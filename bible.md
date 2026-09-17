@@ -9,3 +9,4 @@
 
 - Added the P0.1 work-queue package and moved it through candidate and validation review.
 - Verified the cheap validation path: 7 tests, Ruff, and strict mypy pass.
+- Completed the P0.1 queue package after recording all declared validation receipts; live Gemma remains credential-gated.

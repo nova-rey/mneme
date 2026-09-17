@@ -35,10 +35,12 @@
         "LICENSE",
         "bible.md"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "P0.1 implementation and cheap validation complete; live Gemma blocked only by absent HF credential"
+      ],
       "id": "P0.1",
       "notes": "",
-      "owner": "root-foreman",
+      "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -60,12 +62,10 @@
         }
       ],
       "scope": "Implement only the Phase 0.1 laboratory boundary and supplied-document organization.",
-      "session_ids": [
-        "mneme-p01"
-      ],
-      "status": "VALIDATING",
+      "session_ids": [],
+      "status": "DONE",
       "title": "Host contract, Gemma qualification, and repository foundation",
-      "updated_at": "2026-09-17T23:26:37.788383Z",
+      "updated_at": "2026-09-17T23:27:03.261219Z",
       "validation": {
         "required": [
           "pytest -q",
@@ -74,7 +74,33 @@
           "mneme host qualify fake",
           "document exact Gemma checkpoint and hosted/local assumptions"
         ],
-        "results": {}
+        "results": {
+          "document exact Gemma checkpoint and hosted/local assumptions": {
+            "receipt": "docs/decisions/gemma.md records google/gemma-4-E4B and non-bit-identical hosted/local boundary",
+            "recorded_at": "2026-09-17T23:27:03.221271Z",
+            "status": "PASS"
+          },
+          "mneme host qualify fake": {
+            "receipt": "FakeHost artifact and report generated; 3/3 structured cases passed",
+            "recorded_at": "2026-09-17T23:27:03.180675Z",
+            "status": "PASS"
+          },
+          "mypy src/mneme": {
+            "receipt": "Success no issues (2026-09-17)",
+            "recorded_at": "2026-09-17T23:27:03.143201Z",
+            "status": "PASS"
+          },
+          "pytest -q": {
+            "receipt": "7 passed (2026-09-17)",
+            "recorded_at": "2026-09-17T23:27:03.049440Z",
+            "status": "PASS"
+          },
+          "ruff check .": {
+            "receipt": "All checks passed (2026-09-17)",
+            "recorded_at": "2026-09-17T23:27:03.104267Z",
+            "status": "PASS"
+          }
+        }
       },
       "waiting_on": [],
       "workstream": "p0.1"
@@ -92,5 +118,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-17T23:26:37.788436Z"
+  "updated_at": "2026-09-17T23:27:03.261266Z"
 }
