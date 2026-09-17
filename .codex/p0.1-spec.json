@@ -1,0 +1,15 @@
+{
+  "id": "P0.1",
+  "title": "Host contract, Gemma qualification, and repository foundation",
+  "requirement_ids": ["repo", "host-contract", "fake-host", "gemma-host", "qualification", "docs", "tests", "ci"],
+  "priority": 1,
+  "dependencies": [],
+  "workstream": "p0.1",
+  "domain": "python-host-inference",
+  "scope": "Implement only the Phase 0.1 laboratory boundary and supplied-document organization.",
+  "edit_boundaries": ["src/mneme", "tests", "docs", "README.md", "pyproject.toml", "configs", ".github", ".env.example", ".gitignore", "LICENSE", "bible.md"],
+  "resource_requirements": [{"name": "model-agent", "units": 1, "exclusive": false}],
+  "base_sha": "d13567a",
+  "validation_requirements": ["pytest -q", "ruff check .", "mypy src/mneme", "mneme host qualify fake", "document exact Gemma checkpoint and hosted/local assumptions"],
+  "completion_criterion": "Fresh checkout installs, passes cheap checks, qualifies FakeHost, and provides configured real Gemma execution boundary without implementing later MNEME phases."
+}

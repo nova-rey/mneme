@@ -1,0 +1,96 @@
+{
+  "campaign": "mneme-p0.1",
+  "created_at": "2026-09-17T23:26:09.185518Z",
+  "dependencies": {},
+  "hard_problem_repo": "nova-rey/codex-config-backup",
+  "packages": [
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "d13567a",
+      "campaign": "mneme-p0.1",
+      "candidate": {
+        "artifact": null,
+        "base_sha": "d13567a",
+        "returned_at": "2026-09-17T23:26:37.750258Z",
+        "returned_by": "root-foreman",
+        "sha": "d13567a"
+      },
+      "completion_criterion": "Fresh checkout installs, passes cheap checks, qualifies FakeHost, and provides configured real Gemma execution boundary without implementing later MNEME phases.",
+      "created_at": "2026-09-17T23:26:37.576674Z",
+      "dependencies": [],
+      "domain": "python-host-inference",
+      "edit_boundaries": [
+        "src/mneme",
+        "tests",
+        "docs",
+        "README.md",
+        "pyproject.toml",
+        "configs",
+        ".github",
+        ".env.example",
+        ".gitignore",
+        "LICENSE",
+        "bible.md"
+      ],
+      "evidence_refs": [],
+      "id": "P0.1",
+      "notes": "",
+      "owner": "root-foreman",
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "repo",
+        "host-contract",
+        "fake-host",
+        "gemma-host",
+        "qualification",
+        "docs",
+        "tests",
+        "ci"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": false,
+          "name": "model-agent",
+          "units": 1
+        }
+      ],
+      "scope": "Implement only the Phase 0.1 laboratory boundary and supplied-document organization.",
+      "session_ids": [
+        "mneme-p01"
+      ],
+      "status": "VALIDATING",
+      "title": "Host contract, Gemma qualification, and repository foundation",
+      "updated_at": "2026-09-17T23:26:37.788383Z",
+      "validation": {
+        "required": [
+          "pytest -q",
+          "ruff check .",
+          "mypy src/mneme",
+          "mneme host qualify fake",
+          "document exact Gemma checkpoint and hosted/local assumptions"
+        ],
+        "results": {}
+      },
+      "waiting_on": [],
+      "workstream": "p0.1"
+    }
+  ],
+  "project": "nova-rey/mneme",
+  "resources": {
+    "canonical-integration": {
+      "capacity": 1,
+      "exclusive": true
+    },
+    "model-agent": {
+      "capacity": 4,
+      "exclusive": false
+    }
+  },
+  "schema_version": 1,
+  "updated_at": "2026-09-17T23:26:37.788436Z"
+}
