@@ -84,6 +84,17 @@ def test_preflight_rejects_unbounded_token_budget() -> None:
         preflight(value, FakeHost())
 
 
+def test_preflight_rejects_missing_checkpoint_binding(tmp_path) -> None:
+    value = spec()
+    for subject in value["subjects"]:
+        subject["start"] = "start"
+    value["checkpoints"] = {
+        "start": {"path": str(tmp_path / "missing.sqlite3"), "checkpoint_id": "cp"}
+    }
+    with pytest.raises(PreflightError, match="does not exist"):
+        preflight(value, FakeHost())
+
+
 def test_seed_does_not_depend_on_subject_slot_for_paired_evaluation() -> None:
     value = spec()
     plan = preflight(value, FakeHost())

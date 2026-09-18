@@ -14,6 +14,7 @@ import json
 from collections.abc import Mapping
 from dataclasses import dataclass
 from enum import StrEnum
+from pathlib import Path
 from typing import Any, Protocol
 
 from ..contracts import Capability, HostCapabilities, HostFingerprint
@@ -167,6 +168,52 @@ def _dataset_names(spec: Mapping[str, Any], subject: Mapping[str, Any]) -> tuple
     return development, evaluation
 
 
+def _validate_checkpoint_bindings(spec: Mapping[str, Any]) -> None:
+    checkpoints = spec.get("checkpoints", {})
+    if checkpoints is None:
+        return
+    if not isinstance(checkpoints, Mapping):
+        raise PreflightError("checkpoints must be a mapping")
+    for subject in spec.get("subjects", []):
+        start = subject.get("start") if isinstance(subject, Mapping) else None
+        if checkpoints and start not in checkpoints:
+            raise PreflightError(f"subject start checkpoint is not declared: {start}")
+    for name, binding in checkpoints.items():
+        if not isinstance(binding, Mapping):
+            raise PreflightError(f"checkpoint binding must be an object: {name}")
+        path_value, checkpoint_id = binding.get("path"), binding.get("checkpoint_id")
+        if not isinstance(path_value, str) or not isinstance(checkpoint_id, str):
+            raise PreflightError(f"checkpoint {name} requires path and checkpoint_id")
+        path = Path(path_value)
+        if not path.is_file():
+            raise PreflightError(f"checkpoint file does not exist: {path}")
+        expected_digest = binding.get("sha256")
+        if expected_digest is not None:
+            actual_digest = hashlib.sha256(path.read_bytes()).hexdigest()
+            if actual_digest != expected_digest:
+                raise PreflightError(f"checkpoint digest does not match: {name}")
+        try:
+            from ..state.reader import CheckpointReader
+
+            with CheckpointReader(path, checkpoint_id=checkpoint_id) as reader:
+                manifest = reader.manifest()
+                if (
+                    binding.get("revision") is not None
+                    and manifest["source_revision"] != binding["revision"]
+                ):
+                    raise PreflightError(f"checkpoint revision does not match: {name}")
+                export = reader.store.connection.execute(
+                    "SELECT export_allowed FROM policies WHERE policy_id=?",
+                    (manifest["policy_id"],),
+                ).fetchone()
+                if not export or not bool(export[0]):
+                    raise PreflightError(f"checkpoint export permission denied: {name}")
+        except PreflightError:
+            raise
+        except Exception as exc:
+            raise PreflightError(f"invalid checkpoint binding {name}: {exc}") from exc
+
+
 def _token_bound(records: list[Any], field: str) -> int | None:
     total = 0
     for record in records:
@@ -235,6 +282,7 @@ def preflight(
     subjects = spec.get("subjects")
     if not isinstance(subjects, list) or not subjects:
         raise PreflightError("at least one subject is required")
+    _validate_checkpoint_bindings(spec)
     datasets = _datasets(spec, fixture_pack)
     capabilities, fingerprint, fingerprint_dict = _host_dict(host)
     host_spec = spec.get("host", {})
