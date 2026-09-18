@@ -128,6 +128,7 @@ _REQUIRED_TOP_LEVEL_FIELDS = frozenset(
         "purpose",
         "contract",
         "fixture_pack",
+        "checkpoints",
         "subjects",
         "conditions",
         "evaluation",
@@ -171,7 +172,14 @@ class ExperimentSpec:
         ExperimentIdentity(data["name"], data["contract_revision"])
         if not isinstance(data["purpose"], str) or not data["purpose"].strip():
             raise ContractError("purpose must be a non-empty string")
-        for key in ("contract", "fixture_pack", "host", "randomization", "budgets"):
+        for key in (
+            "contract",
+            "fixture_pack",
+            "checkpoints",
+            "host",
+            "randomization",
+            "budgets",
+        ):
             if not isinstance(data[key], Mapping):
                 raise ContractError(f"{key} must be an object")
         if not isinstance(data["subjects"], list) or not data["subjects"]:
@@ -182,7 +190,9 @@ class ExperimentSpec:
             raise ContractError("evaluation must be an object")
         if not isinstance(data["storage_allowed"], bool):
             raise ContractError("storage_allowed must be boolean")
+        _validate_fixture_pack_reference(data["fixture_pack"])
         _validate_semantic_references(data)
+        _validate_inline_datasets(data)
         _validate_finite(data)
         return cls(_freeze(data))
 
@@ -233,6 +243,35 @@ class ExperimentSpec:
 
 
 def _validate_semantic_references(data: Mapping[str, Any]) -> None:
+    checkpoints = data["checkpoints"]
+    if not checkpoints:
+        raise ContractError("checkpoints must declare at least one starting checkpoint")
+    for name, binding in checkpoints.items():
+        if not isinstance(name, str) or not name.strip():
+            raise ContractError("checkpoint names must be non-empty strings")
+        if not isinstance(binding, Mapping):
+            raise ContractError(f"checkpoints.{name} must be an object")
+        required_checkpoint_fields = {
+            "path",
+            "checkpoint_id",
+            "instance_id",
+            "revision",
+            "manifest_id",
+            "sha256",
+        }
+        missing = sorted(required_checkpoint_fields - set(binding))
+        if missing:
+            raise ContractError(
+                f"checkpoint {name} missing required field(s): {', '.join(missing)}"
+            )
+        for field in ("path", "checkpoint_id", "instance_id", "manifest_id"):
+            if not isinstance(binding[field], str) or not binding[field].strip():
+                raise ContractError(f"checkpoint {name}.{field} must be a non-empty string")
+        revision = binding["revision"]
+        if isinstance(revision, bool) or not isinstance(revision, int) or revision < 0:
+            raise ContractError(f"checkpoint {name}.revision must be a non-negative integer")
+        _validate_hex_digest(binding["sha256"], f"checkpoint {name}.sha256")
+
     subject_slots: set[int] = set()
     for index, subject in enumerate(data["subjects"]):
         if not isinstance(subject, Mapping):
@@ -246,6 +285,10 @@ def _validate_semantic_references(data: Mapping[str, Any]) -> None:
         for required in ("start", "cohort", "condition"):
             if not isinstance(subject.get(required), str) or not subject[required]:
                 raise ContractError(f"subjects[{index}].{required} must be a non-empty string")
+        if subject["start"] not in checkpoints:
+            raise ContractError(
+                f"subject {slot} references undeclared starting checkpoint: {subject['start']}"
+            )
         if "development_sampling_slot" in subject:
             sampling = subject["development_sampling_slot"]
             if isinstance(sampling, bool) or not isinstance(sampling, int) or sampling < 0:
@@ -266,6 +309,51 @@ def _validate_semantic_references(data: Mapping[str, Any]) -> None:
             isinstance(value, bool) or not isinstance(value, (int, float)) or value <= 0
         ):
             raise ContractError(f"budgets.{key} must be positive")
+
+
+def _validate_hex_digest(value: Any, path: str) -> None:
+    if not isinstance(value, str) or len(value) != 64:
+        raise ContractError(f"{path} must be a SHA-256 hexadecimal digest")
+    try:
+        int(value, 16)
+    except ValueError as exc:
+        raise ContractError(f"{path} must be a SHA-256 hexadecimal digest") from exc
+
+
+def _validate_fixture_pack_reference(value: Mapping[str, Any]) -> None:
+    required = {"path", "sha256"}
+    missing = sorted(required - set(value))
+    if missing:
+        raise ContractError(f"fixture_pack missing required field(s): {', '.join(missing)}")
+    if not isinstance(value["path"], str) or not value["path"].strip():
+        raise ContractError("fixture_pack.path must be a non-empty string")
+    _validate_hex_digest(value["sha256"], "fixture_pack.sha256")
+
+
+def _validate_inline_datasets(data: Mapping[str, Any]) -> None:
+    """Validate optional inline records with the same schema as fixture JSONL."""
+
+    datasets = data.get("datasets")
+    if datasets is None:
+        return
+    if not isinstance(datasets, Mapping) or not datasets:
+        raise ContractError("datasets must be a non-empty mapping of named records")
+    # Imported lazily: datasets.py uses ContractError and canonical_json from this
+    # module, so a top-level import would create a cycle during package loading.
+    from .datasets import DatasetBoundaryError, DatasetRecord
+
+    for name, records in datasets.items():
+        if not isinstance(name, str) or not name.strip():
+            raise ContractError("dataset names must be non-empty strings")
+        if not isinstance(records, list):
+            raise ContractError(f"datasets.{name} must be an array of records")
+        try:
+            for index, record in enumerate(records):
+                if not isinstance(record, Mapping):
+                    raise ContractError(f"datasets.{name}[{index}] must be an object")
+                DatasetRecord.from_dict(record, source_path=f"<inline:{name}>")
+        except DatasetBoundaryError as exc:
+            raise ContractError(f"invalid inline dataset {name}: {exc}") from exc
 
 
 def load_spec(path: str | Path) -> ExperimentSpec:

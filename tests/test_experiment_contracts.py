@@ -14,6 +14,16 @@ def _spec(**changes: object) -> dict[str, object]:
         "stage": "engineering",
         "contract": {"fixed": ["host"], "may_differ": ["development_sampling"]},
         "fixture_pack": {"path": "fixtures/pack.json", "sha256": "a" * 64},
+        "checkpoints": {
+            "checkpoint-a": {
+                "path": "checkpoints/a.sqlite3",
+                "checkpoint_id": "checkpoint-id",
+                "instance_id": "instance-id",
+                "revision": 0,
+                "manifest_id": "manifest-id",
+                "sha256": "b" * 64,
+            }
+        },
         "subjects": [
             {
                 "slot": 0,
@@ -76,7 +86,48 @@ def test_duplicate_json_fields_and_nonfinite_values_fail():
 def test_invalid_subject_reference_and_revision_fail():
     with pytest.raises(ContractError, match="unknown condition"):
         ExperimentSpec.from_dict(
-            _spec(subjects=[{"slot": 0, "start": "c", "cohort": "x", "condition": "missing"}])
+            _spec(
+                subjects=[
+                    {
+                        "slot": 0,
+                        "start": "checkpoint-a",
+                        "cohort": "x",
+                        "condition": "missing",
+                    }
+                ]
+            )
         )
     with pytest.raises(ContractError, match="positive"):
         ExperimentSpec.from_dict(_spec(contract_revision=0))
+
+
+def test_starting_checkpoint_is_required_and_must_be_bound():
+    missing = _spec()
+    del missing["checkpoints"]
+    with pytest.raises(ContractError, match="missing"):
+        ExperimentSpec.from_dict(missing)
+
+    unbound = _spec(subjects=[{
+        "slot": 0,
+        "start": "missing-checkpoint",
+        "cohort": "x",
+        "condition": "common",
+    }])
+    with pytest.raises(ContractError, match="undeclared starting checkpoint"):
+        ExperimentSpec.from_dict(unbound)
+
+
+def test_inline_datasets_use_strict_record_schema():
+    record = {
+        "record_id": "d0",
+        "ordinal": 0,
+        "scenario_family": "family-a",
+        "messages": [{"role": "user", "content": "hello"}],
+        "partition": "engineering",
+        "role": "development",
+    }
+    accepted = ExperimentSpec.from_dict(_spec(datasets={"dev": [record]}))
+    assert accepted.to_dict()["datasets"]["dev"][0]["record_id"] == "d0"
+    invalid = _spec(datasets={"dev": [{**record, "unexpected": True}]})
+    with pytest.raises(ContractError, match="unknown field"):
+        ExperimentSpec.from_dict(invalid)
