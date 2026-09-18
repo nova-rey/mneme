@@ -60,3 +60,9 @@
 
 - The full FakeHost acceptance demonstration completed and its receipt was saved under `docs/receipts/` with a local machine-readable artifact at `artifacts/p02_acceptance.json`.
 - The bounded real-Gemma persistence demonstration could not run because `DEEPINFRA_TOKEN` is absent in this environment. P0.2 is therefore retained in the work queue as `WAITING` on `external:gemma-p02-acceptance`; it is not marked DONE.
+
+## 2026-09-18 P0.2 audit correction
+
+- Enforced the approved one-active-writer rule with an OS advisory lock around SQLite transactions and checkpoint copies.
+- Corrected fork ancestry to record the durable checkpoint ID rather than a filename-derived label.
+- Updated the approved plan status to show implementation underway and the real-Gemma gate still pending.

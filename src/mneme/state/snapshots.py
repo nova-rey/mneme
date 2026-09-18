@@ -52,7 +52,8 @@ def create_checkpoint(
         raise SnapshotError("export/copy permission denied")
     destination = Path(destination)
     staging = destination.with_suffix(destination.suffix + f".{uuid.uuid4().hex}.staging")
-    _copy(source, staging)
+    with source.writer_lock():
+        _copy(source, staging)
     try:
         with SQLiteStore(staging) as staged:
             with staged.transaction() as db:
@@ -98,7 +99,8 @@ def backup_instance(source: SQLiteStore, destination: str | Path) -> None:
         raise SnapshotError("export/copy permission denied")
     destination = Path(destination)
     staging = destination.with_suffix(destination.suffix + f".{uuid.uuid4().hex}.staging")
-    _copy(source, staging)
+    with source.writer_lock():
+        _copy(source, staging)
     os.link(staging, destination)
     staging.unlink()
     _sync(destination)
@@ -122,6 +124,9 @@ def fork_from_checkpoint(
         export = source.connection.execute("SELECT export_allowed FROM policies").fetchone()
         if not export or not bool(export[0]):
             raise SnapshotError("export/copy permission denied")
+        checkpoint_id = source.connection.execute(
+            "SELECT checkpoint_id FROM checkpoints ORDER BY created_at DESC LIMIT 1"
+        ).fetchone()[0]
         _copy(source, destination)
     with SQLiteStore(destination) as child:
         with child.transaction() as db:
@@ -154,7 +159,7 @@ def fork_from_checkpoint(
                     lineage["scope_id"],
                     child_self,
                     lineage["instance_id"],
-                    checkpoint.stem,
+                    checkpoint_id,
                     parent_manifest,
                 ),
             )

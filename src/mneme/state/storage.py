@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import contextlib
+import fcntl
 import sqlite3
 from collections.abc import Iterator
 from datetime import UTC, datetime
@@ -224,14 +225,27 @@ class SQLiteStore:
     def transaction(self, *, immediate: bool = True) -> Iterator[sqlite3.Connection]:
         if self.read_only:
             raise sqlite3.OperationalError("read-only store")
-        self.connection.execute("BEGIN IMMEDIATE" if immediate else "BEGIN")
-        try:
-            yield self.connection
-        except BaseException:
-            self.connection.rollback()
-            raise
-        else:
-            self.connection.commit()
+        with self.writer_lock():
+            self.connection.execute("BEGIN IMMEDIATE" if immediate else "BEGIN")
+            try:
+                yield self.connection
+            except BaseException:
+                self.connection.rollback()
+                raise
+            else:
+                self.connection.commit()
+
+    @contextlib.contextmanager
+    def writer_lock(self) -> Iterator[None]:
+        if self.read_only:
+            raise sqlite3.OperationalError("read-only store")
+        lock_path = self.path.parent / "writer.lock"
+        with lock_path.open("a+") as lock:
+            fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+            try:
+                yield
+            finally:
+                fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
 
     def _initialize(self) -> None:
         with self.transaction():
