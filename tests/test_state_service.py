@@ -3,7 +3,12 @@ import pytest
 from mneme.contracts import GenerationRequest
 from mneme.hosts import FakeHost
 from mneme.state.contracts import StoragePermissions
-from mneme.state.service import ContinuityService, IdempotencyConflict, StaleRevision
+from mneme.state.service import (
+    ContinuityService,
+    IdempotencyConflict,
+    OperationNotReady,
+    StaleRevision,
+)
 from mneme.state.storage import SQLiteStore
 
 
@@ -68,3 +73,59 @@ def test_failed_remote_call_is_uncertain_without_revision_advance(tmp_path):
         ).fetchone()[0]
         assert status == "UNCERTAIN"
         assert store.current()["current_revision"] == 0
+
+
+def test_restart_recovery_marks_orphaned_started_operation_uncertain(tmp_path):
+    with SQLiteStore(tmp_path / "a.sqlite3") as store:
+        instance = store.create_root(permissions=StoragePermissions(True, True))
+        service = ContinuityService(store, instance, FakeHost())
+        operation = service.prepare_episode(
+            _request(), operation_id="33333333-3333-4333-8333-333333333333"
+        )
+
+        # Simulate a process dying after the STARTED transaction committed,
+        # before the remote result could be persisted.
+        with store.transaction() as db:
+            db.execute(
+                "UPDATE operations SET status='STARTED' WHERE operation_id=?",
+                (operation.operation_id,),
+            )
+
+        recovered = service.recover_orphaned_operations()
+        assert len(recovered) == 1
+        assert recovered[0].operation_id == operation.operation_id
+        assert recovered[0].episode_id == operation.episode_id
+        assert recovered[0].status == "UNCERTAIN"
+        row = store.connection.execute(
+            "SELECT status,failure_code FROM operations WHERE operation_id=?",
+            (operation.operation_id,),
+        ).fetchone()
+        assert tuple(row) == ("UNCERTAIN", "process_interrupted")
+        with pytest.raises(OperationNotReady, match="UNCERTAIN"):
+            service.generate_operation(operation.operation_id)
+        assert service.recover_started_operations() == ()
+
+
+def test_recovery_can_target_one_started_operation_and_is_idempotent(tmp_path):
+    with SQLiteStore(tmp_path / "a.sqlite3") as store:
+        instance = store.create_root(permissions=StoragePermissions(True, True))
+        service = ContinuityService(store, instance, FakeHost())
+        first = service.prepare_episode(
+            _request("first"), operation_id="44444444-4444-4444-8444-444444444444"
+        )
+        with store.transaction() as db:
+            db.execute(
+                "UPDATE operations SET status='STARTED' WHERE operation_id=?",
+                (first.operation_id,),
+            )
+        recovered = service.recover_started_operations(
+            operation_id=first.operation_id, reason="worker_lost"
+        )
+        assert recovered[0].status == "UNCERTAIN"
+        assert store.connection.execute(
+            "SELECT failure_code FROM operations WHERE operation_id=?",
+            (first.operation_id,),
+        ).fetchone()[0] == "worker_lost"
+        assert service.recover_orphaned_operations(
+            operation_id=first.operation_id, reason="different_reason"
+        ) == ()

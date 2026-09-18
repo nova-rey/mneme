@@ -72,6 +72,71 @@ class ContinuityService:
             raise ContinuityError(f"unknown active lineage: {self.instance_id}")
         return int(row[0]), str(row[1])
 
+    def recover_orphaned_operations(
+        self,
+        *,
+        operation_id: str | None = None,
+        reason: str = "process_interrupted",
+    ) -> tuple[OperationReceipt, ...]:
+        """Mark provider calls left in ``STARTED`` as permanently uncertain.
+
+        A process can disappear after the STARTED transaction commits and
+        before the provider result is durably recorded.  There is no safe way
+        to infer whether that remote call completed, so recovery must make the
+        ambiguity explicit rather than retrying it.  This transition is
+        idempotent: already-uncertain operations are left untouched and a
+        later retry cannot regenerate them.
+
+        ``operation_id`` narrows recovery to one known coordinate; omitting it
+        recovers every orphaned STARTED operation for this lineage.  PREPARED
+        operations remain retryable because no provider call has started.
+        """
+
+        if operation_id is not None and not isinstance(operation_id, str):
+            raise ContinuityError("operation_id must be a string")
+        if not isinstance(reason, str) or not reason:
+            raise ContinuityError("recovery reason must be non-empty")
+        with self._write() as db:
+            if operation_id is None:
+                rows = db.execute(
+                    "SELECT operation_id,episode_id,status FROM operations "
+                    "WHERE instance_id=? AND status='STARTED' ORDER BY created_at,operation_id",
+                    (self.instance_id,),
+                ).fetchall()
+            else:
+                rows = db.execute(
+                    "SELECT operation_id,episode_id,status FROM operations "
+                    "WHERE instance_id=? AND operation_id=? AND status='STARTED'",
+                    (self.instance_id, operation_id),
+                ).fetchall()
+            if not rows:
+                return ()
+            now = _utc()
+            receipts: list[OperationReceipt] = []
+            for row in rows:
+                db.execute(
+                    "UPDATE operations SET status='UNCERTAIN',failure_code=?,updated_at=? "
+                    "WHERE operation_id=? AND instance_id=? AND status='STARTED'",
+                    (reason, now, str(row[0]), self.instance_id),
+                )
+                receipts.append(
+                    OperationReceipt(str(row[0]), str(row[1]), "UNCERTAIN")
+                )
+            return tuple(receipts)
+
+    def recover_started_operations(
+        self,
+        *,
+        operation_id: str | None = None,
+        reason: str = "process_interrupted",
+    ) -> tuple[OperationReceipt, ...]:
+        """Compatibility spelling for the explicit STARTED recovery boundary."""
+
+        return self.recover_orphaned_operations(
+            operation_id=operation_id,
+            reason=reason,
+        )
+
     def prepare_episode(
         self,
         request: GenerationRequest,
