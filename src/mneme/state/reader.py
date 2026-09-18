@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 from pathlib import Path
 from typing import Any
 
@@ -78,3 +80,23 @@ class CheckpointReader:
                 "SELECT * FROM revisions WHERE revision>0 ORDER BY revision"
             )
         ]
+
+    def state_digest(self) -> str:
+        """Digest all logical rows without opening a writable database handle."""
+
+        digest = hashlib.sha256()
+        tables = self.store.connection.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' "
+            "ORDER BY name"
+        ).fetchall()
+        for table_row in tables:
+            table = str(table_row[0])
+            columns = [
+                str(row[1])
+                for row in self.store.connection.execute(f'PRAGMA table_info("{table}")')
+            ]
+            digest.update(json.dumps({"table": table, "columns": columns}, sort_keys=True).encode())
+            for row in self.store.connection.execute(f'SELECT * FROM "{table}" ORDER BY rowid'):
+                values = [value.hex() if isinstance(value, bytes) else value for value in row]
+                digest.update(json.dumps(values, sort_keys=False, default=str).encode())
+        return digest.hexdigest()

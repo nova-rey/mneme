@@ -1,5 +1,6 @@
 """P0.3 experiment contracts and fixture validation."""
 
+from .artifacts import ArtifactError, ArtifactStore, PublishedRun
 from .contracts import (
     EXPERIMENT_SCHEMA_VERSION,
     ContractError,
@@ -16,7 +17,7 @@ from .datasets import (
     load_jsonl,
     validate_split_boundaries,
 )
-from .artifacts import ArtifactError, ArtifactStore, PublishedRun
+from .evaluation import EvaluationError, FrozenEvaluationView, run_isolation_check
 
 __all__ = [
     "EXPERIMENT_SCHEMA_VERSION",
@@ -25,11 +26,14 @@ __all__ = [
     "DatasetRecord",
     "ExperimentIdentity",
     "ExperimentSpec",
+    "EvaluationError",
     "FixturePack",
+    "FrozenEvaluationView",
     "canonical_json",
     "load_fixture_pack",
     "load_jsonl",
     "load_spec",
+    "run_isolation_check",
     "validate_split_boundaries",
     "ArtifactError",
     "ArtifactStore",
