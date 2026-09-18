@@ -1,15 +1,18 @@
-"""Small P0.3 command handlers used by :mod:`mneme.cli`.
+"""Experiment command handlers used by :mod:`mneme.cli`.
 
-These handlers validate and prepare contracts, but deliberately do not execute a
-development schedule.  Keeping them out of the top-level parser also lets the
-legacy P0.1/P0.2 state commands remain unchanged.
+The contract and preparation commands are the P0.3 surface.  P0.4 execution is
+kept behind the runner module: this file only translates the stable CLI
+arguments into runner calls and serializes their results.  Keeping that seam
+small prevents the command layer from becoming a second workflow engine.
 """
 
 from __future__ import annotations
 
+import importlib
 import json
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 from .artifacts import ArtifactError, ArtifactStore, file_digest
 from .contracts import ContractError, ExperimentSpec, load_spec
@@ -150,12 +153,61 @@ def inspect_run(run_id: str, lab: Path, verify: bool) -> dict[str, Any]:
     return ArtifactStore(lab).inspect_run(run_id, verify=verify)
 
 
-def resume_run(run_id: str, lab: Path) -> dict[str, Any]:
+def reconcile_prepared_run(run_id: str, lab: Path) -> dict[str, Any]:
     store = ArtifactStore(lab)
     result = store.inspect_run(run_id, verify=True)
     result["resumed"] = True
     result["execution_supported"] = False
     result["message"] = "P0.3 resume reconciles artifacts only; no model execution was started."
+    return result
+
+
+def execute_run(run_id: str, lab: Path, host_name: str | None = None) -> dict[str, Any]:
+    """Execute one prepared P0.4 run through the integrated runner.
+
+    The import is intentionally lazy.  P0.3 installations can still validate
+    and inspect prepared runs without importing the execution machinery, while
+    P0.4 owns the actual lifecycle and host construction.  ``host_name`` is an
+    optional explicit override used by controlled tests; production execution
+    derives the host from the immutable prepared contract.
+    """
+
+    runner = importlib.import_module("mneme.experiments.runner")
+    run_execute = cast(Callable[..., object], getattr(runner, "execute_run"))
+    result = run_execute(run_id=run_id, lab=lab, host_name=host_name)
+    if not isinstance(result, dict):
+        raise ArtifactError("integrated runner returned a non-object result")
+    return result
+
+
+def resume_execution(run_id: str, lab: Path, host_name: str | None = None) -> dict[str, Any]:
+    """Resume a prepared or interrupted P0.4 run through the integrated runner."""
+
+    runner = importlib.import_module("mneme.experiments.runner")
+    run_resume = cast(Callable[..., object], getattr(runner, "resume_run"))
+    result = run_resume(run_id=run_id, lab=lab, host_name=host_name)
+    if not isinstance(result, dict):
+        raise ArtifactError("integrated runner returned a non-object result")
+    return result
+
+
+def baseline_report(
+    run_id: str,
+    lab: Path,
+    output: Path | None = None,
+) -> dict[str, Any]:
+    """Build the machine-readable P0.4 baseline report for a completed run."""
+
+    reporter = importlib.import_module("mneme.experiments.baseline")
+    build_report = cast(Callable[..., object], getattr(reporter, "build_report"))
+    result = build_report(run_id=run_id, lab=lab)
+    if not isinstance(result, dict):
+        raise ArtifactError("baseline reporter returned a non-object result")
+    if output is not None:
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(_json(result) + "\n", encoding="utf-8")
+        result = dict(result)
+        result["output"] = str(output)
     return result
 
 
@@ -271,8 +323,12 @@ def dispatch(args: Any) -> int:
             result = create_run(args.spec, args.lab, args.run_id, args.host)
         elif args.experiment_action == "run_inspect":
             result = inspect_run(args.run_id, args.lab, args.verify)
+        elif args.experiment_action == "run_execute":
+            result = execute_run(args.run_id, args.lab, args.host)
         elif args.experiment_action == "run_resume":
-            result = resume_run(args.run_id, args.lab)
+            result = resume_execution(args.run_id, args.lab, args.host)
+        elif args.experiment_action == "baseline_report":
+            result = baseline_report(args.run_id, args.lab, args.output)
         elif args.experiment_action == "artifacts":
             result = list_artifacts(args.run_id, args.lab)
         elif args.experiment_action == "check_isolation":
@@ -318,7 +374,19 @@ def add_parser(sub: Any) -> None:
     resume = rsub.add_parser("resume")
     resume.add_argument("run_id")
     resume.add_argument("--lab", type=Path, required=True)
+    resume.add_argument(
+        "--host",
+        help="optional controlled-test host override; normally read from the prepared contract",
+    )
     resume.add_argument("--json", action="store_true", help="emit machine-readable JSON")
+    execute = rsub.add_parser("execute")
+    execute.add_argument("run_id")
+    execute.add_argument("--lab", type=Path, required=True)
+    execute.add_argument(
+        "--host",
+        help="optional controlled-test host override; normally read from the prepared contract",
+    )
+    execute.add_argument("--json", action="store_true", help="emit machine-readable JSON")
     check = esub.add_parser("check-isolation")
     check.add_argument("run_id")
     check.add_argument("--lab", type=Path, required=True)
@@ -331,12 +399,21 @@ def add_parser(sub: Any) -> None:
     artifacts.add_argument("run_id")
     artifacts.add_argument("--lab", type=Path, required=True)
     artifacts.add_argument("--json", action="store_true", help="emit machine-readable JSON")
+    baseline = esub.add_parser("baseline")
+    bsub = baseline.add_subparsers(dest="baseline_action", required=True)
+    report = bsub.add_parser("report")
+    report.add_argument("run_id")
+    report.add_argument("--lab", type=Path, required=True)
+    report.add_argument("--output", type=Path)
+    report.add_argument("--json", action="store_true", help="emit machine-readable JSON")
 
 
 def normalize_args(args: Any) -> Any:
     action = getattr(args, "experiment_action", None)
     if action == "run":
         args.experiment_action = f"run_{args.run_action}"
+    elif action == "baseline":
+        args.experiment_action = f"baseline_{args.baseline_action}"
     elif isinstance(action, str):
         args.experiment_action = action.replace("-", "_")
     return args
