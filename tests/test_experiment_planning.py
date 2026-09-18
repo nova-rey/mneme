@@ -55,7 +55,12 @@ def test_preflight_resolves_without_calling_host() -> None:
     assert plan.budget.development_calls == 2
     assert plan.budget.evaluation_calls == 4
     assert plan.budget.total_calls == 7
-    assert len(plan.streams) == 6
+    assert {item["domain"] for item in plan.streams} == {
+        "development_generation",
+        "evaluation_generation",
+        "condition_assignment",
+        "dataset_ordering",
+    }
     assert plan.host["capabilities"] == sorted(c.value for c in FakeHost().capabilities().supported)
 
 

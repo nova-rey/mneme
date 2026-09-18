@@ -58,9 +58,20 @@ def create_run(path: Path, lab: Path, run_id: str, host_name: str) -> dict[str, 
 
     plan = preflight(spec.to_dict(), _host(host_name), contract_digest=spec.content_digest)
     store = ArtifactStore(lab)
+    snapshots: dict[str, bytes] = {}
+    checkpoint_bindings = spec.to_dict().get("checkpoints", {})
+    if isinstance(checkpoint_bindings, dict):
+        for label, binding in checkpoint_bindings.items():
+            if not isinstance(label, str) or not isinstance(binding, dict):
+                continue
+            source = binding.get("path")
+            if isinstance(source, str):
+                checkpoint_path = (path.parent / source).resolve()
+                if checkpoint_path.is_file():
+                    snapshots[f"{label}.sqlite3"] = checkpoint_path.read_bytes()
     bindings = {
         "subjects": spec.to_dict().get("subjects", []),
-        "checkpoints": spec.to_dict().get("checkpoints", {}),
+        "checkpoints": checkpoint_bindings,
     }
     published = store.publish_run(
         experiment=spec.to_dict(),
@@ -68,6 +79,7 @@ def create_run(path: Path, lab: Path, run_id: str, host_name: str) -> dict[str, 
         study_plan=plan.to_dict(),
         bindings=bindings,
         run_id=run_id,
+        snapshots=snapshots,
     )
     return {
         "status": "PREPARED",
@@ -101,12 +113,28 @@ def list_artifacts(run_id: str, lab: Path) -> dict[str, Any]:
 def isolation_check(
     run_id: str, lab: Path, check_id: str, slot: int, probe: int, repetition: int
 ) -> dict[str, Any]:
-    """Record a check request; actual FakeHost evaluation belongs to evaluation.py."""
+    """Run one bounded FakeHost probe against the run's frozen checkpoint copy."""
+
+    from ..hosts import FakeHost
+    from .evaluation import run_isolation_check
 
     store = ArtifactStore(lab)
-    request = {"subject_slot": slot, "probe_ordinal": probe, "repetition": repetition}
-    started = store.begin_check(run_id, check_id, request)
-    return dict(started)
+    run = store.locate_run(run_id)
+    snapshots = sorted((run / "snapshots").glob("*.sqlite3"))
+    if not snapshots:
+        raise ArtifactError("prepared run has no checkpoint snapshot")
+    return run_isolation_check(
+        run_id=run_id,
+        lab=lab,
+        check_id=check_id,
+        checkpoint=snapshots[0],
+        host=FakeHost(),
+        messages=[{"role": "user", "content": f"P0.3 isolation probe {probe}"}],
+        seed=repetition,
+        subject_slot=slot,
+        probe_ordinal=probe,
+        repetition=repetition,
+    )
 
 
 def dispatch(args: Any) -> int:
@@ -182,6 +210,6 @@ def add_parser(sub: Any) -> None:
 
 
 def normalize_args(args: Any) -> Any:
-    if args.experiment_action == "run":
+    if getattr(args, "experiment_action", None) == "run":
         args.experiment_action = f"run_{args.run_action}"
     return args

@@ -302,6 +302,17 @@ def preflight(
             "development_dataset": development_name,
             "evaluation_dataset": evaluation_name,
         })
+        streams.append(
+            {
+                "domain": SeedDomain.CONDITION_ASSIGNMENT.value,
+                "assignment_slot": ordinal,
+                "seed": derive_seed(
+                    master_seed,
+                    SeedDomain.CONDITION_ASSIGNMENT,
+                    assignment_slot=ordinal,
+                ),
+            }
+        )
         dev_slot = subject.get("development_sampling_slot", ordinal)
         if not isinstance(dev_slot, int) or dev_slot < 0:
             raise PreflightError("development_sampling_slot must be a non-negative integer")
@@ -317,6 +328,21 @@ def preflight(
                         sampling_slot=dev_slot,
                         episode=episode,
                         repetition=0,
+                    ),
+                }
+            )
+        for entry in range(len(development)):
+            streams.append(
+                {
+                    "domain": SeedDomain.DATASET_ORDERING.value,
+                    "dataset": "development",
+                    "subject_slot": subject.get("slot", ordinal),
+                    "entry": entry,
+                    "seed": derive_seed(
+                        master_seed,
+                        SeedDomain.DATASET_ORDERING,
+                        ordering_group=ordinal,
+                        entry=entry,
                     ),
                 }
             )

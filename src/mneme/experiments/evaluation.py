@@ -16,7 +16,7 @@ from typing import Any, cast
 from ..contracts import GenerationRequest, GenerationResult
 from ..hosts.fake import FakeHost
 from ..state.reader import CheckpointReader
-from .artifacts import ArtifactError, ArtifactStore, file_digest
+from .artifacts import ArtifactError, ArtifactStore, content_digest, file_digest
 
 
 class EvaluationError(RuntimeError):
@@ -112,7 +112,23 @@ def run_isolation_check(
     artifact_store = ArtifactStore(lab)
     run_path = artifact_store.locate_run(run_id)
     check_path = run_path / "evaluation" / check_id
+    normalized_messages = [
+        {"role": str(item["role"]), "content": str(item["content"])} for item in messages
+    ]
+    request = {
+        "subject_slot": subject_slot,
+        "probe_ordinal": probe_ordinal,
+        "repetition": repetition,
+        "checkpoint_sha256": file_digest(Path(checkpoint)),
+        "seed": seed,
+        "messages_sha256": content_digest(normalized_messages),
+        "parameters_sha256": content_digest(dict(parameters or {})),
+        "system_sha256": content_digest(system) if system is not None else None,
+    }
     if (check_path / "started.json").exists():
+        started = ArtifactStore._read_json(check_path / "started.json")
+        if started.get("request_sha256") != content_digest(request):
+            raise EvaluationError("check ID already exists with conflicting intent")
         if (check_path / "result.json").exists():
             checks = artifact_store.inspect_run(run_id).get("checks", [])
             if isinstance(checks, list) and checks and isinstance(checks[-1], dict):
@@ -121,13 +137,6 @@ def run_isolation_check(
         artifact_store.mark_uncertain(run_id, check_id, "recovery requires a new check ID")
         raise EvaluationError("existing non-terminal check is UNCERTAIN; use a new check ID")
 
-    request = {
-        "subject_slot": subject_slot,
-        "probe_ordinal": probe_ordinal,
-        "repetition": repetition,
-        "checkpoint_sha256": file_digest(Path(checkpoint)),
-        "seed": seed,
-    }
     artifact_store.begin_check(run_id, check_id, request)
     try:
         with FrozenEvaluationView(checkpoint) as view:
