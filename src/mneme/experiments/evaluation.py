@@ -111,6 +111,15 @@ def run_isolation_check(
 
     artifact_store = ArtifactStore(lab)
     run_path = artifact_store.locate_run(run_id)
+    bindings = artifact_store._read_json(run_path / "bindings.json")
+    bound_ids: set[str] = set()
+    if isinstance(bindings.get("checkpoint_id"), str):
+        bound_ids.add(bindings["checkpoint_id"])
+    checkpoint_bindings = bindings.get("checkpoints", {})
+    if isinstance(checkpoint_bindings, Mapping):
+        for binding in checkpoint_bindings.values():
+            if isinstance(binding, Mapping) and isinstance(binding.get("checkpoint_id"), str):
+                bound_ids.add(binding["checkpoint_id"])
     check_path = run_path / "evaluation" / check_id
     normalized_messages = [
         {"role": str(item["role"]), "content": str(item["content"])} for item in messages
@@ -140,6 +149,9 @@ def run_isolation_check(
     artifact_store.begin_check(run_id, check_id, request)
     try:
         with FrozenEvaluationView(checkpoint) as view:
+            checkpoint_identity = str(view.manifest()["checkpoint_id"])
+            if bound_ids and checkpoint_identity not in bound_ids:
+                raise EvaluationError("evaluation checkpoint is not bound to the prepared run")
             before_file = view.checkpoint_file_digest
             before_state = view.state_digest
             result = view.generate(
