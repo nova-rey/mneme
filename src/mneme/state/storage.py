@@ -186,14 +186,20 @@ class SchemaError(RuntimeError):
 class SQLiteStore:
     """One working lineage database, with explicit transaction boundaries."""
 
-    def __init__(self, path: str | Path, *, read_only: bool = False) -> None:
+    def __init__(
+        self,
+        path: str | Path,
+        *,
+        read_only: bool = False,
+        _allow_published_checkpoint_write: bool = False,
+    ) -> None:
         self.path = Path(path)
         self.read_only = read_only
-        self.path.parent.mkdir(parents=True, exist_ok=True)
         if read_only:
             uri = f"file:{self.path.resolve()}?mode=ro"
             self.connection = sqlite3.connect(uri, uri=True, isolation_level=None)
         else:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
             existed = self.path.exists() and self.path.stat().st_size > 0
             self.connection = sqlite3.connect(self.path, isolation_level=None)
             if not existed:
@@ -211,6 +217,30 @@ class SQLiteStore:
         ):
             self._initialize()
         self._check_schema()
+        artifact = self.connection.execute(
+            "SELECT artifact_kind FROM store_info"
+        ).fetchone()
+        if (
+            not read_only
+            and artifact is not None
+            and artifact[0] == ArtifactKind.CHECKPOINT
+            and not _allow_published_checkpoint_write
+        ):
+            self.connection.close()
+            raise SchemaError(
+                "published checkpoint is read-only; fork it or open it through a checkpoint reader"
+            )
+
+    @classmethod
+    def _open_checkpoint_for_fork(cls, path: str | Path) -> SQLiteStore:
+        """Open a copied checkpoint during the private fork conversion step.
+
+        Published checkpoints remain non-writable through the normal constructor.
+        Forking first copies one, then atomically converts that private copy into a
+        working store before inserting the child lineage.
+        """
+
+        return cls(path, _allow_published_checkpoint_write=True)
 
     def close(self) -> None:
         self.connection.close()

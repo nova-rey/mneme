@@ -119,34 +119,43 @@ def fork_from_checkpoint(
             != ArtifactKind.CHECKPOINT
         ):
             raise SnapshotError("fork source is not a checkpoint")
-        lineage = source.connection.execute("SELECT * FROM lineages").fetchone()
-        parent_manifest = source.current()["current_manifest_id"]
-        export = source.connection.execute("SELECT export_allowed FROM policies").fetchone()
+        current = source.current()
+        lineage = source.connection.execute(
+            "SELECT * FROM lineages WHERE instance_id=?", (current["active_instance_id"],)
+        ).fetchone()
+        if lineage is None:
+            raise SnapshotError("checkpoint active lineage is missing")
+        parent_manifest = current["current_manifest_id"]
+        export = source.connection.execute(
+            "SELECT export_allowed FROM policies WHERE scope_id=?", (lineage["scope_id"],)
+        ).fetchone()
         if not export or not bool(export[0]):
             raise SnapshotError("export/copy permission denied")
-        checkpoint_id = source.connection.execute(
-            "SELECT checkpoint_id FROM checkpoints ORDER BY created_at DESC LIMIT 1"
-        ).fetchone()[0]
+        checkpoint_rows = source.connection.execute(
+            """
+            SELECT checkpoint_id FROM checkpoints
+            WHERE source_instance_id=? AND source_revision=? AND source_manifest_id=?
+            """,
+            (
+                current["active_instance_id"],
+                current["current_revision"],
+                parent_manifest,
+            ),
+        ).fetchall()
+        if len(checkpoint_rows) != 1:
+            raise SnapshotError("checkpoint has no unique current descriptor")
+        checkpoint_id = checkpoint_rows[0][0]
         _copy(source, destination)
-    with SQLiteStore(destination) as child:
+    with SQLiteStore._open_checkpoint_for_fork(destination) as child:
         with child.transaction() as db:
-            for table in (
-                "lineages",
-                "policies",
-                "host_records",
-                "manifests",
-                "run_manifests",
-                "sources",
-                "generation_records",
-                "episodes",
-                "revisions",
-                "checkpoints",
-            ):
-                db.execute(f"DROP TRIGGER IF EXISTS {table}_immutable_update")
-                db.execute(f"DROP TRIGGER IF EXISTS {table}_immutable_delete")
+            child_id = str(uuid.UUID(child_id))
             child_self = new_id()
             child_manifest = new_id()
-            policy = db.execute("SELECT policy_id FROM policies LIMIT 1").fetchone()[0]
+            policy = db.execute(
+                "SELECT policy_id FROM policies WHERE scope_id=?", (lineage["scope_id"],)
+            ).fetchone()
+            if policy is None:
+                raise SnapshotError("checkpoint policy is missing")
             now = _utc()
             db.execute(
                 "UPDATE store_info SET artifact_kind='working',active_instance_id=?", (child_id,)
@@ -171,7 +180,7 @@ def fork_from_checkpoint(
                     0,
                     None,
                     parent_manifest,
-                    policy,
+                    policy[0],
                     child_self,
                     1,
                     "mneme-p0.2",
@@ -182,7 +191,6 @@ def fork_from_checkpoint(
                     ).fetchone()[0],
                 ),
             )
-            db.execute("DELETE FROM revisions WHERE instance_id=?", (lineage["instance_id"],))
             db.execute(
                 "INSERT INTO revisions VALUES(?,?,?,?,?,?,?,?)",
                 (child_id, 0, None, new_id(), "fork_created", None, child_manifest, now),
