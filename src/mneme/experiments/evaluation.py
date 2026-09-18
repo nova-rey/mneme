@@ -2,7 +2,7 @@
 
 Evaluation uses a checkpoint reader and writes only laboratory artifacts.  It
 does not expose a lineage store, continuity service, or acceptance operation.
-The primitive intentionally supports the built-in FakeHost only; complete
+The primitive accepts any implementation of the host protocol; complete
 development/evaluation execution is a P0.4 concern.
 """
 
@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 from ..contracts import GenerationRequest, GenerationResult
-from ..hosts.fake import FakeHost
+from ..host import Host
 from ..state.reader import CheckpointReader
 from .artifacts import ArtifactError, ArtifactStore, content_digest, file_digest
 
@@ -60,7 +60,7 @@ class FrozenEvaluationView:
 
     def generate(
         self,
-        host: FakeHost,
+        host: Host,
         messages: Sequence[Mapping[str, str]],
         *,
         seed: int | None,
@@ -69,8 +69,6 @@ class FrozenEvaluationView:
     ) -> GenerationResult:
         """Generate one fresh probe without any developmental write path."""
 
-        if not isinstance(host, FakeHost):
-            raise EvaluationError("P0.3 frozen evaluation supports FakeHost only")
         normalized = tuple(
             {"role": str(item["role"]), "content": str(item["content"])}
             for item in messages
@@ -98,7 +96,7 @@ def run_isolation_check(
     lab: str | Path,
     check_id: str,
     checkpoint: str | Path,
-    host: FakeHost,
+    host: Host,
     messages: Sequence[Mapping[str, str]],
     seed: int | None,
     subject_slot: int,
@@ -107,7 +105,7 @@ def run_isolation_check(
     parameters: Mapping[str, Any] | None = None,
     system: str | None = None,
 ) -> dict[str, Any]:
-    """Run one idempotent FakeHost probe and publish a separate receipt."""
+    """Run one idempotent host-protocol probe and publish a separate receipt."""
 
     artifact_store = ArtifactStore(lab)
     run_path = artifact_store.locate_run(run_id)

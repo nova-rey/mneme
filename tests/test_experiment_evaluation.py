@@ -235,3 +235,48 @@ def test_correct_bound_private_snapshot_is_accepted(tmp_path):
         repetition=0,
     )
     assert result["status"] == "RESULT"
+
+class _ProtocolHost:
+    """A structural Host implementation that is not a FakeHost instance."""
+
+    def __init__(self) -> None:
+        self._delegate = FakeHost()
+
+    def capabilities(self):
+        return self._delegate.capabilities()
+
+    def fingerprint(self):
+        return self._delegate.fingerprint()
+
+    def generate(self, request: GenerationRequest):
+        return self._delegate.generate(request)
+
+
+def test_frozen_view_accepts_any_host_protocol_implementation(tmp_path):
+    checkpoint, _ = _run(tmp_path)
+    host = _ProtocolHost()
+    with FrozenEvaluationView(checkpoint) as view:
+        result = view.generate(
+            host,
+            [{"role": "user", "content": "protocol host"}],
+            seed=17,
+        )
+    assert result.provider == "builtin"
+    assert result.content
+
+
+def test_isolation_check_accepts_any_host_protocol_implementation(tmp_path):
+    checkpoint, published = _run(tmp_path)
+    result = run_isolation_check(
+        run_id="run-1",
+        lab=published.path.parents[5],
+        check_id="protocol-host-check",
+        checkpoint=checkpoint,
+        host=_ProtocolHost(),
+        messages=[{"role": "user", "content": "protocol host"}],
+        seed=17,
+        subject_slot=0,
+        probe_ordinal=0,
+        repetition=0,
+    )
+    assert result["status"] == "RESULT"
