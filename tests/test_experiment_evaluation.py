@@ -103,3 +103,21 @@ def test_uncertain_check_is_not_regenerated(tmp_path):
             probe_ordinal=1,
             repetition=0,
         )
+
+
+def test_completed_check_rejects_changed_probe_intent(tmp_path):
+    checkpoint, published = _run(tmp_path)
+    kwargs = {
+        "run_id": "run-1",
+        "lab": published.path.parents[5],
+        "check_id": "check-conflict",
+        "checkpoint": checkpoint,
+        "host": FakeHost(),
+        "seed": 99,
+        "subject_slot": 0,
+        "probe_ordinal": 0,
+        "repetition": 0,
+    }
+    run_isolation_check(messages=[{"role": "user", "content": "first"}], **kwargs)
+    with pytest.raises(EvaluationError, match="conflicting intent"):
+        run_isolation_check(messages=[{"role": "user", "content": "changed"}], **kwargs)
