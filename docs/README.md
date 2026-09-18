@@ -11,6 +11,11 @@ The documents are preserved in their supplied form and are intentionally not mer
 * `research/MNEME_Related_Work_Research_Dossier.docx` is unchanged historical/reference
   material, not a normative implementation specification.
 * `setup/deepinfra.md` is the operational procedure for the selected live P0.1 backend.
+* [Approved P0.2 durable lineage, history, and checkpoints plan](<Approved Plans/MNEME_P0.2_Durable_Lineage_History_Checkpoints_Plan.md>)
+  records the approved implementation design and its three scope amendments: no
+  future-mechanism Python placeholders, storage and export/copy permissions only,
+  and an accepted-history digest without behavioral-equivalence claims.
+  P0.2 implementation awaits separate explicit authorization.
 
 This repository does not contain the older `MNEME_Earned_Association_Field_Spec.md`; the
 current specification identifies it as historical context.
