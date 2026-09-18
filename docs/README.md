@@ -20,7 +20,7 @@ The documents are preserved in their supplied form and are intentionally not mer
   records the versioned experiment identity, split controls, random streams, capability
   preflight, budgets, frozen evaluation boundary, and four implementation chunks. P0.3
   implementation and its FakeHost acceptance receipt are complete.
-* [P0.4 FakeHost integrated receipt](receipts/MNEME_P0.4_Fake_Integrated_Receipt.md)
+* [P0.4 FakeHost integrated receipt](receipts/MNEME_P0.4_Fake_Integrated_Receipt.md) ([JSON](receipts/MNEME_P0.4_Fake_Integrated_Receipt.json))
   records the integrated no-learning runner and network-free validation. The bounded
   real Gemma baseline remains an explicit external acceptance gate.
 

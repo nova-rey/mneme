@@ -128,3 +128,4 @@
 
 - Recorded the P0.4 candidate and network-free validation in `.codex/work-queue.json`: FakeHost integrated execution, restart/resume evidence, pytest, Ruff, and strict mypy pass.
 - P0.4 is waiting on the explicit external dependency `external:gemma-p04-baseline` because `DEEPINFRA_TOKEN` is unavailable. The real baseline, final Phase Zero receipt, and pre-development tag remain intentionally unclaimed.
+- Added the matching machine-readable FakeHost receipt; it records zero real-host calls and therefore does not close the external Gemma gate.

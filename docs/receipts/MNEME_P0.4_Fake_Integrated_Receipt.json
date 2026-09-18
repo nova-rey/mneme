@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "phase": "P0.4",
+  "status": "FAKEHOST_PASS_REAL_HOST_PENDING",
+  "validation": {
+    "pytest": "95 passed",
+    "ruff": "pass",
+    "mypy": "pass"
+  },
+  "fakehost_execution": {
+    "development_calls": 1,
+    "evaluation_calls": 2,
+    "within_instance": {
+      "exact_match_rate": 0.0,
+      "normalized_match_rate": 0.0,
+      "mean_lexical_jaccard": 0.5
+    },
+    "between_instance": null,
+    "evaluation_writeback": false,
+    "developmental_influence": false,
+    "restart_resume": true,
+    "uncertain_retry_not_regenerated": true
+  },
+  "real_gemma": {
+    "model": "google/gemma-4-E4B-it",
+    "provider": "DeepInfra",
+    "calls": 0,
+    "blocked_by": "DEEPINFRA_TOKEN unavailable"
+  },
+  "phase_zero_tag": null
+}
