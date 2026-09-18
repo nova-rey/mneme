@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import math
 import re
+import subprocess
 import unicodedata
 from collections import defaultdict
 from collections.abc import Iterable, Mapping, Sequence
@@ -150,8 +151,7 @@ def _feature_summary(observations: Sequence[BaselineObservation]) -> dict[str, i
         "response_count": len(observations),
         "mean_token_length": sum(len(_words(item.output)) for item in observations)
         / len(observations),
-        "mean_character_length": sum(len(item.output) for item in observations)
-        / len(observations),
+        "mean_character_length": sum(len(item.output) for item in observations) / len(observations),
     }
 
 
@@ -258,11 +258,7 @@ def _safe_bindings(bindings: Sequence[Mapping[str, Any]] | None) -> list[dict[st
         if not isinstance(item, Mapping):
             raise BaselineError("subject bindings must be mappings")
         result.append(
-            {
-                str(key): _safe_value(value)
-                for key, value in item.items()
-                if key in allowed
-            }
+            {str(key): _safe_value(value) for key, value in item.items() if key in allowed}
         )
     return result
 
@@ -401,3 +397,78 @@ def render_baseline_report(report: Mapping[str, Any]) -> str:
         "establish individuality or personality.",
     ]
     return "\n".join(lines) + "\n"
+
+
+def build_report(*, run_id: str, lab: str | Path) -> dict[str, Any]:
+    """Collect sanitized observations from one completed integrated run."""
+
+    from .artifacts import ArtifactStore
+
+    store = ArtifactStore(lab)
+    run = store.locate_run(run_id)
+    inspected = store.inspect_run(run_id, verify=True)
+    if not inspected.get("verified"):
+        raise BaselineError("run artifacts failed integrity verification")
+    experiment = store._read_json(run / "experiment.json")
+    preflight = store._read_json(run / "preflight.json")
+    manifest = store._read_json(run / "run-manifest.json")
+    bindings = store._read_json(run / "bindings.json")
+    observations: list[BaselineObservation] = []
+    usage: dict[str, int] = {"evaluation_calls": 0, "development_calls": 0}
+    for check in inspected.get("checks", []):
+        if not isinstance(check, Mapping) or check.get("status") != "RESULT":
+            continue
+        if not isinstance(check.get("output"), str):
+            continue
+        observations.append(
+            BaselineObservation(
+                check.get("subject_slot", "unknown"),
+                int(check.get("probe_ordinal", 0)),
+                int(check.get("repetition", 0)),
+                str(check["output"]),
+            )
+        )
+        usage["evaluation_calls"] += 1
+    execution_state = store.root / "execution" / run_id / "state.json"
+    execution = {}
+    if execution_state.is_file():
+        try:
+            execution = json.loads(execution_state.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            raise BaselineError(f"execution state is unreadable: {exc}") from exc
+    journal = store.root / "execution" / run_id / "journal.jsonl"
+    if journal.is_file():
+        for line in journal.read_text(encoding="utf-8").splitlines():
+            try:
+                event = json.loads(line)
+            except json.JSONDecodeError as exc:
+                raise BaselineError(f"execution journal is unreadable: {exc}") from exc
+            if isinstance(event, Mapping) and event.get("kind") == "development":
+                usage["development_calls"] += int(event.get("model_calls", 0))
+    identity = experiment.get("name")
+    revision = experiment.get("contract_revision")
+    if not isinstance(identity, str) or not isinstance(revision, int):
+        raise BaselineError("experiment identity is incomplete")
+    host = preflight.get("host", experiment.get("host", {}))
+    budgets = preflight.get("budget", {})
+    software = "unknown"
+    try:
+        software = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=Path(__file__).parents[2], text=True
+        ).strip()
+    except (OSError, subprocess.SubprocessError):
+        pass
+    report = build_baseline_report(
+        experiment_name=identity,
+        contract_revision=revision,
+        contract_sha256=str(manifest.get("contract_sha256", "")),
+        software_revision=software,
+        subject_bindings=bindings.get("subjects") if isinstance(bindings, Mapping) else None,
+        host=host if isinstance(host, Mapping) else {},
+        budgets=budgets if isinstance(budgets, Mapping) else {},
+        observations=observations,
+        actual_usage={**usage, "execution_status": execution.get("status", "UNKNOWN")},
+        evaluation_isolation={"observations": len(observations), "developmental_writeback": False},
+        restart_resume={"execution_status": execution.get("status", "UNKNOWN")},
+    )
+    return report.to_dict()

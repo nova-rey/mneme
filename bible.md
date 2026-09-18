@@ -118,3 +118,8 @@
 ## 2026-09-18 P0.3 remediation evidence reconciliation
 
 - Updated the FakeHost receipts and P0.3 work-queue evidence for the fail-closed bound-private-snapshot fix. P0.3 remains DONE with 77 passing tests, Ruff, and strict mypy.
+
+## 2026-09-18 P0.4 integrated no-learning runner
+
+- Added the bounded P0.4 execution primitive over the approved P0.1-P0.3 contracts: digest-pinned fixture publication, writable subject forks, exact-once developmental acceptance, durable execution journals, uncertain-operation recovery, boundary checkpoints, private read-only evaluation, and sanitized baseline reporting.
+- FakeHost integration validation passes with 95 pytest tests, Ruff, and strict mypy. The real `google/gemma-4-E4B-it` baseline is not claimed because `DEEPINFRA_TOKEN` is absent; Phase Zero remains open and no Phase Zero tag was created.

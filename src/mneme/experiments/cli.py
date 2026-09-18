@@ -96,16 +96,35 @@ def create_run(path: Path, lab: Path, run_id: str, host_name: str) -> dict[str, 
         contract_digest=spec.content_digest,
     )
     store = ArtifactStore(lab)
+    fixture_inputs: dict[str, bytes] = {}
+    fixture_reference = spec.to_dict().get("fixture_pack")
+    if isinstance(fixture_reference, dict) and isinstance(fixture_reference.get("path"), str):
+        fixture_path = Path(fixture_reference["path"])
+        if not fixture_path.is_absolute():
+            fixture_path = path.parent / fixture_path
+        fixture_path = fixture_path.resolve()
+        fixture_inputs["fixture-pack/pack.json"] = fixture_path.read_bytes()
+        manifest = json.loads(fixture_path.read_text(encoding="utf-8"))
+        for entry in manifest.get("datasets", []) if isinstance(manifest, dict) else []:
+            if not isinstance(entry, dict) or not isinstance(entry.get("path"), str):
+                raise ArtifactError("fixture manifest contains an invalid dataset path")
+            relative = Path(entry["path"])
+            if relative.is_absolute() or ".." in relative.parts:
+                raise ArtifactError("fixture dataset path escapes the manifest directory")
+            source = (fixture_path.parent / relative).resolve()
+            if not source.is_file() or source.is_symlink():
+                raise ArtifactError(f"fixture dataset file does not exist: {source}")
+            fixture_inputs[str(Path("fixture-pack") / relative)] = source.read_bytes()
     snapshots: dict[str, bytes] = {}
     checkpoint_bindings = spec.to_dict().get("checkpoints", {})
     if isinstance(checkpoint_bindings, dict):
         for label, binding in checkpoint_bindings.items():
             if not isinstance(label, str) or not isinstance(binding, dict):
                 continue
-            source = binding.get("path")
-            if not isinstance(source, str):
+            source_value = binding.get("path")
+            if not isinstance(source_value, str):
                 raise ArtifactError(f"checkpoint binding has no path: {label}")
-            checkpoint_path = Path(source)
+            checkpoint_path = Path(source_value)
             if not checkpoint_path.is_absolute():
                 checkpoint_path = path.parent / checkpoint_path
             checkpoint_path = checkpoint_path.resolve()
@@ -137,6 +156,7 @@ def create_run(path: Path, lab: Path, run_id: str, host_name: str) -> dict[str, 
         study_plan=plan.to_dict(),
         bindings=bindings,
         run_id=run_id,
+        inputs=fixture_inputs,
         snapshots=snapshots,
     )
     return {
