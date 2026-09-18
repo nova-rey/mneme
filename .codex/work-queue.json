@@ -3,12 +3,12 @@
   "created_at": "2026-09-17T23:26:09.185518Z",
   "dependencies": {
     "external:gemma-live-qualification": {
-      "kind": "external",
-      "status": "UNRESOLVED",
-      "reference": "Run DEEPINFRA_TOKEN-backed canonical Gemma qualification and record the artifact",
-      "receipt": null,
       "created_at": "2026-09-17T23:27:03.300000Z",
-      "resolved_at": null
+      "kind": "external",
+      "receipt": "Live DeepInfra artifact artifacts/gemma-deepinfra.json: basic, multi-turn, and 3/3 structured schemas passed on 2026-09-18",
+      "reference": "Run DEEPINFRA_TOKEN-backed canonical Gemma qualification and record the artifact",
+      "resolved_at": "2026-09-18T18:45:40.010614Z",
+      "status": "RESOLVED"
     }
   },
   "hard_problem_repo": "nova-rey/codex-config-backup",
@@ -23,9 +23,9 @@
       "candidate": {
         "artifact": null,
         "base_sha": "d13567a",
-        "returned_at": "2026-09-17T23:26:37.750258Z",
+        "returned_at": "2026-09-18T18:45:56.246947Z",
         "returned_by": "root-foreman",
-        "sha": "d13567a"
+        "sha": "7022aa2546762ee1923c88f8ef705eb9c9e50bf1"
       },
       "completion_criterion": "Fresh checkout installs, passes cheap checks, qualifies FakeHost, and provides configured real Gemma execution boundary without implementing later MNEME phases.",
       "created_at": "2026-09-17T23:26:37.576674Z",
@@ -47,7 +47,8 @@
         "bible.md"
       ],
       "evidence_refs": [
-        "P0.1 implementation and cheap validation complete; live Gemma blocked only by absent HF credential"
+        "P0.1 implementation and cheap validation complete; live Gemma blocked only by absent HF credential",
+        "P0.1 acceptance closed: live DeepInfra canonical Gemma qualification passed; artifact artifacts/gemma-deepinfra.json"
       ],
       "id": "P0.1",
       "notes": "",
@@ -74,16 +75,17 @@
       ],
       "scope": "Implement only the Phase 0.1 laboratory boundary and supplied-document organization.",
       "session_ids": [],
-      "status": "WAITING",
+      "status": "DONE",
       "title": "Host contract, Gemma qualification, and repository foundation",
-      "updated_at": "2026-09-17T23:27:03.261219Z",
+      "updated_at": "2026-09-18T18:45:56.334205Z",
       "validation": {
         "required": [
           "pytest -q",
           "ruff check .",
           "mypy src/mneme",
           "mneme host qualify fake",
-          "document exact Gemma checkpoint and hosted/local assumptions"
+          "document exact Gemma checkpoint and hosted/local assumptions",
+          "mneme host qualify gemma-deepinfra"
         ],
         "results": {
           "document exact Gemma checkpoint and hosted/local assumptions": {
@@ -94,6 +96,11 @@
           "mneme host qualify fake": {
             "receipt": "FakeHost artifact and report generated; 3/3 structured cases passed",
             "recorded_at": "2026-09-17T23:27:03.180675Z",
+            "status": "PASS"
+          },
+          "mneme host qualify gemma-deepinfra": {
+            "receipt": "Live DeepInfra artifact artifacts/gemma-deepinfra.json: basic, multi-turn, and 3/3 structured schemas passed; seed unsupported",
+            "recorded_at": "2026-09-18T00:00:00Z",
             "status": "PASS"
           },
           "mypy src/mneme": {
@@ -113,9 +120,7 @@
           }
         }
       },
-      "waiting_on": [
-        "external:gemma-live-qualification"
-      ],
+      "waiting_on": [],
       "workstream": "p0.1"
     }
   ],
@@ -131,5 +136,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-17T23:27:03.261266Z"
+  "updated_at": "2026-09-18T18:45:56.334254Z"
 }

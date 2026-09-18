@@ -35,3 +35,8 @@
 - Ran the bounded DeepInfra qualification with the user-provided credential; the credential was process-only and did not enter artifacts.
 - Basic generation, multi-turn chat transport, and all three structured JSON schema cases passed; seed control remained correctly unsupported.
 - Tightened structured prompts to require JSON-only output and deterministic temperature before the successful live run.
+
+## 2026-09-18 P0.1 closure
+
+- Credentialed DeepInfra qualification passed for `google/gemma-4-E4B-it`: basic generation, multi-turn transport, and 3/3 structured schema cases.
+- Resolved the external live-qualification dependency and marked the P0.1 work package DONE; no P0.2 work was started.
