@@ -1,6 +1,14 @@
 """P0.3 experiment contracts and fixture validation."""
 
 from .artifacts import ArtifactError, ArtifactStore, PublishedRun
+from .baseline import (
+    BaselineError,
+    BaselineObservation,
+    BaselineReport,
+    build_baseline_report,
+    measure_baseline,
+    render_baseline_report,
+)
 from .contracts import (
     EXPERIMENT_SCHEMA_VERSION,
     ContractError,
@@ -34,6 +42,12 @@ __all__ = [
     "load_jsonl",
     "load_spec",
     "run_isolation_check",
+    "BaselineError",
+    "BaselineObservation",
+    "BaselineReport",
+    "build_baseline_report",
+    "measure_baseline",
+    "render_baseline_report",
     "validate_split_boundaries",
     "ArtifactError",
     "ArtifactStore",
