@@ -240,11 +240,11 @@
       "base_sha": "cd73b1617ad7f7ebda5c8f9403f6d65486e8cf09",
       "campaign": "mneme-p0.3",
       "candidate": {
-        "artifact": "docs/receipts/MNEME_P0.3_Fake_Acceptance_Receipt.md",
-        "base_sha": "cd73b1617ad7f7ebda5c8f9403f6d65486e8cf09",
-        "returned_at": "2026-09-18T00:00:00Z",
+        "artifact": "docs/receipts/MNEME_P0.3_Fake_Acceptance_Receipt.md; docs/receipts/MNEME_P0.3_Fake_Acceptance_Receipt.json",
+        "base_sha": "127c73c0d6762e396a0953dae536655402346141",
+        "returned_at": "2026-09-18T23:59:00Z",
         "returned_by": "root-foreman",
-        "sha": "3ea3ae14cbfb286c2457b847924d581297eb62ff"
+        "sha": "6843288"
       },
       "completion_criterion": "Implement the approved P0.3 experiment contract and experimental-isolation plan with network-free tests and the documented FakeHost acceptance demonstration; do not implement P0.4 or Phase 1.",
       "created_at": "2026-09-18T00:00:00Z",
@@ -290,7 +290,7 @@
       "session_ids": [],
       "status": "DONE",
       "title": "Experiment contracts and experimental isolation",
-      "updated_at": "2026-09-18T00:00:00Z",
+      "updated_at": "2026-09-18T23:59:00Z",
       "validation": {
         "required": [
           "pytest -q",
@@ -299,10 +299,22 @@
           "FakeHost P0.3 acceptance demonstration"
         ],
         "results": {
-          "pytest -q": {"receipt": "64 passed on 2026-09-18", "status": "PASS"},
-          "ruff check .": {"receipt": "All checks passed on 2026-09-18", "status": "PASS"},
-          "mypy src/mneme": {"receipt": "Success: no issues found in 22 source files", "status": "PASS"},
-          "FakeHost P0.3 acceptance demonstration": {"receipt": "docs/receipts/MNEME_P0.3_Fake_Acceptance_Receipt.md", "status": "PASS"}
+          "pytest -q": {
+            "receipt": "73 passed on 2026-09-18",
+            "status": "PASS"
+          },
+          "ruff check .": {
+            "receipt": "All checks passed on 2026-09-18",
+            "status": "PASS"
+          },
+          "mypy src/mneme": {
+            "receipt": "Success: no issues found in 22 source files",
+            "status": "PASS"
+          },
+          "FakeHost P0.3 acceptance demonstration": {
+            "receipt": "docs/receipts/MNEME_P0.3_Fake_Acceptance_Receipt.md; docs/receipts/MNEME_P0.3_Fake_Acceptance_Receipt.json",
+            "status": "PASS"
+          }
         }
       },
       "waiting_on": [],
@@ -321,5 +333,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-18T00:00:00Z"
+  "updated_at": "2026-09-18T23:59:00Z"
 }

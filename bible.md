@@ -94,3 +94,9 @@
 - Completed the FakeHost acceptance demonstration recorded in `docs/receipts/MNEME_P0.3_Fake_Acceptance_Receipt.md`: fork isolation, split/capability/budget rejection, paired evaluation with unchanged checkpoint state, restart inspection, and idempotent retry.
 - Validation passed: 64 pytest tests, Ruff, and strict mypy. No network or paid inference was used; no P0.4 runner or Phase 1 developmental mechanism was started.
 - Verified the public experiment CLI end to end, including prepared-run creation, frozen FakeHost check publication, restart/inspection verification, and hyphenated action dispatch.
+
+## 2026-09-18 P0.3 audit remediation and acceptance reconciliation
+
+- Reconciled the initial P0.3 closure evidence after independent audit found execution-path gaps. Fixture-pack loading and per-file/content/family provenance are now enforced through CLI preflight; checkpoint bindings are exact and spec-relative; controlled sampling requires seed control; hard budgets require integer limits; and resolved dataset orderings are persisted.
+- Hardened subject-specific frozen evaluation to use the prepared FakeHost contract and resolved evaluation seed, reject the wrong checkpoint, return the exact idempotent receipt, and keep evaluation artifacts outside developmental state. Complete run verification now covers payloads, snapshots, manifests, and evaluation receipts.
+- Updated the machine-readable and Markdown FakeHost receipts, work queue, and approved-plan status. Validation passes: 73 pytest tests, Ruff, and strict mypy; no P0.4 runner or Phase 1 mechanism was started.

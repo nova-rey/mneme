@@ -1,6 +1,6 @@
 # MNEME P0.3 — Experiment contracts and experimental isolation
 
-Status: approved plan; implementation requires separate explicit authorization.
+Status: approved plan; implementation complete and accepted under the documented FakeHost receipt.
 
 This plan is based on the accepted P0.2 baseline and the current Model Instance
 Development Specification, Development Roadmap §P0.3, and individuality/identity
