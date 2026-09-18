@@ -242,9 +242,9 @@
       "candidate": {
         "artifact": "docs/receipts/MNEME_P0.3_Fake_Acceptance_Receipt.md; docs/receipts/MNEME_P0.3_Fake_Acceptance_Receipt.json",
         "base_sha": "127c73c0d6762e396a0953dae536655402346141",
-        "returned_at": "2026-09-18T23:59:00Z",
+        "returned_at": "2026-09-18T23:59:45Z",
         "returned_by": "root-foreman",
-        "sha": "fb07134"
+        "sha": "0072222"
       },
       "completion_criterion": "Implement the approved P0.3 experiment contract and experimental-isolation plan with network-free tests and the documented FakeHost acceptance demonstration; do not implement P0.4 or Phase 1.",
       "created_at": "2026-09-18T00:00:00Z",
@@ -263,7 +263,7 @@
         "Approved plan: docs/Approved Plans/MNEME_P0.3_Experiment_Contracts_Experimental_Isolation_Plan.md"
       ],
       "id": "P0.3",
-      "notes": "Approved plan implemented and accepted; no P0.4 or Phase 1 work included.",
+      "notes": "Approved plan implemented and accepted; bound private snapshot enforcement remediated and regression-tested; no P0.4 or Phase 1 work included.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -290,7 +290,7 @@
       "session_ids": [],
       "status": "DONE",
       "title": "Experiment contracts and experimental isolation",
-      "updated_at": "2026-09-18T23:59:30Z",
+      "updated_at": "2026-09-18T23:59:45Z",
       "validation": {
         "required": [
           "pytest -q",
@@ -300,7 +300,7 @@
         ],
         "results": {
           "pytest -q": {
-            "receipt": "74 passed on 2026-09-18",
+            "receipt": "77 passed on 2026-09-18",
             "status": "PASS"
           },
           "ruff check .": {
@@ -333,5 +333,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-18T23:59:30Z"
+  "updated_at": "2026-09-18T23:59:45Z"
 }

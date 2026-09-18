@@ -27,5 +27,9 @@ unsupported seed capability, model-call budget overflow, and changed run intent.
 Restarted run inspection verified the immutable prepared artifacts. The receipt contains
 no prompts, model outputs, credentials, or provider headers.
 
+The bound-snapshot audit remediation is covered by regression tests: a missing prepared
+private snapshot and a different valid copy of the same checkpoint are rejected, while
+the exact prepared private snapshot is accepted. The complete suite passes 77 tests.
+
 This receipt proves the P0.3 laboratory-control invariants only. It is not evidence of
 developmental learning, behavioral individuality, personality, or a completed P0.4 study.
