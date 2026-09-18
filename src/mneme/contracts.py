@@ -30,6 +30,16 @@ class GenerationRequest:
     def to_dict(self) -> dict[str, Any]:
         return asdict(self) | {"messages": [dict(m) for m in self.messages]}
 
+    def generation_material(self) -> dict[str, Any]:
+        """Return only fields permitted to affect model behavior."""
+        return {
+            "messages": [dict(message) for message in self.messages],
+            "system": self.system,
+            "parameters": self.parameters,
+            "seed": self.seed,
+            "response_format": self.response_format,
+        }
+
 
 @dataclass(frozen=True)
 class HostCapabilities:

@@ -11,6 +11,8 @@ def test_fake_qualification_report_and_artifact():
     assert artifact["qualification_version"] == "0.1"
     assert artifact["summary"]["overall"] == "pass"
     assert artifact["summary"]["structured_parse_success"] == 3
+    assert artifact["summary"]["structured_schema_validation_success"] == 3
+    assert any(item["status"] == "exercised" for item in artifact["tests"])
     assert "MNEME host qualification" in report.text()
 
 

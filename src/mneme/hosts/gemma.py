@@ -29,7 +29,7 @@ class GemmaHost:
     timeout_seconds: float = 120.0
 
     def capabilities(self) -> HostCapabilities:
-        caps = {Capability.TEXT_GENERATION, Capability.STRUCTURED_OUTPUT}
+        caps = {Capability.TEXT_GENERATION}
         # The hosted API can report usage, but seed/logprob/tokenizer support is provider-specific.
         return HostCapabilities(frozenset(caps))
 
@@ -40,14 +40,15 @@ class GemmaHost:
             self.revision,
             self.model_id,
             self.revision,
-            "provider-defined",
+            "mneme_fallback_transcript_v1",
             None,
             "huggingface-inference",
             None,
             self.provider or "huggingface",
             {
                 "endpoint": self.endpoint
-                or f"https://api-inference.huggingface.co/models/{self.model_id}"
+                or f"https://api-inference.huggingface.co/models/{self.model_id}",
+                "rendering_mode": "mneme_fallback_transcript_v1",
             },
             self.capabilities().supported,
         )
@@ -62,8 +63,8 @@ class GemmaHost:
             raise HostError("MNEME_HF_TOKEN is required for hosted Gemma inference")
         prompt = _render_messages(request)
         params = dict(request.parameters)
-        if request.response_format:
-            params["response_format"] = request.response_format
+        # response_format is intentionally not forwarded: this backend has no verified
+        # native schema-constrained generation contract.
         body = json.dumps({"inputs": prompt, "parameters": params}).encode()
         req = urllib.request.Request(
             endpoint,

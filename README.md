@@ -35,3 +35,7 @@ experiments, a database, a web UI, or neural intervention.
 The host boundary keeps administrative MNEME metadata out of model-visible messages. Hosted
 credentials are environment-only; qualification artifacts may contain provider metadata but
 never secrets.
+
+Gemma's structured-output qualification is prompt-driven JSON validation only. The hosted
+backend does not advertise native structured-output capability, and its message rendering is
+explicitly labeled `mneme_fallback_transcript_v1`.

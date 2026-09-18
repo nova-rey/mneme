@@ -1,7 +1,16 @@
 {
   "campaign": "mneme-p0.1",
   "created_at": "2026-09-17T23:26:09.185518Z",
-  "dependencies": {},
+  "dependencies": {
+    "external:gemma-live-qualification": {
+      "kind": "external",
+      "status": "UNRESOLVED",
+      "reference": "Run real Gemma qualification with MNEME_HF_TOKEN and record the artifact",
+      "receipt": null,
+      "created_at": "2026-09-17T23:27:03.300000Z",
+      "resolved_at": null
+    }
+  },
   "hard_problem_repo": "nova-rey/codex-config-backup",
   "packages": [
     {
@@ -20,7 +29,9 @@
       },
       "completion_criterion": "Fresh checkout installs, passes cheap checks, qualifies FakeHost, and provides configured real Gemma execution boundary without implementing later MNEME phases.",
       "created_at": "2026-09-17T23:26:37.576674Z",
-      "dependencies": [],
+      "dependencies": [
+        "external:gemma-live-qualification"
+      ],
       "domain": "python-host-inference",
       "edit_boundaries": [
         "src/mneme",
@@ -63,7 +74,7 @@
       ],
       "scope": "Implement only the Phase 0.1 laboratory boundary and supplied-document organization.",
       "session_ids": [],
-      "status": "DONE",
+      "status": "WAITING",
       "title": "Host contract, Gemma qualification, and repository foundation",
       "updated_at": "2026-09-17T23:27:03.261219Z",
       "validation": {
@@ -102,7 +113,9 @@
           }
         }
       },
-      "waiting_on": [],
+      "waiting_on": [
+        "external:gemma-live-qualification"
+      ],
       "workstream": "p0.1"
     }
   ],

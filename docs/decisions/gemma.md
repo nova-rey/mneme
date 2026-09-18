@@ -5,6 +5,12 @@ checkpoint is the canonical model identity; a provider, runtime, quantization, d
 revision are separate fingerprint fields. The hosted path is implemented through the
 Hugging Face Inference API and is not asserted to be bit-identical to local execution.
 
+The hosted implementation advertises text generation only. Its structured JSON checks are
+prompt-following qualification cases, not native schema-constrained output: `response_format`
+is not forwarded because native support has not been verified. Messages are rendered by
+MNEME as `mneme_fallback_transcript_v1`; this is not Gemma's tokenizer chat template and
+hosted/local conversational equivalence remains unestablished.
+
 The exact immutable revision is recorded by `GemmaHost.fingerprint()` when the provider
 returns it or when `MNEME_MODEL_REVISION` is configured. The default model ID is a mutable
 branch reference, so a qualification artifact without a resolved revision is explicitly

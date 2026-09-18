@@ -5,7 +5,7 @@ import time
 from dataclasses import dataclass
 from typing import Any
 
-from .contracts import Capability, GenerationRequest
+from .contracts import Capability, GenerationRequest, HostError
 
 
 @dataclass
@@ -52,14 +52,16 @@ def qualify(host: Any) -> QualificationReport:
         started = time.perf_counter()
         try:
             result = host.generate(request)
-            ok = check(result.content) if check else bool(result.content)
+            parsed, schema_valid = check(result.content) if check else (None, bool(result.content))
             tests.append(
                 {
                     "name": name,
-                    "status": "pass" if ok else "fail",
+                    "status": "pass" if schema_valid else "fail",
+                    "parse_success": parsed if check else None,
+                    "schema_validation_success": schema_valid if check else None,
                     "latency_ms": round((time.perf_counter() - started) * 1000, 3),
                     "token_usage": result.token_usage.__dict__ if result.token_usage else None,
-                    "detail": None if ok else "validation failed",
+                    "detail": None if schema_valid else "schema validation failed",
                 }
             )
         except Exception as exc:  # qualification must report provider failures
@@ -97,39 +99,47 @@ def qualify(host: Any) -> QualificationReport:
             },
         ),
         parameters={"max_new_tokens": 80},
-        response_format={
-            "type": "json_schema",
-            "json_schema": {"name": "concepts", "schema": {"type": "object"}},
-        },
     )
-    run("structured_concept_list", schema_request, _json_object)
+    run("structured_concept_list", schema_request, _concept_schema)
     run(
         "structured_relationship",
         GenerationRequest(
             ({"role": "user", "content": "Return JSON with relationships as an array."},),
-            response_format=schema_request.response_format,
         ),
-        _json_object,
+        _relationship_schema,
     )
     run(
         "structured_nested",
         GenerationRequest(
             ({"role": "user", "content": "Return nested JSON with a subject and evidence."},),
-            response_format=schema_request.response_format,
         ),
-        _json_object,
+        _nested_schema,
     )
     if host.capabilities().has(Capability.SEED_CONTROL):
         run("seed_control", GenerationRequest(base.messages, base.system, base.parameters, 42))
     else:
         tests.append({"name": "seed_control", "status": "unsupported"})
-    tests.append(
-        {
-            "name": "failure_behavior",
-            "status": "not_exercised",
-            "detail": "provider errors are mapped by the host boundary",
-        }
-    )
+    probe = getattr(host, "failure_probe", None)
+    if probe:
+        try:
+            probe(base)
+            tests.append(
+                {
+                    "name": "failure_behavior",
+                    "status": "fail",
+                    "detail": "failure probe did not fail",
+                }
+            )
+        except HostError as exc:
+            tests.append({"name": "failure_behavior", "status": "exercised", "detail": str(exc)})
+    else:
+        tests.append(
+            {
+                "name": "failure_behavior",
+                "status": "unit_tested",
+                "detail": "provider mappings covered by offline unit tests",
+            }
+        )
     statuses = [t["status"] for t in tests]
     return QualificationReport(
         host.fingerprint().to_dict(),
@@ -138,19 +148,76 @@ def qualify(host: Any) -> QualificationReport:
         {
             "latency_ms": [t.get("latency_ms") for t in tests if t.get("latency_ms") is not None],
             "structured_parse_success": sum(
-                t["status"] == "pass" for t in tests if t["name"].startswith("structured_")
+                t.get("parse_success") is True for t in tests if t["name"].startswith("structured_")
+            ),
+            "structured_schema_validation_success": sum(
+                t.get("schema_validation_success") is True
+                for t in tests
+                if t["name"].startswith("structured_")
             ),
             "structured_cases": 3,
             "overall": "pass"
-            if "error" not in statuses and "fail" not in statuses
+            if all(
+                status in {"pass", "exercised", "unit_tested", "unsupported"} for status in statuses
+            )
             else "attention_required",
         },
     )
 
 
-def _json_object(content: str) -> bool:
+def _parse_json(content: str) -> tuple[bool, Any]:
     try:
-        value = json.loads(content)
-        return isinstance(value, dict)
+        return True, json.loads(content)
     except json.JSONDecodeError:
-        return False
+        return False, None
+
+
+def _concept_schema(content: str) -> tuple[bool, bool]:
+    parsed, value = _parse_json(content)
+    valid = (
+        isinstance(value, dict)
+        and isinstance(value.get("concepts"), list)
+        and bool(value["concepts"])
+        and all(isinstance(item, str) for item in value["concepts"])
+        and isinstance(value.get("confidence"), (int, float))
+        and 0 <= value["confidence"] <= 1
+    )
+    return parsed, valid
+
+
+def _relationship_schema(content: str) -> tuple[bool, bool]:
+    parsed, value = _parse_json(content)
+    relationships = value.get("relationships") if isinstance(value, dict) else None
+    valid = (
+        isinstance(relationships, list)
+        and bool(relationships)
+        and all(
+            isinstance(item, dict)
+            and all(
+                isinstance(item.get(key), str) and item[key]
+                for key in ("from", "to", "relationship")
+            )
+            for item in relationships
+        )
+    )
+    return parsed, valid
+
+
+def _nested_schema(content: str) -> tuple[bool, bool]:
+    parsed, value = _parse_json(content)
+    evidence = value.get("evidence") if isinstance(value, dict) else None
+    valid = (
+        isinstance(value, dict)
+        and isinstance(value.get("subject"), str)
+        and bool(value["subject"])
+        and isinstance(evidence, list)
+        and bool(evidence)
+        and all(
+            isinstance(item, dict)
+            and isinstance(item.get("claim"), str)
+            and isinstance(item.get("confidence"), (int, float))
+            and 0 <= item["confidence"] <= 1
+            for item in evidence
+        )
+    )
+    return parsed, valid
