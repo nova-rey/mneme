@@ -106,6 +106,53 @@ def test_run_content_tampering_fails_verification(tmp_path: Path) -> None:
     assert store.verify_run(run.path) is False
 
 
+def test_payload_and_manifest_tampering_fail_verification(tmp_path: Path) -> None:
+    store = ArtifactStore(tmp_path)
+    experiment, preflight, plan, bindings = _payload()
+    run = store.publish_run(
+        experiment=experiment,
+        preflight=preflight,
+        study_plan=plan,
+        bindings=bindings,
+        run_id="run-001",
+        inputs={"development.jsonl": b"original\n"},
+        snapshots={"checkpoint.sqlite3": b"checkpoint"},
+    )
+    assert store.verify_run(run.path)
+    (run.path / "inputs" / "development.jsonl").write_bytes(b"tampered\n")
+    assert store.verify_run(run.path) is False
+
+    (run.path / "inputs" / "development.jsonl").write_bytes(b"original\n")
+    manifest_path = run.path / "run-manifest.json"
+    manifest = json.loads(manifest_path.read_text())
+    manifest["run_id"] = "rewritten"
+    manifest_path.write_text(json.dumps(manifest) + "\n")
+    assert store.verify_run(run.path) is False
+
+
+def test_publication_intent_binds_payload_digests(tmp_path: Path) -> None:
+    store = ArtifactStore(tmp_path)
+    experiment, preflight, plan, bindings = _payload()
+    run = store.publish_run(
+        experiment=experiment,
+        preflight=preflight,
+        study_plan=plan,
+        bindings=bindings,
+        run_id="run-001",
+        inputs={"development.jsonl": b"one\n"},
+    )
+    with pytest.raises(ArtifactError, match="conflicting intent"):
+        store.publish_run(
+            experiment=experiment,
+            preflight=preflight,
+            study_plan=plan,
+            bindings=bindings,
+            run_id="run-001",
+            inputs={"development.jsonl": b"two\n"},
+        )
+    assert store.verify_run(run.path)
+
+
 def test_invalid_artifact_path_is_rejected(tmp_path: Path) -> None:
     store = ArtifactStore(tmp_path)
     experiment, preflight, plan, bindings = _payload()

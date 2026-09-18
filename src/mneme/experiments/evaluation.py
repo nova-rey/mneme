@@ -11,7 +11,7 @@ from __future__ import annotations
 import copy
 from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import Any, cast
+from typing import Any
 
 from ..contracts import GenerationRequest, GenerationResult
 from ..hosts.fake import FakeHost
@@ -111,15 +111,43 @@ def run_isolation_check(
 
     artifact_store = ArtifactStore(lab)
     run_path = artifact_store.locate_run(run_id)
+    if not artifact_store.verify_run(run_path):
+        raise EvaluationError("prepared run failed artifact integrity verification")
     bindings = artifact_store._read_json(run_path / "bindings.json")
-    bound_ids: set[str] = set()
+    expected_checkpoint_id: str | None = None
+    expected_snapshot: Path | None = None
     if isinstance(bindings.get("checkpoint_id"), str):
-        bound_ids.add(bindings["checkpoint_id"])
+        expected_checkpoint_id = bindings["checkpoint_id"]
     checkpoint_bindings = bindings.get("checkpoints", {})
     if isinstance(checkpoint_bindings, Mapping):
-        for binding in checkpoint_bindings.values():
-            if isinstance(binding, Mapping) and isinstance(binding.get("checkpoint_id"), str):
-                bound_ids.add(binding["checkpoint_id"])
+        subjects = bindings.get("subjects")
+        if isinstance(subjects, list):
+            selected = [
+                subject
+                for subject in subjects
+                if isinstance(subject, Mapping) and subject.get("slot") == subject_slot
+            ]
+            if len(selected) != 1:
+                raise EvaluationError(f"subject slot is not uniquely bound: {subject_slot}")
+            start = selected[0].get("start")
+            selected_binding = checkpoint_bindings.get(start)
+            if not isinstance(selected_binding, Mapping):
+                raise EvaluationError(f"subject start checkpoint is not bound: {start!r}")
+            checkpoint_id = selected_binding.get("checkpoint_id")
+            if not isinstance(checkpoint_id, str):
+                raise EvaluationError("subject checkpoint binding has no checkpoint_id")
+            expected_checkpoint_id = checkpoint_id
+            snapshot_name = selected_binding.get("snapshot_path")
+            if isinstance(snapshot_name, str):
+                expected_snapshot = run_path / "snapshots" / snapshot_name
+        elif expected_checkpoint_id is None:
+            ids = {
+                binding.get("checkpoint_id")
+                for binding in checkpoint_bindings.values()
+                if isinstance(binding, Mapping) and isinstance(binding.get("checkpoint_id"), str)
+            }
+            if len(ids) == 1:
+                expected_checkpoint_id = next(iter(ids))
     check_path = run_path / "evaluation" / check_id
     normalized_messages = [
         {"role": str(item["role"]), "content": str(item["content"])} for item in messages
@@ -139,10 +167,12 @@ def run_isolation_check(
         if started.get("request_sha256") != content_digest(request):
             raise EvaluationError("check ID already exists with conflicting intent")
         if (check_path / "result.json").exists():
-            checks = artifact_store.inspect_run(run_id).get("checks", [])
-            if isinstance(checks, list) and checks and isinstance(checks[-1], dict):
-                return cast(dict[str, Any], checks[-1])
-            raise EvaluationError("completed check receipt is malformed")
+            completed = ArtifactStore._read_json(check_path / "result.json")
+            if not ArtifactStore._verify_result(completed):
+                raise EvaluationError("completed check receipt is malformed")
+            return completed
+        if (check_path / "uncertain.json").exists():
+            raise EvaluationError("existing check is UNCERTAIN; use a new check ID")
         artifact_store.mark_uncertain(run_id, check_id, "recovery requires a new check ID")
         raise EvaluationError("existing non-terminal check is UNCERTAIN; use a new check ID")
 
@@ -150,8 +180,13 @@ def run_isolation_check(
     try:
         with FrozenEvaluationView(checkpoint) as view:
             checkpoint_identity = str(view.manifest()["checkpoint_id"])
-            if bound_ids and checkpoint_identity not in bound_ids:
+            if expected_checkpoint_id is not None and checkpoint_identity != expected_checkpoint_id:
                 raise EvaluationError("evaluation checkpoint is not bound to the prepared run")
+            if expected_snapshot is not None and expected_snapshot.is_file():
+                if Path(checkpoint).resolve() != expected_snapshot.resolve():
+                    raise EvaluationError(
+                        "evaluation checkpoint is not the subject's private snapshot"
+                    )
             before_file = view.checkpoint_file_digest
             before_state = view.state_digest
             result = view.generate(
@@ -177,8 +212,8 @@ def run_isolation_check(
                     result.token_usage.__dict__ if result.token_usage is not None else None
                 ),
             }
-        completed = artifact_store.complete_check(run_id, check_id, output)
-        return {str(key): value for key, value in completed.items()}
+        completed_result = artifact_store.complete_check(run_id, check_id, output)
+        return {str(key): value for key, value in completed_result.items()}
     except Exception as exc:
         try:
             artifact_store.mark_uncertain(run_id, check_id, type(exc).__name__)

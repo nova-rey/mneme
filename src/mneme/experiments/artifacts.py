@@ -165,6 +165,10 @@ class ArtifactStore:
         if supplied_digest is not None and supplied_digest != digest:
             raise ArtifactError("experiment contract_sha256 does not match canonical contents")
         target = self.run_path(name, revision, run_id)
+        payloads = {
+            "inputs": self._payload_digests(inputs),
+            "snapshots": self._payload_digests(snapshots),
+        }
         manifest = {
             "schema_version": 1,
             "status": "PREPARED",
@@ -176,14 +180,28 @@ class ArtifactStore:
             "preflight_sha256": content_digest(preflight),
             "study_plan_sha256": content_digest(study_plan),
             "bindings_sha256": content_digest(bindings),
+            "payloads": payloads,
         }
         intent = content_digest(manifest)
         manifest["publication_intent_sha256"] = intent
         with self._writer():
             if target.exists():
                 existing = self._read_json(target / "run-manifest.json")
-                if existing.get("publication_intent_sha256") != intent:
+                expected_intent = intent
+                # A retry from an older caller may omit payload arguments.  In
+                # that case preserve the already-published payload binding;
+                # explicitly supplied empty mappings still mean "no payload".
+                if inputs is None and snapshots is None and isinstance(
+                    existing.get("payloads"), Mapping
+                ):
+                    retry_manifest = dict(manifest)
+                    retry_manifest.pop("publication_intent_sha256", None)
+                    retry_manifest["payloads"] = existing["payloads"]
+                    expected_intent = content_digest(retry_manifest)
+                if existing.get("publication_intent_sha256") != expected_intent:
                     raise ArtifactError(f"run ID already exists with conflicting intent: {run_id}")
+                if not self.verify_run(target):
+                    raise ArtifactError(f"existing run failed integrity verification: {run_id}")
                 return PublishedRun(target, name, revision, digest, run_id)
             target.parent.mkdir(parents=True, exist_ok=True)
             stage = Path(tempfile.mkdtemp(prefix=f".{run_id}.", dir=target.parent))
@@ -223,18 +241,32 @@ class ArtifactStore:
             result = directory / "result.json"
             if result.exists():
                 started_path = directory / "started.json"
-                if started_path.exists():
-                    prior_started = self._read_json(started_path)
-                    if prior_started.get("request_sha256") != started["request_sha256"]:
-                        raise ArtifactError(
-                            f"check ID already exists with conflicting intent: {check_id}"
-                        )
-                return self._read_json(result)
+                if not started_path.exists():
+                    raise ArtifactError(f"check result has no STARTED record: {check_id}")
+                prior_started = self._read_json(started_path)
+                if not self._verify_started(prior_started):
+                    raise ArtifactError(
+                        f"check STARTED record failed integrity verification: {check_id}"
+                    )
+                if prior_started.get("request_sha256") != started["request_sha256"]:
+                    raise ArtifactError(
+                        f"check ID already exists with conflicting intent: {check_id}"
+                    )
+                prior_result = self._read_json(result)
+                if not self._verify_result(prior_result):
+                    raise ArtifactError(
+                        f"check RESULT record failed integrity verification: {check_id}"
+                    )
+                return prior_result
             if (directory / "uncertain.json").exists():
                 raise ArtifactError(f"check is UNCERTAIN and requires a new check ID: {check_id}")
             directory.mkdir(parents=True, exist_ok=True)
             if (directory / "started.json").exists():
                 prior = self._read_json(directory / "started.json")
+                if not self._verify_started(prior):
+                    raise ArtifactError(
+                        f"check STARTED record failed integrity verification: {check_id}"
+                    )
                 if prior.get("request_sha256") != started["request_sha256"]:
                     raise ArtifactError(
                         f"check ID already exists with conflicting intent: {check_id}"
@@ -262,9 +294,7 @@ class ArtifactStore:
             result_path = directory / "result.json"
             if result_path.exists():
                 prior = self._read_json(result_path)
-                if prior.get("result_sha256") != content_digest(
-                    {key: value for key, value in prior.items() if key != "result_sha256"}
-                ):
+                if not self._verify_result(prior):
                     raise ArtifactError("existing check result conflicts with retry")
                 return prior
             output["result_sha256"] = content_digest(output)
@@ -289,7 +319,13 @@ class ArtifactStore:
             }
             path = directory / "uncertain.json"
             if path.exists():
-                return self._read_json(path)
+                prior = self._read_json(path)
+                if not self._verify_uncertain(prior):
+                    raise ArtifactError(
+                        "existing uncertain check receipt failed integrity verification"
+                    )
+                return prior
+            output["receipt_sha256"] = content_digest(output)
             _write_json(path, output)
             self._sync_file(path)
             return output
@@ -312,17 +348,143 @@ class ArtifactStore:
         return output
 
     def verify_run(self, path: Path) -> bool:
-        manifest = self._read_json(path / "run-manifest.json")
-        required = {
-            "experiment.json": manifest["contract_sha256"],
-            "preflight.json": manifest["preflight_sha256"],
-            "study-plan.json": manifest["study_plan_sha256"],
-            "bindings.json": manifest["bindings_sha256"],
-        }
-        for filename, digest in required.items():
-            if content_digest(self._read_json(path / filename)) != digest:
+        """Verify the complete published run tree and receipt integrity hashes."""
+        try:
+            manifest = self._read_json(path / "run-manifest.json")
+            intent = manifest.get("publication_intent_sha256")
+            if not isinstance(intent, str) or intent != content_digest(
+                {
+                    key: value
+                    for key, value in manifest.items()
+                    if key != "publication_intent_sha256"
+                }
+            ):
                 return False
-        return True
+            required = {
+                "experiment.json": manifest["contract_sha256"],
+                "preflight.json": manifest["preflight_sha256"],
+                "study-plan.json": manifest["study_plan_sha256"],
+                "bindings.json": manifest["bindings_sha256"],
+            }
+            for filename, digest in required.items():
+                if not isinstance(digest, str):
+                    return False
+                if content_digest(self._read_json(path / filename)) != digest:
+                    return False
+
+            payloads = manifest.get("payloads")
+            if not isinstance(payloads, Mapping) or set(payloads) != {"inputs", "snapshots"}:
+                return False
+            for category in ("inputs", "snapshots"):
+                expected = payloads[category]
+                if not isinstance(expected, Mapping):
+                    return False
+                root = path / category
+                actual: dict[str, str] = {}
+                if root.exists():
+                    if not root.is_dir() or root.is_symlink():
+                        return False
+                    for candidate in root.rglob("*"):
+                        if candidate.is_symlink():
+                            return False
+                        if candidate.is_file():
+                            actual[str(candidate.relative_to(root))] = file_digest(candidate)
+                if dict(expected) != actual:
+                    return False
+
+            evaluation = path / "evaluation"
+            if evaluation.exists():
+                if not evaluation.is_dir() or evaluation.is_symlink():
+                    return False
+                for check_dir in evaluation.iterdir():
+                    if not check_dir.is_dir() or check_dir.is_symlink():
+                        return False
+                    names = {item.name for item in check_dir.iterdir()}
+                    if not names <= {"started.json", "result.json", "uncertain.json"}:
+                        return False
+                    started_path = check_dir / "started.json"
+                    result_path = check_dir / "result.json"
+                    uncertain_path = check_dir / "uncertain.json"
+                    if started_path.exists() and not self._verify_started(
+                        self._read_json(started_path)
+                    ):
+                        return False
+                    if result_path.exists():
+                        if not started_path.exists() or not self._verify_result(
+                            self._read_json(result_path)
+                        ):
+                            return False
+                    if uncertain_path.exists():
+                        if (
+                            result_path.exists()
+                            or not started_path.exists()
+                            or not self._verify_uncertain(self._read_json(uncertain_path))
+                        ):
+                            return False
+
+            allowed = {
+                "experiment.json",
+                "preflight.json",
+                "study-plan.json",
+                "bindings.json",
+                "run-manifest.json",
+                "inputs",
+                "snapshots",
+                "evaluation",
+            }
+            if {item.name for item in path.iterdir()} - allowed:
+                return False
+            return True
+        except (ArtifactError, KeyError, OSError, TypeError, ValueError):
+            return False
+
+    @staticmethod
+    def _verify_started(value: Mapping[str, Any]) -> bool:
+        request = value.get("request")
+        return (
+            value.get("schema_version") == 1
+            and value.get("status") == "STARTED"
+            and isinstance(request, Mapping)
+            and value.get("request_sha256") == content_digest(request)
+        )
+
+    @staticmethod
+    def _verify_result(value: Mapping[str, Any]) -> bool:
+        return (
+            value.get("schema_version") == 1
+            and value.get("status") == "RESULT"
+            and isinstance(value.get("result_sha256"), str)
+            and value.get("result_sha256")
+            == content_digest(
+                {key: item for key, item in value.items() if key != "result_sha256"}
+            )
+        )
+
+    @staticmethod
+    def _verify_uncertain(value: Mapping[str, Any]) -> bool:
+        return (
+            value.get("schema_version") == 1
+            and value.get("status") == "UNCERTAIN"
+            and isinstance(value.get("receipt_sha256"), str)
+            and value.get("receipt_sha256")
+            == content_digest(
+                {key: item for key, item in value.items() if key != "receipt_sha256"}
+            )
+        )
+
+    @staticmethod
+    def _payload_digests(files: Mapping[str, bytes] | None) -> dict[str, str]:
+        if not files:
+            return {}
+        result: dict[str, str] = {}
+        for relative, content in files.items():
+            if not isinstance(content, bytes):
+                raise ArtifactError(f"artifact payload must be bytes: {relative}")
+            relative_path = Path(relative)
+            if relative_path.is_absolute() or ".." in relative_path.parts:
+                raise ArtifactError(f"artifact path escapes its directory: {relative}")
+            result[str(relative_path)] = hashlib.sha256(content).hexdigest()
+        return result
 
     @staticmethod
     def _read_json(path: Path) -> dict[str, Any]:
