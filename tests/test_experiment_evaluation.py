@@ -3,7 +3,7 @@
 import pytest
 
 from mneme.contracts import GenerationRequest
-from mneme.experiments.artifacts import ArtifactStore
+from mneme.experiments.artifacts import ArtifactStore, content_digest, file_digest
 from mneme.experiments.evaluation import EvaluationError, FrozenEvaluationView, run_isolation_check
 from mneme.hosts import FakeHost
 from mneme.state.contracts import StoragePermissions
@@ -89,7 +89,20 @@ def test_isolation_receipt_is_separate_and_idempotent(tmp_path):
 def test_uncertain_check_is_not_regenerated(tmp_path):
     checkpoint, published = _run(tmp_path)
     store = ArtifactStore(published.path.parents[5])
-    store.begin_check("run-1", "check-uncertain", {"probe": 1})
+    store.begin_check(
+        "run-1",
+        "check-uncertain",
+        {
+            "subject_slot": 0,
+            "probe_ordinal": 1,
+            "repetition": 0,
+            "checkpoint_sha256": file_digest(checkpoint),
+            "seed": 1,
+            "messages_sha256": content_digest([{"role": "user", "content": "evaluation"}]),
+            "parameters_sha256": content_digest({}),
+            "system_sha256": None,
+        },
+    )
     with pytest.raises(EvaluationError, match="UNCERTAIN"):
         run_isolation_check(
             run_id="run-1",
