@@ -222,6 +222,13 @@ class ArtifactStore:
         with self._writer():
             result = directory / "result.json"
             if result.exists():
+                started_path = directory / "started.json"
+                if started_path.exists():
+                    prior_started = self._read_json(started_path)
+                    if prior_started.get("request_sha256") != started["request_sha256"]:
+                        raise ArtifactError(
+                            f"check ID already exists with conflicting intent: {check_id}"
+                        )
                 return self._read_json(result)
             if (directory / "uncertain.json").exists():
                 raise ArtifactError(f"check is UNCERTAIN and requires a new check ID: {check_id}")

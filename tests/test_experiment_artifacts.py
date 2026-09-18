@@ -82,6 +82,8 @@ def test_check_lifecycle_is_idempotent_and_uncertain_is_terminal(tmp_path: Path)
     result = store.complete_check("run-001", "check-001", {"output": "ok"})
     assert result["status"] == "RESULT"
     assert store.complete_check("run-001", "check-001", {"output": "ok"}) == result
+    with pytest.raises(ArtifactError, match="conflicting intent"):
+        store.begin_check("run-001", "check-001", {"slot": 99})
 
     store.begin_check("run-001", "check-002", {"slot": 1})
     uncertain = store.mark_uncertain("run-001", "check-002", "process interrupted")
