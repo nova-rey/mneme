@@ -8,6 +8,10 @@ from typing import Any
 from . import __version__
 from .hosts import DeepInfraGemmaHost, FakeHost, GemmaHost
 from .qualification import qualify
+from .state import SQLiteStore
+from .state.contracts import StoragePermissions
+from .state.service import ContinuityService
+from .state.snapshots import backup_instance, create_checkpoint, fork_from_checkpoint
 
 
 def _host(name: str) -> Any:
@@ -30,6 +34,7 @@ def _host(name: str) -> Any:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="mneme")
     parser.add_argument("--version", action="version", version=__version__)
+    parser.add_argument("--store", type=Path)
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("doctor")
     host = sub.add_parser("host")
@@ -41,7 +46,131 @@ def main(argv: list[str] | None = None) -> int:
         if action == "qualify":
             p.add_argument("--json", type=Path)
             p.add_argument("--report", type=Path)
+    instance = sub.add_parser("instance")
+    isub = instance.add_subparsers(dest="instance_action", required=True)
+    create = isub.add_parser("create")
+    create.add_argument("--id")
+    create.add_argument("--scope", default="local")
+    create.add_argument("--export", action="store_true")
+    isub.add_parser("list")
+    inspect = isub.add_parser("inspect")
+    inspect.add_argument("id")
+    fork = isub.add_parser("fork")
+    fork.add_argument("--checkpoint", required=True)
+    fork.add_argument("--output", required=True)
+    fork.add_argument("--id")
+    episode = sub.add_parser("episode")
+    esub = episode.add_subparsers(dest="episode_action", required=True)
+    prep = esub.add_parser("prepare")
+    prep.add_argument("id")
+    prep.add_argument("--request", required=True, type=Path)
+    prep.add_argument("--host", default="fake")
+    prep.add_argument("--operation-id")
+    gen = esub.add_parser("generate")
+    gen.add_argument("operation")
+    accept = esub.add_parser("accept")
+    accept.add_argument("operation")
+    elist = esub.add_parser("list")
+    elist.add_argument("id")
+    checkpoint = sub.add_parser("checkpoint")
+    csub = checkpoint.add_subparsers(dest="checkpoint_action", required=True)
+    cc = csub.add_parser("create")
+    cc.add_argument("id")
+    cc.add_argument("--output", required=True)
+    cc.add_argument("--id")
+    backup = sub.add_parser("backup")
+    backup.add_argument("id")
+    backup.add_argument("--output", required=True)
     args = parser.parse_args(argv)
+    if args.command in {"instance", "episode", "checkpoint", "backup"}:
+        if args.store is None:
+            raise SystemExit("--store PATH is required for state commands")
+        if args.command == "instance" and args.instance_action == "create":
+            args.store.mkdir(parents=True, exist_ok=True)
+            path = (
+                args.store / f"{args.id or 'instance'}.sqlite3"
+                if args.store.is_dir()
+                else args.store
+            )
+            with SQLiteStore(path) as store:
+                instance_id = store.create_root(
+                    instance_id=args.id,
+                    scope_id=args.scope,
+                    permissions=StoragePermissions(store=True, export=args.export),
+                )
+            print(instance_id)
+            return 0
+        if args.command == "instance" and args.instance_action == "list":
+            paths = sorted(args.store.glob("*.sqlite3")) if args.store.is_dir() else [args.store]
+            print(json.dumps([str(p) for p in paths], indent=2))
+            return 0
+        if args.command == "instance" and args.instance_action == "inspect":
+            with SQLiteStore(args.store, read_only=True) as store:
+                print(json.dumps(dict(store.current()), indent=2, default=str))
+            return 0
+        if args.command == "instance" and args.instance_action == "fork":
+            print(fork_from_checkpoint(args.checkpoint, args.output, args.id))
+            return 0
+        if args.command == "checkpoint" and args.checkpoint_action == "create":
+            with SQLiteStore(args.store) as store:
+                print(create_checkpoint(store, args.output, args.id))
+                return 0
+        if args.command == "backup":
+            with SQLiteStore(args.store) as store:
+                backup_instance(store, args.output)
+            return 0
+        if args.command == "episode":
+            from .contracts import GenerationRequest
+
+            with SQLiteStore(args.store) as store:
+                lookup_id = getattr(args, "id", "")
+                if args.episode_action in {"generate", "accept"}:
+                    lookup = store.connection.execute(
+                        "SELECT instance_id FROM operations WHERE operation_id=?",
+                        (args.operation,),
+                    ).fetchone()
+                    lookup_id = str(lookup[0]) if lookup else ""
+                row = store.connection.execute(
+                    "SELECT instance_id FROM lineages WHERE instance_id=?", (lookup_id,)
+                ).fetchone()
+                if row is None:
+                    raise SystemExit("unknown instance")
+                service = ContinuityService(store, lookup_id, _host(getattr(args, "host", "fake")))
+                if args.episode_action == "prepare":
+                    data = json.loads(args.request.read_text())
+                    req = GenerationRequest(
+                        tuple(data["messages"]),
+                        data.get("system"),
+                        data.get("parameters", {}),
+                        data.get("seed"),
+                        data.get("response_format"),
+                        {},
+                    )
+                    print(
+                        json.dumps(
+                            service.prepare_episode(req, operation_id=args.operation_id).__dict__,
+                            indent=2,
+                        )
+                    )
+                    return 0
+                if args.episode_action == "generate":
+                    print(json.dumps(service.generate_operation(args.operation).__dict__, indent=2))
+                    return 0
+                if args.episode_action == "accept":
+                    print(json.dumps(service.accept_episode(args.operation).__dict__, indent=2))
+                    return 0
+                print(
+                    json.dumps(
+                        [
+                            dict(r)
+                            for r in store.connection.execute(
+                                "SELECT * FROM episodes ORDER BY accepted_revision"
+                            )
+                        ],
+                        indent=2,
+                    )
+                )
+                return 0
     if args.command == "doctor":
         print(
             json.dumps(

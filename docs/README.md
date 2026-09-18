@@ -17,5 +17,8 @@ The documents are preserved in their supplied form and are intentionally not mer
   and an accepted-history digest without behavioral-equivalence claims.
   P0.2 implementation awaits separate explicit authorization.
 
+The P0.2 implementation is now present under `src/mneme/state/`; its acceptance
+status and receipts are recorded in `.codex/work-queue.json` and `bible.md`.
+
 This repository does not contain the older `MNEME_Earned_Association_Field_Spec.md`; the
 current specification identifies it as historical context.

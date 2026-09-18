@@ -9,6 +9,14 @@
       "reference": "Run DEEPINFRA_TOKEN-backed canonical Gemma qualification and record the artifact",
       "resolved_at": "2026-09-18T18:45:40.010614Z",
       "status": "RESOLVED"
+    },
+    "external:gemma-p02-acceptance": {
+      "created_at": "2026-09-18T21:12:01.272249Z",
+      "kind": "external",
+      "receipt": null,
+      "reference": "Run one bounded DEEPINFRA_TOKEN-backed Gemma interaction through a fresh P0.2 store and persist it as an accepted episode",
+      "resolved_at": null,
+      "status": "UNRESOLVED"
     }
   },
   "hard_problem_repo": "nova-rey/codex-config-backup",
@@ -122,6 +130,75 @@
       },
       "waiting_on": [],
       "workstream": "p0.1"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "2b47695",
+      "campaign": "mneme-p0.2",
+      "candidate": null,
+      "completion_criterion": "All four approved P0.2 implementation chunks and acceptance demonstration complete with receipts; no later-phase implementation.",
+      "created_at": "2026-09-18T21:08:40.610627Z",
+      "dependencies": [
+        "external:gemma-p02-acceptance"
+      ],
+      "domain": "sqlite-continuity",
+      "edit_boundaries": [
+        "src/mneme/state",
+        "src/mneme/cli.py",
+        "tests",
+        "docs",
+        "README.md",
+        "bible.md",
+        ".codex/work-queue.json"
+      ],
+      "evidence_refs": [],
+      "id": "P0.2",
+      "notes": "Approved plan saved in docs/Approved Plans/MNEME_P0.2_Durable_Lineage_History_Checkpoints_Plan.md",
+      "owner": null,
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "lineage",
+        "episodes",
+        "revisions",
+        "manifests",
+        "checkpoints",
+        "forks",
+        "recovery",
+        "cli",
+        "tests",
+        "docs"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": false,
+          "name": "model-agent",
+          "units": 1
+        }
+      ],
+      "scope": "Implement only the approved P0.2 plan; exclude P0.3, Phase 1, learning, associations, personality, and evaluation harness.",
+      "session_ids": [],
+      "status": "WAITING",
+      "title": "Durable lineage, accepted history, checkpoints, and recovery",
+      "updated_at": "2026-09-18T21:12:01.272270Z",
+      "validation": {
+        "required": [
+          "pytest -q",
+          "ruff check .",
+          "mypy src/mneme",
+          "FakeHost acceptance demonstration",
+          "opt-in real Gemma demonstration"
+        ],
+        "results": {}
+      },
+      "waiting_on": [
+        "external:gemma-p02-acceptance"
+      ],
+      "workstream": "p0.2"
     }
   ],
   "project": "nova-rey/mneme",
@@ -136,5 +213,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-18T18:45:56.334254Z"
+  "updated_at": "2026-09-18T21:12:01.272306Z"
 }

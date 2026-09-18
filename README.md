@@ -32,6 +32,12 @@ deterministic FakeHost, Hugging Face and DeepInfra hosted Gemma boundaries, and 
 It deliberately does not implement memory, associations, learning, identity evolution,
 experiments, a database, a web UI, or neural intervention.
 
+P0.2 adds the first durable state layer: per-lineage SQLite stores, immutable accepted
+episodes, revisions, manifests, checkpoints, restart recovery, and independent forks.
+It still does not implement learning, recall, associations, personality, or identity
+development. The state CLI requires an explicit `--store PATH`; see the approved
+[P0.2 plan](docs/Approved%20Plans/MNEME_P0.2_Durable_Lineage_History_Checkpoints_Plan.md).
+
 The host boundary keeps administrative MNEME metadata out of model-visible messages. Hosted
 credentials are environment-only; qualification artifacts may contain provider metadata but
 never secrets.
