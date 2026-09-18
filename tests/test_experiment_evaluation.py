@@ -134,3 +134,28 @@ def test_completed_check_rejects_changed_probe_intent(tmp_path):
     run_isolation_check(messages=[{"role": "user", "content": "first"}], **kwargs)
     with pytest.raises(EvaluationError, match="conflicting intent"):
         run_isolation_check(messages=[{"role": "user", "content": "changed"}], **kwargs)
+
+
+def test_completed_check_retry_returns_requested_check_not_last_check(tmp_path):
+    checkpoint, published = _run(tmp_path)
+    common = {
+        "run_id": "run-1",
+        "lab": published.path.parents[5],
+        "checkpoint": checkpoint,
+        "host": FakeHost(),
+        "seed": 99,
+        "subject_slot": 0,
+        "repetition": 0,
+    }
+    first = run_isolation_check(
+        check_id="check-a", probe_ordinal=0, messages=[{"role": "user", "content": "a"}], **common
+    )
+    second = run_isolation_check(
+        check_id="check-b", probe_ordinal=1, messages=[{"role": "user", "content": "b"}], **common
+    )
+    retry = run_isolation_check(
+        check_id="check-a", probe_ordinal=0, messages=[{"role": "user", "content": "a"}], **common
+    )
+    assert retry["check_id"] == "check-a"
+    assert retry["output"] == first["output"]
+    assert retry["output"] != second["output"]
