@@ -105,3 +105,7 @@
 
 - Bound published artifact verification to its run path and receipt identities, rejected duplicate payload paths, and added regression coverage proving a completed-check retry returns the requested check rather than another receipt.
 - Final validation remains 73 pytest tests, Ruff, and strict mypy; P0.3 remains limited to experiment contracts and frozen evaluation isolation.
+
+## 2026-09-18 P0.3 final validation count reconciliation
+
+- Added the exact-check retry regression to the durable test evidence and reconciled the work queue candidate to `fb07134`; the complete suite now passes 74 tests, with Ruff and strict mypy still clean.
