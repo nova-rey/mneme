@@ -15,7 +15,7 @@ The documents are preserved in their supplied form and are intentionally not mer
   records the approved implementation design and its three scope amendments: no
   future-mechanism Python placeholders, storage and export/copy permissions only,
   and an accepted-history digest without behavioral-equivalence claims.
-  P0.2 implementation awaits separate explicit authorization.
+  P0.2 implementation and its acceptance receipts are complete; later phases remain out of scope.
 
 The P0.2 implementation is now present under `src/mneme/state/`; its acceptance
 status and receipts are recorded in `.codex/work-queue.json` and `bible.md`.

@@ -1,6 +1,6 @@
 # MNEME P0.2 — Durable lineage, history, and checkpoints
 
-**Status:** Approved implementation plan; implementation underway, with the real-Gemma acceptance gate pending.
+**Status:** Approved implementation plan; implemented and accepted on 2026-09-18.
 
 **Approval:** 2026-09-18, with the three amendments incorporated below.
 
@@ -13,8 +13,8 @@ P0.2 scope amendments take precedence over the roadmap's earlier placeholder-con
 proposal; the supplied specification and roadmap remain unchanged. All other
 architecture, lifecycle, demonstration, and implementation-chunk decisions are retained.
 Implementation was authorized by the active P0.2 execution task. The plan remains the
-binding contract; the implementation is not complete until the external acceptance gate
-is satisfied.
+binding contract; implementation is complete for the approved P0.2 scope and later
+phases remain deferred.
 
 ## 1. Basis and architecture
 

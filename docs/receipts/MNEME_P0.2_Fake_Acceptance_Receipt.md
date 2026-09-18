@@ -18,7 +18,7 @@ The network-free demonstration completed with a temporary store:
 Machine-readable local output is in `artifacts/p02_acceptance.json` (ignored runtime
 artifact; it is not a source-of-truth database).
 
-The bounded real-Gemma step was not run in this environment because `DEEPINFRA_TOKEN`
-was unavailable. The existing P0.1 live qualification artifact proves the host boundary,
-but does not satisfy the P0.2 real-model persistence demonstration. The P0.2 queue package
-therefore remains waiting on that external credential-backed receipt.
+The bounded real-Gemma persistence step subsequently passed using a separate fresh store.
+Its sanitized receipt is `artifacts/p02-real-gemma-receipt.json`; the credential and raw
+conversation are absent from that receipt. The real store was reopened read-only and its
+accepted revision, host provenance, and integrity checks passed.

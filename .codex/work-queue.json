@@ -13,10 +13,10 @@
     "external:gemma-p02-acceptance": {
       "created_at": "2026-09-18T21:12:01.272249Z",
       "kind": "external",
-      "receipt": null,
+      "receipt": "artifacts/p02-real-gemma-receipt.json: fresh store accepted google/gemma-4-E4B-it through DeepInfra at revision 1 on 2026-09-18; credential not recorded",
       "reference": "Run one bounded DEEPINFRA_TOKEN-backed Gemma interaction through a fresh P0.2 store and persist it as an accepted episode",
-      "resolved_at": null,
-      "status": "UNRESOLVED"
+      "resolved_at": "2026-09-18T21:35:35.178162Z",
+      "status": "RESOLVED"
     }
   },
   "hard_problem_repo": "nova-rey/codex-config-backup",
@@ -139,11 +139,11 @@
       "base_sha": "2b47695",
       "campaign": "mneme-p0.2",
       "candidate": {
-        "artifact": "docs/receipts/MNEME_P0.2_Fake_Acceptance_Receipt.md",
+        "artifact": "artifacts/p02-real-gemma-receipt.json",
         "base_sha": "2b47695",
-        "returned_at": "2026-09-18T21:30:00Z",
+        "returned_at": "2026-09-18T21:35:40.909982Z",
         "returned_by": "root-foreman",
-        "sha": "af93e8cf57f60edba31e43dc23b7b20bab17c6ad"
+        "sha": "5738162"
       },
       "completion_criterion": "All four approved P0.2 implementation chunks and acceptance demonstration complete with receipts; no later-phase implementation.",
       "created_at": "2026-09-18T21:08:40.610627Z",
@@ -160,7 +160,9 @@
         "bible.md",
         ".codex/work-queue.json"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "All approved P0.2 implementation chunks integrated; 35 tests, Ruff, mypy, FakeHost acceptance, and real DeepInfra Gemma acceptance receipt artifacts/p02-real-gemma-receipt.json passed on 2026-09-18"
+      ],
       "id": "P0.2",
       "notes": "Approved plan saved in docs/Approved Plans/MNEME_P0.2_Durable_Lineage_History_Checkpoints_Plan.md",
       "owner": null,
@@ -188,9 +190,9 @@
       ],
       "scope": "Implement only the approved P0.2 plan; exclude P0.3, Phase 1, learning, associations, personality, and evaluation harness.",
       "session_ids": [],
-      "status": "WAITING",
+      "status": "DONE",
       "title": "Durable lineage, accepted history, checkpoints, and recovery",
-      "updated_at": "2026-09-18T21:12:01.272270Z",
+      "updated_at": "2026-09-18T21:36:30.741377Z",
       "validation": {
         "required": [
           "pytest -q",
@@ -200,6 +202,21 @@
           "opt-in real Gemma demonstration"
         ],
         "results": {
+          "FakeHost acceptance demonstration": {
+            "receipt": "docs/receipts/MNEME_P0.2_Fake_Acceptance_Receipt.md and artifacts/p02_acceptance.json",
+            "recorded_at": "2026-09-18T21:30:00Z",
+            "status": "PASS"
+          },
+          "mypy src/mneme": {
+            "receipt": "Success: no issues found in 15 source files on 2026-09-18",
+            "recorded_at": "2026-09-18T21:30:00Z",
+            "status": "PASS"
+          },
+          "opt-in real Gemma demonstration": {
+            "receipt": "artifacts/p02-real-gemma-receipt.json: DeepInfra Gemma accepted episode revision 1; credential absent from receipt",
+            "recorded_at": "2026-09-18T21:35:40.994675Z",
+            "status": "PASS"
+          },
           "pytest -q": {
             "receipt": "35 passed in .venv2/bin/pytest -q on 2026-09-18",
             "recorded_at": "2026-09-18T21:30:00Z",
@@ -209,22 +226,10 @@
             "receipt": "All checks passed on 2026-09-18",
             "recorded_at": "2026-09-18T21:30:00Z",
             "status": "PASS"
-          },
-          "mypy src/mneme": {
-            "receipt": "Success: no issues found in 15 source files on 2026-09-18",
-            "recorded_at": "2026-09-18T21:30:00Z",
-            "status": "PASS"
-          },
-          "FakeHost acceptance demonstration": {
-            "receipt": "docs/receipts/MNEME_P0.2_Fake_Acceptance_Receipt.md and artifacts/p02_acceptance.json",
-            "recorded_at": "2026-09-18T21:30:00Z",
-            "status": "PASS"
           }
         }
       },
-      "waiting_on": [
-        "external:gemma-p02-acceptance"
-      ],
+      "waiting_on": [],
       "workstream": "p0.2"
     }
   ],
@@ -240,5 +245,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-18T21:12:01.272306Z"
+  "updated_at": "2026-09-18T21:36:30.741428Z"
 }
