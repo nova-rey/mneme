@@ -210,6 +210,9 @@ def add_parser(sub: Any) -> None:
 
 
 def normalize_args(args: Any) -> Any:
-    if getattr(args, "experiment_action", None) == "run":
+    action = getattr(args, "experiment_action", None)
+    if action == "run":
         args.experiment_action = f"run_{args.run_action}"
+    elif isinstance(action, str):
+        args.experiment_action = action.replace("-", "_")
     return args
