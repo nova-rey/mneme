@@ -38,6 +38,11 @@ It still does not implement learning, recall, associations, personality, or iden
 development. The state CLI requires an explicit `--store PATH`; see the approved
 [P0.2 plan](docs/Approved%20Plans/MNEME_P0.2_Durable_Lineage_History_Checkpoints_Plan.md).
 
+P0.3 adds versioned experiment contracts, fixture split validation, domain-separated
+random streams, host/budget preflight, immutable laboratory artifacts, and a frozen
+FakeHost evaluation boundary. It does not execute the full P0.4 experiment runner or
+implement developmental mechanisms; see the approved [P0.3 plan](docs/Approved%20Plans/MNEME_P0.3_Experiment_Contracts_Experimental_Isolation_Plan.md).
+
 The host boundary keeps administrative MNEME metadata out of model-visible messages. Hosted
 credentials are environment-only; qualification artifacts may contain provider metadata but
 never secrets.

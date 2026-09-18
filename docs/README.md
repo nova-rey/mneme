@@ -19,10 +19,12 @@ The documents are preserved in their supplied form and are intentionally not mer
 * [Approved P0.3 experiment contracts and experimental isolation plan](<Approved Plans/MNEME_P0.3_Experiment_Contracts_Experimental_Isolation_Plan.md>)
   records the versioned experiment identity, split controls, random streams, capability
   preflight, budgets, frozen evaluation boundary, and four implementation chunks. P0.3
-  implementation is not started.
+  implementation and its FakeHost acceptance receipt are complete.
 
 The P0.2 implementation is now present under `src/mneme/state/`; its acceptance
 status and receipts are recorded in `.codex/work-queue.json` and `bible.md`.
+The P0.3 implementation is present under `src/mneme/experiments/`; its acceptance
+status and receipt are recorded in `.codex/work-queue.json` and `bible.md`.
 
 This repository does not contain the older `MNEME_Earned_Association_Field_Spec.md`; the
 current specification identifies it as historical context.

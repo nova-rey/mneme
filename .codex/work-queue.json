@@ -239,7 +239,13 @@
       },
       "base_sha": "cd73b1617ad7f7ebda5c8f9403f6d65486e8cf09",
       "campaign": "mneme-p0.3",
-      "candidate": null,
+      "candidate": {
+        "artifact": "docs/receipts/MNEME_P0.3_Fake_Acceptance_Receipt.md",
+        "base_sha": "cd73b1617ad7f7ebda5c8f9403f6d65486e8cf09",
+        "returned_at": "2026-09-18T00:00:00Z",
+        "returned_by": "root-foreman",
+        "sha": "b8b13ff0c6b5b01538a5f7be4581f484272daf6c"
+      },
       "completion_criterion": "Implement the approved P0.3 experiment contract and experimental-isolation plan with network-free tests and the documented FakeHost acceptance demonstration; do not implement P0.4 or Phase 1.",
       "created_at": "2026-09-18T00:00:00Z",
       "dependencies": [],
@@ -257,7 +263,7 @@
         "Approved plan: docs/Approved Plans/MNEME_P0.3_Experiment_Contracts_Experimental_Isolation_Plan.md"
       ],
       "id": "P0.3",
-      "notes": "Approved implementation plan recorded; explicit implementation authorization is still required.",
+      "notes": "Approved plan implemented and accepted; no P0.4 or Phase 1 work included.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -282,12 +288,22 @@
       ],
       "scope": "Implement only the approved P0.3 laboratory protocol; exclude the P0.4 integrated runner and all developmental mechanisms.",
       "session_ids": [],
-      "status": "PLANNED",
+      "status": "DONE",
       "title": "Experiment contracts and experimental isolation",
       "updated_at": "2026-09-18T00:00:00Z",
       "validation": {
-        "required": [],
-        "results": {}
+        "required": [
+          "pytest -q",
+          "ruff check .",
+          "mypy src/mneme",
+          "FakeHost P0.3 acceptance demonstration"
+        ],
+        "results": {
+          "pytest -q": {"receipt": "64 passed on 2026-09-18", "status": "PASS"},
+          "ruff check .": {"receipt": "All checks passed on 2026-09-18", "status": "PASS"},
+          "mypy src/mneme": {"receipt": "Success: no issues found in 22 source files", "status": "PASS"},
+          "FakeHost P0.3 acceptance demonstration": {"receipt": "docs/receipts/MNEME_P0.3_Fake_Acceptance_Receipt.md", "status": "PASS"}
+        }
       },
       "waiting_on": [],
       "workstream": "p0.3"
