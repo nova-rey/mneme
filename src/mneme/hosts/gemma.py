@@ -21,7 +21,7 @@ from ..contracts import (
 
 @dataclass
 class GemmaHost:
-    model_id: str = "google/gemma-4-E4B"
+    model_id: str = "google/gemma-4-E4B-it"
     token: str | None = None
     provider: str | None = None
     revision: str | None = None

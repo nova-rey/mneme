@@ -10,6 +10,7 @@ The documents are preserved in their supplied form and are intentionally not mer
   research context and supersedes earlier related-work interpretations where they conflict.
 * `research/MNEME_Related_Work_Research_Dossier.docx` is unchanged historical/reference
   material, not a normative implementation specification.
+* `setup/deepinfra.md` is the operational procedure for the selected live P0.1 backend.
 
 This repository does not contain the older `MNEME_Earned_Association_Field_Spec.md`; the
 current specification identifies it as historical context.

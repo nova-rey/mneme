@@ -23,3 +23,9 @@
 - Tightened structured qualification to separate JSON parsing from three representative schema validations.
 - Exercised FakeHost failure reporting and added offline HTTP, timeout, malformed-response, provider-error, and response-shape coverage for Gemma.
 - Marked Gemma rendering as the explicit MNEME fallback transcript and removed its unverified native structured-output capability claim.
+
+## 2026-09-17 DeepInfra preparation
+
+- Resolved `google/gemma-4-E4B-it` revision `ee0ef6023621cff504d758262d4e04895a5af4a2` as the downloadable local reference and recorded the model checksum.
+- Added the credential-free DeepInfra OpenAI-compatible backend, offline provider-boundary tests, setup instructions, and live qualification command.
+- Selected DeepInfra as the inexpensive live P0.1 backend; hosted exact-weight equivalence remains unknown and P0.1 stays WAITING on credentialed qualification.

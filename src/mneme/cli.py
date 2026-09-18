@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from . import __version__
-from .hosts import FakeHost, GemmaHost
+from .hosts import DeepInfraGemmaHost, FakeHost, GemmaHost
 from .qualification import qualify
 
 
@@ -18,6 +18,11 @@ def _host(name: str) -> Any:
             model_id=os.getenv("MNEME_MODEL_ID", "google/gemma-4-E4B"),
             provider=os.getenv("MNEME_HF_PROVIDER"),
             revision=os.getenv("MNEME_MODEL_REVISION"),
+        )
+    if name == "gemma-deepinfra":
+        return DeepInfraGemmaHost(
+            model_id=os.getenv("MNEME_DEEPINFRA_MODEL_ID", "google/gemma-4-E4B-it"),
+            token=os.getenv("DEEPINFRA_TOKEN"),
         )
     raise SystemExit(f"unknown host: {name}")
 
@@ -44,13 +49,14 @@ def main(argv: list[str] | None = None) -> int:
                     "version": __version__,
                     "python": sys.version.split()[0],
                     "gemma_configured": bool(os.getenv("MNEME_HF_TOKEN")),
+                    "deepinfra_configured": bool(os.getenv("DEEPINFRA_TOKEN")),
                 },
                 indent=2,
             )
         )
         return 0
     if args.action == "list":
-        print("fake\ngemma")
+        print("fake\ngemma\ngemma-deepinfra")
         return 0
     selected = _host(args.host)
     if args.action == "inspect":
