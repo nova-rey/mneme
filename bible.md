@@ -66,3 +66,4 @@
 - Enforced the approved one-active-writer rule with an OS advisory lock around SQLite transactions and checkpoint copies.
 - Corrected fork ancestry to record the durable checkpoint ID rather than a filename-derived label.
 - Updated the approved plan status to show implementation underway and the real-Gemma gate still pending.
+- Completed the remaining read-only CLI surface for checkpoint and operation listing/inspection plus explicit store recovery; validation remains network-free and no later-phase behavior was added.

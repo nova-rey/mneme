@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import sqlite3
 import sys
 from pathlib import Path
 from typing import Any
@@ -10,6 +11,7 @@ from .hosts import DeepInfraGemmaHost, FakeHost, GemmaHost
 from .qualification import qualify
 from .state import SQLiteStore
 from .state.contracts import StoragePermissions
+from .state.reader import CheckpointReader
 from .state.service import ContinuityService
 from .state.snapshots import backup_instance, create_checkpoint, fork_from_checkpoint
 
@@ -72,17 +74,30 @@ def main(argv: list[str] | None = None) -> int:
     accept.add_argument("operation")
     elist = esub.add_parser("list")
     elist.add_argument("id")
+    operation = sub.add_parser("operation")
+    osub = operation.add_subparsers(dest="operation_action", required=True)
+    oi = osub.add_parser("inspect")
+    oi.add_argument("id")
+    ol = osub.add_parser("list")
+    ol.add_argument("id")
     checkpoint = sub.add_parser("checkpoint")
     csub = checkpoint.add_subparsers(dest="checkpoint_action", required=True)
     cc = csub.add_parser("create")
     cc.add_argument("id")
     cc.add_argument("--output", required=True)
     cc.add_argument("--id")
+    csub.add_parser("list")
+    ci = csub.add_parser("inspect")
+    ci.add_argument("id")
     backup = sub.add_parser("backup")
     backup.add_argument("id")
     backup.add_argument("--output", required=True)
+    store_cmd = sub.add_parser("store")
+    ssub = store_cmd.add_subparsers(dest="store_action", required=True)
+    recover = ssub.add_parser("recover")
+    recover.add_argument("id")
     args = parser.parse_args(argv)
-    if args.command in {"instance", "episode", "checkpoint", "backup"}:
+    if args.command in {"instance", "episode", "operation", "checkpoint", "backup", "store"}:
         if args.store is None:
             raise SystemExit("--store PATH is required for state commands")
         if args.command == "instance" and args.instance_action == "create":
@@ -114,10 +129,44 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "checkpoint" and args.checkpoint_action == "create":
             with SQLiteStore(args.store) as store:
                 print(create_checkpoint(store, args.output, args.id))
-                return 0
+            return 0
+        if args.command == "checkpoint" and args.checkpoint_action == "list":
+            paths = sorted(args.store.glob("*.sqlite3")) if args.store.is_dir() else [args.store]
+            output = []
+            for path in paths:
+                try:
+                    with CheckpointReader(path) as reader:
+                        output.append(reader.manifest())
+                except (ValueError, sqlite3.Error):
+                    continue
+            print(json.dumps(output, indent=2))
+            return 0
+        if args.command == "checkpoint" and args.checkpoint_action == "inspect":
+            with CheckpointReader(args.id) as reader:
+                print(json.dumps(reader.manifest(), indent=2))
+            return 0
         if args.command == "backup":
             with SQLiteStore(args.store) as store:
                 backup_instance(store, args.output)
+            return 0
+        if args.command == "operation":
+            with SQLiteStore(args.store, read_only=True) as store:
+                if args.operation_action == "inspect":
+                    row = store.connection.execute(
+                        "SELECT * FROM operations WHERE operation_id=?", (args.id,)
+                    ).fetchone()
+                    if row is None:
+                        raise SystemExit("unknown operation")
+                    print(json.dumps(dict(row), indent=2))
+                else:
+                    rows = store.connection.execute(
+                        "SELECT * FROM operations WHERE instance_id=? ORDER BY created_at", (args.id,)
+                    )
+                    print(json.dumps([dict(row) for row in rows], indent=2))
+            return 0
+        if args.command == "store" and args.store_action == "recover":
+            with SQLiteStore(args.store, read_only=False) as store:
+                print(json.dumps({"instance_id": args.id, "problems": store.verify()}, indent=2))
             return 0
         if args.command == "episode":
             from .contracts import GenerationRequest
