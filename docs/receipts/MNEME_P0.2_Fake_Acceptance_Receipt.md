@@ -1,6 +1,6 @@
 # MNEME P0.2 FakeHost acceptance receipt
 
-Date: 2026-09-18  
+Date: 2026-09-18
 Baseline: implementation working tree after approved P0.2 plan
 
 The network-free demonstration completed with a temporary store:
