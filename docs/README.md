@@ -16,6 +16,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   future-mechanism Python placeholders, storage and export/copy permissions only,
   and an accepted-history digest without behavioral-equivalence claims.
   P0.2 implementation and its acceptance receipts are complete; later phases remain out of scope.
+* [Approved P0.3 experiment contracts and experimental isolation plan](<Approved Plans/MNEME_P0.3_Experiment_Contracts_Experimental_Isolation_Plan.md>)
+  records the versioned experiment identity, split controls, random streams, capability
+  preflight, budgets, frozen evaluation boundary, and four implementation chunks. P0.3
+  implementation is not started.
 
 The P0.2 implementation is now present under `src/mneme/state/`; its acceptance
 status and receipts are recorded in `.codex/work-queue.json` and `bible.md`.
