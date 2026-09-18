@@ -1,7 +1,7 @@
 # MNEME P0.2 real-Gemma acceptance receipt
 
-Date: 2026-09-18  
-Store: fresh temporary P0.2 SQLite store  
+Date: 2026-09-18
+Store: fresh temporary P0.2 SQLite store
 Operation: `55555555-5555-4555-8555-555555555555`
 
 The bounded real-host demonstration completed through the P0.2 durable lifecycle:
