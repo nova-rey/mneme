@@ -11,8 +11,9 @@ import json
 from pathlib import Path
 from typing import Any
 
-from .artifacts import ArtifactError, ArtifactStore
+from .artifacts import ArtifactError, ArtifactStore, file_digest
 from .contracts import ContractError, ExperimentSpec, load_spec
+from .datasets import DatasetBoundaryError, load_fixture_pack
 from .planning import PreflightError, preflight
 
 
@@ -22,6 +23,24 @@ def _json(value: Any) -> str:
 
 def _read_spec(path: Path) -> ExperimentSpec:
     return load_spec(path)
+
+
+def _fixture_pack_for_spec(path: Path, spec: ExperimentSpec) -> Any:
+    """Load the contract's fixture pack relative to the specification file."""
+
+    reference = spec.to_dict().get("fixture_pack")
+    if not isinstance(reference, dict) or not isinstance(reference.get("path"), str):
+        raise PreflightError("fixture_pack.path is required for CLI preflight")
+    fixture_path = Path(reference["path"])
+    if not fixture_path.is_absolute():
+        fixture_path = path.parent / fixture_path
+    try:
+        pack = load_fixture_pack(fixture_path.resolve())
+    except DatasetBoundaryError as exc:
+        raise PreflightError(str(exc)) from exc
+    if reference.get("sha256") != pack.manifest_digest:
+        raise PreflightError("fixture pack digest does not match the contract")
+    return pack
 
 
 def validate(path: Path) -> dict[str, Any]:
@@ -40,10 +59,18 @@ def validate(path: Path) -> dict[str, Any]:
 
 def preflight_spec(path: Path, host_name: str) -> dict[str, Any]:
     spec = _read_spec(path)
+    _require_declared_host(spec, host_name)
     # Importing the existing host factory here avoids changing P0.1 host APIs.
     from ..cli import _host
 
-    plan = preflight(spec.to_dict(), _host(host_name), contract_digest=spec.content_digest)
+    pack = _fixture_pack_for_spec(path, spec)
+    plan = preflight(
+        spec.to_dict(),
+        _host(host_name),
+        fixture_pack=pack,
+        base_path=path.parent,
+        contract_digest=spec.content_digest,
+    )
     return {
         "valid": True,
         "identity": {"name": spec.name, "contract_revision": spec.contract_revision},
@@ -54,9 +81,17 @@ def preflight_spec(path: Path, host_name: str) -> dict[str, Any]:
 
 def create_run(path: Path, lab: Path, run_id: str, host_name: str) -> dict[str, Any]:
     spec = _read_spec(path)
+    _require_declared_host(spec, host_name)
     from ..cli import _host
 
-    plan = preflight(spec.to_dict(), _host(host_name), contract_digest=spec.content_digest)
+    pack = _fixture_pack_for_spec(path, spec)
+    plan = preflight(
+        spec.to_dict(),
+        _host(host_name),
+        fixture_pack=pack,
+        base_path=path.parent,
+        contract_digest=spec.content_digest,
+    )
     store = ArtifactStore(lab)
     snapshots: dict[str, bytes] = {}
     checkpoint_bindings = spec.to_dict().get("checkpoints", {})
@@ -65,13 +100,33 @@ def create_run(path: Path, lab: Path, run_id: str, host_name: str) -> dict[str, 
             if not isinstance(label, str) or not isinstance(binding, dict):
                 continue
             source = binding.get("path")
-            if isinstance(source, str):
-                checkpoint_path = (path.parent / source).resolve()
-                if checkpoint_path.is_file():
-                    snapshots[f"{label}.sqlite3"] = checkpoint_path.read_bytes()
+            if not isinstance(source, str):
+                raise ArtifactError(f"checkpoint binding has no path: {label}")
+            checkpoint_path = Path(source)
+            if not checkpoint_path.is_absolute():
+                checkpoint_path = path.parent / checkpoint_path
+            checkpoint_path = checkpoint_path.resolve()
+            if not checkpoint_path.is_file():
+                raise ArtifactError(f"checkpoint file does not exist: {checkpoint_path}")
+            snapshots[f"{label}.sqlite3"] = checkpoint_path.read_bytes()
     bindings = {
         "subjects": spec.to_dict().get("subjects", []),
-        "checkpoints": checkpoint_bindings,
+        "checkpoints": {
+            str(label): {
+                **binding,
+                "snapshot_path": f"{label}.sqlite3",
+                "snapshot_sha256": file_digest(
+                    (path.parent / binding["path"]).resolve()
+                    if isinstance(binding.get("path"), str)
+                    and not Path(binding["path"]).is_absolute()
+                    else Path(binding["path"])
+                ),
+            }
+            for label, binding in checkpoint_bindings.items()
+            if isinstance(label, str)
+            and isinstance(binding, dict)
+            and isinstance(binding.get("path"), str)
+        },
     }
     published = store.publish_run(
         experiment=spec.to_dict(),
@@ -120,21 +175,90 @@ def isolation_check(
 
     store = ArtifactStore(lab)
     run = store.locate_run(run_id)
-    snapshots = sorted((run / "snapshots").glob("*.sqlite3"))
-    if not snapshots:
-        raise ArtifactError("prepared run has no checkpoint snapshot")
+    experiment = store._read_json(run / "experiment.json")
+    if not isinstance(experiment.get("host"), dict) or experiment["host"].get("backend") != "fake":
+        raise ArtifactError("P0.3 isolation check supports only a prepared FakeHost contract")
+    plan = store._read_json(run / "study-plan.json")
+    _, snapshot = _subject_checkpoint(run, slot)
+    seed = _evaluation_seed(plan, slot, probe, repetition)
+    parameters = _generation_parameters(experiment)
     return run_isolation_check(
         run_id=run_id,
         lab=lab,
         check_id=check_id,
-        checkpoint=snapshots[0],
+        checkpoint=snapshot,
         host=FakeHost(),
         messages=[{"role": "user", "content": f"P0.3 isolation probe {probe}"}],
-        seed=repetition,
+        seed=seed,
         subject_slot=slot,
         probe_ordinal=probe,
         repetition=repetition,
+        parameters=parameters,
     )
+
+
+def _require_declared_host(spec: ExperimentSpec, host_name: str) -> None:
+    host = spec.to_dict().get("host", {})
+    if isinstance(host, dict):
+        declared = host.get("backend")
+        if isinstance(declared, str) and declared != host_name:
+            raise PreflightError(
+                f"selected host {host_name!r} does not match declared host backend {declared!r}"
+            )
+
+
+def _subject_checkpoint(run: Path, subject_slot: int) -> tuple[dict[str, Any], Path]:
+    bindings = ArtifactStore._read_json(run / "bindings.json")
+    subjects = bindings.get("subjects")
+    checkpoints = bindings.get("checkpoints")
+    if not isinstance(subjects, list) or not isinstance(checkpoints, dict):
+        raise ArtifactError("prepared run has no subject checkpoint bindings")
+    matches = [
+        subject
+        for subject in subjects
+        if isinstance(subject, dict) and subject.get("slot") == subject_slot
+    ]
+    if len(matches) != 1:
+        raise ArtifactError(f"subject slot is not uniquely bound: {subject_slot}")
+    start = matches[0].get("start")
+    binding = checkpoints.get(start)
+    if not isinstance(binding, dict):
+        raise ArtifactError(f"subject start checkpoint is not bound: {start!r}")
+    snapshot_name = binding.get("snapshot_path")
+    if not isinstance(snapshot_name, str):
+        raise ArtifactError(f"subject checkpoint has no private snapshot: {start!r}")
+    snapshot = run / "snapshots" / snapshot_name
+    if not snapshot.is_file() or snapshot.is_symlink():
+        raise ArtifactError(f"subject checkpoint snapshot is missing: {snapshot_name}")
+    return matches[0], snapshot
+
+
+def _evaluation_seed(plan: dict[str, Any], subject_slot: int, probe: int, repetition: int) -> int:
+    streams = plan.get("streams")
+    if not isinstance(streams, list):
+        raise ArtifactError("prepared run has no resolved random streams")
+    matches = [
+        stream
+        for stream in streams
+        if isinstance(stream, dict)
+        and stream.get("domain") == "evaluation_generation"
+        and stream.get("subject_slot") == subject_slot
+        and stream.get("probe") == probe
+        and stream.get("repetition") == repetition
+    ]
+    if len(matches) != 1 or not isinstance(matches[0].get("seed"), int):
+        raise ArtifactError("requested evaluation coordinate has no unique prepared seed")
+    return int(matches[0]["seed"])
+
+
+def _generation_parameters(experiment: dict[str, Any]) -> dict[str, Any]:
+    generation = experiment.get("generation", {})
+    if not isinstance(generation, dict):
+        return {}
+    parameters = generation.get("parameters", {})
+    if not isinstance(parameters, dict):
+        raise ArtifactError("generation.parameters must be an object")
+    return dict(parameters)
 
 
 def dispatch(args: Any) -> int:

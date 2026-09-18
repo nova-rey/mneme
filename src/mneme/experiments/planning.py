@@ -18,6 +18,7 @@ from pathlib import Path
 from typing import Any, Protocol
 
 from ..contracts import Capability, HostCapabilities, HostFingerprint
+from .datasets import FixturePack, load_fixture_pack
 
 
 class PreflightError(ValueError):
@@ -110,9 +111,30 @@ def derive_seed(master_seed: int, domain: SeedDomain | str, **coordinates: int |
         raise PreflightError("master_seed must be a non-negative integer")
     if not coordinates:
         raise PreflightError("seed derivation requires explicit scientific coordinates")
-    forbidden = {"id", "uuid", "run_id", "experiment_id", "path", "timestamp", "name"}
-    if forbidden.intersection(coordinates):
-        raise PreflightError("administrative identifiers cannot be seed coordinates")
+    try:
+        seed_domain = SeedDomain(str(domain))
+    except ValueError as exc:
+        raise PreflightError(f"unsupported seed domain: {domain}") from exc
+    allowed = {
+        SeedDomain.DEVELOPMENT_GENERATION: {"sampling_slot", "episode", "repetition"},
+        SeedDomain.EVALUATION_GENERATION: {"probe", "checkpoint_boundary", "repetition"},
+        SeedDomain.CONDITION_ASSIGNMENT: {"assignment_slot"},
+        SeedDomain.DATASET_ORDERING: {"ordering_group", "entry"},
+    }[seed_domain]
+    if set(coordinates) != allowed:
+        forbidden = {"id", "uuid", "run_id", "experiment_id", "path", "timestamp", "name"}
+        if forbidden.intersection(coordinates):
+            raise PreflightError("administrative identifiers cannot be seed coordinates")
+        raise PreflightError(
+            f"{seed_domain.value} seed coordinates must be exactly {sorted(allowed)}"
+        )
+    for key, value in coordinates.items():
+        if isinstance(value, bool) or not isinstance(value, (int, str)):
+            raise PreflightError(f"seed coordinate {key} must be an integer or string")
+        if isinstance(value, int) and value < 0:
+            raise PreflightError(f"seed coordinate {key} must be non-negative")
+        if isinstance(value, str) and not value:
+            raise PreflightError(f"seed coordinate {key} must not be empty")
     message = _canonical({"version": "mneme-seeds-v1", "domain": str(domain),
                           "coordinates": coordinates})
     digest = hmac.new(str(master_seed).encode("ascii"), message, hashlib.sha256).digest()
@@ -136,8 +158,28 @@ def _capability(value: Any) -> Capability:
         raise PreflightError(f"unknown host capability: {value}") from exc
 
 
-def _datasets(spec: Mapping[str, Any], fixture_pack: Mapping[str, Any] | None) -> Mapping[str, Any]:
-    if fixture_pack is not None:
+def _record_mapping(record: Any) -> Mapping[str, Any]:
+    if isinstance(record, Mapping):
+        return record
+    if isinstance(record, object) and hasattr(record, "record_id"):
+        return {
+            "record_id": getattr(record, "record_id"),
+            "id": getattr(record, "record_id"),
+            "ordinal": getattr(record, "ordinal"),
+            "scenario_family": getattr(record, "scenario_family"),
+            "messages": [dict(message) for message in getattr(record, "messages")],
+            "partition": getattr(record, "partition"),
+            "role": getattr(record, "role"),
+            "input_tokens": getattr(record, "input_tokens", None),
+            "max_output_tokens": getattr(record, "max_output_tokens", None),
+        }
+    raise PreflightError("dataset records must be mappings or fixture records")
+
+
+def _datasets(spec: Mapping[str, Any], fixture_pack: Any | None) -> Mapping[str, Any]:
+    if isinstance(fixture_pack, FixturePack):
+        datasets = fixture_pack.datasets
+    elif fixture_pack is not None:
         datasets = fixture_pack.get("datasets", fixture_pack)
     else:
         datasets = spec.get("datasets", {})
@@ -150,9 +192,16 @@ def _records(datasets: Mapping[str, Any], name: str, role: str) -> list[Any]:
     if name not in datasets:
         raise PreflightError(f"{role} dataset is not present: {name}")
     records = datasets[name]
-    if not isinstance(records, list):
+    if not isinstance(records, (list, tuple)):
         raise PreflightError(f"dataset {name} must be a list of records")
-    return records
+    result = [_record_mapping(record) for record in records]
+    for record in result:
+        declared_role = record.get("role")
+        if declared_role is not None and declared_role != role:
+            raise PreflightError(
+                f"dataset {name} record role {declared_role!r} does not match {role!r}"
+            )
+    return result
 
 
 def _dataset_names(spec: Mapping[str, Any], subject: Mapping[str, Any]) -> tuple[str, str]:
@@ -168,7 +217,47 @@ def _dataset_names(spec: Mapping[str, Any], subject: Mapping[str, Any]) -> tuple
     return development, evaluation
 
 
-def _validate_checkpoint_bindings(spec: Mapping[str, Any]) -> None:
+def _resolve_order(
+    records: list[Mapping[str, Any]],
+    *,
+    condition: Mapping[str, Any],
+    master_seed: int,
+    ordering_group: int,
+    domain: SeedDomain,
+) -> list[Mapping[str, Any]]:
+    """Return the declared order and persistable record order.
+
+    ``listed`` is the default and follows explicit record ordinals.  A contract
+    may request ``shuffle``; its permutation is derived only from the numeric
+    scientific ordering group and entry coordinates, never record IDs or paths.
+    """
+
+    ordering = condition.get("ordering", "listed")
+    if ordering not in {"listed", "shuffle"}:
+        raise PreflightError(f"unsupported dataset ordering: {ordering}")
+    listed = sorted(
+        records,
+        key=lambda record: (
+            record.get("ordinal", 0),
+            str(record.get("record_id", record.get("id", ""))),
+        ),
+    )
+    if ordering == "listed":
+        return listed
+    return sorted(
+        listed,
+        key=lambda record: derive_seed(
+            master_seed,
+            domain,
+            ordering_group=ordering_group,
+            entry=listed.index(record),
+        ),
+    )
+
+
+def _validate_checkpoint_bindings(
+    spec: Mapping[str, Any], *, base_path: str | Path | None = None
+) -> None:
     checkpoints = spec.get("checkpoints", {})
     if checkpoints is None:
         return
@@ -184,7 +273,19 @@ def _validate_checkpoint_bindings(spec: Mapping[str, Any]) -> None:
         path_value, checkpoint_id = binding.get("path"), binding.get("checkpoint_id")
         if not isinstance(path_value, str) or not isinstance(checkpoint_id, str):
             raise PreflightError(f"checkpoint {name} requires path and checkpoint_id")
+        required_binding_fields = ("instance_id", "revision", "manifest_id", "sha256")
+        missing_binding_fields = [
+            field for field in required_binding_fields if field not in binding
+        ]
+        if missing_binding_fields:
+            raise PreflightError(
+                f"checkpoint {name} requires exact binding fields: "
+                f"{', '.join(missing_binding_fields)}"
+            )
         path = Path(path_value)
+        if not path.is_absolute() and base_path is not None:
+            path = Path(base_path) / path
+        path = path.resolve()
         if not path.is_file():
             raise PreflightError(f"checkpoint file does not exist: {path}")
         expected_digest = binding.get("sha256")
@@ -197,11 +298,27 @@ def _validate_checkpoint_bindings(spec: Mapping[str, Any]) -> None:
 
             with CheckpointReader(path, checkpoint_id=checkpoint_id) as reader:
                 manifest = reader.manifest()
-                if (
-                    binding.get("revision") is not None
-                    and manifest["source_revision"] != binding["revision"]
-                ):
+                expected_instance = binding.get("instance_id")
+                expected_revision = binding.get("revision")
+                expected_manifest = binding.get("manifest_id")
+                required = {
+                    "instance_id": expected_instance,
+                    "revision": expected_revision,
+                    "manifest_id": expected_manifest,
+                }
+                missing = [key for key, value in required.items() if value is None]
+                if missing:
+                    raise PreflightError(
+                        f"checkpoint {name} requires exact binding fields: {', '.join(missing)}"
+                    )
+                if manifest.get("checkpoint_id") != checkpoint_id:
+                    raise PreflightError(f"checkpoint ID does not match: {name}")
+                if manifest.get("source_instance_id") != expected_instance:
+                    raise PreflightError(f"checkpoint lineage does not match: {name}")
+                if manifest.get("source_revision") != expected_revision:
                     raise PreflightError(f"checkpoint revision does not match: {name}")
+                if manifest.get("manifest_id") != expected_manifest:
+                    raise PreflightError(f"checkpoint manifest does not match: {name}")
                 export = reader.store.connection.execute(
                     "SELECT export_allowed FROM policies WHERE policy_id=?",
                     (manifest["policy_id"],),
@@ -230,22 +347,34 @@ def _check_budget(spec: Mapping[str, Any], estimate: BudgetEstimate) -> None:
     limits = spec.get("budgets")
     if not isinstance(limits, Mapping):
         raise PreflightError("budgets are required")
+    integer_limits = (
+        "max_model_calls",
+        "max_input_tokens",
+        "max_output_tokens",
+        "max_isolation_check_calls",
+    )
+    for key in integer_limits:
+        if key not in limits:
+            continue
+        value = limits[key]
+        if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+            raise PreflightError(f"budgets.{key} must be a positive integer")
     max_calls = limits.get("max_model_calls")
-    if isinstance(max_calls, int) and estimate.total_calls > max_calls:
+    if max_calls is not None and estimate.total_calls > max_calls:
         raise PreflightError(
             f"planned calls {estimate.total_calls} exceed max_model_calls {max_calls}"
         )
     max_input = limits.get("max_input_tokens")
-    if isinstance(max_input, int) and estimate.input_tokens is None:
+    if estimate.input_tokens is None and max_input is not None:
         raise PreflightError("cannot prove max_input_tokens without token bounds")
     if (
-        isinstance(max_input, int)
+        max_input is not None
         and estimate.input_tokens is not None
         and estimate.input_tokens > max_input
     ):
         raise PreflightError("planned input tokens exceed max_input_tokens")
     max_output = limits.get("max_output_tokens")
-    if isinstance(max_output, int) and estimate.output_tokens > max_output:
+    if max_output is not None and estimate.output_tokens > max_output:
         raise PreflightError("planned output tokens exceed max_output_tokens")
 
 
@@ -253,8 +382,9 @@ def preflight(
     spec: Mapping[str, Any] | Any,
     host: PlanningHost,
     *,
-    fixture_pack: Mapping[str, Any] | None = None,
+    fixture_pack: Any | None = None,
     contract_digest: str | None = None,
+    base_path: str | Path | None = None,
 ) -> ResolvedPlan:
     """Validate and resolve a spec without invoking ``host.generate``.
 
@@ -273,16 +403,33 @@ def preflight(
     revision = spec.get("contract_revision")
     if not isinstance(name, str) or not name:
         raise PreflightError("experiment name is required")
-    if not isinstance(revision, int) or revision < 1:
+    if isinstance(revision, bool) or not isinstance(revision, int) or revision < 1:
         raise PreflightError("contract_revision must be a positive integer")
     randomization = spec.get("randomization", {})
     master_seed = randomization.get("master_seed") if isinstance(randomization, Mapping) else None
-    if not isinstance(master_seed, int) or master_seed < 0:
+    if isinstance(master_seed, bool) or not isinstance(master_seed, int) or master_seed < 0:
         raise PreflightError("randomization.master_seed is required")
     subjects = spec.get("subjects")
     if not isinstance(subjects, list) or not subjects:
         raise PreflightError("at least one subject is required")
-    _validate_checkpoint_bindings(spec)
+    _validate_checkpoint_bindings(spec, base_path=base_path)
+    if fixture_pack is None:
+        fixture_reference = spec.get("fixture_pack")
+        if isinstance(fixture_reference, Mapping) and isinstance(
+            fixture_reference.get("path"), str
+        ):
+            fixture_path = Path(str(fixture_reference["path"]))
+            if not fixture_path.is_absolute() and base_path is not None:
+                fixture_path = Path(base_path) / fixture_path
+            fixture_path = fixture_path.resolve()
+            try:
+                loaded = load_fixture_pack(fixture_path)
+            except Exception as exc:
+                raise PreflightError(f"invalid fixture pack: {fixture_path}: {exc}") from exc
+            expected_pack_digest = fixture_reference.get("sha256")
+            if expected_pack_digest != loaded.manifest_digest:
+                raise PreflightError("fixture pack digest does not match the contract")
+            fixture_pack = loaded
     datasets = _datasets(spec, fixture_pack)
     capabilities, fingerprint, fingerprint_dict = _host_dict(host)
     host_spec = spec.get("host", {})
@@ -299,6 +446,15 @@ def preflight(
     actual_digest = hashlib.sha256(_canonical(fingerprint_dict)).hexdigest()
     if expected_digest is not None and expected_digest != actual_digest:
         raise PreflightError("execution host fingerprint does not match the contract")
+    generation = spec.get("generation", {})
+    if not isinstance(generation, Mapping):
+        raise PreflightError("generation must be a mapping")
+    sampling_mode = host_spec.get(
+        "sampling", generation.get("sampling", randomization.get("sampling"))
+    )
+    controlled_sampling = sampling_mode == "controlled" or Capability.SEED_CONTROL in required
+    if controlled_sampling and not capabilities.has(Capability.SEED_CONTROL):
+        raise PreflightError("controlled sampling requires host capability: seed_control")
     assignments: list[dict[str, Any]] = []
     streams: list[dict[str, Any]] = []
     development_calls = evaluation_calls = 0
@@ -310,10 +466,15 @@ def preflight(
     repetitions = evaluation.get("repetitions", 1)
     if not isinstance(repetitions, int) or repetitions < 1:
         raise PreflightError("evaluation.repetitions must be positive")
+    cohort_groups: dict[str, int] = {}
+    evaluation_groups: dict[str, int] = {}
     for ordinal, subject in enumerate(subjects):
         if not isinstance(subject, Mapping):
             raise PreflightError("subject entries must be mappings")
         development_name, evaluation_name = _dataset_names(spec, subject)
+        cohort_name = str(subject.get("cohort", ""))
+        cohort_group = cohort_groups.setdefault(cohort_name, len(cohort_groups))
+        evaluation_group = evaluation_groups.setdefault(evaluation_name, len(evaluation_groups))
         development = _records(datasets, development_name, "development")
         evaluation_records = _records(datasets, evaluation_name, "evaluation")
         development_calls += len(development)
@@ -321,7 +482,7 @@ def preflight(
         for record in development:
             bound = _token_bound([record], "input_tokens")
             input_tokens = None if bound is None or input_tokens is None else input_tokens + bound
-            output = record.get("max_output_tokens") if isinstance(record, Mapping) else None
+            output = record.get("max_output_tokens")
             if isinstance(output, int) and output >= 0:
                 output_per_call += output
             else:
@@ -335,7 +496,7 @@ def preflight(
                 input_tokens = None
             elif input_tokens is not None:
                 input_tokens += bound * repetitions
-            output = record.get("max_output_tokens") if isinstance(record, Mapping) else None
+            output = record.get("max_output_tokens")
             if isinstance(output, int) and output >= 0:
                 output_per_call += output * repetitions
             else:
@@ -343,12 +504,41 @@ def preflight(
                     spec.get("generation", {}).get("parameters", {}).get("max_new_tokens", 0)
                 )
                 output_per_call += (configured if isinstance(configured, int) else 0) * repetitions
+        development_order = _resolve_order(
+            development,
+            condition=spec["conditions"][subject["condition"]],
+            master_seed=master_seed,
+            ordering_group=cohort_group,
+            domain=SeedDomain.DATASET_ORDERING,
+        )
+        evaluation_order = _resolve_order(
+            evaluation_records,
+            condition=evaluation,
+            master_seed=master_seed,
+            ordering_group=evaluation_group,
+            domain=SeedDomain.DATASET_ORDERING,
+        )
         assignments.append({
             "subject_slot": subject.get("slot", ordinal),
             "cohort": subject.get("cohort"),
             "condition": subject.get("condition"),
             "development_dataset": development_name,
             "evaluation_dataset": evaluation_name,
+            "condition_assignment": subject.get("condition"),
+            "assignment_slot": ordinal,
+            "assignment_seed": derive_seed(
+                master_seed,
+                SeedDomain.CONDITION_ASSIGNMENT,
+                assignment_slot=ordinal,
+            ),
+            "development_ordering_group": cohort_group,
+            "evaluation_ordering_group": evaluation_group,
+            "development_order": [
+                record.get("record_id", record.get("id")) for record in development_order
+            ],
+            "evaluation_order": [
+                record.get("record_id", record.get("id")) for record in evaluation_order
+            ],
         })
         streams.append(
             {
@@ -379,7 +569,7 @@ def preflight(
                     ),
                 }
             )
-        for entry in range(len(development)):
+        for entry in range(len(development_order)):
             streams.append(
                 {
                     "domain": SeedDomain.DATASET_ORDERING.value,
@@ -402,7 +592,10 @@ def preflight(
                                 "seed": derive_seed(master_seed, SeedDomain.EVALUATION_GENERATION,
                                                     probe=probe, checkpoint_boundary=0,
                                                     repetition=repetition)})
-    isolation_calls = int(spec.get("budgets", {}).get("max_isolation_check_calls", 0))
+    raw_isolation_calls = spec.get("budgets", {}).get("max_isolation_check_calls", 0)
+    if isinstance(raw_isolation_calls, bool) or not isinstance(raw_isolation_calls, int):
+        raise PreflightError("budgets.max_isolation_check_calls must be a positive integer")
+    isolation_calls = raw_isolation_calls
     estimate = BudgetEstimate(
         development_calls, evaluation_calls, isolation_calls,
         development_calls + evaluation_calls + isolation_calls,
@@ -415,5 +608,9 @@ def preflight(
     )
     _check_budget(spec, estimate)
     return ResolvedPlan(name, revision, contract_digest, tuple(assignments), tuple(streams),
-                        {"fingerprint": fingerprint_dict, "fingerprint_sha256": actual_digest,
-                         "capabilities": capabilities.to_dict()}, estimate)
+                        {
+                            "fingerprint": fingerprint_dict,
+                            "fingerprint_sha256": actual_digest,
+                            "capabilities": capabilities.to_dict(),
+                            "sampling": "controlled" if controlled_sampling else "provider_managed",
+                        }, estimate)
