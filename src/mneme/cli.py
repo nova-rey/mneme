@@ -7,6 +7,9 @@ from pathlib import Path
 from typing import Any
 
 from . import __version__
+from .experiments.cli import add_parser as add_experiment_parser
+from .experiments.cli import dispatch as dispatch_experiment
+from .experiments.cli import normalize_args as normalize_experiment_args
 from .hosts import DeepInfraGemmaHost, FakeHost, GemmaHost
 from .qualification import qualify
 from .state import SQLiteStore
@@ -96,7 +99,10 @@ def main(argv: list[str] | None = None) -> int:
     ssub = store_cmd.add_subparsers(dest="store_action", required=True)
     recover = ssub.add_parser("recover")
     recover.add_argument("id")
-    args = parser.parse_args(argv)
+    add_experiment_parser(sub)
+    args = normalize_experiment_args(parser.parse_args(argv))
+    if args.command == "experiment":
+        return dispatch_experiment(args)
     if args.command in {"instance", "episode", "operation", "checkpoint", "backup", "store"}:
         if args.store is None:
             raise SystemExit("--store PATH is required for state commands")

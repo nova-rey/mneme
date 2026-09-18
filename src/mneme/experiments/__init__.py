@@ -16,6 +16,7 @@ from .datasets import (
     load_jsonl,
     validate_split_boundaries,
 )
+from .artifacts import ArtifactError, ArtifactStore, PublishedRun
 
 __all__ = [
     "EXPERIMENT_SCHEMA_VERSION",
@@ -30,4 +31,7 @@ __all__ = [
     "load_jsonl",
     "load_spec",
     "validate_split_boundaries",
+    "ArtifactError",
+    "ArtifactStore",
+    "PublishedRun",
 ]

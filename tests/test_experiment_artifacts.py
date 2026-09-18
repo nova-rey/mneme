@@ -1,0 +1,118 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import pytest
+
+from mneme.experiments.artifacts import ArtifactError, ArtifactStore, content_digest
+
+
+def _payload() -> tuple[dict[str, object], dict[str, object], dict[str, object], dict[str, object]]:
+    return (
+        {"name": "shared-input-control", "contract_revision": 3, "purpose": "test"},
+        {"valid": True, "host": {"backend": "fake"}},
+        {"calls": 1, "seeds": {"development_generation": [42]}},
+        {"subjects": [{"slot": 0, "checkpoint": "cp"}]},
+    )
+
+
+def test_publish_run_preserves_scientific_identity_and_is_idempotent(tmp_path: Path) -> None:
+    store = ArtifactStore(tmp_path)
+    experiment, preflight, plan, bindings = _payload()
+    run = store.publish_run(
+        experiment=experiment,
+        preflight=preflight,
+        study_plan=plan,
+        bindings=bindings,
+        run_id="run-001",
+        inputs={"development.jsonl": b"{}\n"},
+        snapshots={"checkpoint.sqlite3": b"checkpoint"},
+    )
+    assert run.path == tmp_path / "experiments/shared-input-control/revisions/3/runs/run-001"
+    manifest = json.loads((run.path / "run-manifest.json").read_text())
+    assert manifest["experiment_name"] == "shared-input-control"
+    assert manifest["contract_revision"] == 3
+    assert manifest["contract_sha256"] == content_digest(experiment)
+    again = store.publish_run(
+        experiment=experiment,
+        preflight=preflight,
+        study_plan=plan,
+        bindings=bindings,
+        run_id="run-001",
+    )
+    assert again.path == run.path
+    assert store.verify_run(run.path)
+
+
+def test_conflicting_run_id_is_rejected(tmp_path: Path) -> None:
+    store = ArtifactStore(tmp_path)
+    experiment, preflight, plan, bindings = _payload()
+    store.publish_run(
+        experiment=experiment,
+        preflight=preflight,
+        study_plan=plan,
+        bindings=bindings,
+        run_id="run-001",
+    )
+    plan["calls"] = 2
+    with pytest.raises(ArtifactError, match="conflicting intent"):
+        store.publish_run(
+            experiment=experiment,
+            preflight=preflight,
+            study_plan=plan,
+            bindings=bindings,
+            run_id="run-001",
+        )
+
+
+def test_check_lifecycle_is_idempotent_and_uncertain_is_terminal(tmp_path: Path) -> None:
+    store = ArtifactStore(tmp_path)
+    experiment, preflight, plan, bindings = _payload()
+    store.publish_run(
+        experiment=experiment,
+        preflight=preflight,
+        study_plan=plan,
+        bindings=bindings,
+        run_id="run-001",
+    )
+    started = store.begin_check("run-001", "check-001", {"slot": 0, "probe": 0})
+    assert started["status"] == "STARTED"
+    assert store.begin_check("run-001", "check-001", {"slot": 0, "probe": 0}) == started
+    result = store.complete_check("run-001", "check-001", {"output": "ok"})
+    assert result["status"] == "RESULT"
+    assert store.complete_check("run-001", "check-001", {"output": "ok"}) == result
+
+    store.begin_check("run-001", "check-002", {"slot": 1})
+    uncertain = store.mark_uncertain("run-001", "check-002", "process interrupted")
+    assert uncertain["status"] == "UNCERTAIN"
+    with pytest.raises(ArtifactError, match="UNCERTAIN"):
+        store.begin_check("run-001", "check-002", {"slot": 1})
+
+
+def test_run_content_tampering_fails_verification(tmp_path: Path) -> None:
+    store = ArtifactStore(tmp_path)
+    experiment, preflight, plan, bindings = _payload()
+    run = store.publish_run(
+        experiment=experiment,
+        preflight=preflight,
+        study_plan=plan,
+        bindings=bindings,
+        run_id="run-001",
+    )
+    (run.path / "study-plan.json").write_text('{"calls":99}\n')
+    assert store.verify_run(run.path) is False
+
+
+def test_invalid_artifact_path_is_rejected(tmp_path: Path) -> None:
+    store = ArtifactStore(tmp_path)
+    experiment, preflight, plan, bindings = _payload()
+    with pytest.raises(ArtifactError, match="escapes"):
+        store.publish_run(
+            experiment=experiment,
+            preflight=preflight,
+            study_plan=plan,
+            bindings=bindings,
+            run_id="run-001",
+            inputs={"../secret": b"bad"},
+        )
