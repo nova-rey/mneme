@@ -138,7 +138,13 @@
       },
       "base_sha": "2b47695",
       "campaign": "mneme-p0.2",
-      "candidate": null,
+      "candidate": {
+        "artifact": "docs/receipts/MNEME_P0.2_Fake_Acceptance_Receipt.md",
+        "base_sha": "2b47695",
+        "returned_at": "2026-09-18T21:30:00Z",
+        "returned_by": "root-foreman",
+        "sha": "af93e8cf57f60edba31e43dc23b7b20bab17c6ad"
+      },
       "completion_criterion": "All four approved P0.2 implementation chunks and acceptance demonstration complete with receipts; no later-phase implementation.",
       "created_at": "2026-09-18T21:08:40.610627Z",
       "dependencies": [
@@ -193,7 +199,28 @@
           "FakeHost acceptance demonstration",
           "opt-in real Gemma demonstration"
         ],
-        "results": {}
+        "results": {
+          "pytest -q": {
+            "receipt": "35 passed in .venv2/bin/pytest -q on 2026-09-18",
+            "recorded_at": "2026-09-18T21:30:00Z",
+            "status": "PASS"
+          },
+          "ruff check .": {
+            "receipt": "All checks passed on 2026-09-18",
+            "recorded_at": "2026-09-18T21:30:00Z",
+            "status": "PASS"
+          },
+          "mypy src/mneme": {
+            "receipt": "Success: no issues found in 15 source files on 2026-09-18",
+            "recorded_at": "2026-09-18T21:30:00Z",
+            "status": "PASS"
+          },
+          "FakeHost acceptance demonstration": {
+            "receipt": "docs/receipts/MNEME_P0.2_Fake_Acceptance_Receipt.md and artifacts/p02_acceptance.json",
+            "recorded_at": "2026-09-18T21:30:00Z",
+            "status": "PASS"
+          }
+        }
       },
       "waiting_on": [
         "external:gemma-p02-acceptance"
