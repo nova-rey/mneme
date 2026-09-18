@@ -360,6 +360,12 @@ class ArtifactStore:
                 }
             ):
                 return False
+            if (
+                manifest.get("run_id") != path.name
+                or manifest.get("experiment_name") != path.parent.parent.parent.parent.name
+                or str(manifest.get("contract_revision")) != path.parent.parent.name
+            ):
+                return False
             required = {
                 "experiment.json": manifest["contract_sha256"],
                 "preflight.json": manifest["preflight_sha256"],
@@ -369,8 +375,13 @@ class ArtifactStore:
             for filename, digest in required.items():
                 if not isinstance(digest, str):
                     return False
-                if content_digest(self._read_json(path / filename)) != digest:
+                artifact_path = path / filename
+                if not artifact_path.is_file() or artifact_path.is_symlink():
                     return False
+                if content_digest(self._read_json(artifact_path)) != digest:
+                    return False
+            if self._read_json(path / "experiment.json") != manifest.get("experiment"):
+                return False
 
             payloads = manifest.get("payloads")
             if not isinstance(payloads, Mapping) or set(payloads) != {"inputs", "snapshots"}:
@@ -406,19 +417,23 @@ class ArtifactStore:
                     result_path = check_dir / "result.json"
                     uncertain_path = check_dir / "uncertain.json"
                     if started_path.exists() and not self._verify_started(
-                        self._read_json(started_path)
+                        self._read_json(started_path), manifest.get("run_id"), check_dir.name
                     ):
                         return False
                     if result_path.exists():
                         if not started_path.exists() or not self._verify_result(
-                            self._read_json(result_path)
+                            self._read_json(result_path), manifest.get("run_id"), check_dir.name
                         ):
                             return False
                     if uncertain_path.exists():
                         if (
                             result_path.exists()
                             or not started_path.exists()
-                            or not self._verify_uncertain(self._read_json(uncertain_path))
+                            or not self._verify_uncertain(
+                                self._read_json(uncertain_path),
+                                manifest.get("run_id"),
+                                check_dir.name,
+                            )
                         ):
                             return False
 
@@ -439,17 +454,23 @@ class ArtifactStore:
             return False
 
     @staticmethod
-    def _verify_started(value: Mapping[str, Any]) -> bool:
+    def _verify_started(
+        value: Mapping[str, Any], run_id: Any = None, check_id: Any = None
+    ) -> bool:
         request = value.get("request")
         return (
             value.get("schema_version") == 1
             and value.get("status") == "STARTED"
             and isinstance(request, Mapping)
             and value.get("request_sha256") == content_digest(request)
+            and (run_id is None or value.get("run_id") == run_id)
+            and (check_id is None or value.get("check_id") == check_id)
         )
 
     @staticmethod
-    def _verify_result(value: Mapping[str, Any]) -> bool:
+    def _verify_result(
+        value: Mapping[str, Any], run_id: Any = None, check_id: Any = None
+    ) -> bool:
         return (
             value.get("schema_version") == 1
             and value.get("status") == "RESULT"
@@ -458,10 +479,14 @@ class ArtifactStore:
             == content_digest(
                 {key: item for key, item in value.items() if key != "result_sha256"}
             )
+            and (run_id is None or value.get("run_id") == run_id)
+            and (check_id is None or value.get("check_id") == check_id)
         )
 
     @staticmethod
-    def _verify_uncertain(value: Mapping[str, Any]) -> bool:
+    def _verify_uncertain(
+        value: Mapping[str, Any], run_id: Any = None, check_id: Any = None
+    ) -> bool:
         return (
             value.get("schema_version") == 1
             and value.get("status") == "UNCERTAIN"
@@ -470,6 +495,8 @@ class ArtifactStore:
             == content_digest(
                 {key: item for key, item in value.items() if key != "receipt_sha256"}
             )
+            and (run_id is None or value.get("run_id") == run_id)
+            and (check_id is None or value.get("check_id") == check_id)
         )
 
     @staticmethod
@@ -483,7 +510,10 @@ class ArtifactStore:
             relative_path = Path(relative)
             if relative_path.is_absolute() or ".." in relative_path.parts:
                 raise ArtifactError(f"artifact path escapes its directory: {relative}")
-            result[str(relative_path)] = hashlib.sha256(content).hexdigest()
+            key = str(relative_path)
+            if key in result:
+                raise ArtifactError(f"duplicate artifact path: {relative}")
+            result[key] = hashlib.sha256(content).hexdigest()
         return result
 
     @staticmethod
