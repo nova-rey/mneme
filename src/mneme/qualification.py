@@ -95,23 +95,49 @@ def qualify(host: Any) -> QualificationReport:
         (
             {
                 "role": "user",
-                "content": "Return JSON with concepts and confidence.",
+                "content": (
+                    "Return ONLY valid JSON, with no markdown or explanation, using exactly "
+                    '{"concepts":["concept one"],"confidence":0.85}. '
+                    "concepts must be a non-empty string array and confidence must be 0..1."
+                ),
             },
         ),
-        parameters={"max_new_tokens": 80},
+        parameters={"max_new_tokens": 80, "temperature": 0.0},
     )
     run("structured_concept_list", schema_request, _concept_schema)
     run(
         "structured_relationship",
         GenerationRequest(
-            ({"role": "user", "content": "Return JSON with relationships as an array."},),
+            (
+                {
+                    "role": "user",
+                    "content": (
+                        "Return ONLY valid JSON, with no markdown or explanation, using exactly "
+                        '{"relationships":[{"from":"VRAM","to":"model capacity",'
+                        '"relationship":"constrains"}]}. '
+                        "All fields must be non-empty strings."
+                    ),
+                },
+            ),
+            parameters={"max_new_tokens": 100, "temperature": 0.0},
         ),
         _relationship_schema,
     )
     run(
         "structured_nested",
         GenerationRequest(
-            ({"role": "user", "content": "Return nested JSON with a subject and evidence."},),
+            (
+                {
+                    "role": "user",
+                    "content": (
+                        "Return ONLY valid JSON, with no markdown or explanation, using exactly "
+                        '{"subject":"some concept","evidence":[{"claim":"some claim",'
+                        '"confidence":0.75}]}. '
+                        "subject and claim must be strings; confidence must be 0..1."
+                    ),
+                },
+            ),
+            parameters={"max_new_tokens": 100, "temperature": 0.0},
         ),
         _nested_schema,
     )
