@@ -17,6 +17,14 @@
       "reference": "Run one bounded DEEPINFRA_TOKEN-backed Gemma interaction through a fresh P0.2 store and persist it as an accepted episode",
       "resolved_at": "2026-09-18T21:35:35.178162Z",
       "status": "RESOLVED"
+    },
+    "external:gemma-p04-baseline": {
+      "created_at": "2026-09-18T23:32:47.097582Z",
+      "kind": "external",
+      "receipt": null,
+      "reference": "DEEPINFRA_TOKEN-backed bounded google/gemma-4-E4B-it P0.4 baseline and Phase Zero closure evidence",
+      "resolved_at": null,
+      "status": "UNRESOLVED"
     }
   },
   "hard_problem_repo": "nova-rey/codex-config-backup",
@@ -299,6 +307,14 @@
           "FakeHost P0.3 acceptance demonstration"
         ],
         "results": {
+          "FakeHost P0.3 acceptance demonstration": {
+            "receipt": "docs/receipts/MNEME_P0.3_Fake_Acceptance_Receipt.md; docs/receipts/MNEME_P0.3_Fake_Acceptance_Receipt.json",
+            "status": "PASS"
+          },
+          "mypy src/mneme": {
+            "receipt": "Success: no issues found in 22 source files",
+            "status": "PASS"
+          },
           "pytest -q": {
             "receipt": "77 passed on 2026-09-18",
             "status": "PASS"
@@ -306,19 +322,116 @@
           "ruff check .": {
             "receipt": "All checks passed on 2026-09-18",
             "status": "PASS"
-          },
-          "mypy src/mneme": {
-            "receipt": "Success: no issues found in 22 source files",
-            "status": "PASS"
-          },
-          "FakeHost P0.3 acceptance demonstration": {
-            "receipt": "docs/receipts/MNEME_P0.3_Fake_Acceptance_Receipt.md; docs/receipts/MNEME_P0.3_Fake_Acceptance_Receipt.json",
-            "status": "PASS"
           }
         }
       },
       "waiting_on": [],
       "workstream": "p0.3"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "4f1831f5b27b593d2beaf09104d581020ca59796",
+      "campaign": "mneme-p0.1",
+      "candidate": {
+        "artifact": null,
+        "base_sha": "4f1831f5b27b593d2beaf09104d581020ca59796",
+        "returned_at": "2026-09-18T23:32:32.365387Z",
+        "returned_by": "root-foreman",
+        "sha": "a40f50c"
+      },
+      "completion_criterion": "Full FakeHost integrated study, deterministic sibling control, restart/resume, isolated evaluation, bounded real DeepInfra Gemma baseline with honest provider-managed sampling disclosure, reports and receipts, and Phase Zero closure evidence complete.",
+      "created_at": "2026-09-18T23:18:56.146401Z",
+      "dependencies": [
+        "package:P0.3",
+        "external:gemma-p04-baseline"
+      ],
+      "domain": "integrated-baseline",
+      "edit_boundaries": [
+        "src/mneme/experiments",
+        "src/mneme/state",
+        "src/mneme/cli.py",
+        "tests",
+        "docs",
+        "README.md",
+        "bible.md",
+        ".codex/work-queue.json",
+        "pyproject.toml"
+      ],
+      "evidence_refs": [],
+      "id": "P0.4",
+      "notes": "",
+      "owner": null,
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "integrated-runner",
+        "execution-lifecycle",
+        "evaluation-isolation",
+        "fake-control",
+        "restart-resume",
+        "baseline-metrics",
+        "real-gemma-baseline",
+        "reports",
+        "phase-zero-closure"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": false,
+          "name": "model-agent",
+          "units": 1
+        }
+      ],
+      "scope": "Implement only the approved P0.4 integrated no-learning baseline; no P0.5, Phase 1, learning, associations, personality, or individuality mechanisms.",
+      "session_ids": [],
+      "status": "WAITING",
+      "title": "Integrated no-learning baseline laboratory",
+      "updated_at": "2026-09-18T23:32:47.097609Z",
+      "validation": {
+        "required": [
+          "pytest -q",
+          "ruff check .",
+          "mypy src/mneme",
+          "FakeHost integrated baseline",
+          "restart/resume and interruption evidence",
+          "bounded real Gemma baseline",
+          "Phase Zero closure receipt"
+        ],
+        "results": {
+          "FakeHost integrated baseline": {
+            "receipt": "docs/receipts/MNEME_P0.4_Fake_Integrated_Receipt.md",
+            "recorded_at": "2026-09-18T23:32:39.706633Z",
+            "status": "PASS"
+          },
+          "mypy src/mneme": {
+            "receipt": "Success: no issues found in 24 source files",
+            "recorded_at": "2026-09-18T23:32:39.655271Z",
+            "status": "PASS"
+          },
+          "pytest -q": {
+            "receipt": "95 passed on 2026-09-18",
+            "recorded_at": "2026-09-18T23:32:39.564462Z",
+            "status": "PASS"
+          },
+          "restart/resume and interruption evidence": {
+            "receipt": "runner regression tests and receipt",
+            "recorded_at": "2026-09-18T23:32:39.758327Z",
+            "status": "PASS"
+          },
+          "ruff check .": {
+            "receipt": "All checks passed on 2026-09-18",
+            "recorded_at": "2026-09-18T23:32:39.607831Z",
+            "status": "PASS"
+          }
+        }
+      },
+      "waiting_on": [
+        "external:gemma-p04-baseline"
+      ],
+      "workstream": "p0.4"
     }
   ],
   "project": "nova-rey/mneme",
@@ -333,5 +446,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-18T23:59:45Z"
+  "updated_at": "2026-09-18T23:32:47.097660Z"
 }
