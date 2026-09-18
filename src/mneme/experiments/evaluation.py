@@ -111,8 +111,6 @@ def run_isolation_check(
 
     artifact_store = ArtifactStore(lab)
     run_path = artifact_store.locate_run(run_id)
-    if not artifact_store.verify_run(run_path):
-        raise EvaluationError("prepared run failed artifact integrity verification")
     bindings = artifact_store._read_json(run_path / "bindings.json")
     expected_checkpoint_id: str | None = None
     expected_snapshot: Path | None = None
@@ -148,6 +146,13 @@ def run_isolation_check(
             }
             if len(ids) == 1:
                 expected_checkpoint_id = next(iter(ids))
+    if expected_snapshot is not None:
+        if not expected_snapshot.is_file() or expected_snapshot.is_symlink():
+            raise EvaluationError("bound evaluation snapshot is missing")
+        if Path(checkpoint).resolve() != expected_snapshot.resolve():
+            raise EvaluationError("evaluation checkpoint is not the subject's private snapshot")
+    if not artifact_store.verify_run(run_path):
+        raise EvaluationError("prepared run failed artifact integrity verification")
     check_path = run_path / "evaluation" / check_id
     normalized_messages = [
         {"role": str(item["role"]), "content": str(item["content"])} for item in messages
@@ -182,11 +187,6 @@ def run_isolation_check(
             checkpoint_identity = str(view.manifest()["checkpoint_id"])
             if expected_checkpoint_id is not None and checkpoint_identity != expected_checkpoint_id:
                 raise EvaluationError("evaluation checkpoint is not bound to the prepared run")
-            if expected_snapshot is not None and expected_snapshot.is_file():
-                if Path(checkpoint).resolve() != expected_snapshot.resolve():
-                    raise EvaluationError(
-                        "evaluation checkpoint is not the subject's private snapshot"
-                    )
             before_file = view.checkpoint_file_digest
             before_state = view.state_digest
             result = view.generate(

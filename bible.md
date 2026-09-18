@@ -109,3 +109,8 @@
 ## 2026-09-18 P0.3 final validation count reconciliation
 
 - Added the exact-check retry regression to the durable test evidence and reconciled the work queue candidate to `fb07134`; the complete suite now passes 74 tests, with Ruff and strict mypy still clean.
+
+## 2026-09-18 P0.3 bound snapshot fail-closed remediation
+
+- Corrected `run_isolation_check()` so a subject-bound private snapshot must exist as a regular non-symlink file and the supplied checkpoint path must resolve to that exact prepared copy before evaluation proceeds.
+- Added regression coverage for missing bound snapshots, alternate valid copies with the same checkpoint identity, and successful use of the correct bound snapshot. Focused tests, full pytest, Ruff, and strict mypy pass.

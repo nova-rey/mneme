@@ -39,6 +39,27 @@ def _run(tmp_path):
     return checkpoint, published
 
 
+def _bound_run(tmp_path):
+    checkpoint, checkpoint_id = _checkpoint(tmp_path)
+    published = ArtifactStore(tmp_path / "bound-lab").publish_run(
+        experiment={"name": "bound-isolation", "contract_revision": 1},
+        preflight={"ok": True},
+        study_plan={"calls": 1},
+        bindings={
+            "subjects": [{"slot": 0, "start": "start"}],
+            "checkpoints": {
+                "start": {
+                    "checkpoint_id": checkpoint_id,
+                    "snapshot_path": "start.sqlite3",
+                }
+            },
+        },
+        run_id="bound-run",
+        snapshots={"start.sqlite3": checkpoint.read_bytes()},
+    )
+    return checkpoint, checkpoint_id, published
+
+
 def test_frozen_view_generation_leaves_checkpoint_unchanged(tmp_path):
     checkpoint, _ = _run(tmp_path)
     with FrozenEvaluationView(checkpoint) as view:
@@ -159,3 +180,58 @@ def test_completed_check_retry_returns_requested_check_not_last_check(tmp_path):
     assert retry["check_id"] == "check-a"
     assert retry["output"] == first["output"]
     assert retry["output"] != second["output"]
+
+
+def test_missing_bound_private_snapshot_is_rejected(tmp_path):
+    checkpoint, _, published = _bound_run(tmp_path)
+    (published.path / "snapshots" / "start.sqlite3").unlink()
+    with pytest.raises(EvaluationError, match="bound evaluation snapshot is missing"):
+        run_isolation_check(
+            run_id="bound-run",
+            lab=published.path.parents[5],
+            check_id="missing-bound-snapshot",
+            checkpoint=checkpoint,
+            host=FakeHost(),
+            messages=[{"role": "user", "content": "evaluation"}],
+            seed=99,
+            subject_slot=0,
+            probe_ordinal=0,
+            repetition=0,
+        )
+
+
+def test_different_valid_copy_of_bound_checkpoint_is_rejected(tmp_path):
+    checkpoint, _, published = _bound_run(tmp_path)
+    alternate = tmp_path / "alternate.sqlite3"
+    alternate.write_bytes(checkpoint.read_bytes())
+    with pytest.raises(EvaluationError, match="private snapshot"):
+        run_isolation_check(
+            run_id="bound-run",
+            lab=published.path.parents[5],
+            check_id="alternate-copy",
+            checkpoint=alternate,
+            host=FakeHost(),
+            messages=[{"role": "user", "content": "evaluation"}],
+            seed=99,
+            subject_slot=0,
+            probe_ordinal=0,
+            repetition=0,
+        )
+
+
+def test_correct_bound_private_snapshot_is_accepted(tmp_path):
+    checkpoint, _, published = _bound_run(tmp_path)
+    bound = published.path / "snapshots" / "start.sqlite3"
+    result = run_isolation_check(
+        run_id="bound-run",
+        lab=published.path.parents[5],
+        check_id="correct-bound-snapshot",
+        checkpoint=bound,
+        host=FakeHost(),
+        messages=[{"role": "user", "content": "evaluation"}],
+        seed=99,
+        subject_slot=0,
+        probe_ordinal=0,
+        repetition=0,
+    )
+    assert result["status"] == "RESULT"
