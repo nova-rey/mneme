@@ -341,3 +341,8 @@
 
 - Added a narrow fail-closed instruction to the extraction prompt: before returning a concept or relationship, Gemma must verify each evidence quotation is a contiguous substring of its referenced source; unsupported paraphrases are omitted rather than rewritten into evidence. The validator and acceptance criteria are unchanged, and model-output sources remain explicitly covered.
 - Added prompt regression assertions and reran the offline validation before any further provider call. The prior bridged-run artifacts remain unchanged and P1.LIVE stays waiting for fresh authorization.
+
+## 2026-09-19 Phase One corrected-contract run authorization
+
+- The active continuation authorizes one new bounded `phase-one-v1` study from corrected commit `534183a5b0a5dabf8c8f64a18ab25844d0625a60`. It is a new run because the prior P1.2 interpretation exhausted its initial-plus-one-repair ledger; no prior response, result, receipt, or store will be rewritten or retried in place.
+- The queue transition records `P1.LIVE = RUNNING` for this one run. Dispatch remains capped at 27 calls, with no transport retries and immediate stop on another required failure.

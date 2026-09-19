@@ -37,10 +37,10 @@
     "external:gemma-phase-one-live-rerun": {
       "created_at": "2026-09-19T21:44:38.794249Z",
       "kind": "external",
-      "receipt": "docs/receipts/MNEME_Phase_One_Live_Bridged_Run_Failure_Receipt.md; current bounded run consumed 8 calls, passed P1.1, and stopped at P1.2 after its one invalid extraction repair.",
-      "reference": "P1.2 required extraction failed strict verbatim evidence twice. Preserve the run unchanged. New explicit authorization is required before any further provider call; do not sample until success.",
-      "resolved_at": null,
-      "status": "UNRESOLVED"
+      "receipt": "Active continuation authorization for one new corrected-contract phase-one-v1 study from commit 534183a5b0a5dabf8c8f64a18ab25844d0625a60; prior bridged failure preserved.",
+      "reference": "Dispatch at most 27 calls with no retries; stop on any required failure; preserve the new run and publish sanitized evidence.",
+      "resolved_at": "2026-09-19T23:42:00Z",
+      "status": "RESOLVED"
     }
   },
   "hard_problem_repo": "nova-rey/codex-config-backup",
@@ -788,8 +788,8 @@
         "docs/receipts/MNEME_Phase_One_Live_Bridged_Run_Failure_Receipt.md"
       ],
       "id": "P1.LIVE",
-      "notes": "The bridged live run consumed 8 calls: P1.1 passed with a derived two-edge route and P1.2 naming/response succeeded, but P1.2 extraction and its one permitted repair both failed strict verbatim evidence validation. P1.3 was not attempted. DeepInfra and credential were functional. Preserve all artifacts unchanged; 19 calls remain unused in that authorization but require new explicit authorization after the required P1.2 failure.",
-      "owner": null,
+      "notes": "One new corrected-contract live study is authorized from commit 534183a. Prior 18-call history, four-call route/fixture failure, and eight-call bridged P1.2 failure remain unchanged. Dispatch maximum 27, no retries, stop on required failure.",
+      "owner": "/root",
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -807,10 +807,12 @@
         }
       ],
       "scope": "Run the already prepared bounded DeepInfra Phase One acceptance gate and publish the truthful release receipt; do not alter offline Phase One architecture or begin Phase Two.",
-      "session_ids": [],
-      "status": "WAITING",
+      "session_ids": [
+        "phase-one-live-corrected-20260919"
+      ],
+      "status": "RUNNING",
       "title": "Phase One bounded live acceptance gate",
-      "updated_at": "2026-09-19T23:20:00Z",
+      "updated_at": "2026-09-19T23:42:00Z",
       "validation": {
         "required": [
           "bounded live gate",
@@ -835,9 +837,7 @@
           }
         ]
       },
-      "waiting_on": [
-        "external:gemma-phase-one-live-rerun"
-      ],
+      "waiting_on": [],
       "workstream": "phase-one"
     }
   ],
@@ -853,5 +853,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-19T23:20:00Z"
+  "updated_at": "2026-09-19T23:42:00Z"
 }
