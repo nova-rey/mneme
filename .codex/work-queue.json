@@ -666,6 +666,75 @@
       },
       "waiting_on": [],
       "workstream": "phase-one"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "b46e8c728e2dbf80e553b14b4de99713e6610a1bf",
+      "campaign": "mneme-phase-one",
+      "candidate": null,
+      "completion_criterion": "Approved P1.3 matched three-treatment frozen readouts, inspection/reporting, fresh-install smoke, provenance/isolation evidence, bounded acceptance demonstrations, and complete validation pass without Phase Two implementation.",
+      "created_at": "2026-09-19T18:12:59.847156Z",
+      "dependencies": [
+        "package:P1.2"
+      ],
+      "domain": "experiment-comparison",
+      "edit_boundaries": [
+        "src/mneme/experiments",
+        "src/mneme/cli.py",
+        "src/mneme/memory",
+        "src/mneme/controller.py",
+        "tests",
+        "docs/receipts",
+        "docs",
+        "README.md",
+        "bible.md",
+        ".codex/work-queue.json"
+      ],
+      "evidence_refs": [],
+      "id": "P1.3",
+      "notes": "Approved plan section 11/15; depends on accepted P1.2 gate b46e8c7.",
+      "owner": "/root/p11_supervisor",
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "inspection",
+        "comparators",
+        "frozen-comparisons",
+        "provenance",
+        "isolation-reporting",
+        "fixtures",
+        "runbook",
+        "release"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": false,
+          "name": "model-agent",
+          "units": 1
+        },
+        {
+          "exclusive": true,
+          "name": "canonical-integration",
+          "units": 1
+        }
+      ],
+      "scope": "Implement only approved P1.3 inspection, matched no-memory/lexical/graph comparisons, preview reporting, packaged fixtures/runbook/release receipts, and Phase One acceptance integration. Exclude adaptive dynamics, individuality claims, and Phase Two.",
+      "session_ids": [
+        "p13-supervisor-20260919"
+      ],
+      "status": "RUNNING",
+      "title": "Inspection, comparisons, and graph-wrapper preview",
+      "updated_at": "2026-09-19T18:13:10.888219Z",
+      "validation": {
+        "required": [],
+        "results": {}
+      },
+      "waiting_on": [],
+      "workstream": "phase-one"
     }
   ],
   "project": "nova-rey/mneme",
@@ -680,5 +749,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-19T18:12:12.751820Z"
+  "updated_at": "2026-09-19T18:13:10.888294Z"
 }

@@ -176,3 +176,8 @@
 - P1.2 passed the stop–audit–publish gate in tested code `8e9ed7a`: the complete suite reports 148 passing tests, focused P1.2/runner/storage tests report 21 passing tests, Ruff and strict mypy pass, and the offline FakeHost demonstration verifies exact-once retries, host-mediated naming, correction reversal, fork self-view rebinding, restart, and chat recovery.
 - The approved file-path instance creation workflow was smoke-tested alongside identity adoption and JSON inspection. The sanitized receipt is `docs/receipts/MNEME_P1.2_Response_Identity_Receipt.md` with its machine-readable companion.
 - The work queue records P1.2 `DONE`. P1.3 remains undispatched until this accepted gate is used as its dependency; no Phase Two mechanism was started.
+
+## 2026-09-19 P1.3 implementation dispatch
+
+- Added and claimed the approved P1.3 package on accepted P1.2 gate `b46e8c728e2dbf80e553b14b4de99713e6610a1bf`, covering inspection, matched frozen no-memory/lexical/graph comparisons, provenance and isolation reporting, packaged fixtures, runbook and release evidence.
+- P1.3 is the only active Phase One package. Adaptive dynamics, individuality claims, and Phase Two remain excluded.
