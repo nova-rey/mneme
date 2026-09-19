@@ -22,8 +22,13 @@ attempts. The plan prohibits automatic repeated sampling after a failed
 required result; restarting the complete 23-call gate would exceed the
 approved ceiling. No further live calls were made.
 
+Provider usage persisted for the seven accepted developmental generation
+records totals 186 input tokens, 3,793 output tokens, and 3,979 total tokens.
+Usage for the eleven extraction, naming, frozen-probe, and comparison calls
+was not durably retained after the failed process exits, and no cost basis was
+available.
+
 The provider credential was never written to Git, documentation, receipts,
 artifacts, or logs. No Phase One release tag or closure receipt was created.
 The repository therefore remains pre-release for Phase One and must not be
 described as demonstrating causal developmental differentiation.
-
