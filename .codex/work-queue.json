@@ -793,8 +793,8 @@
         "docs/receipts/MNEME_Phase_One_Live_Evidence_Filter_P1.2_Failure_Receipt.md"
       ],
       "id": "P1.LIVE",
-      "notes": "Evidence-filtered run from 7732449 passed P1.1 and progressed through P1.2 naming, route influence, correction, and valid external-only interpretations, then failed cold-start name recovery after 10 returned calls. The runner originally omitted probe output from the partial report; offline instrumentation now records partial P1.2 evidence before assertions. No automatic retry.",
-      "owner": null,
+      "notes": "One fresh bounded run authorized from d9ac1c6 to preserve the cold-start probe output and complete the P1.2 audit. Maximum 27 calls; no transport retries, no favorable-output resampling, stop on required failure. All prior runs remain immutable.",
+      "owner": "/root",
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -812,10 +812,12 @@
         }
       ],
       "scope": "Run the already prepared bounded DeepInfra Phase One acceptance gate and publish the truthful release receipt; do not alter offline Phase One architecture or begin Phase Two.",
-      "session_ids": [],
-      "status": "WAITING",
+      "session_ids": [
+        "phase-one-live-probe-evidence-20260920"
+      ],
+      "status": "RUNNING",
       "title": "Phase One bounded live acceptance gate",
-      "updated_at": "2026-09-20T00:35:00Z",
+      "updated_at": "2026-09-20T00:45:00Z",
       "validation": {
         "required": [
           "bounded live gate",
@@ -866,5 +868,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-20T00:35:00Z"
+  "updated_at": "2026-09-20T00:45:00Z"
 }

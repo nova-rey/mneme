@@ -389,3 +389,8 @@
 
 - The fresh run from `7732449` passed P1.1 again and consumed ten returned calls. P1.2 naming, route influence, correction suppression, and valid external-only interpretations completed; the frozen cold-start probe did not contain the adopted `Gemma4` name, so P1.2 stopped before unrelated abstention and P1.3.
 - Preserved `docs/receipts/MNEME_Phase_One_Live_Evidence_Filter_P1.2_Failure_Receipt.{md,json}`. The original run retained only the probe hash, exposing an evidence-publication defect; the live driver now persists partial P1.2 progress and the sanitized probe output before applying the name assertion. No provider call was made for this instrumentation correction.
+
+## 2026-09-20 Phase One probe-evidence live authorization
+
+- Full offline validation and CI passed for `d9ac1c6`, which persists partial P1.2 progress and cold-start probe output before assertions. One fresh bounded run is authorized from this commit to obtain reviewable evidence for the previously unpersisted cold-start criterion; the 27-call ceiling, stop-on-failure rule, and no-resampling rule remain in force.
+- `P1.LIVE` is RUNNING. Earlier live runs and receipts remain unchanged.
