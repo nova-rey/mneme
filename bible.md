@@ -280,3 +280,9 @@
 - Added immutable naming-generation accounting linked to the accepted identity event, including request/result, host/provider/model provenance, finish reason, latency, and nullable usage. Added schema 5 with explicit v4-to-v5 migration while preserving read-only historical checkpoint access and private fork migration.
 - Added read-only live usage accounting that counts developmental generations, each persisted extraction attempt/repair, and naming without double-counting or inventing unknown usage. Historical 18-call evidence remains unchanged; DeepInfra access is recorded as functional.
 - Offline remediation validation passed: 196 pytest tests, Ruff, strict mypy, fresh isolated package install/CLI smoke, and focused naming/extraction regressions. No new provider call was made; one fresh bounded live run remains separately authorized.
+
+## 2026-09-19 Phase One fresh live acceptance failure
+
+- Ran one newly authorized fresh DeepInfra Phase One acceptance attempt from remediation commit `0f8bdfe539665503df0456275b521b463b80e8ab`. DeepInfra and the credential were functional; all four dispatched calls returned provider responses.
+- P1.1 accepted two bounded response episodes, then the initial extraction and its sole permitted repair both failed the same strict source-span validation (`residue.core_concepts[1].source_spans[0]`). The run stopped immediately after the repair. P1.2 and P1.3 received zero calls.
+- The sanitized failure receipt is `docs/receipts/MNEME_Phase_One_Live_Acceptance_Fresh_Failure_Receipt.md` with JSON companion. No acceptance criterion was weakened, no additional live call was made, no Phase One release tag was created, and Phase Two remains untouched.

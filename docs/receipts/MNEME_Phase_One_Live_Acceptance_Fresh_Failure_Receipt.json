@@ -1,0 +1,33 @@
+{
+  "date": "2026-09-19",
+  "remediation_base": "0f8bdfe539665503df0456275b521b463b80e8ab",
+  "status": "BLOCKED",
+  "credential_functional": true,
+  "provider": "DeepInfra",
+  "model": "google/gemma-4-E4B-it",
+  "new_run_calls": 4,
+  "historical_calls_preserved": 18,
+  "gates": {
+    "p1.1": {
+      "status": "FAILED",
+      "calls": 4,
+      "failure": "residue.core_concepts[1].source_spans[0]: span must satisfy 0 <= start < end <= source length",
+      "route_evidence": false
+    },
+    "p1.2": {"status": "NOT_STARTED", "calls": 0},
+    "p1.3": {"status": "NOT_STARTED", "calls": 0}
+  },
+  "usage": {
+    "input_tokens": 1390,
+    "output_tokens": 784,
+    "total_tokens": 2174,
+    "cost": null
+  },
+  "call_roles": {
+    "p1.1_response": 2,
+    "p1.1_extraction_initial": 1,
+    "p1.1_extraction_repair": 1
+  },
+  "automatic_resampling": false,
+  "phase_one_release_tag_created": false
+}

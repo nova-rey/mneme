@@ -30,7 +30,7 @@
       "created_at": "2026-09-19T19:11:42.240204Z",
       "kind": "external",
       "receipt": null,
-      "reference": "Prior approved 27-call cap has 18 calls consumed across three failed attempts; provider extraction/identity contract remained invalid and no further calls are authorized.",
+      "reference": "DeepInfra credential and transport are functional. Historical attempts consumed 18 calls; the newly authorized fresh run consumed 4 more and stopped at P1.1 after its permitted extraction repair failed source-span validation. P1.2/P1.3 remain unrun and no further calls are authorized without a new decision.",
       "resolved_at": null,
       "status": "UNRESOLVED"
     }
@@ -770,9 +770,12 @@
         "bible.md",
         ".codex/work-queue.json"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "docs/receipts/MNEME_Phase_One_Live_Remediation_Receipt.md",
+        "docs/receipts/MNEME_Phase_One_Live_Acceptance_Fresh_Failure_Receipt.md"
+      ],
       "id": "P1.LIVE",
-      "notes": "Offline implementation and adversarial gates pass; current external budget/provider evidence is insufficient for another live attempt.",
+      "notes": "DeepInfra access is functional. Offline remediation passed, but the fresh live run failed P1.1 source-span validation after one repair; preserve the failure receipt and do not treat this as a credential blocker.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -794,7 +797,7 @@
       "session_ids": [],
       "status": "WAITING",
       "title": "Phase One bounded live acceptance gate",
-      "updated_at": "2026-09-19T19:11:42.240225Z",
+      "updated_at": "2026-09-19T20:15:00.000000Z",
       "validation": {
         "required": [
           "bounded live gate",

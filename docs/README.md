@@ -30,8 +30,9 @@ The documents are preserved in their supplied form and are intentionally not mer
   confidence/salience bonuses, distinct revision/episode/graph/self-view counters,
   and explicit development-enabled creation with fail-closed legacy reuse.
   P1.1, P1.2, and the credential-free P1.3 preview implementation are present;
-  the required bounded live acceptance remains blocked by provider output
-  incompatibility ([receipt](receipts/MNEME_Phase_One_Live_Acceptance_Blocker.md)).
+  the required bounded live acceptance remains blocked by strict live extraction
+  validation, not provider availability ([historical receipt](receipts/MNEME_Phase_One_Live_Acceptance_Blocker.md),
+  [fresh failure receipt](receipts/MNEME_Phase_One_Live_Acceptance_Fresh_Failure_Receipt.md)).
   The offline adversarial remediation and machine-readable validation are recorded in
   [the Phase One remediation receipt](receipts/MNEME_Phase_One_Adversarial_Audit_Remediation_Receipt.md).
 * [Phase One live remediation receipt](receipts/MNEME_Phase_One_Live_Remediation_Receipt.md)
