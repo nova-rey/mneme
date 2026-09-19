@@ -787,7 +787,7 @@
         "docs/receipts/MNEME_P1.1_Live_Fixture_Preview.md"
       ],
       "id": "P1.LIVE",
-      "notes": "DeepInfra access is functional. The preserved corrected-contract run returned valid source-backed concepts and edges but duplicated the same experience shape, so no route was reasonably available; P1.1 failed after four calls and P1.2/P1.3 were not attempted. Offline publication now derives bounded directed routes from accepted evidenced edges, the extractor treats route_candidates as optional, and a two-experience bridged fixture preview is prepared. Preserve all live evidence and keep this package WAITING for new explicit live authorization; do not treat this as a credential blocker.",
+      "notes": "DeepInfra access is functional. The preserved corrected-contract run returned valid source-backed concepts and edges but duplicated the same experience shape, so no route was reasonably available; P1.1 failed after four calls and P1.2/P1.3 were not attempted. Deterministic route discovery and the bridged fixture are now implemented. The bounded live driver is implemented and passes a complete 23-call FakeHost control, but no provider call has been made from that driver. Preserve all historical evidence and keep this package WAITING until the current live authorization is explicitly active; do not treat this as a credential blocker.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -809,14 +809,25 @@
       "session_ids": [],
       "status": "WAITING",
       "title": "Phase One bounded live acceptance gate",
-      "updated_at": "2026-09-19T22:48:39Z",
+      "updated_at": "2026-09-19T23:00:00Z",
       "validation": {
         "required": [
           "bounded live gate",
           "sanitized acceptance receipt",
           "complete cheap validation"
         ],
-        "results": {}
+        "results": [
+          {
+            "sha": "working-tree",
+            "check": "complete FakeHost live-driver control",
+            "result": "PASS; 23 calls, P1.1/P1.2/P1.3, exact-once re-entry"
+          },
+          {
+            "sha": "working-tree",
+            "check": "pytest/ruff/mypy",
+            "result": "PASS; 218 pytest, Ruff, strict mypy 41 source files"
+          }
+        ]
       },
       "waiting_on": [
         "external:gemma-phase-one-live-rerun"
@@ -836,5 +847,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-19T21:44:38.794323Z"
+  "updated_at": "2026-09-19T23:00:00Z"
 }

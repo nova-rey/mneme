@@ -26,6 +26,7 @@ from .experiments.comparison import ComparisonProbe, run_matched_comparison, sum
 from .experiments.inspection import inspect_checkpoint, inspect_store
 from .hosts import FakeHost
 from .identity import IdentityService
+from .live_phase_one import LivePhaseOneError, run_live_phase_one
 from .memory import InterpretationPublisher, InterpretationService, validate_residue
 from .state.contracts import StoragePermissions
 from .state.service import ContinuityService
@@ -237,8 +238,9 @@ class _ResidueFixtureHost(FakeHost):
     """FakeHost that supplies only deterministic, source-bound fixture residues."""
 
     def generate(self, request: GenerationRequest) -> GenerationResult:
-        if request.messages and "Choose one concise name" in request.messages[0].get(
-            "content", ""
+        if request.messages and (
+            "Choose one concise name" in request.messages[0].get("content", "")
+            or "What is your name?" in request.messages[-1].get("content", "")
         ):
             return GenerationResult(
                 '{"name":"Phase One Fixture"}',
@@ -260,7 +262,14 @@ class _ResidueFixtureHost(FakeHost):
             text = source_slots.get("s0") if isinstance(source_slots, dict) else None
             if not isinstance(text, str):
                 raise DemoError("fixture extractor received no source slot")
-            content = json.dumps(_residue_payload(text), sort_keys=True)
+            try:
+                payload = _residue_payload(text)
+            except DemoError:
+                # Later response-loop turns are deliberately allowed to add no
+                # new graph content; an empty valid residue keeps the FakeHost
+                # integration deterministic without inventing unsupported edges.
+                payload = {}
+            content = json.dumps(payload, sort_keys=True)
             return GenerationResult(
                 content,
                 self.model_id,
@@ -607,10 +616,15 @@ def run_phase_one_gate(
             raise DemoError(
                 "live Phase One gates require the approved --live-budget phase-one-v1"
             )
-        raise DemoError(
-            "live Phase One execution is not provided by the offline gate driver; "
-            "no host call was made"
-        )
+        if gate != "p1.1":
+            raise DemoError(
+                "live Phase One execution is a single P1.1→P1.2→P1.3 run; "
+                "start with --gate p1.1"
+            )
+        try:
+            return run_live_phase_one(workspace, live_budget=live_budget)
+        except LivePhaseOneError as exc:
+            raise DemoError(str(exc)) from exc
     if live_budget is not None:
         raise DemoError("--live-budget is only valid with a live host")
     root = Path(workspace).expanduser().resolve()

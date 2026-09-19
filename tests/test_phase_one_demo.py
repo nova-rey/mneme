@@ -6,7 +6,8 @@ from pathlib import Path
 import pytest
 
 from mneme.cli import main
-from mneme.demo import DemoError, run_phase_one_gate
+from mneme.demo import DemoError, _ResidueFixtureHost, run_phase_one_gate
+from mneme.live_phase_one import LivePhaseOneError, run_live_phase_one
 
 
 def test_phase_one_gate_driver_requires_preceding_gate(tmp_path: Path) -> None:
@@ -61,15 +62,54 @@ def test_phase_one_gate_rejects_changed_preceding_evidence(tmp_path: Path) -> No
         run_phase_one_gate(gate="p1.2", host="fake", workspace=tmp_path)
 
 
-def test_phase_one_gate_does_not_claim_unsupported_live_execution(tmp_path: Path) -> None:
-    with pytest.raises(DemoError, match="no host call was made"):
+def test_phase_one_gate_rejects_live_gate_when_started_at_p12(tmp_path: Path) -> None:
+    with pytest.raises(DemoError, match="single P1.1.*P1.2.*P1.3"):
         run_phase_one_gate(
-            gate="p1.1",
+            gate="p1.2",
             host="gemma-deepinfra",
             live_budget="phase-one-v1",
             workspace=tmp_path,
         )
-    assert not (tmp_path / "p1.1").exists()
+    assert not (tmp_path / "live_summary.json").exists()
+
+
+def test_live_driver_completes_bounded_fake_control_and_is_restart_auditable(
+    tmp_path: Path,
+) -> None:
+    report = run_live_phase_one(
+        tmp_path,
+        live_budget="phase-one-v1",
+        host=_ResidueFixtureHost(),
+    )
+    assert report["status"] == "PASS"
+    assert report["provider_calls"] == 23
+    assert {gate: value["status"] for gate, value in report["gates"].items()} == {
+        "p1.1": "PASS",
+        "p1.2": "PASS",
+        "p1.3": "PASS",
+    }
+    assert any(
+        len(route["edge_keys"]) >= 2 for route in report["gates"]["p1.1"]["multi_hop_routes"]
+    )
+    assert report["gates"]["p1.2"]["checkpoint_unchanged"] is True
+    assert report["gates"]["p1.3"]["completed_reentry_host_free"] is True
+    assert (tmp_path / "live_summary.json").is_file()
+
+
+def test_live_driver_persists_uncertain_dispatch_without_retry(tmp_path: Path) -> None:
+    class UncertainHost(_ResidueFixtureHost):
+        def generate(self, request):
+            raise TimeoutError("simulated interruption")
+
+    with pytest.raises(LivePhaseOneError, match="simulated interruption"):
+        run_live_phase_one(
+            tmp_path,
+            live_budget="phase-one-v1",
+            host=UncertainHost(),
+        )
+    report = json.loads((tmp_path / "live_summary.json").read_text(encoding="utf-8"))
+    assert report["provider_calls"] == 1
+    assert report["calls"][0]["status"] == "UNCERTAIN"
 
 
 def test_phase_one_cli_exposes_approved_gate_command(tmp_path: Path, capsys) -> None:

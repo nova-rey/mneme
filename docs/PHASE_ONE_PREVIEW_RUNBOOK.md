@@ -46,6 +46,14 @@ bounded-route limits, so a path can span separate developmental experiences.
 Search preserves edge direction, source evidence, eligibility, and canonical
 ordering; it never invents a missing edge or relies on administrative IDs.
 
+The same gate driver now supports the approved bounded live path. Start only
+from `p1.1` with `--host gemma-deepinfra --live-budget phase-one-v1`; it runs
+the complete P1.1→P1.2→P1.3 schedule in one private workspace, reserves every
+call before dispatch, and stops after a required failure. A live workspace
+contains `live_summary.json`, the developmental store, the P1.2 checkpoint,
+and the P1.3 comparison artifacts. The CLI never resumes a partial live
+workspace automatically or regenerates an uncertain provider call.
+
 Interpret exact and normalized matches, lexical overlap, and response lengths
 as descriptive no-learning variation. They do not establish personality,
 individuality, or causal developmental differentiation. Hosted Gemma sampling
