@@ -357,3 +357,8 @@
 
 - The active Phase One continuation authorizes one fresh isolated `phase-one-v1` run from `08f8cd6`, after the offline source-purpose correction and full validation. The remaining ceiling from the latest 27-call authorization is 23 calls; prior live attempts remain immutable historical evidence.
 - `P1.LIVE` is RUNNING for this bounded execution. No transport retries, favorable-output resampling, or automatic progression after a failed required criterion is permitted.
+
+## 2026-09-19 Phase One continuation P1.1 live stop
+
+- The fresh isolated continuation from `09bbf42` dispatched four DeepInfra calls and stopped at P1.1. Both extraction results passed strict validation; the first published `weather_check -> rain_jacket`, while the second published concepts without an edge, so deterministic route discovery correctly found no multi-hop path.
+- Preserved the sanitized receipt and private artifact digests in `docs/receipts/MNEME_Phase_One_Live_Continuation_P1.1_Failure_Receipt.{md,json}`. DeepInfra and the credential were functional; P1.2/P1.3 received zero calls. `P1.LIVE` returned to WAITING without automatic retry or favorable-output resampling.
