@@ -330,3 +330,9 @@
 
 - The active continuation authorization covers the already approved bounded `phase-one-v1` run at live-driver commit `7f69a49f230987c01a3d1c3e5e630469ec5a0eab`. The prior 18-call attempts and later four-call route/fixture failure remain historical evidence and are not reclassified.
 - Updated only the persistent queue state for `P1.LIVE`: the rerun dependency is resolved for this authorized execution and the package is `RUNNING`. No provider call has been dispatched yet.
+
+## 2026-09-19 Phase One bridged live run stop
+
+- The bounded bridged-fixture run tested commit `44e9d75ddd16eebe757f0c7975a07636c0f9b318` and dispatched eight DeepInfra calls. P1.1 passed: both natural developmental examples produced valid source-supported edges and deterministic publication derived a two-edge route with provenance from both interpretations.
+- P1.2 naming durably adopted `Gemma4`, and the relevant response was accepted with a traced route payload. Its extraction returned an edge whose evidence paraphrased the immutable source; the one permitted repair returned another paraphrase. Strict quotation validation rejected both, so P1.2 failed and P1.3 received zero calls. DeepInfra and the credential were functional; no transport retry or replacement sampling occurred.
+- Preserved sanitized evidence in `docs/receipts/MNEME_Phase_One_Live_Bridged_Run_Failure_Receipt.{md,json}` and returned `P1.LIVE` to `WAITING` on a new explicit live authorization. Private `live_summary.json` and SQLite artifacts remain outside Git. No release tag or Phase Two work began.

@@ -37,10 +37,10 @@
     "external:gemma-phase-one-live-rerun": {
       "created_at": "2026-09-19T21:44:38.794249Z",
       "kind": "external",
-      "receipt": "Active continuation authorization; bounded phase-one-v1 run may dispatch from live-driver commit 7f69a49f230987c01a3d1c3e5e630469ec5a0eab with historical failures preserved.",
-      "reference": "Execute one complete P1.1→P1.2→P1.3 schedule, maximum 27 calls, no automatic retries, stop on required failure, and preserve sanitized evidence.",
-      "resolved_at": "2026-09-19T23:08:00Z",
-      "status": "RESOLVED"
+      "receipt": "docs/receipts/MNEME_Phase_One_Live_Bridged_Run_Failure_Receipt.md; current bounded run consumed 8 calls, passed P1.1, and stopped at P1.2 after its one invalid extraction repair.",
+      "reference": "P1.2 required extraction failed strict verbatim evidence twice. Preserve the run unchanged. New explicit authorization is required before any further provider call; do not sample until success.",
+      "resolved_at": null,
+      "status": "UNRESOLVED"
     }
   },
   "hard_problem_repo": "nova-rey/codex-config-backup",
@@ -784,11 +784,12 @@
         "docs/receipts/MNEME_Phase_One_Live_Acceptance_Fresh_Failure_Receipt.md",
         "docs/receipts/MNEME_Phase_One_Extractor_Quote_Remediation_Receipt.md",
         "docs/receipts/MNEME_Phase_One_Live_Acceptance_Quote_Run_Failure_Receipt.md",
-        "docs/receipts/MNEME_P1.1_Live_Fixture_Preview.md"
+        "docs/receipts/MNEME_P1.1_Live_Fixture_Preview.md",
+        "docs/receipts/MNEME_Phase_One_Live_Bridged_Run_Failure_Receipt.md"
       ],
       "id": "P1.LIVE",
-      "notes": "Active continuation authorization recorded. Bounded live driver is pushed and FakeHost control is green; this run may dispatch DeepInfra calls under the existing 27-call ceiling. Historical 18-call attempts and the later four-call failure remain unchanged.",
-      "owner": "/root",
+      "notes": "The bridged live run consumed 8 calls: P1.1 passed with a derived two-edge route and P1.2 naming/response succeeded, but P1.2 extraction and its one permitted repair both failed strict verbatim evidence validation. P1.3 was not attempted. DeepInfra and credential were functional. Preserve all artifacts unchanged; 19 calls remain unused in that authorization but require new explicit authorization after the required P1.2 failure.",
+      "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -806,12 +807,10 @@
         }
       ],
       "scope": "Run the already prepared bounded DeepInfra Phase One acceptance gate and publish the truthful release receipt; do not alter offline Phase One architecture or begin Phase Two.",
-      "session_ids": [
-        "phase-one-live-20260919"
-      ],
-      "status": "RUNNING",
+      "session_ids": [],
+      "status": "WAITING",
       "title": "Phase One bounded live acceptance gate",
-      "updated_at": "2026-09-19T23:08:00Z",
+      "updated_at": "2026-09-19T23:20:00Z",
       "validation": {
         "required": [
           "bounded live gate",
@@ -828,10 +827,17 @@
             "sha": "working-tree",
             "check": "pytest/ruff/mypy",
             "result": "PASS; 218 pytest, Ruff, strict mypy 41 source files"
+          },
+          {
+            "sha": "44e9d75ddd16eebe757f0c7975a07636c0f9b318",
+            "check": "bounded DeepInfra bridged run",
+            "result": "P1.1 PASS; P1.2 FAILED after one repair; 8 calls; P1.3 not started"
           }
         ]
       },
-      "waiting_on": [],
+      "waiting_on": [
+        "external:gemma-phase-one-live-rerun"
+      ],
       "workstream": "phase-one"
     }
   ],
@@ -847,5 +853,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-19T23:08:00Z"
+  "updated_at": "2026-09-19T23:20:00Z"
 }

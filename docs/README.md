@@ -55,6 +55,11 @@ The documents are preserved in their supplied form and are intentionally not mer
   and [`configs/p1.1-live-fixture.json`](../configs/p1.1-live-fixture.json)
   define the next two-experience bridged fixture without prescribing an exact
   model extraction answer.
+* [Bridged live run failure receipt](receipts/MNEME_Phase_One_Live_Bridged_Run_Failure_Receipt.md)
+  records the current bounded run: P1.1 passed with a derived two-edge route,
+  while P1.2 stopped after one invalid extraction repair. Its machine-readable
+  companion contains sanitized call accounting; the private SQLite/report
+  artifacts remain outside Git.
 * [Phase One graph-wrapper preview runbook](PHASE_ONE_PREVIEW_RUNBOOK.md) documents
   the read-only matched no-memory, lexical, and graph comparison path.
 

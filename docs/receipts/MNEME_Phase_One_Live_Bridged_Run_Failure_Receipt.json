@@ -1,0 +1,59 @@
+{
+  "status": "BLOCKED_P1.2",
+  "tested_code": "44e9d75ddd16eebe757f0c7975a07636c0f9b318",
+  "provider": "DeepInfra",
+  "model": "google/gemma-4-E4B-it",
+  "credential_functional": true,
+  "automatic_retries": false,
+  "provider_calls": 8,
+  "maximum_calls": 27,
+  "token_usage": {
+    "input_tokens": 3129,
+    "output_tokens": 1861,
+    "total_tokens": 4990,
+    "cost": null
+  },
+  "calls": [
+    {"ordinal": 1, "gate": "P1.1", "role": "response", "status": "returned", "input_tokens": 23, "output_tokens": 192, "total_tokens": 215, "finish_reason": "length"},
+    {"ordinal": 2, "gate": "P1.1", "role": "response", "status": "returned", "input_tokens": 22, "output_tokens": 192, "total_tokens": 214, "finish_reason": "length"},
+    {"ordinal": 3, "gate": "P1.1", "role": "extraction_initial", "status": "returned", "input_tokens": 763, "output_tokens": 375, "total_tokens": 1138, "finish_reason": "stop"},
+    {"ordinal": 4, "gate": "P1.1", "role": "extraction_initial", "status": "returned", "input_tokens": 760, "output_tokens": 286, "total_tokens": 1046, "finish_reason": "stop"},
+    {"ordinal": 5, "gate": "P1.2", "role": "naming", "status": "returned", "input_tokens": 71, "output_tokens": 8, "total_tokens": 79, "finish_reason": "stop"},
+    {"ordinal": 6, "gate": "P1.2", "role": "response", "status": "returned", "input_tokens": 190, "output_tokens": 93, "total_tokens": 283, "finish_reason": "stop"},
+    {"ordinal": 7, "gate": "P1.2", "role": "extraction_initial", "status": "returned", "input_tokens": 636, "output_tokens": 334, "total_tokens": 970, "finish_reason": "stop"},
+    {"ordinal": 8, "gate": "P1.2", "role": "extraction_repair", "status": "returned", "input_tokens": 664, "output_tokens": 381, "total_tokens": 1045, "finish_reason": "stop"}
+  ],
+  "gates": {
+    "P1.1": {
+      "status": "PASS",
+      "fixture_id": "p1.1-natural-bridge-v1",
+      "inputs": [
+        "Checking the weather before our hike reminded us to pack a rain jacket.",
+        "A rain jacket keeps a sudden shower from ending the hike early."
+      ],
+      "accepted_edges": [
+        {"source": "weather_check", "target": "rain_jacket", "relationship": "causes"},
+        {"source": "rain_jacket", "target": "hike", "relationship": "enables"}
+      ],
+      "derived_route": {
+        "route_key": "derived:a1367dc56418ba96",
+        "edge_keys": ["reminds_to_pack", "keeps_hike_going"],
+        "provenance": ["p1.1 interpretation 0", "p1.1 interpretation 1"]
+      }
+    },
+    "P1.2": {
+      "status": "FAILED",
+      "failure_class": "model-output/provenance-validation",
+      "initial_and_repair_error": "residue.edge_candidates[0].evidence[0]: evidence quotation does not occur verbatim in source",
+      "naming": "Gemma4",
+      "calls": 4
+    },
+    "P1.3": {"status": "NOT_STARTED", "calls": 0}
+  },
+  "private_artifacts": {
+    "live_summary_sha256": "eb70b31db3a4a90a5bc0a6bc187b6e9d283aee38a90294b4a250230b0341522c",
+    "lineage_sha256": "d7fd0a9f0536626939563acd80ec841a400d581abaaaae4a649891ff7ab0c96e"
+  },
+  "phase_one_release_tag_created": false,
+  "phase_two_started": false
+}
