@@ -325,3 +325,8 @@
 - Added `src/mneme/live_phase_one.py`, a thin bounded driver for the approved P1.1→P1.2→P1.3 schedule. It reuses the existing continuity, interpretation/publication, controller, identity, checkpoint, frozen-evaluation, and comparison services; reserves each call before dispatch; records sanitized private call accounting; stops on required failure; and never retries uncertain provider outcomes.
 - Wired `mneme demo phase-one --gate p1.1 --host gemma-deepinfra --live-budget phase-one-v1` to the complete live schedule. The previous refusal-only branch remains fail-closed for attempts to start at P1.2 or P1.3.
 - Added a full 23-call FakeHost control of the live path, including the bridged P1.1 route, naming, route application, correction, cold-start probe, checkpoint invariance, 12 matched P1.3 readouts, and host-free comparison re-entry. Validation passed: 218 pytest tests, Ruff, strict mypy across 41 source files. No DeepInfra call was made in this implementation commit; `P1.LIVE` remains waiting for live authorization.
+
+## 2026-09-19 Phase One live authorization transition
+
+- The active continuation authorization covers the already approved bounded `phase-one-v1` run at live-driver commit `7f69a49f230987c01a3d1c3e5e630469ec5a0eab`. The prior 18-call attempts and later four-call route/fixture failure remain historical evidence and are not reclassified.
+- Updated only the persistent queue state for `P1.LIVE`: the rerun dependency is resolved for this authorized execution and the package is `RUNNING`. No provider call has been dispatched yet.

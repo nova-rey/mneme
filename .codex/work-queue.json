@@ -37,10 +37,10 @@
     "external:gemma-phase-one-live-rerun": {
       "created_at": "2026-09-19T21:44:38.794249Z",
       "kind": "external",
-      "receipt": "docs/receipts/MNEME_P1.1_Live_Fixture_Preview.md; route-discovery correction and bridged fixture are pushed, with the preserved four-call failure unchanged",
-      "reference": "New explicit live authorization is required for another predetermined P1.1 attempt after deterministic route discovery and fixture-quality correction; do not sample until success.",
-      "resolved_at": null,
-      "status": "UNRESOLVED"
+      "receipt": "Active continuation authorization; bounded phase-one-v1 run may dispatch from live-driver commit 7f69a49f230987c01a3d1c3e5e630469ec5a0eab with historical failures preserved.",
+      "reference": "Execute one complete P1.1→P1.2→P1.3 schedule, maximum 27 calls, no automatic retries, stop on required failure, and preserve sanitized evidence.",
+      "resolved_at": "2026-09-19T23:08:00Z",
+      "status": "RESOLVED"
     }
   },
   "hard_problem_repo": "nova-rey/codex-config-backup",
@@ -787,8 +787,8 @@
         "docs/receipts/MNEME_P1.1_Live_Fixture_Preview.md"
       ],
       "id": "P1.LIVE",
-      "notes": "DeepInfra access is functional. The preserved corrected-contract run returned valid source-backed concepts and edges but duplicated the same experience shape, so no route was reasonably available; P1.1 failed after four calls and P1.2/P1.3 were not attempted. Deterministic route discovery and the bridged fixture are now implemented. The bounded live driver is implemented and passes a complete 23-call FakeHost control, but no provider call has been made from that driver. Preserve all historical evidence and keep this package WAITING until the current live authorization is explicitly active; do not treat this as a credential blocker.",
-      "owner": null,
+      "notes": "Active continuation authorization recorded. Bounded live driver is pushed and FakeHost control is green; this run may dispatch DeepInfra calls under the existing 27-call ceiling. Historical 18-call attempts and the later four-call failure remain unchanged.",
+      "owner": "/root",
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -806,10 +806,12 @@
         }
       ],
       "scope": "Run the already prepared bounded DeepInfra Phase One acceptance gate and publish the truthful release receipt; do not alter offline Phase One architecture or begin Phase Two.",
-      "session_ids": [],
-      "status": "WAITING",
+      "session_ids": [
+        "phase-one-live-20260919"
+      ],
+      "status": "RUNNING",
       "title": "Phase One bounded live acceptance gate",
-      "updated_at": "2026-09-19T23:00:00Z",
+      "updated_at": "2026-09-19T23:08:00Z",
       "validation": {
         "required": [
           "bounded live gate",
@@ -829,9 +831,7 @@
           }
         ]
       },
-      "waiting_on": [
-        "external:gemma-phase-one-live-rerun"
-      ],
+      "waiting_on": [],
       "workstream": "phase-one"
     }
   ],
@@ -847,5 +847,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-19T23:00:00Z"
+  "updated_at": "2026-09-19T23:08:00Z"
 }
