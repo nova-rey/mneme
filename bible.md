@@ -186,3 +186,8 @@
 
 - Added read-only checkpoint inspection with separately labeled lineage, accepted-episode, graph, and self-view counters; matched fixed no-memory, lexical, and graph treatments; deterministic coordinate/request digests; state/file invariance checks; idempotent private comparison artifacts; and a comparison CLI over the existing experiment surface.
 - Added the Phase One preview runbook and regression coverage for treatment coordinates, administrative-metadata isolation, frozen-state invariance, and counter inspection. The candidate currently passes 153 pytest tests, Ruff, and strict mypy; no Phase Two mechanism was added.
+
+## 2026-09-19 P1.3 candidate audit correction
+
+- Hardened completed comparison re-entry: a valid sanitized comparison artifact now validates checkpoint, provenance, coordinates, and matched seeds before returning without a host call. Conflicting requests fail closed. The artifact remains free of raw provider output while retaining output digests for audit.
+- Offline audit now demonstrates 12 matched frozen readouts, unchanged checkpoint/file state, distinct counters, sanitized artifacts, and completed re-entry against a host that would fail if called.

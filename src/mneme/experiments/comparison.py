@@ -52,6 +52,7 @@ class ComparisonResult:
     subject_slot: int | str
     probe_ordinal: int
     repetition: int
+    seed: int | None
     treatment: str
     output: str
     checkpoint_sha256: str
@@ -67,6 +68,7 @@ class ComparisonResult:
             "subject_slot": self.subject_slot,
             "probe_ordinal": self.probe_ordinal,
             "repetition": self.repetition,
+            "seed": self.seed,
             "treatment": self.treatment,
             "output": self.output,
             "checkpoint_sha256": self.checkpoint_sha256,
@@ -261,6 +263,7 @@ class FrozenComparator:
                 subject_slot,
                 probe.probe_ordinal,
                 repetition,
+                seed,
                 treatment,
                 result.content,
                 view.checkpoint_file_digest,
@@ -287,6 +290,18 @@ def run_matched_comparison(
     if repetitions < 1:
         raise ComparisonError("repetitions must be positive")
     comparator = FrozenComparator(checkpoint, host)
+    if artifact_dir is not None:
+        existing = _load_existing_comparison(
+            Path(artifact_dir),
+            checkpoint=Path(checkpoint),
+            subject_slot=subject_slot,
+            probes=probes,
+            repetitions=repetitions,
+            provenance=provenance,
+            seeds=seeds,
+        )
+        if existing is not None:
+            return existing
     results: list[ComparisonResult] = []
     for probe in probes:
         for repetition in range(repetitions):
@@ -320,6 +335,87 @@ def run_matched_comparison(
             provenance=provenance,
         )
     return output
+
+
+def _load_existing_comparison(
+    directory: Path,
+    *,
+    checkpoint: Path,
+    subject_slot: int | str,
+    probes: Sequence[ComparisonProbe],
+    repetitions: int,
+    provenance: Mapping[str, Any] | None,
+    seeds: Mapping[tuple[int, int, str], int | None] | None,
+) -> tuple[ComparisonResult, ...] | None:
+    path = directory / "comparison.json"
+    if not path.exists():
+        return None
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ComparisonError("existing comparison artifact is unreadable") from exc
+    if not isinstance(payload, dict) or not isinstance(payload.get("artifact_sha256"), str):
+        raise ComparisonError("existing comparison artifact has no integrity digest")
+    digest = payload["artifact_sha256"]
+    unsigned = dict(payload)
+    unsigned.pop("artifact_sha256", None)
+    if _digest(unsigned) != digest:
+        raise ComparisonError("existing comparison artifact failed integrity validation")
+    if payload.get("checkpoint_sha256") != _digest_file(checkpoint):
+        raise ComparisonError("existing comparison artifact is for a different checkpoint")
+    if payload.get("provenance", {}) != dict(provenance or {}):
+        raise ComparisonError("comparison artifact exists with conflicting content")
+    expected = {
+        (subject_slot, probe.probe_ordinal, repetition, treatment)
+        for probe in probes
+        for repetition in range(repetitions)
+        for treatment in FrozenComparator.treatments
+    }
+    raw_results = payload.get("results")
+    if not isinstance(raw_results, list):
+        raise ComparisonError("existing comparison artifact has no results")
+    results: list[ComparisonResult] = []
+    for item in raw_results:
+        if not isinstance(item, dict):
+            raise ComparisonError("existing comparison result is invalid")
+        try:
+                result = ComparisonResult(
+                    item["subject_slot"],
+                    item["probe_ordinal"],
+                    item["repetition"],
+                    item.get("seed"),
+                    item["treatment"],
+                    str(item.get("output", "[REDACTED]")),
+                item["checkpoint_sha256"],
+                item["state_digest_before"],
+                item["state_digest_after"],
+                item.get("token_usage"),
+                item["request_digest"],
+                item.get("system_digest"),
+                item["output_digest"],
+            )
+        except (KeyError, TypeError) as exc:
+            raise ComparisonError("existing comparison result is malformed") from exc
+        results.append(result)
+    actual = {
+        (item.subject_slot, item.probe_ordinal, item.repetition, item.treatment)
+        for item in results
+    }
+    if actual != expected or len(results) != len(expected):
+        raise ComparisonError("existing comparison artifact has conflicting coordinates")
+    if seeds is not None:
+        for item in results:
+            candidates = {
+                seeds.get((item.probe_ordinal, item.repetition, treatment))
+                for treatment in FrozenComparator.treatments
+            }
+            supplied = {value for value in candidates if value is not None}
+            if len(supplied) > 1:
+                raise ComparisonError("matched treatments must share one evaluation seed")
+            expected_seed = next(iter(supplied), None)
+            if item.seed != expected_seed:
+                raise ComparisonError("comparison artifact exists with conflicting content")
+    return tuple(results)
 
 
 def summarize_comparison(results: Sequence[ComparisonResult]) -> dict[str, Any]:
