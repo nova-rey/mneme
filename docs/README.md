@@ -43,6 +43,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   records the follow-up offline correction that moves Unicode span arithmetic
   into deterministic software while retaining strict source provenance. No new
   live call was made; the remaining live budget is unchanged.
+* [Phase One corrected-contract live failure receipt](receipts/MNEME_Phase_One_Live_Acceptance_Quote_Run_Failure_Receipt.md)
+  records the first four-call run under the quotation contract: DeepInfra
+  returned valid source-backed edges, but no required route, so P1.1 stopped
+  and P1.2/P1.3 were not attempted.
 * [Phase One graph-wrapper preview runbook](PHASE_ONE_PREVIEW_RUNBOOK.md) documents
   the read-only matched no-memory, lexical, and graph comparison path.
 

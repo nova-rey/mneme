@@ -301,3 +301,8 @@
 ## 2026-09-19 Phase One live acceptance resumed
 
 - The corrected quotation-contract remediation is now authorized for one bounded live acceptance run. The `P1.LIVE` package moved from `WAITING` to `RUNNING` under the existing 27-call ceiling; historical live failures remain unchanged and no gate is pre-accepted.
+
+## 2026-09-19 Phase One corrected-contract live attempt
+
+- The first bounded run under the quotation contract dispatched four DeepInfra calls: two accepted responses and two valid source-backed extractions. It stopped at P1.1 because both residues contained supported edges but zero route candidates; the required route criterion therefore failed. P1.2/P1.3 received zero calls.
+- Preserved sanitized evidence in `docs/receipts/MNEME_Phase_One_Live_Acceptance_Quote_Run_Failure_Receipt.{md,json}`. Added the narrow offline prompt clarification that a returned supported edge must include a route candidate, reran the full offline suite (209 tests, Ruff, strict mypy), and returned `P1.LIVE` to `WAITING` for new authorization. No historical receipt was rewritten and no Phase Two work began.

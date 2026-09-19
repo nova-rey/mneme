@@ -127,6 +127,7 @@ def test_extraction_prompt_declares_strict_residue_record_shape(tmp_path):
         assert "evidence, and confidence" in system
         assert "Do not calculate or provide numeric offsets" in system
         assert "Every evidence object must contain only source and evidence" in system
+        assert "a supported edge without a route is incomplete" in system
         for kind in SUPPORTED_CONCEPT_KINDS:
             assert kind in system
         for relationship in SUPPORTED_RELATIONSHIP_KINDS:
