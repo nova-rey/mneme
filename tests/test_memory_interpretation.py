@@ -5,6 +5,7 @@ import json
 import pytest
 
 from mneme.contracts import GenerationRequest, GenerationResult, TokenUsage
+from mneme.experiments.live_accounting import summarize_lineage_usage
 from mneme.hosts import FakeHost
 from mneme.memory.interpretation import (
     InterpretationError,
@@ -14,6 +15,7 @@ from mneme.memory.interpretation import (
     InterpretationUncertain,
     InterpretationValidationError,
 )
+from mneme.memory.residue import SUPPORTED_CONCEPT_KINDS, SUPPORTED_RELATIONSHIP_KINDS
 from mneme.state.contracts import StoragePermissions
 from mneme.state.service import ContinuityService
 from mneme.state.storage import SQLiteStore
@@ -117,9 +119,93 @@ def test_extraction_prompt_declares_strict_residue_record_shape(tmp_path):
             ).fetchone()[0]
         )
         system = request["request"]["system"]
-        assert "Do not use markdown fences" in system
+        assert "Return raw JSON only" in system
+        assert "no Markdown fences" in system
+        assert "no introductory or concluding prose" in system
+        assert "no other concept or relationship enum values" in system
         assert "core_concepts records require key, label, kind" in system
+        assert "source_spans, and confidence" in system
+        for kind in SUPPORTED_CONCEPT_KINDS:
+            assert kind in system
+        for relationship in SUPPORTED_RELATIONSHIP_KINDS:
+            assert relationship in system
         assert request["request"]["parameters"]["max_new_tokens"] == 1536
+
+
+def _observed_invalid_extractor_outputs() -> list[tuple[str, str, str]]:
+    """Provider output fixtures captured during the failed live attempts."""
+
+    def concept(kind: str) -> str:
+        return json.dumps(
+            {
+                "core_concepts": [
+                    {
+                        "key": "a",
+                        "label": "Resource",
+                        "kind": kind,
+                        "source_spans": [{"source_slot": "s0", "start": 0, "end": 5}],
+                        "confidence": 0.9,
+                    }
+                ]
+            }
+        )
+    relationship = json.dumps(
+        {
+            "core_concepts": [
+                {
+                    "key": "a",
+                    "label": "Resource",
+                    "kind": "concept",
+                    "source_spans": [{"source_slot": "s0", "start": 0, "end": 5}],
+                    "confidence": 0.9,
+                },
+                {
+                    "key": "b",
+                    "label": "Bandwidth",
+                    "kind": "concept",
+                    "source_spans": [{"source_slot": "s0", "start": 6, "end": 11}],
+                    "confidence": 0.9,
+                },
+            ],
+            "edge_candidates": [
+                {
+                    "key": "e1",
+                    "from": "a",
+                    "to": "b",
+                    "relationship": "processed by",
+                    "source_spans": [{"source_slot": "s0", "start": 0, "end": 11}],
+                    "confidence": 0.9,
+                }
+            ],
+        }
+    )
+    return [
+        ("fenced JSON", "```json\n{}\n```", "Expecting value"),
+        ("pseudo-JSON", "core_concepts:[{key: 'a'}]", "Expecting value"),
+        ("unsupported memory_type", concept("memory_type"), "unsupported concept kind"),
+        ("unsupported definition", concept("definition"), "unsupported concept kind"),
+        ("unsupported TERM", concept("TERM"), "unsupported concept kind"),
+        ("unsupported processed by", relationship, "unsupported relationship kind"),
+    ]
+
+
+@pytest.mark.parametrize(
+    ("name", "output", "error"), _observed_invalid_extractor_outputs()
+)
+def test_observed_invalid_extractor_outputs_remain_fail_closed(
+    tmp_path, name: str, output: str, error: str
+) -> None:
+    """Historical malformed/unsupported outputs must not become residue."""
+
+    del name
+    host = ResidueHost(output)
+    store, instance, episode_id = _accepted(tmp_path, host)
+    with store:
+        service = InterpretationService(store, instance, host)
+        prepared = service.prepare(episode_id)
+        service.execute(prepared)
+        with pytest.raises(InterpretationValidationError, match=error):
+            service.validate(prepared)
 
 
 def test_invalid_result_allows_one_explicit_repair_and_no_more(tmp_path):
@@ -135,6 +221,9 @@ def test_invalid_result_allows_one_explicit_repair_and_no_more(tmp_path):
         assert repaired.attempt == 1
         assert service.validate(prepared).core_concepts == ()
         assert host.calls == 2
+        summary = summarize_lineage_usage(store)
+        assert summary["calls"]["extraction"] == 2
+        assert summary["token_usage"]["total_tokens"] > 0
         with pytest.raises(InterpretationNotReady, match="one invalid"):
             service.execute(prepared, repair=True)
 

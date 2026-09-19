@@ -42,6 +42,7 @@ from .inspection import (
     inspect_store,
     inspect_turn,
 )
+from .live_accounting import summarize_lineage_usage
 
 __all__ = [
     "EXPERIMENT_SCHEMA_VERSION",
@@ -73,6 +74,7 @@ __all__ = [
     "inspect_run",
     "inspect_store",
     "inspect_turn",
+    "summarize_lineage_usage",
     "ComparisonError",
     "ComparisonProbe",
     "ComparisonResult",

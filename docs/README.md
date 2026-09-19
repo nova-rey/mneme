@@ -34,6 +34,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   incompatibility ([receipt](receipts/MNEME_Phase_One_Live_Acceptance_Blocker.md)).
   The offline adversarial remediation and machine-readable validation are recorded in
   [the Phase One remediation receipt](receipts/MNEME_Phase_One_Adversarial_Audit_Remediation_Receipt.md).
+* [Phase One live remediation receipt](receipts/MNEME_Phase_One_Live_Remediation_Receipt.md)
+  records the corrected extraction contract, durable naming accounting, and
+  offline validation before the newly authorized bounded live run. DeepInfra
+  access is functional; the historical 18-call failure remains preserved.
 * [Phase One graph-wrapper preview runbook](PHASE_ONE_PREVIEW_RUNBOOK.md) documents
   the read-only matched no-memory, lexical, and graph comparison path.
 

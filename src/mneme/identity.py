@@ -14,7 +14,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any
 
-from .contracts import GenerationRequest
+from .contracts import GenerationRequest, GenerationResult
 from .host import Host
 from .state.policy import PolicyError, PolicyService
 from .state.storage import SQLiteStore, _utc
@@ -105,13 +105,14 @@ class IdentityService:
             raise IdentityError("current manifest is missing")
         if manifest["self_view_id"] is not None:
             raise IdentityError("identity is already adopted")
+        fingerprint = host.fingerprint().to_dict()
         try:
             policy = PolicyService(self.store, self.instance_id).current()
             if not policy.recall_allowed or not policy.provider_reuse_allowed:
                 raise PolicyError("identity adoption permission is denied")
             if policy.bound_host_ref is not None:
                 PolicyService(self.store, self.instance_id).require_host(
-                    policy, host.fingerprint().to_dict()
+                    policy, fingerprint
                 )
         except PolicyError as exc:
             raise IdentityError(str(exc)) from exc
@@ -133,6 +134,8 @@ class IdentityService:
             parameters={"max_new_tokens": 64, "temperature": 0.0},
         )
         result = host.generate(request)
+        if result.provider != fingerprint["provider"] or result.model_id != fingerprint["model_id"]:
+            raise IdentityError("naming response does not match host fingerprint")
         try:
             decoded = json.loads(result.content)
         except json.JSONDecodeError as exc:
@@ -143,7 +146,6 @@ class IdentityService:
             or not isinstance(decoded.get("name"), str)
         ):
             raise IdentityError("naming response must contain only a string name")
-        fingerprint = host.fingerprint().to_dict()
         provenance = {
             "operation": "identity_adoption",
             "host": fingerprint,
@@ -153,10 +155,25 @@ class IdentityService:
         }
         if source:
             provenance["source"] = dict(source)
-        return self.adopt(str(decoded["name"]), source=provenance)
+        return self._adopt(
+            str(decoded["name"]),
+            source=provenance,
+            generation=(request, result, fingerprint),
+        )
 
     def adopt(self, name: str, *, source: Mapping[str, Any] | None = None) -> SelfView:
         """Adopt one deliberate name; generic extraction cannot call this."""
+
+        return self._adopt(name, source=source, generation=None)
+
+    def _adopt(
+        self,
+        name: str,
+        *,
+        source: Mapping[str, Any] | None,
+        generation: tuple[GenerationRequest, GenerationResult, Mapping[str, Any]] | None,
+    ) -> SelfView:
+        """Commit an identity transition and, when applicable, its host call."""
 
         name = validate_name(name)
         with self.store.transaction() as db:
@@ -200,6 +217,58 @@ class IdentityService:
                     now,
                 ),
             )
+            if generation is not None:
+                request, result, fingerprint = generation
+                host_ref = _digest(fingerprint)
+                db.execute(
+                    "INSERT OR IGNORE INTO host_records(host_ref,provider,model_id,"
+                    "model_revision,runtime,fingerprint_json,canonical_digest) "
+                    "VALUES(?,?,?,?,?,?,?)",
+                    (
+                        host_ref,
+                        fingerprint["provider"],
+                        fingerprint["model_id"],
+                        fingerprint.get("model_revision"),
+                        fingerprint["runtime"],
+                        json.dumps(dict(fingerprint), sort_keys=True),
+                        host_ref,
+                    ),
+                )
+                generation_id = str(uuid.uuid4())
+                usage = result.token_usage
+                result_payload = {
+                    "content": result.content,
+                    "model_id": result.model_id,
+                    "provider": result.provider,
+                    "effective_parameters": result.effective_parameters,
+                    "seed": result.seed,
+                    "finish_reason": result.finish_reason,
+                }
+                provider_evidence = {
+                    "provenance": result.provenance,
+                    "host_fingerprint": dict(fingerprint),
+                    "provider": result.provider,
+                    "model_id": result.model_id,
+                    "finish_reason": result.finish_reason,
+                }
+                db.execute(
+                    "INSERT INTO identity_generation_records VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    (
+                        generation_id,
+                        event_id,
+                        host_ref,
+                        json.dumps(request.to_dict(), sort_keys=True),
+                        json.dumps(result_payload, sort_keys=True),
+                        result.model_id,
+                        result.provider,
+                        json.dumps(result.effective_parameters, sort_keys=True),
+                        json.dumps(usage.__dict__) if usage is not None else None,
+                        result.latency_ms,
+                        result.finish_reason,
+                        json.dumps(provider_evidence, sort_keys=True),
+                        now,
+                    ),
+                )
             db.execute(
                 "INSERT INTO self_views VALUES(?,?,?,?,?,?,?,?)",
                 (

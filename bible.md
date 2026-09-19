@@ -273,3 +273,10 @@
 - GitHub Actions CI for `f3aed96` completed successfully after the remediation documentation push.
 - Updated the approved Phase One plan status to reflect accepted offline implementation and the still-waiting external live gate; no scientific plan text or Phase Two scope changed.
 - Revalidated the current head at 188 passing tests and corrected the remediation receipt's stale 187-test count.
+
+## 2026-09-19 Phase One live acceptance remediation
+
+- Corrected the strict extraction boundary to expose every validator-owned concept and relationship vocabulary, require raw JSON only, and preserve fail-closed handling for malformed or invented values. Added regression fixtures for the six observed live-output failure forms.
+- Added immutable naming-generation accounting linked to the accepted identity event, including request/result, host/provider/model provenance, finish reason, latency, and nullable usage. Added schema 5 with explicit v4-to-v5 migration while preserving read-only historical checkpoint access and private fork migration.
+- Added read-only live usage accounting that counts developmental generations, each persisted extraction attempt/repair, and naming without double-counting or inventing unknown usage. Historical 18-call evidence remains unchanged; DeepInfra access is recorded as functional.
+- Offline remediation validation passed: 196 pytest tests, Ruff, strict mypy, fresh isolated package install/CLI smoke, and focused naming/extraction regressions. No new provider call was made; one fresh bounded live run remains separately authorized.

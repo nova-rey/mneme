@@ -8,7 +8,7 @@ import uuid
 from pathlib import Path
 
 from .contracts import ArtifactKind, canonical_digest, new_id
-from .storage import SQLiteStore, _utc
+from .storage import SCHEMA_VERSION, SQLiteStore, _utc
 
 
 class SnapshotError(RuntimeError):
@@ -181,7 +181,7 @@ def fork_from_checkpoint(
         # the private staged copy before converting it to a writable child.
         with sqlite3.connect(staging) as staged_connection:
             staged_version = staged_connection.execute("PRAGMA user_version").fetchone()[0]
-        if int(staged_version) == 1:
+        if int(staged_version) < SCHEMA_VERSION:
             migration_backup = Path(f"{staging}.pre-v2")
             SQLiteStore.migrate(staging, backup=migration_backup)
             migration_backup.unlink(missing_ok=True)

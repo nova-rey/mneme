@@ -1,15 +1,19 @@
 from __future__ import annotations
 
+import json
+
 import pytest
 
 from mneme.chat import ChatSession
 from mneme.contracts import GenerationRequest, GenerationResult
 from mneme.controller import ResponseController, TurnIntent
 from mneme.corrections import CorrectionService
+from mneme.experiments.live_accounting import summarize_lineage_usage
 from mneme.hosts import FakeHost
 from mneme.identity import IdentityError, IdentityService
 from mneme.memory import InterpretationPublisher, validate_residue
 from mneme.state.contracts import StoragePermissions
+from mneme.state.service import ContinuityService
 from mneme.state.snapshots import create_checkpoint, fork_from_checkpoint
 from mneme.state.storage import SQLiteStore
 
@@ -40,6 +44,23 @@ class _NamingHost(FakeHost):
             result.effective_parameters,
             result.seed,
             result.token_usage,
+            result.latency_ms,
+            result.finish_reason,
+            result.raw_metadata,
+            result.provenance,
+        )
+
+
+class _NoUsageNamingHost(_NamingHost):
+    def generate(self, request: GenerationRequest) -> GenerationResult:
+        result = super().generate(request)
+        return GenerationResult(
+            result.content,
+            result.model_id,
+            result.provider,
+            result.effective_parameters,
+            result.seed,
+            None,
             result.latency_ms,
             result.finish_reason,
             result.raw_metadata,
@@ -78,6 +99,23 @@ def test_identity_host_adoption_is_one_call_and_strictly_structured(tmp_path):
             "SELECT source_json FROM identity_events WHERE event_kind='adopt'"
         ).fetchone()[0]
         assert "Nova" not in source
+        generation = store.connection.execute(
+            "SELECT g.identity_event_id,g.host_ref,g.request_json,g.result_json,"
+            "g.returned_model,g.returned_provider,g.usage_json,g.finish_reason,"
+            "h.fingerprint_json FROM identity_generation_records g "
+            "JOIN identity_events e ON e.event_id=g.identity_event_id "
+            "JOIN host_records h ON h.host_ref=g.host_ref WHERE e.event_kind='adopt'"
+        ).fetchone()
+        assert generation is not None
+        assert generation[0] == store.connection.execute(
+            "SELECT event_id FROM identity_events WHERE event_kind='adopt'"
+        ).fetchone()[0]
+        assert json.loads(generation[2])["messages"][0]["content"].startswith("Choose one")
+        assert json.loads(generation[3])["content"] == '{"name":"Nova"}'
+        assert generation[4:6] == ("mneme-fake-v1", "builtin")
+        assert json.loads(generation[6])["total_tokens"] is not None
+        assert generation[7] == "stop"
+        assert json.loads(generation[8])["provider"] == "builtin"
 
     invalid_store, invalid_instance = _store(tmp_path, "invalid-host-identity")
     with invalid_store:
@@ -86,6 +124,32 @@ def test_identity_host_adoption_is_one_call_and_strictly_structured(tmp_path):
             IdentityService(invalid_store, invalid_instance).adopt_from_host(host)
         assert host.calls == 1
         assert IdentityService(invalid_store, invalid_instance).current() is None
+
+
+def test_identity_host_adoption_preserves_unknown_usage(tmp_path):
+    store, instance = _store(tmp_path, "host-identity-no-usage")
+    with store:
+        IdentityService(store, instance).adopt_from_host(_NoUsageNamingHost('{"name":"Nova"}'))
+        usage = store.connection.execute(
+            "SELECT usage_json FROM identity_generation_records"
+        ).fetchone()[0]
+        assert usage is None
+
+
+def test_live_usage_accounting_separates_extraction_attempts_and_naming(tmp_path):
+    store, instance = _store(tmp_path, "accounting")
+    with store:
+        host = _NamingHost('{"name":"Nova"}')
+        continuity = ContinuityService(store, instance, host)
+        operation = continuity.prepare_episode(
+            GenerationRequest(({"role": "user", "content": "hello world"},))
+        )
+        continuity.generate_operation(operation.operation_id)
+        continuity.accept_episode(operation.operation_id)
+        IdentityService(store, instance).adopt_from_host(host)
+        summary = summarize_lineage_usage(store)
+        assert summary["calls"] == {"development": 1, "extraction": 0, "naming": 1, "total": 2}
+        assert summary["by_role"]["naming"]["token_usage"]["total_tokens"] is not None
 
 
 def test_fork_rebinds_inherited_self_view_to_child_lineage(tmp_path):

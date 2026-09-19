@@ -29,7 +29,13 @@ from .publication import (
     PublicationReceipt,
     StalePublication,
 )
-from .residue import Residue, ResidueValidationError, validate_residue
+from .residue import (
+    SUPPORTED_CONCEPT_KINDS,
+    SUPPORTED_RELATIONSHIP_KINDS,
+    Residue,
+    ResidueValidationError,
+    validate_residue,
+)
 from .resolution import ResolutionDecision
 
 
@@ -244,19 +250,32 @@ class InterpretationService:
             str(source["slot"]): str(source["content"])
             for source in eligible
         }
+        concept_kinds = ", ".join(sorted(SUPPORTED_CONCEPT_KINDS))
+        relationship_kinds = ", ".join(sorted(SUPPORTED_RELATIONSHIP_KINDS))
         instruction = (
             "Extract residue v1 as one JSON object. Use only the supplied source "
             "slots. Every evidence span must use a supplied slot and code-point "
-            "offsets. Return an empty object when no supported candidate exists. "
-            "Do not use markdown fences or explanatory text. Allowed top-level "
-            "fields include core_concepts, edge_candidates, and route_candidates. "
-            "Use this exact record shape: core_concepts records require key, "
-            "label, kind, and source_spans; edge_candidates records require key, "
-            "from, to, relationship, and source_spans, with from/to equal to "
-            "concept keys; route_candidates records require key and edge_keys. "
-            "A source span is an object with source_slot, start, and end. "
-            "Return at most two concepts, one edge, and one route; keep labels "
-            "short and return only the JSON object."
+            "offsets. If no supported candidate exists, return {}. Return raw "
+            "JSON only: no Markdown fences, no introductory or concluding prose, "
+            "and no comments. Never invent enum values or labels for constrained "
+            "fields. The validator accepts exactly these top-level fields: store, "
+            "episode_id, core_concepts, salient_phrases, observed_patterns, "
+            "edge_candidates, route_candidates, declared_memories, "
+            "earned_candidates, identity_candidates, "
+            "developmental_observation_refs, evidence_refs, "
+            "extraction_confidence, intrusion_risk_estimate. Use only the "
+            "canonical record fields described below. The complete allowed "
+            f"concept kind vocabulary is: {concept_kinds}. The complete allowed "
+            f"relationship kind vocabulary is: {relationship_kinds}. There are "
+            "no other concept or relationship enum values. "
+            "core_concepts records require key, label, kind, source_spans, and "
+            "confidence; edge_candidates records require key, from, to, "
+            "relationship, source_spans, and confidence, with from/to equal to "
+            "concept keys; route_candidates records require key, edge_keys, "
+            "source_spans, and confidence. A source span is an object with "
+            "source_slot, start, and end. Use at most two concepts, one edge, "
+            "and one route. Use only supported kinds from the vocabularies above, "
+            "keep labels short, and return only the JSON object."
         )
         if errors:
             instruction += " Correct these validation errors: " + _json(errors)

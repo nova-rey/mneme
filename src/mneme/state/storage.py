@@ -22,7 +22,7 @@ from .contracts import (
     validate_id,
 )
 
-SCHEMA_VERSION = 4
+SCHEMA_VERSION = 5
 APPLICATION_ID = 0x4D4E454D  # ASCII "MNEM"
 
 _SCHEMA = """
@@ -297,6 +297,21 @@ CREATE TABLE IF NOT EXISTS identity_events (
   supersedes_event_id TEXT REFERENCES identity_events(event_id),
   created_at TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS identity_generation_records (
+  generation_id TEXT PRIMARY KEY,
+  identity_event_id TEXT NOT NULL UNIQUE REFERENCES identity_events(event_id),
+  host_ref TEXT NOT NULL REFERENCES host_records(host_ref),
+  request_json TEXT NOT NULL,
+  result_json TEXT NOT NULL,
+  returned_model TEXT NOT NULL,
+  returned_provider TEXT NOT NULL,
+  effective_parameters_json TEXT NOT NULL,
+  usage_json TEXT,
+  latency_ms REAL NOT NULL,
+  finish_reason TEXT,
+  provider_evidence_json TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
 CREATE TABLE IF NOT EXISTS self_views (
   self_view_id TEXT PRIMARY KEY,
   instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
@@ -379,6 +394,7 @@ _IMMUTABLE = (
     "graph_routes",
     "source_bindings",
     "identity_events",
+    "identity_generation_records",
     "self_views",
     "correction_directives",
     "declarations",
@@ -505,7 +521,7 @@ class SQLiteStore:
         version = int(row[0]) if row else 0
         if version > SCHEMA_VERSION:
             raise SchemaError(f"unsupported newer schema version {version}")
-        if self.read_only and version in {1, 2, 3}:
+        if self.read_only and version in {1, 2, 3, 4}:
             # Historical Phase Zero checkpoints remain inspectable without
             # mutation.  Forking a v1 checkpoint stages and explicitly
             # migrates a private copy before opening it writable.
@@ -536,8 +552,8 @@ class SQLiteStore:
         interrupted or validation fails.
         """
 
-        if target_version not in {2, 3, SCHEMA_VERSION}:
-            raise SchemaError(f"only migration to schema 2, 3 or {SCHEMA_VERSION} is supported")
+        if target_version not in {2, 3, 4, SCHEMA_VERSION}:
+            raise SchemaError(f"only migration to schema 2, 3, 4 or {SCHEMA_VERSION} is supported")
         source = Path(path)
         if not source.is_file():
             raise SchemaError(f"store does not exist: {source}")
@@ -556,7 +572,7 @@ class SQLiteStore:
             version = int(version_row[0]) if version_row else 0
             if version == target_version:
                 raise SchemaError("store is already at the requested schema version")
-            if version not in {1, 2, 3} or version > target_version:
+            if version not in {1, 2, 3, 4} or version > target_version:
                 raise SchemaError(f"cannot migrate unsupported schema version {version}")
             info = raw.execute("SELECT schema_version FROM store_info").fetchone()
             if info is None or int(info[0]) != version:
@@ -630,7 +646,7 @@ class SQLiteStore:
                 )
                 raw.execute("PRAGMA user_version = 3")
                 version = 3
-            if version == 3 and target_version >= SCHEMA_VERSION:
+            if version == 3 and target_version >= 4:
                 if not has_column("store_info", "revocation_ledger_path"):
                     raw.execute("ALTER TABLE store_info ADD COLUMN revocation_ledger_path TEXT")
                 policy_table = raw.execute(
@@ -658,11 +674,33 @@ class SQLiteStore:
                     "UPDATE store_info SET revocation_ledger_path=?", (legacy_ledger,)
                 )
                 raw.execute(
-                    "UPDATE store_info SET schema_version=?,record_version=record_version+1",
-                    (SCHEMA_VERSION,),
+                    "UPDATE store_info SET schema_version=4,record_version=record_version+1"
                 )
-                raw.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
-                version = SCHEMA_VERSION
+                raw.execute("PRAGMA user_version = 4")
+                version = 4
+            if version == 4 and target_version >= SCHEMA_VERSION:
+                raw.execute(
+                    "CREATE TABLE IF NOT EXISTS identity_generation_records ("
+                    "generation_id TEXT PRIMARY KEY,"
+                    "identity_event_id TEXT NOT NULL UNIQUE REFERENCES identity_events(event_id),"
+                    "host_ref TEXT NOT NULL REFERENCES host_records(host_ref),"
+                    "request_json TEXT NOT NULL,"
+                    "result_json TEXT NOT NULL,"
+                    "returned_model TEXT NOT NULL,"
+                    "returned_provider TEXT NOT NULL,"
+                    "effective_parameters_json TEXT NOT NULL,"
+                    "usage_json TEXT,"
+                    "latency_ms REAL NOT NULL,"
+                    "finish_reason TEXT,"
+                    "provider_evidence_json TEXT NOT NULL,"
+                    "created_at TEXT NOT NULL"
+                    ")"
+                )
+                raw.execute(
+                    "UPDATE store_info SET schema_version=5,record_version=record_version+1"
+                )
+                raw.execute("PRAGMA user_version = 5")
+                version = 5
             for table in _IMMUTABLE:
                 exists = raw.execute(
                     "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (table,)
