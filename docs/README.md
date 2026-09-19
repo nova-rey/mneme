@@ -47,6 +47,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   records the first four-call run under the quotation contract: DeepInfra
   returned valid source-backed edges, but no required route, so P1.1 stopped
   and P1.2/P1.3 were not attempted.
+* [Phase One corrected-contract human-review evidence bundle](receipts/MNEME_Phase_One_Live_Acceptance_Quote_Run_Review_Evidence.md)
+  preserves the sanitized developmental inputs, host responses, extractor
+  template and outputs, resolution decisions, graph state, and route decision
+  from that run. It is an addendum; the original failure receipt is unchanged.
 * [Phase One graph-wrapper preview runbook](PHASE_ONE_PREVIEW_RUNBOOK.md) documents
   the read-only matched no-memory, lexical, and graph comparison path.
 

@@ -44,3 +44,36 @@ as descriptive no-learning variation. They do not establish personality,
 individuality, or causal developmental differentiation. Hosted Gemma sampling
 remains provider-managed; do not describe a live run as deterministic unless
 the declared host capability and seed contract support that claim.
+
+## Live-gate review evidence
+
+The concise receipt is not sufficient for a human review of a live extraction
+or route failure. After each live gate, generate a sanitized review bundle from
+the persisted run records before deciding whether the fixture, model output,
+extractor, resolver, or graph policy is responsible. Preserve the exact
+model-visible developmental input and accepted host response, the exact source
+slots supplied to the extractor, and the exact extractor template with every
+constrained vocabulary and structural limit.
+
+For every initial and permitted repair call, include the returned result,
+validation status and errors. Then include accepted concepts and relationships,
+canonical evidence spans, alias/resolution decisions, the published graph
+snapshot, and each route candidate with its acceptance or rejection reason.
+Include the tested software SHA, gate/run coordinates, artifact digests, usage,
+and an explicit redaction statement. The bundle must be sufficient to replay
+the inspection path:
+
+```text
+developmental input
+  -> host response
+  -> extractor input
+  -> extractor output
+  -> validation/resolution
+  -> graph state
+  -> route decision
+```
+
+Keep credentials, authorization headers, environment dumps, unrelated private
+conversation content, and provider metadata that may contain secrets out of
+the bundle. Public receipts may remain concise, and historical receipts must
+not be rewritten; the review bundle is a separate sanitized evidence artifact.

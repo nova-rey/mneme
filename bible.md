@@ -306,3 +306,9 @@
 
 - The first bounded run under the quotation contract dispatched four DeepInfra calls: two accepted responses and two valid source-backed extractions. It stopped at P1.1 because both residues contained supported edges but zero route candidates; the required route criterion therefore failed. P1.2/P1.3 received zero calls.
 - Preserved sanitized evidence in `docs/receipts/MNEME_Phase_One_Live_Acceptance_Quote_Run_Failure_Receipt.{md,json}`. Added the narrow offline prompt clarification that a returned supported edge must include a route candidate, reran the full offline suite (209 tests, Ruff, strict mypy), and returned `P1.LIVE` to `WAITING` for new authorization. No historical receipt was rewritten and no Phase Two work began.
+
+## 2026-09-19 Phase One live review evidence bundle
+
+- Published `docs/receipts/MNEME_Phase_One_Live_Acceptance_Quote_Run_Review_Evidence.md` as a sanitized addendum to the preserved corrected-contract live failure receipt. It exposes both exact developmental inputs, persisted DeepInfra responses, extractor source slots and full constrained template, valid residue JSON, resolution decisions, graph snapshots, and the zero-route decision without changing historical evidence or acceptance criteria.
+- Updated the Phase One runbook and documentation index so future live gates preserve a human-reviewable input/output/provenance path rather than only hashes and pass/fail summaries. Credentials, authorization headers, unrelated private content, and secret-bearing metadata remain excluded.
+- No provider calls were made and no P1.1 behavior, graph behavior, acceptance criterion, P1.2/P1.3 work, or Phase Two scope changed.
