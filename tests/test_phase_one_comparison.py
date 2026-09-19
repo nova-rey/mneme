@@ -1,13 +1,16 @@
+import hashlib
+import json
 from pathlib import Path
 
 import pytest
 
-from mneme.contracts import GenerationRequest
+from mneme.contracts import GenerationRequest, GenerationResult
 from mneme.experiments.comparison import (
     ComparisonError,
     ComparisonProbe,
     FrozenComparator,
     run_matched_comparison,
+    summarize_comparison,
 )
 from mneme.experiments.inspection import inspect_checkpoint, inspect_store, inspect_turn
 from mneme.hosts import FakeHost
@@ -76,20 +79,62 @@ def test_comparison_artifact_is_sanitized_and_idempotent(tmp_path: Path) -> None
     assert len(results) == 3
     report = (artifact_dir / "comparison.json").read_text()
     assert "FakeHost response" not in report
-    run_matched_comparison(
+
+    class FailingHost(FakeHost):
+        def generate(self, request: GenerationRequest) -> GenerationResult:
+            raise AssertionError("completed comparison re-entry called the host")
+
+    reentry = run_matched_comparison(
         checkpoint,
-        FakeHost(),
+        FailingHost(),
         [probe],
         seeds={(0, 0, "no_memory"): 7},
         artifact_dir=artifact_dir,
         provenance={"contract_sha256": "contract"},
     )
+    assert all(result.output is None for result in reentry)
+    assert summarize_comparison(reentry) == summarize_comparison(results)
+    assert all("output" not in result.to_dict() for result in reentry)
     with pytest.raises(ComparisonError, match="conflicting content"):
         run_matched_comparison(
             checkpoint,
             FakeHost(),
             [probe],
             seeds={(0, 0, "no_memory"): 8},
+            artifact_dir=artifact_dir,
+            provenance={"contract_sha256": "contract"},
+        )
+
+
+def test_sanitized_reentry_requires_derived_normalized_output_evidence(
+    tmp_path: Path,
+) -> None:
+    checkpoint = _checkpoint(tmp_path)
+    artifact_dir = tmp_path / "comparison"
+    probe = ComparisonProbe(0, ({"role": "user", "content": "Explain VRAM"},))
+    run_matched_comparison(
+        checkpoint,
+        FakeHost(),
+        [probe],
+        artifact_dir=artifact_dir,
+        provenance={"contract_sha256": "contract"},
+    )
+    payload = json.loads((artifact_dir / "comparison.json").read_text())
+    for item in payload["results"]:
+        item.pop("normalized_output_digest")
+    unsigned = dict(payload)
+    unsigned.pop("artifact_sha256")
+    payload["artifact_sha256"] = hashlib.sha256(
+        json.dumps(unsigned, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
+    ).hexdigest()
+    (artifact_dir / "comparison.json").write_text(
+        json.dumps(payload, sort_keys=True), encoding="utf-8"
+    )
+    with pytest.raises(ComparisonError, match="malformed"):
+        run_matched_comparison(
+            checkpoint,
+            FakeHost(),
+            [probe],
             artifact_dir=artifact_dir,
             provenance={"contract_sha256": "contract"},
         )

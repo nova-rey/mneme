@@ -212,3 +212,8 @@
 - Added the approved `mneme demo phase-one --gate p1.1|p1.2|p1.3 --host fake --workspace PATH` surface. The driver composes existing continuity, interpretation, response, identity, checkpoint/fork, and frozen-comparison services; emits integrity-checked private gate manifests; enforces preceding-gate evidence; and supports completed-gate re-entry without rerunning host calls.
 - The offline fixture demonstrates two source-backed P1.1 interpretations, host-mediated naming, fixed route use and correction suppression, checkpoint/fork self-view inheritance, and four identity-disabled P1.3 probes across three treatments (12 readouts) with checkpoint invariance. The approved live budget flag is parsed but live execution remains explicitly blocked by this offline driver; no live call is claimed.
 - Focused gate-driver tests (5), Ruff, strict mypy, and `git diff --check` pass. No Phase Two mechanism was added.
+
+## 2026-09-19 Phase One comparison re-entry audit
+
+- Sanitized frozen-comparison artifacts now retain normalized output digests alongside output digests. Completed re-entry returns no synthesized or raw output, skips the host, and allows summary measurements to compare retained digests without treating a redaction marker as model text. Unsupported or incomplete sanitized artifacts fail closed.
+- Added regressions for host-free re-entry, summary equivalence, sanitized serialization, and missing derived output evidence. Comparison-focused tests (6), Ruff, and strict mypy pass in the clean-base validation worktree; no Phase Two mechanism was added.
