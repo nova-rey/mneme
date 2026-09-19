@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any, cast
 
 from .artifacts import ArtifactError, ArtifactStore, file_digest
+from .comparison import ComparisonProbe, run_matched_comparison, summarize_comparison
 from .contracts import ContractError, ExperimentSpec, load_spec
 from .datasets import DatasetBoundaryError, load_fixture_pack
 from .planning import PreflightError, preflight
@@ -231,6 +232,48 @@ def baseline_report(
     return result
 
 
+def compare_checkpoint(
+    checkpoint: Path,
+    host_name: str,
+    probes_path: Path,
+    repetitions: int,
+    subject_slot: int | str,
+    artifact_dir: Path | None,
+) -> dict[str, Any]:
+    from ..cli import _host
+
+    try:
+        payload = json.loads(probes_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ArtifactError(f"cannot read comparison probes: {probes_path}") from exc
+    raw_probes = payload.get("probes") if isinstance(payload, dict) else payload
+    if not isinstance(raw_probes, list):
+        raise ArtifactError("comparison probes must be an array or an object with probes")
+    probes: list[ComparisonProbe] = []
+    for ordinal, item in enumerate(raw_probes):
+        if not isinstance(item, dict):
+            raise ArtifactError("comparison probe must be an object")
+        messages = item.get("messages")
+        if not isinstance(messages, list):
+            raise ArtifactError("comparison probe messages must be an array")
+        probes.append(ComparisonProbe(int(item.get("probe_ordinal", ordinal)), tuple(messages)))
+    results = run_matched_comparison(
+        checkpoint,
+        _host(host_name),
+        probes,
+        repetitions=repetitions,
+        artifact_dir=artifact_dir,
+        provenance={"probes_sha256": file_digest(probes_path), "host_name": host_name},
+    )
+    return {
+        "checkpoint": str(checkpoint),
+        "subject_slot": subject_slot,
+        "results": [result.to_dict() for result in results],
+        "measurements": summarize_comparison(results),
+        "artifact_dir": str(artifact_dir) if artifact_dir is not None else None,
+    }
+
+
 def list_artifacts(run_id: str, lab: Path) -> dict[str, Any]:
     run = ArtifactStore(lab).locate_run(run_id)
     files = sorted(str(path.relative_to(run)) for path in run.rglob("*") if path.is_file())
@@ -349,6 +392,15 @@ def dispatch(args: Any) -> int:
             result = resume_execution(args.run_id, args.lab, args.host)
         elif args.experiment_action == "baseline_report":
             result = baseline_report(args.run_id, args.lab, args.output)
+        elif args.experiment_action == "compare":
+            result = compare_checkpoint(
+                args.checkpoint,
+                args.host,
+                args.probes,
+                args.repetitions,
+                args.subject_slot,
+                args.artifact_dir,
+            )
         elif args.experiment_action == "artifacts":
             result = list_artifacts(args.run_id, args.lab)
         elif args.experiment_action == "check_isolation":
@@ -426,6 +478,14 @@ def add_parser(sub: Any) -> None:
     report.add_argument("--lab", type=Path, required=True)
     report.add_argument("--output", type=Path)
     report.add_argument("--json", action="store_true", help="emit machine-readable JSON")
+    compare = esub.add_parser("compare")
+    compare.add_argument("checkpoint", type=Path)
+    compare.add_argument("--probes", type=Path, required=True)
+    compare.add_argument("--host", default="fake")
+    compare.add_argument("--repetitions", type=int, default=1)
+    compare.add_argument("--subject-slot", default="0")
+    compare.add_argument("--artifact-dir", type=Path)
+    compare.add_argument("--json", action="store_true", help="emit machine-readable JSON")
 
 
 def normalize_args(args: Any) -> Any:

@@ -181,3 +181,8 @@
 
 - Added and claimed the approved P1.3 package on accepted P1.2 gate `b46e8c728e2dbf80e553b14b4de99713e6610a1bf`, covering inspection, matched frozen no-memory/lexical/graph comparisons, provenance and isolation reporting, packaged fixtures, runbook and release evidence.
 - P1.3 is the only active Phase One package. Adaptive dynamics, individuality claims, and Phase Two remain excluded.
+
+## 2026-09-19 P1.3 candidate implementation
+
+- Added read-only checkpoint inspection with separately labeled lineage, accepted-episode, graph, and self-view counters; matched fixed no-memory, lexical, and graph treatments; deterministic coordinate/request digests; state/file invariance checks; idempotent private comparison artifacts; and a comparison CLI over the existing experiment surface.
+- Added the Phase One preview runbook and regression coverage for treatment coordinates, administrative-metadata isolation, frozen-state invariance, and counter inspection. The candidate currently passes 153 pytest tests, Ruff, and strict mypy; no Phase Two mechanism was added.

@@ -11,6 +11,7 @@ from .chat import ChatSession
 from .experiments.cli import add_parser as add_experiment_parser
 from .experiments.cli import dispatch as dispatch_experiment
 from .experiments.cli import normalize_args as normalize_experiment_args
+from .experiments.inspection import inspect_store, inspect_turn
 from .hosts import DeepInfraGemmaHost, FakeHost, GemmaHost
 from .identity import IdentityService
 from .qualification import qualify
@@ -63,6 +64,7 @@ def main(argv: list[str] | None = None) -> int:
     isub.add_parser("list")
     inspect = isub.add_parser("inspect")
     inspect.add_argument("id")
+    inspect.add_argument("--json", action="store_true")
     fork = isub.add_parser("fork")
     fork.add_argument("--checkpoint", required=True)
     fork.add_argument("--output", required=True)
@@ -102,6 +104,10 @@ def main(argv: list[str] | None = None) -> int:
     ssub = store_cmd.add_subparsers(dest="store_action", required=True)
     recover = ssub.add_parser("recover")
     recover.add_argument("id")
+    inspect_cmd = sub.add_parser("inspect")
+    inspect_sub = inspect_cmd.add_subparsers(dest="inspect_action", required=True)
+    inspect_turn_cmd = inspect_sub.add_parser("turn")
+    inspect_turn_cmd.add_argument("operation_id")
     chat = sub.add_parser("chat")
     chat.add_argument("text", nargs="?")
     chat.add_argument("--mode", choices=("develop", "observe", "evaluate"), default="develop")
@@ -132,6 +138,7 @@ def main(argv: list[str] | None = None) -> int:
         "store",
         "chat",
         "identity",
+        "inspect",
     }:
         if args.store is None:
             raise SystemExit("--store PATH is required for state commands")
@@ -193,13 +200,17 @@ def main(argv: list[str] | None = None) -> int:
                 elif args.identity_action == "alias" and args.alias_action == "add":
                     print(identity_service.add_alias(args.alias, source={"actor": "operator"}))
                 return 0
+        if args.command == "inspect":
+            if args.inspect_action == "turn":
+                print(json.dumps(inspect_turn(args.store, args.operation_id), indent=2))
+                return 0
+            raise SystemExit(f"unknown inspection action: {args.inspect_action}")
         if args.command == "instance" and args.instance_action == "list":
             paths = sorted(args.store.glob("*.sqlite3")) if args.store.is_dir() else [args.store]
             print(json.dumps([str(p) for p in paths], indent=2))
             return 0
         if args.command == "instance" and args.instance_action == "inspect":
-            with SQLiteStore(args.store, read_only=True) as store:
-                print(json.dumps(dict(store.current()), indent=2, default=str))
+            print(json.dumps(inspect_store(args.store), indent=2, default=str))
             return 0
         if args.command == "instance" and args.instance_action == "fork":
             print(fork_from_checkpoint(args.checkpoint, args.output, args.id))

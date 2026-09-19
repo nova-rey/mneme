@@ -9,6 +9,15 @@ from .baseline import (
     measure_baseline,
     render_baseline_report,
 )
+from .comparison import (
+    ComparisonError,
+    ComparisonProbe,
+    ComparisonResult,
+    FrozenComparator,
+    run_matched_comparison,
+    summarize_comparison,
+    write_comparison_artifacts,
+)
 from .contracts import (
     EXPERIMENT_SCHEMA_VERSION,
     ContractError,
@@ -26,6 +35,13 @@ from .datasets import (
     validate_split_boundaries,
 )
 from .evaluation import EvaluationError, FrozenEvaluationView, run_isolation_check
+from .inspection import (
+    InspectionError,
+    inspect_checkpoint,
+    inspect_run,
+    inspect_store,
+    inspect_turn,
+)
 
 __all__ = [
     "EXPERIMENT_SCHEMA_VERSION",
@@ -52,4 +68,21 @@ __all__ = [
     "ArtifactError",
     "ArtifactStore",
     "PublishedRun",
+    "InspectionError",
+    "inspect_checkpoint",
+    "inspect_run",
+    "inspect_store",
+    "inspect_turn",
+    "ComparisonError",
+    "ComparisonProbe",
+    "ComparisonResult",
+    "FrozenComparator",
+    "run_matched_comparison",
+    "summarize_comparison",
+    "write_comparison_artifacts",
+    "InspectionError",
+    "inspect_checkpoint",
+    "inspect_run",
+    "inspect_store",
+    "inspect_turn",
 ]

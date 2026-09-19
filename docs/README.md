@@ -29,7 +29,9 @@ The documents are preserved in their supplied form and are intentionally not mer
   preserves the P1.1/P1.2/P1.3 gates and incorporates fixed route ranking without
   confidence/salience bonuses, distinct revision/episode/graph/self-view counters,
   and explicit development-enabled creation with fail-closed legacy reuse.
-  Implementation awaits separate authorization.
+  P1.1 and P1.2 are accepted; P1.3 is the active preview gate.
+* [Phase One graph-wrapper preview runbook](PHASE_ONE_PREVIEW_RUNBOOK.md) documents
+  the read-only matched no-memory, lexical, and graph comparison path.
 
 The P0.2 implementation is now present under `src/mneme/state/`; its acceptance
 status and receipts are recorded in `.codex/work-queue.json` and `bible.md`.
