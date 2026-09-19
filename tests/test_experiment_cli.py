@@ -13,8 +13,9 @@ import sys
 from pathlib import Path
 from types import SimpleNamespace
 
+import mneme.cli as root_cli
 from mneme.cli import main
-from mneme.experiments.cli import add_parser, dispatch, normalize_args
+from mneme.experiments.cli import add_parser, compare_checkpoint, dispatch, normalize_args
 
 
 def test_execute_and_baseline_commands_parse_and_normalize(tmp_path: Path) -> None:
@@ -154,3 +155,44 @@ def test_top_level_cli_exposes_execute_parser(tmp_path: Path, monkeypatch, capsy
         == 0
     )
     assert '"run_id": "run-1"' in capsys.readouterr().out
+
+
+def test_compare_passes_subject_slot_to_frozen_comparison_and_provenance(
+    tmp_path: Path, monkeypatch
+) -> None:
+    probes = tmp_path / "probes.json"
+    probes.write_text(
+        '[{"messages": [{"role": "user", "content": "probe"}]}]\n',
+        encoding="utf-8",
+    )
+    captured: dict[str, object] = {}
+
+    def run_comparison(*args: object, **kwargs: object) -> tuple[SimpleNamespace, ...]:
+        captured.update(kwargs)
+        slot = kwargs["subject_slot"]
+        return (SimpleNamespace(to_dict=lambda: {"subject_slot": slot}),)
+
+    monkeypatch.setattr(root_cli, "_host", lambda name: object())
+    monkeypatch.setattr("mneme.experiments.cli.run_matched_comparison", run_comparison)
+    monkeypatch.setattr(
+        "mneme.experiments.cli.summarize_comparison",
+        lambda results: {"subject_slot": results[0].to_dict()["subject_slot"]},
+    )
+
+    result = compare_checkpoint(
+        tmp_path / "checkpoint.sqlite3",
+        "fake",
+        probes,
+        repetitions=1,
+        subject_slot="subject-7",
+        artifact_dir=None,
+    )
+
+    assert captured["subject_slot"] == "subject-7"
+    assert captured["provenance"] == {
+        "probes_sha256": captured["provenance"]["probes_sha256"],
+        "host_name": "fake",
+        "subject_slot": "subject-7",
+    }
+    assert result["subject_slot"] == "subject-7"
+    assert result["results"] == [{"subject_slot": "subject-7"}]

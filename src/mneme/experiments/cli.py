@@ -261,9 +261,14 @@ def compare_checkpoint(
         checkpoint,
         _host(host_name),
         probes,
+        subject_slot=subject_slot,
         repetitions=repetitions,
         artifact_dir=artifact_dir,
-        provenance={"probes_sha256": file_digest(probes_path), "host_name": host_name},
+        provenance={
+            "probes_sha256": file_digest(probes_path),
+            "host_name": host_name,
+            "subject_slot": subject_slot,
+        },
     )
     return {
         "checkpoint": str(checkpoint),

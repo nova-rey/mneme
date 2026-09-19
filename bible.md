@@ -202,3 +202,7 @@
 ## 2026-09-19 Phase One extraction budget repair
 
 - Bound interpretation extraction and its explicit repair request to the approved `max_new_tokens=1536` cap and added a contract regression asserting the request carries that cap. No live calls were made for this repair; the prior live blocker remains unchanged.
+
+## 2026-09-19 Phase One comparison subject-coordinate propagation
+
+- Corrected the comparison CLI to pass the supplied subject slot into the frozen comparison coordinate and include it in artifact provenance. Added a regression covering the forwarded coordinate, returned results, and provenance. Focused CLI/comparison tests (11) and Ruff pass.
