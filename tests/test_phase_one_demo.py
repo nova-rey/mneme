@@ -7,7 +7,14 @@ import pytest
 
 from mneme.cli import main
 from mneme.demo import DemoError, _ResidueFixtureHost, run_phase_one_gate
-from mneme.live_phase_one import LivePhaseOneError, run_live_phase_one
+from mneme.live_phase_one import LivePhaseOneError, _name_matches, run_live_phase_one
+
+
+def test_live_name_recovery_accepts_display_spacing_without_broadening_identity() -> None:
+    assert _name_matches("Gemma4", "Gemma 4") is True
+    assert _name_matches("Gemma4", "My adopted name is Gemma 4.") is True
+    assert _name_matches("Gemma4", "Gemma 40") is False
+    assert _name_matches("Gemma4", "I do not have a name") is False
 
 
 def test_phase_one_gate_driver_requires_preceding_gate(tmp_path: Path) -> None:

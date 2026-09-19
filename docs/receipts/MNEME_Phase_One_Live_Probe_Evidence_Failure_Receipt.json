@@ -1,0 +1,40 @@
+{
+  "artifact_sha256": {
+    "lineage.sqlite3": "8fee362f14f06190440bab2b0966e4b67cef7c5bbfd62aabca2d9e2713d30e63",
+    "live_summary.json": "64bc9a0b9039d32663c0b180fdacb859d45dad0eb12d36e508cbd773f5897133"
+  },
+  "cost": {
+    "known_extraction_usd": 0.0001056,
+    "total_usd": "unknown"
+  },
+  "credential_functional": true,
+  "date": "2026-09-20",
+  "model": "google/gemma-4-E4B-it",
+  "p1_1": {
+    "route": [
+      "weather_check",
+      "rain_jacket",
+      "shower"
+    ],
+    "status": "PASS"
+  },
+  "p1_2": {
+    "adopted_name": "Gemma4",
+    "checkpoint_unchanged": true,
+    "correction_suppressed": true,
+    "interpretations": "valid_empty_residues",
+    "probe_output": "Gemma 4",
+    "route_influence_traced": true,
+    "status": "FAILED_COMPARISON"
+  },
+  "p1_3_attempted": false,
+  "provider": "DeepInfra",
+  "provider_calls": 10,
+  "status": "P1.1_PASS_P1.2_NAME_FORMAT_COMPARISON_FAILURE",
+  "tested_code": "8be338e6cbf4a89c1d6c89fe7ea94bfa441a1b8d",
+  "usage": {
+    "input_tokens": 2994,
+    "output_tokens": 1222,
+    "total_tokens": 4216
+  }
+}

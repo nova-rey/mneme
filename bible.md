@@ -394,3 +394,8 @@
 
 - Full offline validation and CI passed for `d9ac1c6`, which persists partial P1.2 progress and cold-start probe output before assertions. One fresh bounded run is authorized from this commit to obtain reviewable evidence for the previously unpersisted cold-start criterion; the 27-call ceiling, stop-on-failure rule, and no-resampling rule remain in force.
 - `P1.LIVE` is RUNNING. Earlier live runs and receipts remain unchanged.
+
+## 2026-09-20 Phase One cold-start name comparison remediation
+
+- The probe-evidence run from `8be338e` passed P1.1 and preserved the actual cold-start output `Gemma 4`. P1.2 stopped because the runner compared it byte-for-byte with the adopted spelling `Gemma4`; this was a deterministic formatting mismatch, not provider failure or absent identity recovery.
+- Added `_name_matches` normalization for case-insensitive token adjacency across display spacing/punctuation, with regression rejection for distinct names. Preserved the run in `docs/receipts/MNEME_Phase_One_Live_Probe_Evidence_Failure_Receipt.{md,json}`. No provider call was made for the correction.

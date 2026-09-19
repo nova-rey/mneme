@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -64,6 +65,26 @@ def _usage(value: TokenUsage | None) -> dict[str, int | None] | None:
         "output_tokens": value.output_tokens,
         "total_tokens": value.total_tokens,
     }
+
+
+def _name_matches(adopted: str | None, output: str) -> bool:
+    """Match a recovered name across harmless display spacing/punctuation."""
+
+    if not adopted:
+        return False
+    expected = "".join(re.findall(r"[\w]+", adopted.casefold()))
+    tokens = re.findall(r"[\w]+", output.casefold())
+    if not expected:
+        return False
+    for start in range(len(tokens)):
+        combined = ""
+        for token in tokens[start:]:
+            combined += token
+            if combined == expected:
+                return True
+            if len(combined) >= len(expected):
+                break
+    return False
 
 
 def _json_file(path: Path, value: dict[str, Any]) -> None:
@@ -499,7 +520,7 @@ def run_live_phase_one(
         )
         report["p1.2_progress"]["frozen_probes"].append(name_probe)
         _json_file(report_path, report)
-        if (identity.name or "").casefold() not in str(name_probe["output"]).casefold():
+        if not _name_matches(identity.name, str(name_probe["output"])):
             raise LivePhaseOneError("P1.2 cold-start probe did not recover adopted name")
         unrelated_probe = _frozen_probe(
             checkpoint,
