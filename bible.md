@@ -154,3 +154,8 @@
 - Completed the approved P1.1 foundation package: bounded source-backed residue validation, persisted interpretation attempts with one explicit repair, fail-closed uncertain recovery, exact host binding, immutable graph snapshots, durable resolution decisions, source provenance, explicit interpretation opt-in, schema 1→2 migration, ancestry-ordered readers, staged checkpoint forks, and slot-relative extraction-cache contracts.
 - Stop–audit gate passed with 138 pytest tests, Ruff, strict mypy across 31 source files, `git diff --check`, valid work-queue schema, and an offline FakeHost demonstration covering accepted episode/interpretation revisions, graph revision, restart verification, checkpoint/fork verification, and inherited history.
 - P1.1 remains limited to residue-to-graph foundation. No response influence, retrieval, identity development, adaptive dynamics, P1.2, P1.3, or Phase Two work was started.
+
+## 2026-09-19 P1.1 acceptance closure
+
+- P1.1 passed the stop–audit–push gate in commit `4529b1e`: the full suite reports 138 passing tests, Ruff and strict mypy pass, and the offline foundation demonstration verifies restart, publication, checkpoint, fork, and inherited-history behavior.
+- The work queue records P1.1 `DONE` with its validation receipt. P1.2 remains locked until a new package is explicitly dispatched; no response influence, retrieval, identity, or Phase Two implementation began in this gate.
