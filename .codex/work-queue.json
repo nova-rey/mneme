@@ -785,11 +785,12 @@
         "docs/receipts/MNEME_Phase_One_Extractor_Quote_Remediation_Receipt.md",
         "docs/receipts/MNEME_Phase_One_Live_Acceptance_Quote_Run_Failure_Receipt.md",
         "docs/receipts/MNEME_P1.1_Live_Fixture_Preview.md",
-        "docs/receipts/MNEME_Phase_One_Live_Bridged_Run_Failure_Receipt.md"
+        "docs/receipts/MNEME_Phase_One_Live_Bridged_Run_Failure_Receipt.md",
+        "docs/receipts/MNEME_Phase_One_Live_Corrected_P1.1_Failure_Receipt.md"
       ],
       "id": "P1.LIVE",
-      "notes": "One new corrected-contract live study is authorized from commit 534183a. Prior 18-call history, four-call route/fixture failure, and eight-call bridged P1.2 failure remain unchanged. Dispatch maximum 27, no retries, stop on required failure.",
-      "owner": "/root",
+      "notes": "Corrected-contract run from 2cdf3ac stopped at P1.1 after 4 returned calls: both interpretations valid, but only one accepted edge and no multi-hop route. DeepInfra/credential functional. Historical 18-call, 4-call, and 8-call receipts remain unchanged. No further live calls are authorized automatically.",
+      "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -807,12 +808,10 @@
         }
       ],
       "scope": "Run the already prepared bounded DeepInfra Phase One acceptance gate and publish the truthful release receipt; do not alter offline Phase One architecture or begin Phase Two.",
-      "session_ids": [
-        "phase-one-live-corrected-20260919"
-      ],
-      "status": "RUNNING",
+      "session_ids": [],
+      "status": "WAITING",
       "title": "Phase One bounded live acceptance gate",
-      "updated_at": "2026-09-19T23:42:00Z",
+      "updated_at": "2026-09-19T23:59:00Z",
       "validation": {
         "required": [
           "bounded live gate",
@@ -834,6 +833,11 @@
             "sha": "44e9d75ddd16eebe757f0c7975a07636c0f9b318",
             "check": "bounded DeepInfra bridged run",
             "result": "P1.1 PASS; P1.2 FAILED after one repair; 8 calls; P1.3 not started"
+          },
+          {
+            "sha": "2cdf3ac10572bf9424220aee50706b01fc9f15ee",
+            "check": "corrected-contract P1.1 live run",
+            "result": "STOPPED; 4 returned calls; route not formed; P1.2/P1.3 not attempted"
           }
         ]
       },
@@ -853,5 +857,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-19T23:42:00Z"
+  "updated_at": "2026-09-19T23:59:00Z"
 }

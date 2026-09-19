@@ -1,0 +1,83 @@
+{
+  "artifact_sha256": {
+    "lineage.sqlite3": "6b6ce2824f7bf297119642e7f110fbd81da3b6b33827cce650b20f1edf54a74c",
+    "live_summary.json": "df65e0eb6ed8ba8c982f60e73772504dc29ef586c1f61386ff876e8d5649174a"
+  },
+  "calls": [
+    {
+      "gate": "p1.1",
+      "ordinal": 1,
+      "role": "response",
+      "status": "RETURNED",
+      "usage": {
+        "input_tokens": 23,
+        "output_tokens": 184,
+        "total_tokens": 207
+      }
+    },
+    {
+      "gate": "p1.1",
+      "ordinal": 2,
+      "role": "response",
+      "status": "RETURNED",
+      "usage": {
+        "input_tokens": 22,
+        "output_tokens": 192,
+        "total_tokens": 214
+      }
+    },
+    {
+      "gate": "p1.1",
+      "ordinal": 3,
+      "role": "extraction_initial",
+      "status": "RETURNED",
+      "usage": {
+        "input_tokens": 818,
+        "output_tokens": 228,
+        "total_tokens": 1046
+      },
+      "validation": "VALID"
+    },
+    {
+      "gate": "p1.1",
+      "ordinal": 4,
+      "role": "extraction_initial",
+      "status": "RETURNED",
+      "usage": {
+        "input_tokens": 818,
+        "output_tokens": 339,
+        "total_tokens": 1157
+      },
+      "validation": "VALID"
+    }
+  ],
+  "cost": {
+    "known_extraction_usd": 8.942e-05,
+    "total_usd": "unknown"
+  },
+  "credential_functional": true,
+  "date": "2026-09-19",
+  "fixture": {
+    "accepted_edges": [
+      "rain_jacket --enables--> hike"
+    ],
+    "inputs": [
+      "Checking the weather before our hike reminded us to pack a rain jacket.",
+      "A rain jacket keeps a sudden shower from ending the hike early."
+    ],
+    "multi_hop_route": false
+  },
+  "model": "google/gemma-4-E4B-it",
+  "p1_2_attempted": false,
+  "p1_3_attempted": false,
+  "provider": "DeepInfra",
+  "provider_calls": 4,
+  "run_workspace": "/home/nyx/.local/share/mneme/phase-one-live/20260919-bridged-v2-534183a/",
+  "status": "BLOCKED_P1.1_ROUTE_NOT_FORMED",
+  "tested_code": "2cdf3ac10572bf9424220aee50706b01fc9f15ee",
+  "usage": {
+    "input_tokens": 1681,
+    "output_tokens": 943,
+    "total_tokens": 2624
+  }
+}

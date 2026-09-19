@@ -127,12 +127,16 @@ class InterpretationService:
         *,
         extractor_version: str = "residue-v1",
         resolver_version: str = "explicit-v1",
+        source_purposes: tuple[str, ...] | None = None,
     ) -> None:
         self.store = store
         self.instance_id = instance_id
         self.host = host
         self.extractor_version = extractor_version
         self.resolver_version = resolver_version
+        if source_purposes is not None and not set(source_purposes) <= self._ALLOWED_PURPOSES:
+            raise InterpretationError("source_purposes contains an unsupported purpose")
+        self.source_purposes = source_purposes
 
     def _policy_allows_interpretation(self, db: Any) -> None:
         """Require the explicit Phase One interpretation opt-in.
@@ -202,11 +206,12 @@ class InterpretationService:
             }
             for index, row in enumerate(rows)
         ]
-        eligible = [
-            source
-            for source in source_rows
-            if source["purpose"] in self._ALLOWED_PURPOSES
-        ]
+        allowed = (
+            self.source_purposes
+            if self.source_purposes is not None
+            else tuple(self._ALLOWED_PURPOSES)
+        )
+        eligible = [source for source in source_rows if source["purpose"] in allowed]
         if not eligible:
             raise InterpretationError("accepted episode has no interpretation-eligible sources")
         return {"episode_id": episode_id, "sources": source_rows, "eligible": eligible}

@@ -60,6 +60,12 @@ The documents are preserved in their supplied form and are intentionally not mer
   while P1.2 stopped after one invalid extraction repair. Its machine-readable
   companion contains sanitized call accounting; the private SQLite/report
   artifacts remain outside Git.
+* [Corrected P1.1 live failure receipt](receipts/MNEME_Phase_One_Live_Corrected_P1.1_Failure_Receipt.md)
+  records the later four-call run: DeepInfra returned all calls and both
+  interpretations were valid, but only one accepted edge was present, so the
+  required multi-hop route was not formed. The live package is waiting for
+  offline correction and explicit authorization; this is not a credential
+  blocker.
 * [Phase One graph-wrapper preview runbook](PHASE_ONE_PREVIEW_RUNBOOK.md) documents
   the read-only matched no-memory, lexical, and graph comparison path.
 

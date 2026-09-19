@@ -346,3 +346,9 @@
 
 - The active continuation authorizes one new bounded `phase-one-v1` study from corrected commit `534183a5b0a5dabf8c8f64a18ab25844d0625a60`. It is a new run because the prior P1.2 interpretation exhausted its initial-plus-one-repair ledger; no prior response, result, receipt, or store will be rewritten or retried in place.
 - The queue transition records `P1.LIVE = RUNNING` for this one run. Dispatch remains capped at 27 calls, with no transport retries and immediate stop on another required failure.
+
+## 2026-09-19 P1.1 corrected live stop and extraction-source boundary
+
+- Preserved the corrected-contract P1.1 live run from tested code `2cdf3ac` as a failed historical receipt: four DeepInfra calls returned, both extractions were structurally/source valid, but only one supported edge was accepted and no multi-hop route formed. P1.2/P1.3 were not attempted; provider and credential were functional.
+- Added a narrow source-purpose boundary for the live P1.1 fixture: extraction receives immutable external episode evidence only, while model output remains durably recorded and auditable without becoming independent developmental evidence for the fixture graph. Existing offline callers retain the prior eligible-source behavior.
+- Added regression coverage for source-purpose filtering and recorded the private artifact digests in `docs/receipts/MNEME_Phase_One_Live_Corrected_P1.1_Failure_Receipt.{md,json}`. The live package is WAITING; no further provider call is authorized automatically.

@@ -52,4 +52,7 @@ reasonable before the call is made.
 The fixture is intentionally small and bounded. It does not claim causal truth,
 learning, personality, or individuality. A live failure must be classified
 from the persisted source/result and graph evidence rather than repaired by
-manufacturing aliases or forcing expected labels.
+manufacturing aliases or forcing expected labels. For this P1.1 developmental
+demonstration, extraction is supplied only the immutable external input for
+each episode; the host response remains durably recorded as model output but
+is not treated as independent developmental evidence for the fixture edges.

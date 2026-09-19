@@ -222,8 +222,14 @@ def _interpret(
     episode_id: str,
     operation_id: str,
     gate: str,
+    source_purposes: tuple[str, ...] | None = None,
 ) -> dict[str, Any]:
-    service = InterpretationService(store, instance_id, host)
+    service = InterpretationService(
+        store,
+        instance_id,
+        host,
+        source_purposes=source_purposes,
+    )
     prepared = service.prepare(episode_id, operation_id=operation_id)
     host.set_coordinate(gate, "extraction_initial")
     service.execute(prepared)
@@ -370,6 +376,7 @@ def run_live_phase_one(
                 episode["episode_id"],
                 f"phase-one-live-p11-interpretation-{ordinal}",
                 "p1.1",
+                source_purposes=("external_evidence",),
             )
             for ordinal, episode in enumerate(episodes)
         ]

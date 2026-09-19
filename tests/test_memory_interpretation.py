@@ -103,6 +103,37 @@ def test_interpretation_persists_result_then_publishes_empty_residue(tmp_path):
         assert store.current()["current_revision"] == 2
 
 
+def test_source_purpose_filter_keeps_model_output_out_of_live_extraction(tmp_path):
+    host = ResidueHost("{}")
+    store, instance, episode_id = _accepted(tmp_path, host)
+    with store:
+        service = InterpretationService(
+            store,
+            instance,
+            host,
+            source_purposes=("external_evidence",),
+        )
+        prepared = service.prepare(episode_id, operation_id="interp-external-only")
+        service.execute(prepared)
+        request = json.loads(
+            store.connection.execute(
+                "SELECT request_json FROM interpretation_attempts WHERE operation_id=?",
+                (prepared.operation_id,),
+            ).fetchone()[0]
+        )
+        bundle = request["source_bundle"]
+        assert [source["purpose"] for source in bundle["sources"]] == [
+            "external_evidence",
+            "model_output",
+        ]
+        assert [source["purpose"] for source in bundle["eligible"]] == [
+            "external_evidence"
+        ]
+        source_slots = json.loads(request["request"]["messages"][0]["content"])
+        assert list(source_slots["source_slots"]) == ["s0"]
+        assert "hello world" in source_slots["source_slots"]["s0"]
+
+
 def test_extraction_prompt_declares_strict_residue_record_shape(tmp_path):
     store, instance, episode_id = _accepted(tmp_path, FakeHost())
     with store:
