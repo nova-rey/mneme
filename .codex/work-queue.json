@@ -789,11 +789,12 @@
         "docs/receipts/MNEME_Phase_One_Live_Corrected_P1.1_Failure_Receipt.md",
         "docs/receipts/MNEME_Phase_One_Live_Continuation_P1.1_Failure_Receipt.md",
         "docs/receipts/MNEME_Phase_One_Live_Edge_Key_Collision_Remediation_Receipt.md",
-        "docs/receipts/MNEME_Phase_One_Live_Collision_Fixed_P1.2_Failure_Receipt.md"
+        "docs/receipts/MNEME_Phase_One_Live_Collision_Fixed_P1.2_Failure_Receipt.md",
+        "docs/receipts/MNEME_Phase_One_Live_Evidence_Filter_P1.2_Failure_Receipt.md"
       ],
       "id": "P1.LIVE",
-      "notes": "Fresh bounded run authorized from 540ad06 after full offline validation and CI. P1.2 live extraction now uses external-evidence-only source binding; maximum 27 calls, no retries, stop on required failure. Prior live runs remain immutable.",
-      "owner": "/root",
+      "notes": "Evidence-filtered run from 7732449 passed P1.1 and progressed through P1.2 naming, route influence, correction, and valid external-only interpretations, then failed cold-start name recovery after 10 returned calls. The runner originally omitted probe output from the partial report; offline instrumentation now records partial P1.2 evidence before assertions. No automatic retry.",
+      "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -811,12 +812,10 @@
         }
       ],
       "scope": "Run the already prepared bounded DeepInfra Phase One acceptance gate and publish the truthful release receipt; do not alter offline Phase One architecture or begin Phase Two.",
-      "session_ids": [
-        "phase-one-live-evidence-filter-20260920"
-      ],
-      "status": "RUNNING",
+      "session_ids": [],
+      "status": "WAITING",
       "title": "Phase One bounded live acceptance gate",
-      "updated_at": "2026-09-20T00:25:00Z",
+      "updated_at": "2026-09-20T00:35:00Z",
       "validation": {
         "required": [
           "bounded live gate",
@@ -867,5 +866,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-20T00:25:00Z"
+  "updated_at": "2026-09-20T00:35:00Z"
 }

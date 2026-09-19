@@ -469,6 +469,17 @@ def run_live_phase_one(
             "p1.2",
             source_purposes=("external_evidence",),
         )
+        report["identity"] = identity.to_dict()
+        report["p1.2_progress"] = {
+            "status": "RUNNING",
+            "relevant_route": route_key,
+            "relevant_trace": {"selected_json": trace[0], "applied_json": trace[1]},
+            "correction_directive_id": correction_id,
+            "correction_suppressed": True,
+            "interpretations": [first_interpretation, second_interpretation],
+            "frozen_probes": [],
+        }
+        _json_file(report_path, report)
         create_checkpoint(store, checkpoint, checkpoint_id="phase-one-live-p12-checkpoint")
         checkpoint_before = file_digest(checkpoint)
         checkpoint_state_before = inspect_checkpoint(checkpoint)
@@ -486,6 +497,8 @@ def run_live_phase_one(
                 parameters={"temperature": 0.0, "max_new_tokens": 192},
             ),
         )
+        report["p1.2_progress"]["frozen_probes"].append(name_probe)
+        _json_file(report_path, report)
         if (identity.name or "").casefold() not in str(name_probe["output"]).casefold():
             raise LivePhaseOneError("P1.2 cold-start probe did not recover adopted name")
         unrelated_probe = _frozen_probe(
@@ -500,6 +513,8 @@ def run_live_phase_one(
                 parameters={"temperature": 0.0, "max_new_tokens": 192},
             ),
         )
+        report["p1.2_progress"]["frozen_probes"].append(unrelated_probe)
+        _json_file(report_path, report)
         if not unrelated_probe["routes_payload_empty"]:
             raise LivePhaseOneError("P1.2 unrelated probe carried route payload")
         if (

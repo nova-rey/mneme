@@ -1,0 +1,41 @@
+{
+  "artifact_sha256": {
+    "lineage.sqlite3": "3b317d90304bc911816a0c6fcb722ff8e74788b0844e07b80a366b6ffb32a9ba",
+    "live_summary.json": "91b7ad9fe6d67edecb5186f9c06eeb050f67159af610bf0991066988eec96161"
+  },
+  "cost": {
+    "known_extraction_usd": 0.0001047,
+    "total_usd": "unknown"
+  },
+  "credential_functional": true,
+  "date": "2026-09-20",
+  "model": "google/gemma-4-E4B-it",
+  "p1_1": {
+    "provenance_edges": 2,
+    "route": [
+      "weather_check",
+      "rain_jacket",
+      "shower"
+    ],
+    "status": "PASS"
+  },
+  "p1_2": {
+    "correction_suppressed": true,
+    "interpretations": "valid_empty_residues",
+    "name_adopted": "Gemma4",
+    "probe_output_persisted_in_original_run": false,
+    "route_influence_traced": true,
+    "status": "FAILED_COLD_START_NAME",
+    "unrelated_abstention_attempted": false
+  },
+  "p1_3_attempted": false,
+  "provider": "DeepInfra",
+  "provider_calls": 10,
+  "status": "P1.1_PASS_P1.2_COLD_START_FAILURE",
+  "tested_code": "7732449a6cc213c00fce6ba2366b66cd6972e008",
+  "usage": {
+    "input_tokens": 2993,
+    "output_tokens": 1262,
+    "total_tokens": 4255
+  }
+}

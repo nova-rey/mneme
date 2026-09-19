@@ -384,3 +384,8 @@
 
 - Remote CI `35476828096` passed for `540ad06` after the P1.2 external-evidence-only extraction correction. The active goal authorizes one fresh bounded `phase-one-v1` run from this commit, capped at 27 calls with no retries or favorable-output resampling.
 - `P1.LIVE` is RUNNING. All earlier P1.1/P1.2 failures remain immutable historical evidence.
+
+## 2026-09-20 Phase One evidence-filtered live stop and probe receipt fix
+
+- The fresh run from `7732449` passed P1.1 again and consumed ten returned calls. P1.2 naming, route influence, correction suppression, and valid external-only interpretations completed; the frozen cold-start probe did not contain the adopted `Gemma4` name, so P1.2 stopped before unrelated abstention and P1.3.
+- Preserved `docs/receipts/MNEME_Phase_One_Live_Evidence_Filter_P1.2_Failure_Receipt.{md,json}`. The original run retained only the probe hash, exposing an evidence-publication defect; the live driver now persists partial P1.2 progress and the sanitized probe output before applying the name assertion. No provider call was made for this instrumentation correction.
