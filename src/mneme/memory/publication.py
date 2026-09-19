@@ -574,8 +574,8 @@ class InterpretationPublisher:
                 "INSERT INTO manifests("
                 "manifest_id,instance_id,revision,parent_manifest_id,inherited_base_manifest_id,"
                 "policy_id,self_ref_id,format_version,controller_version,integrity_digest,"
-                "accepted_history_digest,graph_snapshot_id,graph_revision) "
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                "accepted_history_digest,graph_snapshot_id,graph_revision,accepted_episode_count,"
+                "self_view_id,self_view_version) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 (
                     manifest_id,
                     self.instance_id,
@@ -590,6 +590,9 @@ class InterpretationPublisher:
                     old_manifest["accepted_history_digest"],
                     snapshot_id,
                     graph_revision,
+                    old_manifest["accepted_episode_count"],
+                    old_manifest["self_view_id"],
+                    old_manifest["self_view_version"],
                 ),
             )
             db.execute(

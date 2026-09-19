@@ -7,10 +7,12 @@ from pathlib import Path
 from typing import Any
 
 from . import __version__
+from .chat import ChatSession
 from .experiments.cli import add_parser as add_experiment_parser
 from .experiments.cli import dispatch as dispatch_experiment
 from .experiments.cli import normalize_args as normalize_experiment_args
 from .hosts import DeepInfraGemmaHost, FakeHost, GemmaHost
+from .identity import IdentityService
 from .qualification import qualify
 from .state import SQLiteStore
 from .state.contracts import StoragePermissions
@@ -100,20 +102,48 @@ def main(argv: list[str] | None = None) -> int:
     ssub = store_cmd.add_subparsers(dest="store_action", required=True)
     recover = ssub.add_parser("recover")
     recover.add_argument("id")
+    chat = sub.add_parser("chat")
+    chat.add_argument("text", nargs="?")
+    chat.add_argument("--mode", choices=("develop", "observe", "evaluate"), default="develop")
+    chat.add_argument("--memory", choices=("graph", "episodic", "off"), default="graph")
+    chat.add_argument("--host", default="fake")
+    chat.add_argument("--json", action="store_true")
+    identity = sub.add_parser("identity")
+    idsub = identity.add_subparsers(dest="identity_action", required=True)
+    adopt = idsub.add_parser("adopt")
+    adopt.add_argument("--host", default="fake")
+    adopt.add_argument("--name")
+    idshow = idsub.add_parser("show")
+    idshow.add_argument("--json", action="store_true")
+    alias = idsub.add_parser("alias")
+    alias_sub = alias.add_subparsers(dest="alias_action", required=True)
+    alias_add = alias_sub.add_parser("add")
+    alias_add.add_argument("alias")
     add_experiment_parser(sub)
     args = normalize_experiment_args(parser.parse_args(argv))
     if args.command == "experiment":
         return dispatch_experiment(args)
-    if args.command in {"instance", "episode", "operation", "checkpoint", "backup", "store"}:
+    if args.command in {
+        "instance",
+        "episode",
+        "operation",
+        "checkpoint",
+        "backup",
+        "store",
+        "chat",
+        "identity",
+    }:
         if args.store is None:
             raise SystemExit("--store PATH is required for state commands")
         if args.command == "instance" and args.instance_action == "create":
-            args.store.mkdir(parents=True, exist_ok=True)
-            path = (
-                args.store / f"{args.id or 'instance'}.sqlite3"
-                if args.store.is_dir()
-                else args.store
-            )
+            if args.store.exists() and args.store.is_dir():
+                path = args.store / f"{args.id or 'instance'}.sqlite3"
+            elif args.store.suffix.lower() in {".sqlite3", ".sqlite", ".db"}:
+                args.store.parent.mkdir(parents=True, exist_ok=True)
+                path = args.store
+            else:
+                args.store.mkdir(parents=True, exist_ok=True)
+                path = args.store / f"{args.id or 'instance'}.sqlite3"
             with SQLiteStore(path) as store:
                 instance_id = store.create_root(
                     instance_id=args.id,
@@ -122,10 +152,47 @@ def main(argv: list[str] | None = None) -> int:
                         store=True,
                         export=args.export,
                         interpret=args.development_enabled,
+                        recall=args.development_enabled,
+                        provider_reuse=args.development_enabled,
                     ),
                 )
             print(instance_id)
             return 0
+        if args.command == "chat":
+            text = args.text if args.text is not None else sys.stdin.readline().rstrip("\n")
+            with SQLiteStore(args.store) as store:
+                current = store.current()
+                session = ChatSession(
+                    store,
+                    str(current["active_instance_id"]),
+                    _host(args.host),
+                    mode=args.mode,
+                    memory=args.memory,
+                )
+                result = session.turn(text)
+            if args.json:
+                print(json.dumps(result.to_dict(), indent=2))
+            else:
+                print(result.output_text)
+            return 0
+        if args.command == "identity":
+            with SQLiteStore(args.store) as store:
+                current = store.current()
+                identity_service = IdentityService(store, str(current["active_instance_id"]))
+                if args.identity_action == "adopt":
+                    adopted_view = (
+                        identity_service.adopt(args.name, source={"actor": "operator"})
+                        if args.name is not None
+                        else identity_service.adopt_from_host(_host(args.host))
+                    )
+                    print(json.dumps(adopted_view.to_dict(), indent=2))
+                elif args.identity_action == "show":
+                    shown_view = identity_service.current()
+                    payload = shown_view.to_dict() if shown_view is not None else None
+                    print(json.dumps(payload, indent=2))
+                elif args.identity_action == "alias" and args.alias_action == "add":
+                    print(identity_service.add_alias(args.alias, source={"actor": "operator"}))
+                return 0
         if args.command == "instance" and args.instance_action == "list":
             paths = sorted(args.store.glob("*.sqlite3")) if args.store.is_dir() else [args.store]
             print(json.dumps([str(p) for p in paths], indent=2))
@@ -171,7 +238,8 @@ def main(argv: list[str] | None = None) -> int:
                     print(json.dumps(dict(row), indent=2))
                 else:
                     rows = store.connection.execute(
-                        "SELECT * FROM operations WHERE instance_id=? ORDER BY created_at", (args.id,)
+                        "SELECT * FROM operations WHERE instance_id=? ORDER BY created_at",
+                        (args.id,),
                     )
                     print(json.dumps([dict(row) for row in rows], indent=2))
             return 0
@@ -195,7 +263,9 @@ def main(argv: list[str] | None = None) -> int:
                 ).fetchone()
                 if row is None:
                     raise SystemExit("unknown instance")
-                service = ContinuityService(store, lookup_id, _host(getattr(args, "host", "fake")))
+                continuity = ContinuityService(
+                    store, lookup_id, _host(getattr(args, "host", "fake"))
+                )
                 if args.episode_action == "prepare":
                     data = json.loads(args.request.read_text())
                     req = GenerationRequest(
@@ -208,16 +278,20 @@ def main(argv: list[str] | None = None) -> int:
                     )
                     print(
                         json.dumps(
-                            service.prepare_episode(req, operation_id=args.operation_id).__dict__,
+                            continuity.prepare_episode(
+                                req, operation_id=args.operation_id
+                            ).__dict__,
                             indent=2,
                         )
                     )
                     return 0
                 if args.episode_action == "generate":
-                    print(json.dumps(service.generate_operation(args.operation).__dict__, indent=2))
+                    print(
+                        json.dumps(continuity.generate_operation(args.operation).__dict__, indent=2)
+                    )
                     return 0
                 if args.episode_action == "accept":
-                    print(json.dumps(service.accept_episode(args.operation).__dict__, indent=2))
+                    print(json.dumps(continuity.accept_episode(args.operation).__dict__, indent=2))
                     return 0
                 print(
                     json.dumps(

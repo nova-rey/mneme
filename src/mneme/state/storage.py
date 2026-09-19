@@ -21,7 +21,7 @@ from .contracts import (
     validate_id,
 )
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 APPLICATION_ID = 0x4D4E454D  # ASCII "MNEM"
 
 _SCHEMA = """
@@ -49,6 +49,8 @@ CREATE TABLE IF NOT EXISTS policies (
   storage_allowed INTEGER NOT NULL CHECK (storage_allowed IN (0,1)),
   export_allowed INTEGER NOT NULL CHECK (export_allowed IN (0,1)),
   interpretation_allowed INTEGER NOT NULL DEFAULT 0 CHECK (interpretation_allowed IN (0,1)),
+  recall_allowed INTEGER NOT NULL DEFAULT 0 CHECK (recall_allowed IN (0,1)),
+  provider_reuse_allowed INTEGER NOT NULL DEFAULT 0 CHECK (provider_reuse_allowed IN (0,1)),
   policy_version INTEGER NOT NULL
 );
 CREATE TABLE IF NOT EXISTS host_records (
@@ -74,6 +76,9 @@ CREATE TABLE IF NOT EXISTS manifests (
   accepted_history_digest TEXT NOT NULL,
   graph_snapshot_id TEXT,
   graph_revision INTEGER NOT NULL DEFAULT 0 CHECK (graph_revision >= 0),
+  accepted_episode_count INTEGER NOT NULL DEFAULT 0 CHECK (accepted_episode_count >= 0),
+  self_view_id TEXT,
+  self_view_version INTEGER NOT NULL DEFAULT 0 CHECK (self_view_version >= 0),
   UNIQUE(instance_id, revision),
   FOREIGN KEY(instance_id) REFERENCES lineages(instance_id)
 );
@@ -276,12 +281,78 @@ CREATE TABLE IF NOT EXISTS source_bindings (
   independent_evidence INTEGER NOT NULL CHECK (independent_evidence IN (0,1)),
   created_at TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS identity_events (
+  event_id TEXT PRIMARY KEY,
+  instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
+  event_kind TEXT NOT NULL CHECK (event_kind IN ('adopt','alias','supersede')),
+  name TEXT,
+  alias TEXT,
+  source_json TEXT NOT NULL,
+  accepted_revision INTEGER NOT NULL CHECK (accepted_revision >= 0),
+  self_view_version INTEGER NOT NULL CHECK (self_view_version >= 0),
+  supersedes_event_id TEXT REFERENCES identity_events(event_id),
+  created_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS self_views (
+  self_view_id TEXT PRIMARY KEY,
+  instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
+  version INTEGER NOT NULL CHECK (version >= 0),
+  name TEXT,
+  name_event_id TEXT REFERENCES identity_events(event_id),
+  content_json TEXT NOT NULL,
+  content_digest TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  UNIQUE(instance_id, version)
+);
+CREATE TABLE IF NOT EXISTS correction_directives (
+  directive_id TEXT PRIMARY KEY,
+  instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
+  target_route_id TEXT,
+  expression_type TEXT,
+  context_tag TEXT,
+  scope TEXT NOT NULL CHECK (scope IN ('until_revoked')),
+  status TEXT NOT NULL CHECK (status IN ('ACTIVE','REVOKED')),
+  source_json TEXT NOT NULL,
+  accepted_revision INTEGER NOT NULL CHECK (accepted_revision >= 0),
+  superseded_by TEXT REFERENCES correction_directives(directive_id),
+  created_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS declarations (
+  declaration_id TEXT PRIMARY KEY,
+  instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
+  declaration_json TEXT NOT NULL,
+  source_json TEXT NOT NULL,
+  status TEXT NOT NULL CHECK (status IN ('PROPOSED','ACCEPTED','REVOKED')),
+  accepted_revision INTEGER NOT NULL CHECK (accepted_revision >= 0),
+  created_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS turn_traces (
+  trace_id TEXT PRIMARY KEY,
+  instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
+  operation_id TEXT UNIQUE REFERENCES operations(operation_id),
+  pinned_manifest_id TEXT NOT NULL REFERENCES manifests(manifest_id),
+  mode TEXT NOT NULL,
+  treatment TEXT NOT NULL,
+  query_json TEXT NOT NULL,
+  considered_json TEXT NOT NULL,
+  selected_json TEXT NOT NULL,
+  suppressed_json TEXT NOT NULL,
+  applied_json TEXT NOT NULL,
+  request_json TEXT NOT NULL,
+  context_truncated INTEGER NOT NULL CHECK (context_truncated IN (0,1)),
+  created_at TEXT NOT NULL
+);
 """
 
 # Additive portion used by the explicit v1 -> v2 migration.  It is derived
 # from the same schema declaration so new stores and migrated stores receive
 # identical interpretation/graph tables.
-_SCHEMA_V2_TABLES = _SCHEMA[_SCHEMA.index("CREATE TABLE IF NOT EXISTS interpretation_operations") :]
+_SCHEMA_V3_TABLES = _SCHEMA[_SCHEMA.index("CREATE TABLE IF NOT EXISTS identity_events") :]
+_SCHEMA_V2_TABLES = _SCHEMA[
+    _SCHEMA.index("CREATE TABLE IF NOT EXISTS interpretation_operations") : _SCHEMA.index(
+        "CREATE TABLE IF NOT EXISTS identity_events"
+    )
+]
 
 _IMMUTABLE = (
     "lineages",
@@ -303,6 +374,11 @@ _IMMUTABLE = (
     "graph_edges",
     "graph_routes",
     "source_bindings",
+    "identity_events",
+    "self_views",
+    "correction_directives",
+    "declarations",
+    "turn_traces",
 )
 
 
@@ -350,9 +426,7 @@ class SQLiteStore:
         ):
             self._initialize()
         self._check_schema()
-        artifact = self.connection.execute(
-            "SELECT artifact_kind FROM store_info"
-        ).fetchone()
+        artifact = self.connection.execute("SELECT artifact_kind FROM store_info").fetchone()
         if (
             not read_only
             and artifact is not None
@@ -427,13 +501,11 @@ class SQLiteStore:
         version = int(row[0]) if row else 0
         if version > SCHEMA_VERSION:
             raise SchemaError(f"unsupported newer schema version {version}")
-        if self.read_only and version == SCHEMA_VERSION - 1:
+        if self.read_only and version in {1, 2}:
             # Historical Phase Zero checkpoints remain inspectable without
             # mutation.  Forking a v1 checkpoint stages and explicitly
             # migrates a private copy before opening it writable.
-            if info := self.connection.execute(
-                "SELECT schema_version FROM store_info"
-            ).fetchone():
+            if info := self.connection.execute("SELECT schema_version FROM store_info").fetchone():
                 if int(info[0]) == version:
                     return
         if version != SCHEMA_VERSION:
@@ -460,12 +532,14 @@ class SQLiteStore:
         interrupted or validation fails.
         """
 
-        if target_version != SCHEMA_VERSION:
-            raise SchemaError(f"only migration to schema {SCHEMA_VERSION} is supported")
+        if target_version not in {2, SCHEMA_VERSION}:
+            raise SchemaError(f"only migration to schema 2 or {SCHEMA_VERSION} is supported")
         source = Path(path)
         if not source.is_file():
             raise SchemaError(f"store does not exist: {source}")
-        backup_path = Path(backup) if backup is not None else source.with_suffix(source.suffix + ".pre-v2")
+        backup_path = (
+            Path(backup) if backup is not None else source.with_suffix(source.suffix + ".pre-v2")
+        )
         if backup_path.exists():
             raise SchemaError(f"migration backup already exists: {backup_path}")
         backup_path.parent.mkdir(parents=True, exist_ok=True)
@@ -476,36 +550,76 @@ class SQLiteStore:
         try:
             version_row = raw.execute("PRAGMA user_version").fetchone()
             version = int(version_row[0]) if version_row else 0
-            if version == SCHEMA_VERSION:
+            if version == target_version:
                 raise SchemaError("store is already at the requested schema version")
-            if version != 1:
+            if version not in {1, 2} or version > target_version:
                 raise SchemaError(f"cannot migrate unsupported schema version {version}")
             info = raw.execute("SELECT schema_version FROM store_info").fetchone()
-            if info is None or int(info[0]) != 1:
-                raise SchemaError("v1 store_info is missing or inconsistent")
+            if info is None or int(info[0]) != version:
+                raise SchemaError("store_info schema version is missing or inconsistent")
             raw.execute("BEGIN IMMEDIATE")
-            raw.execute("ALTER TABLE manifests ADD COLUMN graph_snapshot_id TEXT")
-            raw.execute(
-                "ALTER TABLE manifests ADD COLUMN graph_revision INTEGER NOT NULL DEFAULT 0"
-            )
-            policy_table = raw.execute(
-                "SELECT 1 FROM sqlite_master WHERE type='table' AND name='policies'"
-            ).fetchone()
-            if policy_table is not None:
+            if version == 1:
+                raw.execute("ALTER TABLE manifests ADD COLUMN graph_snapshot_id TEXT")
                 raw.execute(
-                    "ALTER TABLE policies ADD COLUMN interpretation_allowed INTEGER NOT NULL DEFAULT 0"
+                    "ALTER TABLE manifests ADD COLUMN graph_revision INTEGER NOT NULL DEFAULT 0"
                 )
-            # The v2 tables are additive.  Keep this script explicit so a
-            # partially applied migration rolls back as one SQLite transaction.
-            for statement in _SCHEMA_V2_TABLES.split(";"):
-                statement = statement.strip()
-                if statement:
-                    raw.execute(statement)
-            raw.execute(
-                "UPDATE store_info SET schema_version=?, record_version=record_version+1",
-                (SCHEMA_VERSION,),
-            )
-            raw.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
+                policy_table = raw.execute(
+                    "SELECT 1 FROM sqlite_master WHERE type='table' AND name='policies'"
+                ).fetchone()
+                if policy_table is not None:
+                    raw.execute(
+                        "ALTER TABLE policies ADD COLUMN interpretation_allowed INTEGER NOT NULL DEFAULT 0"
+                    )
+                for statement in _SCHEMA_V2_TABLES.split(";"):
+                    statement = statement.strip()
+                    if statement:
+                        raw.execute(statement)
+                raw.execute(
+                    "UPDATE store_info SET schema_version=2,record_version=record_version+1"
+                )
+                raw.execute("PRAGMA user_version = 2")
+                version = 2
+            if version == 2 and target_version == SCHEMA_VERSION:
+                raw.execute(
+                    "ALTER TABLE manifests ADD COLUMN accepted_episode_count INTEGER NOT NULL DEFAULT 0"
+                )
+                raw.execute("ALTER TABLE manifests ADD COLUMN self_view_id TEXT")
+                raw.execute(
+                    "ALTER TABLE manifests ADD COLUMN self_view_version INTEGER NOT NULL DEFAULT 0"
+                )
+                policy_table = raw.execute(
+                    "SELECT 1 FROM sqlite_master WHERE type='table' AND name='policies'"
+                ).fetchone()
+                if policy_table is not None:
+                    raw.execute(
+                        "ALTER TABLE policies ADD COLUMN recall_allowed INTEGER NOT NULL DEFAULT 0"
+                    )
+                    raw.execute(
+                        "ALTER TABLE policies ADD COLUMN provider_reuse_allowed INTEGER NOT NULL DEFAULT 0"
+                    )
+                episodes_table = raw.execute(
+                    "SELECT 1 FROM sqlite_master WHERE type='table' AND name='episodes'"
+                ).fetchone()
+                if episodes_table is not None:
+                    # The v3 counter is local to each lineage.  Existing v2
+                    # manifests therefore derive it from accepted episodes
+                    # owned by that lineage, while inherited history remains
+                    # outside the child's local count.
+                    raw.execute(
+                        "UPDATE manifests AS m SET accepted_episode_count="
+                        "(SELECT COUNT(*) FROM episodes e "
+                        "WHERE e.origin_instance_id=m.instance_id "
+                        "AND e.accepted_revision <= m.revision)"
+                    )
+                for statement in _SCHEMA_V3_TABLES.split(";"):
+                    statement = statement.strip()
+                    if statement:
+                        raw.execute(statement)
+                raw.execute(
+                    "UPDATE store_info SET schema_version=?,record_version=record_version+1",
+                    (SCHEMA_VERSION,),
+                )
+                raw.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
             for table in _IMMUTABLE:
                 exists = raw.execute(
                     "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (table,)
@@ -563,14 +677,17 @@ class SQLiteStore:
             )
             db.execute(
                 "INSERT INTO policies(policy_id,scope_id,storage_allowed,export_allowed,"
-                "interpretation_allowed,policy_version) VALUES (?,?,?,?,?,?)",
+                "interpretation_allowed,recall_allowed,provider_reuse_allowed,policy_version) "
+                "VALUES (?,?,?,?,?,?,?,?)",
                 (
                     policy_id,
                     scope_id,
                     int(permissions.store),
                     int(permissions.export),
                     int(permissions.interpret),
-                    2 if permissions.interpret else 1,
+                    int(permissions.recall),
+                    int(permissions.provider_reuse),
+                    3,
                 ),
             )
             db.execute(
@@ -656,9 +773,13 @@ class SQLiteStore:
             problems.append("current_state active lineage is missing")
         else:
             parent = active["parent_instance_id"]
-            if parent is not None and self.connection.execute(
-                "SELECT 1 FROM lineages WHERE instance_id=?", (parent,)
-            ).fetchone() is None:
+            if (
+                parent is not None
+                and self.connection.execute(
+                    "SELECT 1 FROM lineages WHERE instance_id=?", (parent,)
+                ).fetchone()
+                is None
+            ):
                 problems.append("lineage parent is missing")
             if (active["fork_checkpoint_id"] is None) != (active["fork_manifest_id"] is None):
                 problems.append("fork ancestry is incomplete")
@@ -678,6 +799,7 @@ class SQLiteStore:
                         "instance_id": fork_manifest["instance_id"],
                         "revision": 0,
                         "self_ref_id": fork_manifest["self_ref_id"],
+                        "self_view_id": fork_manifest["self_view_id"],
                         "graph_snapshot_id": fork_manifest["graph_snapshot_id"],
                         "graph_revision": fork_manifest["graph_revision"],
                         "accepted_history_digest": fork_manifest["accepted_history_digest"],

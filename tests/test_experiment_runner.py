@@ -43,6 +43,8 @@ def _records() -> tuple[list[dict[str, object]], list[dict[str, object]]]:
 
 def _prepared_run(
     tmp_path: Path,
+    *,
+    controller: bool = False,
 ) -> tuple[ArtifactStore, Path, SQLiteStore, str, list[dict[str, object]], list[dict[str, object]]]:
     host = FakeHost()
     store = SQLiteStore(tmp_path / "subject.sqlite3")
@@ -97,6 +99,8 @@ def _prepared_run(
         "host": {"backend": "fake"},
         "generation": {"parameters": {"max_new_tokens": 8}},
     }
+    if controller:
+        experiment["controller"] = {"mode": "develop", "memory": "off"}
     bindings = {
         "subjects": [{"slot": 0, "start": "start"}],
         "checkpoints": {
@@ -196,6 +200,26 @@ def test_runner_never_injects_previous_output_into_later_request(tmp_path: Path)
     assert len(requests) == 2
     assert requests[1]["messages"] == development[1]["messages"]
     assert requests[0]["messages"] != requests[1]["messages"]
+
+
+def test_runner_controller_path_preserves_declared_context_and_accepts_once(tmp_path: Path) -> None:
+    artifacts, _, store, _, development, _ = _prepared_run(tmp_path, controller=True)
+    development[0]["messages"] = [
+        {"role": "system", "content": "declared system"},
+        {"role": "user", "content": "development one"},
+    ]
+    runner = IntegratedRunner(
+        "run-001", artifacts.root, {0: SubjectExecution(0, store, FakeHost())}
+    )
+    evidence = runner.execute_development(0, development)
+    assert [item.status for item in evidence] == ["ACCEPTED", "ACCEPTED"]
+    requests = [
+        json.loads(row[0])
+        for row in store.connection.execute("SELECT request_json FROM run_manifests ORDER BY rowid")
+    ]
+    assert requests[0]["messages"] == development[0]["messages"]
+    assert store.connection.execute("SELECT COUNT(*) FROM turn_traces").fetchone()[0] == 2
+    assert store.connection.execute("SELECT COUNT(*) FROM episodes").fetchone()[0] == 2
 
 
 def test_uncertain_provider_operation_is_not_regenerated(tmp_path: Path) -> None:

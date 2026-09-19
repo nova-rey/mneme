@@ -6,7 +6,11 @@ import sys
 
 import pytest
 
+from mneme.contracts import GenerationRequest
+from mneme.hosts import FakeHost
 from mneme.state.contracts import StoragePermissions, accepted_history_digest, canonical_digest
+from mneme.state.service import ContinuityService
+from mneme.state.snapshots import create_checkpoint, fork_from_checkpoint
 from mneme.state.storage import SCHEMA_VERSION, SchemaError, SQLiteStore
 
 
@@ -39,7 +43,7 @@ def test_explicit_interpretation_permission_is_recorded(tmp_path):
             store.connection.execute(
                 "SELECT interpretation_allowed, policy_version FROM policies"
             ).fetchone()
-        ) == (1, 2)
+        ) == (1, 3)
 
 
 def test_explicit_transactions_rollback_and_immutable_rows(tmp_path):
@@ -137,7 +141,58 @@ def test_schema_migration_is_explicit_backed_up_and_additive(tmp_path):
     assert migrated.execute("PRAGMA user_version").fetchone()[0] == SCHEMA_VERSION
     columns = {row[1] for row in migrated.execute("PRAGMA table_info(manifests)")}
     assert {"graph_snapshot_id", "graph_revision"} <= columns
-    assert migrated.execute(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name='candidates'"
-    ).fetchone() is not None
+    assert (
+        migrated.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='candidates'"
+        ).fetchone()
+        is not None
+    )
     migrated.close()
+
+
+def test_schema_v2_to_v3_backfills_local_episode_counts(tmp_path):
+    parent_path = tmp_path / "parent.sqlite3"
+    checkpoint_path = tmp_path / "parent.checkpoint.sqlite3"
+    child_path = tmp_path / "child.sqlite3"
+    with SQLiteStore(parent_path) as parent_store:
+        parent = parent_store.create_root(permissions=StoragePermissions(True, True))
+        service = ContinuityService(parent_store, parent, FakeHost())
+        operation = service.prepare_episode(GenerationRequest(({"role": "user", "content": "x"},)))
+        service.generate_operation(operation.operation_id)
+        service.accept_episode(operation.operation_id)
+        create_checkpoint(parent_store, checkpoint_path)
+    child = fork_from_checkpoint(checkpoint_path, child_path)
+
+    raw = sqlite3.connect(child_path)
+    raw.execute("PRAGMA foreign_keys=OFF")
+    for table in (
+        "turn_traces",
+        "declarations",
+        "correction_directives",
+        "self_views",
+        "identity_events",
+    ):
+        raw.execute(f"DROP TABLE {table}")
+    for trigger in tuple(
+        row[0]
+        for row in raw.execute("SELECT name FROM sqlite_master WHERE type='trigger'").fetchall()
+    ):
+        raw.execute(f'DROP TRIGGER "{trigger}"')
+    for column in ("self_view_version", "self_view_id", "accepted_episode_count"):
+        raw.execute(f"ALTER TABLE manifests DROP COLUMN {column}")
+    for column in ("provider_reuse_allowed", "recall_allowed"):
+        raw.execute(f"ALTER TABLE policies DROP COLUMN {column}")
+    raw.execute("UPDATE store_info SET schema_version=2")
+    raw.execute("PRAGMA user_version=2")
+    raw.commit()
+    raw.close()
+
+    backup = tmp_path / "child.before-v3.sqlite3"
+    SQLiteStore.migrate(child_path, backup=backup)
+    with SQLiteStore(child_path, read_only=True) as migrated:
+        counts = migrated.connection.execute(
+            "SELECT instance_id,revision,accepted_episode_count FROM manifests "
+            "WHERE revision IN (0,1) ORDER BY instance_id,revision"
+        ).fetchall()
+        assert any(row[0] == child and row[1] == 0 and row[2] == 0 for row in counts)
+        assert any(row[0] != child and row[1] == 1 and row[2] == 1 for row in counts)

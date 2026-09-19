@@ -26,6 +26,7 @@ from pathlib import Path
 from typing import Any
 
 from ..contracts import GenerationRequest
+from ..controller import ResponseController, TurnIntent
 from ..host import Host
 from ..state.reader import CheckpointReader
 from ..state.service import (
@@ -427,10 +428,28 @@ class IntegratedRunner:
         _validate_order(self.plan, slot, records, "development_order")
         start_revision = self._subject_start(slot)
         system, parameters, response_format = _experiment_parameters(self.experiment)
+        controller_config = self.experiment.get("controller")
+        if controller_config is not None and not isinstance(controller_config, Mapping):
+            raise RunnerError("controller must be an object when provided")
+        controller_mode = (
+            str(controller_config.get("mode", "develop"))
+            if isinstance(controller_config, Mapping)
+            else "develop"
+        )
+        controller_memory = (
+            str(controller_config.get("memory", "off"))
+            if isinstance(controller_config, Mapping)
+            else "off"
+        )
+        if controller_mode not in {"develop", "observe"}:
+            raise RunnerError("runner development controller mode must be develop or observe")
+        if controller_memory not in {"graph", "episodic", "off"}:
+            raise RunnerError("runner controller memory must be graph, episodic, or off")
         evidence: list[DevelopmentEvidence] = []
         limit = len(records) if stop_after is None else max(0, min(stop_after, len(records)))
         accepted_count = 0
         for ordinal, record in enumerate(records[:limit]):
+            record_messages = _messages(record)
             operation_id = _uuid_coordinate(
                 self.run_id,
                 "development",
@@ -438,72 +457,118 @@ class IntegratedRunner:
                 ordinal,
                 _record_id(record, ordinal),
             )
-            request = GenerationRequest(
-                _messages(record),
-                system=system,
-                parameters=parameters,
-                seed=_optional_stream_seed(
+            if controller_config is not None:
+                seed = _optional_stream_seed(
                     self.plan,
                     "development_generation",
                     subject_slot=slot,
                     episode=ordinal,
-                ),
-                response_format=response_format,
-            )
-            try:
-                prepared = ContinuityService(
-                    subject.store,
-                    str(subject.store.current()["active_instance_id"]),
-                    subject.host,
-                ).prepare_episode(request, operation_id=operation_id)
-            except ContinuityError as exc:
-                raise RunnerError(
-                    f"cannot prepare development operation {operation_id}: {exc}"
-                ) from exc
-            if prepared.status == "UNCERTAIN" or prepared.status == "STARTED":
-                raise RunnerUncertain(f"development operation is {prepared.status}: {operation_id}")
-            model_calls = 0
-            if prepared.status == "ACCEPTED":
-                # ``prepare_episode`` intentionally returns a compact accepted
-                # receipt.  Re-read the terminal operation through the
-                # idempotent accept path so the revision is available for
-                # restart validation.
-                receipt = ContinuityService(
-                    subject.store,
-                    str(subject.store.current()["active_instance_id"]),
-                    subject.host,
-                ).accept_episode(operation_id)
-            else:
-                service = ContinuityService(
+                )
+                controller = ResponseController(
                     subject.store,
                     str(subject.store.current()["active_instance_id"]),
                     subject.host,
                 )
-                if prepared.status == "PREPARED":
-                    try:
-                        self._assert_call_budget()
-                        generated = service.generate_operation(operation_id)
-                        model_calls = 1
-                    except Exception as exc:
-                        if self._operation_status(subject.store, operation_id) == "UNCERTAIN":
-                            raise RunnerUncertain(
-                                f"development generation became UNCERTAIN: {operation_id}"
-                            ) from exc
-                        raise RunnerError(
-                            f"development generation failed: {operation_id}: {exc}"
-                        ) from exc
-                else:
-                    generated = prepared
-                if generated.status == "UNCERTAIN" or generated.status == "STARTED":
-                    raise RunnerUncertain(
-                        f"development operation is {generated.status}: {operation_id}"
-                    )
+                status_before = self._operation_status(subject.store, operation_id)
                 try:
-                    receipt = service.accept_episode(operation_id)
+                    prepared_turn = controller.prepare(
+                        TurnIntent(
+                            current_input=record_messages[-1]["content"],
+                            mode=controller_mode,
+                            memory=controller_memory,
+                            session_messages=tuple(record_messages[:-1]),
+                            system=system,
+                            parameters=parameters,
+                            seed=seed,
+                            response_format=response_format,
+                            operation_id=operation_id,
+                        )
+                    )
+                    if status_before in {None, "PREPARED"}:
+                        self._assert_call_budget()
+                    result = controller.execute(prepared_turn)
                 except Exception as exc:
+                    if self._operation_status(subject.store, operation_id) in {
+                        "UNCERTAIN",
+                        "STARTED",
+                    }:
+                        raise RunnerUncertain(
+                            f"development controller operation is uncertain: {operation_id}"
+                        ) from exc
                     raise RunnerError(
-                        f"development acceptance failed: {operation_id}: {exc}"
+                        f"development controller operation failed: {operation_id}: {exc}"
                     ) from exc
+                receipt = result.operation
+                model_calls = int(status_before in {None, "PREPARED"})
+            else:
+                request = GenerationRequest(
+                    record_messages,
+                    system=system,
+                    parameters=parameters,
+                    seed=_optional_stream_seed(
+                        self.plan,
+                        "development_generation",
+                        subject_slot=slot,
+                        episode=ordinal,
+                    ),
+                    response_format=response_format,
+                )
+                try:
+                    prepared = ContinuityService(
+                        subject.store,
+                        str(subject.store.current()["active_instance_id"]),
+                        subject.host,
+                    ).prepare_episode(request, operation_id=operation_id)
+                except ContinuityError as exc:
+                    raise RunnerError(
+                        f"cannot prepare development operation {operation_id}: {exc}"
+                    ) from exc
+                if prepared.status == "UNCERTAIN" or prepared.status == "STARTED":
+                    raise RunnerUncertain(
+                        f"development operation is {prepared.status}: {operation_id}"
+                    )
+                model_calls = 0
+                if prepared.status == "ACCEPTED":
+                    # ``prepare_episode`` intentionally returns a compact accepted
+                    # receipt.  Re-read the terminal operation through the
+                    # idempotent accept path so the revision is available for
+                    # restart validation.
+                    receipt = ContinuityService(
+                        subject.store,
+                        str(subject.store.current()["active_instance_id"]),
+                        subject.host,
+                    ).accept_episode(operation_id)
+                else:
+                    service = ContinuityService(
+                        subject.store,
+                        str(subject.store.current()["active_instance_id"]),
+                        subject.host,
+                    )
+                    if prepared.status == "PREPARED":
+                        try:
+                            self._assert_call_budget()
+                            generated = service.generate_operation(operation_id)
+                            model_calls = 1
+                        except Exception as exc:
+                            if self._operation_status(subject.store, operation_id) == "UNCERTAIN":
+                                raise RunnerUncertain(
+                                    f"development generation became UNCERTAIN: {operation_id}"
+                                ) from exc
+                            raise RunnerError(
+                                f"development generation failed: {operation_id}: {exc}"
+                            ) from exc
+                    else:
+                        generated = prepared
+                    if generated.status == "UNCERTAIN" or generated.status == "STARTED":
+                        raise RunnerUncertain(
+                            f"development operation is {generated.status}: {operation_id}"
+                        )
+                    try:
+                        receipt = service.accept_episode(operation_id)
+                    except Exception as exc:
+                        raise RunnerError(
+                            f"development acceptance failed: {operation_id}: {exc}"
+                        ) from exc
             if receipt.status == "ACCEPTED":
                 expected_revision = start_revision + ordinal + 1
                 if receipt.revision != expected_revision:

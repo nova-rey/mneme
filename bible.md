@@ -164,3 +164,9 @@
 
 - Added and claimed the approved P1.2 package on accepted base `8a0d758`, covering the shared response controller, fixed bounded retrieval/influence boundary, deliberate identity/self-view continuity, explicit correction/declaration records, and evaluation isolation.
 - P1.2 is the only active Phase One package. P1.3 and Phase Two remain undispatched.
+
+## 2026-09-19 P1.2 candidate implementation
+
+- Implemented the approved P1.2 response and identity boundary: schema 2→3 persistence with local episode-count migration, fixed bounded route selection and typed influence traces, exact-once controller retries, deliberate and one-call host-mediated naming, child-local self-view rebinding, explicit reversible corrections/declarations, process-local chat, and opt-in runner controller integration.
+- Added CLI identity/chat surfaces and corrected file-path instance creation so the documented `--store ...sqlite3` workflow creates a database file rather than a directory.
+- Stop-gate candidate validation is green: 148 pytest tests, Ruff, strict mypy, `git diff --check`, focused P1.2/runner/storage tests, and a CLI create/adopt/show smoke. No P1.3 or Phase Two implementation was started.

@@ -15,7 +15,7 @@ from dataclasses import dataclass
 from enum import StrEnum
 from typing import Any
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 ACCEPTED_HISTORY_DIGEST_VERSION = 2
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 
@@ -41,10 +41,18 @@ class StoragePermissions:
     store: bool = True
     export: bool = False
     interpret: bool = False
+    recall: bool = False
+    provider_reuse: bool = False
 
     def to_json(self) -> str:
         return canonical_json(
-            {"export": self.export, "interpret": self.interpret, "store": self.store}
+            {
+                "export": self.export,
+                "interpret": self.interpret,
+                "provider_reuse": self.provider_reuse,
+                "recall": self.recall,
+                "store": self.store,
+            }
         )
 
 
