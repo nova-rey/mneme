@@ -16,7 +16,7 @@ from .experiments.inspection import inspect_store, inspect_turn
 from .hosts import DeepInfraGemmaHost, FakeHost, GemmaHost
 from .identity import IdentityService
 from .qualification import qualify
-from .state import SQLiteStore
+from .state import SCHEMA_VERSION, SQLiteStore
 from .state.contracts import StoragePermissions
 from .state.policy import PolicyService
 from .state.reader import CheckpointReader
@@ -114,6 +114,9 @@ def main(argv: list[str] | None = None) -> int:
     ssub = store_cmd.add_subparsers(dest="store_action", required=True)
     recover = ssub.add_parser("recover")
     recover.add_argument("id")
+    migrate = ssub.add_parser("migrate")
+    migrate.add_argument("--to", type=int, choices=(3, 4), required=True)
+    migrate.add_argument("--backup", type=Path, required=True)
     inspect_cmd = sub.add_parser("inspect")
     inspect_sub = inspect_cmd.add_subparsers(dest="inspect_action", required=True)
     inspect_turn_cmd = inspect_sub.add_parser("turn")
@@ -144,10 +147,13 @@ def main(argv: list[str] | None = None) -> int:
     pgrant.add_argument("--recall", action="store_true")
     pgrant.add_argument("--provider-reuse", action="store_true")
     pgrant.add_argument("--host")
+    pgrant.add_argument("--history", choices=("all",), default=None)
+    pgrant.add_argument("host_name", nargs="?")
     prevoke = psub.add_parser("revoke")
     prevoke.add_argument("--interpret", action="store_true")
     prevoke.add_argument("--recall", action="store_true")
     prevoke.add_argument("--provider-reuse", action="store_true")
+    prevoke.add_argument("policy_id", nargs="?")
     add_experiment_parser(sub)
     args = normalize_experiment_args(parser.parse_args(argv))
     if args.command == "demo":
@@ -228,9 +234,12 @@ def main(argv: list[str] | None = None) -> int:
                 if not permissions:
                     raise SystemExit("select at least one Phase One permission")
                 if args.permission_action == "revoke":
+                    if args.policy_id and args.policy_id != service.current().policy_id:
+                        raise SystemExit("policy ID does not match the active lineage policy")
                     revision = service.revoke(permissions)
                 else:
-                    selected_host = _host(args.host) if args.host else None
+                    selected_host_name = args.host or args.host_name
+                    selected_host = _host(selected_host_name) if selected_host_name else None
                     revision = service.grant(
                         permissions,
                         host_fingerprint=(
@@ -329,6 +338,11 @@ def main(argv: list[str] | None = None) -> int:
                         (args.id,),
                     )
                     print(json.dumps([dict(row) for row in rows], indent=2))
+            return 0
+        if args.command == "store" and args.store_action == "migrate":
+            target_version = SCHEMA_VERSION if args.to == 3 else args.to
+            SQLiteStore.migrate(args.store, target_version=target_version, backup=args.backup)
+            print(json.dumps({"schema_version": target_version, "backup": str(args.backup)}))
             return 0
         if args.command == "store" and args.store_action == "recover":
             with SQLiteStore(args.store, read_only=False) as store:

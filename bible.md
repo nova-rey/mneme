@@ -256,3 +256,7 @@
 - Hardened prepared controller turns against lineage, manifest, graph, self-view, and host fingerprint drift before any provider dispatch; accepted operation coordinates remain idempotent on retry.
 - Marked process-local prior chat messages as replayed provenance so prior user text remains model context without becoming fresh independent evidence. Added regressions for stale-state rejection, host drift rejection, exact-once safety, and replay source-binding provenance.
 - Bound-host interpretation now consults the current provider-reuse authority before dispatch, so revocation cannot leave an old selected provider path usable.
+
+## 2026-09-19 Phase One permission CLI compatibility
+
+- Added the documented store migration entrypoint and compatibility forms for explicit scoped permission grants/revocations, while preserving schema-4 authority storage and fail-closed legacy behavior.
