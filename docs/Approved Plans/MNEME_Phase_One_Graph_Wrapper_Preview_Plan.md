@@ -1,6 +1,6 @@
 # MNEME Phase One — Graph-wrapper preview
 
-**Status:** Approved on 2026-09-19 with the route-ranking, counter-clarity, and explicit new-instance permission corrections incorporated. Implementation awaits separate authorization.
+**Status:** Approved on 2026-09-19 with the route-ranking, counter-clarity, and explicit new-instance permission corrections incorporated. Offline P1.1/P1.2/P1.3 implementation and adversarial validation are accepted; the bounded live acceptance gate remains waiting on external provider evidence.
 
 ## 1. Outcome and planning decisions
 

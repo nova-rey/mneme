@@ -271,3 +271,4 @@
 - Added a dedicated `P1.LIVE` work-queue package waiting on the external DeepInfra acceptance gate. The approved live budget has 18 calls consumed across three failed attempts; no new provider call, release tag, or Phase One closure claim was made.
 - Added the remediation receipt to the documentation index without changing the normative specification or Phase One scope.
 - GitHub Actions CI for `f3aed96` completed successfully after the remediation documentation push.
+- Updated the approved Phase One plan status to reflect accepted offline implementation and the still-waiting external live gate; no scientific plan text or Phase Two scope changed.
