@@ -336,3 +336,8 @@
 - The bounded bridged-fixture run tested commit `44e9d75ddd16eebe757f0c7975a07636c0f9b318` and dispatched eight DeepInfra calls. P1.1 passed: both natural developmental examples produced valid source-supported edges and deterministic publication derived a two-edge route with provenance from both interpretations.
 - P1.2 naming durably adopted `Gemma4`, and the relevant response was accepted with a traced route payload. Its extraction returned an edge whose evidence paraphrased the immutable source; the one permitted repair returned another paraphrase. Strict quotation validation rejected both, so P1.2 failed and P1.3 received zero calls. DeepInfra and the credential were functional; no transport retry or replacement sampling occurred.
 - Preserved sanitized evidence in `docs/receipts/MNEME_Phase_One_Live_Bridged_Run_Failure_Receipt.{md,json}` and returned `P1.LIVE` to `WAITING` on a new explicit live authorization. Private `live_summary.json` and SQLite artifacts remain outside Git. No release tag or Phase Two work began.
+
+## 2026-09-19 Phase One extraction prompt clarification
+
+- Added a narrow fail-closed instruction to the extraction prompt: before returning a concept or relationship, Gemma must verify each evidence quotation is a contiguous substring of its referenced source; unsupported paraphrases are omitted rather than rewritten into evidence. The validator and acceptance criteria are unchanged, and model-output sources remain explicitly covered.
+- Added prompt regression assertions and reran the offline validation before any further provider call. The prior bridged-run artifacts remain unchanged and P1.LIVE stays waiting for fresh authorization.

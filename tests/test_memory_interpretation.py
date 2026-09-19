@@ -129,6 +129,8 @@ def test_extraction_prompt_declares_strict_residue_record_shape(tmp_path):
         assert "Every evidence object must contain only source and evidence" in system
         assert "route_candidates are optional source-backed groupings" in system
         assert "MNEME derives bounded directed routes from accepted graph edges" in system
+        assert "one contiguous substring of the referenced source slot" in system
+        assert "omit that assertion instead of paraphrasing" in system
         for kind in SUPPORTED_CONCEPT_KINDS:
             assert kind in system
         for relationship in SUPPORTED_RELATIONSHIP_KINDS:
