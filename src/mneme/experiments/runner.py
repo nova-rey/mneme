@@ -669,6 +669,7 @@ class IntegratedRunner:
         records: Sequence[Mapping[str, Any]],
         *,
         checkpoint: str | Path,
+        private_snapshot: str | Path | None = None,
         repetition_count: int = 1,
         boundary: int = 0,
     ) -> tuple[EvaluationEvidence, ...]:
@@ -681,6 +682,10 @@ class IntegratedRunner:
             raise RunnerError("repetition_count must be positive")
         _validate_order(self.plan, slot, records, "evaluation_order")
         checkpoint_path = Path(checkpoint)
+        if private_snapshot is None:
+            raise RunnerError("evaluation requires an explicit bound private snapshot")
+        if checkpoint_path.resolve() != Path(private_snapshot).resolve():
+            raise RunnerError("evaluation checkpoint is not the subject's private snapshot")
         if not checkpoint_path.is_file() or checkpoint_path.is_symlink():
             raise RunnerError("evaluation checkpoint must be a regular file")
         try:
@@ -1167,6 +1172,7 @@ class IntegratedRunner:
                     slot,
                     [dict(item) for item in raw_records if isinstance(item, Mapping)],
                     checkpoint=private_path,
+                    private_snapshot=private_path,
                     repetition_count=int(config.get("repetitions", 1)),
                     boundary=boundary_value,
                 )

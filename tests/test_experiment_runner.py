@@ -295,6 +295,26 @@ def test_runner_requires_all_prepared_subject_slots(tmp_path: Path) -> None:
         IntegratedRunner("run-001", artifacts.root, {})
 
 
+def test_evaluation_requires_exact_bound_private_snapshot_path(tmp_path: Path) -> None:
+    artifacts, store, development, evaluation = _complete_runner(tmp_path)
+    alternate = tmp_path / "alternate-evaluation.sqlite3"
+    alternate.write_bytes((tmp_path / "private.sqlite3").read_bytes())
+    runner = IntegratedRunner(
+        "run-001",
+        artifacts.root,
+        {0: SubjectExecution(0, store, FakeHost())},
+    )
+    with pytest.raises(RunnerError, match="private snapshot"):
+        runner.evaluate(
+            0,
+            evaluation,
+            checkpoint=alternate,
+            private_snapshot=tmp_path / "private.sqlite3",
+        )
+    with pytest.raises(RunnerError, match="explicit bound private snapshot"):
+        runner.evaluate(0, evaluation, checkpoint=tmp_path / "private.sqlite3")
+
+
 def test_runner_never_injects_previous_output_into_later_request(tmp_path: Path) -> None:
     artifacts, _, store, _, development, _ = _prepared_run(tmp_path)
     runner = IntegratedRunner(

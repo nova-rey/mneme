@@ -260,3 +260,7 @@
 ## 2026-09-19 Phase One permission CLI compatibility
 
 - Added the documented store migration entrypoint and compatibility forms for explicit scoped permission grants/revocations, while preserving schema-4 authority storage and fail-closed legacy behavior.
+
+## 2026-09-19 Phase One evaluation binding correction
+
+- Integrated evaluation now requires and checks the exact bound private snapshot path before opening a frozen view; an alternate copy or an omitted binding fails closed.
