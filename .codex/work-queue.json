@@ -674,7 +674,13 @@
       },
       "base_sha": "b46e8c728e2dbf80e553b14b4de99713e6610a1bf",
       "campaign": "mneme-phase-one",
-      "candidate": null,
+      "candidate": {
+        "artifact": "docs/receipts/MNEME_P1.3_Graph_Wrapper_Preview_Receipt.md",
+        "base_sha": "b46e8c728e2dbf80e553b14b4de99713e6610a1bf",
+        "returned_at": "2026-09-19T18:24:27.773013Z",
+        "returned_by": "/root/p11_supervisor",
+        "sha": "13acdfafe630000672f8e96ea252c7171cf3c06c"
+      },
       "completion_criterion": "Approved P1.3 matched three-treatment frozen readouts, inspection/reporting, fresh-install smoke, provenance/isolation evidence, bounded acceptance demonstrations, and complete validation pass without Phase Two implementation.",
       "created_at": "2026-09-19T18:12:59.847156Z",
       "dependencies": [
@@ -693,10 +699,12 @@
         "bible.md",
         ".codex/work-queue.json"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "docs/receipts/MNEME_P1.3_Graph_Wrapper_Preview_Receipt.md"
+      ],
       "id": "P1.3",
       "notes": "Approved plan section 11/15; depends on accepted P1.2 gate b46e8c7.",
-      "owner": "/root/p11_supervisor",
+      "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -723,12 +731,10 @@
         }
       ],
       "scope": "Implement only approved P1.3 inspection, matched no-memory/lexical/graph comparisons, preview reporting, packaged fixtures/runbook/release receipts, and Phase One acceptance integration. Exclude adaptive dynamics, individuality claims, and Phase Two.",
-      "session_ids": [
-        "p13-supervisor-20260919"
-      ],
-      "status": "RUNNING",
+      "session_ids": [],
+      "status": "DONE",
       "title": "Inspection, comparisons, and graph-wrapper preview",
-      "updated_at": "2026-09-19T18:13:10.888219Z",
+      "updated_at": "2026-09-19T18:29:24.111420Z",
       "validation": {
         "required": [],
         "results": {}
@@ -749,5 +755,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-19T18:13:10.888294Z"
+  "updated_at": "2026-09-19T18:29:24.111486Z"
 }

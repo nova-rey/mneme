@@ -29,7 +29,9 @@ The documents are preserved in their supplied form and are intentionally not mer
   preserves the P1.1/P1.2/P1.3 gates and incorporates fixed route ranking without
   confidence/salience bonuses, distinct revision/episode/graph/self-view counters,
   and explicit development-enabled creation with fail-closed legacy reuse.
-  P1.1 and P1.2 are accepted; P1.3 is the active preview gate.
+  P1.1, P1.2, and the credential-free P1.3 preview implementation are present;
+  the required bounded live acceptance remains blocked by provider output
+  incompatibility ([receipt](receipts/MNEME_Phase_One_Live_Acceptance_Blocker.md)).
 * [Phase One graph-wrapper preview runbook](PHASE_ONE_PREVIEW_RUNBOOK.md) documents
   the read-only matched no-memory, lexical, and graph comparison path.
 

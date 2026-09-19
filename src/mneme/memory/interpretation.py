@@ -243,8 +243,15 @@ class InterpretationService:
             "Extract residue v1 as one JSON object. Use only the supplied source "
             "slots. Every evidence span must use a supplied slot and code-point "
             "offsets. Return an empty object when no supported candidate exists. "
-            "Allowed top-level fields include core_concepts, edge_candidates, "
-            "and route_candidates."
+            "Do not use markdown fences or explanatory text. Allowed top-level "
+            "fields include core_concepts, edge_candidates, and route_candidates. "
+            "Use this exact record shape: core_concepts records require key, "
+            "label, kind, and source_spans; edge_candidates records require key, "
+            "from, to, relationship, and source_spans, with from/to equal to "
+            "concept keys; route_candidates records require key and edge_keys. "
+            "A source span is an object with source_slot, start, and end. "
+            "Return at most two concepts, one edge, and one route; keep labels "
+            "short and return only the JSON object."
         )
         if errors:
             instruction += " Correct these validation errors: " + _json(errors)

@@ -101,6 +101,26 @@ def test_interpretation_persists_result_then_publishes_empty_residue(tmp_path):
         assert store.current()["current_revision"] == 2
 
 
+def test_extraction_prompt_declares_strict_residue_record_shape(tmp_path):
+    store, instance, episode_id = _accepted(tmp_path, FakeHost())
+    with store:
+        prepared = InterpretationService(store, instance, FakeHost()).prepare(episode_id)
+        # Preparation is intentionally provider-free; the strict shape is
+        # assembled at execution start, so exercise the request helper through
+        # the recorded attempt by using the deterministic fixture host.
+        service = InterpretationService(store, instance, FakeHost())
+        service.execute(prepared)
+        request = json.loads(
+            store.connection.execute(
+                "SELECT request_json FROM interpretation_attempts WHERE operation_id=?",
+                (prepared.operation_id,),
+            ).fetchone()[0]
+        )
+        system = request["request"]["system"]
+        assert "Do not use markdown fences" in system
+        assert "core_concepts records require key, label, kind" in system
+
+
 def test_invalid_result_allows_one_explicit_repair_and_no_more(tmp_path):
     host = ResidueHost('{"unexpected": true}', "{}")
     store, instance, episode_id = _accepted(tmp_path, host)

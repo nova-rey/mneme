@@ -191,3 +191,9 @@
 
 - Hardened completed comparison re-entry: a valid sanitized comparison artifact now validates checkpoint, provenance, coordinates, and matched seeds before returning without a host call. Conflicting requests fail closed. The artifact remains free of raw provider output while retaining output digests for audit.
 - Offline audit now demonstrates 12 matched frozen readouts, unchanged checkpoint/file state, distinct counters, sanitized artifacts, and completed re-entry against a host that would fail if called.
+
+## 2026-09-19 Phase One live acceptance blocker
+
+- Tightened the existing interpretation request boundary to state the exact residue record shape, forbid markdown fences, and bound provider output to two concepts, one edge, and one route; added a regression test for that contract. Offline validation now reports 154 passing tests, Ruff, and strict mypy across 37 source files.
+- The bounded DeepInfra Phase One action was attempted in three isolated runs. Eighteen provider calls were used. P1.1 published supported edges after repair, but the required route evidence was absent and the first P1.2 interpretation remained invalid after its sole repair because the provider returned unsupported concept/relationship kinds.
+- The remaining nine calls cannot restart the complete 23-call gate within the approved 27-call ceiling, and the plan forbids automatic repeated sampling after a failed required result. The sanitized blocker receipt is `docs/receipts/MNEME_Phase_One_Live_Acceptance_Blocker.md` with its JSON companion. No Phase One release tag or closure was created; Phase Two remains untouched.

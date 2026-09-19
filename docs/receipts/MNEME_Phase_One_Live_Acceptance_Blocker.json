@@ -1,0 +1,28 @@
+{
+  "date": "2026-09-19",
+  "status": "BLOCKED",
+  "host": "DeepInfra google/gemma-4-E4B-it",
+  "provider_calls": 18,
+  "approved_call_ceiling": 27,
+  "calls_remaining": 9,
+  "attempts": [
+    {
+      "attempt": 1,
+      "failure": "fenced JSON and incompatible residue fields",
+      "provider_calls": 4
+    },
+    {
+      "attempt": 2,
+      "failure": "provider continued returning incompatible pseudo-JSON after prompt clarification",
+      "provider_calls": 4
+    },
+    {
+      "attempt": 3,
+      "failure": "P1.2 repair returned unsupported concept/relationship kinds; P1.1 pair had no valid route",
+      "provider_calls": 10
+    }
+  ],
+  "raw_responses_in_repository": false,
+  "credential_in_repository": false,
+  "phase_one_release_tag_created": false
+}
