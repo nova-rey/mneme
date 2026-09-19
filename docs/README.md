@@ -51,6 +51,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   preserves the sanitized developmental inputs, host responses, extractor
   template and outputs, resolution decisions, graph state, and route decision
   from that run. It is an addendum; the original failure receipt is unchanged.
+* [P1.1 live fixture preview](receipts/MNEME_P1.1_Live_Fixture_Preview.md)
+  and [`configs/p1.1-live-fixture.json`](../configs/p1.1-live-fixture.json)
+  define the next two-experience bridged fixture without prescribing an exact
+  model extraction answer.
 * [Phase One graph-wrapper preview runbook](PHASE_ONE_PREVIEW_RUNBOOK.md) documents
   the read-only matched no-memory, lexical, and graph comparison path.
 

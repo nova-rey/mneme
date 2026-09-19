@@ -166,24 +166,54 @@ def _existing_gate(workspace: Path, gate: str) -> dict[str, Any] | None:
 def _residue_payload(text: str) -> dict[str, Any]:
     """Return a small source-supported residue for the fixture extractor."""
 
-    first = "VRAM" if "VRAM" in text else "Bandwidth"
-    second = "model capacity"
+    if "weather before our hike" in text:
+        first = {
+            "key": "weather-check",
+            "label": "Weather Check",
+            "kind": "topic",
+            "evidence": "weather",
+        }
+        second = {
+            "key": "rain-jacket",
+            "label": "Rain Jacket",
+            "kind": "object",
+            "evidence": "rain jacket",
+        }
+        relationship = "enables"
+        edge_key = "weather-enables-rain-jacket"
+    elif "rain jacket keeps" in text:
+        first = {
+            "key": "rain-jacket",
+            "label": "Rain Jacket",
+            "kind": "object",
+            "evidence": "rain jacket",
+        }
+        second = {
+            "key": "hike-continuation",
+            "label": "Hike Continuation",
+            "kind": "event",
+            "evidence": "ending the hike early",
+        }
+        relationship = "enables"
+        edge_key = "rain-jacket-enables-hike"
+    else:
+        raise DemoError(f"unknown Phase One fixture input: {text!r}")
     return {
         "core_concepts": [
             {
-                "key": first.casefold().replace(" ", "-"),
-                "label": first,
-                "kind": "resource",
-                "evidence": [{"source": "s0", "evidence": first}],
+                "key": first["key"],
+                "label": first["label"],
+                "kind": first["kind"],
+                "evidence": [{"source": "s0", "evidence": first["evidence"]}],
                 "confidence": 0.9,
                 "salience": 0.5,
                 "origin": "model_output",
             },
             {
-                "key": "capacity",
-                "label": second,
-                "kind": "concept",
-                "evidence": [{"source": "s0", "evidence": second}],
+                "key": second["key"],
+                "label": second["label"],
+                "kind": second["kind"],
+                "evidence": [{"source": "s0", "evidence": second["evidence"]}],
                 "confidence": 0.8,
                 "salience": 0.5,
                 "origin": "model_output",
@@ -191,19 +221,10 @@ def _residue_payload(text: str) -> dict[str, Any]:
         ],
         "edge_candidates": [
             {
-                "key": f"{first.casefold()}-constrains-capacity",
-                "from": first.casefold().replace(" ", "-"),
-                "to": "capacity",
-                "relationship": "constrains",
-                "evidence": [{"source": "s0", "evidence": text}],
-                "confidence": 0.8,
-                "origin": "model_output",
-            }
-        ],
-        "route_candidates": [
-            {
-                "key": f"route-{first.casefold()}",
-                "edge_keys": [f"{first.casefold()}-constrains-capacity"],
+                "key": edge_key,
+                "from": first["key"],
+                "to": second["key"],
+                "relationship": relationship,
                 "evidence": [{"source": "s0", "evidence": text}],
                 "confidence": 0.8,
                 "origin": "model_output",
@@ -261,7 +282,10 @@ def _p11(workspace: Path) -> dict[str, Any]:
     if store_path.exists():
         raise DemoError("P1.1 workspace contains an unexpected existing lineage store")
     host = _ResidueFixtureHost()
-    texts = ("VRAM constrains model capacity", "Bandwidth affects model capacity")
+    texts = (
+        "Checking the weather before our hike reminded us to pack a rain jacket.",
+        "A rain jacket keeps a sudden shower from ending the hike early.",
+    )
     with SQLiteStore(store_path) as store:
         instance = store.create_root(
             permissions=StoragePermissions(
@@ -310,6 +334,7 @@ def _p11(workspace: Path) -> dict[str, Any]:
             counters=counters,
             evidence={
                 "accepted_episodes": len(publications),
+                "fixture_inputs": list(texts),
                 "graph_routes": int(
                     store.connection.execute("SELECT COUNT(*) FROM graph_routes").fetchone()[0]
                 ),
@@ -334,19 +359,21 @@ def _p12(workspace: Path) -> dict[str, Any]:
         controller = ResponseController(store, instance, host)
         prepared = controller.prepare(
             TurnIntent(
-                "Explain VRAM capacity",
+                "Explain why the rain jacket matters on a hike",
                 memory="graph",
                 operation_id="phase-one-p12-response",
             )
         )
         result = controller.execute(prepared)
         correction = CorrectionService(store, instance).suppress(
-            route_id=prepared.selected[0].route_key if prepared.selected else "route-vram",
+            route_id=prepared.selected[0].route_key
+            if prepared.selected
+            else "derived:missing-fixture-route",
             context_tag="explanation",
         )
         post_correction = controller.prepare(
             TurnIntent(
-                "Explain VRAM capacity",
+                "Explain why the rain jacket matters on a hike",
                 memory="graph",
                 context_tags=("explanation",),
                 operation_id="phase-one-p12-correction-check",

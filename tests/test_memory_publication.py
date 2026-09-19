@@ -1,3 +1,5 @@
+import json
+
 import pytest
 
 from mneme.contracts import GenerationRequest
@@ -85,6 +87,101 @@ def test_publication_is_atomic_and_idempotent(tmp_path):
         retry = publisher.publish(operation_id, _residue())
         assert retry == receipt
         assert store.current()["current_revision"] == 2
+
+
+def test_publication_derives_cross_interpretation_route_without_model_route_candidate(tmp_path):
+    store = SQLiteStore(tmp_path / "bridged-lineage.sqlite3")
+    instance = store.create_root(permissions=StoragePermissions(True, True, True, True, True))
+    host = FakeHost()
+    continuity = ContinuityService(store, instance, host)
+
+    def accept(text: str, operation_id: str):
+        operation = continuity.prepare_episode(
+            GenerationRequest(({"role": "user", "content": text},)),
+            operation_id=operation_id,
+        )
+        continuity.generate_operation(operation.operation_id)
+        continuity.accept_episode(operation.operation_id)
+        return operation.episode_id
+
+    first_episode = accept("A guides B", "bridged-episode-1")
+    second_episode = accept("B guides C", "bridged-episode-2")
+    first = validate_residue(
+        {
+            "core_concepts": [
+                {
+                    "key": "a",
+                    "label": "A",
+                    "source_spans": [{"source_slot": "s0", "start": 0, "end": 1}],
+                    "confidence": 0.9,
+                },
+                {
+                    "key": "b",
+                    "label": "B",
+                    "source_spans": [{"source_slot": "s0", "start": 8, "end": 9}],
+                    "confidence": 0.9,
+                },
+            ],
+            "edge_candidates": [
+                {
+                    "key": "e1",
+                    "from": "a",
+                    "to": "b",
+                    "relationship": "causes",
+                    "source_spans": [{"source_slot": "s0", "start": 0, "end": 9}],
+                    "confidence": 0.9,
+                }
+            ],
+        },
+        {"s0": "A guides B"},
+    )
+    second = validate_residue(
+        {
+            "core_concepts": [
+                {
+                    "key": "b",
+                    "label": "B",
+                    "source_spans": [{"source_slot": "s0", "start": 0, "end": 1}],
+                    "confidence": 0.9,
+                },
+                {
+                    "key": "c",
+                    "label": "C",
+                    "source_spans": [{"source_slot": "s0", "start": 8, "end": 9}],
+                    "confidence": 0.9,
+                },
+            ],
+            "edge_candidates": [
+                {
+                    "key": "e2",
+                    "from": "b",
+                    "to": "c",
+                    "relationship": "causes",
+                    "source_spans": [{"source_slot": "s0", "start": 0, "end": 9}],
+                    "confidence": 0.9,
+                }
+            ],
+        },
+        {"s0": "B guides C"},
+    )
+    with store:
+        publisher = InterpretationPublisher(store, instance)
+        publisher.publish(
+            publisher.prepare(first_episode, operation_id="bridged-interp-1"), first
+        )
+        publisher.publish(
+            publisher.prepare(second_episode, operation_id="bridged-interp-2"), second
+        )
+        rows = store.connection.execute(
+            "SELECT route_key,edge_keys_json,source_json FROM graph_routes ORDER BY route_key"
+        ).fetchall()
+
+    paths = {tuple(json.loads(row[1])) for row in rows}
+    assert ("e1", "e2") in paths
+    route = next(row for row in rows if tuple(json.loads(row[1])) == ("e1", "e2"))
+    provenance = json.loads(route[2])
+    assert [item["edge_key"] for item in provenance] == ["e1", "e2"]
+    assert all(item["evidence"] for item in provenance)
 
 
 def test_publication_rejects_stale_base_without_graph_write(tmp_path):

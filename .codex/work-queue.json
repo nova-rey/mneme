@@ -37,8 +37,8 @@
     "external:gemma-phase-one-live-rerun": {
       "created_at": "2026-09-19T21:44:38.794249Z",
       "kind": "external",
-      "receipt": "docs/receipts/MNEME_Phase_One_Live_Acceptance_Quote_Run_Failure_Receipt.md: corrected-contract run stopped after four returned calls with valid edges but zero required routes",
-      "reference": "New explicit live authorization is required for another predetermined P1.1 attempt after the corrected route-prompt offline fix; do not reinterpret the failed run or sample until success.",
+      "receipt": "docs/receipts/MNEME_P1.1_Live_Fixture_Preview.md; route-discovery correction and bridged fixture are pushed, with the preserved four-call failure unchanged",
+      "reference": "New explicit live authorization is required for another predetermined P1.1 attempt after deterministic route discovery and fixture-quality correction; do not sample until success.",
       "resolved_at": null,
       "status": "UNRESOLVED"
     }
@@ -783,10 +783,11 @@
         "docs/receipts/MNEME_Phase_One_Live_Remediation_Receipt.md",
         "docs/receipts/MNEME_Phase_One_Live_Acceptance_Fresh_Failure_Receipt.md",
         "docs/receipts/MNEME_Phase_One_Extractor_Quote_Remediation_Receipt.md",
-        "docs/receipts/MNEME_Phase_One_Live_Acceptance_Quote_Run_Failure_Receipt.md"
+        "docs/receipts/MNEME_Phase_One_Live_Acceptance_Quote_Run_Failure_Receipt.md",
+        "docs/receipts/MNEME_P1.1_Live_Fixture_Preview.md"
       ],
       "id": "P1.LIVE",
-      "notes": "DeepInfra access is functional. The corrected-contract run returned valid source-backed concepts and edges but no required route, so P1.1 failed after four calls and P1.2/P1.3 were not attempted. The offline prompt now explicitly requires a route whenever a supported edge is returned. Preserve all live evidence and keep this package WAITING for new explicit live authorization; do not treat this as a credential blocker.",
+      "notes": "DeepInfra access is functional. The preserved corrected-contract run returned valid source-backed concepts and edges but duplicated the same experience shape, so no route was reasonably available; P1.1 failed after four calls and P1.2/P1.3 were not attempted. Offline publication now derives bounded directed routes from accepted evidenced edges, the extractor treats route_candidates as optional, and a two-experience bridged fixture preview is prepared. Preserve all live evidence and keep this package WAITING for new explicit live authorization; do not treat this as a credential blocker.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -808,7 +809,7 @@
       "session_ids": [],
       "status": "WAITING",
       "title": "Phase One bounded live acceptance gate",
-      "updated_at": "2026-09-19T21:44:38.794269Z",
+      "updated_at": "2026-09-19T22:48:39Z",
       "validation": {
         "required": [
           "bounded live gate",

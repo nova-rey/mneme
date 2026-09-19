@@ -24,7 +24,11 @@ def test_phase_one_offline_gates_use_existing_boundaries_and_are_idempotent(
     assert p11["status"] == p12["status"] == p13["status"] == "PASS"
     assert p11["evidence"]["accepted_episodes"] == 2
     assert p12["evidence"]["identity_adopted_from_host"] is True
-    assert p12["evidence"]["post_correction_selected_routes"] == []
+    assert p12["evidence"]["selected_routes"]
+    assert p12["evidence"]["correction_directive_id"]
+    assert p12["evidence"]["selected_routes"][0] not in p12["evidence"][
+        "post_correction_selected_routes"
+    ]
     assert p12["evidence"]["fork_inherited_identity"] is True
     assert p13["evidence"]["probe_count"] == 4
     assert p13["evidence"]["matched_readouts"] == 12

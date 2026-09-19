@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from collections.abc import Mapping
+from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
 from types import MappingProxyType
 from typing import Any
@@ -254,10 +254,136 @@ def materialize_graph(
     )
 
 
+MAX_DERIVED_ROUTE_EDGES = 3
+MAX_DERIVED_ROUTES = 8
+
+
+def _derived_route_key(edge_keys: tuple[str, ...]) -> str:
+    """Return a stable route identity derived only from canonical edge keys."""
+
+    digest = hashlib.sha256(_json(edge_keys).encode("utf-8")).hexdigest()[:16]
+    return f"derived:{digest}"
+
+
+def discover_routes(
+    concepts: Iterable[GraphConcept],
+    edges: Iterable[GraphEdge],
+    explicit_routes: Iterable[GraphRoute] = (),
+    *,
+    max_edges: int = MAX_DERIVED_ROUTE_EDGES,
+    max_routes: int = MAX_DERIVED_ROUTES,
+) -> tuple[GraphRoute, ...]:
+    """Discover bounded directed paths from accepted graph edges.
+
+    Extracted ``route_candidates`` remain useful source-backed annotations, but
+    they are optional.  This search derives routes from accepted, evidenced
+    edges so a path can span multiple developmental interpretations.  It is
+    deliberately small and deterministic: endpoints must be known concepts,
+    every edge must carry evidence, paths are directed and acyclic, and the
+    canonical edge ordering plus fixed bounds determine the result.
+
+    Derived route evidence records the edge key and that edge's evidence list
+    separately.  That preserves provenance from every originating edge without
+    pretending the model explicitly proposed the assembled path.
+    """
+
+    if max_edges < 1 or max_routes < 1:
+        raise ValueError("route bounds must be positive")
+    concept_keys = {concept.key for concept in concepts}
+    edge_by_key: dict[str, GraphEdge] = {}
+    for edge in edges:
+        if edge.key in edge_by_key:
+            raise ValueError(f"duplicate graph edge key {edge.key!r}")
+        edge_by_key[edge.key] = edge
+    eligible_edges = tuple(
+        sorted(
+            (
+                edge
+                for edge in edge_by_key.values()
+                if edge.source in concept_keys
+                and edge.target in concept_keys
+                and edge.source != edge.target
+                and edge.evidence
+            ),
+            key=lambda edge: (edge.source, edge.target, edge.relationship, edge.key),
+        )
+    )
+    outgoing: dict[str, tuple[GraphEdge, ...]] = {}
+    for edge in eligible_edges:
+        outgoing[edge.source] = (*outgoing.get(edge.source, ()), edge)
+
+    explicit: list[GraphRoute] = []
+    seen_paths: set[tuple[str, ...]] = set()
+    for route in sorted(explicit_routes, key=lambda item: (item.key, item.edge_keys)):
+        path = tuple(route.edge_keys)
+        if not 1 <= len(path) <= max_edges or path in seen_paths:
+            continue
+        path_edges = [edge_by_key.get(key) for key in path]
+        if any(edge is None or not edge.evidence for edge in path_edges):
+            continue
+        if any(
+            left.target != right.source
+            for left, right in zip(path_edges, path_edges[1:])
+            if left is not None and right is not None
+        ):
+            continue
+        seen_paths.add(path)
+        explicit.append(route)
+
+    derived: list[GraphRoute] = []
+
+    def extend(path: tuple[GraphEdge, ...], visited_nodes: frozenset[str]) -> None:
+        if len(path) >= max_edges:
+            return
+        last = path[-1]
+        for edge in outgoing.get(last.target, ()):
+            if edge.target in visited_nodes or edge.key in {item.key for item in path}:
+                continue
+            next_path = (*path, edge)
+            keys = tuple(item.key for item in next_path)
+            if keys not in seen_paths:
+                seen_paths.add(keys)
+                derived.append(
+                    GraphRoute(
+                        _derived_route_key(keys),
+                        keys,
+                        tuple(
+                            {
+                                "edge_key": item.key,
+                                "evidence": tuple(item.evidence),
+                            }
+                            for item in next_path
+                        ),
+                    )
+                )
+            extend(next_path, visited_nodes | {edge.target})
+
+    for edge in eligible_edges:
+        keys = (edge.key,)
+        if keys not in seen_paths:
+            seen_paths.add(keys)
+            derived.append(
+                GraphRoute(
+                    _derived_route_key(keys),
+                    keys,
+                    ({"edge_key": edge.key, "evidence": tuple(edge.evidence)},),
+                )
+            )
+        extend((edge,), frozenset({edge.source, edge.target}))
+
+    all_routes = explicit + sorted(
+        derived, key=lambda route: (len(route.edge_keys), route.edge_keys)
+    )
+    return tuple(all_routes[:max_routes])
+
+
 __all__ = [
     "GraphConcept",
     "GraphEdge",
     "GraphRoute",
     "GraphSnapshot",
+    "MAX_DERIVED_ROUTE_EDGES",
+    "MAX_DERIVED_ROUTES",
+    "discover_routes",
     "materialize_graph",
 ]

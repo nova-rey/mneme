@@ -39,6 +39,13 @@ existing artifact inspection commands for prepared-run provenance. Comparison
 artifacts can be written through `run_matched_comparison(..., artifact_dir=...)`
 and are private working evidence unless explicitly sanitized for publication.
 
+Graph route candidates in an extraction are optional evidence that one source
+explicitly grouped edges. Accepted directed edges are also searched
+deterministically at publication time, within the approved three-edge and
+bounded-route limits, so a path can span separate developmental experiences.
+Search preserves edge direction, source evidence, eligibility, and canonical
+ordering; it never invents a missing edge or relies on administrative IDs.
+
 Interpret exact and normalized matches, lexical overlap, and response lengths
 as descriptive no-learning variation. They do not establish personality,
 individuality, or causal developmental differentiation. Hosted Gemma sampling

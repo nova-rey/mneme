@@ -17,7 +17,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from ..state.storage import SQLiteStore, _utc
-from .graph import materialize_graph
+from .graph import GraphConcept, GraphEdge, GraphRoute, discover_routes, materialize_graph
 from .residue import Residue, ResidueValidationError, validate_residue
 from .resolution import ResolutionDecision, normalize_lookup_label
 
@@ -139,7 +139,7 @@ def _snapshot_digest(db: Any, snapshot_id: str) -> str:
     edges = [
         tuple(row)
         for row in db.execute(
-            "SELECT edge_key,source_key,target_key,relationship,polarity,context_json," 
+            "SELECT edge_key,source_key,target_key,relationship,polarity,context_json,"
             "evidence_json "
             "FROM graph_edges WHERE snapshot_id=? ORDER BY edge_key",
             (snapshot_id,),
@@ -154,6 +154,60 @@ def _snapshot_digest(db: Any, snapshot_id: str) -> str:
         )
     ]
     return _digest({"concepts": concepts, "edges": edges, "routes": routes})
+
+
+def _discover_snapshot_routes(db: Any, snapshot_id: str) -> None:
+    """Persist deterministic paths derived from the complete graph snapshot."""
+
+    concepts = tuple(
+        GraphConcept(
+            str(row[0]),
+            str(row[1]),
+            str(row[3]),
+            annotations={"confidence": float(row[4]), "salience": float(row[5])},
+        )
+        for row in db.execute(
+            "SELECT concept_key,label,normalized_label,kind,confidence,salience "
+            "FROM graph_concepts WHERE snapshot_id=? ORDER BY concept_key",
+            (snapshot_id,),
+        )
+    )
+    edges = tuple(
+        GraphEdge(
+            str(row[0]),
+            str(row[1]),
+            str(row[2]),
+            str(row[3]),
+            tuple(json.loads(str(row[6]))),
+            json.loads(str(row[5])),
+        )
+        for row in db.execute(
+            "SELECT edge_key,source_key,target_key,relationship,polarity,context_json,"
+            "evidence_json FROM graph_edges WHERE snapshot_id=? ORDER BY edge_key",
+            (snapshot_id,),
+        )
+    )
+    existing = tuple(
+        GraphRoute(
+            str(row[0]),
+            tuple(json.loads(str(row[1]))),
+            tuple(json.loads(str(row[2]))),
+        )
+        for row in db.execute(
+            "SELECT route_key,edge_keys_json,source_json FROM graph_routes "
+            "WHERE snapshot_id=? ORDER BY route_key",
+            (snapshot_id,),
+        )
+    )
+    known_keys = {route.key for route in existing}
+    for route in discover_routes(concepts, edges, existing):
+        if route.key in known_keys:
+            continue
+        db.execute(
+            "INSERT INTO graph_routes VALUES(?,?,?,?)",
+            (snapshot_id, route.key, _json(list(route.edge_keys)), _json(list(route.evidence))),
+        )
+        known_keys.add(route.key)
 
 
 class InterpretationPublisher:
@@ -458,6 +512,7 @@ class InterpretationPublisher:
                             _json(list(route.evidence)),
                         ),
                     )
+                _discover_snapshot_routes(db, snapshot_id)
                 digest = _snapshot_digest(db, snapshot_id)
                 db.execute(
                     "INSERT INTO graph_snapshots VALUES(?,?,?,?,?,?,?)",

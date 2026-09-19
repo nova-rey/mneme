@@ -7,7 +7,14 @@ publish an accepted interpretation atomically.
 """
 
 from .cache import AnnotationCache, CacheError, CacheHit, CacheKey, build_cache_key
-from .graph import GraphConcept, GraphEdge, GraphRoute, GraphSnapshot, materialize_graph
+from .graph import (
+    GraphConcept,
+    GraphEdge,
+    GraphRoute,
+    GraphSnapshot,
+    discover_routes,
+    materialize_graph,
+)
 from .interpretation import (
     InterpretationError,
     InterpretationIdempotencyConflict,
@@ -54,6 +61,7 @@ __all__ = [
     "GraphEdge",
     "GraphRoute",
     "GraphSnapshot",
+    "discover_routes",
     "Residue",
     "ResidueValidationError",
     "ResolutionDecision",
