@@ -119,6 +119,7 @@ def test_extraction_prompt_declares_strict_residue_record_shape(tmp_path):
         system = request["request"]["system"]
         assert "Do not use markdown fences" in system
         assert "core_concepts records require key, label, kind" in system
+        assert request["request"]["parameters"]["max_new_tokens"] == 1536
 
 
 def test_invalid_result_allows_one_explicit_repair_and_no_more(tmp_path):

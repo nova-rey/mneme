@@ -259,7 +259,7 @@ class InterpretationService:
         return GenerationRequest(
             messages=({"role": "user", "content": prompt},),
             system=instruction,
-            parameters={"temperature": 0},
+            parameters={"temperature": 0, "max_new_tokens": 1536},
             seed=None,
         )
 

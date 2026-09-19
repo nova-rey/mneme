@@ -198,3 +198,7 @@
 - The bounded DeepInfra Phase One action was attempted in three isolated runs. Eighteen provider calls were used. P1.1 published supported edges after repair, but the required route evidence was absent and the first P1.2 interpretation remained invalid after its sole repair because the provider returned unsupported concept/relationship kinds.
 - The remaining nine calls cannot restart the complete 23-call gate within the approved 27-call ceiling, and the plan forbids automatic repeated sampling after a failed required result. The sanitized blocker receipt is `docs/receipts/MNEME_Phase_One_Live_Acceptance_Blocker.md` with its JSON companion. No Phase One release tag or closure was created; Phase Two remains untouched.
 - The blocker receipt records the available persisted usage (186 input, 3,793 output, 3,979 total tokens across seven generation records); complete-call usage and cost were unavailable after failed process exits.
+
+## 2026-09-19 Phase One extraction budget repair
+
+- Bound interpretation extraction and its explicit repair request to the approved `max_new_tokens=1536` cap and added a contract regression asserting the request carries that cap. No live calls were made for this repair; the prior live blocker remains unchanged.
