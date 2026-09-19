@@ -29,10 +29,10 @@
     "external:gemma-phase-one-live": {
       "created_at": "2026-09-19T19:11:42.240204Z",
       "kind": "external",
-      "receipt": null,
+      "receipt": "Current continuation authorization: corrected quote-contract live acceptance run authorized; credential available in /home/nyx/.config/mneme/secrets.env; preserve 27-call ceiling and stop-on-failure.",
       "reference": "DeepInfra credential and transport are functional. Historical attempts consumed 18 calls; the newly authorized fresh run consumed 4 more and stopped at P1.1 after its permitted extraction repair failed source-span validation. P1.2/P1.3 remain unrun and no further calls are authorized without a new decision.",
-      "resolved_at": null,
-      "status": "UNRESOLVED"
+      "resolved_at": "2026-09-19T21:38:10.749276Z",
+      "status": "RESOLVED"
     }
   },
   "hard_problem_repo": "nova-rey/codex-config-backup",
@@ -777,7 +777,7 @@
       ],
       "id": "P1.LIVE",
       "notes": "DeepInfra access is functional. The fresh live run failed P1.1 source-span validation after one repair; the offline follow-up now has the model return exact source quotations while MNEME derives Unicode offsets deterministically. Preserve the historical failure receipt, keep this package WAITING for explicit live authorization, and do not treat this as a credential blocker.",
-      "owner": null,
+      "owner": "phase_one_live_supervisor",
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -795,10 +795,12 @@
         }
       ],
       "scope": "Run the already prepared bounded DeepInfra Phase One acceptance gate and publish the truthful release receipt; do not alter offline Phase One architecture or begin Phase Two.",
-      "session_ids": [],
-      "status": "WAITING",
+      "session_ids": [
+        "live-phase-one-20260919"
+      ],
+      "status": "RUNNING",
       "title": "Phase One bounded live acceptance gate",
-      "updated_at": "2026-09-19T20:15:00.000000Z",
+      "updated_at": "2026-09-19T21:38:10.799363Z",
       "validation": {
         "required": [
           "bounded live gate",
@@ -807,9 +809,7 @@
         ],
         "results": {}
       },
-      "waiting_on": [
-        "external:gemma-phase-one-live"
-      ],
+      "waiting_on": [],
       "workstream": "phase-one"
     }
   ],
@@ -825,5 +825,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-19T19:11:42.240279Z"
+  "updated_at": "2026-09-19T21:38:10.799448Z"
 }

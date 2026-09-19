@@ -297,3 +297,7 @@
 ## 2026-09-19 Phase One extractor quotation remediation CI
 
 - Remote `main` at `fae92e4` passed the required GitHub Actions CI run `35470638619`: pytest, Ruff, and mypy all passed. The machine-readable remediation receipt now records that CI result; no live provider call was made.
+
+## 2026-09-19 Phase One live acceptance resumed
+
+- The corrected quotation-contract remediation is now authorized for one bounded live acceptance run. The `P1.LIVE` package moved from `WAITING` to `RUNNING` under the existing 27-call ceiling; historical live failures remain unchanged and no gate is pre-accepted.
