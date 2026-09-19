@@ -1,6 +1,6 @@
 # MNEME P0.4 FakeHost integrated receipt
 
-Status: **FakeHost integration PASS; real-host acceptance pending credential-backed execution.**
+Status: **PASS (network-free integration control).**
 
 The P0.4 runner now joins the immutable P0.3 prepared run with writable P0.2
 forks, finite developmental schedules, boundary checkpoints, private frozen
@@ -26,7 +26,5 @@ keeps these records outside the immutable prepared-run tree, and reconstructs
 fixture data from digest-pinned published inputs.  Re-execution uses stable
 operation/check coordinates and P0.2/P0.3 idempotency records.
 
-The bounded real `google/gemma-4-E4B-it` baseline was not run in this receipt:
-`DEEPINFRA_TOKEN` is absent in the execution environment.  No real-host call,
-Phase Zero tag, or Phase Zero completion claim is made until that external gate
-is satisfied.
+The bounded real `google/gemma-4-E4B-it` acceptance is recorded separately in
+`MNEME_P0.4_Real_Gemma_Baseline_Receipt.md`.

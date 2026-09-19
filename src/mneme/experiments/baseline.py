@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import math
 import re
+import sqlite3
 import subprocess
 import unicodedata
 from collections import defaultdict
@@ -217,7 +218,8 @@ def _safe_value(value: Any, *, depth: int = 0) -> Any:
         for key, child in value.items():
             key_text = str(key)
             lowered = key_text.casefold()
-            if any(part in lowered for part in _SECRET_PARTS) or lowered in {
+            usage_key = lowered in {"prompt_tokens", "completion_tokens", "total_tokens"}
+            if (any(part in lowered for part in _SECRET_PARTS) and not usage_key) or lowered in {
                 "raw_metadata",
                 "raw_output",
                 "messages",
@@ -414,7 +416,13 @@ def build_report(*, run_id: str, lab: str | Path) -> dict[str, Any]:
     manifest = store._read_json(run / "run-manifest.json")
     bindings = store._read_json(run / "bindings.json")
     observations: list[BaselineObservation] = []
-    usage: dict[str, int] = {"evaluation_calls": 0, "development_calls": 0}
+    usage: dict[str, Any] = {
+        "evaluation_calls": 0,
+        "development_calls": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0,
+    }
     for check in inspected.get("checks", []):
         if not isinstance(check, Mapping) or check.get("status") != "RESULT":
             continue
@@ -429,6 +437,12 @@ def build_report(*, run_id: str, lab: str | Path) -> dict[str, Any]:
             )
         )
         usage["evaluation_calls"] += 1
+        token_usage = check.get("token_usage")
+        if isinstance(token_usage, Mapping):
+            for key in ("prompt_tokens", "completion_tokens", "total_tokens"):
+                value = token_usage.get(key)
+                if isinstance(value, int) and value >= 0:
+                    usage[key] += value
     execution_state = store.root / "execution" / run_id / "state.json"
     execution = {}
     if execution_state.is_file():
@@ -445,6 +459,26 @@ def build_report(*, run_id: str, lab: str | Path) -> dict[str, Any]:
                 raise BaselineError(f"execution journal is unreadable: {exc}") from exc
             if isinstance(event, Mapping) and event.get("kind") == "development":
                 usage["development_calls"] += int(event.get("model_calls", 0))
+    subjects_root = store.root / "execution" / run_id / "subjects"
+    if subjects_root.is_dir():
+        for subject_path in sorted(subjects_root.glob("*.sqlite3")):
+            try:
+                with sqlite3.connect(f"file:{subject_path}?mode=ro", uri=True) as connection:
+                    rows = connection.execute(
+                        "SELECT usage_json FROM generation_records WHERE usage_json IS NOT NULL"
+                    ).fetchall()
+            except sqlite3.Error as exc:
+                raise BaselineError(f"subject usage is unreadable: {exc}") from exc
+            for (usage_json,) in rows:
+                try:
+                    token_usage = json.loads(usage_json)
+                except (TypeError, json.JSONDecodeError) as exc:
+                    raise BaselineError(f"subject usage is invalid: {exc}") from exc
+                if isinstance(token_usage, Mapping):
+                    for key in ("prompt_tokens", "completion_tokens", "total_tokens"):
+                        value = token_usage.get(key)
+                        if isinstance(value, int) and value >= 0:
+                            usage[key] += value
     identity = experiment.get("name")
     revision = experiment.get("contract_revision")
     if not isinstance(identity, str) or not isinstance(revision, int):

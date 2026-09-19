@@ -21,10 +21,10 @@
     "external:gemma-p04-baseline": {
       "created_at": "2026-09-18T23:32:47.097582Z",
       "kind": "external",
-      "receipt": null,
+      "receipt": "docs/receipts/MNEME_P0.4_Real_Gemma_Baseline_Receipt.md; bounded six-call run passed",
       "reference": "DEEPINFRA_TOKEN-backed bounded google/gemma-4-E4B-it P0.4 baseline and Phase Zero closure evidence",
-      "resolved_at": null,
-      "status": "UNRESOLVED"
+      "resolved_at": "2026-09-19T00:17:07.247175Z",
+      "status": "RESOLVED"
     }
   },
   "hard_problem_repo": "nova-rey/codex-config-backup",
@@ -363,7 +363,7 @@
       "evidence_refs": [],
       "id": "P0.4",
       "notes": "",
-      "owner": null,
+      "owner": "root-foreman",
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -386,10 +386,12 @@
         }
       ],
       "scope": "Implement only the approved P0.4 integrated no-learning baseline; no P0.5, Phase 1, learning, associations, personality, or individuality mechanisms.",
-      "session_ids": [],
-      "status": "WAITING",
+      "session_ids": [
+        "p04-real-validation-20260918"
+      ],
+      "status": "VALIDATING",
       "title": "Integrated no-learning baseline laboratory",
-      "updated_at": "2026-09-18T23:32:47.097609Z",
+      "updated_at": "2026-09-19T00:17:12.636515Z",
       "validation": {
         "required": [
           "pytest -q",
@@ -404,6 +406,16 @@
           "FakeHost integrated baseline": {
             "receipt": "docs/receipts/MNEME_P0.4_Fake_Integrated_Receipt.md",
             "recorded_at": "2026-09-18T23:32:39.706633Z",
+            "status": "PASS"
+          },
+          "Phase Zero closure receipt": {
+            "receipt": "docs/receipts/MNEME_PHASE_ZERO_Closure.md",
+            "recorded_at": "2026-09-19T00:17:12.636489Z",
+            "status": "PASS"
+          },
+          "bounded real Gemma baseline": {
+            "receipt": "docs/receipts/MNEME_P0.4_Real_Gemma_Baseline_Receipt.md",
+            "recorded_at": "2026-09-19T00:17:12.587477Z",
             "status": "PASS"
           },
           "mypy src/mneme": {
@@ -428,9 +440,7 @@
           }
         }
       },
-      "waiting_on": [
-        "external:gemma-p04-baseline"
-      ],
+      "waiting_on": [],
       "workstream": "p0.4"
     }
   ],
@@ -446,5 +456,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-18T23:32:47.097660Z"
+  "updated_at": "2026-09-19T00:17:12.636588Z"
 }

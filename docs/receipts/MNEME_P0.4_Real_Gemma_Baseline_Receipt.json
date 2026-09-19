@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "scientific_identity": {
+    "name": "p04-gemma-no-learning-baseline",
+    "contract_revision": 1,
+    "contract_sha256": "09a172359936a18c17342775c6c5c708a2926353a899768b136cd2dd252a2851"
+  },
+  "host": {
+    "provider": "DeepInfra",
+    "model": "google/gemma-4-E4B-it",
+    "sampling": "provider_managed",
+    "hosted_revision": "unknown"
+  },
+  "calls": {
+    "planned_max": 6,
+    "development": 2,
+    "evaluation": 4,
+    "actual_total": 6
+  },
+  "token_usage": {
+    "total_tokens": 249,
+    "prompt_tokens": null,
+    "completion_tokens": null,
+    "cost": null,
+    "cost_currency": null
+  },
+  "measurements": {
+    "within_instance": {
+      "pair_count": 2,
+      "exact_match_rate": 0.0,
+      "normalized_match_rate": 0.0,
+      "mean_lexical_jaccard": 0.17261904761904762
+    },
+    "between_instance": {
+      "pair_count": 2,
+      "exact_match_rate": 0.0,
+      "normalized_match_rate": 0.0,
+      "mean_lexical_jaccard": 0.19444444444444442
+    }
+  },
+  "evaluation_isolation": {
+    "passed": true,
+    "evaluation_calls": 4,
+    "developmental_writeback": false,
+    "checkpoint_state_unchanged": true,
+    "subject_state_unchanged_during_evaluation": true
+  },
+  "restart_resume": {
+    "passed": true,
+    "rerun_status": "COMPLETE",
+    "duplicate_developmental_episodes": 0,
+    "duplicate_evaluation_receipts": 0
+  },
+  "developmental_influence": false,
+  "phase_zero_claim": "ordinary no-learning variation only; no individuality or personality claim"
+}

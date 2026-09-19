@@ -122,10 +122,14 @@
 ## 2026-09-18 P0.4 integrated no-learning runner
 
 - Added the bounded P0.4 execution primitive over the approved P0.1-P0.3 contracts: digest-pinned fixture publication, writable subject forks, exact-once developmental acceptance, durable execution journals, uncertain-operation recovery, boundary checkpoints, private read-only evaluation, and sanitized baseline reporting.
-- FakeHost integration validation passes with 95 pytest tests, Ruff, and strict mypy. The real `google/gemma-4-E4B-it` baseline is not claimed because `DEEPINFRA_TOKEN` is absent; Phase Zero remains open and no Phase Zero tag was created.
+- FakeHost integration validation passes with 95 pytest tests, Ruff, and strict mypy. The real `google/gemma-4-E4B-it` baseline is recorded separately after the bounded credential-backed run.
 
 ## 2026-09-18 P0.4 validation gate
 
 - Recorded the P0.4 candidate and network-free validation in `.codex/work-queue.json`: FakeHost integrated execution, restart/resume evidence, pytest, Ruff, and strict mypy pass.
-- P0.4 is waiting on the explicit external dependency `external:gemma-p04-baseline` because `DEEPINFRA_TOKEN` is unavailable. The real baseline, final Phase Zero receipt, and pre-development tag remain intentionally unclaimed.
-- Added the matching machine-readable FakeHost receipt; it records zero real-host calls and therefore does not close the external Gemma gate.
+- P0.4 was resumed after the external credential gate resolved. The bounded real baseline completed six calls (two developmental, four evaluation) with 249 provider-reported total tokens; provider cost and prompt/completion subtotals were unavailable.
+
+## 2026-09-19 Phase Zero closure
+
+- Completed the P0.4 real Gemma baseline with two sibling subjects, repeated held-out probes, unchanged evaluation snapshots, exact-once restart re-entry, and sanitized human/machine receipts.
+- Phase Zero is complete and tagged `mneme-phase-zero`. The laboratory remains explicitly no-learning: history is durable but behaviorally inert, and no Phase One mechanism was started.
