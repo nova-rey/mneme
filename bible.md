@@ -293,3 +293,7 @@
 - The interpretation provider boundary rejects graph-bearing numeric-only `source_spans`; direct canonical/internal residue callers retain numeric-span compatibility. The deterministic Phase One fixture now uses the same quotation contract.
 - Added adversarial quotation, Unicode, ambiguity, deterministic replay, repair, and numeric-provider-output regressions while preserving malformed JSON and hidden-enum fixtures. Full offline validation reports 209 passing tests, Ruff pass, strict mypy pass, and fresh-install package/CLI smoke pass.
 - Published `docs/receipts/MNEME_Phase_One_Extractor_Quote_Remediation_Receipt.{md,json}` and linked it from the approved Phase One plan, documentation index, and waiting live package. No DeepInfra call was made; P1.2, P1.3, and Phase Two remain untouched.
+
+## 2026-09-19 Phase One extractor quotation remediation CI
+
+- Remote `main` at `fae92e4` passed the required GitHub Actions CI run `35470638619`: pytest, Ruff, and mypy all passed. The machine-readable remediation receipt now records that CI result; no live provider call was made.
