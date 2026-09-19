@@ -133,3 +133,4 @@
 
 - Completed the P0.4 real Gemma baseline with two sibling subjects, repeated held-out probes, unchanged evaluation snapshots, exact-once restart re-entry, and sanitized human/machine receipts.
 - Phase Zero is complete and tagged `mneme-phase-zero`. The laboratory remains explicitly no-learning: history is durable but behaviorally inert, and no Phase One mechanism was started.
+- The persistent work queue now records P0.4 `DONE` with all required validation and the Phase Zero closure receipt.
