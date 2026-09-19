@@ -139,3 +139,12 @@
 
 - Archived the supplied `MNEME_Developmental_Dynamics_Amendment_2026-09-19.md` unchanged under `docs/research/` with SHA-256 `f5240ec906d40d5e49892b644b6a8ae653f3572bc4694003da217c8b7062d88f`.
 - The document is reference material only. No implementation, scope change, or normative decision was taken from it.
+
+## 2026-09-19 Phase One plan approval and save
+
+- Saved the complete approved plan at `docs/Approved Plans/MNEME_Phase_One_Graph_Wrapper_Preview_Plan.md`, preserving the P1.1/P1.2/P1.3 structure, stop–audit–push gates, acceptance demonstrations, 27-call live ceiling, and Phase Two boundary.
+- Incorporated the three approval corrections: confidence/salience are evidence annotations rather than persistent ranking/accessibility weights (`0.70` remains admission/uncertainty only); lineage revision, episode ordinal/count, graph revision and self-view version are explicitly distinct; new instances may opt in once with `instance create --development-enabled --host gemma-deepinfra`, with inspectable/revocable policy and no implicit legacy reuse.
+- Updated the documentation index and reconciled the amendment description with the approved Phase One allocation. The original amendment and prior archive entry are unchanged; the amendment now informs the approved design allocation without authorizing implementation or bringing adaptive learning into Phase One.
+- The queue has no planning-approval state, so `.codex/work-queue.json` remains unchanged with P0.1–P0.4 `DONE`. Approval is recorded in the plan and this entry; implementation packages await explicit authorization.
+- Documentation validation checked all 16 plan sections, the three corrections and their consequential test/CLI wording, whitespace, index target, and unchanged amendment/Phase Zero receipts/tag. No production code or tests changed; no new test execution or paid calls are claimed for this documentation save.
+- No Phase One production implementation was started. P1.1, P1.2 and P1.3 remain awaiting explicit implementation authorization.

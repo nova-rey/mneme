@@ -8,8 +8,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   (dated 2026-09-14; P0.1 is the current boundary).
 * `research/MNEME_Research_Amendment_Individuality_Identity_2026-09-14.md` is later
   research context and supersedes earlier related-work interpretations where they conflict.
-* `research/MNEME_Developmental_Dynamics_Amendment_2026-09-19.md` is archived reference
-  material supplied on 2026-09-19; it is not an implementation directive or current scope change.
+* `research/MNEME_Developmental_Dynamics_Amendment_2026-09-19.md` is preserved unchanged
+  as design context, with its Phase One allocation recorded in the approved graph-wrapper
+  preview plan below. Adaptive developmental dynamics remain Phase Two or later;
+  plan approval does not authorize implementation.
 * `research/MNEME_Related_Work_Research_Dossier.docx` is unchanged historical/reference
   material, not a normative implementation specification.
 * `setup/deepinfra.md` is the operational procedure for the selected live P0.1 backend.
@@ -23,6 +25,11 @@ The documents are preserved in their supplied form and are intentionally not mer
   preflight, budgets, frozen evaluation boundary, and four implementation chunks. P0.3
   implementation and its FakeHost acceptance receipt are complete.
 * [P0.4 FakeHost integrated receipt](receipts/MNEME_P0.4_Fake_Integrated_Receipt.md) ([JSON](receipts/MNEME_P0.4_Fake_Integrated_Receipt.json)) and [real Gemma baseline receipt](receipts/MNEME_P0.4_Real_Gemma_Baseline_Receipt.md) ([JSON](receipts/MNEME_P0.4_Real_Gemma_Baseline_Receipt.json)) record the completed no-learning laboratory.
+* [Approved Phase One graph-wrapper preview plan](<Approved Plans/MNEME_Phase_One_Graph_Wrapper_Preview_Plan.md>)
+  preserves the P1.1/P1.2/P1.3 gates and incorporates fixed route ranking without
+  confidence/salience bonuses, distinct revision/episode/graph/self-view counters,
+  and explicit development-enabled creation with fail-closed legacy reuse.
+  Implementation awaits separate authorization.
 
 The P0.2 implementation is now present under `src/mneme/state/`; its acceptance
 status and receipts are recorded in `.codex/work-queue.json` and `bible.md`.
