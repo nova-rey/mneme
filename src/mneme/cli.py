@@ -57,6 +57,7 @@ def main(argv: list[str] | None = None) -> int:
     create.add_argument("--id")
     create.add_argument("--scope", default="local")
     create.add_argument("--export", action="store_true")
+    create.add_argument("--development-enabled", action="store_true")
     isub.add_parser("list")
     inspect = isub.add_parser("inspect")
     inspect.add_argument("id")
@@ -117,7 +118,11 @@ def main(argv: list[str] | None = None) -> int:
                 instance_id = store.create_root(
                     instance_id=args.id,
                     scope_id=args.scope,
-                    permissions=StoragePermissions(store=True, export=args.export),
+                    permissions=StoragePermissions(
+                        store=True,
+                        export=args.export,
+                        interpret=args.development_enabled,
+                    ),
                 )
             print(instance_id)
             return 0

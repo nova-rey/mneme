@@ -442,6 +442,116 @@
       },
       "waiting_on": [],
       "workstream": "p0.4"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "48d70210d416572d52bfe833b788ff3603af6492",
+      "campaign": "mneme-p0.1",
+      "candidate": {
+        "artifact": "docs/receipts/p11-foundation-receipt.md",
+        "base_sha": "48d70210d416572d52bfe833b788ff3603af6492",
+        "returned_at": "2026-09-19T17:28:22.047972Z",
+        "returned_by": "/root/p11_supervisor",
+        "sha": null
+      },
+      "completion_criterion": "P1.1 extraction, validation, source provenance, durable interpretation publication, fixed graph/resolution materialization, explicit migration and prior-layer hardening pass adversarial audit with network-free validation and an inspected acceptance receipt.",
+      "created_at": "2026-09-19T16:44:25.001886Z",
+      "dependencies": [],
+      "domain": "memory-foundation",
+      "edit_boundaries": [
+        "src/mneme/state",
+        "src/mneme/hosts",
+        "src/mneme/experiments",
+        "src/mneme/memory",
+        "tests",
+        "docs/receipts",
+        "bible.md",
+        ".codex/work-queue.json"
+      ],
+      "evidence_refs": [],
+      "id": "P1.1",
+      "notes": "",
+      "owner": "/root/p11_supervisor",
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "foundation-repairs",
+        "source-bindings",
+        "residue-validation",
+        "interpretation-ledger",
+        "graph-publication",
+        "resolution",
+        "migration",
+        "history-ordering",
+        "checkpoint-fork-integrity"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": false,
+          "name": "model-agent",
+          "units": 1
+        },
+        {
+          "exclusive": true,
+          "name": "canonical-integration",
+          "units": 1
+        }
+      ],
+      "scope": "Implement only approved P1.1 residue-to-graph foundation and narrow prior-layer repairs; exclude response influence, identity, adaptive dynamics, P1.3 comparisons, and Phase Two.",
+      "session_ids": [
+        "p11-root-audit-20260919"
+      ],
+      "status": "VALIDATING",
+      "title": "Residue extraction and durable graph foundation",
+      "updated_at": "2026-09-19T17:30:33.976692Z",
+      "validation": {
+        "required": [
+          "focused P1.1 tests",
+          "pytest -q",
+          "ruff check .",
+          "mypy src/mneme",
+          "offline P1.1 acceptance demonstration",
+          "stop-audit-publish receipt"
+        ],
+        "results": {
+          "focused P1.1 tests": {
+            "receipt": "docs/receipts/MNEME_P1.1_Residue_Graph_Foundation_Receipt.md: 138 pytest tests pass",
+            "recorded_at": "2026-09-19T17:30:33.748406Z",
+            "status": "PASS"
+          },
+          "mypy src/mneme": {
+            "receipt": "docs/receipts/MNEME_P1.1_Residue_Graph_Foundation_Receipt.md",
+            "recorded_at": "2026-09-19T17:30:33.888709Z",
+            "status": "PASS"
+          },
+          "offline P1.1 acceptance demonstration": {
+            "receipt": "docs/receipts/MNEME_P1.1_Residue_Graph_Foundation_Receipt.md",
+            "recorded_at": "2026-09-19T17:30:33.930785Z",
+            "status": "PASS"
+          },
+          "pytest -q": {
+            "receipt": "docs/receipts/MNEME_P1.1_Residue_Graph_Foundation_Receipt.md",
+            "recorded_at": "2026-09-19T17:30:33.788457Z",
+            "status": "PASS"
+          },
+          "ruff check .": {
+            "receipt": "docs/receipts/MNEME_P1.1_Residue_Graph_Foundation_Receipt.md",
+            "recorded_at": "2026-09-19T17:30:33.840672Z",
+            "status": "PASS"
+          },
+          "stop-audit-publish receipt": {
+            "receipt": "docs/receipts/MNEME_P1.1_Residue_Graph_Foundation_Receipt.md",
+            "recorded_at": "2026-09-19T17:30:33.976674Z",
+            "status": "PASS"
+          }
+        }
+      },
+      "waiting_on": [],
+      "workstream": "phase-one"
     }
   ],
   "project": "nova-rey/mneme",
@@ -456,5 +566,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-19T00:18:20.884697Z"
+  "updated_at": "2026-09-19T17:30:33.976744Z"
 }

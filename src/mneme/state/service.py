@@ -72,6 +72,19 @@ class ContinuityService:
             raise ContinuityError(f"unknown active lineage: {self.instance_id}")
         return int(row[0]), str(row[1])
 
+    def _assert_host_binding(self, run_id: str) -> None:
+        """Reject host drift before a prepared operation reaches the provider."""
+        row = self.db.execute(
+            "SELECT host_ref FROM run_manifests WHERE run_id=? AND instance_id=?",
+            (run_id, self.instance_id),
+        ).fetchone()
+        if row is None:
+            raise ContinuityError("operation has no host binding")
+        expected = str(row[0])
+        actual = _digest(self.host.fingerprint().to_dict())
+        if actual != expected:
+            raise ContinuityError("host fingerprint drifted from prepared operation")
+
     def recover_orphaned_operations(
         self,
         *,
@@ -215,16 +228,34 @@ class ContinuityService:
             )
             for ordinal, message in enumerate(request.messages):
                 content = str(message.get("content", ""))
+                source_id = str(uuid.uuid4())
+                role = str(message.get("role", "user"))
                 db.execute(
                     "INSERT INTO sources VALUES(?,?,?,?,?,?,?)",
                     (
-                        str(uuid.uuid4()),
+                        source_id,
                         operation_id,
                         ordinal,
-                        str(message.get("role", "user")),
+                        role,
                         "external",
                         content,
                         hashlib.sha256(content.encode()).hexdigest(),
+                    ),
+                )
+                purpose = {
+                    "user": "external_evidence",
+                    "assistant": "replayed_context",
+                    "system": "controller_dependency",
+                }.get(role, "controller_dependency")
+                db.execute(
+                    "INSERT INTO source_bindings VALUES(?,?,?,?,?,?)",
+                    (
+                        source_id,
+                        purpose,
+                        None,
+                        None,
+                        int(purpose == "external_evidence"),
+                        now,
                     ),
                 )
         return OperationReceipt(operation_id, episode_id, "PREPARED")
@@ -248,6 +279,9 @@ class ContinuityService:
                 return OperationReceipt(operation_id, episode_id, status)
             if status != "PREPARED":
                 raise OperationNotReady(status)
+            # This check must precede STARTED publication.  A drifted host is
+            # a rejected prepared operation, not an uncertain provider call.
+            self._assert_host_binding(run_id)
             db.execute(
                 "UPDATE operations SET status='STARTED',updated_at=? WHERE operation_id=?",
                 (_utc(), operation_id),
@@ -297,7 +331,20 @@ class ContinuityService:
                     "SELECT host_ref FROM run_manifests WHERE run_id=?", (run_id,)
                 ).fetchone()[0]
             )
+            host_record = db.execute(
+                "SELECT provider,model_id FROM host_records WHERE host_ref=?", (host_ref,)
+            ).fetchone()
+            if host_record is None:
+                raise ContinuityError("operation host record is missing")
+            if result.provider != str(host_record[0]) or result.model_id != str(host_record[1]):
+                db.execute(
+                    "UPDATE operations SET status='UNCERTAIN',failure_code=?,updated_at=? "
+                    "WHERE operation_id=?",
+                    ("result_host_mismatch", _utc(), operation_id),
+                )
+                raise ContinuityError("generation result does not match prepared host")
             content = result.content
+            output_purpose = "model_output"
             db.execute(
                 "INSERT INTO sources VALUES(?,?,?,?,?,?,?)",
                 (
@@ -309,6 +356,10 @@ class ContinuityService:
                     content,
                     hashlib.sha256(content.encode()).hexdigest(),
                 ),
+            )
+            db.execute(
+                "INSERT INTO source_bindings VALUES(?,?,?,?,?,?)",
+                (output_id, output_purpose, None, None, 0, _utc()),
             )
             usage = result.token_usage
             db.execute(
@@ -362,31 +413,6 @@ class ContinuityService:
             if base != current:
                 raise StaleRevision(f"prepared at {base}, current head is {current}")
             revision, now, manifest_id = current + 1, _utc(), str(uuid.uuid4())
-            previous = []
-            for item in db.execute(
-                "SELECT e.accepted_revision, o.operation_id, g.output_source_id "
-                "FROM episodes e JOIN operations o ON o.operation_id=e.operation_id "
-                "JOIN generation_records g ON g.generation_id=e.generation_id "
-                "WHERE e.origin_instance_id=? ORDER BY e.accepted_revision",
-                (self.instance_id,),
-            ):
-                inp = db.execute(
-                    "SELECT content FROM sources WHERE operation_id=? AND ordinal=0",
-                    (item[1],),
-                ).fetchone()[0]
-                out = db.execute(
-                    "SELECT content FROM sources WHERE source_id=?", (item[2],)
-                ).fetchone()[0]
-                previous.append({"revision": item[0], "input_content": inp, "output_content": out})
-            inp = db.execute(
-                "SELECT content FROM sources WHERE operation_id=? AND ordinal=0", (operation_id,)
-            ).fetchone()[0]
-            out = db.execute(
-                "SELECT content FROM sources WHERE source_id=(SELECT output_source_id FROM generation_records WHERE generation_id=?)",
-                (generation_id,),
-            ).fetchone()[0]
-            previous.append({"revision": revision, "input_content": inp, "output_content": out})
-            history_digest = _digest(previous)
             integrity = _digest(
                 {
                     "instance_id": self.instance_id,
@@ -399,11 +425,41 @@ class ContinuityService:
                 "INSERT INTO episodes(episode_id,operation_id,origin_instance_id,accepted_revision,generation_id,occurred_at,accepted_at) VALUES(?,?,?,?,?,?,?)",
                 (episode_id, operation_id, self.instance_id, revision, generation_id, now, now),
             )
+            # The revision row is inserted below, so include this accepted
+            # content explicitly while the enclosing transaction protects the
+            # complete transition.
+            input_sources = [
+                {"role": str(source[0]), "supplier": str(source[1]), "content": str(source[2])}
+                for source in db.execute(
+                    "SELECT role,supplier,content FROM sources WHERE operation_id=? ORDER BY ordinal",
+                    (operation_id,),
+                )
+            ]
+            output_source = db.execute(
+                "SELECT output_source_id FROM generation_records WHERE generation_id=?",
+                (generation_id,),
+            ).fetchone()[0]
+            output_content = db.execute(
+                "SELECT content FROM sources WHERE source_id=?", (output_source,)
+            ).fetchone()[0]
+            history_digest = self.store.accepted_history_digest(
+                self.instance_id,
+                extra_records=[
+                    {
+                        "event_kind": "episode_accepted",
+                        "sources": input_sources,
+                        "generation": {"content": output_content},
+                    }
+                ],
+            )
             base_manifest = db.execute(
                 "SELECT * FROM manifests WHERE manifest_id=?", (previous_manifest,)
             ).fetchone()
             db.execute(
-                "INSERT INTO manifests VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+                "INSERT INTO manifests("
+                "manifest_id,instance_id,revision,parent_manifest_id,inherited_base_manifest_id,"
+                "policy_id,self_ref_id,format_version,controller_version,integrity_digest,"
+                "accepted_history_digest,graph_snapshot_id,graph_revision) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 (
                     manifest_id,
                     self.instance_id,
@@ -416,6 +472,8 @@ class ContinuityService:
                     "mneme-p0.2",
                     integrity,
                     history_digest,
+                    base_manifest["graph_snapshot_id"],
+                    base_manifest["graph_revision"],
                 ),
             )
             db.execute(

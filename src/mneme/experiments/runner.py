@@ -365,7 +365,10 @@ class IntegratedRunner:
         budgets = self.plan.get("budgets", {})
         if not isinstance(budgets, Mapping):
             return
-        limit = budgets.get("max_model_calls")
+        declared_limits = budgets.get("hard_limits", budgets.get("limits", budgets))
+        if not isinstance(declared_limits, Mapping):
+            raise RunnerError("prepared plan has invalid hard budget limits")
+        limit = declared_limits.get("max_model_calls")
         persisted = 0
         for subject in self.subjects.values():
             row = subject.store.connection.execute(

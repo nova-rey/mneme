@@ -15,7 +15,8 @@ from dataclasses import dataclass
 from enum import StrEnum
 from typing import Any
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
+ACCEPTED_HISTORY_DIGEST_VERSION = 2
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 
 
@@ -35,13 +36,16 @@ class OperationStatus(StrEnum):
 
 @dataclass(frozen=True)
 class StoragePermissions:
-    """Permissions implemented by P0.2's actual storage operations."""
+    """Storage permissions plus the Phase One interpretation opt-in."""
 
     store: bool = True
     export: bool = False
+    interpret: bool = False
 
     def to_json(self) -> str:
-        return canonical_json({"export": self.export, "store": self.store})
+        return canonical_json(
+            {"export": self.export, "interpret": self.interpret, "store": self.store}
+        )
 
 
 @dataclass(frozen=True)
@@ -97,12 +101,45 @@ def accepted_history_digest(records: list[Mapping[str, Any]]) -> str:
 
     Equality is a content comparison only.  It does not establish behavioral
     equivalence between model instances.
+
+    The reducer is deliberately ancestry/order aware: callers supply records
+    in authoritative history order, while stable source and generation content
+    is retained.  Administrative identifiers, timestamps and host bookkeeping
+    are excluded so a fork can be compared with its parent without claiming
+    behavioral equivalence.
     """
 
-    keep = ("revision", "event_kind", "episode_id", "sources", "generation")
+    administrative = {
+        "instance_id",
+        "origin_instance_id",
+        "episode_id",
+        "operation_id",
+        "generation_id",
+        "event_id",
+        "manifest_id",
+        "checkpoint_id",
+        "created_at",
+        "occurred_at",
+        "accepted_at",
+        "timestamp",
+        "host_ref",
+        "provider",
+        "model_id",
+        "model_revision",
+        "runtime",
+    }
     normalized: list[dict[str, Any]] = []
-    for record in records:
-        normalized.append({key: record[key] for key in keep if key in record})
+    for ordinal, record in enumerate(records):
+        stable = {
+            key: value
+            for key, value in record.items()
+            if key not in administrative
+        }
+        # The list position is the canonical ancestry order.  Do not retain a
+        # child-local revision, which is an administrative coordinate after a
+        # fork and can differ even when accepted content is identical.
+        stable["history_ordinal"] = ordinal
+        normalized.append(stable)
     return canonical_digest(normalized)
 
 

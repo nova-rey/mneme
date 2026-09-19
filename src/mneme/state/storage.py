@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import contextlib
 import fcntl
+import os
+import shutil
 import sqlite3
-from collections.abc import Iterator
+from collections.abc import Iterator, Mapping
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import cast
@@ -19,7 +21,7 @@ from .contracts import (
     validate_id,
 )
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 APPLICATION_ID = 0x4D4E454D  # ASCII "MNEM"
 
 _SCHEMA = """
@@ -46,6 +48,7 @@ CREATE TABLE IF NOT EXISTS policies (
   scope_id TEXT NOT NULL,
   storage_allowed INTEGER NOT NULL CHECK (storage_allowed IN (0,1)),
   export_allowed INTEGER NOT NULL CHECK (export_allowed IN (0,1)),
+  interpretation_allowed INTEGER NOT NULL DEFAULT 0 CHECK (interpretation_allowed IN (0,1)),
   policy_version INTEGER NOT NULL
 );
 CREATE TABLE IF NOT EXISTS host_records (
@@ -69,6 +72,8 @@ CREATE TABLE IF NOT EXISTS manifests (
   controller_version TEXT NOT NULL,
   integrity_digest TEXT NOT NULL,
   accepted_history_digest TEXT NOT NULL,
+  graph_snapshot_id TEXT,
+  graph_revision INTEGER NOT NULL DEFAULT 0 CHECK (graph_revision >= 0),
   UNIQUE(instance_id, revision),
   FOREIGN KEY(instance_id) REFERENCES lineages(instance_id)
 );
@@ -159,7 +164,124 @@ CREATE TABLE IF NOT EXISTS checkpoints (
   format_version INTEGER NOT NULL,
   integrity_digest TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS interpretation_operations (
+  operation_id TEXT PRIMARY KEY,
+  episode_id TEXT NOT NULL UNIQUE REFERENCES episodes(episode_id),
+  instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
+  base_manifest_id TEXT NOT NULL REFERENCES manifests(manifest_id),
+  status TEXT NOT NULL CHECK (status IN ('PREPARED','STARTED','RESULT_READY','ACCEPTED','FAILED','UNCERTAIN','ABANDONED')),
+  current_attempt INTEGER NOT NULL DEFAULT 0 CHECK (current_attempt >= 0),
+  configuration_digest TEXT NOT NULL,
+  failure_code TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS interpretation_attempts (
+  operation_id TEXT NOT NULL REFERENCES interpretation_operations(operation_id),
+  attempt INTEGER NOT NULL CHECK (attempt >= 0),
+  host_ref TEXT REFERENCES host_records(host_ref),
+  request_json TEXT NOT NULL,
+  result_json TEXT,
+  status TEXT NOT NULL CHECK (status IN ('STARTED','RESULT_READY','VALID','INVALID','UNCERTAIN')),
+  validation_errors_json TEXT,
+  created_at TEXT NOT NULL,
+  PRIMARY KEY (operation_id, attempt)
+);
+CREATE TABLE IF NOT EXISTS interpretations (
+  interpretation_id TEXT PRIMARY KEY,
+  operation_id TEXT NOT NULL UNIQUE REFERENCES interpretation_operations(operation_id),
+  episode_id TEXT NOT NULL UNIQUE REFERENCES episodes(episode_id),
+  schema_version INTEGER NOT NULL,
+  extractor_version TEXT NOT NULL,
+  resolver_version TEXT NOT NULL,
+  accepted_revision INTEGER NOT NULL CHECK (accepted_revision >= 0),
+  accepted_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS candidates (
+  candidate_id TEXT PRIMARY KEY,
+  interpretation_id TEXT NOT NULL REFERENCES interpretations(interpretation_id),
+  local_key TEXT NOT NULL,
+  label TEXT NOT NULL,
+  normalized_label TEXT NOT NULL,
+  kind TEXT NOT NULL,
+  confidence REAL NOT NULL CHECK (confidence >= 0 AND confidence <= 1),
+  salience REAL NOT NULL CHECK (salience >= 0 AND salience <= 1),
+  context_json TEXT NOT NULL,
+  UNIQUE(interpretation_id, local_key)
+);
+CREATE TABLE IF NOT EXISTS evidence_spans (
+  candidate_id TEXT NOT NULL REFERENCES candidates(candidate_id),
+  ordinal INTEGER NOT NULL CHECK (ordinal >= 0),
+  source_slot TEXT NOT NULL,
+  start_offset INTEGER NOT NULL CHECK (start_offset >= 0),
+  end_offset INTEGER NOT NULL CHECK (end_offset > start_offset),
+  text_digest TEXT NOT NULL,
+  PRIMARY KEY (candidate_id, ordinal)
+);
+CREATE TABLE IF NOT EXISTS resolution_decisions (
+  decision_id TEXT PRIMARY KEY,
+  interpretation_id TEXT NOT NULL REFERENCES interpretations(interpretation_id),
+  local_key TEXT NOT NULL,
+  canonical_label TEXT NOT NULL,
+  normalized_label TEXT NOT NULL,
+  decision_kind TEXT NOT NULL,
+  evidence_json TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  UNIQUE(interpretation_id, local_key)
+);
+CREATE TABLE IF NOT EXISTS graph_snapshots (
+  snapshot_id TEXT PRIMARY KEY,
+  instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
+  lineage_revision INTEGER NOT NULL CHECK (lineage_revision >= 0),
+  graph_revision INTEGER NOT NULL CHECK (graph_revision >= 0),
+  parent_snapshot_id TEXT REFERENCES graph_snapshots(snapshot_id),
+  content_digest TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  UNIQUE(instance_id, graph_revision)
+);
+CREATE TABLE IF NOT EXISTS graph_concepts (
+  snapshot_id TEXT NOT NULL REFERENCES graph_snapshots(snapshot_id),
+  concept_key TEXT NOT NULL,
+  label TEXT NOT NULL,
+  normalized_label TEXT NOT NULL,
+  kind TEXT NOT NULL,
+  confidence REAL NOT NULL CHECK (confidence >= 0 AND confidence <= 1),
+  salience REAL NOT NULL CHECK (salience >= 0 AND salience <= 1),
+  candidate_id TEXT REFERENCES candidates(candidate_id),
+  PRIMARY KEY (snapshot_id, concept_key)
+);
+CREATE TABLE IF NOT EXISTS graph_edges (
+  snapshot_id TEXT NOT NULL REFERENCES graph_snapshots(snapshot_id),
+  edge_key TEXT NOT NULL,
+  source_key TEXT NOT NULL,
+  target_key TEXT NOT NULL,
+  relationship TEXT NOT NULL,
+  polarity TEXT NOT NULL,
+  context_json TEXT NOT NULL,
+  evidence_json TEXT NOT NULL,
+  PRIMARY KEY (snapshot_id, edge_key)
+);
+CREATE TABLE IF NOT EXISTS graph_routes (
+  snapshot_id TEXT NOT NULL REFERENCES graph_snapshots(snapshot_id),
+  route_key TEXT NOT NULL,
+  edge_keys_json TEXT NOT NULL,
+  source_json TEXT NOT NULL,
+  PRIMARY KEY (snapshot_id, route_key)
+);
+CREATE TABLE IF NOT EXISTS source_bindings (
+  source_id TEXT PRIMARY KEY REFERENCES sources(source_id),
+  purpose TEXT NOT NULL CHECK (purpose IN ('external_evidence','model_output','controller_dependency','replayed_context','tool_result','feedback')),
+  origin_source_id TEXT REFERENCES sources(source_id),
+  permission_scope TEXT,
+  independent_evidence INTEGER NOT NULL CHECK (independent_evidence IN (0,1)),
+  created_at TEXT NOT NULL
+);
 """
+
+# Additive portion used by the explicit v1 -> v2 migration.  It is derived
+# from the same schema declaration so new stores and migrated stores receive
+# identical interpretation/graph tables.
+_SCHEMA_V2_TABLES = _SCHEMA[_SCHEMA.index("CREATE TABLE IF NOT EXISTS interpretation_operations") :]
 
 _IMMUTABLE = (
     "lineages",
@@ -172,6 +294,15 @@ _IMMUTABLE = (
     "episodes",
     "revisions",
     "checkpoints",
+    "interpretations",
+    "candidates",
+    "evidence_spans",
+    "resolution_decisions",
+    "graph_snapshots",
+    "graph_concepts",
+    "graph_edges",
+    "graph_routes",
+    "source_bindings",
 )
 
 
@@ -204,8 +335,10 @@ class SQLiteStore:
             self.connection = sqlite3.connect(self.path, isolation_level=None)
             if not existed:
                 self.connection.execute(f"PRAGMA application_id = {APPLICATION_ID}")
-                self.connection.execute("PRAGMA journal_mode = DELETE")
-                self.connection.execute("PRAGMA synchronous = EXTRA")
+            # Reassert the approved durable working-store settings on every
+            # writable open; SQLite PRAGMAs are connection-local.
+            self.connection.execute("PRAGMA journal_mode = DELETE")
+            self.connection.execute("PRAGMA synchronous = EXTRA")
             self.connection.execute("PRAGMA busy_timeout = 5000")
         self.connection.row_factory = sqlite3.Row
         self.connection.execute("PRAGMA foreign_keys = ON")
@@ -280,7 +413,7 @@ class SQLiteStore:
     def _initialize(self) -> None:
         with self.transaction():
             self.connection.executescript(_SCHEMA)
-            self.connection.execute("PRAGMA user_version = 1")
+            self.connection.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
             for table in _IMMUTABLE:
                 self.connection.executescript(
                     f"CREATE TRIGGER IF NOT EXISTS {table}_immutable_update "
@@ -294,11 +427,109 @@ class SQLiteStore:
         version = int(row[0]) if row else 0
         if version > SCHEMA_VERSION:
             raise SchemaError(f"unsupported newer schema version {version}")
+        if self.read_only and version == SCHEMA_VERSION - 1:
+            # Historical Phase Zero checkpoints remain inspectable without
+            # mutation.  Forking a v1 checkpoint stages and explicitly
+            # migrates a private copy before opening it writable.
+            if info := self.connection.execute(
+                "SELECT schema_version FROM store_info"
+            ).fetchone():
+                if int(info[0]) == version:
+                    return
         if version != SCHEMA_VERSION:
+            if version < SCHEMA_VERSION:
+                raise SchemaError(
+                    f"schema version {version} requires explicit migration to {SCHEMA_VERSION}"
+                )
             raise SchemaError(f"unsupported schema version {version}; expected {SCHEMA_VERSION}")
         info = self.connection.execute("SELECT schema_version FROM store_info").fetchone()
         if info is not None and int(info[0]) != SCHEMA_VERSION:
             raise SchemaError("store_info schema version disagrees with PRAGMA user_version")
+
+    @staticmethod
+    def migrate(
+        path: str | Path,
+        *,
+        target_version: int = SCHEMA_VERSION,
+        backup: str | Path | None = None,
+    ) -> None:
+        """Explicitly migrate a v1 store to the P1.1 schema.
+
+        Opening an older store never mutates it.  The backup is made before the
+        migration transaction and remains available if the process is
+        interrupted or validation fails.
+        """
+
+        if target_version != SCHEMA_VERSION:
+            raise SchemaError(f"only migration to schema {SCHEMA_VERSION} is supported")
+        source = Path(path)
+        if not source.is_file():
+            raise SchemaError(f"store does not exist: {source}")
+        backup_path = Path(backup) if backup is not None else source.with_suffix(source.suffix + ".pre-v2")
+        if backup_path.exists():
+            raise SchemaError(f"migration backup already exists: {backup_path}")
+        backup_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, backup_path)
+        raw = sqlite3.connect(source, isolation_level=None)
+        raw.row_factory = sqlite3.Row
+        raw.execute("PRAGMA foreign_keys = ON")
+        try:
+            version_row = raw.execute("PRAGMA user_version").fetchone()
+            version = int(version_row[0]) if version_row else 0
+            if version == SCHEMA_VERSION:
+                raise SchemaError("store is already at the requested schema version")
+            if version != 1:
+                raise SchemaError(f"cannot migrate unsupported schema version {version}")
+            info = raw.execute("SELECT schema_version FROM store_info").fetchone()
+            if info is None or int(info[0]) != 1:
+                raise SchemaError("v1 store_info is missing or inconsistent")
+            raw.execute("BEGIN IMMEDIATE")
+            raw.execute("ALTER TABLE manifests ADD COLUMN graph_snapshot_id TEXT")
+            raw.execute(
+                "ALTER TABLE manifests ADD COLUMN graph_revision INTEGER NOT NULL DEFAULT 0"
+            )
+            policy_table = raw.execute(
+                "SELECT 1 FROM sqlite_master WHERE type='table' AND name='policies'"
+            ).fetchone()
+            if policy_table is not None:
+                raw.execute(
+                    "ALTER TABLE policies ADD COLUMN interpretation_allowed INTEGER NOT NULL DEFAULT 0"
+                )
+            # The v2 tables are additive.  Keep this script explicit so a
+            # partially applied migration rolls back as one SQLite transaction.
+            for statement in _SCHEMA_V2_TABLES.split(";"):
+                statement = statement.strip()
+                if statement:
+                    raw.execute(statement)
+            raw.execute(
+                "UPDATE store_info SET schema_version=?, record_version=record_version+1",
+                (SCHEMA_VERSION,),
+            )
+            raw.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
+            for table in _IMMUTABLE:
+                exists = raw.execute(
+                    "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (table,)
+                ).fetchone()
+                if exists is None:
+                    continue
+                raw.execute(
+                    f"CREATE TRIGGER IF NOT EXISTS {table}_immutable_update "
+                    f"BEFORE UPDATE ON {table} BEGIN SELECT RAISE(ABORT, 'immutable record'); END"
+                )
+                raw.execute(
+                    f"CREATE TRIGGER IF NOT EXISTS {table}_immutable_delete "
+                    f"BEFORE DELETE ON {table} BEGIN SELECT RAISE(ABORT, 'immutable record'); END"
+                )
+            raw.commit()
+        except BaseException:
+            raw.rollback()
+            raise
+        finally:
+            raw.close()
+        with source.open("rb") as handle:
+            os.fsync(handle.fileno())
+
+    migrate_to = migrate
 
     def create_root(
         self,
@@ -331,11 +562,22 @@ class SQLiteStore:
                 (instance_id, now, scope_id, self_ref_id, None, None, None),
             )
             db.execute(
-                "INSERT INTO policies VALUES (?,?,?,?,?)",
-                (policy_id, scope_id, int(permissions.store), int(permissions.export), 1),
+                "INSERT INTO policies(policy_id,scope_id,storage_allowed,export_allowed,"
+                "interpretation_allowed,policy_version) VALUES (?,?,?,?,?,?)",
+                (
+                    policy_id,
+                    scope_id,
+                    int(permissions.store),
+                    int(permissions.export),
+                    int(permissions.interpret),
+                    2 if permissions.interpret else 1,
+                ),
             )
             db.execute(
-                "INSERT INTO manifests VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                "INSERT INTO manifests("
+                "manifest_id,instance_id,revision,parent_manifest_id,inherited_base_manifest_id,"
+                "policy_id,self_ref_id,format_version,controller_version,integrity_digest,"
+                "accepted_history_digest,graph_snapshot_id,graph_revision) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 (
                     manifest_id,
                     instance_id,
@@ -348,6 +590,8 @@ class SQLiteStore:
                     controller_version,
                     integrity,
                     history_digest,
+                    None,
+                    0,
                 ),
             )
             db.execute(
@@ -366,45 +610,150 @@ class SQLiteStore:
     def accepted_history(self, instance_id: str | None = None) -> list[sqlite3.Row]:
         instance_id = instance_id or str(self.current()["active_instance_id"])
         validate_id(instance_id, field="instance_id")
-        return list(
-            self.connection.execute(
-                """SELECT r.*, e.episode_id FROM revisions r LEFT JOIN episodes e ON e.episode_id=r.episode_id WHERE r.instance_id=? AND r.revision>0 ORDER BY r.revision""",
-                (instance_id,),
+        return self._history_rows(instance_id)
+
+    def _ancestry(self, instance_id: str) -> list[str]:
+        """Return root-to-child lineage IDs for an active lineage."""
+        result: list[str] = []
+        seen: set[str] = set()
+        current: str | None = instance_id
+        while current is not None:
+            if current in seen:
+                raise SchemaError("lineage ancestry contains a cycle")
+            seen.add(current)
+            result.append(current)
+            row = self.connection.execute(
+                "SELECT parent_instance_id FROM lineages WHERE instance_id=?", (current,)
+            ).fetchone()
+            if row is None:
+                raise SchemaError(f"lineage ancestry references missing instance: {current}")
+            current = str(row[0]) if row[0] is not None else None
+        result.reverse()
+        return result
+
+    def _history_rows(self, instance_id: str) -> list[sqlite3.Row]:
+        rows: list[sqlite3.Row] = []
+        for lineage_id in self._ancestry(instance_id):
+            rows.extend(
+                self.connection.execute(
+                    """SELECT r.*, e.episode_id FROM revisions r
+                    LEFT JOIN episodes e ON e.episode_id=r.episode_id
+                    WHERE r.instance_id=? AND r.revision>0 ORDER BY r.revision""",
+                    (lineage_id,),
+                ).fetchall()
             )
-        )
+        return rows
 
     def verify(self) -> list[str]:
         problems: list[str] = []
         fk = list(self.connection.execute("PRAGMA foreign_key_check"))
         problems.extend(f"foreign key: {tuple(row)}" for row in fk)
         head = self.current()
+        active = self.connection.execute(
+            "SELECT * FROM lineages WHERE instance_id=?", (head["active_instance_id"],)
+        ).fetchone()
+        if active is None:
+            problems.append("current_state active lineage is missing")
+        else:
+            parent = active["parent_instance_id"]
+            if parent is not None and self.connection.execute(
+                "SELECT 1 FROM lineages WHERE instance_id=?", (parent,)
+            ).fetchone() is None:
+                problems.append("lineage parent is missing")
+            if (active["fork_checkpoint_id"] is None) != (active["fork_manifest_id"] is None):
+                problems.append("fork ancestry is incomplete")
         manifest = self.connection.execute(
             "SELECT * FROM manifests WHERE manifest_id=?", (head["current_manifest_id"],)
         ).fetchone()
         if manifest is None or manifest["revision"] != head["current_revision"]:
             problems.append("current_state does not point to its revision manifest")
+        elif int(self.connection.execute("PRAGMA user_version").fetchone()[0]) >= 2:
+            for fork_manifest in self.connection.execute(
+                "SELECT m.*,l.parent_instance_id FROM manifests m "
+                "JOIN lineages l ON l.instance_id=m.instance_id "
+                "WHERE l.parent_instance_id IS NOT NULL AND m.revision=0"
+            ):
+                expected_fork_integrity = canonical_digest(
+                    {
+                        "instance_id": fork_manifest["instance_id"],
+                        "revision": 0,
+                        "self_ref_id": fork_manifest["self_ref_id"],
+                        "graph_snapshot_id": fork_manifest["graph_snapshot_id"],
+                        "graph_revision": fork_manifest["graph_revision"],
+                        "accepted_history_digest": fork_manifest["accepted_history_digest"],
+                    }
+                )
+                if fork_manifest["integrity_digest"] != expected_fork_integrity:
+                    problems.append(
+                        f"fork manifest integrity disagrees with binding: "
+                        f"{fork_manifest['manifest_id']}"
+                    )
+            graph_snapshot = manifest["graph_snapshot_id"]
+            if graph_snapshot is not None:
+                graph = self.connection.execute(
+                    "SELECT instance_id,graph_revision FROM graph_snapshots WHERE snapshot_id=?",
+                    (graph_snapshot,),
+                ).fetchone()
+                if graph is None:
+                    problems.append("manifest graph snapshot is missing")
+                elif int(graph[1]) != int(manifest["graph_revision"]):
+                    problems.append("manifest graph revision disagrees with snapshot")
+            try:
+                if manifest["accepted_history_digest"] != self.accepted_history_digest(
+                    str(head["active_instance_id"])
+                ):
+                    problems.append("manifest accepted-history digest disagrees with ledger")
+            except SchemaError as exc:
+                problems.append(str(exc))
         return problems
 
-    def accepted_history_digest(self, instance_id: str | None = None) -> str:
+    def accepted_history_digest(
+        self,
+        instance_id: str | None = None,
+        *,
+        extra_records: list[Mapping[str, object]] | None = None,
+    ) -> str:
         instance_id = instance_id or str(self.current()["active_instance_id"])
-        records = []
-        for row in self.connection.execute(
-            "SELECT e.accepted_revision,o.operation_id,g.output_source_id "
-            "FROM episodes e JOIN operations o ON o.operation_id=e.operation_id "
-            "JOIN generation_records g ON g.generation_id=e.generation_id "
-            "WHERE e.origin_instance_id=? ORDER BY e.accepted_revision",
-            (instance_id,),
-        ):
+        records = self._history_content_records(instance_id)
+        if extra_records:
+            records.extend(extra_records)
+        return accepted_history_digest(records)
+
+    def _history_content_records(self, instance_id: str) -> list[Mapping[str, object]]:
+        records: list[Mapping[str, object]] = []
+        for row in self._history_rows(instance_id):
+            if row["episode_id"] is None:
+                continue
+            episode = self.connection.execute(
+                "SELECT operation_id,generation_id FROM episodes WHERE episode_id=?",
+                (row["episode_id"],),
+            ).fetchone()
+            if episode is None:
+                raise SchemaError(f"revision references missing episode: {row['episode_id']}")
+            operation_id, generation_id = str(episode[0]), str(episode[1])
+            output = self.connection.execute(
+                "SELECT output_source_id FROM generation_records WHERE generation_id=?",
+                (generation_id,),
+            ).fetchone()
+            if output is None:
+                raise SchemaError(f"episode references missing generation: {generation_id}")
+            sources = [
+                {"role": str(source[0]), "supplier": str(source[1]), "content": str(source[2])}
+                for source in self.connection.execute(
+                    "SELECT role,supplier,content FROM sources WHERE operation_id=? ORDER BY ordinal",
+                    (operation_id,),
+                )
+            ]
+            generated = self.connection.execute(
+                "SELECT content FROM sources WHERE source_id=?", (output[0],)
+            ).fetchone()
+            if generated is None:
+                raise SchemaError(f"generation output source is missing: {output[0]}")
             records.append(
                 {
-                    "revision": row[0],
-                    "input_content": self.connection.execute(
-                        "SELECT content FROM sources WHERE operation_id=? AND ordinal=0",
-                        (row[1],),
-                    ).fetchone()[0],
-                    "output_content": self.connection.execute(
-                        "SELECT content FROM sources WHERE source_id=?", (row[2],)
-                    ).fetchone()[0],
+                    "event_kind": str(row["event_kind"]),
+                    "sources": sources,
+                    "generation": {"content": str(generated[0])},
                 }
             )
-        return accepted_history_digest(records)  # type: ignore[arg-type]
+        return records

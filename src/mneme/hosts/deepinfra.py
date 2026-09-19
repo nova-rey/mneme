@@ -57,12 +57,17 @@ class DeepInfraGemmaHost:
         self.capabilities().require(Capability.TEXT_GENERATION)
         if request.seed is not None:
             raise HostError("DeepInfra Gemma seed control is not advertised or verified")
+        if request.response_format is not None:
+            raise HostError(
+                "DeepInfra Gemma does not support native response_format; "
+                "use prompted JSON and local validation"
+            )
         token = self.token or os.getenv("DEEPINFRA_TOKEN")
         if not token:
             raise HostError("DEEPINFRA_TOKEN is required for DeepInfra inference")
         params = _parameters(request.parameters)
         body = json.dumps(
-            {"model": self.model_id, "messages": list(request.messages), **params}
+            {"model": self.model_id, "messages": _provider_messages(request), **params}
         ).encode()
         headers = {
             "Authorization": f"Bearer {token}",
@@ -93,7 +98,9 @@ class DeepInfraGemmaHost:
             metadata,
             {
                 "host": self.fingerprint().to_dict(),
-                "request_chars": sum(len(message["content"]) for message in request.messages),
+                "request_chars": sum(
+                    len(message["content"]) for message in _provider_messages(request)
+                ),
             },
         )
 
@@ -102,6 +109,36 @@ def _parameters(parameters: dict[str, Any]) -> dict[str, Any]:
     result = dict(parameters)
     if "max_new_tokens" in result:
         result["max_tokens"] = result.pop("max_new_tokens")
+    return result
+
+
+def _provider_messages(request: GenerationRequest) -> list[dict[str, str]]:
+    """Render the provider-visible message list without duplicating ``system``.
+
+    ``GenerationRequest.messages`` remains authoritative for message-only calls.
+    When the separate controller system field is present, it is represented by one
+    provider ``system`` message.  A legacy caller that already placed the same
+    system message in ``messages`` is accepted and deduplicated.
+    """
+
+    messages = [dict(message) for message in request.messages]
+    if request.system is None:
+        return messages
+
+    rendered = {"role": "system", "content": request.system}
+    result: list[dict[str, str]] = []
+    system_seen = False
+    for message in messages:
+        if (
+            message.get("role") == "system"
+            and message.get("content") == request.system
+        ):
+            if system_seen:
+                continue
+            system_seen = True
+        result.append(message)
+    if not system_seen:
+        result.insert(0, rendered)
     return result
 
 

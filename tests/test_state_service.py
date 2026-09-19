@@ -4,6 +4,7 @@ from mneme.contracts import GenerationRequest
 from mneme.hosts import FakeHost
 from mneme.state.contracts import StoragePermissions
 from mneme.state.service import (
+    ContinuityError,
     ContinuityService,
     IdempotencyConflict,
     OperationNotReady,
@@ -129,3 +130,43 @@ def test_recovery_can_target_one_started_operation_and_is_idempotent(tmp_path):
         assert service.recover_orphaned_operations(
             operation_id=first.operation_id, reason="different_reason"
         ) == ()
+
+
+def test_prepared_operation_rejects_host_fingerprint_drift_before_dispatch(tmp_path):
+    with SQLiteStore(tmp_path / "drift.sqlite3") as store:
+        instance = store.create_root(permissions=StoragePermissions(True, True))
+        prepared = ContinuityService(store, instance, FakeHost(model_id="pinned"))
+        operation = prepared.prepare_episode(_request("drift"))
+        changed = ContinuityService(store, instance, FakeHost(model_id="changed"))
+        with pytest.raises(ContinuityError, match="fingerprint drifted"):
+            changed.generate_operation(operation.operation_id)
+        status = store.connection.execute(
+            "SELECT status FROM operations WHERE operation_id=?", (operation.operation_id,)
+        ).fetchone()[0]
+        assert status == "PREPARED"
+
+
+def test_source_bindings_preserve_evidence_roles(tmp_path):
+    with SQLiteStore(tmp_path / "bindings.sqlite3") as store:
+        instance = store.create_root(permissions=StoragePermissions(True, True))
+        service = ContinuityService(store, instance, FakeHost())
+        operation = service.prepare_episode(
+            GenerationRequest(
+                (
+                    {"role": "system", "content": "controller"},
+                    {"role": "user", "content": "external"},
+                    {"role": "assistant", "content": "replayed"},
+                )
+            )
+        )
+        rows = store.connection.execute(
+            "SELECT s.role,b.purpose,b.independent_evidence FROM sources s "
+            "JOIN source_bindings b ON b.source_id=s.source_id "
+            "WHERE s.operation_id=? ORDER BY s.ordinal",
+            (operation.operation_id,),
+        ).fetchall()
+        assert [tuple(row) for row in rows] == [
+            ("system", "controller_dependency", 0),
+            ("user", "external_evidence", 1),
+            ("assistant", "replayed_context", 0),
+        ]

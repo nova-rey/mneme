@@ -27,9 +27,19 @@ def test_root_creation_is_revision_zero_and_durable(tmp_path):
         assert reopened.connection.execute("PRAGMA user_version").fetchone()[0] == SCHEMA_VERSION
         assert tuple(
             reopened.connection.execute(
-                "SELECT storage_allowed, export_allowed FROM policies"
+                "SELECT storage_allowed, export_allowed, interpretation_allowed FROM policies"
             ).fetchone()
-        ) == (1, 1)
+        ) == (1, 1, 0)
+
+
+def test_explicit_interpretation_permission_is_recorded(tmp_path):
+    with SQLiteStore(tmp_path / "phase-one.sqlite3") as store:
+        store.create_root(permissions=StoragePermissions(True, False, True))
+        assert tuple(
+            store.connection.execute(
+                "SELECT interpretation_allowed, policy_version FROM policies"
+            ).fetchone()
+        ) == (1, 2)
 
 
 def test_explicit_transactions_rollback_and_immutable_rows(tmp_path):
@@ -85,3 +95,49 @@ def test_process_interruption_before_commit_recovers_prior_state(tmp_path):
     assert result.returncode == 9
     with SQLiteStore(path, read_only=True) as reopened:
         assert reopened.current()["current_revision"] == 0
+
+
+def test_schema_migration_is_explicit_backed_up_and_additive(tmp_path):
+    path = tmp_path / "legacy.sqlite3"
+    connection = sqlite3.connect(path)
+    connection.executescript(
+        """
+        CREATE TABLE store_info (
+          singleton INTEGER PRIMARY KEY,
+          schema_version INTEGER NOT NULL,
+          record_version INTEGER NOT NULL,
+          artifact_kind TEXT NOT NULL,
+          active_instance_id TEXT,
+          created_by_version TEXT NOT NULL
+        );
+        CREATE TABLE manifests (
+          manifest_id TEXT PRIMARY KEY,
+          instance_id TEXT NOT NULL,
+          revision INTEGER NOT NULL,
+          parent_manifest_id TEXT,
+          inherited_base_manifest_id TEXT,
+          policy_id TEXT NOT NULL,
+          self_ref_id TEXT NOT NULL,
+          format_version INTEGER NOT NULL,
+          controller_version TEXT NOT NULL,
+          integrity_digest TEXT NOT NULL,
+          accepted_history_digest TEXT NOT NULL
+        );
+        INSERT INTO store_info VALUES(1,1,1,'working',NULL,'legacy');
+        PRAGMA user_version=1;
+        """
+    )
+    connection.close()
+    with pytest.raises(SchemaError, match="explicit migration"):
+        SQLiteStore(path)
+    backup = tmp_path / "legacy.before-v2.sqlite3"
+    SQLiteStore.migrate(path, backup=backup)
+    assert backup.is_file()
+    migrated = sqlite3.connect(path)
+    assert migrated.execute("PRAGMA user_version").fetchone()[0] == SCHEMA_VERSION
+    columns = {row[1] for row in migrated.execute("PRAGMA table_info(manifests)")}
+    assert {"graph_snapshot_id", "graph_revision"} <= columns
+    assert migrated.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='candidates'"
+    ).fetchone() is not None
+    migrated.close()

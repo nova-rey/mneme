@@ -61,6 +61,112 @@ def test_request_uses_structured_messages_and_bearer_without_leak(monkeypatch):
     assert result.finish_reason == "stop"
 
 
+def test_request_system_field_is_rendered_once(monkeypatch):
+    captured = {}
+
+    class Response:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return None
+
+        def read(self):
+            return b'{"choices":[{"message":{"content":"hi"}}]}'
+
+    def fake_urlopen(req, timeout):
+        captured["request"] = req
+        return Response()
+
+    monkeypatch.setattr("urllib.request.urlopen", fake_urlopen)
+    DeepInfraGemmaHost(token="secret-token").generate(
+        GenerationRequest(
+            ({"role": "user", "content": "Hello"},),
+            system="Controller instructions.",
+        )
+    )
+    body = json.loads(captured["request"].data)
+    assert body["messages"] == [
+        {"role": "system", "content": "Controller instructions."},
+        {"role": "user", "content": "Hello"},
+    ]
+
+
+def test_request_system_field_deduplicates_legacy_message(monkeypatch):
+    captured = {}
+
+    class Response:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return None
+
+        def read(self):
+            return b'{"choices":[{"message":{"content":"hi"}}]}'
+
+    def fake_urlopen(req, timeout):
+        captured["request"] = req
+        return Response()
+
+    monkeypatch.setattr("urllib.request.urlopen", fake_urlopen)
+    DeepInfraGemmaHost(token="secret-token").generate(
+        GenerationRequest(
+            (
+                {"role": "system", "content": "Controller instructions."},
+                {"role": "system", "content": "Controller instructions."},
+                {"role": "user", "content": "Hello"},
+            ),
+            system="Controller instructions.",
+        )
+    )
+    body = json.loads(captured["request"].data)
+    assert body["messages"].count(
+        {"role": "system", "content": "Controller instructions."}
+    ) == 1
+
+
+def test_message_only_request_remains_unchanged(monkeypatch):
+    captured = {}
+
+    class Response:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return None
+
+        def read(self):
+            return b'{"choices":[{"message":{"content":"hi"}}]}'
+
+    def fake_urlopen(req, timeout):
+        captured["request"] = req
+        return Response()
+
+    monkeypatch.setattr("urllib.request.urlopen", fake_urlopen)
+    messages = (
+        {"role": "system", "content": "Message-only system."},
+        {"role": "user", "content": "Hello"},
+    )
+    DeepInfraGemmaHost(token="secret-token").generate(GenerationRequest(messages))
+    body = json.loads(captured["request"].data)
+    assert body["messages"] == list(messages)
+
+
+def test_unsupported_response_format_is_rejected_before_transport(monkeypatch):
+    def fail(*args, **kwargs):
+        raise AssertionError("unsupported request reached transport")
+
+    monkeypatch.setattr("urllib.request.urlopen", fail)
+    with pytest.raises(HostError, match="response_format"):
+        DeepInfraGemmaHost(token="secret-token").generate(
+            GenerationRequest(
+                ({"role": "user", "content": "Return JSON."},),
+                response_format={"type": "json_schema"},
+            )
+        )
+
+
 def test_deepinfra_missing_token_and_seed_fail_closed():
     with pytest.raises(HostError, match="DEEPINFRA_TOKEN"):
         DeepInfraGemmaHost(token=None).generate(request())

@@ -1,0 +1,555 @@
+"""Validation and immutable contracts for the Phase One residue format.
+
+The residue is an annotation of a bounded, explicitly supplied set of source
+slots.  It is deliberately kept separate from persistence and from graph
+selection: validating a residue does not make any claim that its assertions
+are true, and it does not make the residue available to a model.
+"""
+
+from __future__ import annotations
+
+import copy
+import hashlib
+import json
+import math
+import unicodedata
+from collections.abc import Mapping
+from dataclasses import dataclass
+from types import MappingProxyType
+from typing import Any, cast
+
+MAX_CONCEPTS = 16
+MAX_RELATIONSHIPS = 24
+MAX_ROUTES = 8
+MAX_AUXILIARY_RECORDS = 8
+MAX_ROUTE_EDGES = 3
+MAX_SPANS_PER_ITEM = 8
+MAX_LABEL_LENGTH = 160
+MAX_CONTEXT_LENGTH = 64
+MAX_RESIDUE_BYTES = 24 * 1024
+
+SUPPORTED_CONCEPT_KINDS = frozenset(
+    {
+        "concept",
+        "entity",
+        "topic",
+        "pattern",
+        "behavior",
+        "constraint",
+        "value",
+        "strategy",
+        "resource",
+        "fact",
+        "event",
+        "person",
+        "object",
+        "process",
+        "question",
+        "trait",
+        "style",
+        "warning",
+        "identity",
+    }
+)
+SUPPORTED_RELATIONSHIP_KINDS = frozenset(
+    {
+        "association",
+        "analogy",
+        "causal",
+        "contrast",
+        "dependency",
+        "explanation",
+        "related",
+        "semantic",
+        "temporal",
+        "contradiction",
+        "user-specific",
+        "style",
+        "habit",
+        "warning",
+        "identity",
+        "task-utility",
+        "reasoning-strategy",
+        "conversational-pattern",
+        "constrains",
+        "supports",
+        "depends-on",
+        "depends_on",
+        "enables",
+        "explains",
+        "refines",
+        "corrects",
+        "causes",
+        "caused-by",
+        "caused_by",
+        "part-of",
+        "part_of",
+        "same-as",
+        "same_as",
+    }
+)
+
+_TOP_LEVEL_FIELDS = frozenset(
+    {
+        "store",
+        "episode_id",
+        "core_concepts",
+        "salient_phrases",
+        "observed_patterns",
+        "edge_candidates",
+        "route_candidates",
+        "declared_memories",
+        "earned_candidates",
+        "identity_candidates",
+        "developmental_observation_refs",
+        "evidence_refs",
+        "extraction_confidence",
+        "intrusion_risk_estimate",
+    }
+)
+
+_RECORD_FIELDS = frozenset(
+    {
+        "id",
+        "key",
+        "label",
+        "kind",
+        "node_type",
+        "relationship",
+        "edge_type",
+        "polarity",
+        "from",
+        "to",
+        "from_concept",
+        "to_concept",
+        "source_slot",
+        "source_spans",
+        "spans",
+        "evidence_refs",
+        "source_refs",
+        "context",
+        "valid_contexts",
+        "confidence",
+        "salience",
+        "uncertainty",
+        "subject",
+        "referent",
+        "subject_ref",
+        "referent_ref",
+        "edge_keys",
+        "edges",
+        "route",
+        "origin",
+        "attribution",
+        "text",
+        "value",
+        "scope",
+        "target",
+        "proposal",
+        "self_referential",
+    }
+)
+
+
+class ResidueValidationError(ValueError):
+    """Raised when a model-returned residue is not a valid residue v1."""
+
+
+@dataclass(frozen=True)
+class SourceSpan:
+    """A half-open Unicode code-point span in one request-local source slot."""
+
+    source_slot: str
+    start: int
+    end: int
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"source_slot": self.source_slot, "start": self.start, "end": self.end}
+
+    def extract(self, sources: Mapping[str, str]) -> str:
+        return sources[self.source_slot][self.start : self.end]
+
+
+@dataclass(frozen=True)
+class Residue:
+    """Validated immutable residue data.
+
+    Records are exposed as tuples of read-only-by-convention dictionaries.  A
+    fresh deep copy is returned by :meth:`to_dict`, so callers cannot mutate
+    the validated representation through the serialization API.
+    """
+
+    data: Mapping[str, Any]
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "data", _freeze(self.data))
+
+    @property
+    def episode_id(self) -> str | None:
+        value = self.data.get("episode_id")
+        return value if isinstance(value, str) else None
+
+    @property
+    def core_concepts(self) -> tuple[Mapping[str, Any], ...]:
+        return cast(tuple[Mapping[str, Any], ...], self.data["core_concepts"])
+
+    @property
+    def edge_candidates(self) -> tuple[Mapping[str, Any], ...]:
+        return cast(tuple[Mapping[str, Any], ...], self.data["edge_candidates"])
+
+    @property
+    def route_candidates(self) -> tuple[Mapping[str, Any], ...]:
+        return cast(tuple[Mapping[str, Any], ...], self.data["route_candidates"])
+
+    def to_dict(self) -> dict[str, Any]:
+        return cast(dict[str, Any], _thaw(self.data))
+
+    def canonical_bytes(self) -> bytes:
+        return canonical_json(self.to_dict()).encode("utf-8")
+
+    @property
+    def content_digest(self) -> str:
+        """Digest of the validated residue, independent of map insertion order."""
+
+        return hashlib.sha256(self.canonical_bytes()).hexdigest()
+
+
+def canonical_json(value: Any) -> str:
+    """Serialize JSON-compatible values deterministically."""
+
+    try:
+        return json.dumps(_thaw(value), ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    except (TypeError, ValueError) as exc:
+        raise ResidueValidationError("residue contains a non-JSON value") from exc
+
+
+def normalize_label(value: str) -> str:
+    """Normalize a label without discarding meaningful punctuation or negation."""
+
+    if not isinstance(value, str):
+        raise ResidueValidationError("label must be a string")
+    normalized = " ".join(unicodedata.normalize("NFC", value).split())
+    if not normalized:
+        raise ResidueValidationError("label must not be empty")
+    if len(normalized) > MAX_LABEL_LENGTH:
+        raise ResidueValidationError(f"label exceeds {MAX_LABEL_LENGTH} characters")
+    return normalized
+
+
+def _error(path: str, message: str) -> ResidueValidationError:
+    return ResidueValidationError(f"{path}: {message}")
+
+
+def _freeze(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return MappingProxyType({key: _freeze(item) for key, item in value.items()})
+    if isinstance(value, (list, tuple)):
+        return tuple(_freeze(item) for item in value)
+    return value
+
+
+def _thaw(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return {key: _thaw(item) for key, item in value.items()}
+    if isinstance(value, tuple):
+        return [_thaw(item) for item in value]
+    return copy.deepcopy(value)
+
+
+def _require_mapping(value: Any, path: str) -> Mapping[str, Any]:
+    if not isinstance(value, Mapping):
+        raise _error(path, "must be an object")
+    for key in value:
+        if not isinstance(key, str):
+            raise _error(path, "field names must be strings")
+    return value
+
+
+def _require_string(value: Any, path: str, *, max_length: int | None = None) -> str:
+    if not isinstance(value, str):
+        raise _error(path, "must be a string")
+    if not value:
+        raise _error(path, "must not be empty")
+    if max_length is not None and len(value) > max_length:
+        raise _error(path, f"exceeds {max_length} characters")
+    return value
+
+
+def _require_number(value: Any, path: str, *, minimum: float = 0.0, maximum: float = 1.0) -> float:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise _error(path, "must be a finite number, not a boolean")
+    converted = float(value)
+    if not math.isfinite(converted) or not minimum <= converted <= maximum:
+        raise _error(path, f"must be finite and in [{minimum}, {maximum}]")
+    return converted
+
+
+def _list(value: Any, path: str, *, maximum: int | None = None) -> list[Any]:
+    if not isinstance(value, list):
+        raise _error(path, "must be an array")
+    if maximum is not None and len(value) > maximum:
+        raise _error(path, f"contains more than {maximum} items")
+    return value
+
+
+def _validate_span(value: Any, path: str, sources: Mapping[str, str]) -> dict[str, Any]:
+    span = _require_mapping(value, path)
+    allowed = {"source_slot", "start", "end"}
+    unknown = set(span) - allowed
+    if unknown:
+        raise _error(path, f"unknown fields: {sorted(unknown)}")
+    if set(span) != allowed:
+        raise _error(path, "requires source_slot, start, and end")
+    source_slot = _require_string(span["source_slot"], f"{path}.source_slot")
+    if source_slot not in sources:
+        raise _error(path, f"fabricated or unavailable source slot {source_slot!r}")
+    start, end = span["start"], span["end"]
+    if isinstance(start, bool) or not isinstance(start, int):
+        raise _error(f"{path}.start", "must be an integer")
+    if isinstance(end, bool) or not isinstance(end, int):
+        raise _error(f"{path}.end", "must be an integer")
+    source_length = len(sources[source_slot])
+    if start < 0 or end > source_length or start >= end:
+        raise _error(path, "span must satisfy 0 <= start < end <= source length")
+    return {"source_slot": source_slot, "start": start, "end": end}
+
+
+def _spans(
+    record: Mapping[str, Any], path: str, sources: Mapping[str, str]
+) -> tuple[dict[str, Any], ...]:
+    fields = [name for name in ("source_spans", "spans") if name in record]
+    if len(fields) > 1:
+        raise _error(path, "use only one of source_spans or spans")
+    if not fields:
+        return ()
+    values = _list(record[fields[0]], f"{path}.{fields[0]}", maximum=MAX_SPANS_PER_ITEM)
+    return tuple(
+        _validate_span(value, f"{path}.{fields[0]}[{index}]", sources)
+        for index, value in enumerate(values)
+    )
+
+
+def _record(
+    value: Any,
+    path: str,
+    sources: Mapping[str, str],
+    *,
+    require_label: bool = False,
+) -> dict[str, Any]:
+    record = _require_mapping(value, path)
+    unknown = set(record) - _RECORD_FIELDS
+    if unknown:
+        raise _error(path, f"unknown fields: {sorted(unknown)}")
+    result = copy.deepcopy(dict(record))
+    if "label" in result:
+        result["label"] = normalize_label(result["label"])
+    elif require_label:
+        raise _error(path, "requires label")
+    if "context" in result:
+        context = _list(result["context"], f"{path}.context", maximum=16)
+        result["context"] = tuple(
+            _require_string(item, f"{path}.context[{index}]", max_length=MAX_CONTEXT_LENGTH)
+            for index, item in enumerate(context)
+        )
+    if "valid_contexts" in result:
+        contexts = _list(result["valid_contexts"], f"{path}.valid_contexts", maximum=16)
+        result["valid_contexts"] = tuple(
+            _require_string(item, f"{path}.valid_contexts[{index}]", max_length=MAX_CONTEXT_LENGTH)
+            for index, item in enumerate(contexts)
+        )
+    if "source_slot" in result:
+        source_slot = _require_string(result["source_slot"], f"{path}.source_slot")
+        if source_slot not in sources:
+            raise _error(path, f"fabricated or unavailable source slot {source_slot!r}")
+    for field in ("confidence", "salience", "uncertainty"):
+        if field in result and result[field] is not None:
+            result[field] = _require_number(result[field], f"{path}.{field}")
+    result["source_spans"] = _spans(result, path, sources)
+    result.pop("spans", None)
+    return result
+
+
+def _key(record: Mapping[str, Any], path: str) -> str:
+    candidates = [name for name in ("key", "id") if name in record]
+    if len(candidates) != 1:
+        raise _error(path, "requires exactly one of key or id")
+    return _require_string(record[candidates[0]], f"{path}.{candidates[0]}", max_length=160)
+
+
+def validate_residue(
+    payload: Mapping[str, Any],
+    sources: Mapping[str, str] | None = None,
+    *,
+    source_slots: Mapping[str, str] | None = None,
+) -> Residue:
+    """Validate and return a normalized immutable residue.
+
+    ``sources``/``source_slots`` is the complete request-local slot map. Every
+    span must point into it, which prevents a model response from inventing a
+    source or smuggling an external episode identifier into evidence.
+    """
+
+    if sources is None:
+        sources = source_slots
+    elif source_slots is not None and sources != source_slots:
+        raise ResidueValidationError("sources and source_slots disagree")
+    if sources is None:
+        raise ResidueValidationError("source slots are required")
+
+    root = _require_mapping(payload, "residue")
+    unknown = set(root) - _TOP_LEVEL_FIELDS
+    if unknown:
+        raise _error("residue", f"unknown fields: {sorted(unknown)}")
+    if not isinstance(sources, Mapping) or any(
+        not isinstance(key, str) or not isinstance(value, str)
+        for key, value in sources.items()
+    ):
+        raise ResidueValidationError("sources must map string slots to string content")
+    normalized: dict[str, Any] = {}
+    if "store" in root:
+        if not isinstance(root["store"], bool):
+            raise _error("residue.store", "must be boolean")
+        normalized["store"] = root["store"]
+    if "episode_id" in root:
+        normalized["episode_id"] = _require_string(root["episode_id"], "residue.episode_id")
+    if "extraction_confidence" in root and root["extraction_confidence"] is not None:
+        normalized["extraction_confidence"] = _require_number(
+            root["extraction_confidence"], "residue.extraction_confidence"
+        )
+    if "intrusion_risk_estimate" in root and root["intrusion_risk_estimate"] is not None:
+        normalized["intrusion_risk_estimate"] = _require_number(
+            root["intrusion_risk_estimate"], "residue.intrusion_risk_estimate"
+        )
+
+    concepts_raw = _list(
+        root.get("core_concepts", []), "residue.core_concepts", maximum=MAX_CONCEPTS
+    )
+    concepts: list[dict[str, Any]] = []
+    concept_keys: set[str] = set()
+    for index, value in enumerate(concepts_raw):
+        record = _record(value, f"residue.core_concepts[{index}]", sources, require_label=True)
+        key = _key(record, f"residue.core_concepts[{index}]")
+        if key in concept_keys:
+            raise _error("residue.core_concepts", f"duplicate key {key!r}")
+        concept_keys.add(key)
+        kind = record.get("kind", record.get("node_type", "concept"))
+        if not isinstance(kind, str) or kind not in SUPPORTED_CONCEPT_KINDS:
+            raise _error(f"residue.core_concepts[{index}].kind", "unsupported concept kind")
+        record["key"] = key
+        record["kind"] = kind
+        concepts.append(record)
+    normalized["core_concepts"] = tuple(concepts)
+
+    edges_raw = _list(
+        root.get("edge_candidates", []),
+        "residue.edge_candidates",
+        maximum=MAX_RELATIONSHIPS,
+    )
+    edges: list[dict[str, Any]] = []
+    edge_keys: set[str] = set()
+    for index, value in enumerate(edges_raw):
+        path = f"residue.edge_candidates[{index}]"
+        record = _record(value, path, sources)
+        key = _key(record, path)
+        if key in edge_keys:
+            raise _error("residue.edge_candidates", f"duplicate key {key!r}")
+        edge_keys.add(key)
+        source = record.get("from", record.get("from_concept"))
+        target = record.get("to", record.get("to_concept"))
+        if not isinstance(source, str) or not isinstance(target, str):
+            raise _error(path, "requires from/to concept keys")
+        if source not in concept_keys or target not in concept_keys:
+            raise _error(path, "relationship endpoint does not reference a concept")
+        relationship = record.get("relationship", record.get("edge_type", "association"))
+        if not isinstance(relationship, str) or relationship not in SUPPORTED_RELATIONSHIP_KINDS:
+            raise _error(path, "unsupported relationship kind")
+        record.update({"key": key, "from": source, "to": target, "relationship": relationship})
+        edges.append(record)
+    normalized["edge_candidates"] = tuple(edges)
+
+    routes_raw = _list(
+        root.get("route_candidates", []),
+        "residue.route_candidates",
+        maximum=MAX_ROUTES,
+    )
+    routes: list[dict[str, Any]] = []
+    route_keys: set[str] = set()
+    for index, value in enumerate(routes_raw):
+        path = f"residue.route_candidates[{index}]"
+        record = _record(value, path, sources)
+        key = _key(record, path)
+        if key in route_keys:
+            raise _error("residue.route_candidates", f"duplicate key {key!r}")
+        route_keys.add(key)
+        edge_refs = record.get("edge_keys", record.get("edges"))
+        if not isinstance(edge_refs, list) or not 1 <= len(edge_refs) <= MAX_ROUTE_EDGES:
+            raise _error(path, "requires one to three edge references")
+        if any(not isinstance(ref, str) for ref in edge_refs) or len(set(edge_refs)) != len(
+            edge_refs
+        ):
+            raise _error(path, "edge references must be unique strings")
+        if any(ref not in edge_keys for ref in edge_refs):
+            raise _error(path, "route references a missing relationship")
+        route_edges = [next(edge for edge in edges if edge["key"] == ref) for ref in edge_refs]
+        for left, right in zip(route_edges, route_edges[1:]):
+            if left["to"] != right["from"]:
+                raise _error(path, "route edges are discontinuous or reversed")
+        record["key"] = key
+        record["edge_keys"] = tuple(edge_refs)
+        record.pop("edges", None)
+        routes.append(record)
+    normalized["route_candidates"] = tuple(routes)
+
+    for field in (
+        "salient_phrases",
+        "observed_patterns",
+        "declared_memories",
+        "earned_candidates",
+        "identity_candidates",
+    ):
+        values = _list(root.get(field, []), f"residue.{field}", maximum=MAX_AUXILIARY_RECORDS)
+        records: list[dict[str, Any]] = []
+        keys: set[str] = set()
+        for index, value in enumerate(values):
+            path = f"residue.{field}[{index}]"
+            if field == "salient_phrases" and isinstance(value, str):
+                record = {"label": normalize_label(value), "source_spans": ()}
+            else:
+                record = _record(value, path, sources)
+            if "key" in record or "id" in record:
+                key = _key(record, path)
+                if key in keys:
+                    raise _error(f"residue.{field}", f"duplicate key {key!r}")
+                keys.add(key)
+                record["key"] = key
+            records.append(record)
+        normalized[field] = tuple(records)
+    for field in ("developmental_observation_refs", "evidence_refs"):
+        values = _list(root.get(field, []), f"residue.{field}", maximum=MAX_AUXILIARY_RECORDS)
+        normalized[field] = tuple(
+            _require_string(value, f"residue.{field}[{index}]" )
+            for index, value in enumerate(values)
+        )
+
+    encoded = canonical_json(normalized).encode("utf-8")
+    if len(encoded) > MAX_RESIDUE_BYTES:
+        raise ResidueValidationError(f"residue exceeds {MAX_RESIDUE_BYTES} UTF-8 bytes")
+    return Residue(_freeze(normalized))
+
+
+__all__ = [
+    "MAX_AUXILIARY_RECORDS",
+    "MAX_CONCEPTS",
+    "MAX_LABEL_LENGTH",
+    "MAX_RELATIONSHIPS",
+    "MAX_RESIDUE_BYTES",
+    "MAX_ROUTE_EDGES",
+    "MAX_ROUTES",
+    "MAX_SPANS_PER_ITEM",
+    "Residue",
+    "ResidueValidationError",
+    "SourceSpan",
+    "canonical_json",
+    "normalize_label",
+    "validate_residue",
+]

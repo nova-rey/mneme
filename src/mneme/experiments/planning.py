@@ -78,8 +78,17 @@ class ResolvedPlan:
     host: dict[str, Any]
     budget: BudgetEstimate
     warnings: tuple[str, ...] = ()
+    hard_limits: dict[str, Any] | None = None
 
     def to_dict(self) -> dict[str, Any]:
+        budgets = self.budget.to_dict()
+        # Keep the estimate and operator-declared hard limits distinct.  The
+        # flattened limit keys preserve compatibility with the P0.4 runner,
+        # while ``hard_limits`` is the authoritative persisted boundary.
+        if self.hard_limits:
+            budgets["hard_limits"] = dict(self.hard_limits)
+            budgets.update(self.hard_limits)
+        budgets["estimate"] = self.budget.to_dict()
         return {
             "experiment": {
                 "name": self.experiment_name,
@@ -89,7 +98,7 @@ class ResolvedPlan:
             "assignments": [dict(item) for item in self.assignments],
             "streams": [dict(item) for item in self.streams],
             "host": dict(self.host),
-            "budgets": self.budget.to_dict(),
+            "budgets": budgets,
             "warnings": list(self.warnings),
         }
 
@@ -607,10 +616,11 @@ def preflight(
         ("cost unavailable",) if spec.get("budgets", {}).get("max_cost") is not None else (),
     )
     _check_budget(spec, estimate)
+    hard_limits = dict(spec.get("budgets", {}))
     return ResolvedPlan(name, revision, contract_digest, tuple(assignments), tuple(streams),
                         {
                             "fingerprint": fingerprint_dict,
                             "fingerprint_sha256": actual_digest,
                             "capabilities": capabilities.to_dict(),
                             "sampling": "controlled" if controlled_sampling else "provider_managed",
-                        }, estimate)
+                        }, estimate, hard_limits=hard_limits)

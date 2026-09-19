@@ -74,6 +74,9 @@ def test_preflight_resolves_without_calling_host() -> None:
         "dataset_ordering",
     }
     assert plan.host["capabilities"] == sorted(c.value for c in FakeHost().capabilities().supported)
+    persisted = plan.to_dict()["budgets"]
+    assert persisted["estimate"]["total_calls"] == 7
+    assert persisted["hard_limits"]["max_model_calls"] == 8
 
 
 def test_preflight_rejects_missing_capability() -> None:

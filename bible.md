@@ -148,3 +148,9 @@
 - The queue has no planning-approval state, so `.codex/work-queue.json` remains unchanged with P0.1–P0.4 `DONE`. Approval is recorded in the plan and this entry; implementation packages await explicit authorization.
 - Documentation validation checked all 16 plan sections, the three corrections and their consequential test/CLI wording, whitespace, index target, and unchanged amendment/Phase Zero receipts/tag. No production code or tests changed; no new test execution or paid calls are claimed for this documentation save.
 - No Phase One production implementation was started. P1.1, P1.2 and P1.3 remain awaiting explicit implementation authorization.
+
+## 2026-09-19 P1.1 residue-to-graph foundation validation
+
+- Completed the approved P1.1 foundation package: bounded source-backed residue validation, persisted interpretation attempts with one explicit repair, fail-closed uncertain recovery, exact host binding, immutable graph snapshots, durable resolution decisions, source provenance, explicit interpretation opt-in, schema 1→2 migration, ancestry-ordered readers, staged checkpoint forks, and slot-relative extraction-cache contracts.
+- Stop–audit gate passed with 138 pytest tests, Ruff, strict mypy across 31 source files, `git diff --check`, valid work-queue schema, and an offline FakeHost demonstration covering accepted episode/interpretation revisions, graph revision, restart verification, checkpoint/fork verification, and inherited history.
+- P1.1 remains limited to residue-to-graph foundation. No response influence, retrieval, identity development, adaptive dynamics, P1.2, P1.3, or Phase Two work was started.

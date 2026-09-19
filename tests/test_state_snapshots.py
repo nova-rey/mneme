@@ -45,11 +45,50 @@ def test_checkpoint_is_read_only_and_fork_preserves_history(tmp_path):
         assert loaded.connection.execute(
             "SELECT COUNT(*) FROM revisions WHERE instance_id=?", (instance,)
         ).fetchone()[0] == 2
+        child_manifest = loaded.connection.execute(
+            "SELECT integrity_digest FROM manifests WHERE instance_id=? AND revision=0",
+            (child_id,),
+        ).fetchone()[0]
+        assert child_manifest
+        assert loaded.verify() == []
     with SQLiteStore(child) as writable_child:
         with pytest.raises(sqlite3.IntegrityError, match="immutable record"):
             writable_child.connection.execute(
                 "UPDATE lineages SET scope_id='mutated' WHERE instance_id=?", (instance,)
             )
+
+
+def test_reader_orders_inherited_history_before_child_local_revision(tmp_path):
+    working = SQLiteStore(tmp_path / "parent.sqlite3")
+    parent = working.create_root(permissions=StoragePermissions(True, True))
+    service = ContinuityService(working, parent, FakeHost())
+    for text in ("parent-one", "parent-two"):
+        operation = service.prepare_episode(GenerationRequest(({"role": "user", "content": text},)))
+        service.generate_operation(operation.operation_id)
+        service.accept_episode(operation.operation_id)
+    checkpoint = tmp_path / "parent-checkpoint.sqlite3"
+    create_checkpoint(working, checkpoint)
+    working.close()
+
+    child_path = tmp_path / "child.sqlite3"
+    child = fork_from_checkpoint(checkpoint, child_path)
+    with SQLiteStore(child_path) as child_store:
+        child_service = ContinuityService(child_store, child, FakeHost())
+        operation = child_service.prepare_episode(
+            GenerationRequest(({"role": "user", "content": "child-one"},))
+        )
+        child_service.generate_operation(operation.operation_id)
+        child_service.accept_episode(operation.operation_id)
+        child_checkpoint = tmp_path / "child-checkpoint.sqlite3"
+        create_checkpoint(child_store, child_checkpoint)
+
+    with CheckpointReader(child_checkpoint) as reader:
+        assert [row["origin_instance_id"] for row in reader.episodes()] == [
+            parent,
+            parent,
+            child,
+        ]
+        assert [row["instance_id"] for row in reader.history()] == [parent, parent, child]
 
 
 def test_published_checkpoint_cannot_be_reopened_writable(tmp_path):

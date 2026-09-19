@@ -7,7 +7,7 @@ import sqlite3
 import uuid
 from pathlib import Path
 
-from .contracts import ArtifactKind, new_id
+from .contracts import ArtifactKind, canonical_digest, new_id
 from .storage import SQLiteStore, _utc
 
 
@@ -113,7 +113,11 @@ def fork_from_checkpoint(
     child_id = child_id or new_id()
     checkpoint = Path(checkpoint)
     destination = Path(destination)
-    with SQLiteStore(checkpoint, read_only=True) as source:
+    staging = destination.with_suffix(destination.suffix + f".{uuid.uuid4().hex}.staging")
+    if destination.exists():
+        raise SnapshotError(f"destination exists: {destination}")
+    try:
+      with SQLiteStore(checkpoint, read_only=True) as source:
         if (
             source.connection.execute("SELECT artifact_kind FROM store_info").fetchone()[0]
             != ArtifactKind.CHECKPOINT
@@ -126,6 +130,21 @@ def fork_from_checkpoint(
         if lineage is None:
             raise SnapshotError("checkpoint active lineage is missing")
         parent_manifest = current["current_manifest_id"]
+        source_schema = int(source.connection.execute("PRAGMA user_version").fetchone()[0])
+        if source_schema == 1:
+            parent_manifest_row = source.connection.execute(
+                "SELECT accepted_history_digest FROM manifests WHERE manifest_id=?",
+                (parent_manifest,),
+            ).fetchone()
+            parent_manifest_row = (None, 0, parent_manifest_row[0]) if parent_manifest_row else None
+        else:
+            parent_manifest_row = source.connection.execute(
+                "SELECT graph_snapshot_id,graph_revision,accepted_history_digest "
+                "FROM manifests WHERE manifest_id=?",
+                (parent_manifest,),
+            ).fetchone()
+        if parent_manifest_row is None:
+            raise SnapshotError("checkpoint current manifest is missing")
         export = source.connection.execute(
             "SELECT export_allowed FROM policies WHERE scope_id=?", (lineage["scope_id"],)
         ).fetchone()
@@ -145,8 +164,16 @@ def fork_from_checkpoint(
         if len(checkpoint_rows) != 1:
             raise SnapshotError("checkpoint has no unique current descriptor")
         checkpoint_id = checkpoint_rows[0][0]
-        _copy(source, destination)
-    with SQLiteStore._open_checkpoint_for_fork(destination) as child:
+        _copy(source, staging)
+      # A historical v1 checkpoint is never mutated in place.  Upgrade only
+      # the private staged copy before converting it to a writable child.
+      with sqlite3.connect(staging) as staged_connection:
+        staged_version = staged_connection.execute("PRAGMA user_version").fetchone()[0]
+      if int(staged_version) == 1:
+        migration_backup = Path(f"{staging}.pre-v2")
+        SQLiteStore.migrate(staging, backup=migration_backup)
+        migration_backup.unlink(missing_ok=True)
+      with SQLiteStore._open_checkpoint_for_fork(staging) as child:
         with child.transaction() as db:
             child_id = str(uuid.UUID(child_id))
             child_self = new_id()
@@ -157,6 +184,16 @@ def fork_from_checkpoint(
             if policy is None:
                 raise SnapshotError("checkpoint policy is missing")
             now = _utc()
+            child_integrity = canonical_digest(
+                {
+                    "instance_id": child_id,
+                    "revision": 0,
+                    "self_ref_id": child_self,
+                    "graph_snapshot_id": parent_manifest_row[0],
+                    "graph_revision": parent_manifest_row[1],
+                    "accepted_history_digest": parent_manifest_row[2],
+                }
+            )
             db.execute(
                 "UPDATE store_info SET artifact_kind='working',active_instance_id=?", (child_id,)
             )
@@ -173,7 +210,10 @@ def fork_from_checkpoint(
                 ),
             )
             db.execute(
-                "INSERT INTO manifests VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+                "INSERT INTO manifests("
+                "manifest_id,instance_id,revision,parent_manifest_id,inherited_base_manifest_id,"
+                "policy_id,self_ref_id,format_version,controller_version,integrity_digest,"
+                "accepted_history_digest,graph_snapshot_id,graph_revision) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 (
                     child_manifest,
                     child_id,
@@ -184,11 +224,10 @@ def fork_from_checkpoint(
                     child_self,
                     1,
                     "mneme-p0.2",
-                    "",
-                    db.execute(
-                        "SELECT accepted_history_digest FROM manifests WHERE manifest_id=?",
-                        (parent_manifest,),
-                    ).fetchone()[0],
+                    child_integrity,
+                    parent_manifest_row[2],
+                    parent_manifest_row[0],
+                    parent_manifest_row[1],
                 ),
             )
             db.execute(
@@ -197,4 +236,9 @@ def fork_from_checkpoint(
             )
             db.execute("DELETE FROM current_state")
             db.execute("INSERT INTO current_state VALUES(1,?,?,?)", (child_id, 0, child_manifest))
-    return child_id
+      os.replace(staging, destination)
+      _sync(destination)
+      return child_id
+    finally:
+      if staging.exists():
+        staging.unlink()

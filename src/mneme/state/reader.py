@@ -66,19 +66,27 @@ class CheckpointReader:
         return result
 
     def episodes(self) -> list[dict[str, Any]]:
-        return [
-            dict(row)
-            for row in self.store.connection.execute(
-                "SELECT * FROM episodes ORDER BY accepted_revision"
-            )
-        ]
+        # Local revision numbers restart at zero after a fork.  Reconstruct
+        # the reader view through the manifest ancestry so inherited episodes
+        # precede child-local episodes even when their local ordinals collide.
+        result: list[dict[str, Any]] = []
+        for revision in self.store._history_rows(str(self.manifest()["source_instance_id"])):
+            episode_id = revision["episode_id"]
+            if episode_id is None:
+                continue
+            episode = self.store.connection.execute(
+                "SELECT * FROM episodes WHERE episode_id=?", (episode_id,)
+            ).fetchone()
+            if episode is None:
+                raise ValueError("checkpoint history references a missing episode")
+            result.append(dict(episode))
+        return result
 
     def history(self) -> list[dict[str, Any]]:
         return [
             dict(row)
-            for row in self.store.connection.execute(
-                "SELECT * FROM revisions WHERE revision>0 ORDER BY revision"
-            )
+            for row in self.store._history_rows(str(self.manifest()["source_instance_id"]))
+            if int(row["revision"]) > 0
         ]
 
     def state_digest(self) -> str:
