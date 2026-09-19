@@ -1,0 +1,41 @@
+{
+  "artifact_sha256": {
+    "lineage.sqlite3": "e21193e9b9bfcc4180bc511ce4142b9bc737fdf117e25ea593f6a1cfea17d831",
+    "live_summary.json": "d4173bcda9f34fac20239e94a114cab6e5cc6cb839420c50a1202d2b73c99eaa"
+  },
+  "cost": {
+    "known_extraction_usd": 0.00024084,
+    "total_usd": "unknown"
+  },
+  "credential_functional": true,
+  "date": "2026-09-20",
+  "model": "google/gemma-4-E4B-it",
+  "p1_1": {
+    "edge_keys": [
+      "e1",
+      "e1~26c3984d45ec3eec"
+    ],
+    "route": [
+      "weather_check",
+      "rain_jacket",
+      "shower"
+    ],
+    "route_provenance_edges": 2,
+    "status": "PASS"
+  },
+  "p1_2": {
+    "initial_error": "evidence quotation does not occur verbatim in source",
+    "repair_error": "evidence quotation does not occur verbatim in source",
+    "status": "FAILED_AFTER_REPAIR"
+  },
+  "p1_3_attempted": false,
+  "provider": "DeepInfra",
+  "provider_calls": 8,
+  "status": "P1.1_PASS_P1.2_STOPPED_AFTER_REPAIR",
+  "tested_code": "8465d4e065176bfff7ca6dadf4e7fb8f556194c8",
+  "usage": {
+    "input_tokens": 3099,
+    "output_tokens": 2404,
+    "total_tokens": 5503
+  }
+}

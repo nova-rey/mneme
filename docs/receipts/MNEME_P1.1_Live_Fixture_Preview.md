@@ -56,3 +56,6 @@ manufacturing aliases or forcing expected labels. For this P1.1 developmental
 demonstration, extraction is supplied only the immutable external input for
 each episode; the host response remains durably recorded as model output but
 is not treated as independent developmental evidence for the fixture edges.
+The integrated live runner applies the same external-evidence-only boundary to
+P1.2 developmental interpretation calls; host responses remain available in
+the durable ledger and traces for audit.

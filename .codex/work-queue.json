@@ -788,11 +788,12 @@
         "docs/receipts/MNEME_Phase_One_Live_Bridged_Run_Failure_Receipt.md",
         "docs/receipts/MNEME_Phase_One_Live_Corrected_P1.1_Failure_Receipt.md",
         "docs/receipts/MNEME_Phase_One_Live_Continuation_P1.1_Failure_Receipt.md",
-        "docs/receipts/MNEME_Phase_One_Live_Edge_Key_Collision_Remediation_Receipt.md"
+        "docs/receipts/MNEME_Phase_One_Live_Edge_Key_Collision_Remediation_Receipt.md",
+        "docs/receipts/MNEME_Phase_One_Live_Collision_Fixed_P1.2_Failure_Receipt.md"
       ],
       "id": "P1.LIVE",
-      "notes": "Fresh bounded run authorized from 950f596 after collision-safe publication remediation. Maximum 27 calls for this corrected run; prior 8 calls remain historical and unchanged. Stop on any required failure, no transport retries or favorable-output resampling.",
-      "owner": "/root",
+      "notes": "Collision-fixed run from 8465d4e passed P1.1 with two-edge route and stopped at P1.2 after initial plus one repair failed strict source quotations from model-output evidence. DeepInfra/credential functional. Offline live extraction boundary now applies external-only evidence to P1.2 calls; no automatic retry.",
+      "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -810,12 +811,10 @@
         }
       ],
       "scope": "Run the already prepared bounded DeepInfra Phase One acceptance gate and publish the truthful release receipt; do not alter offline Phase One architecture or begin Phase Two.",
-      "session_ids": [
-        "phase-one-live-collision-fixed-20260920"
-      ],
-      "status": "RUNNING",
+      "session_ids": [],
+      "status": "WAITING",
       "title": "Phase One bounded live acceptance gate",
-      "updated_at": "2026-09-20T00:05:00Z",
+      "updated_at": "2026-09-20T00:15:00Z",
       "validation": {
         "required": [
           "bounded live gate",
@@ -866,5 +865,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-20T00:05:00Z"
+  "updated_at": "2026-09-20T00:15:00Z"
 }

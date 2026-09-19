@@ -439,6 +439,7 @@ def run_live_phase_one(
             first_turn.operation.episode_id,
             "phase-one-live-p12-interpretation-0",
             "p1.2",
+            source_purposes=("external_evidence",),
         )
         route_key = prepared.selected[0].route_key
         correction_id = CorrectionService(store, instance_id).suppress(
@@ -466,6 +467,7 @@ def run_live_phase_one(
             second_turn.operation.episode_id,
             "phase-one-live-p12-interpretation-1",
             "p1.2",
+            source_purposes=("external_evidence",),
         )
         create_checkpoint(store, checkpoint, checkpoint_id="phase-one-live-p12-checkpoint")
         checkpoint_before = file_digest(checkpoint)

@@ -67,6 +67,7 @@ The documents are preserved in their supplied form and are intentionally not mer
   offline correction and explicit authorization; this is not a credential
   blocker.
 * [Phase One continuation P1.1 failure receipt](receipts/MNEME_Phase_One_Live_Continuation_P1.1_Failure_Receipt.md) records the later four-call stop. The valid second edge reused local key `e1`; the separate [edge-key collision remediation receipt](receipts/MNEME_Phase_One_Live_Edge_Key_Collision_Remediation_Receipt.md) documents the offline infrastructure fix and regression evidence.
+* [Collision-fixed P1.2 failure receipt](receipts/MNEME_Phase_One_Live_Collision_Fixed_P1.2_Failure_Receipt.md) records the next run: P1.1 passed with the repaired publication, while P1.2 stopped after its single permitted exact-quotation repair.
 * [Phase One graph-wrapper preview runbook](PHASE_ONE_PREVIEW_RUNBOOK.md) documents
   the read-only matched no-memory, lexical, and graph comparison path.
 
