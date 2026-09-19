@@ -32,6 +32,8 @@ The documents are preserved in their supplied form and are intentionally not mer
   P1.1, P1.2, and the credential-free P1.3 preview implementation are present;
   the required bounded live acceptance remains blocked by provider output
   incompatibility ([receipt](receipts/MNEME_Phase_One_Live_Acceptance_Blocker.md)).
+  The offline adversarial remediation and machine-readable validation are recorded in
+  [the Phase One remediation receipt](receipts/MNEME_Phase_One_Adversarial_Audit_Remediation_Receipt.md).
 * [Phase One graph-wrapper preview runbook](PHASE_ONE_PREVIEW_RUNBOOK.md) documents
   the read-only matched no-memory, lexical, and graph comparison path.
 

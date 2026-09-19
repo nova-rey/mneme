@@ -25,6 +25,14 @@
       "reference": "DEEPINFRA_TOKEN-backed bounded google/gemma-4-E4B-it P0.4 baseline and Phase Zero closure evidence",
       "resolved_at": "2026-09-19T00:17:07.247175Z",
       "status": "RESOLVED"
+    },
+    "external:gemma-phase-one-live": {
+      "created_at": "2026-09-19T19:11:42.240204Z",
+      "kind": "external",
+      "receipt": null,
+      "reference": "Prior approved 27-call cap has 18 calls consumed across three failed attempts; provider extraction/identity contract remained invalid and no further calls are authorized.",
+      "resolved_at": null,
+      "status": "UNRESOLVED"
     }
   },
   "hard_problem_repo": "nova-rey/codex-config-backup",
@@ -741,6 +749,64 @@
       },
       "waiting_on": [],
       "workstream": "phase-one"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "93496c0",
+      "campaign": "mneme-p0.1",
+      "candidate": null,
+      "completion_criterion": "Approved bounded DeepInfra Phase One live gate passes with honest host provenance, extraction/identity/comparison evidence, and no credential leakage.",
+      "created_at": "2026-09-19T19:11:42.200099Z",
+      "dependencies": [
+        "external:gemma-phase-one-live"
+      ],
+      "domain": "live-provider-acceptance",
+      "edit_boundaries": [
+        "docs/receipts",
+        "docs",
+        "bible.md",
+        ".codex/work-queue.json"
+      ],
+      "evidence_refs": [],
+      "id": "P1.LIVE",
+      "notes": "Offline implementation and adversarial gates pass; current external budget/provider evidence is insufficient for another live attempt.",
+      "owner": null,
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "live-extraction",
+        "live-response",
+        "live-comparison",
+        "phase-one-release"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": false,
+          "name": "model-agent",
+          "units": 1
+        }
+      ],
+      "scope": "Run the already prepared bounded DeepInfra Phase One acceptance gate and publish the truthful release receipt; do not alter offline Phase One architecture or begin Phase Two.",
+      "session_ids": [],
+      "status": "WAITING",
+      "title": "Phase One bounded live acceptance gate",
+      "updated_at": "2026-09-19T19:11:42.240225Z",
+      "validation": {
+        "required": [
+          "bounded live gate",
+          "sanitized acceptance receipt",
+          "complete cheap validation"
+        ],
+        "results": {}
+      },
+      "waiting_on": [
+        "external:gemma-phase-one-live"
+      ],
+      "workstream": "phase-one"
     }
   ],
   "project": "nova-rey/mneme",
@@ -755,5 +821,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-19T18:29:24.111486Z"
+  "updated_at": "2026-09-19T19:11:42.240279Z"
 }
