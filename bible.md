@@ -170,3 +170,9 @@
 - Implemented the approved P1.2 response and identity boundary: schema 2→3 persistence with local episode-count migration, fixed bounded route selection and typed influence traces, exact-once controller retries, deliberate and one-call host-mediated naming, child-local self-view rebinding, explicit reversible corrections/declarations, process-local chat, and opt-in runner controller integration.
 - Added CLI identity/chat surfaces and corrected file-path instance creation so the documented `--store ...sqlite3` workflow creates a database file rather than a directory.
 - Stop-gate candidate validation is green: 148 pytest tests, Ruff, strict mypy, `git diff --check`, focused P1.2/runner/storage tests, and a CLI create/adopt/show smoke. No P1.3 or Phase Two implementation was started.
+
+## 2026-09-19 P1.2 acceptance closure
+
+- P1.2 passed the stop–audit–publish gate in tested code `8e9ed7a`: the complete suite reports 148 passing tests, focused P1.2/runner/storage tests report 21 passing tests, Ruff and strict mypy pass, and the offline FakeHost demonstration verifies exact-once retries, host-mediated naming, correction reversal, fork self-view rebinding, restart, and chat recovery.
+- The approved file-path instance creation workflow was smoke-tested alongside identity adoption and JSON inspection. The sanitized receipt is `docs/receipts/MNEME_P1.2_Response_Identity_Receipt.md` with its machine-readable companion.
+- The work queue records P1.2 `DONE`. P1.3 remains undispatched until this accepted gate is used as its dependency; no Phase Two mechanism was started.

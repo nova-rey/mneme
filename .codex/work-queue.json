@@ -560,7 +560,13 @@
       },
       "base_sha": "8a0d758f68d68cadfaa842200c151776d8636a1a",
       "campaign": "mneme-phase-one",
-      "candidate": null,
+      "candidate": {
+        "artifact": "docs/receipts/MNEME_P1.2_Response_Identity_Receipt.md",
+        "base_sha": "8a0d758f68d68cadfaa842200c151776d8636a1a",
+        "returned_at": "2026-09-19T18:10:30.695699Z",
+        "returned_by": "/root/p11_supervisor",
+        "sha": "8e9ed7a4349409f7d9edae942410856f95da6e66"
+      },
       "completion_criterion": "Shared response controller, fixed conservative route selection, deliberate identity adoption/self-view recovery, explicit correction/declaration boundaries, fork continuity, evaluation write prevention, adversarial offline acceptance, and network-free validation pass the approved P1.2 gate.",
       "created_at": "2026-09-19T17:32:40.618459Z",
       "dependencies": [
@@ -580,10 +586,12 @@
         "bible.md",
         ".codex/work-queue.json"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "docs/receipts/MNEME_P1.2_Response_Identity_Receipt.md"
+      ],
       "id": "P1.2",
       "notes": "",
-      "owner": "/root/p11_supervisor",
+      "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -610,12 +618,10 @@
         }
       ],
       "scope": "Implement only approved P1.2 shared response controller, fixed bounded retrieval/influence boundary, deliberate name adoption and self-view continuity, explicit correction/declaration records, and chat/runner integration. Exclude P1.3 comparator studies, individuality claims, adaptive dynamics, and Phase Two.",
-      "session_ids": [
-        "p12-supervisor-20260919"
-      ],
-      "status": "RUNNING",
+      "session_ids": [],
+      "status": "DONE",
       "title": "Response loop and basic identity",
-      "updated_at": "2026-09-19T17:32:49.738590Z",
+      "updated_at": "2026-09-19T18:12:12.751742Z",
       "validation": {
         "required": [
           "focused P1.2 tests",
@@ -625,7 +631,38 @@
           "offline P1.2 acceptance demonstration",
           "stop-audit-publish receipt"
         ],
-        "results": {}
+        "results": {
+          "focused P1.2 tests": {
+            "receipt": "21 passed: tests/test_phase_one_controller_identity.py tests/test_experiment_runner.py tests/test_state_storage.py",
+            "recorded_at": "2026-09-19T18:11:32.005869Z",
+            "status": "PASS"
+          },
+          "mypy --strict src": {
+            "receipt": "Success: no issues found in 35 source files",
+            "recorded_at": "2026-09-19T18:11:32.276763Z",
+            "status": "PASS"
+          },
+          "offline P1.2 acceptance demonstration": {
+            "receipt": "Controller retry, host naming, correction, checkpoint/fork self-view rebinding, restart/chat recovery passed",
+            "recorded_at": "2026-09-19T18:11:32.366945Z",
+            "status": "PASS"
+          },
+          "pytest -q": {
+            "receipt": "148 passed in .venv2/bin/pytest -q after candidate commit 8e9ed7a",
+            "recorded_at": "2026-09-19T18:11:32.096108Z",
+            "status": "PASS"
+          },
+          "ruff check src tests": {
+            "receipt": "All checks passed",
+            "recorded_at": "2026-09-19T18:11:32.186907Z",
+            "status": "PASS"
+          },
+          "stop-audit-publish receipt": {
+            "receipt": "docs/receipts/MNEME_P1.2_Response_Identity_Receipt.md",
+            "recorded_at": "2026-09-19T18:11:32.460843Z",
+            "status": "PASS"
+          }
+        }
       },
       "waiting_on": [],
       "workstream": "phase-one"
@@ -643,5 +680,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-19T17:32:49.738652Z"
+  "updated_at": "2026-09-19T18:12:12.751820Z"
 }

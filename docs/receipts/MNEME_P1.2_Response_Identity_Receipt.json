@@ -1,0 +1,31 @@
+{
+  "package": "P1.2",
+  "date": "2026-09-19",
+  "base_sha": "8a0d758f68d68cadfaa842200c151776d8636a1a",
+  "tested_code_sha": "8e9ed7a4349409f7d9edae942410856f95da6e66",
+  "validation": {
+    "pytest": {"status": "PASS", "count": 148},
+    "focused_tests": {"status": "PASS", "count": 21},
+    "ruff": {"status": "PASS"},
+    "mypy_strict": {"status": "PASS", "source_files": 35},
+    "diff_check": {"status": "PASS"},
+    "cli_smoke": {"status": "PASS"}
+  },
+  "offline_acceptance": {
+    "status": "PASS",
+    "controller_retry_exact_once": true,
+    "host_naming_single_call": true,
+    "malformed_naming_rejected_without_adoption": true,
+    "correction_reversible": true,
+    "fork_self_view_rebound": true,
+    "restart_and_chat_recovery": true
+  },
+  "scope": {
+    "fixed_route_ranking": true,
+    "confidence_or_salience_persistent_weight": false,
+    "adaptive_learning": false,
+    "p13_started": false,
+    "phase_two_started": false,
+    "live_calls": 0
+  }
+}
