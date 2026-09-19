@@ -8,6 +8,8 @@ The documents are preserved in their supplied form and are intentionally not mer
   (dated 2026-09-14; P0.1 is the current boundary).
 * `research/MNEME_Research_Amendment_Individuality_Identity_2026-09-14.md` is later
   research context and supersedes earlier related-work interpretations where they conflict.
+* `research/MNEME_Developmental_Dynamics_Amendment_2026-09-19.md` is archived reference
+  material supplied on 2026-09-19; it is not an implementation directive or current scope change.
 * `research/MNEME_Related_Work_Research_Dossier.docx` is unchanged historical/reference
   material, not a normative implementation specification.
 * `setup/deepinfra.md` is the operational procedure for the selected live P0.1 backend.
