@@ -379,3 +379,8 @@
 - The fresh run from `8465d4e` passed P1.1: collision-safe publication retained both reused-local-key edges and deterministic route discovery produced `weather_check -> rain_jacket -> shower` with provenance from both interpretations.
 - P1.2 naming and response influence evidence were returned, but its initial extraction and one permitted repair failed strict quotation validation on model-output evidence. P1.3 received zero calls. The sanitized receipt is `docs/receipts/MNEME_Phase_One_Live_Collision_Fixed_P1.2_Failure_Receipt.{md,json}`.
 - Added the narrow live-run source boundary to P1.2 developmental interpretation calls: host output remains recorded testimony, while extraction receives only immutable external evidence. Offline focused validation passed; no new provider call was made for this correction.
+
+## 2026-09-20 Phase One live evidence-filter authorization
+
+- Remote CI `35476828096` passed for `540ad06` after the P1.2 external-evidence-only extraction correction. The active goal authorizes one fresh bounded `phase-one-v1` run from this commit, capped at 27 calls with no retries or favorable-output resampling.
+- `P1.LIVE` is RUNNING. All earlier P1.1/P1.2 failures remain immutable historical evidence.

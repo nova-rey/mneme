@@ -792,8 +792,8 @@
         "docs/receipts/MNEME_Phase_One_Live_Collision_Fixed_P1.2_Failure_Receipt.md"
       ],
       "id": "P1.LIVE",
-      "notes": "Collision-fixed run from 8465d4e passed P1.1 with two-edge route and stopped at P1.2 after initial plus one repair failed strict source quotations from model-output evidence. DeepInfra/credential functional. Offline live extraction boundary now applies external-only evidence to P1.2 calls; no automatic retry.",
-      "owner": null,
+      "notes": "Fresh bounded run authorized from 540ad06 after full offline validation and CI. P1.2 live extraction now uses external-evidence-only source binding; maximum 27 calls, no retries, stop on required failure. Prior live runs remain immutable.",
+      "owner": "/root",
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -811,10 +811,12 @@
         }
       ],
       "scope": "Run the already prepared bounded DeepInfra Phase One acceptance gate and publish the truthful release receipt; do not alter offline Phase One architecture or begin Phase Two.",
-      "session_ids": [],
-      "status": "WAITING",
+      "session_ids": [
+        "phase-one-live-evidence-filter-20260920"
+      ],
+      "status": "RUNNING",
       "title": "Phase One bounded live acceptance gate",
-      "updated_at": "2026-09-20T00:15:00Z",
+      "updated_at": "2026-09-20T00:25:00Z",
       "validation": {
         "required": [
           "bounded live gate",
@@ -865,5 +867,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-20T00:15:00Z"
+  "updated_at": "2026-09-20T00:25:00Z"
 }
