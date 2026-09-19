@@ -270,3 +270,4 @@
 - Recorded the offline Phase One audit remediation receipt and machine-readable evidence. P1.1/P1.2/P1.3 FakeHost gates pass with 12 frozen readouts, authored-control child snapshot, exact replay/terminal-artifact checks, source-backed admission, and current permission revocation enforcement.
 - Added a dedicated `P1.LIVE` work-queue package waiting on the external DeepInfra acceptance gate. The approved live budget has 18 calls consumed across three failed attempts; no new provider call, release tag, or Phase One closure claim was made.
 - Added the remediation receipt to the documentation index without changing the normative specification or Phase One scope.
+- GitHub Actions CI for `f3aed96` completed successfully after the remediation documentation push.

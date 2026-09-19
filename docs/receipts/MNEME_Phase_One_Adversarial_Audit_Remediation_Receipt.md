@@ -30,6 +30,7 @@ Offline acceptance evidence:
 - `.venv2/bin/ruff check src tests`: passed.
 - `.venv2/bin/mypy --strict src`: passed for 39 source files.
 - `git diff --check`: passed.
+- GitHub Actions CI for `f3aed96cb369e06adeb25ef892689f9e999a01ae`: passed.
 
 The DeepInfra live acceptance gate remains waiting. Three earlier bounded attempts consumed 18
 of the approved 27 calls and did not yield valid provider extraction/identity evidence. No further
