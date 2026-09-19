@@ -203,11 +203,13 @@ def test_controller_uses_fixed_content_route_selection(tmp_path):
                         "key": "vram",
                         "label": "VRAM",
                         "source_spans": [{"source_slot": "s0", "start": 0, "end": 4}],
+                        "confidence": 0.9,
                     },
                     {
                         "key": "capacity",
                         "label": "capacity",
                         "source_spans": [{"source_slot": "s0", "start": 16, "end": 24}],
+                        "confidence": 0.9,
                     },
                 ],
                 "edge_candidates": [
@@ -216,9 +218,18 @@ def test_controller_uses_fixed_content_route_selection(tmp_path):
                         "from": "vram",
                         "to": "capacity",
                         "relationship": "constrains",
+                        "source_spans": [{"source_slot": "s0", "start": 0, "end": 24}],
+                        "confidence": 0.9,
                     }
                 ],
-                "route_candidates": [{"key": "route", "edge_keys": ["limits"]}],
+                "route_candidates": [
+                    {
+                        "key": "route",
+                        "edge_keys": ["limits"],
+                        "source_spans": [{"source_slot": "s0", "start": 0, "end": 24}],
+                        "confidence": 0.9,
+                    }
+                ],
             },
             {"s0": "VRAM constrains capacity"},
         )

@@ -226,6 +226,14 @@ class ContinuityService:
                     supersedes_operation_id,
                 ),
             )
+            replayed_ordinals_raw = request.run_metadata.get("replayed_message_ordinals", ())
+            if not isinstance(replayed_ordinals_raw, (list, tuple, set, frozenset)):
+                replayed_ordinals_raw = ()
+            replayed_ordinals = {
+                int(value)
+                for value in replayed_ordinals_raw
+                if isinstance(value, int) and value >= 0
+            }
             for ordinal, message in enumerate(request.messages):
                 content = str(message.get("content", ""))
                 source_id = str(uuid.uuid4())
@@ -242,11 +250,15 @@ class ContinuityService:
                         hashlib.sha256(content.encode()).hexdigest(),
                     ),
                 )
-                purpose = {
+                purpose = (
+                    "replayed_context"
+                    if ordinal in replayed_ordinals
+                    else {
                     "user": "external_evidence",
                     "assistant": "replayed_context",
                     "system": "controller_dependency",
-                }.get(role, "controller_dependency")
+                    }.get(role, "controller_dependency")
+                )
                 db.execute(
                     "INSERT INTO source_bindings VALUES(?,?,?,?,?,?)",
                     (

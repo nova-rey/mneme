@@ -4,6 +4,7 @@ from mneme.contracts import GenerationRequest
 from mneme.hosts import FakeHost
 from mneme.memory import (
     InterpretationPublisher,
+    Residue,
     ResolutionDecision,
     StalePublication,
     validate_residue,
@@ -33,17 +34,33 @@ def _residue():
                     "key": "vram",
                     "label": "VRAM",
                     "source_spans": [{"source_slot": "s0", "start": 0, "end": 4}],
+                    "confidence": 0.9,
                 },
                 {
                     "key": "capacity",
                     "label": "model capacity",
                     "source_spans": [{"source_slot": "s0", "start": 15, "end": 29}],
+                    "confidence": 0.9,
                 },
             ],
             "edge_candidates": [
-                {"key": "limits", "from": "vram", "to": "capacity", "relationship": "causal"}
+                {
+                    "key": "limits",
+                    "from": "vram",
+                    "to": "capacity",
+                    "relationship": "causal",
+                    "source_spans": [{"source_slot": "s0", "start": 0, "end": 29}],
+                    "confidence": 0.9,
+                }
             ],
-            "route_candidates": [{"key": "route", "edge_keys": ["limits"]}],
+            "route_candidates": [
+                {
+                    "key": "route",
+                    "edge_keys": ["limits"],
+                    "source_spans": [{"source_slot": "s0", "start": 0, "end": 29}],
+                    "confidence": 0.9,
+                }
+            ],
         },
         {"s0": "VRAM constrains model capacity"},
     )
@@ -110,6 +127,25 @@ def test_invalid_recorded_attempt_cannot_publish(tmp_path):
         publisher.record_attempt(operation_id, "{bad", status="INVALID")
         with pytest.raises(Exception, match="not publishable"):
             publisher.publish(operation_id, _residue())
+        assert store.current()["current_revision"] == 1
+
+
+def test_publication_revalidates_manually_constructed_residue(tmp_path):
+    store, instance, episode_id = _accepted(tmp_path)
+    with store:
+        publisher = InterpretationPublisher(store, instance)
+        operation_id = publisher.prepare(episode_id)
+        bypass = Residue(
+            {
+                "core_concepts": (
+                    {"key": "vram", "label": "VRAM", "kind": "concept"},
+                ),
+                "edge_candidates": (),
+                "route_candidates": (),
+            }
+        )
+        with pytest.raises(Exception, match="residue is not publishable"):
+            publisher.publish(operation_id, bypass)
         assert store.current()["current_revision"] == 1
 
 

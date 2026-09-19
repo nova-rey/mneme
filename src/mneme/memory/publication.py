@@ -18,7 +18,7 @@ from typing import Any
 
 from ..state.storage import SQLiteStore, _utc
 from .graph import materialize_graph
-from .residue import Residue
+from .residue import Residue, ResidueValidationError, validate_residue
 from .resolution import ResolutionDecision, normalize_lookup_label
 
 
@@ -342,6 +342,19 @@ class InterpretationPublisher:
                 raise PublicationError("interpretation episode is missing")
             if not isinstance(residue, Residue):
                 raise PublicationError("publish requires a validated Residue")
+            # Revalidate at the publication boundary.  The service normally
+            # passes a residue returned by validate_residue(), but this keeps
+            # a manually constructed/deserialized Residue from bypassing
+            # source-slot, span, and 0.70 admission checks.
+            try:
+                source_bundle = _source_bundle(db, str(op["episode_id"]))
+                source_map = {
+                    str(source["slot"]): str(source["content"])
+                    for source in source_bundle["sources"]
+                }
+                residue = validate_residue(residue.to_dict(), source_map)
+            except ResidueValidationError as exc:
+                raise PublicationError(f"residue is not publishable: {exc}") from exc
             latest_attempt = db.execute(
                 "SELECT attempt,status FROM interpretation_attempts "
                 "WHERE operation_id=? ORDER BY attempt DESC LIMIT 1",

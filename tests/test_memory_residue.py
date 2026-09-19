@@ -44,6 +44,7 @@ def residue_payload() -> dict[str, object]:
                 "to": "b",
                 "relationship": "explanation",
                 "source_spans": [{"source_slot": "s0", "start": 0, "end": 18}],
+                "confidence": 0.8,
                 "origin": "model_output",
             }
         ],
@@ -52,6 +53,7 @@ def residue_payload() -> dict[str, object]:
                 "key": "r1",
                 "edge_keys": ["e1"],
                 "source_spans": [{"source_slot": "s0", "start": 0, "end": 18}],
+                "confidence": 0.8,
                 "origin": "model_output",
             }
         ],
@@ -97,6 +99,50 @@ def test_unknown_fields_and_fabricated_source_slots_fail_closed() -> None:
         validate_residue(fabricated, {"s0": "Resource Bandwidth"})
 
 
+@pytest.mark.parametrize(
+    ("field", "index", "missing"),
+    [
+        ("core_concepts", 0, "source_spans"),
+        ("edge_candidates", 0, "source_spans"),
+        ("route_candidates", 0, "source_spans"),
+        ("core_concepts", 0, "confidence"),
+        ("edge_candidates", 0, "confidence"),
+        ("route_candidates", 0, "confidence"),
+    ],
+)
+def test_graph_material_requires_source_spans_and_confidence(
+    field: str, index: int, missing: str
+) -> None:
+    payload = residue_payload()
+    records = payload[field]
+    assert isinstance(records, list)
+    records[index].pop(missing)  # type: ignore[union-attr]
+
+    with pytest.raises(ResidueValidationError, match="graph material requires"):
+        validate_residue(payload, {"s0": "Resource Bandwidth"})
+
+
+@pytest.mark.parametrize("confidence", [0.0, 0.69, 0.699999])
+def test_graph_material_below_admission_threshold_is_rejected(confidence: float) -> None:
+    payload = residue_payload()
+    concepts = payload["core_concepts"]
+    assert isinstance(concepts, list)
+    concepts[0]["confidence"] = confidence
+
+    with pytest.raises(ResidueValidationError, match="admission threshold 0.70"):
+        validate_residue(payload, {"s0": "Resource Bandwidth"})
+
+
+def test_graph_material_at_admission_threshold_is_accepted() -> None:
+    payload = residue_payload()
+    concepts = payload["core_concepts"]
+    assert isinstance(concepts, list)
+    concepts[0]["confidence"] = 0.70
+
+    residue = validate_residue(payload, {"s0": "Resource Bandwidth"})
+    assert residue.core_concepts[0]["confidence"] == 0.70
+
+
 @pytest.mark.parametrize("number", [True, False, math.nan, math.inf, -0.1, 1.1])
 def test_confidence_and_salience_require_finite_unit_interval_numbers(number: object) -> None:
     payload = residue_payload()
@@ -140,10 +186,23 @@ def test_relationships_and_routes_require_existing_contiguous_references() -> No
 
     payload = residue_payload()
     payload["core_concepts"].append(  # type: ignore[union-attr]
-        {"key": "c", "label": "Context", "kind": "concept"}
+        {
+            "key": "c",
+            "label": "Context",
+            "kind": "concept",
+            "source_spans": [{"source_slot": "s0", "start": 0, "end": 7}],
+            "confidence": 0.8,
+        }
     )
     payload["edge_candidates"].append(  # type: ignore[union-attr]
-        {"key": "e2", "from": "b", "to": "c", "relationship": "related"}
+        {
+            "key": "e2",
+            "from": "b",
+            "to": "c",
+            "relationship": "related",
+            "source_spans": [{"source_slot": "s0", "start": 0, "end": 18}],
+            "confidence": 0.8,
+        }
     )
     payload["route_candidates"][0]["edge_keys"] = ["e2", "e1"]  # type: ignore[index]
     with pytest.raises(ResidueValidationError, match="discontinuous"):

@@ -27,6 +27,9 @@ MAX_SPANS_PER_ITEM = 8
 MAX_LABEL_LENGTH = 160
 MAX_CONTEXT_LENGTH = 64
 MAX_RESIDUE_BYTES = 24 * 1024
+# This is an admission/uncertainty threshold only.  It is deliberately not
+# carried into graph selection as a weight or accessibility bonus.
+DEFAULT_ADMISSION_CONFIDENCE_THRESHOLD = 0.70
 
 SUPPORTED_CONCEPT_KINDS = frozenset(
     {
@@ -376,11 +379,67 @@ def _key(record: Mapping[str, Any], path: str) -> str:
     return _require_string(record[candidates[0]], f"{path}.{candidates[0]}", max_length=160)
 
 
+def _require_graph_admission(
+    record: Mapping[str, Any],
+    path: str,
+    *,
+    confidence_threshold: float,
+) -> None:
+    """Require provenance and admission evidence for graph-bearing records.
+
+    A source span establishes where an assertion came from; confidence is an
+    extraction/admission signal.  Neither becomes a later route-ranking
+    weight.  Records without either field must not become graph state.
+    """
+
+    source_spans = record.get("source_spans", ())
+    if not source_spans:
+        raise _error(path, "graph material requires at least one source span")
+    confidence = record.get("confidence")
+    if confidence is None:
+        raise _error(path, "graph material requires confidence")
+    confidence_value = _require_number(confidence, f"{path}.confidence")
+    if confidence_value < confidence_threshold:
+        raise _error(
+            f"{path}.confidence",
+            f"must meet admission threshold {confidence_threshold:.2f}",
+        )
+
+
+def validate_graph_admission(
+    residue: Residue,
+    *,
+    confidence_threshold: float = DEFAULT_ADMISSION_CONFIDENCE_THRESHOLD,
+) -> None:
+    """Validate graph admission on an already normalized residue.
+
+    This second boundary is used by publication so a manually constructed or
+    deserialized :class:`Residue` cannot bypass the source-backed admission
+    rules.  Full source-slot and offset validation remains the responsibility
+    of :func:`validate_residue`.
+    """
+
+    threshold = _require_number(
+        confidence_threshold, "confidence_threshold", minimum=0.0, maximum=1.0
+    )
+    for field in ("core_concepts", "edge_candidates", "route_candidates"):
+        records = residue.data.get(field, ())
+        for index, record in enumerate(records):
+            if not isinstance(record, Mapping):
+                raise ResidueValidationError(f"residue.{field}[{index}]: must be an object")
+            _require_graph_admission(
+                record,
+                f"residue.{field}[{index}]",
+                confidence_threshold=threshold,
+            )
+
+
 def validate_residue(
     payload: Mapping[str, Any],
     sources: Mapping[str, str] | None = None,
     *,
     source_slots: Mapping[str, str] | None = None,
+    confidence_threshold: float = DEFAULT_ADMISSION_CONFIDENCE_THRESHOLD,
 ) -> Residue:
     """Validate and return a normalized immutable residue.
 
@@ -395,6 +454,10 @@ def validate_residue(
         raise ResidueValidationError("sources and source_slots disagree")
     if sources is None:
         raise ResidueValidationError("source slots are required")
+
+    threshold = _require_number(
+        confidence_threshold, "confidence_threshold", minimum=0.0, maximum=1.0
+    )
 
     root = _require_mapping(payload, "residue")
     unknown = set(root) - _TOP_LEVEL_FIELDS
@@ -435,6 +498,11 @@ def validate_residue(
         kind = record.get("kind", record.get("node_type", "concept"))
         if not isinstance(kind, str) or kind not in SUPPORTED_CONCEPT_KINDS:
             raise _error(f"residue.core_concepts[{index}].kind", "unsupported concept kind")
+        _require_graph_admission(
+            record,
+            f"residue.core_concepts[{index}]",
+            confidence_threshold=threshold,
+        )
         record["key"] = key
         record["kind"] = kind
         concepts.append(record)
@@ -463,6 +531,7 @@ def validate_residue(
         relationship = record.get("relationship", record.get("edge_type", "association"))
         if not isinstance(relationship, str) or relationship not in SUPPORTED_RELATIONSHIP_KINDS:
             raise _error(path, "unsupported relationship kind")
+        _require_graph_admission(record, path, confidence_threshold=threshold)
         record.update({"key": key, "from": source, "to": target, "relationship": relationship})
         edges.append(record)
     normalized["edge_candidates"] = tuple(edges)
@@ -490,6 +559,7 @@ def validate_residue(
             raise _error(path, "edge references must be unique strings")
         if any(ref not in edge_keys for ref in edge_refs):
             raise _error(path, "route references a missing relationship")
+        _require_graph_admission(record, path, confidence_threshold=threshold)
         route_edges = [next(edge for edge in edges if edge["key"] == ref) for ref in edge_refs]
         for left, right in zip(route_edges, route_edges[1:]):
             if left["to"] != right["from"]:
@@ -534,11 +604,14 @@ def validate_residue(
     encoded = canonical_json(normalized).encode("utf-8")
     if len(encoded) > MAX_RESIDUE_BYTES:
         raise ResidueValidationError(f"residue exceeds {MAX_RESIDUE_BYTES} UTF-8 bytes")
-    return Residue(_freeze(normalized))
+    residue = Residue(_freeze(normalized))
+    validate_graph_admission(residue, confidence_threshold=threshold)
+    return residue
 
 
 __all__ = [
     "MAX_AUXILIARY_RECORDS",
+    "DEFAULT_ADMISSION_CONFIDENCE_THRESHOLD",
     "MAX_CONCEPTS",
     "MAX_LABEL_LENGTH",
     "MAX_RELATIONSHIPS",
@@ -551,5 +624,6 @@ __all__ = [
     "SourceSpan",
     "canonical_json",
     "normalize_label",
+    "validate_graph_admission",
     "validate_residue",
 ]

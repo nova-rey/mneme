@@ -25,11 +25,13 @@ from .publication import (
     publish_interpretation,
 )
 from .residue import (
+    DEFAULT_ADMISSION_CONFIDENCE_THRESHOLD,
     Residue,
     ResidueValidationError,
     SourceSpan,
     canonical_json,
     normalize_label,
+    validate_graph_admission,
     validate_residue,
 )
 from .resolution import (
@@ -46,6 +48,7 @@ __all__ = [
     "CacheError",
     "CacheHit",
     "CacheKey",
+    "DEFAULT_ADMISSION_CONFIDENCE_THRESHOLD",
     "ExplicitAliasResolver",
     "GraphConcept",
     "GraphEdge",
@@ -74,4 +77,5 @@ __all__ = [
     "publish_interpretation",
     "resolve_label",
     "validate_residue",
+    "validate_graph_admission",
 ]

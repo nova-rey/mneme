@@ -222,3 +222,15 @@
 
 - Hardened the integrated runner so a completed run records and revalidates its terminal boundary checkpoint, exact private evaluation snapshot path, checkpoint identity/digests, and every required evaluation result before returning COMPLETE. Missing, corrupt, stale, alternate-path, or wrong-slot terminal evidence now fails closed; prepared subject-slot coverage is also enforced.
 - Added focused regressions for missing/corrupt terminal checkpoints, missing/corrupt evaluation results, alternate private snapshot paths, and missing prepared subject slots. The focused runner suite reports 11 passing tests; Ruff and strict mypy pass for the changed runner/tests.
+
+## 2026-09-19 Phase One residue admission boundary
+
+- Tightened graph admission so concepts, relationships, and routes require source spans and confidence at or above the approved 0.70 admission/uncertainty threshold. Confidence remains evidence for validation and admission only; it is not a route-ranking weight. Empty residues remain valid.
+- Publication now revalidates the residue against the accepted episode's source slots before graph writes, preventing manually constructed or deserialized residues from bypassing source provenance and admission checks. Added focused regressions for missing spans/confidence, below-threshold material, threshold acceptance, and publication bypass attempts.
+- Focused residue, publication, and controller tests (37), Ruff, and strict mypy pass. The offline gate fixture still requires its worker-side residue confidence update; no Phase Two mechanism was added.
+
+## 2026-09-19 Phase One policy and revocation boundary candidate
+
+- Added a scoped Phase One policy authority with explicit selected-host bindings at development-enabled instance creation, inspectable permissions, append-only grant/revoke records, and read-only consultation from working stores and copied checkpoints.
+- Added schema 3→4 migration that establishes the authority reference, clears legacy interpretation/recall/provider-reuse grants, and requires explicit reauthorization. Missing or corrupt authority fails closed; old checkpoint copies retain the authority reference and therefore cannot bypass later scope revocation.
+- Integrated policy checks at storage acceptance, bound-host development/context dispatch, interpretation permission, identity adoption, controller recall/provider reuse, and frozen comparison memory treatments. Focused policy tests pass; broader validation remains with the assigning owner because the shared tree contains parallel gate-driver changes.
