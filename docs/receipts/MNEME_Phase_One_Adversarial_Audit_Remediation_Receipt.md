@@ -26,7 +26,7 @@ Offline acceptance evidence:
 - Replayed chat context remains provenance-bound and is not fresh independent evidence.
 - Missing source spans, missing confidence, and confidence below 0.70 cannot enter graph state; confidence and salience are not route-ranking weights.
 - Permission revocation is consulted through the current local authority, including historical checkpoint readers.
-- `.venv2/bin/pytest -q`: 187 passed.
+- `.venv2/bin/pytest -q`: 188 passed.
 - `.venv2/bin/ruff check src tests`: passed.
 - `.venv2/bin/mypy --strict src`: passed for 39 source files.
 - `git diff --check`: passed.

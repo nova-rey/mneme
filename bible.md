@@ -272,3 +272,4 @@
 - Added the remediation receipt to the documentation index without changing the normative specification or Phase One scope.
 - GitHub Actions CI for `f3aed96` completed successfully after the remediation documentation push.
 - Updated the approved Phase One plan status to reflect accepted offline implementation and the still-waiting external live gate; no scientific plan text or Phase Two scope changed.
+- Revalidated the current head at 188 passing tests and corrected the remediation receipt's stale 187-test count.
