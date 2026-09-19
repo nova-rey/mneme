@@ -368,3 +368,8 @@
 - Audited the continuation P1.1 failure and found that Gemma returned a valid second relationship using the same interpretation-local key `e1`; publication copied the previous snapshot and silently skipped the colliding row. The missing route was therefore an infrastructure defect, not missing provider capability.
 - Added deterministic collision-safe graph edge and explicit-route keys derived from relationship/evidence content, remapped route references, preserved local-key provenance, and added a regression proving reused local keys still produce a two-edge route with both evidence records.
 - Full offline validation passed: 221 pytest tests, Ruff, strict mypy, and fresh package/CLI smoke. No provider call was made for this remediation. The P1.LIVE package remains WAITING pending a fresh bounded run.
+
+## 2026-09-20 Phase One collision-fixed live authorization
+
+- Remote CI `35476530136` passed for `950f596`, including the collision-safe publication fix and the reused-local-key regression. The active goal authorizes one fresh bounded Phase One run from this commit with a 27-call ceiling; the prior eight live calls remain historical and are not reclassified.
+- `P1.LIVE` is RUNNING for the corrected run. Stop-on-failure, no transport retries, and no favorable-output resampling remain in force.

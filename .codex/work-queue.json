@@ -791,8 +791,8 @@
         "docs/receipts/MNEME_Phase_One_Live_Edge_Key_Collision_Remediation_Receipt.md"
       ],
       "id": "P1.LIVE",
-      "notes": "Continuation run from 09bbf42 exposed and preserved a publication defect: both valid interpretations used local edge key e1, and the second edge was silently skipped on snapshot copy. Offline collision-safe edge/route-key remediation is now implemented and validated; P1.LIVE remains WAITING for a fresh bounded run authorization.",
-      "owner": null,
+      "notes": "Fresh bounded run authorized from 950f596 after collision-safe publication remediation. Maximum 27 calls for this corrected run; prior 8 calls remain historical and unchanged. Stop on any required failure, no transport retries or favorable-output resampling.",
+      "owner": "/root",
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -810,10 +810,12 @@
         }
       ],
       "scope": "Run the already prepared bounded DeepInfra Phase One acceptance gate and publish the truthful release receipt; do not alter offline Phase One architecture or begin Phase Two.",
-      "session_ids": [],
-      "status": "WAITING",
+      "session_ids": [
+        "phase-one-live-collision-fixed-20260920"
+      ],
+      "status": "RUNNING",
       "title": "Phase One bounded live acceptance gate",
-      "updated_at": "2026-09-20T00:00:30Z",
+      "updated_at": "2026-09-20T00:05:00Z",
       "validation": {
         "required": [
           "bounded live gate",
@@ -840,6 +842,11 @@
             "sha": "2cdf3ac10572bf9424220aee50706b01fc9f15ee",
             "check": "corrected-contract P1.1 live run",
             "result": "STOPPED; 4 returned calls; route not formed; P1.2/P1.3 not attempted"
+          },
+          {
+            "sha": "950f596081aaf0457a933dd66d05609e5b9299bf",
+            "check": "edge-key collision remediation",
+            "result": "PASS; 221 pytest, Ruff, strict mypy, fresh-install smoke, CI 35476530136; reused local e1 preserves both edges and route"
           }
         ]
       },
@@ -859,5 +866,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-20T00:00:30Z"
+  "updated_at": "2026-09-20T00:05:00Z"
 }
