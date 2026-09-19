@@ -13,6 +13,7 @@ from typing import Any
 
 from ..contracts import GenerationRequest, GenerationResult
 from ..host import Host
+from .policy import PermissionState, PolicyError, PolicyService
 from .storage import SQLiteStore, _utc
 
 
@@ -84,6 +85,35 @@ class ContinuityService:
         actual = _digest(self.host.fingerprint().to_dict())
         if actual != expected:
             raise ContinuityError("host fingerprint drifted from prepared operation")
+
+    def _policy(self) -> PermissionState:
+        try:
+            return PolicyService(self.store, self.instance_id).current()
+        except PolicyError as exc:
+            raise ContinuityError(str(exc)) from exc
+
+    def _requires_provider_reuse(self, operation_id: str) -> bool:
+        return (
+            self.db.execute(
+                "SELECT 1 FROM source_bindings b JOIN sources s ON s.source_id=b.source_id "
+                "WHERE s.operation_id=? AND b.purpose NOT IN ('external_evidence') LIMIT 1",
+                (operation_id,),
+            ).fetchone()
+            is not None
+        )
+
+    def _assert_provider_policy(self, operation_id: str) -> None:
+        if not self._requires_provider_reuse(operation_id):
+            return
+        try:
+            state = PolicyService(self.store, self.instance_id).current()
+            if state.bound_host_ref is not None:
+                PolicyService(self.store, self.instance_id).require("provider_reuse")
+                PolicyService(self.store, self.instance_id).require_host(
+                    state, self.host.fingerprint().to_dict()
+                )
+        except PolicyError as exc:
+            raise ContinuityError(str(exc)) from exc
 
     def recover_orphaned_operations(
         self,
@@ -176,12 +206,18 @@ class ContinuityService:
             if unresolved is not None:
                 raise OperationNotReady("another operation is unresolved")
             head, manifest_id = self._head()
+            try:
+                policy_state = PolicyService(self.store, self.instance_id).current()
+                if not policy_state.storage_allowed:
+                    raise PolicyError("storage permission denied")
+            except PolicyError as exc:
+                raise ContinuityError(str(exc)) from exc
             policy = db.execute(
-                "SELECT p.policy_id,p.storage_allowed FROM policies p JOIN lineages l ON l.scope_id=p.scope_id WHERE l.instance_id=?",
-                (self.instance_id,),
+                "SELECT policy_id FROM policies WHERE policy_id=(SELECT policy_id FROM manifests WHERE manifest_id=?)",
+                (manifest_id,),
             ).fetchone()
-            if policy and not bool(policy[1]):
-                raise ContinuityError("storage permission denied")
+            if any(str(message.get("role", "")) != "user" for message in request.messages):
+                self._assert_provider_policy_for_request(request)
             fp = self.host.fingerprint().to_dict()
             host_ref = _digest(fp)
             db.execute(
@@ -272,6 +308,22 @@ class ContinuityService:
                 )
         return OperationReceipt(operation_id, episode_id, "PREPARED")
 
+    def _assert_provider_policy_for_request(self, request: GenerationRequest) -> None:
+        if not any(str(message.get("role", "")) == "assistant" for message in request.messages):
+            return
+        try:
+            state = PolicyService(self.store, self.instance_id).current()
+            # Phase Zero callers may persist an explicitly supplied context
+            # without a Phase One host binding.  A selected Phase One host
+            # makes the provider-reuse gate authoritative for that lineage.
+            if state.bound_host_ref is not None:
+                PolicyService(self.store, self.instance_id).require("provider_reuse")
+                PolicyService(self.store, self.instance_id).require_host(
+                    state, self.host.fingerprint().to_dict()
+                )
+        except PolicyError as exc:
+            raise ContinuityError(str(exc)) from exc
+
     def generate_operation(self, operation_id: str) -> OperationReceipt:
         with self._write() as db:
             row = db.execute(
@@ -291,6 +343,7 @@ class ContinuityService:
                 return OperationReceipt(operation_id, episode_id, status)
             if status != "PREPARED":
                 raise OperationNotReady(status)
+            self._assert_provider_policy(operation_id)
             # This check must precede STARTED publication.  A drifted host is
             # a rejected prepared operation, not an uncertain provider call.
             self._assert_host_binding(run_id)
@@ -421,6 +474,11 @@ class ContinuityService:
                 return OperationReceipt(operation_id, episode_id, status, int(e[0]), str(e[1]))
             if status != "RESULT_READY":
                 raise OperationNotReady(status)
+            try:
+                if not self._policy().storage_allowed:
+                    raise PolicyError("storage permission denied")
+            except PolicyError as exc:
+                raise ContinuityError(str(exc)) from exc
             current, previous_manifest = self._head()
             if base != current:
                 raise StaleRevision(f"prepared at {base}, current head is {current}")

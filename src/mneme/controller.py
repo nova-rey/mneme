@@ -13,6 +13,7 @@ from typing import Any
 from .contracts import GenerationRequest, GenerationResult
 from .host import Host
 from .identity import IdentityService
+from .state.policy import PolicyError, PolicyService
 from .state.service import ContinuityService, OperationReceipt
 from .state.storage import SQLiteStore, _utc
 
@@ -51,6 +52,7 @@ class PinnedState:
     self_view_version: int
     graph_snapshot_id: str | None
     recall_allowed: bool
+    provider_reuse_allowed: bool
     host_ref: str
 
 
@@ -136,9 +138,10 @@ class ResponseController:
         ).fetchone()
         if manifest is None:
             raise ControllerError("current manifest is missing")
-        policy = self.store.connection.execute(
-            "SELECT recall_allowed FROM policies WHERE policy_id=?", (manifest["policy_id"],)
-        ).fetchone()
+        try:
+            policy = PolicyService(self.store, self.instance_id).current()
+        except PolicyError as exc:
+            raise ControllerError(str(exc)) from exc
         return PinnedState(
             str(current["active_instance_id"]),
             str(manifest["manifest_id"]),
@@ -146,7 +149,8 @@ class ResponseController:
             int(manifest["graph_revision"]),
             int(manifest["self_view_version"]),
             str(manifest["graph_snapshot_id"]) if manifest["graph_snapshot_id"] else None,
-            bool(policy and policy[0]),
+            policy.recall_allowed,
+            policy.provider_reuse_allowed,
             _host_ref(self.host),
         )
 
@@ -183,6 +187,7 @@ class ResponseController:
             intent.mode in {"observe", "evaluate"}
             or intent.memory == "off"
             or not pin.recall_allowed
+            or not pin.provider_reuse_allowed
         ):
             return ()
         if intent.memory not in {"graph", "episodic"}:

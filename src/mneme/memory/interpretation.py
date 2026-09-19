@@ -153,6 +153,19 @@ class InterpretationService:
         except PolicyError as exc:
             raise InterpretationError(str(exc)) from exc
 
+    def _policy_allows_provider_reuse(self) -> None:
+        """Require current reuse authority when the lineage selected a host."""
+
+        try:
+            state = PolicyService(self.store, self.instance_id).current()
+            if state.bound_host_ref is not None:
+                PolicyService(self.store, self.instance_id).require("provider_reuse")
+                PolicyService(self.store, self.instance_id).require_host(
+                    state, self.host.fingerprint().to_dict()
+                )
+        except PolicyError as exc:
+            raise InterpretationError(str(exc)) from exc
+
     def _source_bundle(self, db: Any, episode_id: str) -> dict[str, Any]:
         operation = db.execute(
             "SELECT operation_id FROM episodes WHERE episode_id=? AND origin_instance_id=?",
@@ -387,6 +400,7 @@ class InterpretationService:
                 errors = None
             source_bundle = self._source_bundle(db, str(op["episode_id"]))
             self._policy_allows_selected_host()
+            self._policy_allows_provider_reuse()
             expected_host = self._episode_host_ref(db, str(op["episode_id"]))
             host_ref = self._host_ref()
             if expected_host is not None and expected_host != host_ref:
