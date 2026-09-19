@@ -83,6 +83,140 @@ def test_valid_residue_preserves_source_evidence_and_model_origin() -> None:
         graph.edges[0].annotations["origin"] = "external"  # type: ignore[index]
 
 
+@pytest.mark.parametrize(
+    ("source", "quotation", "expected"),
+    [
+        ("Resource Bandwidth", "Resource", (0, 8)),
+        ("café 😀 — ready", "😀", (5, 6)),
+        ("It’s “ready”", "“ready”", (5, 12)),
+        ("starts here", "starts", (0, 6)),
+        ("ends here", "here", (5, 9)),
+    ],
+)
+def test_model_evidence_quote_resolves_to_unicode_code_point_span(
+    source: str, quotation: str, expected: tuple[int, int]
+) -> None:
+    payload = {
+        "core_concepts": [
+            {
+                "key": "a",
+                "label": "Evidence",
+                "kind": "concept",
+                "evidence": [{"source": "s0", "evidence": quotation}],
+                "confidence": 0.9,
+            }
+        ]
+    }
+
+    residue = validate_residue(payload, {"s0": source})
+
+    assert residue.core_concepts[0]["source_spans"] == (
+        {"source_slot": "s0", "start": expected[0], "end": expected[1]},
+    )
+    assert "evidence" not in residue.core_concepts[0]
+
+
+@pytest.mark.parametrize(
+    ("source", "evidence", "error"),
+    [
+        ("Resource Bandwidth", "", "must not be empty"),
+        ("Resource Bandwidth", "resource bandwidth", "does not occur verbatim"),
+        ("Resource Bandwidth", "Missing", "does not occur verbatim"),
+    ],
+)
+def test_model_evidence_quote_must_be_nonempty_and_verbatim(
+    source: str, evidence: str, error: str
+) -> None:
+    payload = {
+        "core_concepts": [
+            {
+                "key": "a",
+                "label": "Evidence",
+                "kind": "concept",
+                "evidence": [{"source": "s0", "evidence": evidence}],
+                "confidence": 0.9,
+            }
+        ]
+    }
+
+    with pytest.raises(ResidueValidationError, match=error):
+        validate_residue(payload, {"s0": source})
+
+
+def test_model_evidence_quote_rejects_missing_slot_and_ambiguous_occurrence() -> None:
+    def payload(source: str, quotation: str) -> dict[str, object]:
+        return {
+            "core_concepts": [
+                {
+                    "key": "a",
+                    "label": "Evidence",
+                    "kind": "concept",
+                    "evidence": [{"source": source, "evidence": quotation}],
+                    "confidence": 0.9,
+                }
+            ]
+        }
+
+    with pytest.raises(ResidueValidationError, match="fabricated or unavailable"):
+        validate_residue(payload("s9", "Resource"), {"s0": "Resource Bandwidth"})
+    with pytest.raises(ResidueValidationError, match="does not occur verbatim"):
+        validate_residue(
+            payload("s1", "Resource"),
+            {"s0": "Resource Bandwidth", "s1": "Other source"},
+        )
+    with pytest.raises(ResidueValidationError, match="ambiguous"):
+        validate_residue(payload("s0", "alpha"), {"s0": "alpha alpha"})
+    with pytest.raises(ResidueValidationError, match="ambiguous"):
+        validate_residue(payload("s0", "aa"), {"s0": "aaa"})
+
+
+def test_model_evidence_quote_resolves_multiple_unique_spans_deterministically() -> None:
+    payload = {
+        "core_concepts": [
+            {
+                "key": "a",
+                "label": "Evidence",
+                "kind": "concept",
+                "evidence": [
+                    {"source": "s0", "evidence": "Resource"},
+                    {"source": "s0", "evidence": "Bandwidth"},
+                ],
+                "confidence": 0.9,
+            }
+        ]
+    }
+    sources = {"s0": "Resource Bandwidth"}
+
+    first = validate_residue(payload, sources)
+    second = validate_residue(payload, sources)
+
+    expected = (
+        {"source_slot": "s0", "start": 0, "end": 8},
+        {"source_slot": "s0", "start": 9, "end": 18},
+    )
+    assert first.core_concepts[0]["source_spans"] == expected
+    assert second.core_concepts[0]["source_spans"] == expected
+    assert first.content_digest == second.content_digest
+
+
+def test_model_evidence_quote_cannot_be_mixed_with_numeric_spans() -> None:
+    payload = {
+        "core_concepts": [
+            {
+                "key": "a",
+                "label": "Evidence",
+                "kind": "concept",
+                "evidence": [{"source": "s0", "evidence": "Resource"}],
+                "source_spans": [{"source_slot": "s0", "start": 0, "end": 8}],
+                "confidence": 0.9,
+            }
+        ]
+    }
+
+    with pytest.raises(ResidueValidationError, match="only one of evidence"):
+        validate_residue(payload, {"s0": "Resource Bandwidth"})
+
+
 def test_unknown_fields_and_fabricated_source_slots_fail_closed() -> None:
     unknown = residue_payload()
     unknown["unexpected"] = True

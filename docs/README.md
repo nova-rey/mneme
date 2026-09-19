@@ -39,6 +39,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   records the corrected extraction contract, durable naming accounting, and
   offline validation before the newly authorized bounded live run. DeepInfra
   access is functional; the historical 18-call failure remains preserved.
+* [Phase One extractor quotation remediation receipt](receipts/MNEME_Phase_One_Extractor_Quote_Remediation_Receipt.md)
+  records the follow-up offline correction that moves Unicode span arithmetic
+  into deterministic software while retaining strict source provenance. No new
+  live call was made; the remaining live budget is unchanged.
 * [Phase One graph-wrapper preview runbook](PHASE_ONE_PREVIEW_RUNBOOK.md) documents
   the read-only matched no-memory, lexical, and graph comparison path.
 

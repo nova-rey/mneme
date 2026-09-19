@@ -230,8 +230,8 @@ Extractor commentary is never a subject episode. The extractor receives neither 
 
 A residue contains:
 
-- Concepts: local key, label, kind, source spans, confidence and salience. Confidence is evidence for validation, admission, uncertainty handling and inspection; salience records centrality within the source experience. Neither confers developmental strength or persistent accessibility.
-- Directed relationships: endpoints, type, polarity, context and spans.
+- Concepts: local key, label, kind, model-supplied source/evidence quotations resolved by MNEME into canonical source spans, confidence and salience. Confidence is evidence for validation, admission, uncertainty handling and inspection; salience records centrality within the source experience. Neither confers developmental strength or persistent accessibility.
+- Directed relationships: endpoints, type, polarity, context and canonical spans derived from exact source/evidence quotations.
 - Ordered candidate routes referencing relationship keys.
 - Observable patterns with subject/referent classification and uncertainty.
 - Declared-memory, identity and feedback proposals with supporting spans.
@@ -245,7 +245,7 @@ Bounds:
 - Eight spans per item; 160 characters per label; 64 per context tag.
 - 24 KiB maximum returned residue.
 - Finite numeric annotations in `[0,1]`; booleans are not numbers.
-- Exact Unicode code-point span offsets into unnormalized source text.
+- Exact Unicode code-point span offsets into unnormalized source text are canonical internal evidence derived deterministically from the model's exact quotations; the model does not calculate or supply those offsets.
 
 Reject unknown fields, fabricated source slots, invalid spans, duplicate keys, missing endpoints, discontinuous/reversed paths, unsupported kinds, non-finite values and exceeded limits. Empty residue is valid.
 

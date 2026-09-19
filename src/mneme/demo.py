@@ -168,17 +168,13 @@ def _residue_payload(text: str) -> dict[str, Any]:
 
     first = "VRAM" if "VRAM" in text else "Bandwidth"
     second = "model capacity"
-    first_start = text.index(first)
-    second_start = text.index(second)
     return {
         "core_concepts": [
             {
                 "key": first.casefold().replace(" ", "-"),
                 "label": first,
                 "kind": "resource",
-                "source_spans": [
-                    {"source_slot": "s0", "start": first_start, "end": first_start + len(first)}
-                ],
+                "evidence": [{"source": "s0", "evidence": first}],
                 "confidence": 0.9,
                 "salience": 0.5,
                 "origin": "model_output",
@@ -187,13 +183,7 @@ def _residue_payload(text: str) -> dict[str, Any]:
                 "key": "capacity",
                 "label": second,
                 "kind": "concept",
-                "source_spans": [
-                    {
-                        "source_slot": "s0",
-                        "start": second_start,
-                        "end": second_start + len(second),
-                    }
-                ],
+                "evidence": [{"source": "s0", "evidence": second}],
                 "confidence": 0.8,
                 "salience": 0.5,
                 "origin": "model_output",
@@ -205,9 +195,7 @@ def _residue_payload(text: str) -> dict[str, Any]:
                 "from": first.casefold().replace(" ", "-"),
                 "to": "capacity",
                 "relationship": "constrains",
-                "source_spans": [
-                    {"source_slot": "s0", "start": 0, "end": len(text)}
-                ],
+                "evidence": [{"source": "s0", "evidence": text}],
                 "confidence": 0.8,
                 "origin": "model_output",
             }
@@ -216,7 +204,7 @@ def _residue_payload(text: str) -> dict[str, Any]:
             {
                 "key": f"route-{first.casefold()}",
                 "edge_keys": [f"{first.casefold()}-constrains-capacity"],
-                "source_spans": [{"source_slot": "s0", "start": 0, "end": len(text)}],
+                "evidence": [{"source": "s0", "evidence": text}],
                 "confidence": 0.8,
                 "origin": "model_output",
             }

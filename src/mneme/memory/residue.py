@@ -126,6 +126,7 @@ _RECORD_FIELDS = frozenset(
         "from_concept",
         "to_concept",
         "source_slot",
+        "evidence",
         "source_spans",
         "spans",
         "evidence_refs",
@@ -318,13 +319,63 @@ def _validate_span(value: Any, path: str, sources: Mapping[str, str]) -> dict[st
 
 
 def _spans(
-    record: Mapping[str, Any], path: str, sources: Mapping[str, str]
+    record: Mapping[str, Any],
+    path: str,
+    sources: Mapping[str, str],
+    *,
+    require_evidence_quotes: bool = False,
 ) -> tuple[dict[str, Any], ...]:
-    fields = [name for name in ("source_spans", "spans") if name in record]
+    fields = [name for name in ("evidence", "source_spans", "spans") if name in record]
     if len(fields) > 1:
-        raise _error(path, "use only one of source_spans or spans")
+        raise _error(path, "use only one of evidence, source_spans, or spans")
     if not fields:
         return ()
+    if require_evidence_quotes and fields[0] != "evidence":
+        raise _error(path, "model evidence requires quotation evidence")
+    if fields[0] == "evidence":
+        values = _list(record[fields[0]], f"{path}.evidence", maximum=MAX_SPANS_PER_ITEM)
+        resolved: list[dict[str, Any]] = []
+        for index, value in enumerate(values):
+            evidence_path = f"{path}.evidence[{index}]"
+            item = _require_mapping(value, evidence_path)
+            unknown = set(item) - {"source", "evidence"}
+            if unknown:
+                raise _error(evidence_path, f"unknown fields: {sorted(unknown)}")
+            if set(item) != {"source", "evidence"}:
+                raise _error(evidence_path, "requires source and evidence")
+            source_slot = _require_string(item["source"], f"{evidence_path}.source")
+            if source_slot not in sources:
+                raise _error(
+                    evidence_path,
+                    f"fabricated or unavailable source slot {source_slot!r}",
+                )
+            quotation = _require_string(item["evidence"], f"{evidence_path}.evidence")
+            source_text = sources[source_slot]
+            matches: list[int] = []
+            search_from = 0
+            while True:
+                match = source_text.find(quotation, search_from)
+                if match < 0:
+                    break
+                matches.append(match)
+                search_from = match + 1
+            if not matches:
+                raise _error(
+                    evidence_path,
+                    "evidence quotation does not occur verbatim in source",
+                )
+            if len(matches) != 1:
+                raise _error(
+                    evidence_path,
+                    "evidence quotation is ambiguous in source",
+                )
+            start = matches[0]
+            end = start + len(quotation)
+            span = {"source_slot": source_slot, "start": start, "end": end}
+            if source_text[start:end] != quotation:
+                raise _error(evidence_path, "derived span does not equal evidence quotation")
+            resolved.append(span)
+        return tuple(resolved)
     values = _list(record[fields[0]], f"{path}.{fields[0]}", maximum=MAX_SPANS_PER_ITEM)
     return tuple(
         _validate_span(value, f"{path}.{fields[0]}[{index}]", sources)
@@ -338,6 +389,7 @@ def _record(
     sources: Mapping[str, str],
     *,
     require_label: bool = False,
+    require_evidence_quotes: bool = False,
 ) -> dict[str, Any]:
     record = _require_mapping(value, path)
     unknown = set(record) - _RECORD_FIELDS
@@ -367,7 +419,13 @@ def _record(
     for field in ("confidence", "salience", "uncertainty"):
         if field in result and result[field] is not None:
             result[field] = _require_number(result[field], f"{path}.{field}")
-    result["source_spans"] = _spans(result, path, sources)
+    result["source_spans"] = _spans(
+        result,
+        path,
+        sources,
+        require_evidence_quotes=require_evidence_quotes,
+    )
+    result.pop("evidence", None)
     result.pop("spans", None)
     return result
 
@@ -440,12 +498,16 @@ def validate_residue(
     *,
     source_slots: Mapping[str, str] | None = None,
     confidence_threshold: float = DEFAULT_ADMISSION_CONFIDENCE_THRESHOLD,
+    require_evidence_quotes: bool = False,
 ) -> Residue:
     """Validate and return a normalized immutable residue.
 
     ``sources``/``source_slots`` is the complete request-local slot map. Every
     span must point into it, which prevents a model response from inventing a
-    source or smuggling an external episode identifier into evidence.
+    source or smuggling an external episode identifier into evidence. When
+    ``require_evidence_quotes`` is true, graph records must use model-facing
+    quotation evidence; numeric ``source_spans`` remain available to callers
+    constructing canonical/internal residues directly.
     """
 
     if sources is None:
@@ -490,7 +552,13 @@ def validate_residue(
     concepts: list[dict[str, Any]] = []
     concept_keys: set[str] = set()
     for index, value in enumerate(concepts_raw):
-        record = _record(value, f"residue.core_concepts[{index}]", sources, require_label=True)
+        record = _record(
+            value,
+            f"residue.core_concepts[{index}]",
+            sources,
+            require_label=True,
+            require_evidence_quotes=require_evidence_quotes,
+        )
         key = _key(record, f"residue.core_concepts[{index}]")
         if key in concept_keys:
             raise _error("residue.core_concepts", f"duplicate key {key!r}")
@@ -517,7 +585,7 @@ def validate_residue(
     edge_keys: set[str] = set()
     for index, value in enumerate(edges_raw):
         path = f"residue.edge_candidates[{index}]"
-        record = _record(value, path, sources)
+        record = _record(value, path, sources, require_evidence_quotes=require_evidence_quotes)
         key = _key(record, path)
         if key in edge_keys:
             raise _error("residue.edge_candidates", f"duplicate key {key!r}")
@@ -545,7 +613,7 @@ def validate_residue(
     route_keys: set[str] = set()
     for index, value in enumerate(routes_raw):
         path = f"residue.route_candidates[{index}]"
-        record = _record(value, path, sources)
+        record = _record(value, path, sources, require_evidence_quotes=require_evidence_quotes)
         key = _key(record, path)
         if key in route_keys:
             raise _error("residue.route_candidates", f"duplicate key {key!r}")
@@ -585,7 +653,12 @@ def validate_residue(
             if field == "salient_phrases" and isinstance(value, str):
                 record = {"label": normalize_label(value), "source_spans": ()}
             else:
-                record = _record(value, path, sources)
+                record = _record(
+                    value,
+                    path,
+                    sources,
+                    require_evidence_quotes=require_evidence_quotes,
+                )
             if "key" in record or "id" in record:
                 key = _key(record, path)
                 if key in keys:

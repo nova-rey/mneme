@@ -254,8 +254,12 @@ class InterpretationService:
         relationship_kinds = ", ".join(sorted(SUPPORTED_RELATIONSHIP_KINDS))
         instruction = (
             "Extract residue v1 as one JSON object. Use only the supplied source "
-            "slots. Every evidence span must use a supplied slot and code-point "
-            "offsets. If no supported candidate exists, return {}. Return raw "
+            "slots. For every supported assertion, provide evidence as an array "
+            "of objects with exactly {source, evidence}, where source is the "
+            "source slot and evidence is a short, exact, non-empty quotation "
+            "copied verbatim from that source. Do not calculate or provide "
+            "numeric offsets; MNEME resolves quotations to canonical Unicode "
+            "code-point spans. If no supported candidate exists, return {}. Return raw "
             "JSON only: no Markdown fences, no introductory or concluding prose, "
             "and no comments. Never invent enum values or labels for constrained "
             "fields. The validator accepts exactly these top-level fields: store, "
@@ -268,12 +272,13 @@ class InterpretationService:
             f"concept kind vocabulary is: {concept_kinds}. The complete allowed "
             f"relationship kind vocabulary is: {relationship_kinds}. There are "
             "no other concept or relationship enum values. "
-            "core_concepts records require key, label, kind, source_spans, and "
+            "core_concepts records require key, label, kind, evidence, and "
             "confidence; edge_candidates records require key, from, to, "
-            "relationship, source_spans, and confidence, with from/to equal to "
+            "relationship, evidence, and confidence, with from/to equal to "
             "concept keys; route_candidates records require key, edge_keys, "
-            "source_spans, and confidence. A source span is an object with "
-            "source_slot, start, and end. Use at most two concepts, one edge, "
+            "evidence, and confidence. Every evidence object must contain only "
+            "source and evidence; do not return source_spans, start, or end. "
+            "Use at most two concepts, one edge, "
             "and one route. Use only supported kinds from the vocabularies above, "
             "keep labels short, and return only the JSON object."
         )
@@ -577,7 +582,7 @@ class InterpretationService:
             payload = payload["residue"]
         if not isinstance(payload, Mapping):
             raise InterpretationValidationError("provider result must be a JSON object")
-        return validate_residue(payload, sources), dict(payload)
+        return validate_residue(payload, sources, require_evidence_quotes=True), dict(payload)
 
     def validate(self, operation: str | InterpretationReceipt) -> Residue:
         """Validate the already persisted result and mark its attempt VALID."""
@@ -612,7 +617,9 @@ class InterpretationService:
                         payload = payload["residue"]
                     if not isinstance(payload, Mapping):
                         raise ResidueValidationError("provider result must be a JSON object")
-                    valid_residue = validate_residue(payload, sources)
+                    valid_residue = validate_residue(
+                        payload, sources, require_evidence_quotes=True
+                    )
                     if (
                         valid_residue.episode_id is not None
                         and valid_residue.episode_id != str(op["episode_id"])

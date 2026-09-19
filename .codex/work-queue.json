@@ -772,10 +772,11 @@
       ],
       "evidence_refs": [
         "docs/receipts/MNEME_Phase_One_Live_Remediation_Receipt.md",
-        "docs/receipts/MNEME_Phase_One_Live_Acceptance_Fresh_Failure_Receipt.md"
+        "docs/receipts/MNEME_Phase_One_Live_Acceptance_Fresh_Failure_Receipt.md",
+        "docs/receipts/MNEME_Phase_One_Extractor_Quote_Remediation_Receipt.md"
       ],
       "id": "P1.LIVE",
-      "notes": "DeepInfra access is functional. Offline remediation passed, but the fresh live run failed P1.1 source-span validation after one repair; preserve the failure receipt and do not treat this as a credential blocker.",
+      "notes": "DeepInfra access is functional. The fresh live run failed P1.1 source-span validation after one repair; the offline follow-up now has the model return exact source quotations while MNEME derives Unicode offsets deterministically. Preserve the historical failure receipt, keep this package WAITING for explicit live authorization, and do not treat this as a credential blocker.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",

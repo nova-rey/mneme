@@ -286,3 +286,10 @@
 - Ran one newly authorized fresh DeepInfra Phase One acceptance attempt from remediation commit `0f8bdfe539665503df0456275b521b463b80e8ab`. DeepInfra and the credential were functional; all four dispatched calls returned provider responses.
 - P1.1 accepted two bounded response episodes, then the initial extraction and its sole permitted repair both failed the same strict source-span validation (`residue.core_concepts[1].source_spans[0]`). The run stopped immediately after the repair. P1.2 and P1.3 received zero calls.
 - The sanitized failure receipt is `docs/receipts/MNEME_Phase_One_Live_Acceptance_Fresh_Failure_Receipt.md` with JSON companion. No acceptance criterion was weakened, no additional live call was made, no Phase One release tag was created, and Phase Two remains untouched.
+
+## 2026-09-19 Phase One extractor quotation remediation
+
+- Replaced the model-facing extraction requirement for numeric Unicode offsets with exact source-slot quotations. MNEME now resolves each unique verbatim quotation deterministically into canonical `source_slot`, `start`, and `end` code-point spans, rejecting missing, paraphrased, ambiguous, overlapping, or wrong-slot evidence without fuzzy matching.
+- The interpretation provider boundary rejects graph-bearing numeric-only `source_spans`; direct canonical/internal residue callers retain numeric-span compatibility. The deterministic Phase One fixture now uses the same quotation contract.
+- Added adversarial quotation, Unicode, ambiguity, deterministic replay, repair, and numeric-provider-output regressions while preserving malformed JSON and hidden-enum fixtures. Full offline validation reports 209 passing tests, Ruff pass, strict mypy pass, and fresh-install package/CLI smoke pass.
+- Published `docs/receipts/MNEME_Phase_One_Extractor_Quote_Remediation_Receipt.{md,json}` and linked it from the approved Phase One plan, documentation index, and waiting live package. No DeepInfra call was made; P1.2, P1.3, and Phase Two remain untouched.

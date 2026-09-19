@@ -124,7 +124,9 @@ def test_extraction_prompt_declares_strict_residue_record_shape(tmp_path):
         assert "no introductory or concluding prose" in system
         assert "no other concept or relationship enum values" in system
         assert "core_concepts records require key, label, kind" in system
-        assert "source_spans, and confidence" in system
+        assert "evidence, and confidence" in system
+        assert "Do not calculate or provide numeric offsets" in system
+        assert "Every evidence object must contain only source and evidence" in system
         for kind in SUPPORTED_CONCEPT_KINDS:
             assert kind in system
         for relationship in SUPPORTED_RELATIONSHIP_KINDS:
@@ -143,7 +145,7 @@ def _observed_invalid_extractor_outputs() -> list[tuple[str, str, str]]:
                         "key": "a",
                         "label": "Resource",
                         "kind": kind,
-                        "source_spans": [{"source_slot": "s0", "start": 0, "end": 5}],
+                        "evidence": [{"source": "s0", "evidence": "hello"}],
                         "confidence": 0.9,
                     }
                 ]
@@ -156,14 +158,14 @@ def _observed_invalid_extractor_outputs() -> list[tuple[str, str, str]]:
                     "key": "a",
                     "label": "Resource",
                     "kind": "concept",
-                    "source_spans": [{"source_slot": "s0", "start": 0, "end": 5}],
+                    "evidence": [{"source": "s0", "evidence": "hello"}],
                     "confidence": 0.9,
                 },
                 {
                     "key": "b",
                     "label": "Bandwidth",
                     "kind": "concept",
-                    "source_spans": [{"source_slot": "s0", "start": 6, "end": 11}],
+                    "evidence": [{"source": "s0", "evidence": "world"}],
                     "confidence": 0.9,
                 },
             ],
@@ -173,7 +175,7 @@ def _observed_invalid_extractor_outputs() -> list[tuple[str, str, str]]:
                     "from": "a",
                     "to": "b",
                     "relationship": "processed by",
-                    "source_spans": [{"source_slot": "s0", "start": 0, "end": 11}],
+                    "evidence": [{"source": "s0", "evidence": "hello world"}],
                     "confidence": 0.9,
                 }
             ],
@@ -226,6 +228,74 @@ def test_invalid_result_allows_one_explicit_repair_and_no_more(tmp_path):
         assert summary["token_usage"]["total_tokens"] > 0
         with pytest.raises(InterpretationNotReady, match="one invalid"):
             service.execute(prepared, repair=True)
+
+
+def test_invalid_evidence_allows_one_explicit_repair_and_resolves_offsets(tmp_path):
+    invalid = json.dumps(
+        {
+            "core_concepts": [
+                {
+                    "key": "a",
+                    "label": "Hello",
+                    "kind": "concept",
+                    "evidence": [{"source": "s0", "evidence": "not present"}],
+                    "confidence": 0.9,
+                }
+            ]
+        }
+    )
+    valid = json.dumps(
+        {
+            "core_concepts": [
+                {
+                    "key": "a",
+                    "label": "Hello",
+                    "kind": "concept",
+                    "evidence": [{"source": "s0", "evidence": "hello"}],
+                    "confidence": 0.9,
+                }
+            ]
+        }
+    )
+    host = ResidueHost(invalid, valid)
+    store, instance, episode_id = _accepted(tmp_path, host)
+    with store:
+        service = InterpretationService(store, instance, host)
+        prepared = service.prepare(episode_id)
+        service.execute(prepared)
+        with pytest.raises(InterpretationValidationError, match="does not occur"):
+            service.validate(prepared)
+        service.execute(prepared, repair=True)
+        residue = service.validate(prepared)
+        assert residue.core_concepts[0]["source_spans"] == (
+            {"source_slot": "s0", "start": 0, "end": 5},
+        )
+        assert "evidence" not in residue.core_concepts[0]
+        assert host.calls == 2
+
+
+def test_model_numeric_source_spans_are_rejected_at_interpretation_boundary(tmp_path):
+    output = json.dumps(
+        {
+            "core_concepts": [
+                {
+                    "key": "a",
+                    "label": "Hello",
+                    "kind": "concept",
+                    "source_spans": [{"source_slot": "s0", "start": 0, "end": 5}],
+                    "confidence": 0.9,
+                }
+            ]
+        }
+    )
+    host = ResidueHost(output)
+    store, instance, episode_id = _accepted(tmp_path, host)
+    with store:
+        service = InterpretationService(store, instance, host)
+        prepared = service.prepare(episode_id)
+        service.execute(prepared)
+        with pytest.raises(InterpretationValidationError, match="quotation evidence"):
+            service.validate(prepared)
 
 
 def test_uncertain_provider_call_is_never_automatically_retried(tmp_path):
