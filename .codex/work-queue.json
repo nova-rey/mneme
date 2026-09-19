@@ -787,10 +787,11 @@
         "docs/receipts/MNEME_P1.1_Live_Fixture_Preview.md",
         "docs/receipts/MNEME_Phase_One_Live_Bridged_Run_Failure_Receipt.md",
         "docs/receipts/MNEME_Phase_One_Live_Corrected_P1.1_Failure_Receipt.md",
-        "docs/receipts/MNEME_Phase_One_Live_Continuation_P1.1_Failure_Receipt.md"
+        "docs/receipts/MNEME_Phase_One_Live_Continuation_P1.1_Failure_Receipt.md",
+        "docs/receipts/MNEME_Phase_One_Live_Edge_Key_Collision_Remediation_Receipt.md"
       ],
       "id": "P1.LIVE",
-      "notes": "Continuation run from 09bbf42 stopped at P1.1 after 4 returned calls: first interpretation accepted weather_check -> rain_jacket, second accepted no edge, so no multi-hop route. DeepInfra/credential functional. All prior historical runs remain unchanged. No further retry is authorized automatically.",
+      "notes": "Continuation run from 09bbf42 exposed and preserved a publication defect: both valid interpretations used local edge key e1, and the second edge was silently skipped on snapshot copy. Offline collision-safe edge/route-key remediation is now implemented and validated; P1.LIVE remains WAITING for a fresh bounded run authorization.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -812,7 +813,7 @@
       "session_ids": [],
       "status": "WAITING",
       "title": "Phase One bounded live acceptance gate",
-      "updated_at": "2026-09-19T23:59:55Z",
+      "updated_at": "2026-09-20T00:00:30Z",
       "validation": {
         "required": [
           "bounded live gate",
@@ -858,5 +859,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-19T23:59:55Z"
+  "updated_at": "2026-09-20T00:00:30Z"
 }

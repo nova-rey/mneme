@@ -210,6 +210,76 @@ def _discover_snapshot_routes(db: Any, snapshot_id: str) -> None:
         known_keys.add(route.key)
 
 
+def _unique_graph_key(base: str, used: set[str]) -> str:
+    """Return a deterministic collision-safe key for a materialized row."""
+
+    if base not in used:
+        return base
+    suffix = 2
+    candidate = f"{base}~{suffix}"
+    while candidate in used:
+        suffix += 1
+        candidate = f"{base}~{suffix}"
+    return candidate
+
+
+def _canonicalize_colliding_graph_keys(
+    graph_edges: tuple[GraphEdge, ...],
+    graph_routes: tuple[GraphRoute, ...],
+    existing_edges: set[str],
+    existing_routes: set[str],
+) -> tuple[tuple[GraphEdge, ...], tuple[GraphRoute, ...]]:
+    """Keep interpretation-local keys unique in the accumulated snapshot.
+
+    Residue keys are local to one interpretation.  A later extractor call may
+    validly reuse ``e1`` for a different source-backed relationship.  Snapshot
+    rows require lineage-wide keys, so only colliding incoming rows receive a
+    deterministic content-derived suffix; non-colliding historical keys remain
+    readable.  The suffix contains no administrative identifier.
+    """
+
+    used_edges = set(existing_edges)
+    edge_key_map: dict[str, str] = {}
+    canonical_edges: list[GraphEdge] = []
+    for edge in graph_edges:
+        key = edge.key
+        if key in used_edges:
+            digest = _digest(
+                {
+                    "source": edge.source,
+                    "target": edge.target,
+                    "relationship": edge.relationship,
+                    "evidence": edge.content_dict()["evidence"],
+                }
+            )[:16]
+            key = _unique_graph_key(f"{edge.key}~{digest}", used_edges)
+        used_edges.add(key)
+        edge_key_map[edge.key] = key
+        annotations = dict(edge.annotations or {})
+        if key != edge.key:
+            annotations["local_key"] = edge.key
+        canonical_edges.append(
+            GraphEdge(key, edge.source, edge.target, edge.relationship, edge.evidence, annotations)
+        )
+
+    used_routes = set(existing_routes)
+    canonical_routes: list[GraphRoute] = []
+    for route in graph_routes:
+        edge_keys = tuple(edge_key_map.get(key, key) for key in route.edge_keys)
+        key = route.key
+        if key in used_routes:
+            digest = _digest(
+                {"edge_keys": edge_keys, "evidence": route.content_dict()["evidence"]}
+            )[:16]
+            key = _unique_graph_key(f"{route.key}~{digest}", used_routes)
+        used_routes.add(key)
+        annotations = dict(route.annotations or {})
+        if key != route.key:
+            annotations["local_key"] = route.key
+        canonical_routes.append(GraphRoute(key, edge_keys, route.evidence, annotations))
+    return tuple(canonical_edges), tuple(canonical_routes)
+
+
 class InterpretationPublisher:
     """Prepare, record and atomically publish one interpretation."""
 
@@ -466,6 +536,18 @@ class InterpretationPublisher:
                         "SELECT edge_key FROM graph_edges WHERE snapshot_id=?", (snapshot_id,)
                     )
                 }
+                existing_routes = {
+                    str(row[0])
+                    for row in db.execute(
+                        "SELECT route_key FROM graph_routes WHERE snapshot_id=?", (snapshot_id,)
+                    )
+                }
+                graph_edges, graph_routes = _canonicalize_colliding_graph_keys(
+                    graph.edges,
+                    graph.routes,
+                    existing_edges,
+                    existing_routes,
+                )
                 for graph_concept in graph.concepts:
                     if graph_concept.key in existing_concepts:
                         continue
@@ -486,7 +568,7 @@ class InterpretationPublisher:
                             None,
                         ),
                     )
-                for edge in graph.edges:
+                for edge in graph_edges:
                     if edge.key in existing_edges:
                         continue
                     db.execute(
@@ -502,7 +584,7 @@ class InterpretationPublisher:
                             _json(list(edge.evidence)),
                         ),
                     )
-                for route in graph.routes:
+                for route in graph_routes:
                     db.execute(
                         "INSERT OR IGNORE INTO graph_routes VALUES(?,?,?,?)",
                         (

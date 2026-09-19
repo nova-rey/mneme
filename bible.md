@@ -362,3 +362,9 @@
 
 - The fresh isolated continuation from `09bbf42` dispatched four DeepInfra calls and stopped at P1.1. Both extraction results passed strict validation; the first published `weather_check -> rain_jacket`, while the second published concepts without an edge, so deterministic route discovery correctly found no multi-hop path.
 - Preserved the sanitized receipt and private artifact digests in `docs/receipts/MNEME_Phase_One_Live_Continuation_P1.1_Failure_Receipt.{md,json}`. DeepInfra and the credential were functional; P1.2/P1.3 received zero calls. `P1.LIVE` returned to WAITING without automatic retry or favorable-output resampling.
+
+## 2026-09-19 Phase One publication edge-key collision remediation
+
+- Audited the continuation P1.1 failure and found that Gemma returned a valid second relationship using the same interpretation-local key `e1`; publication copied the previous snapshot and silently skipped the colliding row. The missing route was therefore an infrastructure defect, not missing provider capability.
+- Added deterministic collision-safe graph edge and explicit-route keys derived from relationship/evidence content, remapped route references, preserved local-key provenance, and added a regression proving reused local keys still produce a two-edge route with both evidence records.
+- Full offline validation passed: 221 pytest tests, Ruff, strict mypy, and fresh package/CLI smoke. No provider call was made for this remediation. The P1.LIVE package remains WAITING pending a fresh bounded run.

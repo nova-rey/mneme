@@ -184,6 +184,90 @@ def test_publication_derives_cross_interpretation_route_without_model_route_cand
     assert all(item["evidence"] for item in provenance)
 
 
+def test_publication_preserves_cross_interpretation_edges_with_reused_local_keys(tmp_path):
+    store = SQLiteStore(tmp_path / "reused-edge-key-lineage.sqlite3")
+    instance = store.create_root(permissions=StoragePermissions(True, True, True, True, True))
+    continuity = ContinuityService(store, instance, FakeHost())
+
+    def accept(text: str, operation_id: str) -> str:
+        operation = continuity.prepare_episode(
+            GenerationRequest(({"role": "user", "content": text},)),
+            operation_id=operation_id,
+        )
+        continuity.generate_operation(operation.operation_id)
+        continuity.accept_episode(operation.operation_id)
+        return operation.episode_id
+
+    def residue(source: str, source_key: str, target_key: str) -> Residue:
+        return validate_residue(
+            {
+                "core_concepts": [
+                    {
+                        "key": source_key,
+                        "label": source_key.upper(),
+                        "source_spans": [{"source_slot": "s0", "start": 0, "end": 1}],
+                        "confidence": 0.9,
+                    },
+                    {
+                        "key": target_key,
+                        "label": target_key.upper(),
+                        "source_spans": [{"source_slot": "s0", "start": 8, "end": 9}],
+                        "confidence": 0.9,
+                    },
+                ],
+                "edge_candidates": [
+                    {
+                        "key": "e1",
+                        "from": source_key,
+                        "to": target_key,
+                        "relationship": "causes",
+                        "source_spans": [{"source_slot": "s0", "start": 0, "end": 9}],
+                        "confidence": 0.9,
+                    }
+                ],
+            },
+            {"s0": source},
+        )
+
+    first = residue("A guides B", "a", "b")
+    second = residue("B guides C", "b", "c")
+    with store:
+        publisher = InterpretationPublisher(store, instance)
+        publisher.publish(
+            publisher.prepare(
+                accept("A guides B", "reused-key-episode-1"),
+                operation_id="reused-key-interp-1",
+            ),
+            first,
+        )
+        publisher.publish(
+            publisher.prepare(
+                accept("B guides C", "reused-key-episode-2"),
+                operation_id="reused-key-interp-2",
+            ),
+            second,
+        )
+        snapshot = store.connection.execute(
+            "SELECT graph_snapshot_id FROM manifests WHERE manifest_id=?",
+            (store.current()["current_manifest_id"],),
+        ).fetchone()[0]
+        edges = store.connection.execute(
+            "SELECT edge_key,source_key,target_key FROM graph_edges "
+            "WHERE snapshot_id=? ORDER BY edge_key",
+            (snapshot,),
+        ).fetchall()
+        routes = store.connection.execute(
+            "SELECT edge_keys_json,source_json FROM graph_routes WHERE snapshot_id=?",
+            (snapshot,),
+        ).fetchall()
+
+    assert len(edges) == 2
+    assert {tuple(row[1:]) for row in edges} == {("a", "b"), ("b", "c")}
+    multi_hop = next((row for row in routes if len(json.loads(row[0])) == 2), None)
+    assert multi_hop is not None
+    assert len(json.loads(multi_hop[1])) == 2
+
+
 def test_publication_rejects_stale_base_without_graph_write(tmp_path):
     store, instance, episode_id = _accepted(tmp_path)
     with store:
