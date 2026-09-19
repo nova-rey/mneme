@@ -17,6 +17,7 @@ import fcntl
 import hashlib
 import json
 import os
+import sqlite3
 import uuid
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
@@ -125,9 +126,15 @@ class PolicyService:
         return row
 
     def _authority_path(self) -> Path | None:
-        row = self.store.connection.execute(
-            "SELECT revocation_ledger_path FROM store_info WHERE singleton=1"
-        ).fetchone()
+        try:
+            row = self.store.connection.execute(
+                "SELECT revocation_ledger_path FROM store_info WHERE singleton=1"
+            ).fetchone()
+        except sqlite3.OperationalError:
+            # Historical read-only P0.2/P1.1 checkpoints predate the
+            # authority column and therefore have no current revocation
+            # authority.  Their Phase One permissions remain denied.
+            return None
         if row is None or row[0] in (None, ""):
             return None
         return Path(str(row[0]))
@@ -164,14 +171,23 @@ class PolicyService:
     def current(self) -> PermissionState:
         row = self._policy_row()
         events, authority_available = self._events()
+        columns = set(row.keys())
         values = {
-            "interpret": bool(row["interpretation_allowed"]),
-            "recall": bool(row["recall_allowed"]),
-            "provider_reuse": bool(row["provider_reuse_allowed"]),
+            "interpret": bool(row["interpretation_allowed"])
+            if "interpretation_allowed" in columns
+            else False,
+            "recall": bool(row["recall_allowed"]) if "recall_allowed" in columns else False,
+            "provider_reuse": bool(row["provider_reuse_allowed"])
+            if "provider_reuse_allowed" in columns
+            else False,
         }
-        bound_ref = str(row["bound_host_ref"]) if row["bound_host_ref"] else None
+        bound_ref = (
+            str(row["bound_host_ref"])
+            if "bound_host_ref" in columns and row["bound_host_ref"]
+            else None
+        )
         bound_fingerprint: dict[str, Any] | None = None
-        if row["bound_host_fingerprint_json"]:
+        if "bound_host_fingerprint_json" in columns and row["bound_host_fingerprint_json"]:
             try:
                 decoded = json.loads(str(row["bound_host_fingerprint_json"]))
             except json.JSONDecodeError as exc:
@@ -204,7 +220,7 @@ class PolicyService:
             interpretation_allowed=values["interpret"],
             recall_allowed=values["recall"],
             provider_reuse_allowed=values["provider_reuse"],
-            policy_version=int(row["policy_version"]),
+            policy_version=int(row["policy_version"]) if "policy_version" in columns else 1,
             revocation_revision=revision,
             authority_path=str(self._authority_path()) if self._authority_path() else None,
             authority_available=authority_available,

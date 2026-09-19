@@ -245,3 +245,8 @@
 - Implemented schema v4 policy metadata and the `PolicyService` authority: selected host fingerprints are persisted at explicit development-enabled creation; `permission show`, `grant`, and `revoke` expose the narrow Phase One boundary; and migrated stores remain deny-by-default until explicit grant.
 - Added focused regression coverage for selected-host binding, missing-authority fail-closed behavior, grant/revoke persistence, old-checkpoint revocation visibility, provider-reuse gating, interpretation/recall gating, and v3 migration.
 - Tested policy/storage/interpretation/comparison coverage: 35 passing tests; Ruff and strict mypy pass for the owned files. Controller/service integration remains visible in the shared working tree for canonical integration with parallel gate-driver changes.
+
+## 2026-09-19 Phase One policy authority historical-checkpoint compatibility
+
+- Preserved read-only opening of schema-3 historical checkpoints after the schema-4 authority extension. Pre-authority copies expose storage/export state but deny interpretation, recall, and provider reuse because no current revocation authority is available.
+- Validated 14 focused storage/policy tests, strict mypy for the policy/storage modules, and Ruff for those modules. No historical Phase Zero artifact was rewritten.
