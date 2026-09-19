@@ -552,6 +552,83 @@
       },
       "waiting_on": [],
       "workstream": "phase-one"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "8a0d758f68d68cadfaa842200c151776d8636a1a",
+      "campaign": "mneme-phase-one",
+      "candidate": null,
+      "completion_criterion": "Shared response controller, fixed conservative route selection, deliberate identity adoption/self-view recovery, explicit correction/declaration boundaries, fork continuity, evaluation write prevention, adversarial offline acceptance, and network-free validation pass the approved P1.2 gate.",
+      "created_at": "2026-09-19T17:32:40.618459Z",
+      "dependencies": [
+        "package:P1.1"
+      ],
+      "domain": "response-identity",
+      "edit_boundaries": [
+        "src/mneme/state",
+        "src/mneme/memory",
+        "src/mneme/controller.py",
+        "src/mneme/identity.py",
+        "src/mneme/chat.py",
+        "src/mneme/experiments",
+        "src/mneme/cli.py",
+        "tests",
+        "docs/receipts",
+        "bible.md",
+        ".codex/work-queue.json"
+      ],
+      "evidence_refs": [],
+      "id": "P1.2",
+      "notes": "",
+      "owner": "/root/p11_supervisor",
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "controller",
+        "fixed-retrieval",
+        "influence-trace",
+        "identity-adoption",
+        "self-view",
+        "correction",
+        "fork-continuity",
+        "evaluation-boundary"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": false,
+          "name": "model-agent",
+          "units": 1
+        },
+        {
+          "exclusive": true,
+          "name": "canonical-integration",
+          "units": 1
+        }
+      ],
+      "scope": "Implement only approved P1.2 shared response controller, fixed bounded retrieval/influence boundary, deliberate name adoption and self-view continuity, explicit correction/declaration records, and chat/runner integration. Exclude P1.3 comparator studies, individuality claims, adaptive dynamics, and Phase Two.",
+      "session_ids": [
+        "p12-supervisor-20260919"
+      ],
+      "status": "RUNNING",
+      "title": "Response loop and basic identity",
+      "updated_at": "2026-09-19T17:32:49.738590Z",
+      "validation": {
+        "required": [
+          "focused P1.2 tests",
+          "pytest -q",
+          "ruff check src tests",
+          "mypy --strict src",
+          "offline P1.2 acceptance demonstration",
+          "stop-audit-publish receipt"
+        ],
+        "results": {}
+      },
+      "waiting_on": [],
+      "workstream": "phase-one"
     }
   ],
   "project": "nova-rey/mneme",
@@ -566,5 +643,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-19T17:31:12.744813Z"
+  "updated_at": "2026-09-19T17:32:49.738652Z"
 }

@@ -159,3 +159,8 @@
 
 - P1.1 passed the stop–audit–push gate in commit `4529b1e`: the full suite reports 138 passing tests, Ruff and strict mypy pass, and the offline foundation demonstration verifies restart, publication, checkpoint, fork, and inherited-history behavior.
 - The work queue records P1.1 `DONE` with its validation receipt. P1.2 remains locked until a new package is explicitly dispatched; no response influence, retrieval, identity, or Phase Two implementation began in this gate.
+
+## 2026-09-19 P1.2 implementation dispatch
+
+- Added and claimed the approved P1.2 package on accepted base `8a0d758`, covering the shared response controller, fixed bounded retrieval/influence boundary, deliberate identity/self-view continuity, explicit correction/declaration records, and evaluation isolation.
+- P1.2 is the only active Phase One package. P1.3 and Phase Two remain undispatched.
