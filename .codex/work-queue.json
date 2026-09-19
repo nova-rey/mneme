@@ -789,8 +789,8 @@
         "docs/receipts/MNEME_Phase_One_Live_Corrected_P1.1_Failure_Receipt.md"
       ],
       "id": "P1.LIVE",
-      "notes": "Corrected-contract run from 2cdf3ac stopped at P1.1 after 4 returned calls: both interpretations valid, but only one accepted edge and no multi-hop route. DeepInfra/credential functional. Historical 18-call, 4-call, and 8-call receipts remain unchanged. No further live calls are authorized automatically.",
-      "owner": null,
+      "notes": "Active continuation now authorizes one fresh isolated phase-one-v1 run from 08f8cd6 after the offline source-purpose correction. Remaining ceiling from the latest 27-call authorization is 23 calls; no retries, stop on required failure, preserve every result.",
+      "owner": "/root",
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -808,10 +808,12 @@
         }
       ],
       "scope": "Run the already prepared bounded DeepInfra Phase One acceptance gate and publish the truthful release receipt; do not alter offline Phase One architecture or begin Phase Two.",
-      "session_ids": [],
-      "status": "WAITING",
+      "session_ids": [
+        "phase-one-live-continuation-20260919"
+      ],
+      "status": "RUNNING",
       "title": "Phase One bounded live acceptance gate",
-      "updated_at": "2026-09-19T23:59:00Z",
+      "updated_at": "2026-09-19T23:59:30Z",
       "validation": {
         "required": [
           "bounded live gate",
@@ -857,5 +859,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-19T23:59:00Z"
+  "updated_at": "2026-09-19T23:59:30Z"
 }
