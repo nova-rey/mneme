@@ -187,6 +187,114 @@ def test_integrated_runner_pauses_resumes_exactly_once_and_isolates_evaluation(
     )
 
 
+def _complete_runner(
+    tmp_path: Path,
+) -> tuple[ArtifactStore, SQLiteStore, list[dict[str, object]], list[dict[str, object]]]:
+    artifacts, _, store, _, development, evaluation = _prepared_run(tmp_path)
+    IntegratedRunner(
+        "run-001",
+        artifacts.root,
+        {0: SubjectExecution(0, store, FakeHost())},
+    ).execute_run(
+        {0: development},
+        {
+            0: {
+                "records": evaluation,
+                "checkpoint": tmp_path / "boundary.sqlite3",
+                "private_snapshot": tmp_path / "private.sqlite3",
+                "repetitions": 2,
+            }
+        },
+    )
+    return artifacts, store, development, evaluation
+
+
+def test_completed_reentry_rejects_missing_terminal_checkpoint(tmp_path: Path) -> None:
+    artifacts, store, _, _ = _complete_runner(tmp_path)
+    (tmp_path / "boundary.sqlite3").unlink()
+    with pytest.raises(RunnerError, match="terminal boundary checkpoint"):
+        IntegratedRunner(
+            "run-001",
+            artifacts.root,
+            {0: SubjectExecution(0, store, FakeHost())},
+        ).execute_run({}, None)
+
+
+def test_completed_reentry_rejects_corrupt_terminal_checkpoint(tmp_path: Path) -> None:
+    artifacts, store, _, _ = _complete_runner(tmp_path)
+    (tmp_path / "boundary.sqlite3").write_bytes(b"corrupt checkpoint\n")
+    with pytest.raises(RunnerError, match="terminal boundary checkpoint"):
+        IntegratedRunner(
+            "run-001",
+            artifacts.root,
+            {0: SubjectExecution(0, store, FakeHost())},
+        ).execute_run({}, None)
+
+
+def test_completed_reentry_rejects_missing_terminal_evaluation_result(tmp_path: Path) -> None:
+    artifacts, store, _, _ = _complete_runner(tmp_path)
+    run_path = artifacts.locate_run("run-001")
+    check = next(
+        item
+        for item in artifacts.inspect_run("run-001", verify=True)["checks"]
+        if item.get("status") == "RESULT"
+    )
+    check_id = str(check["check_id"])
+    (run_path / "evaluation" / check_id / "result.json").unlink()
+    with pytest.raises(RunnerError, match="terminal evaluation result"):
+        IntegratedRunner(
+            "run-001",
+            artifacts.root,
+            {0: SubjectExecution(0, store, FakeHost())},
+        ).execute_run({}, None)
+
+
+def test_completed_reentry_rejects_alternate_private_snapshot_path(tmp_path: Path) -> None:
+    artifacts, store, development, evaluation = _complete_runner(tmp_path)
+    alternate = tmp_path / "alternate-private.sqlite3"
+    alternate.write_bytes((tmp_path / "private.sqlite3").read_bytes())
+    with pytest.raises(RunnerError, match="terminal binding changed"):
+        IntegratedRunner(
+            "run-001",
+            artifacts.root,
+            {0: SubjectExecution(0, store, FakeHost())},
+        ).execute_run(
+            {0: development},
+            {
+                0: {
+                    "records": evaluation,
+                    "checkpoint": tmp_path / "boundary.sqlite3",
+                    "private_snapshot": alternate,
+                    "repetitions": 2,
+                }
+            },
+        )
+
+
+def test_completed_reentry_rejects_corrupt_terminal_evaluation_result(tmp_path: Path) -> None:
+    artifacts, store, _, _ = _complete_runner(tmp_path)
+    run_path = artifacts.locate_run("run-001")
+    check = next(
+        item
+        for item in artifacts.inspect_run("run-001", verify=True)["checks"]
+        if item.get("status") == "RESULT"
+    )
+    check_id = str(check["check_id"])
+    (run_path / "evaluation" / check_id / "result.json").write_text("{}\n", encoding="utf-8")
+    with pytest.raises(RunnerError, match="prepared run failed artifact integrity"):
+        IntegratedRunner(
+            "run-001",
+            artifacts.root,
+            {0: SubjectExecution(0, store, FakeHost())},
+        ).execute_run({}, None)
+
+
+def test_runner_requires_all_prepared_subject_slots(tmp_path: Path) -> None:
+    artifacts, _, store, _, _, _ = _prepared_run(tmp_path)
+    with pytest.raises(RunnerError, match="exactly the prepared subject slots"):
+        IntegratedRunner("run-001", artifacts.root, {})
+
+
 def test_runner_never_injects_previous_output_into_later_request(tmp_path: Path) -> None:
     artifacts, _, store, _, development, _ = _prepared_run(tmp_path)
     runner = IntegratedRunner(

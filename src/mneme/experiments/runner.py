@@ -17,6 +17,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import sqlite3
 import tempfile
 import uuid
 from collections.abc import Mapping, Sequence
@@ -34,7 +35,7 @@ from ..state.service import (
     ContinuityService,
 )
 from ..state.snapshots import SnapshotError, create_checkpoint, fork_from_checkpoint
-from ..state.storage import SQLiteStore
+from ..state.storage import SchemaError, SQLiteStore
 from .artifacts import ArtifactError, ArtifactStore, content_digest, file_digest
 from .evaluation import FrozenEvaluationView
 
@@ -385,6 +386,14 @@ class IntegratedRunner:
         declared = self.plan.get("host")
         if not isinstance(declared, Mapping):
             raise RunnerError("prepared plan has no host binding")
+        assignments = self.plan.get("assignments")
+        planned_slots = {
+            item.get("subject_slot")
+            for item in assignments
+            if isinstance(item, Mapping) and isinstance(item.get("subject_slot"), int)
+        } if isinstance(assignments, list) else set()
+        if planned_slots != set(self.subjects):
+            raise RunnerError("subject mapping does not contain exactly the prepared subject slots")
         expected = declared.get("fingerprint_sha256")
         for slot, subject in self.subjects.items():
             if slot != subject.slot:
@@ -831,6 +840,279 @@ class IntegratedRunner:
                 os.unlink(temporary)
         return destination
 
+    def _checkpoint_artifact(
+        self, subject: SubjectExecution, path: Path, label: str
+    ) -> dict[str, Any]:
+        """Validate and describe one terminal checkpoint artifact.
+
+        A completed run records these descriptors in its execution state.  A
+        later re-entry therefore checks the exact published files instead of
+        merely checking that a path with a valid checkpoint happens to exist.
+        """
+
+        if not path.is_file() or path.is_symlink():
+            raise RunnerError(f"terminal {label} checkpoint is missing or not a regular file")
+        try:
+            digest = file_digest(path)
+            with CheckpointReader(path) as reader:
+                manifest = reader.manifest()
+            current = _current_descriptor(subject.store)
+        except (
+            ArtifactError,
+            OSError,
+            SchemaError,
+            SnapshotError,
+            ValueError,
+            sqlite3.Error,
+        ) as exc:
+            raise RunnerError(f"terminal {label} checkpoint is invalid: {exc}") from exc
+        if (
+            manifest.get("source_instance_id") != current[0]
+            or manifest.get("source_revision") != current[1]
+            or manifest.get("manifest_id") != current[2]
+        ):
+            raise RunnerError(f"terminal {label} checkpoint is stale")
+        checkpoint_id = manifest.get("checkpoint_id")
+        if not isinstance(checkpoint_id, str):
+            raise RunnerError(f"terminal {label} checkpoint has no checkpoint ID")
+        return {
+            "path": str(path.resolve()),
+            "sha256": digest,
+            "checkpoint_id": checkpoint_id,
+            "source_instance_id": current[0],
+            "source_revision": current[1],
+            "manifest_id": current[2],
+        }
+
+    def _terminal_inventory_for_slot(
+        self,
+        slot: int,
+        records: Sequence[Mapping[str, Any]],
+        *,
+        checkpoint: Path,
+        private_snapshot: Path,
+        repetition_count: int,
+        boundary: int,
+    ) -> dict[str, Any]:
+        subject = self.subjects.get(slot)
+        if subject is None:
+            raise RunnerError(f"no writable subject supplied for slot {slot}")
+        published = self._checkpoint_artifact(subject, checkpoint, "boundary")
+        private = self._checkpoint_artifact(subject, private_snapshot, "private evaluation")
+        if private["sha256"] != published["sha256"]:
+            raise RunnerError("terminal private evaluation checkpoint differs from boundary")
+        checks: list[dict[str, Any]] = []
+        for probe, _record in enumerate(records):
+            for repetition in range(repetition_count):
+                check_id = _uuid_coordinate(
+                    self.run_id, "evaluation", slot, boundary, probe, repetition
+                )
+                result_path = self.run_path / "evaluation" / check_id / "result.json"
+                if not result_path.is_file() or result_path.is_symlink():
+                    raise RunnerError(f"terminal evaluation result is missing: {check_id}")
+                try:
+                    result = self.artifacts._read_json(result_path)
+                    if not ArtifactStore._verify_result(result, self.run_id, check_id):
+                        raise RunnerError(f"terminal evaluation result is corrupt: {check_id}")
+                except (ArtifactError, OSError, TypeError, ValueError) as exc:
+                    raise RunnerError(f"terminal evaluation result is corrupt: {check_id}") from exc
+                if (
+                    result.get("subject_slot") != slot
+                    or result.get("probe_ordinal") != probe
+                    or result.get("repetition") != repetition
+                    or result.get("boundary") != boundary
+                    or result.get("checkpoint_sha256") != private["sha256"]
+                    or not isinstance(result.get("output"), str)
+                ):
+                    raise RunnerError(f"terminal evaluation result has wrong binding: {check_id}")
+                checks.append(
+                    {
+                        "check_id": check_id,
+                        "path": str(result_path.resolve()),
+                        "sha256": file_digest(result_path),
+                    }
+                )
+        return {
+            "subject_slot": slot,
+            "boundary": boundary,
+            "repetitions": repetition_count,
+            "checkpoint": published,
+            "private_snapshot": private,
+            "checks": checks,
+        }
+
+    @staticmethod
+    def _path_from_config(
+        config: Mapping[str, Any], published: Path
+    ) -> tuple[Path, Path]:
+        checkpoint_value = config.get("checkpoint")
+        if not isinstance(checkpoint_value, (str, Path)):
+            raise RunnerError("evaluation checkpoint path is missing")
+        checkpoint = Path(checkpoint_value)
+        private_value = config.get("private_snapshot")
+        private = (
+            Path(private_value)
+            if isinstance(private_value, (str, Path))
+            else published.with_name(f"{published.stem}.evaluation.sqlite3")
+        )
+        return checkpoint, private
+
+    def _validate_terminal_inventory(
+        self,
+        state: Mapping[str, Any],
+        development: Mapping[int, Sequence[Mapping[str, Any]]],
+        evaluations: Mapping[int, Mapping[str, Any]] | None,
+    ) -> None:
+        raw_inventory = state.get("terminal_artifacts")
+        if not isinstance(raw_inventory, Mapping):
+            raise RunnerError("completed execution has no terminal artifact inventory")
+        raw_subjects = raw_inventory.get("subjects")
+        if not isinstance(raw_subjects, list):
+            raise RunnerError("completed execution has an invalid terminal artifact inventory")
+        by_slot: dict[int, Mapping[str, Any]] = {}
+        for item in raw_subjects:
+            if not isinstance(item, Mapping) or isinstance(item.get("subject_slot"), bool):
+                raise RunnerError("completed execution has an invalid terminal subject record")
+            slot = item.get("subject_slot")
+            if not isinstance(slot, int) or slot in by_slot:
+                raise RunnerError("completed execution has duplicate terminal subject records")
+            by_slot[slot] = item
+        if set(by_slot) != set(self.subjects):
+            raise RunnerError(
+                "completed execution terminal subjects do not match supplied subjects"
+            )
+
+        for slot, item in by_slot.items():
+            subject = self.subjects[slot]
+            checkpoint_record = item.get("checkpoint")
+            private_record = item.get("private_snapshot")
+            if not isinstance(checkpoint_record, Mapping) or not isinstance(
+                private_record, Mapping
+            ):
+                raise RunnerError(f"completed subject {slot} lacks terminal checkpoints")
+            checkpoint_value = checkpoint_record.get("path")
+            private_value = private_record.get("path")
+            checkpoint_digest = checkpoint_record.get("sha256")
+            private_digest = private_record.get("sha256")
+            if not isinstance(checkpoint_value, str) or not isinstance(private_value, str):
+                raise RunnerError(f"completed subject {slot} has invalid terminal checkpoint paths")
+            if not isinstance(checkpoint_digest, str) or not isinstance(private_digest, str):
+                raise RunnerError(
+                    f"completed subject {slot} has invalid terminal checkpoint digests"
+                )
+            checkpoint = Path(checkpoint_value)
+            private = Path(private_value)
+            current_checkpoint = self._checkpoint_artifact(subject, checkpoint, "boundary")
+            current_private = self._checkpoint_artifact(subject, private, "private evaluation")
+            if current_checkpoint["sha256"] != checkpoint_digest:
+                raise RunnerError(f"completed subject {slot} boundary checkpoint changed")
+            if current_private["sha256"] != private_digest:
+                raise RunnerError(f"completed subject {slot} private snapshot changed")
+            for key in (
+                "checkpoint_id",
+                "source_instance_id",
+                "source_revision",
+                "manifest_id",
+            ):
+                if (
+                    current_checkpoint.get(key) != checkpoint_record.get(key)
+                    or current_private.get(key) != private_record.get(key)
+                ):
+                    raise RunnerError(f"completed subject {slot} checkpoint identity changed")
+            if current_private["sha256"] != current_checkpoint["sha256"]:
+                raise RunnerError(
+                    f"completed subject {slot} private snapshot differs from boundary"
+                )
+            checks = item.get("checks")
+            if not isinstance(checks, list):
+                raise RunnerError(
+                    f"completed subject {slot} has no terminal evaluation inventory"
+                )
+            for check in checks:
+                if not isinstance(check, Mapping):
+                    raise RunnerError(
+                        f"completed subject {slot} has an invalid evaluation inventory"
+                    )
+                check_id = check.get("check_id")
+                check_path = check.get("path")
+                check_digest = check.get("sha256")
+                if not isinstance(check_id, str) or not isinstance(check_path, str):
+                    raise RunnerError(f"completed subject {slot} has an invalid evaluation record")
+                if not isinstance(check_digest, str):
+                    raise RunnerError(f"completed subject {slot} has an invalid evaluation digest")
+                path = Path(check_path)
+                expected_path = self.run_path / "evaluation" / check_id / "result.json"
+                if path.resolve() != expected_path.resolve():
+                    raise RunnerError(f"completed evaluation result path is not bound: {check_id}")
+                if not path.is_file() or path.is_symlink():
+                    raise RunnerError(f"terminal evaluation result is missing: {check_id}")
+                try:
+                    result = self.artifacts._read_json(path)
+                    if not ArtifactStore._verify_result(result, self.run_id, check_id):
+                        raise RunnerError(f"terminal evaluation result is corrupt: {check_id}")
+                    digest = file_digest(path)
+                except (ArtifactError, OSError, TypeError, ValueError) as exc:
+                    raise RunnerError(f"terminal evaluation result is corrupt: {check_id}") from exc
+                if digest != check_digest:
+                    raise RunnerError(f"terminal evaluation result changed: {check_id}")
+
+        if evaluations:
+            for slot in sorted(set(development) | set(evaluations)):
+                config = evaluations.get(slot)
+                if not isinstance(config, Mapping):
+                    raise RunnerError(
+                        f"completed run has no evaluation schedule for subject {slot}"
+                    )
+                raw_records = config.get("records")
+                if not isinstance(raw_records, Sequence) or isinstance(raw_records, (str, bytes)):
+                    raise RunnerError(f"evaluation records are missing for subject {slot}")
+                boundary_value = config.get("boundary", 0)
+                if isinstance(boundary_value, bool) or not isinstance(boundary_value, int):
+                    raise RunnerError("evaluation boundary must be an integer")
+                repetitions = config.get("repetitions", 1)
+                if isinstance(repetitions, bool) or not isinstance(repetitions, int):
+                    raise RunnerError("evaluation repetitions must be an integer")
+                checkpoint_value = config.get("checkpoint")
+                if not isinstance(checkpoint_value, (str, Path)):
+                    raise RunnerError("evaluation checkpoint path is missing")
+                checkpoint, private = self._path_from_config(config, Path(checkpoint_value))
+                item = by_slot.get(slot)
+                if item is None:
+                    raise RunnerError(f"completed run has no terminal artifacts for subject {slot}")
+                recorded_checkpoint = item.get("checkpoint")
+                recorded_private = item.get("private_snapshot")
+                if not isinstance(recorded_checkpoint, Mapping) or not isinstance(
+                    recorded_private, Mapping
+                ):
+                    raise RunnerError(f"completed subject {slot} lacks terminal checkpoints")
+                if (
+                    recorded_checkpoint.get("path") != str(checkpoint.resolve())
+                    or recorded_private.get("path") != str(private.resolve())
+                ):
+                    raise RunnerError(f"completed subject {slot} terminal binding changed")
+                expected_ids = {
+                    _uuid_coordinate(
+                        self.run_id,
+                        "evaluation",
+                        slot,
+                        boundary_value,
+                        probe,
+                        repetition,
+                    )
+                    for probe, _record in enumerate(raw_records)
+                    for repetition in range(repetitions)
+                }
+                recorded_checks = item.get("checks")
+                actual_ids = {
+                    check.get("check_id")
+                    for check in recorded_checks
+                    if isinstance(check, Mapping)
+                } if isinstance(recorded_checks, list) else set()
+                if actual_ids != expected_ids or item.get("boundary") != boundary_value:
+                    raise RunnerError(f"completed subject {slot} evaluation schedule changed")
+                if item.get("repetitions") != repetitions:
+                    raise RunnerError(f"completed subject {slot} evaluation repetitions changed")
+
     def execute_run(
         self,
         development: Mapping[int, Sequence[Mapping[str, Any]]],
@@ -848,10 +1130,16 @@ class IntegratedRunner:
 
         state = self._read_execution_state()
         if state.get("status") == "COMPLETE":
+            self._validate_terminal_inventory(state, development, evaluations)
             return state
+        if set(development) != set(self.subjects):
+            raise RunnerError(
+                "development schedule does not contain exactly the prepared subject slots"
+            )
         self._write_execution_state("EXECUTING", contract_sha256=self._run_contract_digest())
         evaluations = evaluations or {}
         try:
+            terminal_subjects: list[dict[str, Any]] = []
             for slot in sorted(development):
                 records = development[slot]
                 stop = pause_after.get(slot) if pause_after is not None else None
@@ -873,12 +1161,7 @@ class IntegratedRunner:
                 if not isinstance(checkpoint_value, (str, Path)):
                     raise RunnerError(f"evaluation checkpoint path is missing for subject {slot}")
                 published = self.create_boundary_checkpoint(slot, checkpoint_value)
-                private_value = config.get("private_snapshot")
-                private = (
-                    Path(private_value)
-                    if isinstance(private_value, (str, Path))
-                    else published.with_name(f"{published.stem}.evaluation.sqlite3")
-                )
+                _, private = self._path_from_config(config, published)
                 private_path = self._copy_private_snapshot(published, private)
                 self.evaluate(
                     slot,
@@ -887,7 +1170,27 @@ class IntegratedRunner:
                     repetition_count=int(config.get("repetitions", 1)),
                     boundary=boundary_value,
                 )
-            return self._write_execution_state("COMPLETE", completed_at=_utc())
+                terminal_inventory = self._terminal_inventory_for_slot(
+                    slot,
+                    [dict(item) for item in raw_records if isinstance(item, Mapping)],
+                    checkpoint=published,
+                    private_snapshot=private_path,
+                    repetition_count=int(config.get("repetitions", 1)),
+                    boundary=boundary_value,
+                )
+                terminal_subjects.append(terminal_inventory)
+            final_inventory = {
+                "schema_version": 1,
+                "subjects": terminal_subjects,
+            }
+            final_state = dict(state)
+            final_state["terminal_artifacts"] = final_inventory
+            self._validate_terminal_inventory(final_state, development, evaluations)
+            return self._write_execution_state(
+                "COMPLETE",
+                completed_at=_utc(),
+                terminal_artifacts=final_inventory,
+            )
         except RunnerUncertain as exc:
             self._write_execution_state("UNCERTAIN", reason=str(exc))
             raise

@@ -217,3 +217,8 @@
 
 - Sanitized frozen-comparison artifacts now retain normalized output digests alongside output digests. Completed re-entry returns no synthesized or raw output, skips the host, and allows summary measurements to compare retained digests without treating a redaction marker as model text. Unsupported or incomplete sanitized artifacts fail closed.
 - Added regressions for host-free re-entry, summary equivalence, sanitized serialization, and missing derived output evidence. Comparison-focused tests (6), Ruff, and strict mypy pass in the clean-base validation worktree; no Phase Two mechanism was added.
+
+## 2026-09-19 Phase One terminal artifact re-entry audit
+
+- Hardened the integrated runner so a completed run records and revalidates its terminal boundary checkpoint, exact private evaluation snapshot path, checkpoint identity/digests, and every required evaluation result before returning COMPLETE. Missing, corrupt, stale, alternate-path, or wrong-slot terminal evidence now fails closed; prepared subject-slot coverage is also enforced.
+- Added focused regressions for missing/corrupt terminal checkpoints, missing/corrupt evaluation results, alternate private snapshot paths, and missing prepared subject slots. The focused runner suite reports 11 passing tests; Ruff and strict mypy pass for the changed runner/tests.
