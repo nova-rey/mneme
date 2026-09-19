@@ -18,6 +18,7 @@ from .identity import IdentityService
 from .qualification import qualify
 from .state import SQLiteStore
 from .state.contracts import StoragePermissions
+from .state.policy import PolicyService
 from .state.reader import CheckpointReader
 from .state.service import ContinuityService
 from .state.snapshots import backup_instance, create_checkpoint, fork_from_checkpoint
@@ -69,6 +70,7 @@ def main(argv: list[str] | None = None) -> int:
     create.add_argument("--scope", default="local")
     create.add_argument("--export", action="store_true")
     create.add_argument("--development-enabled", action="store_true")
+    create.add_argument("--host")
     isub.add_parser("list")
     inspect = isub.add_parser("inspect")
     inspect.add_argument("id")
@@ -133,6 +135,19 @@ def main(argv: list[str] | None = None) -> int:
     alias_sub = alias.add_subparsers(dest="alias_action", required=True)
     alias_add = alias_sub.add_parser("add")
     alias_add.add_argument("alias")
+    permission = sub.add_parser("permission")
+    psub = permission.add_subparsers(dest="permission_action", required=True)
+    pshow = psub.add_parser("show")
+    pshow.add_argument("--json", action="store_true")
+    pgrant = psub.add_parser("grant")
+    pgrant.add_argument("--interpret", action="store_true")
+    pgrant.add_argument("--recall", action="store_true")
+    pgrant.add_argument("--provider-reuse", action="store_true")
+    pgrant.add_argument("--host")
+    prevoke = psub.add_parser("revoke")
+    prevoke.add_argument("--interpret", action="store_true")
+    prevoke.add_argument("--recall", action="store_true")
+    prevoke.add_argument("--provider-reuse", action="store_true")
     add_experiment_parser(sub)
     args = normalize_experiment_args(parser.parse_args(argv))
     if args.command == "demo":
@@ -160,11 +175,14 @@ def main(argv: list[str] | None = None) -> int:
         "store",
         "chat",
         "identity",
+        "permission",
         "inspect",
     }:
         if args.store is None:
             raise SystemExit("--store PATH is required for state commands")
         if args.command == "instance" and args.instance_action == "create":
+            if args.development_enabled and not args.host:
+                raise SystemExit("--host is required with --development-enabled")
             if args.store.exists() and args.store.is_dir():
                 path = args.store / f"{args.id or 'instance'}.sqlite3"
             elif args.store.suffix.lower() in {".sqlite3", ".sqlite", ".db"}:
@@ -174,6 +192,7 @@ def main(argv: list[str] | None = None) -> int:
                 args.store.mkdir(parents=True, exist_ok=True)
                 path = args.store / f"{args.id or 'instance'}.sqlite3"
             with SQLiteStore(path) as store:
+                selected_host = _host(args.host) if args.host else None
                 instance_id = store.create_root(
                     instance_id=args.id,
                     scope_id=args.scope,
@@ -184,9 +203,44 @@ def main(argv: list[str] | None = None) -> int:
                         recall=args.development_enabled,
                         provider_reuse=args.development_enabled,
                     ),
+                    host_binding=(
+                        selected_host.fingerprint().to_dict() if selected_host is not None else None
+                    ),
                 )
             print(instance_id)
             return 0
+        if args.command == "permission":
+            with SQLiteStore(args.store) as store:
+                current = store.current()
+                service = PolicyService(store, str(current["active_instance_id"]))
+                if args.permission_action == "show":
+                    print(json.dumps(service.show(), indent=2, sort_keys=True))
+                    return 0
+                permissions = [
+                    name
+                    for name, selected in (
+                        ("interpret", args.interpret),
+                        ("recall", args.recall),
+                        ("provider_reuse", args.provider_reuse),
+                    )
+                    if selected
+                ]
+                if not permissions:
+                    raise SystemExit("select at least one Phase One permission")
+                if args.permission_action == "revoke":
+                    revision = service.revoke(permissions)
+                else:
+                    selected_host = _host(args.host) if args.host else None
+                    revision = service.grant(
+                        permissions,
+                        host_fingerprint=(
+                            selected_host.fingerprint().to_dict()
+                            if selected_host is not None
+                            else None
+                        ),
+                    )
+                print(json.dumps({"revision": revision, **service.show()}, indent=2, sort_keys=True))
+                return 0
         if args.command == "chat":
             text = args.text if args.text is not None else sys.stdin.readline().rstrip("\n")
             with SQLiteStore(args.store) as store:

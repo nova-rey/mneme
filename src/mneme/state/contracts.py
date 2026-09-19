@@ -56,6 +56,9 @@ class StoragePermissions:
         )
 
 
+PHASE_ONE_PERMISSIONS = ("interpret", "recall", "provider_reuse")
+
+
 @dataclass(frozen=True)
 class LineageRecord:
     instance_id: str

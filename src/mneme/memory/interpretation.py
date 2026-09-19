@@ -21,6 +21,7 @@ from typing import Any
 
 from ..contracts import GenerationRequest, GenerationResult
 from ..host import Host
+from ..state.policy import PolicyError, PolicyService
 from ..state.storage import SQLiteStore, _utc
 from .publication import (
     InterpretationPublisher,
@@ -135,31 +136,22 @@ class InterpretationService:
         reuse remain outside this service until their implementing phases.
         """
 
-        columns = {
-            str(row[1]) for row in db.execute("PRAGMA table_info(policies)").fetchall()
-        }
-        policy_column = next(
-            (
-                name
-                for name in ("interpret_allowed", "interpretation_allowed", "interpret")
-                if name in columns
-            ),
-            None,
-        )
-        if policy_column is None:
-            raise InterpretationError("interpretation permission is missing")
-        query = f"SELECT p.storage_allowed,p.{policy_column}"
-        query += (
-            " FROM policies p JOIN lineages l ON l.scope_id=p.scope_id "
-            "WHERE l.instance_id=?"
-        )
-        row = db.execute(query, (self.instance_id,)).fetchone()
-        if row is None:
-            raise InterpretationError("lineage policy is missing")
-        if not bool(row[0]):
-            raise InterpretationError("storage permission denied")
-        if not bool(row[1]):
-            raise InterpretationError("interpretation permission denied")
+        try:
+            state = PolicyService(self.store, self.instance_id).require("interpret")
+            if not state.storage_allowed:
+                raise PolicyError("storage permission denied")
+        except PolicyError as exc:
+            raise InterpretationError(str(exc)) from exc
+
+    def _policy_allows_selected_host(self) -> None:
+        try:
+            state = PolicyService(self.store, self.instance_id).current()
+            if state.bound_host_ref is not None:
+                PolicyService(self.store, self.instance_id).require_host(
+                    state, self.host.fingerprint().to_dict()
+                )
+        except PolicyError as exc:
+            raise InterpretationError(str(exc)) from exc
 
     def _source_bundle(self, db: Any, episode_id: str) -> dict[str, Any]:
         operation = db.execute(
@@ -394,6 +386,7 @@ class InterpretationService:
                 attempt = 0
                 errors = None
             source_bundle = self._source_bundle(db, str(op["episode_id"]))
+            self._policy_allows_selected_host()
             expected_host = self._episode_host_ref(db, str(op["episode_id"]))
             host_ref = self._host_ref()
             if expected_host is not None and expected_host != host_ref:

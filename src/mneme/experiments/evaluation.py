@@ -15,6 +15,7 @@ from typing import Any
 
 from ..contracts import GenerationRequest, GenerationResult
 from ..host import Host
+from ..state.policy import PermissionState, PolicyError, PolicyService
 from ..state.reader import CheckpointReader
 from .artifacts import ArtifactError, ArtifactStore, content_digest, file_digest
 
@@ -57,6 +58,17 @@ class FrozenEvaluationView:
 
     def history(self) -> list[dict[str, Any]]:
         return copy.deepcopy(self._reader.history())
+
+    def permissions(self) -> PermissionState:
+        """Read the current scope authority for this historical checkpoint."""
+
+        manifest = self._reader.manifest()
+        try:
+            return PolicyService(
+                self._reader.store, str(manifest["source_instance_id"])
+            ).current()
+        except PolicyError as exc:
+            raise EvaluationError(str(exc)) from exc
 
     def generate(
         self,

@@ -234,3 +234,9 @@
 - Added a scoped Phase One policy authority with explicit selected-host bindings at development-enabled instance creation, inspectable permissions, append-only grant/revoke records, and read-only consultation from working stores and copied checkpoints.
 - Added schema 3→4 migration that establishes the authority reference, clears legacy interpretation/recall/provider-reuse grants, and requires explicit reauthorization. Missing or corrupt authority fails closed; old checkpoint copies retain the authority reference and therefore cannot bypass later scope revocation.
 - Integrated policy checks at storage acceptance, bound-host development/context dispatch, interpretation permission, identity adoption, controller recall/provider reuse, and frozen comparison memory treatments. Focused policy tests pass; broader validation remains with the assigning owner because the shared tree contains parallel gate-driver changes.
+
+## 2026-09-19 Phase One policy authority implementation candidate
+
+- Implemented schema v4 policy metadata and the `PolicyService` authority: selected host fingerprints are persisted at explicit development-enabled creation; `permission show`, `grant`, and `revoke` expose the narrow Phase One boundary; and migrated stores remain deny-by-default until explicit grant.
+- Added focused regression coverage for selected-host binding, missing-authority fail-closed behavior, grant/revoke persistence, old-checkpoint revocation visibility, provider-reuse gating, interpretation/recall gating, and v3 migration.
+- Tested policy/storage/interpretation/comparison coverage: 35 passing tests; Ruff and strict mypy pass for the owned files. Controller/service integration remains visible in the shared working tree for canonical integration with parallel gate-driver changes.

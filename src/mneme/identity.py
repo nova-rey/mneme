@@ -16,6 +16,7 @@ from typing import Any
 
 from .contracts import GenerationRequest
 from .host import Host
+from .state.policy import PolicyError, PolicyService
 from .state.storage import SQLiteStore, _utc
 
 
@@ -102,14 +103,18 @@ class IdentityService:
         ).fetchone()
         if manifest is None:
             raise IdentityError("current manifest is missing")
-        policy = self.store.connection.execute(
-            "SELECT recall_allowed,provider_reuse_allowed FROM policies WHERE policy_id=?",
-            (manifest["policy_id"],),
-        ).fetchone()
         if manifest["self_view_id"] is not None:
             raise IdentityError("identity is already adopted")
-        if policy is None or not bool(policy[0]) or not bool(policy[1]):
-            raise IdentityError("identity adoption permission is denied")
+        try:
+            policy = PolicyService(self.store, self.instance_id).current()
+            if not policy.recall_allowed or not policy.provider_reuse_allowed:
+                raise PolicyError("identity adoption permission is denied")
+            if policy.bound_host_ref is not None:
+                PolicyService(self.store, self.instance_id).require_host(
+                    policy, host.fingerprint().to_dict()
+                )
+        except PolicyError as exc:
+            raise IdentityError(str(exc)) from exc
         request = GenerationRequest(
             messages=(
                 {
@@ -165,12 +170,12 @@ class IdentityService:
             ).fetchone()
             if manifest is None:
                 raise IdentityError("current manifest is missing")
-            policy = db.execute(
-                "SELECT recall_allowed,provider_reuse_allowed FROM policies WHERE policy_id=?",
-                (manifest["policy_id"],),
-            ).fetchone()
-            if policy is None or not bool(policy[0]) or not bool(policy[1]):
-                raise IdentityError("identity adoption permission is denied")
+            try:
+                policy = PolicyService(self.store, self.instance_id).current()
+                if not policy.recall_allowed or not policy.provider_reuse_allowed:
+                    raise PolicyError("identity adoption permission is denied")
+            except PolicyError as exc:
+                raise IdentityError(str(exc)) from exc
             if manifest["self_view_id"] is not None:
                 raise IdentityError("identity is already adopted")
             version = int(manifest["self_view_version"]) + 1

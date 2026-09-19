@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import contextlib
 import fcntl
+import json
 import os
 import shutil
 import sqlite3
@@ -21,7 +22,7 @@ from .contracts import (
     validate_id,
 )
 
-SCHEMA_VERSION = 3
+SCHEMA_VERSION = 4
 APPLICATION_ID = 0x4D4E454D  # ASCII "MNEM"
 
 _SCHEMA = """
@@ -32,7 +33,8 @@ CREATE TABLE IF NOT EXISTS store_info (
   record_version INTEGER NOT NULL,
   artifact_kind TEXT NOT NULL CHECK (artifact_kind IN ('working','checkpoint')),
   active_instance_id TEXT,
-  created_by_version TEXT NOT NULL
+  created_by_version TEXT NOT NULL,
+  revocation_ledger_path TEXT
 );
 CREATE TABLE IF NOT EXISTS lineages (
   instance_id TEXT PRIMARY KEY,
@@ -51,7 +53,9 @@ CREATE TABLE IF NOT EXISTS policies (
   interpretation_allowed INTEGER NOT NULL DEFAULT 0 CHECK (interpretation_allowed IN (0,1)),
   recall_allowed INTEGER NOT NULL DEFAULT 0 CHECK (recall_allowed IN (0,1)),
   provider_reuse_allowed INTEGER NOT NULL DEFAULT 0 CHECK (provider_reuse_allowed IN (0,1)),
-  policy_version INTEGER NOT NULL
+  policy_version INTEGER NOT NULL,
+  bound_host_ref TEXT,
+  bound_host_fingerprint_json TEXT
 );
 CREATE TABLE IF NOT EXISTS host_records (
   host_ref TEXT PRIMARY KEY,
@@ -532,8 +536,8 @@ class SQLiteStore:
         interrupted or validation fails.
         """
 
-        if target_version not in {2, SCHEMA_VERSION}:
-            raise SchemaError(f"only migration to schema 2 or {SCHEMA_VERSION} is supported")
+        if target_version not in {2, 3, SCHEMA_VERSION}:
+            raise SchemaError(f"only migration to schema 2, 3 or {SCHEMA_VERSION} is supported")
         source = Path(path)
         if not source.is_file():
             raise SchemaError(f"store does not exist: {source}")
@@ -552,13 +556,19 @@ class SQLiteStore:
             version = int(version_row[0]) if version_row else 0
             if version == target_version:
                 raise SchemaError("store is already at the requested schema version")
-            if version not in {1, 2} or version > target_version:
+            if version not in {1, 2, 3} or version > target_version:
                 raise SchemaError(f"cannot migrate unsupported schema version {version}")
             info = raw.execute("SELECT schema_version FROM store_info").fetchone()
             if info is None or int(info[0]) != version:
                 raise SchemaError("store_info schema version is missing or inconsistent")
             raw.execute("BEGIN IMMEDIATE")
-            if version == 1:
+            def has_column(table: str, column: str) -> bool:
+                return any(
+                    str(item[1]) == column
+                    for item in raw.execute(f'PRAGMA table_info("{table}")').fetchall()
+                )
+
+            if version == 1 and target_version >= 2:
                 raw.execute("ALTER TABLE manifests ADD COLUMN graph_snapshot_id TEXT")
                 raw.execute(
                     "ALTER TABLE manifests ADD COLUMN graph_revision INTEGER NOT NULL DEFAULT 0"
@@ -579,7 +589,7 @@ class SQLiteStore:
                 )
                 raw.execute("PRAGMA user_version = 2")
                 version = 2
-            if version == 2 and target_version == SCHEMA_VERSION:
+            if version == 2 and target_version >= 3:
                 raw.execute(
                     "ALTER TABLE manifests ADD COLUMN accepted_episode_count INTEGER NOT NULL DEFAULT 0"
                 )
@@ -616,10 +626,43 @@ class SQLiteStore:
                     if statement:
                         raw.execute(statement)
                 raw.execute(
+                    "UPDATE store_info SET schema_version=3,record_version=record_version+1"
+                )
+                raw.execute("PRAGMA user_version = 3")
+                version = 3
+            if version == 3 and target_version >= SCHEMA_VERSION:
+                if not has_column("store_info", "revocation_ledger_path"):
+                    raw.execute("ALTER TABLE store_info ADD COLUMN revocation_ledger_path TEXT")
+                policy_table = raw.execute(
+                    "SELECT 1 FROM sqlite_master WHERE type='table' AND name='policies'"
+                ).fetchone()
+                if policy_table is not None:
+                    if not has_column("policies", "bound_host_ref"):
+                        raw.execute("ALTER TABLE policies ADD COLUMN bound_host_ref TEXT")
+                    if not has_column("policies", "bound_host_fingerprint_json"):
+                        raw.execute(
+                            "ALTER TABLE policies ADD COLUMN bound_host_fingerprint_json TEXT"
+                        )
+                    # Legacy material never acquires Phase One reuse through
+                    # migration.  An operator must issue an explicit grant
+                    # against the newly established authority.
+                    raw.execute("DROP TRIGGER IF EXISTS policies_immutable_update")
+                    raw.execute(
+                        "UPDATE policies SET interpretation_allowed=0,recall_allowed=0,"
+                        "provider_reuse_allowed=0,policy_version=policy_version+1"
+                    )
+                legacy_ledger = str(
+                    source.with_suffix(source.suffix + ".policy.jsonl").resolve()
+                )
+                raw.execute(
+                    "UPDATE store_info SET revocation_ledger_path=?", (legacy_ledger,)
+                )
+                raw.execute(
                     "UPDATE store_info SET schema_version=?,record_version=record_version+1",
                     (SCHEMA_VERSION,),
                 )
                 raw.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
+                version = SCHEMA_VERSION
             for table in _IMMUTABLE:
                 exists = raw.execute(
                     "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (table,)
@@ -652,6 +695,7 @@ class SQLiteStore:
         self_ref_id: str | None = None,
         instance_id: str | None = None,
         permissions: StoragePermissions = StoragePermissions(),
+        host_binding: Mapping[str, object] | None = None,
         controller_version: str = "mneme-p0.2",
     ) -> str:
         """Create the immutable root lineage and revision-zero manifest."""
@@ -664,12 +708,30 @@ class SQLiteStore:
         integrity = canonical_digest(
             {"instance_id": instance_id, "revision": 0, "self_ref_id": self_ref_id}
         )
+        ledger_path = self.path.with_suffix(self.path.suffix + ".policy.jsonl").resolve()
+        if self.connection.execute("SELECT 1 FROM store_info").fetchone() is not None:
+            raise ValueError("store already has a lineage")
+        if ledger_path.exists():
+            raise SchemaError(f"permission authority already exists: {ledger_path}")
+        ledger_path.parent.mkdir(parents=True, exist_ok=True)
+        ledger_path.touch(mode=0o600)
+        os.chmod(ledger_path, 0o600)
+        bound_ref: str | None = None
+        bound_json: str | None = None
+        if host_binding is not None:
+            bound_ref = canonical_digest(dict(host_binding))
+            bound_json = json.dumps(dict(host_binding), sort_keys=True, separators=(",", ":"))
         with self.transaction() as db:
-            if db.execute("SELECT 1 FROM store_info").fetchone() is not None:
-                raise ValueError("store already has a lineage")
             db.execute(
-                "INSERT INTO store_info VALUES (1,?,?,?,?,?)",
-                (SCHEMA_VERSION, 1, ArtifactKind.WORKING, instance_id, controller_version),
+                "INSERT INTO store_info VALUES (1,?,?,?,?,?,?)",
+                (
+                    SCHEMA_VERSION,
+                    1,
+                    ArtifactKind.WORKING,
+                    instance_id,
+                    controller_version,
+                    str(ledger_path),
+                ),
             )
             db.execute(
                 "INSERT INTO lineages VALUES (?,?,?,?,?,?,?)",
@@ -677,8 +739,8 @@ class SQLiteStore:
             )
             db.execute(
                 "INSERT INTO policies(policy_id,scope_id,storage_allowed,export_allowed,"
-                "interpretation_allowed,recall_allowed,provider_reuse_allowed,policy_version) "
-                "VALUES (?,?,?,?,?,?,?,?)",
+                "interpretation_allowed,recall_allowed,provider_reuse_allowed,policy_version,"
+                "bound_host_ref,bound_host_fingerprint_json) VALUES (?,?,?,?,?,?,?,?,?,?)",
                 (
                     policy_id,
                     scope_id,
@@ -688,6 +750,8 @@ class SQLiteStore:
                     int(permissions.recall),
                     int(permissions.provider_reuse),
                     3,
+                    bound_ref,
+                    bound_json,
                 ),
             )
             db.execute(

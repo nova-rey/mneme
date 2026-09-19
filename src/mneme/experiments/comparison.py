@@ -20,6 +20,7 @@ from typing import Any
 
 from ..contracts import GenerationRequest, GenerationResult
 from ..host import Host
+from ..state.policy import host_ref
 from .evaluation import EvaluationError, FrozenEvaluationView
 
 
@@ -224,6 +225,26 @@ class FrozenComparator:
         if isinstance(repetition, bool) or repetition < 0:
             raise ComparisonError("repetition must be non-negative")
         with FrozenEvaluationView(self.checkpoint) as view:
+            if treatment != "no_memory":
+                try:
+                    permissions = view.permissions()
+                    if not permissions.authority_available:
+                        raise ComparisonError("checkpoint permission authority is unavailable")
+                    if permissions.revocation_revision > 0 and not permissions.recall_allowed:
+                        raise ComparisonError("checkpoint recall permission is revoked")
+                    if (
+                        permissions.bound_host_ref is not None
+                        and not permissions.provider_reuse_allowed
+                    ):
+                        raise ComparisonError(
+                            "checkpoint provider-reuse permission is revoked"
+                        )
+                    if permissions.bound_host_ref is not None and host_ref(
+                        self.host.fingerprint().to_dict()
+                    ) != permissions.bound_host_ref:
+                        raise ComparisonError("checkpoint selected host binding does not match")
+                except EvaluationError as exc:
+                    raise ComparisonError(str(exc)) from exc
             query = _message_text(probe.messages)
             if treatment == "no_memory":
                 notes: list[dict[str, Any]] = []
