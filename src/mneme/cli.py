@@ -8,6 +8,7 @@ from typing import Any
 
 from . import __version__
 from .chat import ChatSession
+from .demo import DemoError, run_phase_one_gate
 from .experiments.cli import add_parser as add_experiment_parser
 from .experiments.cli import dispatch as dispatch_experiment
 from .experiments.cli import normalize_args as normalize_experiment_args
@@ -45,6 +46,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--store", type=Path)
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("doctor")
+    demo = sub.add_parser("demo")
+    dsub = demo.add_subparsers(dest="demo_action", required=True)
+    phase_one = dsub.add_parser("phase-one")
+    phase_one.add_argument("--gate", choices=("p1.1", "p1.2", "p1.3"), required=True)
+    phase_one.add_argument("--host", default="fake")
+    phase_one.add_argument("--live-budget")
+    phase_one.add_argument("--workspace", type=Path, required=True)
     host = sub.add_parser("host")
     hsub = host.add_subparsers(dest="action", required=True)
     hsub.add_parser("list")
@@ -127,6 +135,20 @@ def main(argv: list[str] | None = None) -> int:
     alias_add.add_argument("alias")
     add_experiment_parser(sub)
     args = normalize_experiment_args(parser.parse_args(argv))
+    if args.command == "demo":
+        if args.demo_action not in {"phase-one", "phase_one"}:
+            raise SystemExit(f"unknown demo action: {args.demo_action}")
+        try:
+            demo_report = run_phase_one_gate(
+                gate=args.gate,
+                host=args.host,
+                live_budget=args.live_budget,
+                workspace=args.workspace,
+            )
+        except DemoError as exc:
+            raise SystemExit(str(exc)) from exc
+        print(json.dumps(demo_report, indent=2, sort_keys=True))
+        return 0
     if args.command == "experiment":
         return dispatch_experiment(args)
     if args.command in {
