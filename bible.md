@@ -399,3 +399,8 @@
 
 - The probe-evidence run from `8be338e` passed P1.1 and preserved the actual cold-start output `Gemma 4`. P1.2 stopped because the runner compared it byte-for-byte with the adopted spelling `Gemma4`; this was a deterministic formatting mismatch, not provider failure or absent identity recovery.
 - Added `_name_matches` normalization for case-insensitive token adjacency across display spacing/punctuation, with regression rejection for distinct names. Preserved the run in `docs/receipts/MNEME_Phase_One_Live_Probe_Evidence_Failure_Receipt.{md,json}`. No provider call was made for the correction.
+
+## 2026-09-20 Phase One normalized-name live authorization
+
+- Full validation and CI passed for `56bee14`, including the recovered-name spacing regression. One fresh bounded `phase-one-v1` run is authorized from this commit with the 27-call ceiling and stop-on-failure/no-resampling rules.
+- `P1.LIVE` is RUNNING; all prior provider results remain immutable.

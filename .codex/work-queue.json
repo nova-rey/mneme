@@ -794,8 +794,8 @@
         "docs/receipts/MNEME_Phase_One_Live_Probe_Evidence_Failure_Receipt.md"
       ],
       "id": "P1.LIVE",
-      "notes": "Probe-evidence run from 8be338e passed P1.1 and preserved cold-start output Gemma 4. P1.2 stopped only because strict comparison rejected display spacing against adopted Gemma4; deterministic name normalization is implemented and offline-tested. No automatic retry.",
-      "owner": null,
+      "notes": "Fresh bounded run authorized from 56bee14 after deterministic recovered-name normalization and full validation/CI. Maximum 27 calls; stop on any required failure; no retries or favorable-output resampling. Prior runs remain immutable.",
+      "owner": "/root",
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -813,10 +813,12 @@
         }
       ],
       "scope": "Run the already prepared bounded DeepInfra Phase One acceptance gate and publish the truthful release receipt; do not alter offline Phase One architecture or begin Phase Two.",
-      "session_ids": [],
-      "status": "WAITING",
+      "session_ids": [
+        "phase-one-live-name-normalized-20260920"
+      ],
+      "status": "RUNNING",
       "title": "Phase One bounded live acceptance gate",
-      "updated_at": "2026-09-20T00:55:00Z",
+      "updated_at": "2026-09-20T01:05:00Z",
       "validation": {
         "required": [
           "bounded live gate",
@@ -867,5 +869,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-20T00:55:00Z"
+  "updated_at": "2026-09-20T01:05:00Z"
 }
