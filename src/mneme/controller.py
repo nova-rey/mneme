@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import uuid
@@ -50,6 +51,7 @@ class PinnedState:
     self_view_version: int
     graph_snapshot_id: str | None
     recall_allowed: bool
+    host_ref: str
 
 
 @dataclass(frozen=True)
@@ -99,6 +101,15 @@ def _tokens(text: str) -> tuple[str, ...]:
     return tuple(re.findall(r"[\w]+(?:['-][\w]+)*", text.casefold(), re.UNICODE))
 
 
+def _host_ref(host: Host) -> str:
+    """Return the canonical identity of the host pinned for a prepared turn."""
+
+    payload = json.dumps(
+        host.fingerprint().to_dict(), sort_keys=True, separators=(",", ":"), ensure_ascii=False
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
 def _phrase(query: str, label: str) -> bool:
     q, target = _tokens(query), _tokens(label)
     return bool(target) and any(
@@ -136,7 +147,36 @@ class ResponseController:
             int(manifest["self_view_version"]),
             str(manifest["graph_snapshot_id"]) if manifest["graph_snapshot_id"] else None,
             bool(policy and policy[0]),
+            _host_ref(self.host),
         )
+
+    def _assert_prepared_binding(self, prepared: PreparedTurn) -> None:
+        """Reject a turn prepared against state or host identity that moved."""
+
+        current = self.store.current()
+        pinned = prepared.pinned
+        if str(current["active_instance_id"]) != pinned.instance_id:
+            raise ControllerError("prepared turn lineage is no longer active")
+        if int(current["current_revision"]) != pinned.lineage_revision:
+            raise ControllerError("prepared turn is stale: lineage revision changed")
+        if str(current["current_manifest_id"]) != pinned.manifest_id:
+            raise ControllerError("prepared turn is stale: current manifest changed")
+        manifest = self.store.connection.execute(
+            "SELECT graph_revision,self_view_version,graph_snapshot_id "
+            "FROM manifests WHERE manifest_id=?",
+            (pinned.manifest_id,),
+        ).fetchone()
+        if manifest is None:
+            raise ControllerError("prepared turn manifest is missing")
+        if int(manifest[0]) != pinned.graph_revision:
+            raise ControllerError("prepared turn is stale: graph revision changed")
+        if int(manifest[1]) != pinned.self_view_version:
+            raise ControllerError("prepared turn is stale: self view changed")
+        snapshot = str(manifest[2]) if manifest[2] else None
+        if snapshot != pinned.graph_snapshot_id:
+            raise ControllerError("prepared turn is stale: graph snapshot changed")
+        if _host_ref(self.host) != pinned.host_ref:
+            raise ControllerError("host fingerprint drifted from prepared turn")
 
     def _find_routes(self, intent: TurnIntent, pin: PinnedState) -> tuple[RouteCandidate, ...]:
         if (
@@ -239,6 +279,7 @@ class ResponseController:
             )
         )
         selected = tuple(eligible[:2])
+        messages = _messages(intent)
         memory: dict[str, Any] = {"routes": [route.to_dict() for route in selected]}
         if intent.memory != "off" and intent.mode != "evaluate":
             view = IdentityService(self.store, self.instance_id).current()
@@ -252,12 +293,16 @@ class ResponseController:
             if memory_json != '{"routes":[]}'
             else intent.system
         )
+        replayed_ordinals = (
+            list(range(max(0, len(messages) - 1))) if intent.session_messages else []
+        )
         request = GenerationRequest(
-            _messages(intent),
+            messages,
             system,
             dict(intent.parameters),
             intent.seed,
             dict(intent.response_format) if intent.response_format else None,
+            {"replayed_message_ordinals": replayed_ordinals},
         )
         return PreparedTurn(
             intent,
@@ -272,6 +317,12 @@ class ResponseController:
     def execute(self, prepared: PreparedTurn) -> TurnResult:
         if prepared.intent.mode == "evaluate":
             raise ControllerError("evaluation requires a frozen read-only boundary")
+        accepted_retry = self.store.connection.execute(
+            "SELECT status FROM operations WHERE operation_id=? AND instance_id=?",
+            (prepared.operation_id, self.instance_id),
+        ).fetchone()
+        if accepted_retry is None or str(accepted_retry[0]) != "ACCEPTED":
+            self._assert_prepared_binding(prepared)
         service = ContinuityService(self.store, self.instance_id, self.host)
         operation = service.prepare_episode(prepared.request, operation_id=prepared.operation_id)
         with self.store.transaction() as db:

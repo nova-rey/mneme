@@ -26,7 +26,7 @@ from .experiments.comparison import ComparisonProbe, run_matched_comparison, sum
 from .experiments.inspection import inspect_checkpoint, inspect_store
 from .hosts import FakeHost
 from .identity import IdentityService
-from .memory import InterpretationService
+from .memory import InterpretationPublisher, InterpretationService, validate_residue
 from .state.contracts import StoragePermissions
 from .state.service import ContinuityService
 from .state.snapshots import create_checkpoint, fork_from_checkpoint
@@ -208,6 +208,7 @@ def _residue_payload(text: str) -> dict[str, Any]:
                 "source_spans": [
                     {"source_slot": "s0", "start": 0, "end": len(text)}
                 ],
+                "confidence": 0.8,
                 "origin": "model_output",
             }
         ],
@@ -216,6 +217,7 @@ def _residue_payload(text: str) -> dict[str, Any]:
                 "key": f"route-{first.casefold()}",
                 "edge_keys": [f"{first.casefold()}-constrains-capacity"],
                 "source_spans": [{"source_slot": "s0", "start": 0, "end": len(text)}],
+                "confidence": 0.8,
                 "origin": "model_output",
             }
         ],
@@ -412,9 +414,85 @@ def _p12(workspace: Path) -> dict[str, Any]:
 
 def _p13(workspace: Path) -> dict[str, Any]:
     prior = _load_prior(workspace, "p1.3")
-    checkpoint = workspace / "p1.2" / "lineage.checkpoint.sqlite3"
-    if not checkpoint.is_file():
+    source_checkpoint = workspace / "p1.2" / "lineage.checkpoint.sqlite3"
+    if not source_checkpoint.is_file():
         raise DemoError("P1.2 checkpoint is missing")
+    authored_child = workspace / "p1.3" / "authored-control.sqlite3"
+    authored_checkpoint = workspace / "p1.3" / "authored-control.checkpoint.sqlite3"
+    fork_from_checkpoint(
+        source_checkpoint,
+        authored_child,
+        child_id="22222222-2222-4222-8222-222222222222",
+    )
+    authored_text = "Authored control route: VRAM constrains model capacity"
+    with SQLiteStore(authored_child) as authored_store:
+        authored_instance = str(authored_store.current()["active_instance_id"])
+        operation = ContinuityService(
+            authored_store, authored_instance, FakeHost()
+        ).prepare_episode(
+            GenerationRequest(({"role": "user", "content": authored_text},)),
+            operation_id="phase-one-p13-authored-control-episode",
+        )
+        continuity = ContinuityService(authored_store, authored_instance, FakeHost())
+        continuity.generate_operation(operation.operation_id)
+        continuity.accept_episode(operation.operation_id)
+        residue = validate_residue(
+            {
+                "core_concepts": [
+                    {
+                        "key": "authored-vram",
+                        "label": "VRAM",
+                        "kind": "resource",
+                        "source_spans": [{"source_slot": "s0", "start": 24, "end": 28}],
+                        "confidence": 0.9,
+                        "origin": "authored_control",
+                    },
+                    {
+                        "key": "authored-capacity",
+                        "label": "model capacity",
+                        "kind": "concept",
+                        "source_spans": [{"source_slot": "s0", "start": 40, "end": 54}],
+                        "confidence": 0.9,
+                        "origin": "authored_control",
+                    },
+                ],
+                "edge_candidates": [
+                    {
+                        "key": "authored-control-edge",
+                        "from": "authored-vram",
+                        "to": "authored-capacity",
+                        "relationship": "constrains",
+                        "source_spans": [{"source_slot": "s0", "start": 24, "end": 54}],
+                        "confidence": 0.9,
+                        "origin": "authored_control",
+                    }
+                ],
+                "route_candidates": [
+                    {
+                        "key": "authored-control-route",
+                        "edge_keys": ["authored-control-edge"],
+                        "source_spans": [{"source_slot": "s0", "start": 24, "end": 54}],
+                        "confidence": 0.9,
+                        "origin": "authored_control",
+                    }
+                ],
+            },
+            {"s0": authored_text},
+        )
+        publication = InterpretationPublisher(authored_store, authored_instance).publish(
+            InterpretationPublisher(authored_store, authored_instance).prepare(
+                operation.episode_id,
+                operation_id="phase-one-p13-authored-control-interpretation",
+            ),
+            residue,
+        )
+        create_checkpoint(
+            authored_store,
+            authored_checkpoint,
+            checkpoint_id="phase-one-p13-authored-control-checkpoint",
+        )
+        authored_revision = publication.lineage_revision
+    checkpoint = authored_checkpoint
     before_file = _file_digest(checkpoint)
     before_state = inspect_checkpoint(checkpoint)
     artifact_dir = workspace / "p1.3" / "comparison"
@@ -470,13 +548,20 @@ def _p13(workspace: Path) -> dict[str, Any]:
     after_state = inspect_checkpoint(checkpoint)
     if before_file != after_file or before_state != after_state:
         raise DemoError("frozen comparison changed checkpoint state")
-    artifacts = [checkpoint, artifact_dir / "comparison.json", artifact_dir / "comparison.md"]
+    artifacts = [
+        source_checkpoint,
+        authored_child,
+        authored_checkpoint,
+        artifact_dir / "comparison.json",
+        artifact_dir / "comparison.md",
+    ]
     return _write_gate(
         workspace,
         "p1.3",
         artifacts,
         prior_gate_sha256=prior["manifest_sha256"],
         checkpoint=str(checkpoint.relative_to(workspace)),
+        source_checkpoint=str(source_checkpoint.relative_to(workspace)),
         counters=after_state["counters"],
         evidence={
             "matched_readouts": len(results),
@@ -487,6 +572,9 @@ def _p13(workspace: Path) -> dict[str, Any]:
             "checkpoint_file_unchanged": True,
             "checkpoint_state_unchanged": True,
             "idempotent_reentry_without_host_call": True,
+            "authored_control_child": str(authored_child.relative_to(workspace)),
+            "authored_control_route": "authored-control-route",
+            "authored_control_revision": authored_revision,
             "comparison_artifact": str((artifact_dir / "comparison.json").relative_to(workspace)),
         },
     )

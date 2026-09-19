@@ -29,6 +29,8 @@ def test_phase_one_offline_gates_use_existing_boundaries_and_are_idempotent(
     assert p13["evidence"]["probe_count"] == 4
     assert p13["evidence"]["matched_readouts"] == 12
     assert p13["evidence"]["identity_enabled"] is False
+    assert p13["evidence"]["authored_control_route"] == "authored-control-route"
+    assert p13["evidence"]["authored_control_child"].endswith("authored-control.sqlite3")
     assert p13["evidence"]["checkpoint_file_unchanged"] is True
     assert p13["evidence"]["checkpoint_state_unchanged"] is True
     assert p13["evidence"]["idempotent_reentry_without_host_call"] is True

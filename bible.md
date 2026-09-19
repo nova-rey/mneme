@@ -213,6 +213,11 @@
 - The offline fixture demonstrates two source-backed P1.1 interpretations, host-mediated naming, fixed route use and correction suppression, checkpoint/fork self-view inheritance, and four identity-disabled P1.3 probes across three treatments (12 readouts) with checkpoint invariance. The approved live budget flag is parsed but live execution remains explicitly blocked by this offline driver; no live call is claimed.
 - Focused gate-driver tests (5), Ruff, strict mypy, and `git diff --check` pass. No Phase Two mechanism was added.
 
+## 2026-09-19 Phase One gate-driver authored control correction
+
+- Corrected the offline residue fixture to provide explicit admission confidence on edge and route records. Extended P1.3 with an isolated forked authored-control child, a labeled authored route publication, and a checkpoint used for the four-probe matched comparison. The source P1.2 checkpoint remains preserved as a separate artifact.
+- The corrected FakeHost gate sequence passes five focused gate-driver tests and produces 12 readouts with authored-control provenance, identity disabled, checkpoint invariance, and host-free completed re-entry. No live call or Phase Two mechanism was added.
+
 ## 2026-09-19 Phase One comparison re-entry audit
 
 - Sanitized frozen-comparison artifacts now retain normalized output digests alongside output digests. Completed re-entry returns no synthesized or raw output, skips the host, and allows summary measurements to compare retained digests without treating a redaction marker as model text. Unsupported or incomplete sanitized artifacts fail closed.
