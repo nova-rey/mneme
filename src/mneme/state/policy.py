@@ -164,7 +164,7 @@ class PolicyService:
                         raise PolicyError("revocation authority contains a non-object record")
                     if event.get("scope_id") != self._policy_row()["scope_id"]:
                         continue
-                    if event.get("permission") not in PHASE_ONE_PERMISSIONS:
+                    if event.get("permission") not in (*PHASE_ONE_PERMISSIONS, *PHASE_TWO_PERMISSIONS):
                         raise PolicyError("revocation authority contains an unknown permission")
                     if event.get("action") not in {"grant", "revoke"}:
                         raise PolicyError("revocation authority contains an unknown action")
@@ -219,7 +219,9 @@ class PolicyService:
         # A missing authority is an explicit fail-closed condition for every
         # Phase One permission, including copied legacy stores.
         if not authority_available:
-            values.update({permission: False for permission in PHASE_ONE_PERMISSIONS})
+            values.update(
+                {permission: False for permission in (*PHASE_ONE_PERMISSIONS, *PHASE_TWO_PERMISSIONS)}
+            )
         return PermissionState(
             policy_id=str(row["policy_id"]),
             scope_id=str(row["scope_id"]),
@@ -239,7 +241,7 @@ class PolicyService:
 
     def require(self, permission: str) -> PermissionState:
         state = self.current()
-        if permission in PHASE_ONE_PERMISSIONS and not state.authority_available:
+        if permission in (*PHASE_ONE_PERMISSIONS, *PHASE_TWO_PERMISSIONS) and not state.authority_available:
             raise PolicyError("Phase One permission authority is unavailable")
         if not state.permits(permission):
             raise PolicyError(f"{permission} permission denied")
@@ -260,7 +262,7 @@ class PolicyService:
         names = tuple(dict.fromkeys(str(item) for item in permissions))
         if not names:
             raise PolicyError("at least one Phase One permission is required")
-        unknown = set(names) - set(PHASE_ONE_PERMISSIONS)
+        unknown = set(names) - set((*PHASE_ONE_PERMISSIONS, *PHASE_TWO_PERMISSIONS))
         if unknown:
             raise PolicyError(f"unknown permission: {sorted(unknown)[0]}")
         path = self._authority_path()

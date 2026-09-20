@@ -427,3 +427,7 @@
 
 - Added the first bounded P2.1 vertical slice: a pure fixed-point replayable learner with explicit observation/dependence categories, bounded source pools/caps, support-versus-presence handling, contextual consequence state, learned exposure eligibility, and highest-coverage-only exploration. Added deterministic FakeHost-free tests for model-origin credit, current-input echo zero credit, unknown/presence handling, contextual closure/recovery, and mixed-coverage exploration.
 - Added schema-6 storage scaffolding and explicit `learn` opt-in state for development operations, semantic bindings, observations, learner updates/values/snapshots, and assessor attempts. Schema migration remains explicit, backed up, and legacy learning-disabled. Focused validation passed: 19 storage/policy/learner tests, Ruff, and strict mypy. No provider call or credential access occurred; P2.1 remains in progress.
+
+## 2026-09-20 P2.1 schema migration and learning-policy correction
+
+- Completed the schema-5 to schema-6 migration path for learner manifest fields and retained explicit backup/fail-closed behavior. Development lifecycle records remain mutable while accepted learner records remain immutable. Learning permission is now accepted by the local authority ledger, explicitly grantable/revocable, and denied when that authority is unavailable. Focused schema, storage, policy, and migration validation passed; no provider calls or credentials were used. P2.1 remains in progress.

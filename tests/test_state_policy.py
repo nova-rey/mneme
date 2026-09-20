@@ -45,6 +45,18 @@ def test_creation_records_selected_host_and_permission_inspection(tmp_path):
         assert PolicyService(store, instance).show()["scope_id"] == "local"
 
 
+def test_learning_permission_is_explicit_and_revocable(tmp_path):
+    store = SQLiteStore(tmp_path / "learning.sqlite3")
+    instance = store.create_root(permissions=StoragePermissions(True, True, learn=True))
+    with store:
+        policy = PolicyService(store, instance)
+        assert policy.require("learn").learning_allowed
+        policy.revoke(("learn",))
+        assert not policy.current().learning_allowed
+        with pytest.raises(PolicyError, match="learn permission denied"):
+            policy.require("learn")
+
+
 def test_revocation_is_persistent_and_old_checkpoint_cannot_bypass_it(tmp_path):
     store, instance, _host = _dev_store(tmp_path)
     checkpoint = tmp_path / "before-revocation.sqlite3"

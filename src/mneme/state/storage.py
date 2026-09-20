@@ -504,13 +504,11 @@ _IMMUTABLE = (
     "correction_directives",
     "declarations",
     "turn_traces",
-    "development_operations",
     "semantic_bindings",
     "development_observations",
     "learner_updates",
     "learner_values",
     "learner_snapshots",
-    "development_assessor_attempts",
 )
 
 
@@ -684,7 +682,7 @@ class SQLiteStore:
             version = int(version_row[0]) if version_row else 0
             if version == target_version:
                 raise SchemaError("store is already at the requested schema version")
-            if version not in {1, 2, 3, 4} or version > target_version:
+            if version not in {1, 2, 3, 4, 5} or version > target_version:
                 raise SchemaError(f"cannot migrate unsupported schema version {version}")
             info = raw.execute("SELECT schema_version FROM store_info").fetchone()
             if info is None or int(info[0]) != version:
@@ -821,6 +819,16 @@ class SQLiteStore:
                     raw.execute(
                         "ALTER TABLE policies ADD COLUMN learning_allowed INTEGER NOT NULL DEFAULT 0"
                     )
+                for column, definition in (
+                    ("learner_snapshot_id", "TEXT"),
+                    ("learner_configuration_digest", "TEXT"),
+                    ("binding_version", "INTEGER"),
+                    ("opportunity", "INTEGER"),
+                    ("coverage_json", "TEXT"),
+                    ("authority_revision", "INTEGER"),
+                ):
+                    if not has_column("manifests", column):
+                        raw.execute(f"ALTER TABLE manifests ADD COLUMN {column} {definition}")
                 for statement in _SCHEMA_V6_TABLES.split(";"):
                     statement = statement.strip()
                     if statement:
