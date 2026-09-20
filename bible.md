@@ -492,3 +492,7 @@
 ## 2026-09-20 P2.3 ancestry remediation candidate reconciliation
 
 - Reconciled the P2.3 offline candidate to `5eb95b9`, including the scoped-ancestry validator correction, production prompt clarification, 268-test validation, package smoke, and sanitized remediation receipt. P2.3 remains WAITING on a new assessor qualification authorization; no provider call occurred in this bookkeeping update.
+
+## 2026-09-20 P2.3 validation timestamp reconciliation
+
+- Updated the P2.3 queue validation timestamp to the completed 268-test ancestry-remediation gate. No implementation or provider state changed; P2.3 remains WAITING on external assessor qualification.
