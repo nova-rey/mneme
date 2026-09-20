@@ -9,6 +9,7 @@ from typing import Any
 from ..contracts import GenerationResult
 from ..development.assessment import (
     AssessorValidationError,
+    ResolvedAssessment,
     assessor_generation_request,
     qualification_cases,
     validate_qualification_case,
@@ -46,10 +47,12 @@ def run_assessor_qualification(
 ) -> dict[str, Any]:
     """Run the fixed Q1/Q2/Q3 qualification in order, stopping on failure.
 
-    Each returned provider result is durably recorded before local JSON and
-    semantic validation. A provider exception is uncertain and terminal; it
-    is never regenerated. Invalid results are retained and qualification
-    completes immediately after the failing case.
+    Each returned provider result is durably recorded before local semantic
+    validation. Developmental provenance is resolved afterward from the
+    immutable request/runtime records and is persisted separately. A provider
+    exception is uncertain and terminal; it is never regenerated. Invalid
+    results are retained and qualification completes immediately after the
+    failing case.
     """
 
     if host is not None and assessor_host is not None:
@@ -100,6 +103,7 @@ def run_assessor_qualification(
         )
         valid = True
         error: str | None = None
+        validated: tuple[ResolvedAssessment, ...] = ()
         try:
             pilot.assert_returned_host(call_id)
             decoded = json.loads(generated.content)
@@ -123,6 +127,12 @@ def run_assessor_qualification(
                 "valid": valid,
                 "validation_error": error,
                 "validated": canonical,
+                "semantic_observations": [item.semantic.to_dict() for item in validated]
+                if valid
+                else [],
+                "provenance_resolution": [item.provenance.to_dict() for item in validated]
+                if valid
+                else [],
             },
         )
         case_results.append(

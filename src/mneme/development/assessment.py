@@ -3,7 +3,7 @@
 The assessor is responsible for semantic classification.  This module keeps
 the provider-facing request and result shape identical for qualification and
 the pilot, while deterministic software owns coverage, quotation, source
-binding, and dependence validation.
+binding, and developmental provenance resolution.
 
 No model call is made here.  The caller reserves and dispatches a
 ``GenerationRequest`` and passes the returned JSON object to
@@ -15,29 +15,17 @@ from __future__ import annotations
 import json
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
-from typing import Any, cast
+from typing import Any
 
 from ..contracts import GenerationRequest
 
-ASSESSOR_SCHEMA_VERSION = "p2-assessor-v1"
-ASSESSOR_PROMPT_VERSION = "p2-assessor-production-v2"
+ASSESSOR_SCHEMA_VERSION = "p2-assessor-v2"
+ASSESSOR_PROMPT_VERSION = "p2-assessor-production-v3"
+PROVENANCE_SCHEMA_VERSION = "p2-provenance-v1"
 
 ASSESSMENT_STATUSES = frozenset({"present", "absent", "unknown"})
 RELATION_SUPPORT = frozenset({"supported", "unsupported", "unknown"})
 EXPRESSION_STATUS = frozenset({"expressed", "not_expressed", "unknown"})
-DEPENDENCE_CATEGORIES = frozenset(
-    {
-        "external_supported",
-        "current_input_echo",
-        "replay_linked",
-        "exposure_linked",
-        "no_identified_link",
-        "unknown",
-        "conflict",
-    }
-)
-
-
 class AssessorValidationError(ValueError):
     """A production-shaped assessor request or result is invalid."""
 
@@ -196,15 +184,16 @@ class EvidenceQuote:
 
 
 @dataclass(frozen=True)
-class ValidatedAssessment:
+class ValidatedSemanticAssessment:
+    """Language-level judgment validated without developmental provenance."""
+
     monitor_id: str
     status: str
     relation_support: str
     expression_status: str
-    dependence: str
     coverage: Mapping[str, Any]
     evidence: EvidenceQuote | None
-    dependence_group: str | None
+    corresponding_source_slots: tuple[str, ...]
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -212,10 +201,82 @@ class ValidatedAssessment:
             "status": self.status,
             "relation_support": self.relation_support,
             "expression_status": self.expression_status,
-            "dependence": self.dependence,
             "coverage": dict(self.coverage),
             "evidence": self.evidence.to_dict() if self.evidence else None,
-            "dependence_group": self.dependence_group,
+            "corresponding_source_slots": list(self.corresponding_source_slots),
+        }
+
+
+@dataclass(frozen=True)
+class ProvenanceResolution:
+    """Deterministic developmental provenance derived from runtime records."""
+
+    monitor_id: str
+    dependence: str
+    applicable_categories: tuple[str, ...]
+    corresponding_source_slots: tuple[str, ...]
+    ancestry: tuple[Mapping[str, Any], ...]
+    provenance_group_keys: tuple[str, ...]
+    credit_eligible: bool
+    resolution_reason: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "schema_version": PROVENANCE_SCHEMA_VERSION,
+            "monitor_id": self.monitor_id,
+            "dependence": self.dependence,
+            "applicable_categories": list(self.applicable_categories),
+            "corresponding_source_slots": list(self.corresponding_source_slots),
+            "ancestry": [dict(item) for item in self.ancestry],
+            "provenance_group_keys": list(self.provenance_group_keys),
+            "credit_eligible": self.credit_eligible,
+            "resolution_reason": self.resolution_reason,
+        }
+
+
+@dataclass(frozen=True)
+class ResolvedAssessment:
+    """Validated semantic judgment joined to a deterministic resolution."""
+
+    semantic: ValidatedSemanticAssessment
+    provenance: ProvenanceResolution
+
+    @property
+    def monitor_id(self) -> str:
+        return self.semantic.monitor_id
+
+    @property
+    def status(self) -> str:
+        return self.semantic.status
+
+    @property
+    def relation_support(self) -> str:
+        return self.semantic.relation_support
+
+    @property
+    def expression_status(self) -> str:
+        return self.semantic.expression_status
+
+    @property
+    def dependence(self) -> str:
+        return self.provenance.dependence
+
+    @property
+    def provenance_group_keys(self) -> tuple[str, ...]:
+        return self.provenance.provenance_group_keys
+
+    @property
+    def coverage(self) -> Mapping[str, Any]:
+        return self.semantic.coverage
+
+    @property
+    def evidence(self) -> EvidenceQuote | None:
+        return self.semantic.evidence
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "semantic": self.semantic.to_dict(),
+            "provenance": self.provenance.to_dict(),
         }
 
 
@@ -300,12 +361,13 @@ def _validate_coverage(
 
 def validate_assessor_result(
     request: AssessorRequest, result: Mapping[str, Any]
-) -> tuple[ValidatedAssessment, ...]:
-    """Validate and canonicalize one production-shaped assessor result.
+) -> tuple[ValidatedSemanticAssessment, ...]:
+    """Validate semantic judgments without accepting model provenance labels.
 
-    All monitors must be represented exactly once.  Recorded replay/exposure
-    ancestry overrides an assessor's claim of independence only for the
-    monitor's referenced source slots, so unrelated monitors remain independent.
+    All monitors must be represented exactly once.  The returned rows contain
+    only language-level judgments plus source quotations and semantic
+    correspondence slots.  Developmental dependence is resolved separately by
+    :func:`resolve_provenance` from immutable runtime records.
     """
 
     top = _mapping(result, "assessor result")
@@ -324,15 +386,24 @@ def validate_assessor_result(
         raise AssessorValidationError("every required monitor must have exactly one row")
     seen: set[str] = set()
     sources = _source_map(request)
-    ancestry_slots = {
-        str(item["source_slot"])
-        for item in (*request.memory_exposure, *request.replay_ancestry)
-        if isinstance(item.get("source_slot"), str)
-    }
-    validated: list[ValidatedAssessment] = []
+    validated: list[ValidatedSemanticAssessment] = []
     for index, raw_row in enumerate(rows):
         row = _mapping(raw_row, f"assessments[{index}]")
         monitor_id = _text(row.get("monitor_id"), f"assessments[{index}].monitor_id")
+        unknown_row_fields = set(row) - {
+            "monitor_id",
+            "status",
+            "relation_support",
+            "expression_status",
+            "coverage",
+            "evidence",
+            "corresponding_source_slots",
+        }
+        if unknown_row_fields:
+            raise AssessorValidationError(
+                f"monitor {monitor_id} has "
+                "unknown field(s): " + ", ".join(sorted(unknown_row_fields))
+            )
         monitor = expected.get(monitor_id)
         if monitor is None:
             raise AssessorValidationError(f"unknown monitor row: {monitor_id}")
@@ -342,15 +413,12 @@ def validate_assessor_result(
         status = _text(row.get("status"), f"monitor {monitor_id}.status")
         support = _text(row.get("relation_support"), f"monitor {monitor_id}.relation_support")
         expression = _text(row.get("expression_status"), f"monitor {monitor_id}.expression_status")
-        dependence = _text(row.get("dependence"), f"monitor {monitor_id}.dependence")
         if status not in ASSESSMENT_STATUSES:
             raise AssessorValidationError(f"unsupported monitor status: {status}")
         if support not in RELATION_SUPPORT:
             raise AssessorValidationError(f"unsupported relation support: {support}")
         if expression not in EXPRESSION_STATUS:
             raise AssessorValidationError(f"unsupported expression status: {expression}")
-        if dependence not in DEPENDENCE_CATEGORIES:
-            raise AssessorValidationError(f"unsupported dependence category: {dependence}")
         coverage = _validate_coverage(request, monitor, row.get("coverage"), status)
         evidence: EvidenceQuote | None = None
         if status == "present":
@@ -366,27 +434,170 @@ def validate_assessor_result(
             raise AssessorValidationError(
                 f"monitor {monitor_id} {status} must not include evidence quotation"
             )
-        monitor_has_ancestry = bool(ancestry_slots & set(monitor.required_source_slots))
-        if monitor_has_ancestry and dependence == "no_identified_link":
+        raw_correspondence = row.get("corresponding_source_slots", [])
+        corresponding_source_slots = _string_list(
+            raw_correspondence,
+            f"monitor {monitor_id}.corresponding_source_slots",
+        )
+        if not set(corresponding_source_slots) <= set(sources):
             raise AssessorValidationError(
-                f"monitor {monitor_id} claims independence despite recorded ancestry"
+                f"monitor {monitor_id} correspondence names unknown source slots"
             )
-        group = row.get("dependence_group")
-        if group is not None:
-            _text(group, f"monitor {monitor_id}.dependence_group")
+        if any(not sources[slot].available for slot in corresponding_source_slots):
+            raise AssessorValidationError(
+                f"monitor {monitor_id} correspondence references unavailable source"
+            )
+        if status != "present" and corresponding_source_slots:
+            raise AssessorValidationError(
+                f"monitor {monitor_id} non-present result cannot declare correspondence"
+            )
         validated.append(
-            ValidatedAssessment(
+            ValidatedSemanticAssessment(
                 monitor_id,
                 status,
                 support,
                 expression,
-                dependence,
                 coverage,
                 evidence,
-                cast(str | None, group),
+                corresponding_source_slots,
             )
         )
     return tuple(validated)
+
+
+def _recorded_ancestry(
+    request: AssessorRequest, source_slots: Sequence[str]
+) -> tuple[Mapping[str, Any], ...]:
+    """Return immutable runtime ancestry records for the named source slots."""
+
+    wanted = set(source_slots)
+    records: list[Mapping[str, Any]] = []
+    for item in (*request.memory_exposure, *request.replay_ancestry):
+        slot = item.get("source_slot")
+        if isinstance(slot, str) and slot in wanted:
+            records.append(dict(item))
+    return tuple(records)
+
+
+def resolve_provenance(
+    request: AssessorRequest,
+    semantic_rows: Sequence[ValidatedSemanticAssessment],
+) -> tuple[ResolvedAssessment, ...]:
+    """Resolve developmental provenance using runtime facts and semantic matches.
+
+    The assessor cannot override source roles, availability, exposure ancestry,
+    or replay ancestry.  When several antecedent categories apply, all are
+    retained and the canonical category follows the fixed precedence while the
+    learner receives ``conflict`` only for genuinely unresolved ambiguity.
+    """
+
+    sources = _source_map(request)
+    precedence = (
+        "current_input_echo",
+        "exposure_linked",
+        "replay_linked",
+        "no_identified_link",
+    )
+    resolved: list[ResolvedAssessment] = []
+    for semantic in semantic_rows:
+        if semantic.status != "present" or semantic.evidence is None:
+            resolution = ProvenanceResolution(
+                semantic.monitor_id,
+                "unknown",
+                (),
+                semantic.corresponding_source_slots,
+                (),
+                (),
+                False,
+                "non_present_or_unknown_semantic_result",
+            )
+            resolved.append(ResolvedAssessment(semantic, resolution))
+            continue
+        evidence_source = sources[semantic.evidence.source_slot]
+        categories: list[str] = []
+        antecedents = semantic.corresponding_source_slots
+        if evidence_source.role == "external":
+            categories.append("external_supported")
+        elif evidence_source.role == "model_output":
+            if not antecedents:
+                categories.append("no_identified_link")
+            else:
+                antecedent_sources = [sources[slot] for slot in antecedents]
+                raw_current_slots = request.context.get("current_input_source_slots", [])
+                current_slots = {
+                    str(slot)
+                    for slot in raw_current_slots
+                } if isinstance(raw_current_slots, Sequence) and not isinstance(
+                    raw_current_slots, (str, bytes)
+                ) else set()
+                if any(
+                    source.role == "external" and slot in current_slots
+                    for slot, source in zip(antecedents, antecedent_sources)
+                ):
+                    categories.append("current_input_echo")
+                memory_slots = {
+                    str(item["source_slot"])
+                    for item in request.memory_exposure
+                    if isinstance(item.get("source_slot"), str)
+                }
+                replay_slots = {
+                    str(item["source_slot"])
+                    for item in request.replay_ancestry
+                    if isinstance(item.get("source_slot"), str)
+                }
+                if memory_slots & set(antecedents):
+                    categories.append("exposure_linked")
+                if replay_slots & set(antecedents):
+                    categories.append("replay_linked")
+                if not categories:
+                    categories.append("no_identified_link")
+        else:
+            categories.append("unknown")
+        unique_categories = tuple(dict.fromkeys(categories))
+        if "external_supported" in unique_categories:
+            canonical = "external_supported"
+        else:
+            canonical = next(
+                (item for item in precedence if item in unique_categories),
+                "unknown",
+            )
+        ancestry = _recorded_ancestry(
+            request,
+            tuple(dict.fromkeys((*antecedents, semantic.evidence.source_slot))),
+        )
+        accounting_ancestry = _recorded_ancestry(request, antecedents)
+        group_keys: list[str] = []
+        for item in accounting_ancestry:
+            before = len(group_keys)
+            if isinstance(item.get("exposure_id"), str):
+                group_keys.append(f"exposure:{item['exposure_id']}")
+            if isinstance(item.get("root"), str):
+                group_keys.append(f"replay:{item['root']}")
+            if len(group_keys) == before and isinstance(item.get("source_slot"), str):
+                group_keys.append(f"source:{item['source_slot']}")
+        if not group_keys and evidence_source.role == "external":
+            group_keys.append(f"external:{evidence_source.slot}")
+        resolution = ProvenanceResolution(
+            semantic.monitor_id,
+            canonical,
+            unique_categories,
+            antecedents,
+            ancestry,
+            tuple(dict.fromkeys(group_keys)),
+            semantic.relation_support == "supported"
+            and canonical not in {"current_input_echo", "unknown", "conflict"},
+            "runtime_source_role_and_recorded_ancestry",
+        )
+        resolved.append(ResolvedAssessment(semantic, resolution))
+    return tuple(resolved)
+
+
+def validate_and_resolve_assessor_result(
+    request: AssessorRequest, result: Mapping[str, Any]
+) -> tuple[ResolvedAssessment, ...]:
+    """Run the shared semantic-validation and provenance-resolution boundary."""
+
+    return resolve_provenance(request, validate_assessor_result(request, result))
 
 
 @dataclass(frozen=True)
@@ -416,16 +627,13 @@ def assessor_generation_request(
                     "requested monitor, with no omitted or duplicated monitor IDs. "
                     "The complete output contract is:\n"
                     "{\n"
-                    '  "schema_version": "p2-assessor-v1",\n'
+                    f'  "schema_version": "{ASSESSOR_SCHEMA_VERSION}",\n'
                     '  "assessments": [\n'
                     "    {\n"
                     '      "monitor_id": "<exact monitor_id from the request>",\n'
                     '      "status": "present" | "absent" | "unknown",\n'
                     '      "relation_support": "supported" | "unsupported" | "unknown",\n'
                     '      "expression_status": "expressed" | "not_expressed" | "unknown",\n'
-                    '      "dependence": "external_supported" | "current_input_echo" | '
-                    '"replay_linked" | "exposure_linked" | "no_identified_link" | '
-                    '"unknown" | "conflict",\n'
                     '      "coverage": {\n'
                     '        "complete": true | false,\n'
                     '        "source_slots": ["<declared source slot>"],\n'
@@ -433,28 +641,25 @@ def assessor_generation_request(
                     "      },\n"
                     '      "evidence": {"source_slot": "<declared source slot>", '
                     '"quote": "<short exact verbatim quotation>"} | null,\n'
-                    '      "dependence_group": "<group>" | null\n'
+                    '      "corresponding_source_slots": ["<declared antecedent source slot>"]\n'
                     "    }\n"
                     "  ]\n"
                     "}\n"
                     "Use only the listed top-level and row fields. The schema_version "
-                    "must be exactly p2-assessor-v1. For status=present, coverage "
+                    f"must be exactly {ASSESSOR_SCHEMA_VERSION}. For status=present, coverage "
                     "must name covered declared source slots and evidence must contain "
                     "a non-empty exact quotation from its source_slot. For status=absent, "
                     "coverage must be complete for every available required source and "
                     "reason must explain the absence; evidence must be null. For "
                     "status=unknown, coverage must be incomplete with a reason and "
                     "evidence must be null. Copy monitor IDs and source slots exactly "
-                    "from the request. Dependence meanings are strict: use "
-                    "external_supported for an independently supported external source; "
-                    "current_input_echo when model output repeats the current input; "
-                    "replay_linked when the evidence is directly replayed from a recorded "
-                    "source or replay ancestry; exposure_linked when supplied memory or "
-                    "exposure caused the model-output evidence; and no_identified_link "
-                    "only when the monitor's referenced source slots have no recorded "
-                    "exposure or replay ancestry. Recorded ancestry for one monitor does "
-                    "not apply to unrelated monitor source slots. Never use "
-                    "no_identified_link to erase recorded ancestry.\n\n"
+                    "from the request. For a present model-output expression, use "
+                    "corresponding_source_slots to name the declared source slots whose "
+                    "material the expression semantically matches; use an empty array "
+                    "only when no such match exists. Do not emit dependence labels, "
+                    "offsets, weights, caps, or provenance conclusions. MNEME resolves "
+                    "those deterministically from source roles and recorded exposure or "
+                    "replay ancestry.\n\n"
                     + request.prompt_payload()
                 ),
             },
@@ -469,18 +674,19 @@ def assessor_generation_request(
 
 def validate_qualification_case(
     case: QualificationCase, result: Mapping[str, Any]
-) -> tuple[ValidatedAssessment, ...]:
-    """Apply generic validation plus the fixed Q1/Q2/Q3 assertions."""
+) -> tuple[ResolvedAssessment, ...]:
+    """Apply semantic validation, deterministic provenance, and fixed assertions."""
 
-    rows = validate_assessor_result(case.request, result)
+    rows = validate_and_resolve_assessor_result(case.request, result)
     by_id = {row.monitor_id: row for row in rows}
     for monitor_id, expected in case.expected.items():
         row = by_id[monitor_id]
         for field_name, expected_value in expected.items():
-            if getattr(row, field_name) != expected_value:
+            actual = getattr(row, field_name)
+            if actual != expected_value:
                 raise AssessorValidationError(
                     f"{case.case_id} monitor {monitor_id} has wrong {field_name}: "
-                    f"expected {expected_value!r}, got {getattr(row, field_name)!r}"
+                    f"expected {expected_value!r}, got {actual!r}"
                 )
     return rows
 
@@ -513,7 +719,7 @@ def qualification_cases() -> tuple[QualificationCase, ...]:
             AssessorMonitor("shade", {"relation": "raises"}, ("s1", "s2")),
         ),
         memory_exposure=(
-            {"source_slot": "s1", "exposure_id": "memory-1", "dependence": "replay_linked"},
+            {"source_slot": "s1", "exposure_id": "memory-1"},
         ),
         replay_ancestry=({"source_slot": "s1", "root": "memory-root-1"},),
     )
@@ -593,15 +799,20 @@ def qualification_cases() -> tuple[QualificationCase, ...]:
 __all__ = [
     "ASSESSOR_PROMPT_VERSION",
     "ASSESSOR_SCHEMA_VERSION",
+    "PROVENANCE_SCHEMA_VERSION",
     "AssessorMonitor",
     "AssessorRequest",
     "AssessorSource",
     "AssessorValidationError",
     "EvidenceQuote",
     "QualificationCase",
-    "ValidatedAssessment",
+    "ProvenanceResolution",
+    "ResolvedAssessment",
+    "ValidatedSemanticAssessment",
     "assessor_generation_request",
     "qualification_cases",
+    "resolve_provenance",
+    "validate_and_resolve_assessor_result",
     "validate_qualification_case",
     "validate_assessor_result",
 ]

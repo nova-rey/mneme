@@ -9,6 +9,7 @@ from mneme.development import (
     AssessorValidationError,
     assessor_generation_request,
     qualification_cases,
+    resolve_provenance,
     validate_assessor_result,
     validate_qualification_case,
 )
@@ -21,12 +22,12 @@ def _row(
     status: str,
     support: str,
     expression: str,
-    dependence: str,
     slots: list[str],
     complete: bool,
     reason: str | None = None,
     source_slot: str | None = None,
     quote: str | None = None,
+    corresponding: list[str] | None = None,
 ) -> dict[str, object]:
     evidence = None
     if source_slot is not None or quote is not None:
@@ -36,63 +37,63 @@ def _row(
         "status": status,
         "relation_support": support,
         "expression_status": expression,
-        "dependence": dependence,
         "coverage": {"complete": complete, "source_slots": slots, "reason": reason},
         "evidence": evidence,
-        "dependence_group": None,
+        "corresponding_source_slots": corresponding or [],
     }
 
 
 def _valid_result(case_id: str) -> dict[str, object]:
     if case_id == "Q1":
         return {
-            "schema_version": "p2-assessor-v1",
+            "schema_version": "p2-assessor-v2",
             "assessments": [
                 _row(
                     "latch", status="present", support="supported", expression="expressed",
-                    dependence="external_supported", slots=["s0"], complete=True,
+                    slots=["s0"], complete=True,
                     source_slot="s0", quote="Pulling the lever released the latch.",
                 ),
                 _row(
                     "echo", status="present", support="supported", expression="expressed",
-                    dependence="current_input_echo", slots=["s1"], complete=True,
+                    slots=["s1"], complete=True,
                     source_slot="s1", quote="Pulling the lever released the latch.",
+                    corresponding=["s0"],
                 ),
                 _row(
                     "unrelated", status="absent", support="unsupported", expression="not_expressed",
-                    dependence="external_supported", slots=["s0"], complete=True,
+                    slots=["s0"], complete=True,
                     reason="The source does not mention the unrelated target.",
                 ),
             ],
         }
     if case_id == "Q2":
         return {
-            "schema_version": "p2-assessor-v1",
+            "schema_version": "p2-assessor-v2",
             "assessments": [
                 _row(
                     "jacket_direction", status="absent", support="unsupported",
-                    expression="not_expressed", dependence="external_supported", slots=["s0"],
+                    expression="not_expressed", slots=["s0"],
                     complete=True,
                     reason="The rain-jacket source does not express the candidate direction.",
                 ),
                 _row(
                     "shade", status="present", support="supported", expression="expressed",
-                    dependence="exposure_linked", slots=["s1", "s2"], complete=True,
-                    source_slot="s1", quote="Turning the handle raises the shade.",
+                    slots=["s1", "s2"], complete=True,
+                    source_slot="s2", quote="Turning the handle raises the shade.",
+                    corresponding=["s1"],
                 ),
             ],
         }
     return {
-        "schema_version": "p2-assessor-v1",
+        "schema_version": "p2-assessor-v2",
         "assessments": [
             _row(
                 "dial", status="present", support="unsupported", expression="expressed",
-                dependence="external_supported", slots=["s0"], complete=True,
+                slots=["s0"], complete=True,
                 source_slot="s0", quote="did not stop the ticking",
             ),
             _row(
                 "unavailable_output", status="unknown", support="unknown", expression="unknown",
-                dependence="unknown",
                 slots=[],
                 complete=False,
                 reason="The model-output source was unavailable.",
@@ -124,7 +125,7 @@ def test_assessor_prompt_exposes_complete_enum_and_json_contract() -> None:
 
     assert "Return raw JSON only" in prompt
     assert "Do not use Markdown fences" in prompt
-    assert '"schema_version": "p2-assessor-v1"' in prompt
+    assert '"schema_version": "p2-assessor-v2"' in prompt
     assert '"assessments": [' in prompt
     for value in ("present", "absent", "unknown"):
         assert value in prompt
@@ -132,22 +133,11 @@ def test_assessor_prompt_exposes_complete_enum_and_json_contract() -> None:
         assert value in prompt
     for value in ("expressed", "not_expressed", "unknown"):
         assert value in prompt
-    for value in (
-        "external_supported",
-        "current_input_echo",
-        "replay_linked",
-        "exposure_linked",
-        "no_identified_link",
-        "unknown",
-        "conflict",
-    ):
-        assert value in prompt
     for field in (
         '"monitor_id"',
         '"status"',
         '"relation_support"',
         '"expression_status"',
-        '"dependence"',
         '"coverage"',
         '"complete"',
         '"source_slots"',
@@ -155,22 +145,26 @@ def test_assessor_prompt_exposes_complete_enum_and_json_contract() -> None:
         '"evidence"',
         '"source_slot"',
         '"quote"',
-        '"dependence_group"',
+        '"corresponding_source_slots"',
     ):
         assert field in prompt
     assert "no omitted or duplicated monitor IDs" in prompt
     assert "Do not invent enum values" in prompt
-    assert "replay_linked when the evidence is directly replayed" in prompt
-    assert "exposure_linked when supplied memory or exposure caused" in prompt
-    assert "Recorded ancestry for one monitor does not apply" in prompt
+    assert "Do not emit dependence labels" in prompt
+    assert '"dependence":' not in prompt
+    assert "MNEME resolves" in prompt
 
 
-def test_q1_echo_and_q2_exposure_ancestry_are_classified() -> None:
+def test_q1_echo_and_q2_exposure_ancestry_are_deterministically_resolved() -> None:
     cases = {case.case_id: case for case in qualification_cases()}
     q1 = validate_qualification_case(cases["Q1"], _valid_result("Q1"))
-    assert {row.monitor_id: row.dependence for row in q1}["echo"] == "current_input_echo"
+    echo = {row.monitor_id: row for row in q1}["echo"]
+    assert echo.dependence == "current_input_echo"
+    assert echo.provenance.credit_eligible is False
     q2 = validate_qualification_case(cases["Q2"], _valid_result("Q2"))
-    assert {row.monitor_id: row.dependence for row in q2}["shade"] == "exposure_linked"
+    shade = {row.monitor_id: row for row in q2}["shade"]
+    assert shade.dependence == "exposure_linked"
+    assert shade.provenance.applicable_categories == ("exposure_linked", "replay_linked")
 
 
 def test_qualification_requests_preserve_complete_proposition_and_source_roles() -> None:
@@ -199,9 +193,7 @@ def test_qualification_requests_preserve_complete_proposition_and_source_roles()
         "jacket_direction",
         "shade",
     }
-    assert q2["memory_exposure"] == [
-        {"source_slot": "s1", "exposure_id": "memory-1", "dependence": "replay_linked"}
-    ]
+    assert q2["memory_exposure"] == [{"source_slot": "s1", "exposure_id": "memory-1"}]
     q3 = cases["Q3"].request.to_dict()
     assert q3["sources"][1]["available"] is False
     assert q3["sources"][1]["role"] == "model_output"
@@ -214,6 +206,7 @@ def test_q3_negation_quote_and_unavailable_source_are_fail_closed() -> None:
     dial = next(row for row in rows if row.monitor_id == "dial")
     assert dial.evidence is not None
     assert dial.evidence.start == case.request.sources[0].text.index("did not stop")
+    assert dial.provenance.credit_eligible is False
     unknown = next(row for row in rows if row.monitor_id == "unavailable_output")
     assert unknown.status == "unknown"
     assert unknown.evidence is None
@@ -279,18 +272,67 @@ def test_unicode_quote_offsets_are_code_point_offsets() -> None:
     assert quote.start == 0
 
 
-def test_recorded_ancestry_rejects_claimed_independence() -> None:
+def test_assessor_cannot_supply_or_override_provenance_labels() -> None:
     case = next(case for case in qualification_cases() if case.case_id == "Q2")
     result = _valid_result("Q2")
     result["assessments"][1]["dependence"] = "no_identified_link"  # type: ignore[index]
-    with pytest.raises(AssessorValidationError, match="despite recorded ancestry"):
+    with pytest.raises(AssessorValidationError, match="unknown field.*dependence"):
         validate_assessor_result(case.request, result)  # type: ignore[arg-type]
 
 
 def test_recorded_ancestry_is_scoped_to_referenced_monitor_sources() -> None:
     case = next(case for case in qualification_cases() if case.case_id == "Q2")
     result = _valid_result("Q2")
-    result["assessments"][0]["dependence"] = "no_identified_link"  # type: ignore[index]
-    rows = validate_assessor_result(case.request, result)  # type: ignore[arg-type]
+    rows = validate_qualification_case(case, result)
     jacket = next(row for row in rows if row.monitor_id == "jacket_direction")
-    assert jacket.dependence == "no_identified_link"
+    assert jacket.dependence == "unknown"
+
+
+def test_external_precedence_ignores_replay_metadata_on_other_slots() -> None:
+    case = next(case for case in qualification_cases() if case.case_id == "Q1")
+    request = replace(
+        case.request,
+        replay_ancestry=(
+            {"source_slot": "s1", "root": "replay-root"},
+            {"source_slot": "s0", "root": "carryover-metadata"},
+        ),
+    )
+    rows = validate_qualification_case(replace(case, request=request), _valid_result("Q1"))
+    assert {row.monitor_id: row.dependence for row in rows} == {
+        "latch": "external_supported",
+        "echo": "current_input_echo",
+        "unrelated": "unknown",
+    }
+
+
+def test_missing_correspondence_is_no_identified_link_without_optimistic_credit() -> None:
+    case = next(case for case in qualification_cases() if case.case_id == "Q1")
+    result = _valid_result("Q1")
+    result["assessments"][1]["corresponding_source_slots"] = []  # type: ignore[index]
+    semantic = validate_assessor_result(case.request, result)
+    rows = resolve_provenance(case.request, semantic)
+    echo = next(row for row in rows if row.monitor_id == "echo")
+    assert echo.dependence == "no_identified_link"
+
+
+def test_external_antecedent_not_marked_echo_without_current_input_binding() -> None:
+    case = next(case for case in qualification_cases() if case.case_id == "Q1")
+    request = replace(case.request, context={})
+    semantic = validate_assessor_result(request, _valid_result("Q1"))
+    rows = resolve_provenance(request, semantic)
+    echo = next(row for row in rows if row.monitor_id == "echo")
+    assert echo.dependence == "no_identified_link"
+
+
+def test_replay_only_and_multiple_ancestry_roots_are_preserved() -> None:
+    case = next(case for case in qualification_cases() if case.case_id == "Q2")
+    request = replace(
+        case.request,
+        memory_exposure=(),
+        replay_ancestry=({"source_slot": "s1", "root": "replay-root"},),
+    )
+    semantic = validate_assessor_result(request, _valid_result("Q2"))
+    rows = resolve_provenance(request, semantic)
+    shade = next(row for row in rows if row.monitor_id == "shade")
+    assert shade.dependence == "replay_linked"
+    assert shade.provenance.ancestry == ({"source_slot": "s1", "root": "replay-root"},)

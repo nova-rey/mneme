@@ -1053,7 +1053,7 @@
       "base_sha": "7157845",
       "campaign": "mneme-phase-two",
       "candidate": {
-        "artifact": "P2.3 offline candidate: assessor contract plus fixed raw-JSON qualification executor; explicit production prompt v2 and scoped-ancestry validator; pilot ledger; route/outcome/identity durability; 268 pytest, Ruff, strict mypy; package smoke; no provider calls",
+        "artifact": "P2.3 offline candidate: semantic assessor v2 plus deterministic provenance resolver v1; fixed raw-JSON qualification executor; multi-root learner accounting; pilot ledger; route/outcome/identity durability; 280 pytest, Ruff, strict mypy; wheel/install smoke; no provider calls",
         "base_sha": "5ac5c0c",
         "returned_at": "2026-09-20T18:25:00.000000Z",
         "returned_by": "/root",
@@ -1090,10 +1090,13 @@
         "docs/receipts/MNEME_P2_Assessor_Role_Separation_Offline_Receipt.md",
         "docs/receipts/MNEME_P2_Assessor_Role_Separation_Offline_Receipt.json",
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_Qwen_V1_Failure_Receipt.md",
-        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Qwen_V1_Failure_Receipt.json"
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Qwen_V1_Failure_Receipt.json",
+        "docs/decisions/MNEME_P2_Assessor_Provenance_Resolution_Addendum.md",
+        "docs/receipts/MNEME_P2_Assessor_Provenance_Resolution_Offline_Receipt.md",
+        "docs/receipts/MNEME_P2_Assessor_Provenance_Resolution_Offline_Receipt.json"
       ],
       "id": "P2.3",
-      "notes": "Offline boundary passed at 7de05a2/a3a8ee6. Historical Gemma qualification failures remain unchanged. The one authorized separated-assessor Qwen qualification dispatched only Q1, returned valid JSON, and failed the frozen semantic dependence assertion (`replay_linked` instead of `external_supported`); Q2/Q3 and the pilot were not dispatched. The credential/provider were functional. No further model, prompt, or resampling action is authorized automatically; the package remains WAITING on external:p2-assessor-qualification and the proposed ceiling remains 299 calls / 204,288 output tokens.",
+      "notes": "Offline boundary passed at 7de05a2/a3a8ee6. Historical Gemma and Qwen qualification failures remain unchanged. The additive provenance-resolution correction now uses assessor schema p2-assessor-v2/prompt p2-assessor-production-v3 plus p2-provenance-v1 deterministic resolution; raw semantic output and derived provenance are persisted separately, and multi-root learner caps use the minimum remaining budget. No provider call occurred during this correction. A fresh three-call qualification authorization is required; the package remains WAITING on external:p2-assessor-qualification and the proposed ceiling remains 299 calls / 204,288 output tokens.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1120,13 +1123,14 @@
       "session_ids": [],
       "status": "WAITING",
       "title": "Assessor qualification and bounded developmental pilot",
-      "updated_at": "2026-09-20T19:50:00.000000Z",
+      "updated_at": "2026-09-20T20:05:09.000000Z",
       "validation": {
         "required": [
           "p23-assessor-contract",
           "p23-pilot-ledger",
           "p23-offline-validation",
-          "p23-boundary-audit"
+          "p23-boundary-audit",
+          "p23-provenance-resolution"
         ],
         "results": {
           "p23-assessor-qualification": {
@@ -1135,8 +1139,13 @@
             "status": "FAIL"
           },
           "p23-assessor-contract": {
-            "receipt": "assessment.py production-shaped request/result contract; Q1/Q2/Q3, strict quotes/coverage/ancestry tests",
+            "receipt": "assessment.py semantic assessor schema v2 and deterministic provenance resolver; Q1/Q2/Q3 strict quotes/coverage/correspondence tests",
             "recorded_at": "2026-09-20T17:05:14.693257Z",
+            "status": "PASS"
+          },
+          "p23-provenance-resolution": {
+            "receipt": "docs/receipts/MNEME_P2_Assessor_Provenance_Resolution_Offline_Receipt.md and .json; 280 pytest; Ruff; strict mypy; wheel/install smoke; no provider calls",
+            "recorded_at": "2026-09-20T20:05:09.000000Z",
             "status": "PASS"
           },
           "p23-boundary-audit": {

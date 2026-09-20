@@ -151,6 +151,7 @@ class Observation:
     dependence: Dependence | str = Dependence.EXTERNAL_SUPPORTED
     status: ObservationStatus | str = ObservationStatus.PRESENT
     group_key: str | None = None
+    provenance_group_keys: tuple[str, ...] = ()
     occurrence_key: str | None = None
     covered: bool = True
     relevant: bool = True
@@ -173,6 +174,10 @@ class Observation:
         _as_status(self.status)
         if self.group_key is not None and not self.group_key:
             raise LearnerError("group_key must be non-empty when supplied")
+        if len(self.provenance_group_keys) != len(set(self.provenance_group_keys)):
+            raise LearnerError("provenance_group_keys must not contain duplicates")
+        if any(not item for item in self.provenance_group_keys):
+            raise LearnerError("provenance_group_keys must contain non-empty values")
         if self.occurrence_key is not None and not self.occurrence_key:
             raise LearnerError("occurrence_key must be non-empty when supplied")
         if self.occurrence_key is None and self.observation_id is not None:
@@ -191,6 +196,7 @@ class Observation:
             "dependence": _as_dependence(self.dependence).value,
             "status": _as_status(self.status).value,
             "group_key": self.group_key,
+            "provenance_group_keys": list(self.provenance_group_keys),
             "occurrence_key": self.occurrence_key,
             "covered": self.covered,
             "relevant": self.relevant,
@@ -638,6 +644,7 @@ def _dedupe_observations(observations: Sequence[Observation]) -> tuple[Observati
                 dependence=Dependence.CONFLICT,
                 status=ObservationStatus.UNKNOWN,
                 group_key=item.group_key,
+                provenance_group_keys=item.provenance_group_keys,
                 occurrence_key=occurrence,
                 covered=False,
                 relevant=False,
@@ -988,7 +995,7 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
             elif len(statuses) > 1:
                 target_status[key] = ObservationStatus.UNKNOWN
 
-        candidates: list[tuple[Observation, int, int, str, int]] = []
+        candidates: list[tuple[Observation, int, int, tuple[str, ...], int]] = []
         # Source pools are divided among distinct admitted target keys before
         # dependence discounts. Zero-credit observations retain their share.
         for role in (SourceRole.EXTERNAL, SourceRole.MODEL_OUTPUT):
@@ -1013,8 +1020,9 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
                 dependence = _as_dependence(item.dependence)
                 numerator, denominator = _dependence_factor(dependence)
                 proposed = _mul_div(shares[item.key], numerator, denominator)
-                group = item.group_key or item.occurrence_key or transition.operation_id
-                candidates.append((item, proposed, numerator, group, denominator))
+                fallback_group = item.group_key or item.occurrence_key or transition.operation_id
+                groups = item.provenance_group_keys or (fallback_group,)
+                candidates.append((item, proposed, numerator, groups, denominator))
 
         candidates.sort(
             key=lambda item: (
@@ -1029,7 +1037,7 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
         per_operation_remaining = OPPORTUNITY_CAP
         credited_by_target: dict[tuple[str, str], int] = defaultdict(int)
         consolidation_possible: dict[tuple[str, str], bool] = defaultdict(bool)
-        for item, proposed, _numerator, group, _denominator in candidates:
+        for item, proposed, _numerator, groups, _denominator in candidates:
             dependence = _as_dependence(item.dependence)
             edge = edges.get(item.key, EdgeState(item.target_key, item.context))
             lifetime = dict(edge.lifetime_by_group)
@@ -1039,16 +1047,21 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
             )
             allowed = min(
                 proposed,
-                max(0, LIFETIME_CAP - lifetime.get(group, 0)),
+                *(max(0, LIFETIME_CAP - lifetime.get(group, 0)) for group in groups),
                 max(0, per_operation_remaining),
                 max(0, ROLLING_CAP - rolling_used),
             )
             if _is_induced(dependence):
-                allowed = min(allowed, max(0, INDUCED_CAP - induced.get(group, 0)))
+                allowed = min(
+                    allowed,
+                    *(max(0, INDUCED_CAP - induced.get(group, 0)) for group in groups),
+                )
             if allowed:
-                lifetime[group] = lifetime.get(group, 0) + allowed
+                for group in groups:
+                    lifetime[group] = lifetime.get(group, 0) + allowed
                 if _is_induced(dependence):
-                    induced[group] = induced.get(group, 0) + allowed
+                    for group in groups:
+                        induced[group] = induced.get(group, 0) + allowed
                 per_operation_remaining -= allowed
                 credited_by_target[item.key] += allowed
                 if _is_consolidatable(dependence):
@@ -1063,7 +1076,7 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
                     item.target_key,
                     item.context,
                     _as_role(item.source_role).value,
-                    group,
+                    "|".join(groups),
                     dependence.value,
                     proposed,
                     allowed,

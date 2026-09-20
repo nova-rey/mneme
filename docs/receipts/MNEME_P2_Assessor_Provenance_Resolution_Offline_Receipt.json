@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "amendment": "P2-ASSESSOR-PROVENANCE-RESOLUTION-01",
+  "base_sha": "fe31d6b0fda2f1069250f57cde769528b2fa2a1d",
+  "status": "OFFLINE_GATE_PASS",
+  "provider_calls": 0,
+  "contracts": {
+    "assessor_schema": "p2-assessor-v2",
+    "assessor_prompt": "p2-assessor-production-v3",
+    "provenance_schema": "p2-provenance-v1"
+  },
+  "validation": {
+    "pytest": "280 passed",
+    "focused": "31 passed",
+    "ruff": "PASS",
+    "mypy_strict": "PASS (47 source files)",
+    "package_smoke": "PASS (wheel build and fresh-install mneme --help)"
+  },
+  "historical_evidence_preserved": true,
+  "live_qualification_authorized": false,
+  "pilot_calls": 0
+}

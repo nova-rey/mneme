@@ -38,12 +38,18 @@ def _results() -> dict[str, str]:
                 "status": expected.get("status", "unknown"),
                 "relation_support": expected.get("relation_support", "unknown"),
                 "expression_status": expected.get("expression_status", "unknown"),
-                "dependence": expected.get("dependence", "unknown"),
                 "coverage": {"complete": False, "source_slots": [], "reason": "unavailable"},
                 "evidence": None,
+                "corresponding_source_slots": [],
             }
             if row["status"] == "present":
                 source = monitor.required_source_slots[0]
+                if case.case_id == "Q1" and monitor.monitor_id == "echo":
+                    source = "s1"
+                    row["corresponding_source_slots"] = ["s0"]
+                elif case.case_id == "Q2" and monitor.monitor_id == "shade":
+                    source = "s2"
+                    row["corresponding_source_slots"] = ["s1"]
                 text = next(item.text for item in case.request.sources if item.slot == source)
                 row["coverage"] = {
                     "complete": True,
@@ -59,7 +65,7 @@ def _results() -> dict[str, str]:
                 }
             rows.append(row)
         outputs[case.case_id] = json.dumps(
-            {"schema_version": "p2-assessor-v1", "assessments": rows}
+            {"schema_version": "p2-assessor-v2", "assessments": rows}
         )
     return outputs
 
@@ -99,6 +105,13 @@ def test_qualification_persists_results_before_validation_and_passes(tmp_path: P
         (pilot.run_path / "qualification" / f"q{ordinal}.json").is_file()
         for ordinal in range(1, 4)
     )
+    artifact = json.loads(
+        (pilot.run_path / "qualification" / "q1.json").read_text(encoding="utf-8")
+    )
+    assert artifact["result"]["usage"] is not None
+    assert artifact["semantic_observations"]
+    assert artifact["provenance_resolution"]
+    assert artifact["provenance_resolution"][1]["dependence"] == "current_input_echo"
 
 
 def test_invalid_qualification_is_retained_and_does_not_retry(tmp_path: Path) -> None:

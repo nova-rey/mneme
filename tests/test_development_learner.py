@@ -13,6 +13,7 @@ from mneme.development import (
     route_score,
     select_routes,
 )
+from mneme.development.learner import LIFETIME_CAP
 
 
 def test_model_origin_observation_is_bounded_and_replayable() -> None:
@@ -297,6 +298,41 @@ def test_saturated_route_remains_closed_under_dependent_recurrence() -> None:
         _consequence("recovery", direction=1, opportunity=25),
     )
     assert recovered.state.route("route-a").consequence == -200_000
+
+
+def test_multiple_provenance_roots_use_the_minimum_remaining_cap() -> None:
+    state = LearnerState(
+        edge_states=(
+            EdgeState(
+                "edge-a",
+                lifetime_by_group=(
+                    ("exposure:memory-1", LIFETIME_CAP - 10),
+                    ("replay:root-1", LIFETIME_CAP),
+                ),
+            ),
+        )
+    )
+    result = apply_transition(
+        state,
+        TransitionInput(
+            "multi-root",
+            observations=(
+                Observation(
+                    "edge-a",
+                    source_role="model",
+                    dependence="exposure_linked",
+                    provenance_group_keys=("exposure:memory-1", "replay:root-1"),
+                    observation_id="multi-root-observation",
+                ),
+            ),
+        ),
+    )
+    assert result.contributions[0].awarded == 0
+    assert result.contributions[0].reason == "cap_exhausted"
+    assert dict(result.state.edge("edge-a").lifetime_by_group) == {
+        "exposure:memory-1": LIFETIME_CAP - 10,
+        "replay:root-1": LIFETIME_CAP,
+    }
 
 
 def test_competing_and_hard_gated_routes_remain_correct_under_restraint() -> None:

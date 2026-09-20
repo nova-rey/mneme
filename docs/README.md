@@ -95,7 +95,12 @@ The documents are preserved in their supplied form and are intentionally not mer
   The resulting one-call semantic stop is recorded in [the Qwen assessor
   qualification failure receipt](receipts/MNEME_P2.3_Assessor_Qualification_Qwen_V1_Failure_Receipt.md)
   ([JSON](receipts/MNEME_P2.3_Assessor_Qualification_Qwen_V1_Failure_Receipt.json));
-  no pilot call was made.
+  no pilot call was made. The additive [assessor/provenance resolution
+  addendum](decisions/MNEME_P2_Assessor_Provenance_Resolution_Addendum.md)
+  moves developmental dependence resolution to deterministic software while
+  preserving semantic assessor judgments; its offline evidence is recorded in
+  the [offline resolution receipt](receipts/MNEME_P2_Assessor_Provenance_Resolution_Offline_Receipt.md)
+  ([JSON](receipts/MNEME_P2_Assessor_Provenance_Resolution_Offline_Receipt.json)).
 
   Future design context: [Developmental Self-Context](architecture/future/MNEME_Developmental_Self_Context_Architecture.md).
   This reference does not change the phase's implementation scope, frozen
