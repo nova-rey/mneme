@@ -463,6 +463,7 @@
 ## 2026-09-20 P2.3 qualification stop
 
 - Executed exactly the fixed three-call DeepInfra assessor qualification under `p2-developmental-pilot / contract_revision 1`. All three provider calls returned and were durably retained with usage (1,450 input, 279 output, 1,729 total tokens), proving provider/credential functionality. Gemma returned newline-delimited single-object text with unsupported enum values instead of the required raw JSON object containing an `assessments` array; all three cases failed structural validation. No retries, repairs, replacement calls, or pilot calls were made. P2.3 is stopped at qualification failure; the proposed 299-call pilot ceiling remains untouched.
+- Reconciled the P2.3 queue notes and evidence references to the qualification failure receipt. The package remains WAITING on a reviewed correction/live authorization; Phase Two is not declared complete.
 
 ## 2026-09-20 P2.3 assessor contract candidate
 
