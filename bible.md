@@ -652,3 +652,7 @@
 ## 2026-09-20 Phase Two queue reconciliation after polarity audit
 
 - Pointed P2.2 and P2.3 at candidate `f11b884`; P2.2 is `VALIDATING` pending dedicated recovery/identity receipts and final adversarial audit. P2.3 remains `WAITING` on P2.2 and the fixed pilot boundary; the polarity-v8 qualification pass remains the latest live evidence and no unchanged qualification was resampled.
+
+## 2026-09-20 P2.2 recovery and evidence audit
+
+- Added the five required P2.2 evidence receipts covering six deterministic dynamics scenarios, feedback/rebuild, reviewed identity, fork/revocation, and recovery. Added a simulated quarantine-rebuild interruption proving the authority event remains durable and explicit replay rebuild recovers a coherent materialized state. Offline validation passed at 313 pytest tests, Ruff, strict mypy, and no provider calls; P2.2 remains validating until the pushed CI result is recorded.

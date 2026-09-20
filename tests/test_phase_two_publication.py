@@ -8,11 +8,13 @@ import pytest
 
 from mneme.contracts import GenerationRequest
 from mneme.development import (
+    AuthorityError,
     ConsequenceAssessment,
     FeedbackService,
     Observation,
     QuarantineService,
 )
+from mneme.development import recovery as recovery_module
 from mneme.development.recovery import verify_replay
 from mneme.hosts import FakeHost
 from mneme.memory import InterpretationPublisher, PublicationError, Residue, validate_residue
@@ -247,6 +249,47 @@ def test_replay_verification_and_quarantine_rebuild_use_canonical_binding(tmp_pa
         assert restored["skipped_operation_ids"] == []
         assert released.authority_revision > added.authority_revision
         assert receipt.status == "ACCEPTED"
+
+
+def test_quarantine_rebuild_interruption_is_durable_and_recoverable(
+    tmp_path, monkeypatch
+):
+    store, instance, episode_id, residue = _episode_and_residue(tmp_path, learn=True)
+    with store:
+        publisher = InterpretationPublisher(store, instance)
+        publisher.publish(
+            publisher.prepare(episode_id, operation_id="interrupt-interpretation"),
+            residue,
+            development_operation_id="interrupt-development",
+            opportunity=1,
+            observations=(Observation(target_key="edge-ab", occurrence_key="interrupt"),),
+        )
+        canonical = store.connection.execute(
+            "SELECT canonical_key FROM semantic_bindings "
+            "WHERE binding_id=(SELECT binding_id FROM development_observations "
+            "WHERE operation_id=?)",
+            ("interrupt-development",),
+        ).fetchone()[0]
+
+        original_rebuild = recovery_module.rebuild_learner
+
+        def interrupted(*args, **kwargs):
+            raise RuntimeError("simulated interruption after authority commit")
+
+        monkeypatch.setattr(recovery_module, "rebuild_learner", interrupted)
+        with pytest.raises(AuthorityError, match="rebuild failed"):
+            QuarantineService(store, instance).add(
+                "edge", str(canonical), "simulated interrupted rebuild"
+            )
+        assert QuarantineService(store, instance).is_quarantined("edge", str(canonical))
+
+        monkeypatch.setattr(recovery_module, "rebuild_learner", original_rebuild)
+        # The authority event is durable even though materialization publication
+        # was interrupted; explicit recovery rebuilds from immutable history.
+        recovery_module.rebuild_learner(store, reason="post-interruption recovery")
+        replay = verify_replay(store)
+        assert replay["matches_materialized"] is True
+        assert replay["skipped_operation_ids"] == ["interrupt-development"]
 
 
 def test_feedback_proposal_acceptance_rebuilds_attributable_consequence(tmp_path):

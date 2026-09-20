@@ -76,8 +76,12 @@ The documents are preserved in their supplied form and are intentionally not mer
 * [Approved Phase Two self-conditioned developmental runtime plan](<Approved Plans/MNEME_Phase_Two_Self_Conditioned_Developmental_Runtime_Plan.md>)
   defines the bounded replayable learner, learned contextual restraint, source/dependence
   accounting, production-equivalent assessor qualification, two-sibling pilot, and
-  the three stop-audit-publish gates. The offline P2.3 assessor/pilot boundary is
-  recorded in [the offline boundary receipt](receipts/MNEME_P2.3_Offline_Assessor_Pilot_Boundary_Receipt.md);
+  the three stop-audit-publish gates. The P2.2 offline [six-scenarios](receipts/MNEME_P2.2_Six_Scenarios_Receipt.md),
+  [feedback/rebuild](receipts/MNEME_P2.2_Feedback_Rebuild_Receipt.md),
+  [identity](receipts/MNEME_P2.2_Identity_Receipt.md),
+  [fork/revocation](receipts/MNEME_P2.2_Fork_Revocation_Receipt.md), and
+  [recovery](receipts/MNEME_P2.2_Recovery_Receipt.md) receipts are published beside
+  [the offline P2.3 assessor/pilot boundary receipt](receipts/MNEME_P2.3_Offline_Assessor_Pilot_Boundary_Receipt.md);
   the fixed qualification failure is recorded in [the qualification failure receipt](receipts/MNEME_P2.3_Assessor_Qualification_Failure_Receipt.md);
   the reviewed prompt-contract remediation and its offline validation are recorded in
   [the remediation receipt](receipts/MNEME_P2.3_Assessor_Prompt_Contract_Remediation_Receipt.md);
