@@ -134,6 +134,9 @@ The documents are preserved in their supplied form and are intentionally not mer
   The prospective polarity correction and learner-boundary audit are recorded in [the polarity remediation receipt](receipts/MNEME_P2.3_Assessor_Polarity_Contract_Remediation_Receipt.md)
   ([JSON](receipts/MNEME_P2.3_Assessor_Polarity_Contract_Remediation_Receipt.json));
   v5/v7 is offline-validated and historical v4/v6 evidence remains unchanged.
+  The fixed v5/v7 qualification passed all three cases in [the polarity v8 pass receipt](receipts/MNEME_P2.3_Assessor_Qualification_Polarity_V8_Pass_Receipt.md)
+  ([JSON](receipts/MNEME_P2.3_Assessor_Qualification_Polarity_V8_Pass_Receipt.json));
+  the bounded pilot may proceed under the unchanged ceiling.
 
   Future design context: [Developmental Self-Context](architecture/future/MNEME_Developmental_Self_Context_Architecture.md).
   This reference does not change the phase's implementation scope, frozen

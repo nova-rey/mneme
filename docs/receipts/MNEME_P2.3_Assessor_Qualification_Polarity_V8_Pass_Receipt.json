@@ -1,0 +1,911 @@
+{
+  "assessor": {
+    "credential_functional": true,
+    "model_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+    "provider": "DeepInfra"
+  },
+  "calls": [
+    {
+      "case_id": "Q1",
+      "provenance_resolution": [
+        {
+          "ancestry": [],
+          "applicable_categories": [
+            "external_supported"
+          ],
+          "corresponding_source_slots": [],
+          "credit_eligible": true,
+          "dependence": "external_supported",
+          "monitor_id": "latch",
+          "provenance_group_keys": [
+            "external:s0"
+          ],
+          "resolution_reason": "runtime_source_role_and_recorded_ancestry",
+          "schema_version": "p2-provenance-v1"
+        },
+        {
+          "ancestry": [],
+          "applicable_categories": [
+            "current_input_echo"
+          ],
+          "corresponding_source_slots": [
+            "s0"
+          ],
+          "credit_eligible": false,
+          "dependence": "current_input_echo",
+          "monitor_id": "echo",
+          "provenance_group_keys": [],
+          "resolution_reason": "runtime_source_role_and_recorded_ancestry",
+          "schema_version": "p2-provenance-v1"
+        },
+        {
+          "ancestry": [],
+          "applicable_categories": [],
+          "corresponding_source_slots": [],
+          "credit_eligible": false,
+          "dependence": "unknown",
+          "monitor_id": "unrelated",
+          "provenance_group_keys": [],
+          "resolution_reason": "non_present_or_unknown_semantic_result",
+          "schema_version": "p2-provenance-v1"
+        }
+      ],
+      "provider_result": {
+        "content": "{\n  \"schema_version\": \"p2-assessor-v5\",\n  \"assessments\": [\n    {\n      \"monitor_id\": \"latch\",\n      \"status\": \"present\",\n      \"relation_support\": \"supported\",\n      \"expression_status\": \"affirmed\",\n      \"coverage\": {\n        \"complete\": true,\n        \"source_slots\": [\"s0\"],\n        \"reason\": null\n      },\n      \"evidence\": {\n        \"source_slot\": \"s0\",\n        \"quote\": \"Pulling the lever released the latch.\"\n      },\n      \"corresponding_source_slots\": []\n    },\n    {\n      \"monitor_id\": \"echo\",\n      \"status\": \"present\",\n      \"relation_support\": \"supported\",\n      \"expression_status\": \"affirmed\",\n      \"coverage\": {\n        \"complete\": true,\n        \"source_slots\": [\"s0\", \"s1\"],\n        \"reason\": null\n      },\n      \"evidence\": {\n        \"source_slot\": \"s1\",\n        \"quote\": \"Pulling the lever released the latch.\"\n      },\n      \"corresponding_source_slots\": [\"s0\"]\n    },\n    {\n      \"monitor_id\": \"unrelated\",\n      \"status\": \"absent\",\n      \"relation_support\": \"unsupported\",\n      \"expression_status\": \"not_expressed\",\n      \"coverage\": {\n        \"complete\": true,\n        \"source_slots\": [\"s0\"],\n        \"reason\": \"The proposition involving 'unrelated' is not addressed in the source.\"\n      },\n      \"evidence\": null,\n      \"corresponding_source_slots\": []\n    }\n  ]\n}",
+        "finish_reason": "stop",
+        "model_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "provenance": {
+          "host": {
+            "capabilities": [
+              "text_generation",
+              "token_usage"
+            ],
+            "chat_template": "deepinfra_openai_chat",
+            "execution": {
+              "base_url": "https://api.deepinfra.com/v1/openai",
+              "canonical_upstream_model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+              "catalog_context_length": 262144,
+              "catalog_quantization": "fp8",
+              "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+              "hosted_model_revision": "unknown",
+              "rendering_mode": "deepinfra_openai_chat",
+              "service_tier": "standard"
+            },
+            "model_family": "Qwen3 235B A22B Instruct 2507",
+            "model_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+            "model_revision": null,
+            "provider": "DeepInfra",
+            "quantization": "fp8",
+            "runtime": "deepinfra-openai-compatible",
+            "runtime_version": null,
+            "tokenizer_id": null,
+            "tokenizer_revision": null
+          },
+          "request_chars": 5574
+        },
+        "provider": "DeepInfra",
+        "seed": null,
+        "usage": {
+          "input_tokens": 1247,
+          "output_tokens": 335,
+          "total_tokens": 1582
+        }
+      },
+      "request": {
+        "candidate": {
+          "from": "lever",
+          "relation": "causes",
+          "to": "latch_release"
+        },
+        "context": {
+          "current_input_source_slots": [
+            "s0"
+          ]
+        },
+        "memory_exposure": [],
+        "monitors": [
+          {
+            "context": "general",
+            "correspondence_source_slots": [],
+            "evidence_source_slots": [
+              "s0"
+            ],
+            "monitor_id": "latch",
+            "relation": {
+              "from": "lever",
+              "relation": "causes",
+              "to": "latch_release"
+            },
+            "required_source_slots": [
+              "s0"
+            ]
+          },
+          {
+            "context": "general",
+            "correspondence_source_slots": [
+              "s0"
+            ],
+            "evidence_source_slots": [
+              "s1"
+            ],
+            "monitor_id": "echo",
+            "relation": {
+              "from": "lever",
+              "relation": "causes",
+              "to": "latch_release"
+            },
+            "required_source_slots": [
+              "s0",
+              "s1"
+            ]
+          },
+          {
+            "context": "general",
+            "correspondence_source_slots": [],
+            "evidence_source_slots": [
+              "s0"
+            ],
+            "monitor_id": "unrelated",
+            "relation": {
+              "from": "lever",
+              "relation": "causes",
+              "to": "unrelated"
+            },
+            "required_source_slots": [
+              "s0"
+            ]
+          }
+        ],
+        "prompt_version": "p2-assessor-production-v7",
+        "replay_ancestry": [],
+        "schema_version": "p2-assessor-v5",
+        "source_purpose_mask": [],
+        "sources": [
+          {
+            "available": true,
+            "role": "external",
+            "slot": "s0",
+            "source_id": null,
+            "text": "Pulling the lever released the latch."
+          },
+          {
+            "available": true,
+            "role": "model_output",
+            "slot": "s1",
+            "source_id": null,
+            "text": "Pulling the lever released the latch."
+          }
+        ]
+      },
+      "semantic_observations": [
+        {
+          "corresponding_source_slots": [],
+          "coverage": {
+            "complete": true,
+            "reason": null,
+            "source_slots": [
+              "s0"
+            ]
+          },
+          "evidence": {
+            "end": 37,
+            "quote": "Pulling the lever released the latch.",
+            "source_slot": "s0",
+            "start": 0
+          },
+          "expression_status": "affirmed",
+          "monitor_id": "latch",
+          "relation_support": "supported",
+          "status": "present"
+        },
+        {
+          "corresponding_source_slots": [
+            "s0"
+          ],
+          "coverage": {
+            "complete": true,
+            "reason": null,
+            "source_slots": [
+              "s0",
+              "s1"
+            ]
+          },
+          "evidence": {
+            "end": 37,
+            "quote": "Pulling the lever released the latch.",
+            "source_slot": "s1",
+            "start": 0
+          },
+          "expression_status": "affirmed",
+          "monitor_id": "echo",
+          "relation_support": "supported",
+          "status": "present"
+        },
+        {
+          "corresponding_source_slots": [],
+          "coverage": {
+            "complete": true,
+            "reason": "The proposition involving 'unrelated' is not addressed in the source.",
+            "source_slots": [
+              "s0"
+            ]
+          },
+          "evidence": null,
+          "expression_status": "not_expressed",
+          "monitor_id": "unrelated",
+          "relation_support": "unsupported",
+          "status": "absent"
+        }
+      ],
+      "valid": true,
+      "validated": [
+        {
+          "provenance": {
+            "ancestry": [],
+            "applicable_categories": [
+              "external_supported"
+            ],
+            "corresponding_source_slots": [],
+            "credit_eligible": true,
+            "dependence": "external_supported",
+            "monitor_id": "latch",
+            "provenance_group_keys": [
+              "external:s0"
+            ],
+            "resolution_reason": "runtime_source_role_and_recorded_ancestry",
+            "schema_version": "p2-provenance-v1"
+          },
+          "semantic": {
+            "corresponding_source_slots": [],
+            "coverage": {
+              "complete": true,
+              "reason": null,
+              "source_slots": [
+                "s0"
+              ]
+            },
+            "evidence": {
+              "end": 37,
+              "quote": "Pulling the lever released the latch.",
+              "source_slot": "s0",
+              "start": 0
+            },
+            "expression_status": "affirmed",
+            "monitor_id": "latch",
+            "relation_support": "supported",
+            "status": "present"
+          }
+        },
+        {
+          "provenance": {
+            "ancestry": [],
+            "applicable_categories": [
+              "current_input_echo"
+            ],
+            "corresponding_source_slots": [
+              "s0"
+            ],
+            "credit_eligible": false,
+            "dependence": "current_input_echo",
+            "monitor_id": "echo",
+            "provenance_group_keys": [],
+            "resolution_reason": "runtime_source_role_and_recorded_ancestry",
+            "schema_version": "p2-provenance-v1"
+          },
+          "semantic": {
+            "corresponding_source_slots": [
+              "s0"
+            ],
+            "coverage": {
+              "complete": true,
+              "reason": null,
+              "source_slots": [
+                "s0",
+                "s1"
+              ]
+            },
+            "evidence": {
+              "end": 37,
+              "quote": "Pulling the lever released the latch.",
+              "source_slot": "s1",
+              "start": 0
+            },
+            "expression_status": "affirmed",
+            "monitor_id": "echo",
+            "relation_support": "supported",
+            "status": "present"
+          }
+        },
+        {
+          "provenance": {
+            "ancestry": [],
+            "applicable_categories": [],
+            "corresponding_source_slots": [],
+            "credit_eligible": false,
+            "dependence": "unknown",
+            "monitor_id": "unrelated",
+            "provenance_group_keys": [],
+            "resolution_reason": "non_present_or_unknown_semantic_result",
+            "schema_version": "p2-provenance-v1"
+          },
+          "semantic": {
+            "corresponding_source_slots": [],
+            "coverage": {
+              "complete": true,
+              "reason": "The proposition involving 'unrelated' is not addressed in the source.",
+              "source_slots": [
+                "s0"
+              ]
+            },
+            "evidence": null,
+            "expression_status": "not_expressed",
+            "monitor_id": "unrelated",
+            "relation_support": "unsupported",
+            "status": "absent"
+          }
+        }
+      ],
+      "validation_error": null
+    },
+    {
+      "case_id": "Q2",
+      "provenance_resolution": [
+        {
+          "ancestry": [],
+          "applicable_categories": [],
+          "corresponding_source_slots": [],
+          "credit_eligible": false,
+          "dependence": "unknown",
+          "monitor_id": "jacket_direction",
+          "provenance_group_keys": [],
+          "resolution_reason": "non_present_or_unknown_semantic_result",
+          "schema_version": "p2-provenance-v1"
+        },
+        {
+          "ancestry": [
+            {
+              "exposure_id": "memory-1",
+              "source_slot": "s1"
+            },
+            {
+              "root": "memory-root-1",
+              "source_slot": "s1"
+            }
+          ],
+          "applicable_categories": [
+            "exposure_linked",
+            "replay_linked"
+          ],
+          "corresponding_source_slots": [
+            "s1"
+          ],
+          "credit_eligible": true,
+          "dependence": "exposure_linked",
+          "monitor_id": "shade",
+          "provenance_group_keys": [
+            "exposure:memory-1",
+            "replay:memory-root-1"
+          ],
+          "resolution_reason": "runtime_source_role_and_recorded_ancestry",
+          "schema_version": "p2-provenance-v1"
+        }
+      ],
+      "provider_result": {
+        "content": "{\n  \"schema_version\": \"p2-assessor-v5\",\n  \"assessments\": [\n    {\n      \"monitor_id\": \"jacket_direction\",\n      \"status\": \"absent\",\n      \"relation_support\": \"unsupported\",\n      \"expression_status\": \"not_expressed\",\n      \"coverage\": {\n        \"complete\": true,\n        \"source_slots\": [\"s0\"],\n        \"reason\": \"The proposition 'rain_jacket raises shade' is not addressed in the source.\"\n      },\n      \"evidence\": null,\n      \"corresponding_source_slots\": []\n    },\n    {\n      \"monitor_id\": \"shade\",\n      \"status\": \"present\",\n      \"relation_support\": \"supported\",\n      \"expression_status\": \"affirmed\",\n      \"coverage\": {\n        \"complete\": true,\n        \"source_slots\": [\"s1\", \"s2\"],\n        \"reason\": null\n      },\n      \"evidence\": {\n        \"source_slot\": \"s2\",\n        \"quote\": \"Turning the handle raises the shade.\"\n      },\n      \"corresponding_source_slots\": [\"s1\"]\n    }\n  ]\n}",
+        "finish_reason": "stop",
+        "model_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "provenance": {
+          "host": {
+            "capabilities": [
+              "text_generation",
+              "token_usage"
+            ],
+            "chat_template": "deepinfra_openai_chat",
+            "execution": {
+              "base_url": "https://api.deepinfra.com/v1/openai",
+              "canonical_upstream_model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+              "catalog_context_length": 262144,
+              "catalog_quantization": "fp8",
+              "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+              "hosted_model_revision": "unknown",
+              "rendering_mode": "deepinfra_openai_chat",
+              "service_tier": "standard"
+            },
+            "model_family": "Qwen3 235B A22B Instruct 2507",
+            "model_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+            "model_revision": null,
+            "provider": "DeepInfra",
+            "quantization": "fp8",
+            "runtime": "deepinfra-openai-compatible",
+            "runtime_version": null,
+            "tokenizer_id": null,
+            "tokenizer_revision": null
+          },
+          "request_chars": 5491
+        },
+        "provider": "DeepInfra",
+        "seed": null,
+        "usage": {
+          "input_tokens": 1232,
+          "output_tokens": 233,
+          "total_tokens": 1465
+        }
+      },
+      "request": {
+        "candidate": {
+          "from": "rain_jacket",
+          "relation": "raises",
+          "to": "shade"
+        },
+        "context": {},
+        "memory_exposure": [
+          {
+            "exposure_id": "memory-1",
+            "source_slot": "s1"
+          }
+        ],
+        "monitors": [
+          {
+            "context": "general",
+            "correspondence_source_slots": [],
+            "evidence_source_slots": [
+              "s0"
+            ],
+            "monitor_id": "jacket_direction",
+            "relation": {
+              "from": "rain_jacket",
+              "relation": "raises",
+              "to": "shade"
+            },
+            "required_source_slots": [
+              "s0"
+            ]
+          },
+          {
+            "context": "general",
+            "correspondence_source_slots": [
+              "s1"
+            ],
+            "evidence_source_slots": [
+              "s2"
+            ],
+            "monitor_id": "shade",
+            "relation": {
+              "from": "handle",
+              "relation": "raises",
+              "to": "shade"
+            },
+            "required_source_slots": [
+              "s1",
+              "s2"
+            ]
+          }
+        ],
+        "prompt_version": "p2-assessor-production-v7",
+        "replay_ancestry": [
+          {
+            "root": "memory-root-1",
+            "source_slot": "s1"
+          }
+        ],
+        "schema_version": "p2-assessor-v5",
+        "source_purpose_mask": [],
+        "sources": [
+          {
+            "available": true,
+            "role": "external",
+            "slot": "s0",
+            "source_id": null,
+            "text": "The rain jacket kept my shoulders dry."
+          },
+          {
+            "available": true,
+            "role": "memory",
+            "slot": "s1",
+            "source_id": null,
+            "text": "Turning the handle raises the shade."
+          },
+          {
+            "available": true,
+            "role": "model_output",
+            "slot": "s2",
+            "source_id": null,
+            "text": "Turning the handle raises the shade."
+          }
+        ]
+      },
+      "semantic_observations": [
+        {
+          "corresponding_source_slots": [],
+          "coverage": {
+            "complete": true,
+            "reason": "The proposition 'rain_jacket raises shade' is not addressed in the source.",
+            "source_slots": [
+              "s0"
+            ]
+          },
+          "evidence": null,
+          "expression_status": "not_expressed",
+          "monitor_id": "jacket_direction",
+          "relation_support": "unsupported",
+          "status": "absent"
+        },
+        {
+          "corresponding_source_slots": [
+            "s1"
+          ],
+          "coverage": {
+            "complete": true,
+            "reason": null,
+            "source_slots": [
+              "s1",
+              "s2"
+            ]
+          },
+          "evidence": {
+            "end": 36,
+            "quote": "Turning the handle raises the shade.",
+            "source_slot": "s2",
+            "start": 0
+          },
+          "expression_status": "affirmed",
+          "monitor_id": "shade",
+          "relation_support": "supported",
+          "status": "present"
+        }
+      ],
+      "valid": true,
+      "validated": [
+        {
+          "provenance": {
+            "ancestry": [],
+            "applicable_categories": [],
+            "corresponding_source_slots": [],
+            "credit_eligible": false,
+            "dependence": "unknown",
+            "monitor_id": "jacket_direction",
+            "provenance_group_keys": [],
+            "resolution_reason": "non_present_or_unknown_semantic_result",
+            "schema_version": "p2-provenance-v1"
+          },
+          "semantic": {
+            "corresponding_source_slots": [],
+            "coverage": {
+              "complete": true,
+              "reason": "The proposition 'rain_jacket raises shade' is not addressed in the source.",
+              "source_slots": [
+                "s0"
+              ]
+            },
+            "evidence": null,
+            "expression_status": "not_expressed",
+            "monitor_id": "jacket_direction",
+            "relation_support": "unsupported",
+            "status": "absent"
+          }
+        },
+        {
+          "provenance": {
+            "ancestry": [
+              {
+                "exposure_id": "memory-1",
+                "source_slot": "s1"
+              },
+              {
+                "root": "memory-root-1",
+                "source_slot": "s1"
+              }
+            ],
+            "applicable_categories": [
+              "exposure_linked",
+              "replay_linked"
+            ],
+            "corresponding_source_slots": [
+              "s1"
+            ],
+            "credit_eligible": true,
+            "dependence": "exposure_linked",
+            "monitor_id": "shade",
+            "provenance_group_keys": [
+              "exposure:memory-1",
+              "replay:memory-root-1"
+            ],
+            "resolution_reason": "runtime_source_role_and_recorded_ancestry",
+            "schema_version": "p2-provenance-v1"
+          },
+          "semantic": {
+            "corresponding_source_slots": [
+              "s1"
+            ],
+            "coverage": {
+              "complete": true,
+              "reason": null,
+              "source_slots": [
+                "s1",
+                "s2"
+              ]
+            },
+            "evidence": {
+              "end": 36,
+              "quote": "Turning the handle raises the shade.",
+              "source_slot": "s2",
+              "start": 0
+            },
+            "expression_status": "affirmed",
+            "monitor_id": "shade",
+            "relation_support": "supported",
+            "status": "present"
+          }
+        }
+      ],
+      "validation_error": null
+    },
+    {
+      "case_id": "Q3",
+      "provenance_resolution": [
+        {
+          "ancestry": [],
+          "applicable_categories": [
+            "external_supported"
+          ],
+          "corresponding_source_slots": [],
+          "credit_eligible": false,
+          "dependence": "external_supported",
+          "monitor_id": "dial",
+          "provenance_group_keys": [
+            "external:s0"
+          ],
+          "resolution_reason": "runtime_source_role_and_recorded_ancestry",
+          "schema_version": "p2-provenance-v1"
+        },
+        {
+          "ancestry": [],
+          "applicable_categories": [],
+          "corresponding_source_slots": [],
+          "credit_eligible": false,
+          "dependence": "unknown",
+          "monitor_id": "unavailable_output",
+          "provenance_group_keys": [],
+          "resolution_reason": "non_present_or_unknown_semantic_result",
+          "schema_version": "p2-provenance-v1"
+        }
+      ],
+      "provider_result": {
+        "content": "{\n  \"schema_version\": \"p2-assessor-v5\",\n  \"assessments\": [\n    {\n      \"monitor_id\": \"dial\",\n      \"status\": \"present\",\n      \"relation_support\": \"contradicted\",\n      \"expression_status\": \"negated\",\n      \"coverage\": {\n        \"complete\": true,\n        \"source_slots\": [\n          \"s0\"\n        ],\n        \"reason\": null\n      },\n      \"evidence\": {\n        \"source_slot\": \"s0\",\n        \"quote\": \"did not stop the ticking\"\n      },\n      \"corresponding_source_slots\": []\n    },\n    {\n      \"monitor_id\": \"unavailable_output\",\n      \"status\": \"unknown\",\n      \"relation_support\": \"unknown\",\n      \"expression_status\": \"unknown\",\n      \"coverage\": {\n        \"complete\": false,\n        \"source_slots\": [],\n        \"reason\": \"Required source slot 's1' is unavailable for inspection.\"\n      },\n      \"evidence\": null,\n      \"corresponding_source_slots\": []\n    }\n  ]\n}",
+        "finish_reason": "stop",
+        "model_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "provenance": {
+          "host": {
+            "capabilities": [
+              "text_generation",
+              "token_usage"
+            ],
+            "chat_template": "deepinfra_openai_chat",
+            "execution": {
+              "base_url": "https://api.deepinfra.com/v1/openai",
+              "canonical_upstream_model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+              "catalog_context_length": 262144,
+              "catalog_quantization": "fp8",
+              "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+              "hosted_model_revision": "unknown",
+              "rendering_mode": "deepinfra_openai_chat",
+              "service_tier": "standard"
+            },
+            "model_family": "Qwen3 235B A22B Instruct 2507",
+            "model_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+            "model_revision": null,
+            "provider": "DeepInfra",
+            "quantization": "fp8",
+            "runtime": "deepinfra-openai-compatible",
+            "runtime_version": null,
+            "tokenizer_id": null,
+            "tokenizer_revision": null
+          },
+          "request_chars": 5153
+        },
+        "provider": "DeepInfra",
+        "seed": null,
+        "usage": {
+          "input_tokens": 1131,
+          "output_tokens": 222,
+          "total_tokens": 1353
+        }
+      },
+      "request": {
+        "candidate": {
+          "from": "dial",
+          "relation": "stops",
+          "to": "ticking"
+        },
+        "context": {},
+        "memory_exposure": [],
+        "monitors": [
+          {
+            "context": "general",
+            "correspondence_source_slots": [],
+            "evidence_source_slots": [
+              "s0"
+            ],
+            "monitor_id": "dial",
+            "relation": {
+              "from": "dial",
+              "relation": "stops",
+              "to": "ticking"
+            },
+            "required_source_slots": [
+              "s0"
+            ]
+          },
+          {
+            "context": "general",
+            "correspondence_source_slots": [],
+            "evidence_source_slots": [
+              "s1"
+            ],
+            "monitor_id": "unavailable_output",
+            "relation": {
+              "from": "dial",
+              "relation": "stops",
+              "to": "ticking"
+            },
+            "required_source_slots": [
+              "s1"
+            ]
+          }
+        ],
+        "prompt_version": "p2-assessor-production-v7",
+        "replay_ancestry": [],
+        "schema_version": "p2-assessor-v5",
+        "source_purpose_mask": [],
+        "sources": [
+          {
+            "available": true,
+            "role": "external",
+            "slot": "s0",
+            "source_id": null,
+            "text": "Turning the dial did not stop the ticking; the sound continued."
+          },
+          {
+            "available": false,
+            "role": "model_output",
+            "slot": "s1",
+            "source_id": "model-output-unavailable",
+            "text": null
+          }
+        ]
+      },
+      "semantic_observations": [
+        {
+          "corresponding_source_slots": [],
+          "coverage": {
+            "complete": true,
+            "reason": null,
+            "source_slots": [
+              "s0"
+            ]
+          },
+          "evidence": {
+            "end": 41,
+            "quote": "did not stop the ticking",
+            "source_slot": "s0",
+            "start": 17
+          },
+          "expression_status": "negated",
+          "monitor_id": "dial",
+          "relation_support": "contradicted",
+          "status": "present"
+        },
+        {
+          "corresponding_source_slots": [],
+          "coverage": {
+            "complete": false,
+            "reason": "Required source slot 's1' is unavailable for inspection.",
+            "source_slots": []
+          },
+          "evidence": null,
+          "expression_status": "unknown",
+          "monitor_id": "unavailable_output",
+          "relation_support": "unknown",
+          "status": "unknown"
+        }
+      ],
+      "valid": true,
+      "validated": [
+        {
+          "provenance": {
+            "ancestry": [],
+            "applicable_categories": [
+              "external_supported"
+            ],
+            "corresponding_source_slots": [],
+            "credit_eligible": false,
+            "dependence": "external_supported",
+            "monitor_id": "dial",
+            "provenance_group_keys": [
+              "external:s0"
+            ],
+            "resolution_reason": "runtime_source_role_and_recorded_ancestry",
+            "schema_version": "p2-provenance-v1"
+          },
+          "semantic": {
+            "corresponding_source_slots": [],
+            "coverage": {
+              "complete": true,
+              "reason": null,
+              "source_slots": [
+                "s0"
+              ]
+            },
+            "evidence": {
+              "end": 41,
+              "quote": "did not stop the ticking",
+              "source_slot": "s0",
+              "start": 17
+            },
+            "expression_status": "negated",
+            "monitor_id": "dial",
+            "relation_support": "contradicted",
+            "status": "present"
+          }
+        },
+        {
+          "provenance": {
+            "ancestry": [],
+            "applicable_categories": [],
+            "corresponding_source_slots": [],
+            "credit_eligible": false,
+            "dependence": "unknown",
+            "monitor_id": "unavailable_output",
+            "provenance_group_keys": [],
+            "resolution_reason": "non_present_or_unknown_semantic_result",
+            "schema_version": "p2-provenance-v1"
+          },
+          "semantic": {
+            "corresponding_source_slots": [],
+            "coverage": {
+              "complete": false,
+              "reason": "Required source slot 's1' is unavailable for inspection.",
+              "source_slots": []
+            },
+            "evidence": null,
+            "expression_status": "unknown",
+            "monitor_id": "unavailable_output",
+            "relation_support": "unknown",
+            "status": "unknown"
+          }
+        }
+      ],
+      "validation_error": null
+    }
+  ],
+  "campaign": {
+    "calls_dispatched": 3,
+    "fixed_cases": [
+      "Q1",
+      "Q2",
+      "Q3"
+    ],
+    "pilot_calls": 0,
+    "repairs": 0,
+    "resampling": 0,
+    "retries": 0
+  },
+  "contract": {
+    "assessor_schema": "p2-assessor-v5",
+    "prompt": "p2-assessor-production-v7",
+    "provenance": "p2-provenance-v1"
+  },
+  "disposition": "all qualification cases passed; pilot may proceed under existing Phase Two budget and stop rules",
+  "kind": "phase-two-assessor-qualification-pass",
+  "provider_cost": "unavailable",
+  "recorded_at": "2026-09-20T23:06:01.296503+00:00",
+  "run_id": "qualification-v8",
+  "schema_version": 1,
+  "source_artifact": "artifacts/p2-qualification-polarity-v8/experiments/phase-two-assessor-qualification/revisions/8/runs/qualification-v8",
+  "usage": {
+    "input_tokens": 3610,
+    "output_tokens": 790,
+    "total_tokens": 4400
+  },
+  "validated_commit": "4185e57e32687f7faffd4fb625f68e445da84ed2"
+}
