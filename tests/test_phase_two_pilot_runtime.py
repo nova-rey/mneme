@@ -247,6 +247,17 @@ def test_extraction_and_publication_reuse_durable_boundaries(tmp_path: Path) -> 
     )
     assert publication.status == "ACCEPTED"
     assert developing.calls == 2
+    reservation = pilot.artifacts._read_json(
+        pilot.run_path / "pilot" / "reservations" / "extraction-s0-e0-a0.json"
+    )
+    assert reservation["usage"]["input_tokens"] == 10
+    assert reservation["usage"]["total_tokens"] == (
+        reservation["usage"]["input_tokens"] + reservation["usage"]["output_tokens"]
+    )
+    extraction_artifact = pilot.artifacts._read_json(
+        pilot.run_path / "extraction" / "extraction-s0-e0-a0.json"
+    )
+    assert extraction_artifact["request"]["request"]["messages"]
     assert subject.store.connection.execute(
         "SELECT status FROM interpretation_operations WHERE operation_id=?",
         (extraction.operation_id,),

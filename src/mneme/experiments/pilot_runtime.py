@@ -113,6 +113,16 @@ def _mapping(value: Any, label: str) -> Mapping[str, Any]:
     return value
 
 
+def _persisted_usage(value: Mapping[str, Any]) -> Mapping[str, Any] | None:
+    """Normalize usage retained by the interpretation result ledger."""
+
+    usage = value.get("usage")
+    if isinstance(usage, Mapping):
+        return usage
+    token_usage = value.get("token_usage")
+    return token_usage if isinstance(token_usage, Mapping) else None
+
+
 class PilotRuntime:
     """Execute finite P2.3 coordinates without creating a second state system.
 
@@ -316,6 +326,7 @@ class PilotRuntime:
             call_id,
             {
                 "coordinate": dict(coordinate),
+                "request": request.to_dict(),
                 "operation": {
                     "operation_id": accepted.operation_id,
                     "episode_id": accepted.episode_id,
@@ -380,7 +391,7 @@ class PilotRuntime:
                     raise PilotRuntimeUncertain(f"extraction call is uncertain: {call_id}") from exc
                 raise PilotRuntimeError(f"extraction failed before result: {call_id}") from exc
             persisted: Mapping[str, Any] = self._interpretation_payload(subject.store, operation_id)
-            usage = persisted.get("usage")
+            usage = _persisted_usage(persisted)
             _returned = self.pilot.return_call(
                 call_id,
                 result=persisted,
@@ -395,7 +406,7 @@ class PilotRuntime:
         else:
             if dispatched:
                 persisted = self._interpretation_payload(subject.store, operation_id)
-                usage = persisted.get("usage")
+                usage = _persisted_usage(persisted)
                 self.pilot.return_call(
                     call_id,
                     result=persisted,
@@ -424,6 +435,7 @@ class PilotRuntime:
                 "coordinate": dict(coordinate),
                 "episode_id": episode_id,
                 "attempt": attempt,
+                "request": self._interpretation_request(subject.store, operation_id),
                 "provider_called": provider_called,
                 "result": dict(persisted),
                 "valid": residue is not None,
@@ -432,13 +444,30 @@ class PilotRuntime:
         )
         return ExtractionOutcome(
             call_id,
-            call_id,
+            operation_id,
             episode_id,
             attempt,
             provider_called,
             residue,
             validation_error,
         )
+
+    @staticmethod
+    def _interpretation_request(store: SQLiteStore, operation_id: str) -> Mapping[str, Any]:
+        row = store.connection.execute(
+            "SELECT request_json FROM interpretation_attempts "
+            "WHERE operation_id=? ORDER BY attempt DESC LIMIT 1",
+            (operation_id,),
+        ).fetchone()
+        if row is None or row[0] is None:
+            raise PilotRuntimeError(f"interpretation request is not persisted: {operation_id}")
+        try:
+            value = json.loads(str(row[0]))
+        except json.JSONDecodeError as exc:
+            raise PilotRuntimeError(
+                f"interpretation request is invalid JSON: {operation_id}"
+            ) from exc
+        return _mapping(value, f"interpretation request {operation_id}")
 
     @staticmethod
     def _interpretation_status(store: SQLiteStore, operation_id: str) -> str:
@@ -542,6 +571,7 @@ class PilotRuntime:
             call_id,
             {
                 "coordinate": dict(coordinate),
+                "request": request.to_dict(),
                 "provider_called": provider_called,
                 "result": payload,
                 "valid": validation_error is None,
@@ -628,6 +658,12 @@ class PilotRuntime:
             {
                 "coordinate": dict(coordinate),
                 "checkpoint_sha256": file_digest(private_path),
+                "request": {
+                    "messages": [dict(message) for message in messages],
+                    "system": system,
+                    "parameters": dict(parameters or {}),
+                    "seed": seed,
+                },
                 "provider_called": provider_called,
                 "result": payload,
                 "developmental_state_before": before,
