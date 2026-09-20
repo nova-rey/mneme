@@ -488,3 +488,7 @@
 ## 2026-09-20 P2.3 assessor ancestry-scope remediation
 
 - Offline audit of the failed qualification found and corrected a validator defect: request-level replay/exposure ancestry was incorrectly applied to every monitor instead of only monitors referencing the ancestral source slots. The production prompt now defines the distinction among replay-linked, exposure-linked, current-input-echo, and independent evidence. Strict qualification assertions were preserved; the historical Q1/Q2/Q3 failures remain unchanged. Validation passed at 268 pytest tests, Ruff, and strict mypy across 47 source files with no provider call. A new qualification authorization is required; the 299-call pilot remains untouched.
+
+## 2026-09-20 P2.3 ancestry remediation candidate reconciliation
+
+- Reconciled the P2.3 offline candidate to `5eb95b9`, including the scoped-ancestry validator correction, production prompt clarification, 268-test validation, package smoke, and sanitized remediation receipt. P2.3 remains WAITING on a new assessor qualification authorization; no provider call occurred in this bookkeeping update.
