@@ -90,6 +90,17 @@ The documents are preserved in their supplied form and are intentionally not mer
   ([JSON](receipts/MNEME_P2.3_Assessor_Qualification_V4_Failure_Receipt.json));
   the proposed 299-call pilot budget remains unrun.
 
+  Future design context: [Developmental Self-Context](architecture/future/MNEME_Developmental_Self_Context_Architecture.md).
+  This reference does not change the phase's implementation scope, frozen
+  experimental contracts, acceptance requirements, or authorized call budget.
+
+## Future architecture — non-blocking design context
+
+[Developmental Self-Context and Functional Layering](architecture/future/MNEME_Developmental_Self_Context_Architecture.md)
+records a future extension of the existing graph-backed self-model. It is not
+an approved implementation plan, a Phase Two acceptance dependency, or an
+inference authorization. Current work remains governed by its approved plan.
+
 The P0.2 implementation is now present under `src/mneme/state/`; its acceptance
 status and receipts are recorded in `.codex/work-queue.json` and `bible.md`.
 The P0.3 implementation is present under `src/mneme/experiments/`; its acceptance

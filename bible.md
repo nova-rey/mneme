@@ -508,3 +508,7 @@
 ## 2026-09-20 P2.3 qualification v4 stop
 
 - Executed the newly authorized fresh fixed Q1/Q2/Q3 qualification against clean main `3386d945`. All three DeepInfra calls returned and were durably retained (2,866 input, 706 output, 3,572 total tokens); no retries, repairs, replacement samples, or pilot calls occurred. Q1 falsely marked the unrelated monitor present, Q2 falsely supported the rain-jacket candidate, and Q3 marked a negated relation supported and unavailable output absent instead of unknown. Qualification failed and the pilot remained at zero calls. The sanitized receipts are `docs/receipts/MNEME_P2.3_Assessor_Qualification_V4_Failure_Receipt.md` and `.json`; P2.3 remains stopped for architectural review of assessor suitability.
+
+## 2026-09-20 Future developmental self-context architecture filed
+
+- Filed `docs/architecture/future/MNEME_Developmental_Self_Context_Architecture.md` as future developer design context under its section 14 documentation-only instructions. Added discoverability and a non-blocking cross-reference in `docs/README.md`; no approved plan, frozen contract, runtime prompt, learner, test, budget, queue state, or inference operation changed.
