@@ -1053,11 +1053,11 @@
       "base_sha": "7157845",
       "campaign": "mneme-phase-two",
       "candidate": {
-        "artifact": "P2.3 offline candidate plus corrected Q1 qualification stop: semantic assessor v2, deterministic provenance resolver v1, fixed raw-JSON executor, and one returned/failed Q1; Q2/Q3 and pilot undispatched",
+        "artifact": "P2.3 prompt-semantics remediation candidate: assessor v2, deterministic provenance v1, explicit source availability and candidate/monitor proposition rules; 280 pytest, Ruff, strict mypy, wheel/install smoke; no provider calls during remediation",
         "base_sha": "fe31d6b0fda2f1069250f57cde769528b2fa2a1d",
-        "returned_at": "2026-09-20T20:46:24.493513Z",
+        "returned_at": "2026-09-20T21:02:00.000000Z",
         "returned_by": "/root",
-        "sha": "266fed2"
+        "sha": "d28c9e5"
       },
       "completion_criterion": "Production-equivalent assessor qualification and separately authorized pilot execute/resume/replay with honest engineering, adequacy, and research outcomes, or publish a truthful blocker.",
       "created_at": "2026-09-20T16:16:33.650428Z",
@@ -1095,10 +1095,12 @@
         "docs/receipts/MNEME_P2_Assessor_Provenance_Resolution_Offline_Receipt.md",
         "docs/receipts/MNEME_P2_Assessor_Provenance_Resolution_Offline_Receipt.json",
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_Provenance_V2_Failure_Receipt.md",
-        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Provenance_V2_Failure_Receipt.json"
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Provenance_V2_Failure_Receipt.json",
+        "docs/receipts/MNEME_P2.3_Assessor_Prompt_Semantics_Remediation_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Assessor_Prompt_Semantics_Remediation_Receipt.json"
       ],
       "id": "P2.3",
-      "notes": "Offline boundary passed at 7de05a2/a3a8ee6. The corrected qualification authorization dispatched only Q1 from clean main 0abd74e; Q1 returned and failed semantic validation because echo was marked absent and unrelated was marked present. Q2/Q3 and pilot calls were not dispatched. Historical Gemma and Qwen qualification failures remain unchanged. The package remains WAITING on external:p2-assessor-qualification and the proposed ceiling remains 299 calls / 204,288 output tokens.",
+      "notes": "Offline prompt-semantics remediation passed at d28c9e5 with assessor prompt p2-assessor-production-v4; it clarifies available-source visibility and candidate/monitor proposition inheritance without changing schema, cases, expected outcomes, resolver, learner, or criteria. The corrected Q1 failure at 0abd74e remains historical. A new fixed Q1/Q2/Q3 qualification under v4 is the next bounded verification; package remains WAITING on external:p2-assessor-qualification and the proposed ceiling remains 299 calls / 204,288 output tokens.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1136,9 +1138,9 @@
         ],
         "results": {
           "p23-assessor-qualification": {
-            "receipt": "docs/receipts/MNEME_P2.3_Assessor_Qualification_Provenance_V2_Failure_Receipt.md and .json; Q1 returned then failed semantic qualification; Q2/Q3 undispatched; pilot calls 0",
-            "recorded_at": "2026-09-20T20:46:24.493513Z",
-            "status": "FAIL"
+            "receipt": "docs/receipts/MNEME_P2.3_Assessor_Prompt_Semantics_Remediation_Receipt.md and .json; offline prompt-only correction; 280 pytest, Ruff, strict mypy, wheel/install smoke; provider calls 0",
+            "recorded_at": "2026-09-20T21:02:00.000000Z",
+            "status": "PASS"
           },
           "p23-assessor-contract": {
             "receipt": "assessment.py semantic assessor schema v2 and deterministic provenance resolver; Q1/Q2/Q3 strict quotes/coverage/correspondence tests",
