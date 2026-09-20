@@ -782,12 +782,12 @@ class RouteSpec:
 
 
 def select_routes(
-    state: LearnerState | Iterable[Mapping[str, Any]],
-    routes: Iterable[RouteSpec] | Mapping[str, EdgeState],
+    state: Any,
+    routes: Any,
     *,
     opportunity: int | None = None,
     max_routes: int = 2,
-) -> tuple[RouteSpec, ...]:
+) -> Any:
     """Select learned-v1 routes with highest-coverage-only exploration.
 
     This helper returns semantic candidates only.  Serialization and payload
@@ -938,6 +938,11 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
                 for item in observations
                 if item.covered and item.relevant
             }
+            if not statuses and any(
+                _as_status(item.status) is ObservationStatus.UNKNOWN and item.relevant
+                for item in observations
+            ):
+                statuses = {ObservationStatus.UNKNOWN}
             if len(statuses) == 1:
                 target_status[key] = next(iter(statuses))
             elif len(statuses) > 1:

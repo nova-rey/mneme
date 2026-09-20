@@ -11,6 +11,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from .contracts import GenerationRequest, GenerationResult
+from .development import EdgeState, route_exposure, select_routes
 from .host import Host
 from .identity import IdentityService
 from .state.policy import PolicyError, PolicyService
@@ -41,6 +42,7 @@ class TurnIntent:
     seed: int | None = None
     response_format: Mapping[str, Any] | None = None
     operation_id: str | None = None
+    selection_policy: str | None = None
 
 
 @dataclass(frozen=True)
@@ -53,6 +55,7 @@ class PinnedState:
     graph_snapshot_id: str | None
     recall_allowed: bool
     provider_reuse_allowed: bool
+    learning_allowed: bool
     host_ref: str
 
 
@@ -65,6 +68,7 @@ class RouteCandidate:
     support_count: int
     query_coverage: int
     suppressed_reason: str | None = None
+    edge_keys: tuple[str, ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
         data: dict[str, Any] = {
@@ -89,6 +93,8 @@ class PreparedTurn:
     selected: tuple[RouteCandidate, ...]
     suppressed: tuple[RouteCandidate, ...]
     operation_id: str
+    applied: tuple[RouteCandidate, ...] = ()
+    selection_policy: str = "fixed-v2"
 
 
 @dataclass(frozen=True)
@@ -151,6 +157,7 @@ class ResponseController:
             str(manifest["graph_snapshot_id"]) if manifest["graph_snapshot_id"] else None,
             policy.recall_allowed,
             policy.provider_reuse_allowed,
+            policy.learning_allowed,
             _host_ref(self.host),
         )
 
@@ -181,10 +188,16 @@ class ResponseController:
             raise ControllerError("prepared turn is stale: graph snapshot changed")
         if _host_ref(self.host) != pinned.host_ref:
             raise ControllerError("host fingerprint drifted from prepared turn")
+        try:
+            policy = PolicyService(self.store, self.instance_id).current()
+        except PolicyError as exc:
+            raise ControllerError(str(exc)) from exc
+        if policy.learning_allowed != pinned.learning_allowed:
+            raise ControllerError("prepared turn is stale: learning policy changed")
 
     def _find_routes(self, intent: TurnIntent, pin: PinnedState) -> tuple[RouteCandidate, ...]:
         if (
-            intent.mode in {"observe", "evaluate"}
+            intent.mode in {"evaluate"}
             or intent.memory == "off"
             or not pin.recall_allowed
             or not pin.provider_reuse_allowed
@@ -201,20 +214,41 @@ class ResponseController:
                 "SELECT concept_key,label FROM graph_concepts WHERE snapshot_id=?", (snapshot,)
             )
         }
-        edges = {
-            str(row[0]): row
+        from .memory.graph import GraphConcept, GraphEdge, GraphRoute, discover_routes
+
+        graph_edges = tuple(
+            GraphEdge(
+                str(row[0]),
+                str(row[1]),
+                str(row[2]),
+                str(row[3]),
+                tuple(json.loads(str(row[6]))),
+                json.loads(str(row[5])),
+            )
             for row in self.store.connection.execute(
-                "SELECT edge_key,source_key,target_key,relationship,evidence_json "
-                "FROM graph_edges WHERE snapshot_id=?",
+                "SELECT edge_key,source_key,target_key,relationship,polarity,context_json,"
+                "evidence_json "
+                "FROM graph_edges WHERE snapshot_id=? ORDER BY edge_key",
                 (snapshot,),
             )
-        }
+        )
+        graph_concepts = tuple(
+            GraphConcept(str(key), str(label), "unknown") for key, label in concepts.items()
+        )
+        explicit = tuple(
+            GraphRoute(str(row[0]), tuple(str(key) for key in json.loads(str(row[1]))), ())
+            for row in self.store.connection.execute(
+                "SELECT route_key,edge_keys_json FROM graph_routes WHERE snapshot_id=? "
+                "ORDER BY route_key",
+                (snapshot,),
+            )
+        )
+        routes = discover_routes(graph_concepts, graph_edges, explicit)
+        edge_by_key = {edge.key: edge for edge in graph_edges}
         found: list[RouteCandidate] = []
-        for row in self.store.connection.execute(
-            "SELECT route_key,edge_keys_json FROM graph_routes WHERE snapshot_id=?", (snapshot,)
-        ):
-            keys = tuple(str(key) for key in json.loads(str(row[1])))
-            rows = [edges.get(key) for key in keys]
+        for route in routes:
+            keys = tuple(route.edge_keys)
+            rows = [edge_by_key.get(key) for key in keys]
             if any(edge is None for edge in rows):
                 continue
             labels: list[str] = []
@@ -222,27 +256,108 @@ class ResponseController:
             support = 0
             for edge in rows:
                 assert edge is not None
-                labels.extend(
-                    filter(None, (concepts.get(str(edge[1])), concepts.get(str(edge[2]))))
-                )
-                relationships.append(str(edge[3]))
-                try:
-                    support += len(json.loads(str(edge[4])))
-                except json.JSONDecodeError:
-                    pass
+                labels.extend(filter(None, (concepts.get(edge.source), concepts.get(edge.target))))
+                relationships.append(edge.relationship)
+                support += len(edge.evidence)
             coverage = sum(_phrase(intent.current_input, label) for label in set(labels))
             if coverage:
                 found.append(
                     RouteCandidate(
-                        str(row[0]),
+                        str(route.key),
                         tuple(dict.fromkeys(labels)),
                         tuple(relationships),
                         len(keys),
                         support,
                         coverage,
+                        edge_keys=keys,
                     )
                 )
         return tuple(found)
+
+    def _selection_policy(self, intent: TurnIntent, pin: PinnedState) -> str:
+        policy = intent.selection_policy
+        if policy is None:
+            return "learned-v1" if pin.learning_allowed else "fixed-v2"
+        if policy not in {"fixed-v2", "learned-v1"}:
+            raise ControllerError("selection_policy must be fixed-v2 or learned-v1")
+        if policy == "learned-v1" and not pin.learning_allowed:
+            raise ControllerError("learned-v1 requires learning permission")
+        return policy
+
+    def _learner_edges(self, pin: PinnedState) -> dict[str, EdgeState]:
+        """Load the latest materialized learner values without using history."""
+
+        try:
+            rows = self.store.connection.execute(
+                "SELECT edge_key,accessibility,support,consequence,lifetime_credit,"
+                "induced_credit,rolling_credit,last_consolidation_opportunity,inactivity_ticks "
+                "FROM learner_values WHERE instance_id=? ORDER BY opportunity,rowid",
+                (pin.instance_id,),
+            )
+        except Exception as exc:
+            if "no such table" in str(exc):
+                return {}
+            raise
+        result: dict[str, EdgeState] = {}
+        for row in rows:
+            result[str(row[0])] = EdgeState(
+                target_key=str(row[0]),
+                accessibility=int(row[1]),
+                support=int(row[2]),
+                consequence=int(row[3]),
+            )
+        return result
+
+    def _select(
+        self,
+        routes: tuple[RouteCandidate, ...],
+        pin: PinnedState,
+        policy: str,
+    ) -> tuple[RouteCandidate, ...]:
+        eligible = [route for route in routes if route.suppressed_reason is None]
+        if policy == "learned-v1":
+            edge_states = self._learner_edges(pin)
+            rows = [
+                {
+                    "route_key": route.route_key,
+                    "edge_keys": list(route.edge_keys),
+                    "query_coverage": route.query_coverage,
+                }
+                for route in eligible
+                if route.edge_keys and route_exposure(edge_states, route.edge_keys)
+            ]
+            chosen = select_routes(
+                rows,
+                edge_states,
+                opportunity=self._opportunity(pin),
+                max_routes=2,
+            )
+            by_key = {route.route_key: route for route in eligible}
+            return tuple(
+                by_key[str(row["route_key"])]
+                for row in chosen
+                if str(row["route_key"]) in by_key
+            )
+        ranked = sorted(
+            eligible,
+            key=lambda route: (
+                -route.query_coverage,
+                route.edge_count,
+                json.dumps(route.to_dict(), sort_keys=True, ensure_ascii=False),
+            ),
+        )
+        return tuple(ranked[:2])
+
+    def _opportunity(self, pin: PinnedState) -> int:
+        try:
+            row = self.store.connection.execute(
+                "SELECT opportunity FROM manifests WHERE manifest_id=?", (pin.manifest_id,)
+            ).fetchone()
+        except Exception as exc:
+            if "no such column" in str(exc):
+                return max(1, pin.lineage_revision)
+            raise
+        return max(1, int(row[0] or 0)) if row is not None else max(1, pin.lineage_revision)
 
     def _gate(self, route: RouteCandidate, intent: TurnIntent) -> RouteCandidate:
         text = " ".join((*route.labels, *route.relationships)).casefold()
@@ -271,19 +386,11 @@ class ResponseController:
         if intent.mode not in {"develop", "observe", "evaluate"}:
             raise ControllerError("unsupported mode")
         pin = self._pin()
+        policy = self._selection_policy(intent, pin)
         considered = self._find_routes(intent, pin)
         gated = tuple(self._gate(route, intent) for route in considered)
         suppressed = tuple(route for route in gated if route.suppressed_reason)
-        eligible = [route for route in gated if route.suppressed_reason is None]
-        eligible.sort(
-            key=lambda route: (
-                -route.query_coverage,
-                route.edge_count,
-                -route.support_count,
-                json.dumps(route.to_dict(), sort_keys=True),
-            )
-        )
-        selected = tuple(eligible[:2])
+        selected = self._select(gated, pin, policy)
         messages = _messages(intent)
         memory: dict[str, Any] = {"routes": [route.to_dict() for route in selected]}
         if intent.memory != "off" and intent.mode != "evaluate":
@@ -291,13 +398,20 @@ class ResponseController:
             if view is not None:
                 memory["self"] = {"name": view.name, "version": view.version}
         memory_json = json.dumps(memory, sort_keys=True, separators=(",", ":"))
-        if len(memory_json.encode()) > 1536:
+        if len(memory_json.encode("utf-8")) > 1536:
             memory_json = '{"routes":[]}'
-        system = (
-            _TEMPLATE.format(memory=memory_json)
-            if memory_json != '{"routes":[]}'
-            else intent.system
-        )
+        applied = selected if memory_json != '{"routes":[]}' else ()
+        if intent.memory == "off" or intent.mode == "evaluate":
+            system = intent.system
+        elif applied or "self" in memory:
+            controller_system = _TEMPLATE.format(memory=memory_json)
+            system = (
+                f"{intent.system}\n\n{controller_system}"
+                if intent.system
+                else controller_system
+            )
+        else:
+            system = intent.system
         replayed_ordinals = (
             list(range(max(0, len(messages) - 1))) if intent.session_messages else []
         )
@@ -317,6 +431,8 @@ class ResponseController:
             selected,
             suppressed,
             intent.operation_id or str(uuid.uuid4()),
+            applied,
+            policy,
         )
 
     def execute(self, prepared: PreparedTurn) -> TurnResult:
@@ -352,13 +468,14 @@ class ResponseController:
                             {
                                 "input": prepared.intent.current_input,
                                 "tags": prepared.intent.context_tags,
+                                "selection_policy": prepared.selection_policy,
                             },
                             sort_keys=True,
                         ),
                         json.dumps(
                             [item.to_dict() for item in prepared.considered], sort_keys=True
                         ),
-                        json.dumps([item.to_dict() for item in prepared.selected], sort_keys=True),
+                        json.dumps([item.to_dict() for item in prepared.applied], sort_keys=True),
                         json.dumps(
                             [item.to_dict() for item in prepared.suppressed], sort_keys=True
                         ),

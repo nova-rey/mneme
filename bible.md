@@ -435,3 +435,7 @@
 ## 2026-09-20 P2.1 learner transition contract refinement
 
 - Refined the pure learner into an immutable, fixed-point transition kernel with explicit global opportunities, dependence-group and rolling caps, observation/retention distinctions, attributable contextual consequences, idempotent operation coordinates, highest-coverage exploration, and weak/established/saturated restraint with recovery. The initial mapping API remains as a compatibility adapter while the production-facing `LearnerState`/`TransitionInput` contract carries the full Phase Two semantics. Focused learner, policy, and schema tests pass; no provider calls or credentials were used.
+
+## 2026-09-20 P2.1 controller and atomic publication candidate
+
+- Added the first production-boundary P2.1 slice: deterministic directed route discovery from accepted graph edges, fixed-v2 versus explicitly permitted learned-v1 selection, preserved system instructions, actual supplied-payload tracing, and highest-coverage exploration. Extended interpretation publication with optional atomic learner observations, stable semantic bindings, learner snapshots/values, manifest metadata, explicit learning-permission enforcement, unknown/no-credit recording, and idempotent retry behavior. Focused controller/publication/memory tests, Ruff, and strict mypy passed; no provider calls or credentials were used. P2.1 remains in progress pending full integration and adversarial validation.

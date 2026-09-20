@@ -16,6 +16,8 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any
 
+from ..development import DevelopmentalLearner, EdgeState, Observation
+from ..development.learner import CreditWindow
 from ..state.storage import SQLiteStore, _utc
 from .graph import GraphConcept, GraphEdge, GraphRoute, discover_routes, materialize_graph
 from .residue import Residue, ResidueValidationError, validate_residue
@@ -28,6 +30,75 @@ class PublicationError(RuntimeError):
 
 class StalePublication(PublicationError):
     """The interpretation was prepared against an obsolete manifest."""
+
+
+def _stable_concept_key(label: str, kind: str, context: Any = ()) -> str:
+    """Build a content identity for a resolved semantic concept.
+
+    Local extractor keys are deliberately excluded.  This is used only for
+    the Phase Two binding ledger; Phase One graph row keys remain unchanged.
+    """
+
+    return "concept:" + _digest(
+        {
+            "label": normalize_lookup_label(label),
+            "kind": kind,
+            "context": context,
+        }
+    )
+
+
+def _stable_edge_key(
+    source_key: str, target_key: str, relationship: str, polarity: str, context: Any = ()
+) -> str:
+    return "edge:" + _digest(
+        {
+            "source": source_key,
+            "target": target_key,
+            "relationship": relationship,
+            "polarity": polarity,
+            "context": context,
+        }
+    )
+
+
+def _observation_target(observation: Observation) -> str:
+    target = observation.edge_key or observation.target_key
+    if not target:
+        raise PublicationError("development observation has no target key")
+    return str(target)
+
+
+def _edge_state_from_json(value: Mapping[str, Any]) -> EdgeState:
+    """Restore the complete learner state retained in an update payload."""
+
+    return EdgeState(
+        target_key=str(value.get("target_key", value.get("edge_key", "legacy"))),
+        context=str(value.get("context", "general")),
+        accessibility=int(value.get("accessibility", 0)),
+        support=int(value.get("support", 0)),
+        consequence=int(value.get("consequence", 0)),
+        relevant_opportunities=int(value.get("relevant_opportunities", 0)),
+        inactivity_ticks=int(value.get("inactivity_ticks", 0)),
+        lifetime_by_group=tuple(
+            (str(key), int(amount))
+            for key, amount in sorted(dict(value.get("lifetime_by_group", {})).items())
+        ),
+        induced_by_group=tuple(
+            (str(key), int(amount))
+            for key, amount in sorted(dict(value.get("induced_by_group", {})).items())
+        ),
+        rolling_credits=tuple(
+            CreditWindow(int(item["opportunity"]), int(item["amount"]))
+            for item in value.get("rolling_credits", [])
+        ),
+        last_consolidation_opportunity=(
+            int(value["last_consolidation_opportunity"])
+            if value.get("last_consolidation_opportunity") is not None
+            else None
+        ),
+        raw_occurrence_count=int(value.get("raw_occurrence_count", 0)),
+    )
 
 
 @dataclass(frozen=True)
@@ -420,7 +491,16 @@ class InterpretationPublisher:
         extractor_version: str = "residue-v1",
         resolver_version: str = "explicit-v1",
         resolution_decisions: Mapping[str, ResolutionDecision] | None = None,
+        observations: tuple[Observation, ...] | list[Observation] = (),
+        learner: DevelopmentalLearner | None = None,
+        development_operation_id: str | None = None,
+        opportunity: int | None = None,
+        assessor_version: str = "",
     ) -> PublicationReceipt:
+        observation_rows = tuple(observations)
+        learner_requested = bool(
+            observation_rows or learner is not None or development_operation_id
+        )
         with self.store.transaction() as db:
             # Graph rows reference the snapshot envelope, whose digest is
             # computed only after materialization. Defer FK checks until the
@@ -456,6 +536,14 @@ class InterpretationPublisher:
             ).fetchone()
             if current is None:
                 raise PublicationError("lineage has no current state")
+            if learner_requested:
+                policy = db.execute(
+                    "SELECT learning_allowed FROM policies WHERE policy_id=("
+                    "SELECT policy_id FROM manifests WHERE manifest_id=? )",
+                    (current["current_manifest_id"],),
+                ).fetchone()
+                if policy is None or not bool(policy[0]):
+                    raise PublicationError("learning permission is not enabled")
             expected = expected_manifest_id or str(op["base_manifest_id"])
             if str(current["current_manifest_id"]) != expected:
                 raise StalePublication("interpretation base manifest is stale")
@@ -648,6 +736,8 @@ class InterpretationPublisher:
                     (old_snapshot,),
                 ):
                     concept_labels.setdefault(str(row[0]), str(row[1]))
+            candidate_ids: dict[str, str] = {}
+            decisions: dict[str, ResolutionDecision] = {}
             for concept in residue.core_concepts:
                 # Persist the conservative resolution outcome alongside the
                 # candidate. Callers may provide an explicit alias or
@@ -667,6 +757,7 @@ class InterpretationPublisher:
                         canonical_key=local_key,
                         method="exact",
                     )
+                decisions[local_key] = decision
                 canonical_label = concept_labels.get(
                     str(decision.canonical_key), decision.input_label
                 )
@@ -689,6 +780,7 @@ class InterpretationPublisher:
                     ),
                 )
                 candidate_id = str(uuid.uuid4())
+                candidate_ids[local_key] = candidate_id
                 db.execute(
                     "INSERT INTO candidates VALUES(?,?,?,?,?,?,?,?,?)",
                     (
@@ -717,6 +809,134 @@ class InterpretationPublisher:
                     )
             new_revision = int(current["current_revision"]) + 1
             manifest_id = str(uuid.uuid4())
+            learner_result = None
+            learner_snapshot_id: str | None = None
+            learner_configuration_digest: str | None = None
+            learner_opportunity: int | None = None
+            binding_rows: list[
+                tuple[str, str, str, str | None, str, str, str, int, str]
+            ] = []
+            if learner_requested:
+                # Bindings are content identities.  The extractor's local
+                # keys and row UUIDs remain provenance, never learner keys.
+                concepts_by_key = {
+                    str(concept["key"]): concept for concept in residue.core_concepts
+                }
+                stable_by_local: dict[str, str] = {}
+                for local_key, concept in concepts_by_key.items():
+                    decision = decisions[local_key]
+                    target = concepts_by_key.get(str(decision.canonical_key), concept)
+                    historical = None
+                    if str(decision.canonical_key) not in concepts_by_key:
+                        historical = db.execute(
+                            "SELECT canonical_key FROM semantic_bindings "
+                            "WHERE instance_id=? AND local_key=? ORDER BY created_at LIMIT 1",
+                            (self.instance_id, str(decision.canonical_key)),
+                        ).fetchone()
+                    stable_by_local[local_key] = (
+                        str(historical[0])
+                        if historical is not None
+                        else _stable_concept_key(
+                            str(target["label"]),
+                            str(target["kind"]),
+                            target.get("context", ()),
+                        )
+                    )
+                for local_key, concept in concepts_by_key.items():
+                    binding_id = _digest(
+                        {
+                            "instance": self.instance_id,
+                            "interpretation": interpretation_id,
+                            "local_key": local_key,
+                        }
+                    )
+                    binding_rows.append(
+                        (
+                            binding_id,
+                            self.instance_id,
+                            interpretation_id,
+                            candidate_ids[local_key],
+                            local_key,
+                            stable_by_local[local_key],
+                            str(concept["label"]),
+                            1,
+                            _json(
+                                {
+                                    "interpretation_id": interpretation_id,
+                                    "candidate_id": candidate_ids[local_key],
+                                    "source_spans": concept.get("source_spans", ()),
+                                }
+                            ),
+                        )
+                    )
+                for edge_record in residue.edge_candidates:
+                    edge_map = edge_record
+                    edge_key = str(edge_map["key"])
+                    stable_source = stable_by_local.get(str(edge_map["from"]))
+                    stable_target = stable_by_local.get(str(edge_map["to"]))
+                    if stable_source is None or stable_target is None:
+                        raise PublicationError("edge has no stable concept binding")
+                    stable_edge = _stable_edge_key(
+                        stable_source,
+                        stable_target,
+                        str(edge_map["relationship"]),
+                        str(edge_map.get("polarity", "asserted")),
+                        edge_map.get("context", ()),
+                    )
+                    binding_id = _digest(
+                        {
+                            "instance": self.instance_id,
+                            "interpretation": interpretation_id,
+                            "local_key": edge_key,
+                            "kind": "edge",
+                        }
+                    )
+                    binding_rows.append(
+                        (
+                            binding_id,
+                            self.instance_id,
+                            interpretation_id,
+                            None,
+                            edge_key,
+                            stable_edge,
+                            str(edge_map["relationship"]),
+                            1,
+                            _json(
+                                {
+                                    "interpretation_id": interpretation_id,
+                                    "edge_key": edge_key,
+                                    "source_spans": edge_map.get("source_spans", ()),
+                                }
+                            ),
+                        )
+                    )
+                learner_obj = learner or DevelopmentalLearner()
+                learner_opportunity = opportunity
+                if learner_opportunity is None:
+                    learner_opportunity = int(old_manifest["opportunity"] or 0) + 1
+                if learner_opportunity < 1:
+                    raise PublicationError("learner opportunity must be positive")
+                prior_state: dict[tuple[str, str], EdgeState] = {}
+                latest_values = db.execute(
+                    "SELECT v.edge_key,v.context,u.after_json FROM learner_values v "
+                    "JOIN learner_updates u ON u.update_id=v.update_id "
+                    "WHERE v.instance_id=? ORDER BY v.opportunity,v.rowid",
+                    (self.instance_id,),
+                )
+                for value in latest_values:
+                    key = (str(value[0]), str(value[1]))
+                    prior_state[key] = _edge_state_from_json(json.loads(str(value[2])))
+                learner_result = learner_obj.apply(
+                    prior_state,
+                    observation_rows,
+                    opportunity=learner_opportunity,
+                )
+                learner_configuration = {
+                    key: value
+                    for key, value in learner_obj.config.__dict__.items()
+                }
+                learner_configuration_digest = _digest(learner_configuration)
+                learner_snapshot_id = str(uuid.uuid4())
             integrity = _digest(
                 {"instance_id": self.instance_id, "revision": new_revision, "snapshot": snapshot_id}
             )
@@ -725,7 +945,9 @@ class InterpretationPublisher:
                 "manifest_id,instance_id,revision,parent_manifest_id,inherited_base_manifest_id,"
                 "policy_id,self_ref_id,format_version,controller_version,integrity_digest,"
                 "accepted_history_digest,graph_snapshot_id,graph_revision,accepted_episode_count,"
-                "self_view_id,self_view_version) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                "self_view_id,self_view_version,learner_snapshot_id,learner_configuration_digest,"
+                "binding_version,opportunity,coverage_json,authority_revision) "
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 (
                     manifest_id,
                     self.instance_id,
@@ -743,8 +965,195 @@ class InterpretationPublisher:
                     old_manifest["accepted_episode_count"],
                     old_manifest["self_view_id"],
                     old_manifest["self_view_version"],
+                    learner_snapshot_id,
+                    learner_configuration_digest,
+                    1 if learner_requested else old_manifest["binding_version"],
+                    learner_opportunity
+                    if learner_opportunity is not None
+                    else old_manifest["opportunity"],
+                    _json(
+                        {
+                            f"{_observation_target(row)}:{row.context}": row.covered
+                            for row in observation_rows
+                        }
+                    )
+                    if learner_requested
+                    else old_manifest["coverage_json"],
+                    old_manifest["authority_revision"],
                 ),
             )
+            if learner_requested:
+                development_id = development_operation_id or operation_id
+                development = db.execute(
+                    "SELECT episode_id,instance_id,base_manifest_id,opportunity,stage "
+                    "FROM development_operations WHERE operation_id=?",
+                    (development_id,),
+                ).fetchone()
+                if development is None:
+                    db.execute(
+                        "INSERT INTO development_operations VALUES(?,?,?,?,?,?,?,?,?,?)",
+                        (
+                            development_id,
+                            self.instance_id,
+                            op["episode_id"],
+                            expected,
+                            int(learner_opportunity or 1),
+                            "ACCEPTED",
+                            "accepted",
+                            str(op["configuration_digest"]),
+                            now,
+                            now,
+                        ),
+                    )
+                elif (
+                    str(development[0]) != str(op["episode_id"])
+                    or str(development[1]) != self.instance_id
+                    or str(development[2]) != expected
+                ):
+                    raise PublicationError("development operation idempotency conflict")
+                for row in binding_rows:
+                    db.execute(
+                        "INSERT INTO semantic_bindings VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+                        (*row, resolver_version, now),
+                    )
+                binding_lookup = {
+                    row[4]: row[0] for row in binding_rows
+                }
+                for observation in observation_rows:
+                    observation_target = _observation_target(observation)
+                    if observation_target not in binding_lookup:
+                        raise PublicationError(
+                            f"observation has no accepted edge binding: {observation_target}"
+                        )
+                    binding_id = binding_lookup[observation_target]
+                    db.execute(
+                        "INSERT INTO development_observations VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                        (
+                            _digest(
+                                {
+                                    "operation": development_id,
+                                    "edge": observation_target,
+                                    "context": observation.context,
+                                    "observation": observation.observation_id,
+                                }
+                            ),
+                            development_id,
+                            binding_id,
+                            observation_target,
+                            observation.context,
+                            getattr(observation.source_role, "value", str(observation.source_role)),
+                            getattr(observation.status, "value", str(observation.status)),
+                            getattr(observation.dependence, "value", str(observation.dependence)),
+                            observation.group_key,
+                            int(observation.covered),
+                            int(observation.actual_exposure),
+                            _json(
+                                {
+                                    "observation_id": observation.observation_id,
+                                    "assessor_version": assessor_version,
+                                }
+                            ),
+                            learner_result.reasons.get(
+                                (observation.target_key, observation.context), "unchanged"
+                            )
+                            if learner_result is not None
+                            else None,
+                            now,
+                        ),
+                    )
+                if learner_result is not None:
+                    observed_keys = {
+                        (_observation_target(observation), observation.context)
+                        for observation in observation_rows
+                    }
+                    persist_keys = sorted(set(learner_result.state) | observed_keys)
+                    for key in persist_keys:
+                        edge_key, context = key
+                        before = prior_state.get(key, EdgeState())
+                        after = learner_result.state.get(key, before)
+                        update_id = _digest(
+                            {
+                                "operation": development_id,
+                                "edge": edge_key,
+                                "context": context,
+                                "opportunity": learner_opportunity,
+                            }
+                        )
+                        delta = learner_result.deltas.get(key, 0)
+                        db.execute(
+                            "INSERT INTO learner_updates VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+                            (
+                                update_id,
+                                development_id,
+                                update_id,
+                                int(learner_opportunity or 1),
+                                edge_key,
+                                context,
+                                delta,
+                                learner_result.reasons.get(key, "unchanged"),
+                                _json(before.to_dict()),
+                                _json(after.to_dict()),
+                                now,
+                            ),
+                        )
+                        db.execute(
+                            "INSERT INTO learner_values VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                            (
+                                _digest(
+                                    {"update": update_id, "edge": edge_key, "context": context}
+                                ),
+                                self.instance_id,
+                                update_id,
+                                edge_key,
+                                context,
+                                after.accessibility,
+                                after.support,
+                                after.consequence,
+                                sum(amount for _group, amount in after.lifetime_by_group),
+                                sum(amount for _group, amount in after.induced_by_group),
+                                sum(item.amount for item in after.rolling_credits),
+                                after.last_consolidation_opportunity,
+                                after.inactivity_ticks,
+                                int(learner_opportunity or 1),
+                                _digest({"edge": edge_key, "context": context, **after.to_dict()}),
+                                now,
+                            ),
+                        )
+                    state_payload = {
+                        f"{edge}:{context}": value.to_dict()
+                        for (edge, context), value in sorted(
+                            (
+                                key,
+                                learner_result.state.get(
+                                    key, prior_state.get(key, EdgeState(*key))
+                                ),
+                            )
+                            for key in persist_keys
+                        )
+                    }
+                    db.execute(
+                        "INSERT INTO learner_snapshots VALUES(?,?,?,?,?,?,?,?)",
+                        (
+                            learner_snapshot_id,
+                            self.instance_id,
+                            manifest_id,
+                            int(learner_opportunity or 1),
+                            learner_obj.config.version,
+                            _json(
+                                {
+                                    "configuration": learner_obj.config.__dict__,
+                                    "state": state_payload,
+                                }
+                            ),
+                            _digest(
+                                {
+                                    "configuration": learner_obj.config.__dict__,
+                                    "state": state_payload,
+                                }
+                            ),
+                            now,
+                        ),
+                    )
             db.execute(
                 "INSERT INTO revisions VALUES(?,?,?,?,?,?,?,?)",
                 (
