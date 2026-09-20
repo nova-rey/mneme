@@ -3,7 +3,8 @@ from __future__ import annotations
 from pathlib import Path
 
 from mneme.contracts import GenerationRequest
-from mneme.development import Observation
+from mneme.development import Observation, QuarantineService
+from mneme.development.recovery import verify_replay
 from mneme.hosts import FakeHost
 from mneme.memory import InterpretationPublisher, validate_residue
 from mneme.state.contracts import StoragePermissions
@@ -81,3 +82,27 @@ def test_fork_inherits_learner_snapshot_but_uses_child_identity(tmp_path: Path) 
         assert child_store.connection.execute(
             "SELECT COUNT(*) FROM learner_values WHERE instance_id=?", (child,)
         ).fetchone()[0] == 1
+        replay = verify_replay(child_store)
+        assert replay["operation_count"] == 1
+        assert replay["matches_materialized"] is True
+
+    # A quarantine immediately after the fork has no child-local development
+    # operation to own a rebuilt materialization.  The inherited parent
+    # operation is still a valid immutable ledger owner for the child-local
+    # learner rows, and the rebuild must not leave the old value visible.
+    with SQLiteStore(child_path) as child_store:
+        canonical = child_store.connection.execute(
+            "SELECT canonical_key FROM semantic_bindings WHERE candidate_id IS NULL LIMIT 1"
+        ).fetchone()[0]
+        QuarantineService(child_store, child).add(
+            "edge", str(canonical), "forked evidence quarantined"
+        )
+        replay = verify_replay(child_store)
+        assert replay["operation_count"] == 0
+        assert replay["skipped_operation_ids"] == ["fork-development"]
+        assert replay["matches_materialized"] is True
+        assert child_store.connection.execute(
+            "SELECT accessibility FROM learner_values WHERE instance_id=? "
+            "ORDER BY rowid DESC LIMIT 1",
+            (child,),
+        ).fetchone()[0] == 0

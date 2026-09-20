@@ -161,6 +161,20 @@ class IdentityReviewService:
         self.store = store
         self.instance_id = instance_id
 
+    def _require_identity_permission(
+        self, host_fingerprint: Mapping[str, Any] | None = None
+    ) -> None:
+        """Require the same explicit permissions as deliberate identity adoption."""
+
+        try:
+            policy = PolicyService(self.store, self.instance_id)
+            state = policy.require("recall")
+            state = policy.require("provider_reuse")
+            if host_fingerprint is not None:
+                policy.require_host(state, host_fingerprint)
+        except PolicyError as exc:
+            raise AuthorityError(str(exc)) from exc
+
     def prepare(
         self,
         proposal: Mapping[str, Any],
@@ -197,6 +211,52 @@ class IdentityReviewService:
             )
         return review_id
 
+    def start_attempt(
+        self,
+        review_id: str,
+        request: Mapping[str, Any],
+        *,
+        host_fingerprint: Mapping[str, Any],
+    ) -> None:
+        """Persist the exact review request before a provider call begins."""
+
+        if not request:
+            raise AuthorityError("identity review request is required")
+        self._require_identity_permission(host_fingerprint)
+        encoded = json.dumps(dict(request), sort_keys=True)
+        host_ref = _digest(dict(host_fingerprint))
+        now = _utc()
+        with self.store.transaction() as db:
+            row = db.execute(
+                "SELECT stage FROM identity_review_operations WHERE review_id=? "
+                "AND instance_id=?",
+                (review_id, self.instance_id),
+            ).fetchone()
+            if row is None:
+                raise AuthorityError("unknown identity review")
+            if str(row[0]) != "PREPARED":
+                raise AuthorityError("identity review is not ready for a provider attempt")
+            db.execute(
+                "INSERT INTO identity_review_attempts VALUES(?,?,?,?,?,?,?,?,?,?)",
+                (
+                    review_id,
+                    0,
+                    encoded,
+                    None,
+                    None,
+                    host_ref,
+                    "STARTED",
+                    "[]",
+                    now,
+                    now,
+                ),
+            )
+            db.execute(
+                "UPDATE identity_review_operations SET stage='STARTED',updated_at=? "
+                "WHERE review_id=?",
+                (now, review_id),
+            )
+
 
     def record_attempt(
         self,
@@ -226,21 +286,32 @@ class IdentityReviewService:
             ).fetchone()
             if row is None:
                 raise AuthorityError("unknown identity review")
-            db.execute(
-                "INSERT OR REPLACE INTO identity_review_attempts VALUES(?,?,?,?,?,?,?,?,?,?)",
-                (
-                    review_id,
-                    attempt,
-                    "{}",
-                    encoded,
-                    json.dumps(dict(usage or {}), sort_keys=True),
-                    host_ref,
-                    status,
-                    json.dumps(list(errors), sort_keys=True),
-                    _utc(),
-                    _utc(),
-                ),
-            )
+            now = _utc()
+            existing = db.execute(
+                "SELECT request_json,host_ref FROM identity_review_attempts "
+                "WHERE review_id=? AND attempt=?",
+                (review_id, attempt),
+            ).fetchone()
+            if existing is None:
+                raise AuthorityError(
+                    "identity review result requires a persisted STARTED request"
+                )
+            else:
+                db.execute(
+                    "UPDATE identity_review_attempts SET result_json=?,usage_json=?,host_ref=?,"
+                    "status=?,validation_errors_json=?,updated_at=? "
+                    "WHERE review_id=? AND attempt=?",
+                    (
+                        encoded,
+                        json.dumps(dict(usage or {}), sort_keys=True),
+                        host_ref or existing[1],
+                        status,
+                        json.dumps(list(errors), sort_keys=True),
+                        now,
+                        review_id,
+                        attempt,
+                    ),
+                )
             db.execute(
                 "UPDATE identity_review_operations SET stage=?,updated_at=? WHERE review_id=?",
                 (
@@ -255,6 +326,7 @@ class IdentityReviewService:
             )
 
     def accept(self, review_id: str, *, name: str) -> str:
+        self._require_identity_permission()
         name = validate_name(name)
         with self.store.transaction() as db:
             row = db.execute(

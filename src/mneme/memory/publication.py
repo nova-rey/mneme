@@ -1168,6 +1168,17 @@ class InterpretationPublisher:
                                 {
                                     "observation_id": observation.observation_id,
                                     "occurrence_key": observation.occurrence_key,
+                                    "group_key": observation.group_key,
+                                    # Persist the exact fallback used by the
+                                    # compatibility learner when callers omit
+                                    # an explicit group.  Replay must consume
+                                    # the same attributable root rather than
+                                    # deriving a new UUID/row-based value.
+                                    "effective_group_key": (
+                                        observation.group_key
+                                        or observation.occurrence_key
+                                        or f"compat:{learner_opportunity}"
+                                    ),
                                     "provenance_group_keys": list(
                                         observation.provenance_group_keys
                                     ),

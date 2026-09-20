@@ -11,7 +11,7 @@ from . import __version__
 from .chat import ChatSession
 from .demo import DemoError, run_phase_one_gate
 from .development import FeedbackService, IdentityReviewService, QuarantineService
-from .development.recovery import replay_learner, verify_replay
+from .development.recovery import rebuild_learner, replay_learner, verify_replay
 from .experiments.cli import add_parser as add_experiment_parser
 from .experiments.cli import dispatch as dispatch_experiment
 from .experiments.cli import normalize_args as normalize_experiment_args
@@ -331,8 +331,12 @@ def main(argv: list[str] | None = None) -> int:
                     result = verify_replay(store)
                     print(json.dumps(result, indent=2, sort_keys=True))
                     return 0 if result["matches_materialized"] else 1
+                if args.learner_action == "rebuild":
+                    result = rebuild_learner(store, reason=args.reason)
+                    print(json.dumps(result, indent=2, sort_keys=True))
+                    return 0
                 raise SystemExit(
-                    "learner rebuild/advance require the Phase Two authority service"
+                    "learner advance requires the Phase Two authority service"
                 )
         if args.command == "feedback":
             with SQLiteStore(args.store) as store:
@@ -418,6 +422,15 @@ def main(argv: list[str] | None = None) -> int:
                             "The result is an administrative self-view label, not a personality claim."
                         ),
                         parameters={"max_new_tokens": 64, "temperature": 0.0},
+                    )
+                    # The review request and STARTED charge must be durable,
+                    # permission-checked, and host-bound before dispatch.  A
+                    # provider interruption therefore remains an auditable
+                    # uncertain attempt instead of an invisible call.
+                    review_service.start_attempt(
+                        args.proposal_id,
+                        request.to_dict(),
+                        host_fingerprint=fingerprint,
                     )
                     result = host.generate(request)
                     host_ref = hashlib.sha256(

@@ -138,7 +138,41 @@ def _operation_quarantined(
     )
 
 
+def _lineage_history(store: SQLiteStore, instance_id: str) -> tuple[str, ...]:
+    """Return the inherited lineage chain from oldest ancestor to active child.
+
+    Forks copy the immutable parent ledger into the child database, while
+    child-local operations are recorded under the child lineage.  Replay must
+    therefore select the complete ancestry explicitly; filtering only on the
+    active child silently drops the state from which the fork was created.
+    """
+
+    chain: list[str] = []
+    current: str | None = instance_id
+    seen: set[str] = set()
+    while current is not None:
+        if current in seen:
+            raise ReplayError("lineage ancestry contains a cycle")
+        seen.add(current)
+        row = store.connection.execute(
+            "SELECT parent_instance_id FROM lineages WHERE instance_id=?", (current,)
+        ).fetchone()
+        if row is None:
+            raise ReplayError(f"lineage ancestry is missing {current}")
+        chain.append(current)
+        current = str(row[0]) if row[0] is not None else None
+    chain.reverse()
+    return tuple(chain)
+
+
 def _observations(store: SQLiteStore, operation_id: str) -> tuple[Observation, ...]:
+    operation = store.connection.execute(
+        "SELECT opportunity FROM development_operations WHERE operation_id=?",
+        (operation_id,),
+    ).fetchone()
+    if operation is None:
+        raise ReplayError(f"development operation is missing: {operation_id}")
+    fallback_group = f"compat:{int(operation[0])}"
     rows = store.connection.execute(
         "SELECT d.observation_id,COALESCE(b.canonical_key,d.edge_key),d.context,"
         "d.source_role,d.status,d.dependence,d.dependence_group,d.covered,d.actual_exposure "
@@ -158,6 +192,10 @@ def _observations(store: SQLiteStore, operation_id: str) -> tuple[Observation, .
         provenance = evidence.get("provenance_group_keys", ())
         if not isinstance(provenance, (list, tuple)):
             provenance = ()
+        occurrence = evidence.get("occurrence_key")
+        occurrence_key = str(occurrence) if occurrence else fallback_group
+        group = evidence.get("group_key") or evidence.get("effective_group_key")
+        group_key = str(group) if group else (occurrence_key or fallback_group)
         observations.append(
             Observation(
                 target_key=str(row[1]),
@@ -180,13 +218,9 @@ def _observations(store: SQLiteStore, operation_id: str) -> tuple[Observation, .
                     if evidence.get("semantic_schema_version")
                     else None
                 ),
-                group_key=str(row[6]) if row[6] is not None else None,
+                group_key=str(row[6]) if row[6] is not None else group_key,
                 provenance_group_keys=tuple(str(item) for item in provenance),
-                occurrence_key=(
-                    str(evidence["occurrence_key"])
-                    if evidence.get("occurrence_key")
-                    else str(row[0])
-                ),
+                occurrence_key=occurrence_key,
                 covered=bool(row[7]),
                 relevant=bool(evidence.get("relevant", True)),
                 actual_exposure=bool(row[8]),
@@ -248,10 +282,13 @@ def replay_learner(
     active = _active_quarantine(store, instance_id)
     state = LearnerState.empty()
     skipped: list[str] = []
+    lineage_ids = _lineage_history(store, instance_id)
+    placeholders = ",".join("?" for _ in lineage_ids)
     operations = store.connection.execute(
         "SELECT operation_id,opportunity,terminal_disposition FROM development_operations "
-        "WHERE instance_id=? AND stage='ACCEPTED' ORDER BY opportunity,operation_id",
-        (instance_id,),
+        f"WHERE instance_id IN ({placeholders}) AND stage='ACCEPTED' "
+        "ORDER BY opportunity,operation_id",
+        lineage_ids,
     )
     count = 0
     for row in operations:
@@ -437,10 +474,13 @@ def rebuild_learner(store: SQLiteStore, *, reason: str) -> dict[str, Any]:
         # tombstones for old keys and values for the rebuilt state, retaining
         # every prior row for audit.  A prior accepted development operation
         # supplies the required foreign-key owner for these materialized rows.
+        lineage_ids = _lineage_history(store, instance_id)
+        placeholders = ",".join("?" for _ in lineage_ids)
         owner = db.execute(
-            "SELECT operation_id FROM development_operations WHERE instance_id=? "
+            "SELECT operation_id FROM development_operations "
+            f"WHERE instance_id IN ({placeholders}) "
             "ORDER BY opportunity DESC,operation_id DESC LIMIT 1",
-            (instance_id,),
+            lineage_ids,
         ).fetchone()
         old_keys = {
             (str(row[0]), str(row[1]))

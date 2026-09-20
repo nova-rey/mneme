@@ -645,3 +645,6 @@
 ## 2026-09-20 P2.3 pilot request and usage audit correction
 
 - The pilot runtime now persists the exact sanitized GenerationRequest payload for development, extraction, assessor, and evaluation artifacts. Extraction reservations normalize the durable `token_usage` field into the same usage accounting shape used by other provider roles. Focused runtime tests cover request retention and extraction usage; no provider call was made for this correction. P2.3 remains stopped pending the fixed schedule/orchestrator and the P2.2 audit repairs.
+## 2026-09-20 P2.3 assessor polarity contract regression audit
+
+- Re-audited the existing `p2-assessor-v5` / `p2-assessor-production-v7` polarity boundary and added paired insufficient-statement and double-negative regression fixtures. Full offline validation passed at 312 pytest tests, Ruff, strict mypy, wheel/fresh-install smoke, and zero provider calls. Historical qualification receipts remain unchanged; the latest polarity-v8 pass remains the current live evidence.

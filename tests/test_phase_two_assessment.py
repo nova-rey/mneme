@@ -382,6 +382,61 @@ def test_present_unsupported_can_record_ambiguous_addressing_without_false_absen
     assert dial.expression_status == "unknown"
 
 
+def test_semantic_contract_preserves_insufficient_and_double_negative_cases() -> None:
+    """Coverage and polarity remain independent for language-level edge cases."""
+
+    case = next(case for case in qualification_cases() if case.case_id == "Q3")
+    incomplete = replace(
+        case.request,
+        sources=(
+            replace(
+                case.request.sources[0],
+                text=(
+                    "The dial may have affected the sound, but I cannot tell whether "
+                    "it stopped it."
+                ),
+            ),
+            case.request.sources[1],
+        ),
+    )
+    ambiguous = _valid_result("Q3")
+    ambiguous_row = ambiguous["assessments"][0]  # type: ignore[index]
+    ambiguous_row["status"] = "present"  # type: ignore[index]
+    ambiguous_row["relation_support"] = "unsupported"  # type: ignore[index]
+    ambiguous_row["expression_status"] = "unknown"  # type: ignore[index]
+    ambiguous_row["evidence"]["quote"] = "I cannot tell whether it stopped it."  # type: ignore[index]
+    rows = validate_assessor_result(incomplete, ambiguous)  # type: ignore[arg-type]
+    dial = next(row for row in rows if row.monitor_id == "dial")
+    assert (dial.status, dial.relation_support, dial.expression_status) == (
+        "present",
+        "unsupported",
+        "unknown",
+    )
+
+    double_negative = replace(
+        case.request,
+        sources=(
+            replace(
+                case.request.sources[0],
+                text="Turning the dial did not fail to stop the ticking.",
+            ),
+            case.request.sources[1],
+        ),
+    )
+    affirmed = _valid_result("Q3")
+    affirmed_row = affirmed["assessments"][0]  # type: ignore[index]
+    affirmed_row["relation_support"] = "supported"  # type: ignore[index]
+    affirmed_row["expression_status"] = "affirmed"  # type: ignore[index]
+    affirmed_row["evidence"]["quote"] = "did not fail to stop the ticking"  # type: ignore[index]
+    rows = validate_assessor_result(double_negative, affirmed)  # type: ignore[arg-type]
+    dial = next(row for row in rows if row.monitor_id == "dial")
+    assert (dial.status, dial.relation_support, dial.expression_status) == (
+        "present",
+        "supported",
+        "affirmed",
+    )
+
+
 def test_missing_monitor_and_false_absence_fail_closed() -> None:
     case = next(case for case in qualification_cases() if case.case_id == "Q1")
     result = _valid_result("Q1")

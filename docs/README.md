@@ -138,6 +138,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   ([JSON](receipts/MNEME_P2.3_Assessor_Qualification_Polarity_V8_Pass_Receipt.json));
   the bounded pilot may proceed under the unchanged ceiling.
 
+  The offline paired semantic-edge regression audit is recorded in [the polarity contract regression receipt](receipts/MNEME_P2.3_Assessor_Polarity_Contract_Regression_Receipt.md)
+  ([JSON](receipts/MNEME_P2.3_Assessor_Polarity_Contract_Regression_Receipt.json));
+  it adds no provider calls and leaves historical qualification evidence unchanged.
+
   The pilot extraction stop and its six returned calls are recorded in [the extraction-stop receipt](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md) ([JSON](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json)); the finite-repair rule halted the pilot before evaluation.
 
   The pilot extraction stop and its six returned calls are recorded in [the extraction-stop receipt](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md) ([JSON](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json)); the finite-repair rule halted the pilot before evaluation.

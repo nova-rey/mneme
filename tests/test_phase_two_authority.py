@@ -5,14 +5,29 @@ import json
 import pytest
 
 from mneme.development import AuthorityError, IdentityReviewService, QuarantineService
+from mneme.hosts import FakeHost
 from mneme.state.contracts import StoragePermissions
 from mneme.state.storage import SQLiteStore
 
 
 def _store(tmp_path):
     store = SQLiteStore(tmp_path / "authority.sqlite3")
-    instance = store.create_root(permissions=StoragePermissions(True, True, learn=True))
+    fingerprint = FakeHost().fingerprint().to_dict()
+    instance = store.create_root(
+        permissions=StoragePermissions(
+            True, True, recall=True, provider_reuse=True, learn=True
+        ),
+        host_binding=fingerprint,
+    )
     return store, instance
+
+
+def _start_review(service: IdentityReviewService, review: str) -> None:
+    service.start_attempt(
+        review,
+        {"messages": [{"role": "user", "content": "name"}]},
+        host_fingerprint=FakeHost().fingerprint().to_dict(),
+    )
 
 
 def test_quarantine_is_append_only_reversible_and_requires_learning_permission(tmp_path):
@@ -34,6 +49,7 @@ def test_identity_review_persists_failed_result_and_requires_explicit_acceptance
     with store:
         service = IdentityReviewService(store, instance)
         review = service.prepare({"name": "Candidate"}, operation_key="review-1")
+        _start_review(service, review)
         service.record_attempt(
             review,
             {"name": "not-json"},
@@ -51,11 +67,50 @@ def test_identity_review_persists_failed_result_and_requires_explicit_acceptance
             service.accept(review, name="Candidate")
 
 
+def test_identity_review_requires_permission_and_persists_request_before_dispatch(tmp_path):
+    denied = SQLiteStore(tmp_path / "denied.sqlite3")
+    denied_instance = denied.create_root(permissions=StoragePermissions(True, True, learn=True))
+    with denied:
+        review = IdentityReviewService(denied, denied_instance).prepare(
+            {"name": "Candidate"}, operation_key="denied-review"
+        )
+        with pytest.raises(AuthorityError, match="permission denied"):
+            IdentityReviewService(denied, denied_instance).start_attempt(
+                review,
+                {"messages": [{"role": "user", "content": "name"}]},
+                host_fingerprint=FakeHost().fingerprint().to_dict(),
+            )
+        assert denied.connection.execute(
+            "SELECT COUNT(*) FROM identity_review_attempts"
+        ).fetchone()[0] == 0
+
+    store = SQLiteStore(tmp_path / "durable.sqlite3")
+    fingerprint = FakeHost().fingerprint().to_dict()
+    instance = store.create_root(
+        permissions=StoragePermissions(True, True, recall=True, provider_reuse=True),
+        host_binding=fingerprint,
+    )
+    request = {"messages": [{"role": "user", "content": "name"}]}
+    with store:
+        service = IdentityReviewService(store, instance)
+        review = service.prepare({"name": "Candidate"}, operation_key="durable-review")
+        service.start_attempt(review, request, host_fingerprint=fingerprint)
+        service.record_attempt(review, {"name": "Candidate"}, status="VALID")
+        row = store.connection.execute(
+            "SELECT request_json,result_json,status,host_ref FROM identity_review_attempts"
+        ).fetchone()
+        assert json.loads(row[0]) == request
+        assert json.loads(row[1]) == {"name": "Candidate"}
+        assert row[2] == "VALID"
+        assert row[3]
+
+
 def test_identity_review_valid_result_can_be_accepted(tmp_path):
     store, instance = _store(tmp_path)
     with store:
         service = IdentityReviewService(store, instance)
         review = service.prepare({"name": "Candidate"}, operation_key="review-2")
+        _start_review(service, review)
         service.record_attempt(review, {"name": "Candidate"}, status="VALID")
         assert service.accept(review, name="Candidate") == review
         assert store.connection.execute(
@@ -76,7 +131,8 @@ def test_identity_review_valid_result_can_be_accepted(tmp_path):
 def test_identity_review_acceptance_supersedes_existing_self_view_atomically(tmp_path):
     store = SQLiteStore(tmp_path / "authority-existing.sqlite3")
     instance = store.create_root(
-        permissions=StoragePermissions(True, True, True, True, True, True)
+        permissions=StoragePermissions(True, True, True, True, True, True),
+        host_binding=FakeHost().fingerprint().to_dict(),
     )
     with store:
         from mneme.identity import IdentityService
@@ -84,6 +140,7 @@ def test_identity_review_acceptance_supersedes_existing_self_view_atomically(tmp
         IdentityService(store, instance).adopt("First")
         service = IdentityReviewService(store, instance)
         review = service.prepare({"name": "Second"}, operation_key="review-3")
+        _start_review(service, review)
         service.record_attempt(review, {"name": "Second"}, status="VALID")
         service.accept(review, name="Second")
         events = store.connection.execute(

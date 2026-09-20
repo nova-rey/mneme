@@ -1,0 +1,19 @@
+{
+  "kind": "phase-two-assessor-polarity-contract-regression",
+  "assessor_schema": "p2-assessor-v5",
+  "prompt_version": "p2-assessor-production-v7",
+  "status": "PASS_OFFLINE",
+  "provider_calls": 0,
+  "tests": {
+    "pytest": 312,
+    "ruff": "PASS",
+    "mypy_strict": "PASS",
+    "wheel_fresh_install_smoke": "PASS"
+  },
+  "new_regression_cases": [
+    "present unsupported unknown for an explicitly insufficient statement",
+    "present supported affirmed for a double-negative statement"
+  ],
+  "historical_live_qualification": "polarity-v8 pass preserved unchanged",
+  "disposition": "No historical receipt was rewritten and no new provider call was made."
+}
