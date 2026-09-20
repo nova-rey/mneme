@@ -577,3 +577,7 @@
 ## 2026-09-20 P2.3 source-role v6 qualification stop
 
 - Executed the one fixed Q1/Q2/Q3 qualification from clean main `46593a6`. All three DeepInfra Qwen calls returned and were durably retained (3,190 input, 804 output, 3,994 total tokens; provider cost unavailable). Q1 and Q2 passed, including deterministic `external_supported`, `current_input_echo`, and `exposure_linked` resolution. Q3 returned `absent` for an unavailable model-output source where the contract requires `unknown`; strict validation rejected it and the run stopped. No retry, repair, resampling, model substitution, or pilot call occurred. The sanitized receipts are `docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Failure_Receipt.md` and `.json`; P2.3 remains stopped for assessor suitability review.
+
+## 2026-09-20 P2.3 source-role v6 queue reconciliation
+
+- Reconciled the P2.3 queue to the v6 qualification failure receipt and removed the stale duplicate qualification result entry so the queue now exposes the current Q1/Q2-pass, Q3-fail evidence. Package remains `WAITING` on `external:p2-assessor-qualification`; no pilot call was made.
