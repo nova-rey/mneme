@@ -529,3 +529,7 @@
 
 - Applied the additive `P2-ASSESSOR-PROVENANCE-RESOLUTION-01` correction without changing the approved Phase Two plan, Gemma developing host, separated assessor role, learner semantics, budgets, or historical evidence. The assessor contract is now `p2-assessor-v2` / `p2-assessor-production-v3` and returns semantic observations plus source correspondence only; deterministic `p2-provenance-v1` resolution derives developmental dependence from authoritative source roles, memory exposure, replay ancestry, and immutable bindings. Raw assessor output, semantic observations, and derived provenance are persisted separately, with all applicable ancestry roots retained and minimum remaining multi-root caps applied by the learner.
 - Offline validation passed at 280 pytest tests, focused provenance/qualification/learner regressions, Ruff, strict mypy across 47 source files, and wheel/install smoke. No provider call or pilot call occurred. The historical Qwen Q1 failure remains unchanged, and P2.3 remains WAITING on a fresh explicit qualification authorization. Evidence: `docs/receipts/MNEME_P2_Assessor_Provenance_Resolution_Offline_Receipt.md` and `.json`.
+
+## 2026-09-20 P2 assessor/provenance queue reconciliation
+
+- Reconciled the P2.3 candidate to `e993d68` and CI run `35534420124` (passed). The queue records the new semantic/provenance contract versions and offline receipt while retaining `WAITING` on `external:p2-assessor-qualification`. No provider call, pilot dispatch, or acceptance-criterion change occurred.
