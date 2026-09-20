@@ -553,3 +553,7 @@
 ## 2026-09-20 P2.3 prompt v4 qualification stop
 
 - Executed one fixed Q1/Q2/Q3 qualification from the prompt-v4 remediation boundary. Q1 returned and was durably retained (877 input, 343 output, 1,220 total tokens). Qwen correctly rejected the unrelated monitor and supported the latch, but still marked the available model-output echo absent. Q2/Q3 and the pilot were not dispatched; no retry, repair, or resampling occurred. The sanitized receipts are `docs/receipts/MNEME_P2.3_Assessor_Qualification_PromptV4_Failure_Receipt.md` and `.json`. This repeated semantic assessor failure is preserved as the P2.3 blocker.
+
+## 2026-09-20 P2.3 prompt v4 queue reconciliation
+
+- Reconciled P2.3 to evidence commit `71b6323`, retaining `WAITING` on `external:p2-assessor-qualification`. The queue records the prompt-v4 Q1 semantic stop and preserves the historical v2 failure and offline remediation; Q2/Q3 and pilot calls remain zero.
