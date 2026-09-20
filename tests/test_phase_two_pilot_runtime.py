@@ -251,3 +251,7 @@ def test_extraction_and_publication_reuse_durable_boundaries(tmp_path: Path) -> 
         "SELECT status FROM interpretation_operations WHERE operation_id=?",
         (extraction.operation_id,),
     ).fetchone()[0] == "ACCEPTED"
+    # A resumed run must accept the extraction artifact directory written by
+    # the runtime and retain its durable ledger state.
+    reopened = PilotRun(pilot.artifacts, pilot.run_id)
+    assert reopened.status()["status"] == "RUNNING"

@@ -617,3 +617,7 @@
 ## 2026-09-20 P2.3 partial pilot probe
 
 - After the fixed polarity v8 assessor qualification passed, a bounded pilot probe used the existing PilotRuntime with the approved Gemma developing host. Exactly two post-qualification calls were dispatched at fixed coordinates: one development response and one extraction. Both provider results were returned and durably persisted; the extraction passed local residue validation. The probe stopped before any assessor or evaluation call after a harness serialization error, without retry or replacement. The repository currently lacks a committed fixed-fixture schedule/orchestrator and CLI path for the full 48-response/48-extraction/48-assessment/144-readout contract, so no P2.3 adequacy or completion claim is made. Evidence: `docs/receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.md` and `.json`.
+
+## 2026-09-20 P2.3 pilot artifact restart correction
+
+- Offline audit of the partial pilot probe found that `PilotRuntime` publishes an `extraction/` artifact directory while `ArtifactStore.verify_run()` rejected that directory on restart. The verifier now admits and validates the existing extraction artifact category, with a regression proving a run containing extraction output reopens as `RUNNING`. Focused runtime tests and the complete 308-test suite pass; no provider call was made for this correction. The partial probe receipt remains historical and unchanged.
