@@ -648,3 +648,7 @@
 ## 2026-09-20 P2.3 assessor polarity contract regression audit
 
 - Re-audited the existing `p2-assessor-v5` / `p2-assessor-production-v7` polarity boundary and added paired insufficient-statement and double-negative regression fixtures. Full offline validation passed at 312 pytest tests, Ruff, strict mypy, wheel/fresh-install smoke, and zero provider calls. Historical qualification receipts remain unchanged; the latest polarity-v8 pass remains the current live evidence.
+
+## 2026-09-20 Phase Two queue reconciliation after polarity audit
+
+- Pointed P2.2 and P2.3 at candidate `f11b884`; P2.2 is `VALIDATING` pending dedicated recovery/identity receipts and final adversarial audit. P2.3 remains `WAITING` on P2.2 and the fixed pilot boundary; the polarity-v8 qualification pass remains the latest live evidence and no unchanged qualification was resampled.
