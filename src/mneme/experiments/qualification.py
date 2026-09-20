@@ -1,0 +1,114 @@
+"""The fixed, production-shaped Phase Two assessor qualification gate."""
+
+from __future__ import annotations
+
+import json
+from dataclasses import asdict
+from typing import Any
+
+from ..contracts import GenerationResult
+from ..development.assessment import (
+    AssessorValidationError,
+    assessor_generation_request,
+    qualification_cases,
+    validate_qualification_case,
+)
+from ..host import Host
+from .pilot import PilotError, PilotRun
+
+
+def _result_payload(
+    result: GenerationResult,
+) -> tuple[dict[str, Any], dict[str, Any] | None, int | None]:
+    usage = asdict(result.token_usage) if result.token_usage is not None else None
+    output_tokens = usage.get("output_tokens") if usage is not None else None
+    return (
+        {
+            "content": result.content,
+            "model_id": result.model_id,
+            "provider": result.provider,
+            "finish_reason": result.finish_reason,
+            "seed": result.seed,
+            "usage": usage,
+        },
+        usage,
+        output_tokens if isinstance(output_tokens, int) else None,
+    )
+
+
+def run_assessor_qualification(
+    pilot: PilotRun,
+    host: Host,
+    *,
+    max_output_tokens: int = 1_536,
+) -> dict[str, Any]:
+    """Run exactly the fixed Q1/Q2/Q3 qualification calls once.
+
+    Each returned provider result is durably recorded before local JSON and
+    semantic validation. A provider exception is uncertain and terminal; it
+    is never regenerated. Invalid results are retained and qualification
+    completes as a failure after the three predetermined calls.
+    """
+
+    pilot.begin_qualification()
+    case_results: list[dict[str, Any]] = []
+    all_valid = True
+    for case in qualification_cases():
+        call_id = f"assessor-{case.case_id.lower()}"
+        request = assessor_generation_request(case.request, max_new_tokens=max_output_tokens)
+        pilot.reserve_call(
+            call_id=call_id,
+            role="assessor-qualification",
+            coordinate={"case": case.case_id},
+            max_output_tokens=max_output_tokens,
+        )
+        pilot.dispatch_call(call_id)
+        try:
+            generated = host.generate(request)
+        except Exception as exc:
+            pilot.mark_uncertain(call_id, f"provider outcome uncertain: {type(exc).__name__}")
+            pilot.fail(
+                "qualification provider outcome is uncertain",
+                details={"case": case.case_id},
+            )
+            raise PilotError(f"qualification call {case.case_id} is UNCERTAIN") from exc
+        payload, usage, output_tokens = _result_payload(generated)
+        pilot.return_call(
+            call_id,
+            result=payload,
+            usage=usage,
+            output_tokens=output_tokens,
+        )
+        valid = True
+        error: str | None = None
+        try:
+            decoded = json.loads(generated.content)
+            if not isinstance(decoded, dict):
+                raise AssessorValidationError("assessor result must be a JSON object")
+            validated = validate_qualification_case(case, decoded)
+            canonical = [item.to_dict() for item in validated]
+        except (AssessorValidationError, json.JSONDecodeError, TypeError, ValueError) as exc:
+            valid = False
+            all_valid = False
+            error = str(exc)
+            canonical = []
+        pilot.publish_artifact(
+            "qualification",
+            f"{case.case_id.lower()}.json",
+            {
+                "case_id": case.case_id,
+                "request": case.request.to_dict(),
+                "result": payload,
+                "valid": valid,
+                "validation_error": error,
+                "validated": canonical,
+            },
+        )
+        case_results.append(
+            {"case_id": case.case_id, "valid": valid, "validation_error": error}
+        )
+    final = pilot.complete_qualification(passed=all_valid, details={"cases": case_results})
+    return {"status": final["status"], "cases": case_results}
+
+
+__all__ = ["run_assessor_qualification"]

@@ -108,6 +108,7 @@ def test_qualification_cases_use_production_shape_and_fakehost() -> None:
         # The request is the same host boundary used by the pilot; no run ID or
         # filesystem coordinate is placed in model-visible generation material.
         assert request.run_metadata == {}
+        assert request.response_format is None
         payload = request.messages[0]["content"]
         assert "source" in payload and "monitors" in payload
         fake_result = host.generate(request)

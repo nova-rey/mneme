@@ -44,6 +44,7 @@ from .inspection import (
 )
 from .live_accounting import summarize_lineage_usage
 from .pilot import CallReservation, CallStatus, PilotError, PilotRun, PilotStatus
+from .qualification import run_assessor_qualification
 
 __all__ = [
     "EXPERIMENT_SCHEMA_VERSION",
@@ -81,6 +82,7 @@ __all__ = [
     "PilotError",
     "PilotRun",
     "PilotStatus",
+    "run_assessor_qualification",
     "ComparisonError",
     "ComparisonProbe",
     "ComparisonResult",

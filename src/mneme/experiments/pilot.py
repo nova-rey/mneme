@@ -423,6 +423,21 @@ class PilotRun:
             },
         )
 
+    def fail(self, reason: str, *, details: Mapping[str, Any] | None = None) -> dict[str, Any]:
+        """Record a terminal failure without inventing missing call results."""
+
+        state = self.status()
+        if state["status"] not in {
+            PilotStatus.QUALIFYING.value,
+            PilotStatus.RUNNING.value,
+            PilotStatus.PAUSED.value,
+        }:
+            raise PilotError("pilot is not active")
+        return self._write_state(
+            PilotStatus.FAILED,
+            failure={"reason": str(reason), "details": _safe_value(details or {})},
+        )
+
     def begin_pilot(self) -> dict[str, Any]:
         state = self.status()
         if state["status"] != PilotStatus.QUALIFIED.value:

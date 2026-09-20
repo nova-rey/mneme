@@ -22,6 +22,10 @@ budget consumption occurred.
   `RESERVED → DISPATCHED → RETURNED|FAILED|UNCERTAIN`, with idempotent
   coordinates, hard call/output-token ceilings, pause/resume, integrity digests,
   and sanitized artifact publication.
+- The fixed qualification executor uses prompted raw JSON with no native
+  response-format claim, matching the selected DeepInfra host boundary. Each
+  returned result is stored before validation; invalid results remain retained
+  and are never retried.
 - Contextual consequence state and accepted outcome assessments are persisted
   and reconstructed across publications; reviewed identity acceptance creates a
   durable identity event/self-view transition.
@@ -29,9 +33,9 @@ budget consumption occurred.
 ## Validation
 
 ```text
-pytest: 264 passed
+pytest: 266 passed
 Ruff: PASS
-strict mypy (src): PASS, 46 source files
+strict mypy (src): PASS, 47 source files
 provider calls: 0
 credential access: 0
 ```

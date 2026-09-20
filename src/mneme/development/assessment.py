@@ -414,7 +414,10 @@ def assessor_generation_request(
             },
         ),
         parameters={"max_new_tokens": max_new_tokens, "temperature": 0.0},
-        response_format={"type": "json_object"},
+        # DeepInfra's selected backend has no verified native structured-output
+        # contract.  The raw-JSON instruction above is the shared production
+        # boundary; local validation remains authoritative.
+        response_format=None,
     )
 
 
