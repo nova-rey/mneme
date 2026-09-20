@@ -549,3 +549,7 @@
 ## 2026-09-20 P2.3 prompt remediation queue reconciliation
 
 - Reconciled P2.3 to correction commit `d28c9e5`. The queue records the prompt-semantics offline gate as PASS while retaining the historical Q1 qualification failure and `WAITING` on `external:p2-assessor-qualification`. No provider call or pilot dispatch occurred during remediation; the proposed 299-call ceiling is unchanged.
+
+## 2026-09-20 P2.3 prompt v4 qualification stop
+
+- Executed one fixed Q1/Q2/Q3 qualification from the prompt-v4 remediation boundary. Q1 returned and was durably retained (877 input, 343 output, 1,220 total tokens). Qwen correctly rejected the unrelated monitor and supported the latch, but still marked the available model-output echo absent. Q2/Q3 and the pilot were not dispatched; no retry, repair, or resampling occurred. The sanitized receipts are `docs/receipts/MNEME_P2.3_Assessor_Qualification_PromptV4_Failure_Receipt.md` and `.json`. This repeated semantic assessor failure is preserved as the P2.3 blocker.

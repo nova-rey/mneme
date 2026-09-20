@@ -109,6 +109,11 @@ The documents are preserved in their supplied form and are intentionally not mer
   prompt semantics remediation receipt](receipts/MNEME_P2.3_Assessor_Prompt_Semantics_Remediation_Receipt.md)
   ([JSON](receipts/MNEME_P2.3_Assessor_Prompt_Semantics_Remediation_Receipt.json));
   it preserves the historical Q1 failure and changes no qualification case.
+  The subsequent v4 qualification stop is recorded in [the prompt v4 failure
+  receipt](receipts/MNEME_P2.3_Assessor_Qualification_PromptV4_Failure_Receipt.md)
+  ([JSON](receipts/MNEME_P2.3_Assessor_Qualification_PromptV4_Failure_Receipt.json));
+  Qwen still failed the model-output echo semantic case and the pilot remained
+  unrun.
 
   Future design context: [Developmental Self-Context](architecture/future/MNEME_Developmental_Self_Context_Architecture.md).
   This reference does not change the phase's implementation scope, frozen

@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "status": "FAILED",
+  "tested_commit": "916b0e9b8c536c2583d810d08f45170faea14a1e",
+  "run_id": "qualification-20260920-v4",
+  "contract": {"assessor_schema":"p2-assessor-v2","prompt":"p2-assessor-production-v4","provenance":"p2-provenance-v1"},
+  "assessor": {"provider":"DeepInfra","model_id":"Qwen/Qwen3-235B-A22B-Instruct-2507","credential_functional":true},
+  "authorization": {"maximum_new_provider_calls":3,"calls_dispatched":1,"retries":0,"repairs":0,"replacement_samples":0,"pilot_calls":0},
+  "q1": {
+    "status":"RETURNED",
+    "validation":"FAILED",
+    "usage":{"input_tokens":877,"output_tokens":343,"total_tokens":1220},
+    "validation_error":"monitor echo absent requires complete available-source coverage",
+    "semantic_result": {
+      "latch":{"status":"present","relation_support":"supported"},
+      "echo":{"status":"absent","relation_support":"unsupported","expression_status":"not_expressed","coverage_source_slots":[],"corresponding_source_slots":[]},
+      "unrelated":{"status":"absent","relation_support":"unsupported"}
+    }
+  },
+  "q2":{"status":"NOT_DISPATCHED"},
+  "q3":{"status":"NOT_DISPATCHED"},
+  "pilot":{"calls":0},
+  "historical_evidence_preserved":true,
+  "credential_in_repository_artifacts":false,
+  "disposition":"repeated semantic assessor failure; stop for assessor-suitability review"
+}
