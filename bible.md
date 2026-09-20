@@ -609,3 +609,7 @@
 ## 2026-09-20 P2.3 polarity v8 qualification pass
 
 - Executed exactly one fixed Q1/Q2/Q3 DeepInfra Qwen qualification under `p2-assessor-v5` / `p2-assessor-production-v7` after the offline polarity correction. All three calls returned and were durably retained before validation: Q1/Q2 passed, and Q3 passed with `present` / `contradicted` / `negated` plus exact evidence for the dial negation; unavailable output remained `unknown`. Usage was 3,610 input, 790 output, 4,400 total tokens; provider cost unavailable. No retry, repair, resampling, model substitution, or pilot call occurred. Qualification evidence is preserved in `docs/receipts/MNEME_P2.3_Assessor_Qualification_Polarity_V8_Pass_Receipt.md` and `.json`; the bounded P2.3 pilot may proceed under the unchanged budget and stop rules.
+
+## 2026-09-20 P2.3 bounded pilot runtime candidate
+
+- Added an offline-only orchestration boundary that composes `PilotRun` reservations, `ContinuityService` developmental acceptance, interpretation result persistence/validation, `InterpretationPublisher`, and `FrozenEvaluationView` without introducing new semantic or learner rules. Stable coordinates are exact-once; uncertain provider calls are never regenerated; frozen evaluation publishes only external artifacts. Added four FakeHost regressions covering developmental idempotency, extraction/publication, frozen evaluation isolation, and private-snapshot binding. No provider call occurred.
