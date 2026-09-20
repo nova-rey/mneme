@@ -20,7 +20,7 @@ from typing import Any
 from ..contracts import GenerationRequest
 
 ASSESSOR_SCHEMA_VERSION = "p2-assessor-v2"
-ASSESSOR_PROMPT_VERSION = "p2-assessor-production-v3"
+ASSESSOR_PROMPT_VERSION = "p2-assessor-production-v4"
 PROVENANCE_SCHEMA_VERSION = "p2-provenance-v1"
 
 ASSESSMENT_STATUSES = frozenset({"present", "absent", "unknown"})
@@ -653,7 +653,15 @@ def assessor_generation_request(
                     "reason must explain the absence; evidence must be null. For "
                     "status=unknown, coverage must be incomplete with a reason and "
                     "evidence must be null. Copy monitor IDs and source slots exactly "
-                    "from the request. For a present model-output expression, use "
+                    "from the request. Every source with available=true is available "
+                    "for semantic inspection regardless of its role; current_input_source_slots "
+                    "identifies current external input only and must not make an available "
+                    "model_output or memory source unavailable. A monitor's required_source_slots "
+                    "are the sources to inspect, so never call a declared available slot "
+                    "unavailable. Compare the complete candidate proposition, including its "
+                    "from, to, and relation fields, against the monitor relation: a quotation "
+                    "supporting one target does not support a different target merely because "
+                    "the wording overlaps. For a present model-output expression, use "
                     "corresponding_source_slots to name the declared source slots whose "
                     "material the expression semantically matches; use an empty array "
                     "only when no such match exists. Do not emit dependence labels, "

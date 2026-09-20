@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "status": "OFFLINE_GATE_PASS",
+  "provider_calls": 0,
+  "historical_failure": "docs/receipts/MNEME_P2.3_Assessor_Qualification_Provenance_V2_Failure_Receipt.md",
+  "prompt_version": "p2-assessor-production-v4",
+  "assessor_schema": "p2-assessor-v2",
+  "provenance_schema": "p2-provenance-v1",
+  "correction": [
+    "available=true is authoritative source visibility regardless of source role",
+    "monitor relation fields override candidate fields and omitted fields inherit candidate fields",
+    "complete proposition matching is required for semantic support"
+  ],
+  "unchanged": ["Q1/Q2/Q3 cases", "expected outcomes", "assessor model", "provenance rules", "learner coefficients", "acceptance criteria"],
+  "validation": {
+    "pytest": "280 passed",
+    "ruff": "PASS",
+    "mypy_strict": "PASS",
+    "wheel_fresh_install_smoke": "PASS"
+  },
+  "next_action": "one fixed Q1/Q2/Q3 qualification under p2-assessor-production-v4",
+  "pilot_calls": 0,
+  "pilot_ceiling": {"calls": 299, "max_output_tokens": 204288}
+}

@@ -153,6 +153,10 @@ def test_assessor_prompt_exposes_complete_enum_and_json_contract() -> None:
     assert "Do not emit dependence labels" in prompt
     assert '"dependence":' not in prompt
     assert "MNEME resolves" in prompt
+    assert "Every source with available=true is available" in prompt
+    assert "current_input_source_slots" in prompt
+    assert "complete candidate proposition" in prompt
+    assert "does not support a different target" in prompt
 
 
 def test_q1_echo_and_q2_exposure_ancestry_are_deterministically_resolved() -> None:

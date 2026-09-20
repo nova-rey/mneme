@@ -105,6 +105,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   receipt](receipts/MNEME_P2.3_Assessor_Qualification_Provenance_V2_Failure_Receipt.md)
   ([JSON](receipts/MNEME_P2.3_Assessor_Qualification_Provenance_V2_Failure_Receipt.json));
   Q2/Q3 and the pilot were not dispatched.
+  The prompt-only semantics remediation and offline gate are recorded in [the
+  prompt semantics remediation receipt](receipts/MNEME_P2.3_Assessor_Prompt_Semantics_Remediation_Receipt.md)
+  ([JSON](receipts/MNEME_P2.3_Assessor_Prompt_Semantics_Remediation_Receipt.json));
+  it preserves the historical Q1 failure and changes no qualification case.
 
   Future design context: [Developmental Self-Context](architecture/future/MNEME_Developmental_Self_Context_Architecture.md).
   This reference does not change the phase's implementation scope, frozen

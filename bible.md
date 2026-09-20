@@ -541,3 +541,7 @@
 ## 2026-09-20 P2.3 corrected qualification queue reconciliation
 
 - Reconciled P2.3 to evidence commit `266fed2`, preserving `WAITING` on `external:p2-assessor-qualification`. The queue now points to the one-call Q1 semantic stop; Q2/Q3 and pilot calls remain undispatched. No acceptance criteria, model, contract, or historical receipt was changed.
+
+## 2026-09-20 P2.3 assessor prompt semantics remediation
+
+- Audited the corrected Q1 failure and found two prompt omissions: source `available=true` was not explicitly distinguished from current-input membership, and partial monitor relations did not state candidate-field inheritance. Added only those model-facing clarifications and bumped the prospective prompt version to `p2-assessor-production-v4`; schema, Q1/Q2/Q3 cases, expected outcomes, resolver, learner, and acceptance criteria remain unchanged. Offline validation passed at 280 pytest tests, Ruff, strict mypy, wheel build, and fresh-install CLI smoke with no provider call. The historical Q1 failure remains preserved; one fixed qualification under the new prompt is the next bounded verification.
