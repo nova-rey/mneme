@@ -500,3 +500,7 @@
 ## 2026-09-20 P2.3 qualification v3 stop
 
 - Executed the explicitly authorized fresh fixed Q1/Q2/Q3 qualification against clean main `905622f`. All three DeepInfra calls returned and were durably retained (2,866 input, 706 output, 3,572 total tokens); no retries, repairs, replacement samples, or pilot calls occurred. Q1 falsely marked the unrelated monitor present, Q2 falsely supported the rain-jacket candidate and used `replay_linked` instead of required `exposure_linked`, and Q3 marked a negated relation supported and unavailable output absent instead of unknown. Qualification failed and the pilot remained at zero calls. The sanitized receipts are `docs/receipts/MNEME_P2.3_Assessor_Qualification_V3_Failure_Receipt.md` and `.json`; repeated semantic failure is preserved for architectural review.
+
+## 2026-09-20 P2.3 qualification v3 queue reconciliation
+
+- Updated the P2.3 queue timestamp to the v3 qualification stop and preserved the package as `WAITING` on external assessor qualification. No additional provider call or pilot dispatch occurred.
