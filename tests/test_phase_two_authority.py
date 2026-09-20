@@ -62,3 +62,39 @@ def test_identity_review_valid_result_can_be_accepted(tmp_path):
             "SELECT stage,decision_json FROM identity_review_operations WHERE review_id=?",
             (review,),
         ).fetchone()[0] == "ACCEPTED"
+        event = store.connection.execute(
+            "SELECT event_kind,name,accepted_revision FROM identity_events"
+        ).fetchone()
+        assert tuple(event) == ("adopt", "Candidate", 1)
+        view = store.connection.execute(
+            "SELECT name,version FROM self_views"
+        ).fetchone()
+        assert tuple(view) == ("Candidate", 1)
+        assert store.current()["current_revision"] == 1
+
+
+def test_identity_review_acceptance_supersedes_existing_self_view_atomically(tmp_path):
+    store = SQLiteStore(tmp_path / "authority-existing.sqlite3")
+    instance = store.create_root(
+        permissions=StoragePermissions(True, True, True, True, True, True)
+    )
+    with store:
+        from mneme.identity import IdentityService
+
+        IdentityService(store, instance).adopt("First")
+        service = IdentityReviewService(store, instance)
+        review = service.prepare({"name": "Second"}, operation_key="review-3")
+        service.record_attempt(review, {"name": "Second"}, status="VALID")
+        service.accept(review, name="Second")
+        events = store.connection.execute(
+            "SELECT event_id,event_kind,name,supersedes_event_id,accepted_revision "
+            "FROM identity_events ORDER BY accepted_revision"
+        ).fetchall()
+        assert events[1][1:3] == ("supersede", "Second")
+        assert events[1][3] == events[0][0]
+        assert events[1][4] == 2
+        assert tuple(
+            store.connection.execute(
+                "SELECT name,version FROM self_views ORDER BY version DESC LIMIT 1"
+            ).fetchone()
+        ) == ("Second", 2)

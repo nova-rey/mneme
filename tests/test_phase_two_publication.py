@@ -7,7 +7,7 @@ import json
 import pytest
 
 from mneme.contracts import GenerationRequest
-from mneme.development import Observation
+from mneme.development import ConsequenceAssessment, Observation
 from mneme.hosts import FakeHost
 from mneme.memory import InterpretationPublisher, PublicationError, Residue, validate_residue
 from mneme.state.contracts import StoragePermissions
@@ -157,6 +157,86 @@ def test_unknown_observation_is_durable_without_credit(tmp_path):
         assert store.connection.execute(
             "SELECT accessibility FROM learner_values"
         ).fetchone()[0] == 0
+
+
+def test_route_consequences_and_assessments_are_durable_in_learner_snapshot(tmp_path):
+    store, instance, episode_id, residue = _episode_and_residue(tmp_path, learn=True)
+    with store:
+        publisher = InterpretationPublisher(store, instance)
+        operation_id = publisher.prepare(episode_id, operation_id="route-interpretation")
+        receipt = publisher.publish(
+            operation_id,
+            residue,
+            development_operation_id="route-development",
+            opportunity=1,
+            observations=(Observation(target_key="edge-ab", occurrence_key="route-observation"),),
+            consequences=(
+                ConsequenceAssessment(
+                    "assessment-1",
+                    "route-ab",
+                    direction=-1,
+                    exposure_id="exposure-1",
+                    opportunity=1,
+                ),
+            ),
+        )
+        learner_snapshot = store.connection.execute(
+            "SELECT learner_snapshot_id FROM manifests WHERE manifest_id=?",
+            (receipt.manifest_id,),
+        ).fetchone()
+        row = store.connection.execute(
+            "SELECT configuration_json FROM learner_snapshots WHERE snapshot_id=?",
+            (learner_snapshot[0],),
+        ).fetchone()
+        payload = json.loads(row[0])
+        assert payload["state"]["routes"]["route-ab:general"]["consequence"] == -50_000
+        assessment = store.connection.execute(
+            "SELECT assessment_id,target_route_id,direction,status FROM outcome_assessments"
+        ).fetchone()
+        assert tuple(assessment) == ("assessment-1", "route-ab", -1, "ACCEPTED")
+
+        # A later publication reconstructs route state from the prior learner
+        # snapshot rather than starting contextual restraint over at zero.
+        continuity = ContinuityService(store, instance, FakeHost())
+        next_operation = continuity.prepare_episode(
+            GenerationRequest(({"role": "user", "content": "A causes B"},)),
+            operation_id="generation-op-2",
+        )
+        continuity.generate_operation(next_operation.operation_id)
+        continuity.accept_episode(next_operation.operation_id)
+        next_interpretation = publisher.prepare(
+            next_operation.episode_id, operation_id="route-interpretation-2"
+        )
+        next_receipt = publisher.publish(
+            next_interpretation,
+            residue,
+            development_operation_id="route-development-2",
+            opportunity=2,
+            observations=(Observation(target_key="edge-ab", occurrence_key="route-observation-2"),),
+            consequences=(
+                ConsequenceAssessment(
+                    "assessment-2",
+                    "route-ab",
+                    direction=-1,
+                    exposure_id="exposure-2",
+                    opportunity=2,
+                ),
+            ),
+        )
+        next_snapshot = store.connection.execute(
+            "SELECT learner_snapshot_id FROM manifests WHERE manifest_id=?",
+            (next_receipt.manifest_id,),
+        ).fetchone()
+        next_payload = json.loads(
+            store.connection.execute(
+                "SELECT configuration_json FROM learner_snapshots WHERE snapshot_id=?",
+                (next_snapshot[0],),
+            ).fetchone()[0]
+        )
+        assert next_payload["state"]["routes"]["route-ab:general"]["consequence"] == -100_000
+        assert store.connection.execute(
+            "SELECT COUNT(*) FROM outcome_assessments"
+        ).fetchone()[0] == 2
 
 
 def test_learning_publication_requires_explicit_learning_permission(tmp_path):

@@ -5,7 +5,6 @@ integration are layered around these functions so replay can compare the
 same accepted observations without invoking a model.
 """
 
-from .authority import AuthorityError, IdentityReviewService, QuarantineRecord, QuarantineService
 from .assessment import (
     ASSESSOR_PROMPT_VERSION,
     ASSESSOR_SCHEMA_VERSION,
@@ -18,12 +17,19 @@ from .assessment import (
     ValidatedAssessment,
     assessor_generation_request,
     qualification_cases,
-    validate_qualification_case,
     validate_assessor_result,
+    validate_qualification_case,
+)
+from .authority import (
+    AuthorityError,
+    IdentityReviewService,
+    QuarantineRecord,
+    QuarantineService,
 )
 from .learner import (
     FIXED_SCALE,
     ConsequenceAssessment,
+    ConsequenceResult,
     Contribution,
     DevelopmentalLearner,
     EdgeState,
@@ -62,6 +68,7 @@ __all__ = [
     "QuarantineService",
     "FIXED_SCALE",
     "ConsequenceAssessment",
+    "ConsequenceResult",
     "Contribution",
     "DevelopmentalLearner",
     "EdgeUpdate",

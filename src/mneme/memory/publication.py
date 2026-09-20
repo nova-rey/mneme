@@ -16,7 +16,16 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any
 
-from ..development import DevelopmentalLearner, EdgeState, Observation
+from ..development import (
+    ConsequenceAssessment,
+    ConsequenceResult,
+    DevelopmentalLearner,
+    EdgeState,
+    LearnerState,
+    Observation,
+    RouteState,
+    apply_consequence,
+)
 from ..development.learner import CreditWindow
 from ..state.storage import SQLiteStore, _utc
 from .graph import GraphConcept, GraphEdge, GraphRoute, discover_routes, materialize_graph
@@ -99,6 +108,27 @@ def _edge_state_from_json(value: Mapping[str, Any]) -> EdgeState:
             else None
         ),
         raw_occurrence_count=int(value.get("raw_occurrence_count", 0)),
+    )
+
+
+def _route_state_from_json(value: Mapping[str, Any]) -> RouteState:
+    """Restore one contextual route state from a learner snapshot payload."""
+
+    by_exposure = tuple(
+        (str(key), int(amount))
+        for key, amount in sorted(dict(value.get("by_exposure", {})).items())
+    )
+    rolling = tuple(
+        CreditWindow(int(item["opportunity"]), int(item["amount"]))
+        for item in value.get("rolling_consequences", [])
+    )
+    return RouteState(
+        route_key=str(value["route_key"]),
+        context=str(value.get("context", "general")),
+        consequence=int(value.get("consequence", 0)),
+        by_exposure=by_exposure,
+        rolling_consequences=rolling,
+        applied_assessments=tuple(str(item) for item in value.get("applied_assessments", [])),
     )
 
 
@@ -493,14 +523,16 @@ class InterpretationPublisher:
         resolver_version: str = "explicit-v1",
         resolution_decisions: Mapping[str, ResolutionDecision] | None = None,
         observations: tuple[Observation, ...] | list[Observation] = (),
+        consequences: tuple[ConsequenceAssessment, ...] | list[ConsequenceAssessment] = (),
         learner: DevelopmentalLearner | None = None,
         development_operation_id: str | None = None,
         opportunity: int | None = None,
         assessor_version: str = "",
     ) -> PublicationReceipt:
         observation_rows = tuple(observations)
+        consequence_rows = tuple(consequences)
         learner_requested = bool(
-            observation_rows or learner is not None or development_operation_id
+            observation_rows or consequence_rows or learner is not None or development_operation_id
         )
         with self.store.transaction() as db:
             # Graph rows reference the snapshot envelope, whose digest is
@@ -927,11 +959,41 @@ class InterpretationPublisher:
                 for value in latest_values:
                     key = (str(value[0]), str(value[1]))
                     prior_state[key] = _edge_state_from_json(json.loads(str(value[2])))
+                prior_routes: tuple[RouteState, ...] = ()
+                latest_snapshot = db.execute(
+                    "SELECT configuration_json FROM learner_snapshots "
+                    "WHERE instance_id=? ORDER BY opportunity DESC,rowid DESC LIMIT 1",
+                    (self.instance_id,),
+                ).fetchone()
+                if latest_snapshot is not None:
+                    snapshot_payload = json.loads(str(latest_snapshot[0]))
+                    raw_state = snapshot_payload.get("state", {})
+                    raw_routes = (
+                        raw_state.get("routes", {}) if isinstance(raw_state, Mapping) else {}
+                    )
+                    if isinstance(raw_routes, Mapping):
+                        prior_routes = tuple(
+                            _route_state_from_json(value)
+                            for _key, value in sorted(raw_routes.items())
+                            if isinstance(value, Mapping)
+                        )
                 learner_result = learner_obj.apply(
                     prior_state,
                     observation_rows,
                     opportunity=learner_opportunity,
                 )
+                learner_state = LearnerState(
+                    edge_states=tuple(
+                        sorted(learner_result.state.values(), key=lambda item: item.key)
+                    ),
+                    route_states=prior_routes,
+                    global_opportunity=max(0, int(learner_opportunity) - 1),
+                )
+                for consequence in consequence_rows:
+                    consequence_result = apply_consequence(learner_state, consequence)
+                    if not isinstance(consequence_result, ConsequenceResult):
+                        raise PublicationError("consequence transition returned an invalid state")
+                    learner_state = consequence_result.state
                 learner_configuration = {
                     key: value
                     for key, value in learner_obj.config.__dict__.items()
@@ -1012,6 +1074,36 @@ class InterpretationPublisher:
                     or str(development[2]) != expected
                 ):
                     raise PublicationError("development operation idempotency conflict")
+                for consequence in consequence_rows:
+                    db.execute(
+                        "INSERT INTO outcome_assessments("
+                        "assessment_id,instance_id,operation_id,target_route_id,context,outcome,"
+                        "direction,exposure_id,relevant,evidence_json,source_json,status,"
+                        "authority_revision,supersedes_assessment_id,created_at) "
+                        "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                        (
+                            consequence.operation_id,
+                            self.instance_id,
+                            development_id,
+                            consequence.route_key,
+                            consequence.context,
+                            consequence.outcome,
+                            consequence.direction,
+                            consequence.exposure_id,
+                            int(consequence.relevant),
+                            _json({"assessment": consequence.to_dict()}),
+                            _json(
+                                {
+                                    "development_operation_id": development_id,
+                                    "exposure_id": consequence.exposure_id,
+                                }
+                            ),
+                            "ACCEPTED",
+                            int(old_manifest["authority_revision"] or 0),
+                            None,
+                            now,
+                        ),
+                    )
                 for row in binding_rows:
                     db.execute(
                         "INSERT INTO semantic_bindings VALUES(?,?,?,?,?,?,?,?,?,?,?)",
@@ -1121,16 +1213,22 @@ class InterpretationPublisher:
                             ),
                         )
                     state_payload = {
-                        f"{edge}:{context}": value.to_dict()
-                        for (edge, context), value in sorted(
-                            (
-                                key,
-                                learner_result.state.get(
-                                    key, prior_state.get(key, EdgeState(*key))
-                                ),
+                        "edges": {
+                            f"{edge}:{context}": value.to_dict()
+                            for (edge, context), value in sorted(
+                                (
+                                    key,
+                                    learner_result.state.get(
+                                        key, prior_state.get(key, EdgeState(*key))
+                                    ),
+                                )
+                                for key in persist_keys
                             )
-                            for key in persist_keys
-                        )
+                        },
+                        "routes": {
+                            f"{route.route_key}:{route.context}": route.to_dict()
+                            for route in learner_state.route_states
+                        },
                     }
                     db.execute(
                         "INSERT INTO learner_snapshots VALUES(?,?,?,?,?,?,?,?)",

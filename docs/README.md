@@ -76,8 +76,9 @@ The documents are preserved in their supplied form and are intentionally not mer
 * [Approved Phase Two self-conditioned developmental runtime plan](<Approved Plans/MNEME_Phase_Two_Self_Conditioned_Developmental_Runtime_Plan.md>)
   defines the bounded replayable learner, learned contextual restraint, source/dependence
   accounting, production-equivalent assessor qualification, two-sibling pilot, and
-  the three stop-audit-publish gates. It is approved for planning only; implementation
-  and the proposed live budget require separate authorization.
+  the three stop-audit-publish gates. The offline P2.3 assessor/pilot boundary is
+  recorded in [the offline boundary receipt](receipts/MNEME_P2.3_Offline_Assessor_Pilot_Boundary_Receipt.md);
+  live qualification and the proposed budget remain unrun.
 
 The P0.2 implementation is now present under `src/mneme/state/`; its acceptance
 status and receipts are recorded in `.codex/work-queue.json` and `bible.md`.

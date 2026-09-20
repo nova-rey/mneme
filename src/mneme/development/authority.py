@@ -13,7 +13,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any
 
-from ..identity import validate_name
+from ..identity import _digest, validate_name
 from ..state.policy import PolicyError, PolicyService
 from ..state.storage import SQLiteStore, _utc
 
@@ -230,17 +230,145 @@ class IdentityReviewService:
         name = validate_name(name)
         with self.store.transaction() as db:
             row = db.execute(
-                "SELECT stage FROM identity_review_operations WHERE review_id=? "
+                "SELECT * FROM identity_review_operations WHERE review_id=? "
                 "AND instance_id=?",
                 (review_id, self.instance_id),
             ).fetchone()
-            if row is None or str(row[0]) not in {"RESULT_READY", "VALID"}:
+            if row is None:
+                raise AuthorityError("unknown identity review")
+            if str(row["stage"]) != "RESULT_READY":
                 raise AuthorityError("identity review is not ready for acceptance")
+            valid = db.execute(
+                "SELECT 1 FROM identity_review_attempts WHERE review_id=? AND status='VALID' "
+                "AND result_json IS NOT NULL",
+                (review_id,),
+            ).fetchone()
+            if valid is None:
+                raise AuthorityError("identity review has no valid persisted result")
+            current = db.execute(
+                "SELECT * FROM current_state WHERE active_instance_id=?", (self.instance_id,)
+            ).fetchone()
+            if current is None or current["current_manifest_id"] != row["base_manifest_id"]:
+                raise AuthorityError("identity review base is stale")
+            manifest = db.execute(
+                "SELECT * FROM manifests WHERE manifest_id=?", (current["current_manifest_id"],)
+            ).fetchone()
+            if manifest is None:
+                raise AuthorityError("current identity manifest is missing")
+            prior_event = None
+            if manifest["self_view_id"] is not None:
+                prior_event = db.execute(
+                    "SELECT name_event_id FROM self_views WHERE self_view_id=?",
+                    (manifest["self_view_id"],),
+                ).fetchone()
+                event_kind = "supersede"
+                if prior_event is None:
+                    raise AuthorityError("current self-view name event is missing")
+                supersedes = prior_event[0]
+            else:
+                event_kind = "adopt"
+                supersedes = None
+            revision = int(current["current_revision"]) + 1
+            version = int(manifest["self_view_version"]) + 1
+            event_id = str(uuid.uuid4())
+            view_id = str(uuid.uuid4())
+            now = _utc()
+            content = {"name": name}
+            content_json = json.dumps(content, sort_keys=True, separators=(",", ":"))
+            content_digest = _digest(content)
+            db.execute(
+                "INSERT INTO identity_events VALUES(?,?,?,?,?,?,?,?,?,?)",
+                (
+                    event_id,
+                    self.instance_id,
+                    event_kind,
+                    name,
+                    None,
+                    json.dumps({"review_id": review_id}, sort_keys=True),
+                    revision,
+                    version,
+                    supersedes,
+                    now,
+                ),
+            )
+            db.execute(
+                "INSERT INTO self_views VALUES(?,?,?,?,?,?,?,?)",
+                (
+                    view_id,
+                    self.instance_id,
+                    version,
+                    name,
+                    event_id,
+                    content_json,
+                    content_digest,
+                    now,
+                ),
+            )
+            manifest_id = str(uuid.uuid4())
+            integrity = _digest(
+                {
+                    "instance_id": self.instance_id,
+                    "revision": revision,
+                    "self_view_id": view_id,
+                    "self_view_version": version,
+                }
+            )
+            db.execute(
+                "INSERT INTO manifests(manifest_id,instance_id,revision,parent_manifest_id,"
+                "inherited_base_manifest_id,policy_id,self_ref_id,format_version,"
+                "controller_version,integrity_digest,accepted_history_digest,graph_snapshot_id,"
+                "graph_revision,accepted_episode_count,self_view_id,self_view_version,"
+                "learner_snapshot_id,learner_configuration_digest,binding_version,opportunity,"
+                "coverage_json,authority_revision) "
+                "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                (
+                    manifest_id,
+                    self.instance_id,
+                    revision,
+                    manifest["manifest_id"],
+                    manifest["inherited_base_manifest_id"],
+                    manifest["policy_id"],
+                    manifest["self_ref_id"],
+                    manifest["format_version"],
+                    "mneme-p2.2",
+                    integrity,
+                    manifest["accepted_history_digest"],
+                    manifest["graph_snapshot_id"],
+                    manifest["graph_revision"],
+                    manifest["accepted_episode_count"],
+                    view_id,
+                    version,
+                    manifest["learner_snapshot_id"],
+                    manifest["learner_configuration_digest"],
+                    manifest["binding_version"],
+                    manifest["opportunity"],
+                    manifest["coverage_json"],
+                    manifest["authority_revision"],
+                ),
+            )
+            db.execute(
+                "INSERT INTO revisions VALUES(?,?,?,?,?,?,?,?)",
+                (
+                    self.instance_id,
+                    revision,
+                    current["current_revision"],
+                    event_id,
+                    "identity_review_accepted",
+                    None,
+                    manifest_id,
+                    now,
+                ),
+            )
+            db.execute(
+                "UPDATE current_state SET current_revision=?,current_manifest_id=? "
+                "WHERE singleton=1",
+                (revision, manifest_id),
+            )
             db.execute(
                 "UPDATE identity_review_operations SET stage='ACCEPTED',decision_json=?,"
-                "accepted_revision=(SELECT current_revision FROM current_state),updated_at=? "
+                "accepted_revision=?,updated_at=? "
                 "WHERE review_id=?",
-                (json.dumps({"name": name}, sort_keys=True), _utc(), review_id),
+                (json.dumps({"name": name}, sort_keys=True), revision, now, review_id),
             )
         return review_id
 
