@@ -48,6 +48,28 @@ def test_current_input_echo_adds_no_model_credit() -> None:
     assert result.reasons[("edge-a", "general")] == "support_seen_credit_capped"
 
 
+def test_induced_credit_requires_actual_exposure_but_retains_audit_contribution() -> None:
+    result = apply_transition(
+        LearnerState.empty(),
+        TransitionInput(
+            "not-supplied",
+            observations=(
+                Observation(
+                    "edge-a",
+                    source_role="model",
+                    dependence="exposure_linked",
+                    actual_exposure=False,
+                    observation_id="memory-echo",
+                ),
+            ),
+        ),
+    )
+    assert result.contributions[0].proposed == 8_000
+    assert result.contributions[0].awarded == 0
+    assert result.contributions[0].reason == "not_actually_exposed"
+    assert result.state.edge("edge-a").accessibility == 0
+
+
 def test_presence_cap_is_not_absence_and_unknown_does_not_change_state() -> None:
     learner = DevelopmentalLearner()
     state = {("edge-a", "general"): EdgeState(accessibility=FIXED_SCALE)}
@@ -239,6 +261,27 @@ def test_consequence_caps_do_not_cancel_by_opposite_awards() -> None:
     assert capped.state.route("route-a").consequence == 0
 
 
+def test_consequence_exposure_cap_is_shared_across_signs() -> None:
+    state = LearnerState.empty()
+    for index, direction in enumerate((-1, 1, -1), start=1):
+        result = apply_consequence(
+            state,
+            _consequence(
+                f"signed-{index}",
+                direction=direction,
+                exposure_id="same-origin",
+                opportunity=index,
+            ),
+        )
+        state = result.state
+        if index < 3:
+            assert result.awarded == direction * 50_000
+    assert result.awarded == 0
+    assert result.reason == "consequence_cap_exhausted"
+    assert dict(state.route("route-a").by_exposure) == {"same-origin": 100_000}
+    assert state.route("route-a").consequence == 0
+
+
 def test_established_route_closes_after_spaced_negative_consequences_and_recovers() -> None:
     state = LearnerState(
         edge_states=(
@@ -322,6 +365,7 @@ def test_multiple_provenance_roots_use_the_minimum_remaining_cap() -> None:
                     source_role="model",
                     dependence="exposure_linked",
                     provenance_group_keys=("exposure:memory-1", "replay:root-1"),
+                    actual_exposure=True,
                     observation_id="multi-root-observation",
                 ),
             ),

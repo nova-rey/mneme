@@ -12,7 +12,14 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from .contracts import GenerationRequest, GenerationResult
-from .development import EdgeState, route_exposure, select_routes
+from .development import (
+    EdgeState,
+    LearnerState,
+    RouteSpec,
+    RouteState,
+    select_routes,
+)
+from .development.learner import CreditWindow
 from .host import Host
 from .identity import IdentityService
 from .state.policy import PolicyError, PolicyService
@@ -309,6 +316,100 @@ class ResponseController:
             )
         return result
 
+    def _learner_state(self, pin: PinnedState) -> LearnerState:
+        """Load the latest canonical edge and contextual route values.
+
+        Learned-v1 selection must consult the same route consequence state that
+        the pure learner updates.  Reconstructing only edge values (the old
+        compatibility path) silently ignored contextual restraint in
+        production selection.
+        """
+
+        try:
+            rows = self.store.connection.execute(
+                "SELECT v.edge_key,v.context,u.after_json FROM learner_values v "
+                "JOIN learner_updates u ON u.update_id=v.update_id "
+                "WHERE v.instance_id=? ORDER BY v.opportunity,v.rowid",
+                (pin.instance_id,),
+            )
+        except sqlite3.OperationalError as exc:
+            if "no such table" in str(exc):
+                return LearnerState(global_opportunity=self._opportunity(pin))
+            raise
+        edges: dict[tuple[str, str], EdgeState] = {}
+        for row in rows:
+            payload = json.loads(str(row[2]))
+            edges[(str(row[0]), str(row[1]))] = EdgeState(
+                target_key=str(payload.get("target_key", row[0])),
+                context=str(payload.get("context", row[1])),
+                accessibility=int(payload.get("accessibility", row[3] if len(row) > 3 else 0)),
+                support=int(payload.get("support", 0)),
+                consequence=int(payload.get("consequence", 0)),
+            )
+        routes: tuple[RouteState, ...] = ()
+        snapshot = self.store.connection.execute(
+            "SELECT configuration_json FROM learner_snapshots "
+            "WHERE instance_id=? ORDER BY opportunity DESC,rowid DESC LIMIT 1",
+            (pin.instance_id,),
+        ).fetchone()
+        if snapshot is not None:
+            payload = json.loads(str(snapshot[0]))
+            state_payload = payload.get("state", {})
+            raw_routes = (
+                state_payload.get("routes", {})
+                if isinstance(state_payload, Mapping)
+                else {}
+            )
+            if isinstance(raw_routes, Mapping):
+                parsed: list[RouteState] = []
+                for value in raw_routes.values():
+                    if not isinstance(value, Mapping):
+                        continue
+                    parsed.append(
+                        RouteState(
+                            route_key=str(value["route_key"]),
+                            context=str(value.get("context", "general")),
+                            consequence=int(value.get("consequence", 0)),
+                            by_exposure=tuple(
+                                (str(key), int(amount))
+                                for key, amount in sorted(
+                                    dict(value.get("by_exposure", {})).items()
+                                )
+                            ),
+                            rolling_consequences=tuple(
+                                CreditWindow(int(item["opportunity"]), int(item["amount"]))
+                                for item in value.get("rolling_consequences", [])
+                            ),
+                            applied_assessments=tuple(
+                                str(item) for item in value.get("applied_assessments", [])
+                            ),
+                        )
+                    )
+                routes = tuple(sorted(parsed, key=lambda item: item.key))
+        return LearnerState(
+            edge_states=tuple(sorted(edges.values(), key=lambda item: item.key)),
+            route_states=routes,
+            global_opportunity=self._opportunity(pin),
+        )
+
+    def _learner_key_map(self, pin: PinnedState) -> dict[str, str]:
+        """Map interpretation-local edge keys to canonical semantic keys."""
+
+        try:
+            rows = self.store.connection.execute(
+                "SELECT local_key,canonical_key FROM semantic_bindings "
+                "WHERE instance_id=? AND candidate_id IS NULL ORDER BY created_at,rowid",
+                (pin.instance_id,),
+            )
+        except sqlite3.OperationalError as exc:
+            if "no such table" in str(exc):
+                return {}
+            raise
+        result: dict[str, str] = {}
+        for row in rows:
+            result[str(row[0])] = str(row[1])
+        return result
+
     def _select(
         self,
         routes: tuple[RouteCandidate, ...],
@@ -317,27 +418,31 @@ class ResponseController:
     ) -> tuple[RouteCandidate, ...]:
         eligible = [route for route in routes if route.suppressed_reason is None]
         if policy == "learned-v1":
-            edge_states = self._learner_edges(pin)
-            rows = [
-                {
-                    "route_key": route.route_key,
-                    "edge_keys": list(route.edge_keys),
-                    "query_coverage": route.query_coverage,
-                }
+            state = self._learner_state(pin)
+            key_map = self._learner_key_map(pin)
+            specs = tuple(
+                RouteSpec(
+                    route_key=route.route_key,
+                    edge_keys=tuple(key_map.get(key, key) for key in route.edge_keys),
+                    query_coverage=route.query_coverage,
+                    directness=max(0, 100 - route.edge_count),
+                    canonical_key=route.route_key,
+                )
                 for route in eligible
-                if route.edge_keys and route_exposure(edge_states, route.edge_keys)
-            ]
+                if route.edge_keys
+            )
             chosen = select_routes(
-                rows,
-                edge_states,
+                state,
+                specs,
                 opportunity=self._opportunity(pin),
                 max_routes=2,
             )
             by_key = {route.route_key: route for route in eligible}
             return tuple(
-                by_key[str(row["route_key"])]
+                by_key[item.route_key]
                 for row in chosen
-                if str(row["route_key"]) in by_key
+                for item in (row,)
+                if item.route_key in by_key
             )
         ranked = sorted(
             eligible,

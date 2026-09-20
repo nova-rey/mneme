@@ -6,6 +6,7 @@ import pytest
 
 from mneme.contracts import GenerationRequest
 from mneme.controller import ControllerError, ResponseController, TurnIntent
+from mneme.development import ConsequenceAssessment
 from mneme.hosts import FakeHost
 from mneme.memory import InterpretationPublisher, validate_residue
 from mneme.state.contracts import StoragePermissions
@@ -112,3 +113,54 @@ def test_learned_policy_requires_explicit_learning_permission(tmp_path):
             ResponseController(store, instance, FakeHost()).prepare(
                 TurnIntent("alpha omega", memory="graph", selection_policy="learned-v1")
             )
+
+
+def test_learned_selection_loads_persisted_route_restraint(tmp_path):
+    store, instance = _graph_store(tmp_path, learning=True)
+    with store:
+        snapshot = store.connection.execute(
+            "SELECT graph_snapshot_id FROM manifests WHERE manifest_id=?",
+            (store.current()["current_manifest_id"],),
+        ).fetchone()[0]
+        route_key = store.connection.execute(
+            "SELECT route_key FROM graph_routes WHERE snapshot_id=? "
+            "AND json_array_length(edge_keys_json)=2 ORDER BY route_key LIMIT 1",
+            (snapshot,),
+        ).fetchone()[0]
+        continuity = ContinuityService(store, instance, FakeHost())
+        operation = continuity.prepare_episode(
+            GenerationRequest(({"role": "user", "content": "recorded consequence"},)),
+            operation_id="restraint-generation",
+        )
+        continuity.generate_operation(operation.operation_id)
+        continuity.accept_episode(operation.operation_id)
+        empty = validate_residue({}, {"s0": "recorded consequence"})
+        publisher = InterpretationPublisher(store, instance)
+        publisher.publish(
+            publisher.prepare(operation.episode_id, operation_id="restraint-interpretation"),
+            empty,
+            development_operation_id="restraint-development",
+            opportunity=2,
+            consequences=tuple(
+                ConsequenceAssessment(
+                    operation_id=f"restraint-assessment-{index}",
+                    route_key=str(route_key),
+                    direction=-1,
+                    exposure_id=f"restraint-exposure-{index}",
+                    opportunity=2,
+                )
+                for index in range(5)
+            ),
+        )
+        prepared = ResponseController(store, instance, FakeHost()).prepare(
+            TurnIntent("alpha omega", memory="graph", selection_policy="learned-v1")
+        )
+        restrained = next(route for route in prepared.considered if route.route_key == route_key)
+        assert restrained not in prepared.selected
+        route_payload = store.connection.execute(
+            "SELECT configuration_json FROM learner_snapshots "
+            "ORDER BY opportunity DESC LIMIT 1"
+        ).fetchone()[0]
+        assert json.loads(route_payload)["state"]["routes"][f"{route_key}:general"][
+            "consequence"
+        ] == -250_000

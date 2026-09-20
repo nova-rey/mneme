@@ -13,7 +13,7 @@ import hashlib
 import json
 import uuid
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Any
 
 from ..development import (
@@ -943,6 +943,38 @@ class InterpretationPublisher:
                             ),
                         )
                     )
+                edge_binding_rows = [row for row in binding_rows if row[3] is None]
+                edge_binding_by_local = {str(row[4]): row for row in edge_binding_rows}
+                edge_binding_by_canonical: dict[str, list[tuple[Any, ...]]] = {}
+                for row in edge_binding_rows:
+                    edge_binding_by_canonical.setdefault(str(row[5]), []).append(row)
+
+                # Learner state is keyed by the stable semantic edge identity,
+                # while the local extractor key remains available for audit and
+                # source provenance.  Normalize observations before the pure
+                # transition so a later interpretation using a different local
+                # key accumulates on the same canonical edge.
+                normalized_observations: list[Observation] = []
+                normalized_targets: dict[int, tuple[str, str, str]] = {}
+                for index, observation in enumerate(observation_rows):
+                    local_target = _observation_target(observation)
+                    binding = edge_binding_by_local.get(local_target)
+                    if binding is None:
+                        canonical_matches = edge_binding_by_canonical.get(local_target, [])
+                        if len(canonical_matches) != 1:
+                            raise PublicationError(
+                                "observation has no unique accepted edge binding: "
+                                f"{local_target}"
+                            )
+                        binding = canonical_matches[0]
+                    canonical_target = str(binding[5])
+                    normalized = replace(
+                        observation,
+                        target_key=canonical_target,
+                        edge_key=canonical_target,
+                    )
+                    normalized_observations.append(normalized)
+                    normalized_targets[index] = (local_target, canonical_target, str(binding[0]))
                 learner_obj = learner or DevelopmentalLearner()
                 learner_opportunity = opportunity
                 if learner_opportunity is None:
@@ -979,7 +1011,7 @@ class InterpretationPublisher:
                         )
                 learner_result = learner_obj.apply(
                     prior_state,
-                    observation_rows,
+                    tuple(normalized_observations),
                     opportunity=learner_opportunity,
                 )
                 learner_state = LearnerState(
@@ -987,7 +1019,7 @@ class InterpretationPublisher:
                         sorted(learner_result.state.values(), key=lambda item: item.key)
                     ),
                     route_states=prior_routes,
-                    global_opportunity=max(0, int(learner_opportunity) - 1),
+                    global_opportunity=int(learner_opportunity),
                 )
                 for consequence in consequence_rows:
                     consequence_result = apply_consequence(learner_state, consequence)
@@ -1109,16 +1141,8 @@ class InterpretationPublisher:
                         "INSERT INTO semantic_bindings VALUES(?,?,?,?,?,?,?,?,?,?,?)",
                         (*row, resolver_version, now),
                     )
-                binding_lookup = {
-                    row[4]: row[0] for row in binding_rows
-                }
-                for observation in observation_rows:
-                    observation_target = _observation_target(observation)
-                    if observation_target not in binding_lookup:
-                        raise PublicationError(
-                            f"observation has no accepted edge binding: {observation_target}"
-                        )
-                    binding_id = binding_lookup[observation_target]
+                for index, observation in enumerate(observation_rows):
+                    observation_target, canonical_target, binding_id = normalized_targets[index]
                     db.execute(
                         "INSERT INTO development_observations VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                         (
@@ -1143,11 +1167,17 @@ class InterpretationPublisher:
                             _json(
                                 {
                                     "observation_id": observation.observation_id,
+                                    "occurrence_key": observation.occurrence_key,
+                                    "provenance_group_keys": list(
+                                        observation.provenance_group_keys
+                                    ),
+                                    "relevant": observation.relevant,
+                                    "eligible": observation.eligible,
                                     "assessor_version": assessor_version,
                                 }
                             ),
                             learner_result.reasons.get(
-                                (observation.target_key, observation.context), "unchanged"
+                                (canonical_target, observation.context), "unchanged"
                             )
                             if learner_result is not None
                             else None,
@@ -1156,8 +1186,8 @@ class InterpretationPublisher:
                     )
                 if learner_result is not None:
                     observed_keys = {
-                        (_observation_target(observation), observation.context)
-                        for observation in observation_rows
+                        (observation.target_key, observation.context)
+                        for observation in normalized_observations
                     }
                     persist_keys = sorted(set(learner_result.state) | observed_keys)
                     for key in persist_keys:
@@ -1213,6 +1243,7 @@ class InterpretationPublisher:
                             ),
                         )
                     state_payload = {
+                        "global_opportunity": learner_state.global_opportunity,
                         "edges": {
                             f"{edge}:{context}": value.to_dict()
                             for (edge, context), value in sorted(

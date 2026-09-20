@@ -624,6 +624,21 @@ def _is_consolidatable(dependence: Dependence) -> bool:
     }
 
 
+def _actual_exposure_allows_credit(observation: Observation) -> bool:
+    """Require a recorded supplied payload for induced model credit.
+
+    Selection, serialization, and observed exposure are separate facts.  An
+    assessor can report a model-output relationship that resembles memory even
+    when the selected payload was dropped (for example by the request-size
+    limit).  Such a row remains auditable, but it must not earn exposure-linked
+    learner credit unless the final host-visible request actually contained the
+    material.
+    """
+
+    dependence = _as_dependence(observation.dependence)
+    return not _is_induced(dependence) or observation.actual_exposure
+
+
 def _dedupe_observations(observations: Sequence[Observation]) -> tuple[Observation, ...]:
     result: dict[tuple[str, str, str, str], Observation] = {}
     for item in observations:
@@ -708,8 +723,12 @@ def _apply_consequence_mutable(
     if assessment.outcome == "unknown" or not assessment.relevant:
         _replace_route(routes, RouteState(**{**route.__dict__, "applied_assessments": applied}))
         return 0, "unknown_or_irrelevant", False
+    # The per-originating-exposure cap is a signed contribution pool.  Keep
+    # one ledger key for both signs so a positive correction cannot create a
+    # second allowance alongside an earlier negative assessment (or vice
+    # versa).  The route consequence itself remains signed; only accounting
+    # for the bounded absolute contribution is shared.
     exposure_key = assessment.exposure_id or assessment.operation_id
-    exposure_key = f"{exposure_key}:{assessment.direction}"
     by_exposure = dict(route.by_exposure)
     exposure_used = by_exposure.get(exposure_key, 0)
     opportunity = (
@@ -1051,11 +1070,17 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
                 max(0, per_operation_remaining),
                 max(0, ROLLING_CAP - rolling_used),
             )
-            if _is_induced(dependence):
+            if not _actual_exposure_allows_credit(item):
+                allowed = 0
+                reason = "not_actually_exposed"
+            elif _is_induced(dependence):
                 allowed = min(
                     allowed,
                     *(max(0, INDUCED_CAP - induced.get(group, 0)) for group in groups),
                 )
+                reason = "cap_exhausted" if proposed and not allowed else "awarded"
+            else:
+                reason = "cap_exhausted" if proposed and not allowed else "awarded"
             if allowed:
                 for group in groups:
                     lifetime[group] = lifetime.get(group, 0) + allowed
@@ -1067,9 +1092,9 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
                 if _is_consolidatable(dependence):
                     consolidation_possible[item.key] = True
                 reason = "awarded"
-            elif proposed:
+            elif reason == "awarded" and proposed:
                 reason = "cap_exhausted"
-            else:
+            elif reason == "awarded":
                 reason = "zero_credit_dependence"
             contributions.append(
                 Contribution(

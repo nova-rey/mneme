@@ -589,3 +589,7 @@
 ## 2026-09-20 P2.3 v6 qualification audit correction
 
 - Audited the persisted v6 Q3 result and found the failure receipt had incorrectly described the negated dial row as correct. The raw model output marked `dial → stops → ticking` supported despite an explicit negation, and marked unavailable output absent instead of unknown. Added an append-only audit correction without rewriting the original receipt, changing criteria, or making a provider call. Evidence: `docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Audit_Correction.md` and `.json`.
+
+## 2026-09-20 P2.1 learner-accounting correction
+
+- Corrected the Phase Two learner publication boundary so induced observations receive credit only when the corresponding memory/replay material was actually exposed, stable semantic edge bindings are used as learner keys across extractor-local key reuse, and production `learned-v1` selection reconstructs persisted contextual route consequences before applying restraint. Consequence exposure caps now share one absolute per-origin across positive and negative assessments. Added FakeHost regressions for zero-credit omitted exposure, stable binding reuse, persisted route closure, and signed cap accounting. Offline validation passed; no provider call occurred. Gate artifacts and queue disposition remain pending the serialized stop–audit–publish reconciliation.
