@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "status": "FAILED",
+  "run_id": "qualification-20260920-v3",
+  "implementation_commit": "905622f4c439a44f4be951ea157f599a8a34ecdf",
+  "prompt_version": "p2-assessor-production-v2",
+  "assessor_schema_version": "p2-assessor-v1",
+  "provider": "DeepInfra",
+  "model_id": "google/gemma-4-E4B-it",
+  "calls": {
+    "authorized": 3,
+    "returned": 3,
+    "retries": 0,
+    "pilot": 0,
+    "uncertain": 0
+  },
+  "usage": {
+    "input_tokens": 2866,
+    "output_tokens": 706,
+    "total_tokens": 3572,
+    "cost": "unknown"
+  },
+  "cases": [
+    {"case_id": "Q1", "accepted": false, "reason": "unrelated monitor falsely marked present and supported"},
+    {"case_id": "Q2", "accepted": false, "reason": "rain-jacket monitor falsely marked present and supported; shade dependence was replay_linked instead of required exposure_linked"},
+    {"case_id": "Q3", "accepted": false, "reason": "negated relation marked supported; unavailable source marked absent instead of unknown"}
+  ],
+  "credential_functional": true,
+  "automatic_retry": false
+}

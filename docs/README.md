@@ -84,6 +84,8 @@ The documents are preserved in their supplied form and are intentionally not mer
   the fresh semantic qualification stop is recorded in [the v2 qualification failure receipt](receipts/MNEME_P2.3_Assessor_Qualification_V2_Failure_Receipt.md)
   ([JSON](receipts/MNEME_P2.3_Assessor_Qualification_V2_Failure_Receipt.json));
   the scoped-ancestry validator remediation is recorded in [the ancestry-scope remediation receipt](receipts/MNEME_P2.3_Assessor_Ancestry_Scope_Remediation_Receipt.md);
+  the authorized v3 semantic qualification stop is recorded in [the v3 qualification failure receipt](receipts/MNEME_P2.3_Assessor_Qualification_V3_Failure_Receipt.md)
+  ([JSON](receipts/MNEME_P2.3_Assessor_Qualification_V3_Failure_Receipt.json));
   the proposed 299-call pilot budget remains unrun.
 
 The P0.2 implementation is now present under `src/mneme/state/`; its acceptance

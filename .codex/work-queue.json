@@ -1081,10 +1081,12 @@
         "docs/receipts/MNEME_P2.3_Assessor_Prompt_Contract_Remediation_Receipt.md",
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_V2_Failure_Receipt.md",
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_V2_Failure_Receipt.json",
-        "docs/receipts/MNEME_P2.3_Assessor_Ancestry_Scope_Remediation_Receipt.md"
+        "docs/receipts/MNEME_P2.3_Assessor_Ancestry_Scope_Remediation_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_V3_Failure_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_V3_Failure_Receipt.json"
       ],
       "id": "P2.3",
-      "notes": "Offline boundary passed. The first fixed three-call qualification failed on structurally invalid Gemma outputs caused by an underspecified model-facing contract; prompt v2 corrected that contract without weakening validation. The fresh fixed three-call qualification returned all results but failed semantic cases Q1/Q2/Q3; offline audit also found and corrected a validator defect that applied ancestry globally instead of by monitor source slots. No retries or pilot calls occurred. The package remains WAITING on external:p2-assessor-qualification and the proposed ceiling remains 299 calls / 204,288 output tokens.",
+      "notes": "Offline boundary passed. The first fixed three-call qualification failed structurally; prompt v2 corrected that contract without weakening validation. The second fixed three-call qualification failed semantic cases Q1/Q2/Q3; offline audit corrected validator ancestry scope. The explicitly authorized v3 fixed qualification again returned all three results but failed semantic cases Q1/Q2/Q3; no retries or pilot calls occurred. Repeated semantic failure is preserved as evidence that the selected host has not demonstrated assessor suitability. The package remains WAITING on external:p2-assessor-qualification and the proposed ceiling remains 299 calls / 204,288 output tokens.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1121,8 +1123,8 @@
         ],
         "results": {
           "p23-assessor-qualification": {
-            "receipt": "docs/receipts/MNEME_P2.3_Assessor_Qualification_V2_Failure_Receipt.md and .json; three returned DeepInfra calls, semantic qualification failed, pilot calls 0",
-            "recorded_at": "2026-09-20T18:10:00.000000Z",
+            "receipt": "docs/receipts/MNEME_P2.3_Assessor_Qualification_V3_Failure_Receipt.md and .json; three returned DeepInfra calls, semantic qualification failed, pilot calls 0",
+            "recorded_at": "2026-09-20T19:10:00.000000Z",
             "status": "FAIL"
           },
           "p23-assessor-contract": {
