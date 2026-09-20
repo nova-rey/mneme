@@ -73,6 +73,11 @@ The documents are preserved in their supplied form and are intentionally not mer
 * [Final Phase One live acceptance receipt](receipts/MNEME_Phase_One_Live_Acceptance_Final_Receipt.md) records the accepted 23-call DeepInfra run, route provenance, durable identity, frozen comparison, restart audit, and evaluation-isolation evidence.
 * [Phase One graph-wrapper preview runbook](PHASE_ONE_PREVIEW_RUNBOOK.md) documents
   the read-only matched no-memory, lexical, and graph comparison path.
+* [Approved Phase Two self-conditioned developmental runtime plan](<Approved Plans/MNEME_Phase_Two_Self_Conditioned_Developmental_Runtime_Plan.md>)
+  defines the bounded replayable learner, learned contextual restraint, source/dependence
+  accounting, production-equivalent assessor qualification, two-sibling pilot, and
+  the three stop-audit-publish gates. It is approved for planning only; implementation
+  and the proposed live budget require separate authorization.
 
 The P0.2 implementation is now present under `src/mneme/state/`; its acceptance
 status and receipts are recorded in `.codex/work-queue.json` and `bible.md`.
