@@ -1116,7 +1116,7 @@
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_Polarity_V8_Pass_Receipt.json"
       ],
       "id": "P2.3",
-      "notes": "Qualification v8 passed. A bounded pilot probe consumed 2 post-qualification Gemma calls (development + extraction) and produced valid persisted evidence, but stopped before canonical study execution after a harness serialization error. Pilot acceptance remains WAITING on an in-scope fixed-fixture schedule/orchestrator and CLI path; no assessment/evaluation calls or adequacy claim.",
+      "notes": "Polarity v8 qualification passed. Pilot stop: 6 new provider calls were consumed; subject 0 episode 2 extraction failed strict source-bound validation on initial and one permitted repair, so no evaluation calls were made and pilot adequacy is unassessed. Further work requires review/correction; no automatic resampling.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1187,6 +1187,11 @@
             "status": "PARTIAL",
             "receipt": "docs/receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.md",
             "recorded_at": "2026-09-20T23:30:00+00:00"
+          },
+          "p23-pilot-execution": {
+            "status": "FAIL_STOP",
+            "receipt": "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md",
+            "recorded_at": "2026-09-20T23:29:00+00:00"
           }
         }
       },
@@ -1196,7 +1201,11 @@
       "workstream": "phase-two",
       "evidence": [
         "docs/receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.md",
-        "docs/receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.json"
+        "docs/receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.json",
+        "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json",
+        "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json"
       ]
     }
   ],

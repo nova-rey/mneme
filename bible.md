@@ -629,3 +629,11 @@
 ## 2026-09-20 P2.3 assessment artifact restart correction
 
 - The pilot runtime writes assessor results under `assessment/`; the artifact verifier had allowed the runtime API to publish that directory but rejected it during restart verification. The verifier now admits and validates the existing assessment category alongside extraction, with runtime tests and Ruff passing. No provider call was made for this correction.
+
+## 2026-09-20 P2.3 pilot extraction stop
+
+- The approved post-qualification pilot was dispatched at fixed coordinates and stopped under the finite-repair rule. Six provider calls returned: two Gemma development responses, two initial Gemma extractions, one Gemma extraction repair, and one Qwen assessment. Subject 0 episode 2 failed strict source-bound quotation validation on both initial and repair output; the model-output quotation did not occur verbatim in source `s1`. No evaluation calls were made, and no adequacy or completion claim is made. Usage was 3,411 input, 2,128 output, 5,539 total tokens; cost unavailable. Evidence: `docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md` and `.json`.
+
+## 2026-09-20 P2.3 pilot extraction stop
+
+- The approved post-qualification pilot was dispatched at fixed coordinates and stopped under the finite-repair rule. Six provider calls returned: two Gemma development responses, two initial Gemma extractions, one Gemma extraction repair, and one Qwen assessment. Subject 0 episode 2 failed strict source-bound quotation validation on both initial and repair output; the model-output quotation did not occur verbatim in source `s1`. No evaluation calls were made, and no adequacy or completion claim is made. Usage was 3,411 input, 2,128 output, 5,539 total tokens; cost unavailable. Evidence: `docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md` and `.json`.

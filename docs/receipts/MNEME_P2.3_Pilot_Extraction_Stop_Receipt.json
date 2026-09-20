@@ -1,0 +1,459 @@
+{
+  "schema_version": 1,
+  "status": "FAILED_STOP",
+  "experiment": "p2-developmental-pilot",
+  "contract_revision": 1,
+  "run_id": "pilot-1",
+  "qualification_reference": "docs/receipts/MNEME_P2.3_Assessor_Qualification_Polarity_V8_Pass_Receipt.json",
+  "new_provider_calls": 6,
+  "pilot_reservations": 7,
+  "token_usage": {
+    "input_tokens": 3411,
+    "output_tokens": 2128,
+    "total_tokens": 5539,
+    "cost": "unavailable"
+  },
+  "calls": [
+    {
+      "call_id": "dev-s0-e01",
+      "role": "development-response",
+      "coordinate": {
+        "episode": 1,
+        "subject": 0
+      },
+      "status": "RETURNED",
+      "usage": {
+        "input_tokens": 31,
+        "output_tokens": 33,
+        "total_tokens": 64
+      },
+      "result": {
+        "content": "That sounds like a **huge time-saver** and a great step for organization! Having everything labeled in dedicated bins makes the whole repair process so much smoother.",
+        "finish_reason": "stop",
+        "model_id": "google/gemma-4-E4B-it",
+        "provenance": {
+          "finish_reason": "stop",
+          "model_id": "google/gemma-4-E4B-it",
+          "provenance": {
+            "host": {
+              "capabilities": [
+                "text_generation",
+                "token_usage"
+              ],
+              "chat_template": "deepinfra_openai_chat",
+              "execution": {
+                "base_url": "https://api.deepinfra.com/v1/openai",
+                "canonical_upstream_model": "google/gemma-4-E4B-it",
+                "catalog_context_length": 131072,
+                "catalog_quantization": "unknown/provider-managed",
+                "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+                "hosted_model_revision": "unknown",
+                "rendering_mode": "deepinfra_openai_chat",
+                "service_tier": "standard"
+              },
+              "model_family": "Gemma 4 E4B IT",
+              "model_id": "google/gemma-4-E4B-it",
+              "model_revision": null,
+              "provider": "DeepInfra",
+              "quantization": "unknown/provider-managed",
+              "runtime": "deepinfra-openai-compatible",
+              "runtime_version": null,
+              "tokenizer_id": "google/gemma-4-E4B-it",
+              "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+            },
+            "request_chars": 112
+          },
+          "provider": "DeepInfra"
+        },
+        "provider": "DeepInfra",
+        "usage": {
+          "input_tokens": 31,
+          "output_tokens": 33,
+          "total_tokens": 64
+        }
+      }
+    },
+    {
+      "call_id": "extract-s0-e01-a0",
+      "role": "development-extraction",
+      "coordinate": {
+        "attempt": 0,
+        "episode": 1,
+        "subject": 0
+      },
+      "status": "RETURNED",
+      "usage": null,
+      "result": {
+        "content": "{\"core_concepts\": [{\"key\": \"socket_wrenches\", \"label\": \"socket wrenches\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted the socket wrenches into labeled workshop bins\"}], \"confidence\": 1.0}, {\"key\": \"workshop_bins\", \"label\": \"workshop bins\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted the socket wrenches into labeled workshop bins\"}], \"confidence\": 1.0}, {\"key\": \"finding_size\", \"label\": \"finding the right size\", \"kind\": \"process\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"finding the right size for a repair takes less time\"}], \"confidence\": 1.0}, {\"key\": \"repair\", \"label\": \"repair\", \"kind\": \"event\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"finding the right size for a repair takes less time\"}], \"confidence\": 1.0}, {\"key\": \"organization\", \"label\": \"organization\", \"kind\": \"topic\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"a great step for organization!\"}], \"confidence\": 1.0}, {\"key\": \"time_saver\", \"label\": \"time-saver\", \"kind\": \"value\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"That sounds like a **huge time-saver**\"}], \"confidence\": 1.0}], \"salient_phrases\": [{\"key\": \"huge_time_saver\", \"label\": \"huge time-saver\", \"kind\": \"salient_phrase\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"That sounds like a **huge time-saver**\"}], \"confidence\": 1.0}], \"edge_candidates\": [{\"key\": \"enables_faster_finding\", \"from\": \"socket_wrenches\", \"to\": \"finding_size\", \"relationship\": \"enables\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted the socket wrenches into labeled workshop bins, so finding the right size for a repair takes less time.\"}], \"confidence\": 1.0}, {\"key\": \"bins_aid_process\", \"from\": \"workshop_bins\", \"to\": \"repair\", \"relationship\": \"supports\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Having everything labeled in dedicated bins makes the whole repair process so much smoother.\"}], \"confidence\": 1.0}, {\"key\": \"sorting_leads_to_efficiency\", \"from\": \"socket_wrenches\", \"to\": \"time_saver\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted the socket wrenches into labeled workshop bins, so finding the right size for a repair takes less time.\"}], \"confidence\": 1.0}]}",
+        "effective_parameters": {
+          "max_tokens": 1536,
+          "temperature": 0
+        },
+        "finish_reason": "stop",
+        "latency_ms": 12781.383301015012,
+        "model_id": "google/gemma-4-E4B-it",
+        "provenance": {
+          "host": {
+            "capabilities": [
+              "text_generation",
+              "token_usage"
+            ],
+            "chat_template": "deepinfra_openai_chat",
+            "execution": {
+              "base_url": "https://api.deepinfra.com/v1/openai",
+              "canonical_upstream_model": "google/gemma-4-E4B-it",
+              "catalog_context_length": 131072,
+              "catalog_quantization": "unknown/provider-managed",
+              "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+              "hosted_model_revision": "unknown",
+              "rendering_mode": "deepinfra_openai_chat",
+              "service_tier": "standard"
+            },
+            "model_family": "Gemma 4 E4B IT",
+            "model_id": "google/gemma-4-E4B-it",
+            "model_revision": null,
+            "provider": "DeepInfra",
+            "quantization": "unknown/provider-managed",
+            "runtime": "deepinfra-openai-compatible",
+            "runtime_version": null,
+            "tokenizer_id": "google/gemma-4-E4B-it",
+            "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+          },
+          "request_chars": 3047
+        },
+        "provider": "DeepInfra",
+        "raw_metadata": {
+          "choices": [
+            {
+              "finish_reason": "stop",
+              "index": 0,
+              "logprobs": null,
+              "message": {
+                "content": "{\"core_concepts\": [{\"key\": \"socket_wrenches\", \"label\": \"socket wrenches\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted the socket wrenches into labeled workshop bins\"}], \"confidence\": 1.0}, {\"key\": \"workshop_bins\", \"label\": \"workshop bins\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted the socket wrenches into labeled workshop bins\"}], \"confidence\": 1.0}, {\"key\": \"finding_size\", \"label\": \"finding the right size\", \"kind\": \"process\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"finding the right size for a repair takes less time\"}], \"confidence\": 1.0}, {\"key\": \"repair\", \"label\": \"repair\", \"kind\": \"event\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"finding the right size for a repair takes less time\"}], \"confidence\": 1.0}, {\"key\": \"organization\", \"label\": \"organization\", \"kind\": \"topic\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"a great step for organization!\"}], \"confidence\": 1.0}, {\"key\": \"time_saver\", \"label\": \"time-saver\", \"kind\": \"value\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"That sounds like a **huge time-saver**\"}], \"confidence\": 1.0}], \"salient_phrases\": [{\"key\": \"huge_time_saver\", \"label\": \"huge time-saver\", \"kind\": \"salient_phrase\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"That sounds like a **huge time-saver**\"}], \"confidence\": 1.0}], \"edge_candidates\": [{\"key\": \"enables_faster_finding\", \"from\": \"socket_wrenches\", \"to\": \"finding_size\", \"relationship\": \"enables\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted the socket wrenches into labeled workshop bins, so finding the right size for a repair takes less time.\"}], \"confidence\": 1.0}, {\"key\": \"bins_aid_process\", \"from\": \"workshop_bins\", \"to\": \"repair\", \"relationship\": \"supports\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Having everything labeled in dedicated bins makes the whole repair process so much smoother.\"}], \"confidence\": 1.0}, {\"key\": \"sorting_leads_to_efficiency\", \"from\": \"socket_wrenches\", \"to\": \"time_saver\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted the socket wrenches into labeled workshop bins, so finding the right size for a repair takes less time.\"}], \"confidence\": 1.0}]}",
+                "name": null,
+                "reasoning_content": null,
+                "role": "assistant",
+                "tool_calls": []
+              }
+            }
+          ],
+          "created": 1789946376,
+          "id": "chatcmpl-R2GKu6r2XindEUSWim7YKE3n",
+          "model": "google/gemma-4-E4B-it",
+          "object": "chat.completion",
+          "service_tier": "default",
+          "usage": {
+            "completion_tokens": 632,
+            "estimated_cost": 7.62e-05,
+            "prompt_tokens": 650,
+            "prompt_tokens_details": null,
+            "total_tokens": 1282
+          }
+        },
+        "seed": null,
+        "token_usage": "[REDACTED]"
+      },
+      "valid": true,
+      "validation_error": null,
+      "attempt": 0
+    },
+    {
+      "call_id": "assess-s0-e01-v2",
+      "role": "assessor",
+      "coordinate": {
+        "episode": 1,
+        "episode_id": "5197b883-ddd5-47f4-89cd-e967fd597c46",
+        "subject": 0
+      },
+      "status": "RETURNED",
+      "usage": {
+        "input_tokens": 1150,
+        "output_tokens": 143,
+        "total_tokens": 1293
+      },
+      "result": {
+        "content": "{\n  \"schema_version\": \"p2-assessor-v5\",\n  \"assessments\": [\n    {\n      \"monitor_id\": \"candidate\",\n      \"status\": \"present\",\n      \"relation_support\": \"supported\",\n      \"expression_status\": \"affirmed\",\n      \"coverage\": {\n        \"complete\": true,\n        \"source_slots\": [\"s0\"],\n        \"reason\": null\n      },\n      \"evidence\": {\n        \"source_slot\": \"s0\",\n        \"quote\": \"I sorted the socket wrenches into labeled workshop bins, so finding the right size for a repair takes less time.\"\n      },\n      \"corresponding_source_slots\": []\n    }\n  ]\n}",
+        "effective_parameters": {
+          "max_tokens": 1536,
+          "temperature": 0.0
+        },
+        "finish_reason": "stop",
+        "model_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "provenance": {
+          "host": {
+            "capabilities": [
+              "text_generation",
+              "token_usage"
+            ],
+            "chat_template": "deepinfra_openai_chat",
+            "execution": {
+              "base_url": "https://api.deepinfra.com/v1/openai",
+              "canonical_upstream_model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+              "catalog_context_length": 262144,
+              "catalog_quantization": "fp8",
+              "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+              "hosted_model_revision": "unknown",
+              "rendering_mode": "deepinfra_openai_chat",
+              "service_tier": "standard"
+            },
+            "model_family": "Qwen3 235B A22B Instruct 2507",
+            "model_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+            "model_revision": null,
+            "provider": "DeepInfra",
+            "quantization": "fp8",
+            "runtime": "deepinfra-openai-compatible",
+            "runtime_version": null,
+            "tokenizer_id": null,
+            "tokenizer_revision": null
+          },
+          "request_chars": 5129
+        },
+        "provider": "DeepInfra",
+        "seed": null,
+        "usage": {
+          "input_tokens": 1150,
+          "output_tokens": 143,
+          "total_tokens": 1293
+        }
+      },
+      "valid": true,
+      "validation_error": null
+    },
+    {
+      "call_id": "dev-s0-e02",
+      "role": "development-response",
+      "coordinate": {
+        "episode": 2,
+        "subject": 0
+      },
+      "status": "RETURNED",
+      "usage": {
+        "input_tokens": 24,
+        "output_tokens": 156,
+        "total_tokens": 180
+      },
+      "result": {
+        "content": "This is a **true and accurate** statement.\n\nHere's a breakdown of why and what that means:\n\n* **How Mulch Works:** Mulch (like wood chips, straw, shredded leaves, etc.) acts as a physical barrier placed on the soil surface.\n* **Moisture Retention:** This barrier significantly reduces the rate of **evaporation**. When the soil is covered, the sun's energy hits the mulch instead of the soil, keeping the cooler, moist layers underneath shielded.\n* **The Result:** Because less water is lost to the air between rain events, the plants can draw on that stored moisture for longer, helping them stay healthy during dry spells.\n\n**In short: Mulch = Reduced evaporation = Wetter soil for longer.**",
+        "finish_reason": "stop",
+        "model_id": "google/gemma-4-E4B-it",
+        "provenance": {
+          "finish_reason": "stop",
+          "model_id": "google/gemma-4-E4B-it",
+          "provenance": {
+            "host": {
+              "capabilities": [
+                "text_generation",
+                "token_usage"
+              ],
+              "chat_template": "deepinfra_openai_chat",
+              "execution": {
+                "base_url": "https://api.deepinfra.com/v1/openai",
+                "canonical_upstream_model": "google/gemma-4-E4B-it",
+                "catalog_context_length": 131072,
+                "catalog_quantization": "unknown/provider-managed",
+                "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+                "hosted_model_revision": "unknown",
+                "rendering_mode": "deepinfra_openai_chat",
+                "service_tier": "standard"
+              },
+              "model_family": "Gemma 4 E4B IT",
+              "model_id": "google/gemma-4-E4B-it",
+              "model_revision": null,
+              "provider": "DeepInfra",
+              "quantization": "unknown/provider-managed",
+              "runtime": "deepinfra-openai-compatible",
+              "runtime_version": null,
+              "tokenizer_id": "google/gemma-4-E4B-it",
+              "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+            },
+            "request_chars": 83
+          },
+          "provider": "DeepInfra"
+        },
+        "provider": "DeepInfra",
+        "usage": {
+          "input_tokens": 24,
+          "output_tokens": 156,
+          "total_tokens": 180
+        }
+      }
+    },
+    {
+      "call_id": "extract-s0-e02-a0",
+      "role": "development-extraction",
+      "coordinate": {
+        "attempt": 0,
+        "episode": 2,
+        "subject": 0
+      },
+      "status": "RETURNED",
+      "usage": null,
+      "result": {
+        "content": "{\"core_concepts\": [{\"key\": \"mulch\", \"label\": \"mulch\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Adding mulch around the garden plants helped the soil stay moist between rainfalls.\"}], \"confidence\": 1.0}, {\"key\": \"soil\", \"label\": \"soil\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Adding mulch around the garden plants helped the soil stay moist between rainfalls.\"}], \"confidence\": 1.0}, {\"key\": \"evaporation\", \"label\": \"evaporation\", \"kind\": \"process\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"This barrier significantly reduces the rate of evaporation.\"}], \"confidence\": 1.0}, {\"key\": \"moisture_retention\", \"label\": \"moisture retention\", \"kind\": \"process\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Moisture Retention: This barrier significantly reduces the rate of evaporation.\"}], \"confidence\": 1.0}], \"salient_phrases\": [\"Mulch = Reduced evaporation = Wetter soil for longer.\"], \"observed_patterns\": [], \"edge_candidates\": [{\"key\": \"reduces_evaporation\", \"from\": \"mulch\", \"to\": \"evaporation\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"This barrier significantly reduces the rate of evaporation.\"}], \"confidence\": 1.0}, {\"key\": \"retains_moisture\", \"from\": \"mulch\", \"to\": \"soil\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Adding mulch around the garden plants helped the soil stay moist between rainfalls.\"}], \"confidence\": 1.0}], \"route_candidates\": [{\"key\": \"mulch_benefits\", \"edge_keys\": [\"reduces_evaporation\", \"retains_moisture\"], \"evidence\": [{\"source\": \"s1\", \"evidence\": \"In short: Mulch = Reduced evaporation = Wetter soil for longer.\"}], \"confidence\": 1.0}], \"declared_memories\": [], \"earned_candidates\": [], \"identity_candidates\": [], \"developmental_observation_refs\": [], \"evidence_refs\": [], \"extraction_confidence\": 0.95, \"intrusion_risk_estimate\": 0.0}",
+        "effective_parameters": {
+          "max_tokens": 1536,
+          "temperature": 0
+        },
+        "finish_reason": "stop",
+        "latency_ms": 9668.658406008035,
+        "model_id": "google/gemma-4-E4B-it",
+        "provenance": {
+          "host": {
+            "capabilities": [
+              "text_generation",
+              "token_usage"
+            ],
+            "chat_template": "deepinfra_openai_chat",
+            "execution": {
+              "base_url": "https://api.deepinfra.com/v1/openai",
+              "canonical_upstream_model": "google/gemma-4-E4B-it",
+              "catalog_context_length": 131072,
+              "catalog_quantization": "unknown/provider-managed",
+              "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+              "hosted_model_revision": "unknown",
+              "rendering_mode": "deepinfra_openai_chat",
+              "service_tier": "standard"
+            },
+            "model_family": "Gemma 4 E4B IT",
+            "model_id": "google/gemma-4-E4B-it",
+            "model_revision": null,
+            "provider": "DeepInfra",
+            "quantization": "unknown/provider-managed",
+            "runtime": "deepinfra-openai-compatible",
+            "runtime_version": null,
+            "tokenizer_id": "google/gemma-4-E4B-it",
+            "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+          },
+          "request_chars": 3553
+        },
+        "provider": "DeepInfra",
+        "raw_metadata": {
+          "choices": [
+            {
+              "finish_reason": "stop",
+              "index": 0,
+              "logprobs": null,
+              "message": {
+                "content": "{\"core_concepts\": [{\"key\": \"mulch\", \"label\": \"mulch\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Adding mulch around the garden plants helped the soil stay moist between rainfalls.\"}], \"confidence\": 1.0}, {\"key\": \"soil\", \"label\": \"soil\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Adding mulch around the garden plants helped the soil stay moist between rainfalls.\"}], \"confidence\": 1.0}, {\"key\": \"evaporation\", \"label\": \"evaporation\", \"kind\": \"process\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"This barrier significantly reduces the rate of evaporation.\"}], \"confidence\": 1.0}, {\"key\": \"moisture_retention\", \"label\": \"moisture retention\", \"kind\": \"process\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Moisture Retention: This barrier significantly reduces the rate of evaporation.\"}], \"confidence\": 1.0}], \"salient_phrases\": [\"Mulch = Reduced evaporation = Wetter soil for longer.\"], \"observed_patterns\": [], \"edge_candidates\": [{\"key\": \"reduces_evaporation\", \"from\": \"mulch\", \"to\": \"evaporation\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"This barrier significantly reduces the rate of evaporation.\"}], \"confidence\": 1.0}, {\"key\": \"retains_moisture\", \"from\": \"mulch\", \"to\": \"soil\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Adding mulch around the garden plants helped the soil stay moist between rainfalls.\"}], \"confidence\": 1.0}], \"route_candidates\": [{\"key\": \"mulch_benefits\", \"edge_keys\": [\"reduces_evaporation\", \"retains_moisture\"], \"evidence\": [{\"source\": \"s1\", \"evidence\": \"In short: Mulch = Reduced evaporation = Wetter soil for longer.\"}], \"confidence\": 1.0}], \"declared_memories\": [], \"earned_candidates\": [], \"identity_candidates\": [], \"developmental_observation_refs\": [], \"evidence_refs\": [], \"extraction_confidence\": 0.95, \"intrusion_risk_estimate\": 0.0}",
+                "name": null,
+                "reasoning_content": null,
+                "role": "assistant",
+                "tool_calls": []
+              }
+            }
+          ],
+          "created": 1789946788,
+          "id": "chatcmpl-RvM37w0q5EHBcxhQb9aes9OL",
+          "model": "google/gemma-4-E4B-it",
+          "object": "chat.completion",
+          "service_tier": "default",
+          "usage": {
+            "completion_tokens": 518,
+            "estimated_cost": 6.724000000000001e-05,
+            "prompt_tokens": 772,
+            "prompt_tokens_details": null,
+            "total_tokens": 1290
+          }
+        },
+        "seed": null,
+        "token_usage": "[REDACTED]"
+      },
+      "valid": false,
+      "validation_error": "residue.core_concepts[2].evidence[0]: evidence quotation does not occur verbatim in source",
+      "attempt": 1
+    },
+    {
+      "call_id": "extract-s0-e02-a1",
+      "role": "development-extraction",
+      "coordinate": {
+        "attempt": 1,
+        "episode": 2,
+        "subject": 0
+      },
+      "status": "RETURNED",
+      "usage": null,
+      "result": {
+        "content": "{\"core_concepts\": [{\"key\": \"mulch\", \"label\": \"mulch\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Adding mulch around the garden plants helped the soil stay moist between rainfalls.\"}], \"confidence\": 1.0}, {\"key\": \"soil\", \"label\": \"soil\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Adding mulch around the garden plants helped the soil stay moist between rainfalls.\"}], \"confidence\": 1.0}, {\"key\": \"moisture_retention\", \"label\": \"moisture retention\", \"kind\": \"process\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Moisture Retention: This barrier significantly reduces the rate of evaporation.\"}], \"confidence\": 1.0}, {\"key\": \"evaporation\", \"label\": \"evaporation\", \"kind\": \"process\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"This barrier significantly reduces the rate of evaporation.\"}], \"confidence\": 1.0}, {\"key\": \"garden_plants\", \"label\": \"garden plants\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Adding mulch around the garden plants helped the soil stay moist between rainfalls.\"}], \"confidence\": 1.0}], \"salient_phrases\": [{\"key\": \"mulch_function\", \"label\": \"Mulch acts as a physical barrier\", \"kind\": \"fact\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Mulch (like wood chips, straw, shredded leaves, etc.) acts as a physical barrier placed on the soil surface.\"}], \"confidence\": 1.0}], \"observed_patterns\": [], \"edge_candidates\": [{\"key\": \"reduces_evaporation\", \"from\": \"mulch\", \"to\": \"evaporation\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"This barrier significantly reduces the rate of evaporation.\"}], \"confidence\": 1.0}, {\"key\": \"retains_moisture\", \"from\": \"mulch\", \"to\": \"soil\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Adding mulch around the garden plants helped the soil stay moist between rainfalls.\"}], \"confidence\": 1.0}], \"route_candidates\": [{\"key\": \"mulch_to_moist_soil\", \"edge_keys\": [\"reduces_evaporation\", \"retains_moisture\"], \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Adding mulch around the garden plants helped the soil stay moist between rainfalls.\"}], \"confidence\": 1.0}], \"declared_memories\": [], \"earned_candidates\": [], \"identity_candidates\": [], \"developmental_observation_refs\": [], \"evidence_refs\": [], \"extraction_confidence\": 0.95, \"intrusion_risk_estimate\": 0.0}",
+        "effective_parameters": {
+          "max_tokens": 1536,
+          "temperature": 0
+        },
+        "finish_reason": "stop",
+        "latency_ms": 15663.428670028225,
+        "model_id": "google/gemma-4-E4B-it",
+        "provenance": {
+          "host": {
+            "capabilities": [
+              "text_generation",
+              "token_usage"
+            ],
+            "chat_template": "deepinfra_openai_chat",
+            "execution": {
+              "base_url": "https://api.deepinfra.com/v1/openai",
+              "canonical_upstream_model": "google/gemma-4-E4B-it",
+              "catalog_context_length": 131072,
+              "catalog_quantization": "unknown/provider-managed",
+              "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+              "hosted_model_revision": "unknown",
+              "rendering_mode": "deepinfra_openai_chat",
+              "service_tier": "standard"
+            },
+            "model_family": "Gemma 4 E4B IT",
+            "model_id": "google/gemma-4-E4B-it",
+            "model_revision": null,
+            "provider": "DeepInfra",
+            "quantization": "unknown/provider-managed",
+            "runtime": "deepinfra-openai-compatible",
+            "runtime_version": null,
+            "tokenizer_id": "google/gemma-4-E4B-it",
+            "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+          },
+          "request_chars": 3626
+        },
+        "provider": "DeepInfra",
+        "raw_metadata": {
+          "choices": [
+            {
+              "finish_reason": "stop",
+              "index": 0,
+              "logprobs": null,
+              "message": {
+                "content": "{\"core_concepts\": [{\"key\": \"mulch\", \"label\": \"mulch\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Adding mulch around the garden plants helped the soil stay moist between rainfalls.\"}], \"confidence\": 1.0}, {\"key\": \"soil\", \"label\": \"soil\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Adding mulch around the garden plants helped the soil stay moist between rainfalls.\"}], \"confidence\": 1.0}, {\"key\": \"moisture_retention\", \"label\": \"moisture retention\", \"kind\": \"process\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Moisture Retention: This barrier significantly reduces the rate of evaporation.\"}], \"confidence\": 1.0}, {\"key\": \"evaporation\", \"label\": \"evaporation\", \"kind\": \"process\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"This barrier significantly reduces the rate of evaporation.\"}], \"confidence\": 1.0}, {\"key\": \"garden_plants\", \"label\": \"garden plants\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Adding mulch around the garden plants helped the soil stay moist between rainfalls.\"}], \"confidence\": 1.0}], \"salient_phrases\": [{\"key\": \"mulch_function\", \"label\": \"Mulch acts as a physical barrier\", \"kind\": \"fact\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Mulch (like wood chips, straw, shredded leaves, etc.) acts as a physical barrier placed on the soil surface.\"}], \"confidence\": 1.0}], \"observed_patterns\": [], \"edge_candidates\": [{\"key\": \"reduces_evaporation\", \"from\": \"mulch\", \"to\": \"evaporation\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"This barrier significantly reduces the rate of evaporation.\"}], \"confidence\": 1.0}, {\"key\": \"retains_moisture\", \"from\": \"mulch\", \"to\": \"soil\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Adding mulch around the garden plants helped the soil stay moist between rainfalls.\"}], \"confidence\": 1.0}], \"route_candidates\": [{\"key\": \"mulch_to_moist_soil\", \"edge_keys\": [\"reduces_evaporation\", \"retains_moisture\"], \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Adding mulch around the garden plants helped the soil stay moist between rainfalls.\"}], \"confidence\": 1.0}], \"declared_memories\": [], \"earned_candidates\": [], \"identity_candidates\": [], \"developmental_observation_refs\": [], \"evidence_refs\": [], \"extraction_confidence\": 0.95, \"intrusion_risk_estimate\": 0.0}",
+                "name": null,
+                "reasoning_content": null,
+                "role": "assistant",
+                "tool_calls": []
+              }
+            }
+          ],
+          "created": 1789946951,
+          "id": "chatcmpl-RFVW6oZCZNFnza1i7FJ4KDqV",
+          "model": "google/gemma-4-E4B-it",
+          "object": "chat.completion",
+          "service_tier": "default",
+          "usage": {
+            "completion_tokens": 646,
+            "estimated_cost": 8.028000000000001e-05,
+            "prompt_tokens": 784,
+            "prompt_tokens_details": null,
+            "total_tokens": 1430
+          }
+        },
+        "seed": null,
+        "token_usage": "[REDACTED]"
+      },
+      "valid": false,
+      "validation_error": "residue.core_concepts[2].evidence[0]: evidence quotation does not occur verbatim in source",
+      "attempt": 1
+    }
+  ],
+  "non_provider_reservation": {
+    "call_id": "assess-s0-e01",
+    "role": "development-assessment",
+    "status": "FAILED",
+    "error": "pre-dispatch role-binding defect; no provider call",
+    "provider_called": false
+  },
+  "stop_reason": "The required extraction for subject 0 episode 2 remained structurally invalid after its one permitted repair. The invalid quotation was from model-output source s1 and did not occur verbatim in that source. Per the approved finite-repair stop rule, the pilot stopped with zero further calls.",
+  "adequacy": "NOT ASSESSED; no continuation, evaluation, or completion claim."
+}
