@@ -512,3 +512,7 @@
 ## 2026-09-20 Future developmental self-context architecture filed
 
 - Filed `docs/architecture/future/MNEME_Developmental_Self_Context_Architecture.md` as future developer design context under its section 14 documentation-only instructions. Added discoverability and a non-blocking cross-reference in `docs/README.md`; no approved plan, frozen contract, runtime prompt, learner, test, budget, queue state, or inference operation changed.
+
+## 2026-09-20 P2 assessor role-separation amendment
+
+- Applied the additive `P2-ASSESSOR-SEPARATION-01` instruction. The developing Gemma binding remains unchanged; a separately fingerprinted DeepInfra Qwen assessor binding is now available through the existing Host boundary, with role-bound qualification accounting and fail-closed mixed-role reservations. Historical qualification receipts, learner semantics, frozen fixtures, budgets, and the P2.3 blocker remain unchanged. No provider call occurred in this offline correction.

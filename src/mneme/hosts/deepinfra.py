@@ -1,4 +1,8 @@
-"""DeepInfra's OpenAI-compatible chat-completions backend for Gemma 4 E4B IT."""
+"""DeepInfra's OpenAI-compatible chat-completions hosts.
+
+The transport is shared, but model-family configuration stays explicit so a
+Qwen assessor cannot be mislabeled with Gemma provenance.
+"""
 
 import json
 import os
@@ -20,9 +24,17 @@ from ..contracts import (
 
 
 @dataclass
-class DeepInfraGemmaHost:
+class DeepInfraChatHost:
+    """Provider-neutral configuration for one DeepInfra chat model."""
+
     model_id: str = "google/gemma-4-E4B-it"
-    canonical_revision: str = "ee0ef6023621cff504d758262d4e04895a5af4a2"
+    model_family: str = "Gemma 4 E4B IT"
+    upstream_model_id: str | None = "google/gemma-4-E4B-it"
+    canonical_revision: str | None = None
+    tokenizer_id: str | None = None
+    tokenizer_revision: str | None = None
+    quantization: str | None = "unknown/provider-managed"
+    context_length: int | None = None
     token: str | None = None
     endpoint: str = "https://api.deepinfra.com/v1/openai/chat/completions"
     timeout_seconds: float = 120.0
@@ -31,35 +43,39 @@ class DeepInfraGemmaHost:
         return HostCapabilities(frozenset({Capability.TEXT_GENERATION, Capability.TOKEN_USAGE}))
 
     def fingerprint(self) -> HostFingerprint:
+        execution: dict[str, Any] = {
+            "base_url": "https://api.deepinfra.com/v1/openai",
+            "endpoint": self.endpoint,
+            "rendering_mode": "deepinfra_openai_chat",
+            "canonical_upstream_model": self.upstream_model_id,
+            "hosted_model_revision": "unknown",
+            "catalog_quantization": self.quantization,
+            "service_tier": "standard",
+        }
+        if self.context_length is not None:
+            execution["catalog_context_length"] = self.context_length
         return HostFingerprint(
-            "Gemma 4 E4B IT",
+            self.model_family,
             self.model_id,
             None,
-            "google/gemma-4-E4B-it",
-            self.canonical_revision,
+            self.tokenizer_id,
+            self.tokenizer_revision or self.canonical_revision,
             "deepinfra_openai_chat",
-            "unknown/provider-managed",
+            self.quantization,
             "deepinfra-openai-compatible",
             None,
             "DeepInfra",
-            {
-                "base_url": "https://api.deepinfra.com/v1/openai",
-                "endpoint": self.endpoint,
-                "rendering_mode": "deepinfra_openai_chat",
-                "canonical_upstream_model": "google/gemma-4-E4B-it",
-                "hosted_model_revision": "unknown",
-                "context_length": 131072,
-            },
+            execution,
             self.capabilities().supported,
         )
 
     def generate(self, request: GenerationRequest) -> GenerationResult:
         self.capabilities().require(Capability.TEXT_GENERATION)
         if request.seed is not None:
-            raise HostError("DeepInfra Gemma seed control is not advertised or verified")
+            raise HostError("DeepInfra seed control is not advertised or verified")
         if request.response_format is not None:
             raise HostError(
-                "DeepInfra Gemma does not support native response_format; "
+                "DeepInfra native response_format is not used by this host; "
                 "use prompted JSON and local validation"
             )
         token = self.token or os.getenv("DEEPINFRA_TOKEN")
@@ -105,6 +121,34 @@ class DeepInfraGemmaHost:
         )
 
 
+@dataclass
+class DeepInfraGemmaHost(DeepInfraChatHost):
+    """The existing developing Gemma binding, preserved for compatibility."""
+
+    model_id: str = "google/gemma-4-E4B-it"
+    model_family: str = "Gemma 4 E4B IT"
+    upstream_model_id: str | None = "google/gemma-4-E4B-it"
+    canonical_revision: str | None = "ee0ef6023621cff504d758262d4e04895a5af4a2"
+    tokenizer_id: str | None = "google/gemma-4-E4B-it"
+    tokenizer_revision: str | None = None
+    quantization: str | None = "unknown/provider-managed"
+    context_length: int | None = 131072
+
+
+@dataclass
+class DeepInfraQwenAssessorHost(DeepInfraChatHost):
+    """The designated semantic assessor binding for P2 role separation."""
+
+    model_id: str = "Qwen/Qwen3-235B-A22B-Instruct-2507"
+    model_family: str = "Qwen3 235B A22B Instruct 2507"
+    upstream_model_id: str | None = "Qwen/Qwen3-235B-A22B-Instruct-2507"
+    canonical_revision: str | None = None
+    tokenizer_id: str | None = None
+    tokenizer_revision: str | None = None
+    quantization: str | None = "fp8"
+    context_length: int | None = 262144
+
+
 def _parameters(parameters: dict[str, Any]) -> dict[str, Any]:
     result = dict(parameters)
     if "max_new_tokens" in result:
@@ -113,13 +157,7 @@ def _parameters(parameters: dict[str, Any]) -> dict[str, Any]:
 
 
 def _provider_messages(request: GenerationRequest) -> list[dict[str, str]]:
-    """Render the provider-visible message list without duplicating ``system``.
-
-    ``GenerationRequest.messages`` remains authoritative for message-only calls.
-    When the separate controller system field is present, it is represented by one
-    provider ``system`` message.  A legacy caller that already placed the same
-    system message in ``messages`` is accepted and deduplicated.
-    """
+    """Render the provider-visible message list without duplicating ``system``."""
 
     messages = [dict(message) for message in request.messages]
     if request.system is None:

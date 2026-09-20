@@ -19,6 +19,7 @@ from enum import StrEnum
 from pathlib import Path
 from typing import Any
 
+from ..host import Host
 from .artifacts import ArtifactError, ArtifactStore, _write_json, content_digest
 
 
@@ -75,9 +76,13 @@ def _safe_value(value: Any, *, key: str | None = None, depth: int = 0) -> Any:
     if depth > 8:
         return "[TRUNCATED]"
     lowered = key.casefold() if key is not None else ""
-    if lowered in _SECRET_KEYS or (
-        any(part in lowered for part in _SECRET_KEYS) and lowered not in _USAGE_KEYS
-    ):
+    sensitive_fragment = any(
+        lowered.startswith(f"{part}_")
+        or lowered.endswith(f"_{part}")
+        or f"_{part}_" in lowered
+        for part in _SECRET_KEYS
+    )
+    if lowered in _SECRET_KEYS or (sensitive_fragment and lowered not in _USAGE_KEYS):
         return "[REDACTED]"
     if isinstance(value, Mapping):
         return {
@@ -124,6 +129,21 @@ class CallReservation:
         }
 
 
+def host_role_binding(role: str, host: Host) -> dict[str, Any]:
+    """Return the immutable, sanitized host binding for one execution role."""
+
+    if not isinstance(role, str) or not role:
+        raise PilotError("host role must be non-empty")
+    fingerprint = host.fingerprint().to_dict()
+    return {
+        "role": role,
+        "fingerprint": fingerprint,
+        "fingerprint_sha256": content_digest(fingerprint),
+        "provider": fingerprint.get("provider"),
+        "model_id": fingerprint.get("model_id"),
+    }
+
+
 class PilotRun:
     """A restart-safe P2.3 lifecycle bound to one prepared P0.3 run."""
 
@@ -141,6 +161,8 @@ class PilotRun:
         if not isinstance(digest, str):
             raise PilotError("prepared run has no contract digest")
         self.contract_digest = digest
+        bindings_path = self.run_path / "bindings.json"
+        self.bindings = artifacts._read_json(bindings_path)
 
     def _read_state(self) -> dict[str, Any]:
         if not self.state_path.is_file():
@@ -211,6 +233,7 @@ class PilotRun:
         qualification_calls: int = 3,
         pilot_calls: int = 0,
         metadata: Mapping[str, Any] | None = None,
+        role_bindings: Mapping[str, Mapping[str, Any]] | None = None,
     ) -> dict[str, Any]:
         """Create or idempotently verify the immutable pilot execution envelope."""
 
@@ -240,9 +263,42 @@ class PilotRun:
             "pilot_calls": pilot_calls,
             "metadata": _safe_value(metadata or {}),
         }
+        if role_bindings is not None:
+            if not isinstance(role_bindings, Mapping):
+                raise PilotError("role_bindings must be an object")
+            normalized_roles = _safe_value(dict(role_bindings))
+            if not isinstance(normalized_roles, dict):
+                raise PilotError("role_bindings could not be serialized")
+            for required in ("developing", "assessor"):
+                if not isinstance(normalized_roles.get(required), Mapping):
+                    raise PilotError(f"role_bindings requires {required!r}")
+            envelope["role_bindings"] = normalized_roles
         if state.get("envelope") is not None and state.get("envelope") != envelope:
             raise PilotError("pilot envelope is immutable and conflicts with the existing state")
         return self._write_state(PilotStatus.PREPARED, envelope=envelope)
+
+    def require_role_host(self, role: str, host: Host) -> Mapping[str, Any]:
+        """Fail closed when a configured role is bound to another host."""
+
+        state = self.status()
+        envelope = state.get("envelope")
+        configured = envelope.get("role_bindings") if isinstance(envelope, Mapping) else None
+        if configured is None:
+            # Existing single-host fixtures remain explicitly legacy. New
+            # mixed-role runs always publish role_bindings and cannot use this
+            # compatibility path accidentally.
+            if role == "assessor" and self.bindings.get("roles") is None:
+                return {"legacy_single_host": True}
+            raise PilotError(f"missing configured host binding for role {role}")
+        expected = configured.get(role) if isinstance(configured, Mapping) else None
+        if not isinstance(expected, Mapping):
+            raise PilotError(f"missing configured host binding for role {role}")
+        actual = host_role_binding(role, host)
+        if expected.get("fingerprint_sha256") != actual["fingerprint_sha256"]:
+            raise PilotError(f"host fingerprint does not match configured {role} binding")
+        if expected.get("fingerprint") != actual["fingerprint"]:
+            raise PilotError(f"host fingerprint contents do not match configured {role} binding")
+        return expected
 
     def begin_qualification(self) -> dict[str, Any]:
         state = self.status()
@@ -351,6 +407,12 @@ class PilotRun:
             value = self.artifacts._read_json(path)
             if value.get("status") != expected.value:
                 if value.get("status") == status.value:
+                    normalized = _safe_value(fields)
+                    for key, expected_value in normalized.items():
+                        if key in value and value.get(key) != expected_value:
+                            raise PilotError(
+                                f"call {call_id} already has conflicting {key}"
+                            )
                     return value
                 raise PilotError(
                     f"call {call_id} is {value.get('status')}, expected {expected.value}"
@@ -364,8 +426,20 @@ class PilotRun:
             self.artifacts._sync_file(path)
             return value
 
-    def dispatch_call(self, call_id: str) -> Mapping[str, Any]:
-        return self._transition_call(call_id, CallStatus.RESERVED, CallStatus.DISPATCHED)
+    def dispatch_call(
+        self,
+        call_id: str,
+        *,
+        expected_host_fingerprint: Mapping[str, Any] | None = None,
+    ) -> Mapping[str, Any]:
+        return self._transition_call(
+            call_id,
+            CallStatus.RESERVED,
+            CallStatus.DISPATCHED,
+            expected_host_fingerprint=dict(expected_host_fingerprint)
+            if expected_host_fingerprint is not None
+            else None,
+        )
 
     def return_call(
         self,
@@ -374,6 +448,7 @@ class PilotRun:
         result: Mapping[str, Any] | None = None,
         usage: Mapping[str, Any] | None = None,
         output_tokens: int | None = None,
+        actual_host_fingerprint: Mapping[str, Any] | None = None,
     ) -> Mapping[str, Any]:
         if output_tokens is not None and (
             isinstance(output_tokens, bool)
@@ -388,8 +463,24 @@ class PilotRun:
             result=_safe_value(result or {}),
             usage=_safe_value(usage) if usage is not None else None,
             output_tokens=output_tokens,
+            actual_host_fingerprint=dict(actual_host_fingerprint)
+            if actual_host_fingerprint is not None
+            else None,
             returned_at=_utc(),
         )
+
+    def assert_returned_host(self, call_id: str) -> None:
+        """Verify a returned result stayed on its reserved host binding."""
+
+        value = self.artifacts._read_json(self._reservation_path(call_id))
+        expected = value.get("expected_host_fingerprint")
+        actual = value.get("actual_host_fingerprint")
+        if expected is None:
+            return
+        if not isinstance(expected, Mapping) or not isinstance(actual, Mapping):
+            raise PilotError(f"call {call_id} has incomplete host provenance")
+        if dict(expected) != dict(actual):
+            raise PilotError(f"call {call_id} returned from a different host binding")
 
     def fail_call(self, call_id: str, reason: str) -> Mapping[str, Any]:
         return self._transition_call(
@@ -410,10 +501,12 @@ class PilotRun:
         calls = self._all_reservations()
         expected = int(state.get("envelope", {}).get("qualification_calls", 3))
         qualification = [item for item in calls if item.get("role") == "assessor-qualification"]
-        if len(qualification) != expected or any(
+        if not qualification or any(
             item.get("status") != CallStatus.RETURNED.value for item in qualification
         ):
             raise PilotError("qualification cannot finish before all calls return")
+        if passed and len(qualification) != expected:
+            raise PilotError("qualification cannot pass before all calls return")
         next_status = PilotStatus.QUALIFIED if passed else PilotStatus.FAILED
         return self._write_state(
             next_status,
@@ -510,4 +603,11 @@ class PilotRun:
         return path
 
 
-__all__ = ["CallReservation", "CallStatus", "PilotError", "PilotRun", "PilotStatus"]
+__all__ = [
+    "CallReservation",
+    "CallStatus",
+    "PilotError",
+    "PilotRun",
+    "PilotStatus",
+    "host_role_binding",
+]

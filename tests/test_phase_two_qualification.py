@@ -3,10 +3,12 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from mneme.contracts import GenerationRequest, GenerationResult, TokenUsage
 from mneme.development.assessment import qualification_cases
 from mneme.experiments.artifacts import ArtifactStore
-from mneme.experiments.pilot import PilotRun, PilotStatus
+from mneme.experiments.pilot import PilotError, PilotRun, PilotStatus, host_role_binding
 from mneme.experiments.qualification import run_assessor_qualification
 from mneme.hosts import FakeHost
 
@@ -106,4 +108,57 @@ def test_invalid_qualification_is_retained_and_does_not_retry(tmp_path: Path) ->
     result = run_assessor_qualification(pilot, ScriptedHost(outputs))
     assert result["status"] == PilotStatus.FAILED.value
     assert result["cases"][1]["valid"] is False
-    assert PilotRun(pilot.artifacts, "run-1").reservations_report()["counts"]["RETURNED"] == 3
+    assert PilotRun(pilot.artifacts, "run-1").reservations_report()["counts"]["RETURNED"] == 2
+
+
+def test_mixed_role_qualification_uses_configured_assessor_and_stops_on_failure(
+    tmp_path: Path,
+) -> None:
+    store = ArtifactStore(tmp_path / "lab")
+    store.publish_run(
+        experiment={"name": "p2-qualification", "contract_revision": 2},
+        preflight={"valid": True},
+        study_plan={"budgets": {}},
+        bindings={"subjects": [], "roles": {"developing": "gemma", "assessor": "fake"}},
+        run_id="run-2",
+    )
+    pilot = PilotRun(store, "run-2")
+    host = ScriptedHost(_results())
+    pilot.prepare(
+        planned_calls=3,
+        max_output_tokens=4_608,
+        qualification_calls=3,
+        role_bindings={
+            "developing": host_role_binding("developing", FakeHost(model_id="gemma")),
+            "assessor": host_role_binding("assessor", host),
+        },
+    )
+    result = run_assessor_qualification(pilot, assessor_host=host)
+    assert result["status"] == PilotStatus.QUALIFIED.value
+    report = pilot.reservations_report()
+    assert report["counts"]["RETURNED"] == 3
+    assert all(
+        item.get("expected_host_fingerprint") == item.get("actual_host_fingerprint")
+        for item in report["calls"]
+    )
+
+
+def test_mixed_role_qualification_missing_assessor_binding_fails_before_dispatch(
+    tmp_path: Path,
+) -> None:
+    store = ArtifactStore(tmp_path / "lab")
+    store.publish_run(
+        experiment={"name": "p2-qualification", "contract_revision": 2},
+        preflight={"valid": True},
+        study_plan={"budgets": {}},
+        bindings={"subjects": [], "roles": {"developing": "gemma"}},
+        run_id="run-2",
+    )
+    pilot = PilotRun(store, "run-2")
+    with pytest.raises(PilotError, match="assessor"):
+        pilot.prepare(
+            planned_calls=3,
+            max_output_tokens=4_608,
+            qualification_calls=3,
+            role_bindings={"developing": host_role_binding("developing", FakeHost())},
+        )

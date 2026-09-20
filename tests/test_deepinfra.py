@@ -4,7 +4,7 @@ import urllib.error
 import pytest
 
 from mneme.contracts import Capability, GenerationRequest, HostError
-from mneme.hosts.deepinfra import DeepInfraGemmaHost, _parse_response
+from mneme.hosts.deepinfra import DeepInfraGemmaHost, DeepInfraQwenAssessorHost, _parse_response
 
 
 def request() -> GenerationRequest:
@@ -24,6 +24,21 @@ def test_deepinfra_capabilities_and_fingerprint():
     assert fingerprint["execution"]["canonical_upstream_model"] == "google/gemma-4-E4B-it"
     assert fingerprint["chat_template"] == "deepinfra_openai_chat"
     assert "admin-only" not in json.dumps(fingerprint)
+
+
+def test_qwen_assessor_fingerprint_is_not_gemma_metadata():
+    fingerprint = DeepInfraQwenAssessorHost().fingerprint().to_dict()
+    assert fingerprint["model_id"] == "Qwen/Qwen3-235B-A22B-Instruct-2507"
+    assert fingerprint["model_family"] == "Qwen3 235B A22B Instruct 2507"
+    assert fingerprint["tokenizer_id"] is None
+    assert fingerprint["tokenizer_revision"] is None
+    assert fingerprint["model_revision"] is None
+    assert fingerprint["execution"]["canonical_upstream_model"] == (
+        "Qwen/Qwen3-235B-A22B-Instruct-2507"
+    )
+    assert fingerprint["execution"]["hosted_model_revision"] == "unknown"
+    assert "Gemma" not in json.dumps(fingerprint)
+    assert "ee0ef6023621cff504d758262d4e04895a5af4a2" not in json.dumps(fingerprint)
 
 
 def test_request_uses_structured_messages_and_bearer_without_leak(monkeypatch):

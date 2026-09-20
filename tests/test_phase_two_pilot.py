@@ -5,7 +5,14 @@ from pathlib import Path
 import pytest
 
 from mneme.experiments.artifacts import ArtifactStore
-from mneme.experiments.pilot import CallStatus, PilotError, PilotRun, PilotStatus
+from mneme.experiments.pilot import (
+    CallStatus,
+    PilotError,
+    PilotRun,
+    PilotStatus,
+    host_role_binding,
+)
+from mneme.hosts import FakeHost
 
 
 def _published(tmp_path: Path) -> ArtifactStore:
@@ -171,3 +178,56 @@ def test_qualification_pass_then_pilot_finish_and_artifact_report(tmp_path: Path
     report = PilotRun(store, "run-1").reservations_report()
     assert report["counts"][CallStatus.RETURNED.value] == 4
     assert store.verify_run(store.locate_run("run-1"))
+
+
+def test_mixed_role_binding_requires_matching_assessor_host(tmp_path: Path) -> None:
+    store = _published(tmp_path)
+    developing = FakeHost(model_id="developing")
+    assessor = FakeHost(model_id="assessor")
+    pilot = PilotRun(store, "run-1")
+    pilot.prepare(
+        planned_calls=3,
+        max_output_tokens=30,
+        qualification_calls=3,
+        pilot_calls=0,
+        role_bindings={
+            "developing": host_role_binding("developing", developing),
+            "assessor": host_role_binding("assessor", assessor),
+        },
+    )
+    assert pilot.require_role_host("assessor", assessor)["model_id"] == "assessor"
+    with pytest.raises(PilotError, match="fingerprint"):
+        pilot.require_role_host("assessor", developing)
+
+
+def test_completed_dispatch_rejects_changed_expected_host_binding(tmp_path: Path) -> None:
+    store = _published(tmp_path)
+    host = FakeHost(model_id="assessor")
+    pilot = PilotRun(store, "run-1")
+    pilot.prepare(planned_calls=3, max_output_tokens=30, qualification_calls=3)
+    pilot.begin_qualification()
+    pilot.reserve_call(
+        call_id="q-1",
+        role="assessor-qualification",
+        coordinate={"case": "Q1"},
+        max_output_tokens=10,
+    )
+    expected = host.fingerprint().to_dict()
+    pilot.dispatch_call("q-1", expected_host_fingerprint=expected)
+    altered = dict(expected)
+    altered["model_id"] = "other"
+    with pytest.raises(PilotError, match="expected_host_fingerprint"):
+        pilot.dispatch_call("q-1", expected_host_fingerprint=altered)
+
+
+def test_role_binding_missing_assessor_fails_closed(tmp_path: Path) -> None:
+    store = _published(tmp_path)
+    pilot = PilotRun(store, "run-1")
+    with pytest.raises(PilotError, match="assessor"):
+        pilot.prepare(
+            planned_calls=3,
+            max_output_tokens=30,
+            qualification_calls=3,
+            pilot_calls=0,
+            role_bindings={"developing": host_role_binding("developing", FakeHost())},
+        )

@@ -173,6 +173,41 @@ def test_q1_echo_and_q2_exposure_ancestry_are_classified() -> None:
     assert {row.monitor_id: row.dependence for row in q2}["shade"] == "exposure_linked"
 
 
+def test_qualification_requests_preserve_complete_proposition_and_source_roles() -> None:
+    cases = {case.case_id: case for case in qualification_cases()}
+    q1 = cases["Q1"].request.to_dict()
+    assert q1["candidate"] == {"from": "lever", "relation": "causes", "to": "latch_release"}
+    assert q1["sources"] == [
+        {
+            "slot": "s0",
+            "role": "external",
+            "available": True,
+            "text": "Pulling the lever released the latch.",
+            "source_id": None,
+        },
+        {
+            "slot": "s1",
+            "role": "model_output",
+            "available": True,
+            "text": "Pulling the lever released the latch.",
+            "source_id": None,
+        },
+    ]
+    q2 = cases["Q2"].request.to_dict()
+    assert q2["candidate"] == {"from": "rain_jacket", "relation": "raises", "to": "shade"}
+    assert {monitor["monitor_id"] for monitor in q2["monitors"]} == {
+        "jacket_direction",
+        "shade",
+    }
+    assert q2["memory_exposure"] == [
+        {"source_slot": "s1", "exposure_id": "memory-1", "dependence": "replay_linked"}
+    ]
+    q3 = cases["Q3"].request.to_dict()
+    assert q3["sources"][1]["available"] is False
+    assert q3["sources"][1]["role"] == "model_output"
+    assert q3["monitors"][0]["relation"] == {"relation": "stops"}
+
+
 def test_q3_negation_quote_and_unavailable_source_are_fail_closed() -> None:
     case = next(case for case in qualification_cases() if case.case_id == "Q3")
     rows = validate_qualification_case(case, _valid_result("Q3"))

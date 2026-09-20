@@ -14,7 +14,7 @@ from .experiments.cli import add_parser as add_experiment_parser
 from .experiments.cli import dispatch as dispatch_experiment
 from .experiments.cli import normalize_args as normalize_experiment_args
 from .experiments.inspection import inspect_store, inspect_turn
-from .hosts import DeepInfraGemmaHost, FakeHost, GemmaHost
+from .hosts import DeepInfraGemmaHost, DeepInfraQwenAssessorHost, FakeHost, GemmaHost
 from .identity import IdentityService
 from .qualification import qualify
 from .state import SCHEMA_VERSION, SQLiteStore
@@ -39,6 +39,8 @@ def _host(name: str) -> Any:
             model_id=os.getenv("MNEME_DEEPINFRA_MODEL_ID", "google/gemma-4-E4B-it"),
             token=os.getenv("DEEPINFRA_TOKEN"),
         )
+    if name == "qwen-assessor-deepinfra":
+        return DeepInfraQwenAssessorHost(token=os.getenv("DEEPINFRA_TOKEN"))
     raise SystemExit(f"unknown host: {name}")
 
 
@@ -447,7 +449,7 @@ def main(argv: list[str] | None = None) -> int:
         )
         return 0
     if args.action == "list":
-        print("fake\ngemma\ngemma-deepinfra")
+        print("fake\ngemma\ngemma-deepinfra\nqwen-assessor-deepinfra")
         return 0
     selected = _host(args.host)
     if args.action == "inspect":

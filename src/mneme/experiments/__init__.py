@@ -43,7 +43,14 @@ from .inspection import (
     inspect_turn,
 )
 from .live_accounting import summarize_lineage_usage
-from .pilot import CallReservation, CallStatus, PilotError, PilotRun, PilotStatus
+from .pilot import (
+    CallReservation,
+    CallStatus,
+    PilotError,
+    PilotRun,
+    PilotStatus,
+    host_role_binding,
+)
 from .qualification import run_assessor_qualification
 
 __all__ = [
@@ -82,6 +89,7 @@ __all__ = [
     "PilotError",
     "PilotRun",
     "PilotStatus",
+    "host_role_binding",
     "run_assessor_qualification",
     "ComparisonError",
     "ComparisonProbe",

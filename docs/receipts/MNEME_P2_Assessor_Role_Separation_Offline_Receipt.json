@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "amendment_id": "P2-ASSESSOR-SEPARATION-01",
+  "starting_sha": "f8c72277a0915d2af14f1d37819e4e8fe251f03f",
+  "status": "OFFLINE_GATE_PASS",
+  "provider_calls": 0,
+  "developing_host": "google/gemma-4-E4B-it",
+  "assessor_host": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+  "assessor_endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+  "assessor_service_tier": "standard",
+  "assessor_catalog_observed": {
+    "date": "2026-09-20",
+    "quantization": "fp8",
+    "context_length": 262144,
+    "input_usd_per_million_tokens": 0.09,
+    "output_usd_per_million_tokens": 0.55,
+    "served_revision": "unknown",
+    "tokenizer_identity": "unknown"
+  },
+  "validation": {
+    "pytest": "275 passed",
+    "focused_tests": "24 passed before final contract regression; included in complete suite",
+    "ruff": "pass",
+    "mypy_strict": "pass: 47 source files",
+    "wheel": "pass: pip wheel . --no-deps"
+  },
+  "pilot_calls": 0,
+  "historical_receipts_preserved": true,
+  "queue_status_unchanged": "WAITING on external:p2-assessor-qualification"
+}

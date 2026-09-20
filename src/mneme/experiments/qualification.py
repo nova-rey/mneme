@@ -30,6 +30,7 @@ def _result_payload(
             "finish_reason": result.finish_reason,
             "seed": result.seed,
             "usage": usage,
+            "provenance": result.provenance,
         },
         usage,
         output_tokens if isinstance(output_tokens, int) else None,
@@ -38,18 +39,25 @@ def _result_payload(
 
 def run_assessor_qualification(
     pilot: PilotRun,
-    host: Host,
+    host: Host | None = None,
     *,
+    assessor_host: Host | None = None,
     max_output_tokens: int = 1_536,
 ) -> dict[str, Any]:
-    """Run exactly the fixed Q1/Q2/Q3 qualification calls once.
+    """Run the fixed Q1/Q2/Q3 qualification in order, stopping on failure.
 
     Each returned provider result is durably recorded before local JSON and
     semantic validation. A provider exception is uncertain and terminal; it
     is never regenerated. Invalid results are retained and qualification
-    completes as a failure after the three predetermined calls.
+    completes immediately after the failing case.
     """
 
+    if host is not None and assessor_host is not None:
+        raise PilotError("supply host or assessor_host, not both")
+    selected_host = assessor_host or host
+    if selected_host is None:
+        raise PilotError("assessor host is required")
+    configured = pilot.require_role_host("assessor", selected_host)
     pilot.begin_qualification()
     case_results: list[dict[str, Any]] = []
     all_valid = True
@@ -62,9 +70,15 @@ def run_assessor_qualification(
             coordinate={"case": case.case_id},
             max_output_tokens=max_output_tokens,
         )
-        pilot.dispatch_call(call_id)
+        expected_fingerprint = configured.get("fingerprint")
+        pilot.dispatch_call(
+            call_id,
+            expected_host_fingerprint=expected_fingerprint
+            if isinstance(expected_fingerprint, dict)
+            else None,
+        )
         try:
-            generated = host.generate(request)
+            generated = selected_host.generate(request)
         except Exception as exc:
             pilot.mark_uncertain(call_id, f"provider outcome uncertain: {type(exc).__name__}")
             pilot.fail(
@@ -78,10 +92,16 @@ def run_assessor_qualification(
             result=payload,
             usage=usage,
             output_tokens=output_tokens,
+            actual_host_fingerprint=(
+                generated.provenance.get("host")
+                if isinstance(generated.provenance.get("host"), dict)
+                else None
+            ),
         )
         valid = True
         error: str | None = None
         try:
+            pilot.assert_returned_host(call_id)
             decoded = json.loads(generated.content)
             if not isinstance(decoded, dict):
                 raise AssessorValidationError("assessor result must be a JSON object")
@@ -97,6 +117,7 @@ def run_assessor_qualification(
             f"{case.case_id.lower()}.json",
             {
                 "case_id": case.case_id,
+                "assessor_binding": configured,
                 "request": case.request.to_dict(),
                 "result": payload,
                 "valid": valid,
@@ -107,6 +128,12 @@ def run_assessor_qualification(
         case_results.append(
             {"case_id": case.case_id, "valid": valid, "validation_error": error}
         )
+        if not valid:
+            final = pilot.complete_qualification(
+                passed=False,
+                details={"cases": case_results, "stopped_after": case.case_id},
+            )
+            return {"status": final["status"], "cases": case_results}
     final = pilot.complete_qualification(passed=all_valid, details={"cases": case_results})
     return {"status": final["status"], "cases": case_results}
 

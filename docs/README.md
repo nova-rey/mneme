@@ -89,6 +89,9 @@ The documents are preserved in their supplied form and are intentionally not mer
   the newly authorized v4 semantic qualification stop is recorded in [the v4 qualification failure receipt](receipts/MNEME_P2.3_Assessor_Qualification_V4_Failure_Receipt.md)
   ([JSON](receipts/MNEME_P2.3_Assessor_Qualification_V4_Failure_Receipt.json));
   the proposed 299-call pilot budget remains unrun.
+  The additive [assessor role-separation addendum](decisions/MNEME_P2_Assessor_Role_Separation_Addendum.md)
+  records the designated Qwen assessor configuration and does not alter the
+  approved learner, fixtures, frozen contracts, or release criteria.
 
   Future design context: [Developmental Self-Context](architecture/future/MNEME_Developmental_Self_Context_Architecture.md).
   This reference does not change the phase's implementation scope, frozen
