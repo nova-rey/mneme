@@ -118,6 +118,50 @@ def test_qualification_cases_use_production_shape_and_fakehost() -> None:
         assert result.provenance["host"]["provider"] == "builtin"
 
 
+def test_assessor_prompt_exposes_complete_enum_and_json_contract() -> None:
+    request = assessor_generation_request(qualification_cases()[0].request)
+    prompt = request.messages[0]["content"]
+
+    assert "Return raw JSON only" in prompt
+    assert "Do not use Markdown fences" in prompt
+    assert '"schema_version": "p2-assessor-v1"' in prompt
+    assert '"assessments": [' in prompt
+    for value in ("present", "absent", "unknown"):
+        assert value in prompt
+    for value in ("supported", "unsupported", "unknown"):
+        assert value in prompt
+    for value in ("expressed", "not_expressed", "unknown"):
+        assert value in prompt
+    for value in (
+        "external_supported",
+        "current_input_echo",
+        "replay_linked",
+        "exposure_linked",
+        "no_identified_link",
+        "unknown",
+        "conflict",
+    ):
+        assert value in prompt
+    for field in (
+        '"monitor_id"',
+        '"status"',
+        '"relation_support"',
+        '"expression_status"',
+        '"dependence"',
+        '"coverage"',
+        '"complete"',
+        '"source_slots"',
+        '"reason"',
+        '"evidence"',
+        '"source_slot"',
+        '"quote"',
+        '"dependence_group"',
+    ):
+        assert field in prompt
+    assert "no omitted or duplicated monitor IDs" in prompt
+    assert "Do not invent enum values" in prompt
+
+
 def test_q1_echo_and_q2_exposure_ancestry_are_classified() -> None:
     cases = {case.case_id: case for case in qualification_cases()}
     q1 = validate_qualification_case(cases["Q1"], _valid_result("Q1"))

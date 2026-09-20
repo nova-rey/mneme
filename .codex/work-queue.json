@@ -1053,7 +1053,7 @@
       "base_sha": "7157845",
       "campaign": "mneme-phase-two",
       "candidate": {
-        "artifact": "P2.3 offline candidate: assessor contract plus fixed raw-JSON qualification executor; pilot ledger; route/outcome/identity durability; 266 pytest, Ruff, strict mypy; no provider calls",
+        "artifact": "P2.3 offline candidate: assessor contract plus fixed raw-JSON qualification executor; explicit production prompt v2; pilot ledger; route/outcome/identity durability; 267 pytest, Ruff, strict mypy; no provider calls",
         "base_sha": "5ac5c0c",
         "returned_at": "2026-09-20T17:16:00.000000Z",
         "returned_by": "/root",
@@ -1077,10 +1077,11 @@
       ],
       "evidence_refs": [
         "docs/receipts/MNEME_P2.3_Offline_Assessor_Pilot_Boundary_Receipt.md",
-        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Failure_Receipt.md"
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Failure_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Assessor_Prompt_Contract_Remediation_Receipt.md"
       ],
       "id": "P2.3",
-      "notes": "Offline boundary passed. Fixed three-call assessor qualification failed on structurally invalid Gemma outputs; pilot was not started. New reviewed correction and live authorization are required. Proposed ceiling remains 299 calls / 204,288 output tokens.",
+      "notes": "Offline boundary passed. Fixed three-call assessor qualification failed on structurally invalid Gemma outputs caused by an underspecified model-facing contract; the validator and criteria remain strict. Prompt v2 now enumerates the complete JSON/enums/coverage contract. Fresh three-call qualification is authorized by the resumed goal; prior results remain historical and the pilot is prohibited unless qualification passes. Proposed ceiling remains 299 calls / 204,288 output tokens.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1127,7 +1128,7 @@
             "status": "PASS"
           },
           "p23-offline-validation": {
-            "receipt": "266 pytest; Ruff; strict mypy src across 47 files; raw-JSON DeepInfra boundary; no provider calls",
+            "receipt": "267 pytest; Ruff; strict mypy src across 47 files; prompt v2 raw-JSON DeepInfra boundary; no provider calls",
             "recorded_at": "2026-09-20T17:05:14.792123Z",
             "status": "PASS"
           },

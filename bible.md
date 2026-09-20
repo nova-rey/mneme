@@ -472,3 +472,7 @@
 ## 2026-09-20 P2.3 pilot lifecycle candidate
 
 - Added the offline Phase Two pilot lifecycle ledger beside prepared experiment artifacts. It durably records PREPARED/QUALIFYING/QUALIFIED/RUNNING/PAUSED/COMPLETE/FAILED/UNCERTAIN state, bounded pre-dispatch reservations, DISPATCHED/RETURNED/FAILED/UNCERTAIN call outcomes, idempotent coordinates, output-token ceilings, qualification gating, sanitized report artifacts, and restart-safe integrity receipts. No provider calls or credentials were used; the live qualification and pilot remain outside this candidate.
+
+## 2026-09-20 P2.3 assessor prompt remediation
+
+- Corrected the production assessor prompt contract after the first qualification failure. Prompt version `p2-assessor-production-v2` now enumerates every validator-constrained enum and the complete top-level/row JSON structure, coverage rules, exact quotation requirements, and raw-JSON-only boundary. Validator strictness and qualification criteria were unchanged. Offline validation passed at 267 pytest tests, Ruff, and strict mypy across 47 source files; no provider call occurred during remediation. A fresh fixed three-call qualification attempt is the next gate; the prior three results remain unchanged and the 299-call pilot remains untouched.

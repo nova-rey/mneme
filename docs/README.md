@@ -79,6 +79,8 @@ The documents are preserved in their supplied form and are intentionally not mer
   the three stop-audit-publish gates. The offline P2.3 assessor/pilot boundary is
   recorded in [the offline boundary receipt](receipts/MNEME_P2.3_Offline_Assessor_Pilot_Boundary_Receipt.md);
   the fixed qualification failure is recorded in [the qualification failure receipt](receipts/MNEME_P2.3_Assessor_Qualification_Failure_Receipt.md);
+  the reviewed prompt-contract remediation and its offline validation are recorded in
+  [the remediation receipt](receipts/MNEME_P2.3_Assessor_Prompt_Contract_Remediation_Receipt.md);
   the proposed 299-call pilot budget remains unrun.
 
 The P0.2 implementation is now present under `src/mneme/state/`; its acceptance

@@ -20,7 +20,7 @@ from typing import Any, cast
 from ..contracts import GenerationRequest
 
 ASSESSOR_SCHEMA_VERSION = "p2-assessor-v1"
-ASSESSOR_PROMPT_VERSION = "p2-assessor-production-v1"
+ASSESSOR_PROMPT_VERSION = "p2-assessor-production-v2"
 
 ASSESSMENT_STATUSES = frozenset({"present", "absent", "unknown"})
 RELATION_SUPPORT = frozenset({"supported", "unsupported", "unknown"})
@@ -405,10 +405,42 @@ def assessor_generation_request(
             {
                 "role": "user",
                 "content": (
-                    "Return raw JSON only. Do not use Markdown fences or prose. "
-                    "Return exactly one assessment row for every requested monitor. "
-                    "Use only the declared status, relation_support, expression_status, "
-                    "and dependence enum values.\n\n"
+                    "Return raw JSON only. Do not use Markdown fences, introductory "
+                    "or concluding prose, comments, or any text outside the JSON. "
+                    "Do not invent enum values. Return exactly one row for every "
+                    "requested monitor, with no omitted or duplicated monitor IDs. "
+                    "The complete output contract is:\n"
+                    "{\n"
+                    '  "schema_version": "p2-assessor-v1",\n'
+                    '  "assessments": [\n'
+                    "    {\n"
+                    '      "monitor_id": "<exact monitor_id from the request>",\n'
+                    '      "status": "present" | "absent" | "unknown",\n'
+                    '      "relation_support": "supported" | "unsupported" | "unknown",\n'
+                    '      "expression_status": "expressed" | "not_expressed" | "unknown",\n'
+                    '      "dependence": "external_supported" | "current_input_echo" | '
+                    '"replay_linked" | "exposure_linked" | "no_identified_link" | '
+                    '"unknown" | "conflict",\n'
+                    '      "coverage": {\n'
+                    '        "complete": true | false,\n'
+                    '        "source_slots": ["<declared source slot>"],\n'
+                    '        "reason": "<reason>" | null\n'
+                    "      },\n"
+                    '      "evidence": {"source_slot": "<declared source slot>", '
+                    '"quote": "<short exact verbatim quotation>"} | null,\n'
+                    '      "dependence_group": "<group>" | null\n'
+                    "    }\n"
+                    "  ]\n"
+                    "}\n"
+                    "Use only the listed top-level and row fields. The schema_version "
+                    "must be exactly p2-assessor-v1. For status=present, coverage "
+                    "must name covered declared source slots and evidence must contain "
+                    "a non-empty exact quotation from its source_slot. For status=absent, "
+                    "coverage must be complete for every available required source and "
+                    "reason must explain the absence; evidence must be null. For "
+                    "status=unknown, coverage must be incomplete with a reason and "
+                    "evidence must be null. Copy monitor IDs and source slots exactly "
+                    "from the request.\n\n"
                     + request.prompt_payload()
                 ),
             },
