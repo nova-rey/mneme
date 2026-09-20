@@ -537,3 +537,7 @@
 ## 2026-09-20 P2.3 corrected qualification Q1 stop
 
 - Executed the authorized corrected Q1/Q2/Q3 qualification from clean main `0abd74e`. Q1 returned from the designated DeepInfra Qwen assessor and was durably persisted before validation (781 input, 331 output, 1,112 total tokens). The latch semantic was correct, but Qwen marked the available model-output echo absent and incorrectly marked the unrelated monitor present. Qualification stopped after Q1; Q2/Q3 and the pilot were not dispatched, and no retry or repair was made. The sanitized evidence is `docs/receipts/MNEME_P2.3_Assessor_Qualification_Provenance_V2_Failure_Receipt.md` and `.json`. Historical failures remain unchanged; P2.3 stays WAITING for review.
+
+## 2026-09-20 P2.3 corrected qualification queue reconciliation
+
+- Reconciled P2.3 to evidence commit `266fed2`, preserving `WAITING` on `external:p2-assessor-qualification`. The queue now points to the one-call Q1 semantic stop; Q2/Q3 and pilot calls remain undispatched. No acceptance criteria, model, contract, or historical receipt was changed.

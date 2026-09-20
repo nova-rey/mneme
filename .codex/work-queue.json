@@ -1053,11 +1053,11 @@
       "base_sha": "7157845",
       "campaign": "mneme-phase-two",
       "candidate": {
-        "artifact": "P2.3 offline candidate: semantic assessor v2 plus deterministic provenance resolver v1; fixed raw-JSON qualification executor; multi-root learner accounting; pilot ledger; route/outcome/identity durability; 280 pytest, Ruff, strict mypy; wheel/install smoke; no provider calls",
+        "artifact": "P2.3 offline candidate plus corrected Q1 qualification stop: semantic assessor v2, deterministic provenance resolver v1, fixed raw-JSON executor, and one returned/failed Q1; Q2/Q3 and pilot undispatched",
         "base_sha": "fe31d6b0fda2f1069250f57cde769528b2fa2a1d",
-        "returned_at": "2026-09-20T20:05:09.000000Z",
+        "returned_at": "2026-09-20T20:46:24.493513Z",
         "returned_by": "/root",
-        "sha": "e993d68"
+        "sha": "266fed2"
       },
       "completion_criterion": "Production-equivalent assessor qualification and separately authorized pilot execute/resume/replay with honest engineering, adequacy, and research outcomes, or publish a truthful blocker.",
       "created_at": "2026-09-20T16:16:33.650428Z",
@@ -1093,10 +1093,12 @@
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_Qwen_V1_Failure_Receipt.json",
         "docs/decisions/MNEME_P2_Assessor_Provenance_Resolution_Addendum.md",
         "docs/receipts/MNEME_P2_Assessor_Provenance_Resolution_Offline_Receipt.md",
-        "docs/receipts/MNEME_P2_Assessor_Provenance_Resolution_Offline_Receipt.json"
+        "docs/receipts/MNEME_P2_Assessor_Provenance_Resolution_Offline_Receipt.json",
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Provenance_V2_Failure_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Provenance_V2_Failure_Receipt.json"
       ],
       "id": "P2.3",
-      "notes": "Offline boundary passed at 7de05a2/a3a8ee6. Historical Gemma and Qwen qualification failures remain unchanged. The additive provenance-resolution correction now uses assessor schema p2-assessor-v2/prompt p2-assessor-production-v3 plus p2-provenance-v1 deterministic resolution; raw semantic output and derived provenance are persisted separately, and multi-root learner caps use the minimum remaining budget. No provider call occurred during this correction. A fresh three-call qualification authorization is required; the package remains WAITING on external:p2-assessor-qualification and the proposed ceiling remains 299 calls / 204,288 output tokens.",
+      "notes": "Offline boundary passed at 7de05a2/a3a8ee6. The corrected qualification authorization dispatched only Q1 from clean main 0abd74e; Q1 returned and failed semantic validation because echo was marked absent and unrelated was marked present. Q2/Q3 and pilot calls were not dispatched. Historical Gemma and Qwen qualification failures remain unchanged. The package remains WAITING on external:p2-assessor-qualification and the proposed ceiling remains 299 calls / 204,288 output tokens.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1134,8 +1136,8 @@
         ],
         "results": {
           "p23-assessor-qualification": {
-            "receipt": "docs/receipts/MNEME_P2.3_Assessor_Qualification_V4_Failure_Receipt.md and .json; three returned DeepInfra calls, semantic qualification failed, pilot calls 0",
-            "recorded_at": "2026-09-20T19:50:00.000000Z",
+            "receipt": "docs/receipts/MNEME_P2.3_Assessor_Qualification_Provenance_V2_Failure_Receipt.md and .json; Q1 returned then failed semantic qualification; Q2/Q3 undispatched; pilot calls 0",
+            "recorded_at": "2026-09-20T20:46:24.493513Z",
             "status": "FAIL"
           },
           "p23-assessor-contract": {
