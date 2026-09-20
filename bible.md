@@ -431,3 +431,7 @@
 ## 2026-09-20 P2.1 schema migration and learning-policy correction
 
 - Completed the schema-5 to schema-6 migration path for learner manifest fields and retained explicit backup/fail-closed behavior. Development lifecycle records remain mutable while accepted learner records remain immutable. Learning permission is now accepted by the local authority ledger, explicitly grantable/revocable, and denied when that authority is unavailable. Focused schema, storage, policy, and migration validation passed; no provider calls or credentials were used. P2.1 remains in progress.
+
+## 2026-09-20 P2.1 learner transition contract refinement
+
+- Refined the pure learner into an immutable, fixed-point transition kernel with explicit global opportunities, dependence-group and rolling caps, observation/retention distinctions, attributable contextual consequences, idempotent operation coordinates, highest-coverage exploration, and weak/established/saturated restraint with recovery. The initial mapping API remains as a compatibility adapter while the production-facing `LearnerState`/`TransitionInput` contract carries the full Phase Two semantics. Focused learner, policy, and schema tests pass; no provider calls or credentials were used.
