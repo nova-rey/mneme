@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "status": "PARTIAL_PILOT_PROBE",
+  "experiment": "p2-developmental-pilot",
+  "contract_revision": 1,
+  "run_id": "pilot-1",
+  "qualification_reference": "docs/receipts/MNEME_P2.3_Assessor_Qualification_Polarity_V8_Pass_Receipt.json",
+  "provider_calls_consumed": 2,
+  "calls": [
+    {
+      "call_id": "dev-s0-e01",
+      "role": "development-response",
+      "coordinate": {
+        "episode": 1,
+        "subject": 0
+      },
+      "input": "I sorted the socket wrenches into labeled workshop bins, so finding the right size for a repair takes less time.",
+      "result": {
+        "content": "That sounds like a **huge time-saver** and a great step for organization! Having everything labeled in dedicated bins makes the whole repair process so much smoother.",
+        "finish_reason": "stop",
+        "model_id": "google/gemma-4-E4B-it",
+        "provenance": {
+          "finish_reason": "stop",
+          "model_id": "google/gemma-4-E4B-it",
+          "provenance": {
+            "host": {
+              "capabilities": [
+                "text_generation",
+                "token_usage"
+              ],
+              "chat_template": "deepinfra_openai_chat",
+              "execution": {
+                "base_url": "https://api.deepinfra.com/v1/openai",
+                "canonical_upstream_model": "google/gemma-4-E4B-it",
+                "catalog_context_length": 131072,
+                "catalog_quantization": "unknown/provider-managed",
+                "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+                "hosted_model_revision": "unknown",
+                "rendering_mode": "deepinfra_openai_chat",
+                "service_tier": "standard"
+              },
+              "model_family": "Gemma 4 E4B IT",
+              "model_id": "google/gemma-4-E4B-it",
+              "model_revision": null,
+              "provider": "DeepInfra",
+              "quantization": "unknown/provider-managed",
+              "runtime": "deepinfra-openai-compatible",
+              "runtime_version": null,
+              "tokenizer_id": "google/gemma-4-E4B-it",
+              "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+            },
+            "request_chars": 112
+          },
+          "provider": "DeepInfra"
+        },
+        "provider": "DeepInfra",
+        "usage": {
+          "input_tokens": 31,
+          "output_tokens": 33,
+          "total_tokens": 64
+        }
+      },
+      "persisted": true,
+      "accepted": {
+        "episode_id": "5197b883-ddd5-47f4-89cd-e967fd597c46",
+        "manifest_id": "389a6d86-0af6-466f-a38e-14ccaa29279b",
+        "operation_id": "dev-s0-e01",
+        "revision": 1,
+        "status": "ACCEPTED"
+      }
+    },
+    {
+      "call_id": "extract-s0-e01-a0",
+      "role": "development-extraction",
+      "coordinate": {
+        "attempt": 0,
+        "episode": 1,
+        "subject": 0
+      },
+      "source_material": {
+        "s0": "I sorted the socket wrenches into labeled workshop bins, so finding the right size for a repair takes less time.",
+        "s1": "That sounds like a **huge time-saver** and a great step for organization! Having everything labeled in dedicated bins makes the whole repair process so much smoother."
+      },
+      "result": {
+        "content": "{\"core_concepts\": [{\"key\": \"socket_wrenches\", \"label\": \"socket wrenches\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted the socket wrenches into labeled workshop bins\"}], \"confidence\": 1.0}, {\"key\": \"workshop_bins\", \"label\": \"workshop bins\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted the socket wrenches into labeled workshop bins\"}], \"confidence\": 1.0}, {\"key\": \"finding_size\", \"label\": \"finding the right size\", \"kind\": \"process\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"finding the right size for a repair takes less time\"}], \"confidence\": 1.0}, {\"key\": \"repair\", \"label\": \"repair\", \"kind\": \"event\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"finding the right size for a repair takes less time\"}], \"confidence\": 1.0}, {\"key\": \"organization\", \"label\": \"organization\", \"kind\": \"topic\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"a great step for organization!\"}], \"confidence\": 1.0}, {\"key\": \"time_saver\", \"label\": \"time-saver\", \"kind\": \"value\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"That sounds like a **huge time-saver**\"}], \"confidence\": 1.0}], \"salient_phrases\": [{\"key\": \"huge_time_saver\", \"label\": \"huge time-saver\", \"kind\": \"salient_phrase\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"That sounds like a **huge time-saver**\"}], \"confidence\": 1.0}], \"edge_candidates\": [{\"key\": \"enables_faster_finding\", \"from\": \"socket_wrenches\", \"to\": \"finding_size\", \"relationship\": \"enables\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted the socket wrenches into labeled workshop bins, so finding the right size for a repair takes less time.\"}], \"confidence\": 1.0}, {\"key\": \"bins_aid_process\", \"from\": \"workshop_bins\", \"to\": \"repair\", \"relationship\": \"supports\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Having everything labeled in dedicated bins makes the whole repair process so much smoother.\"}], \"confidence\": 1.0}, {\"key\": \"sorting_leads_to_efficiency\", \"from\": \"socket_wrenches\", \"to\": \"time_saver\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted the socket wrenches into labeled workshop bins, so finding the right size for a repair takes less time.\"}], \"confidence\": 1.0}]}",
+        "usage": null,
+        "provider": "DeepInfra",
+        "model_id": "google/gemma-4-E4B-it",
+        "finish_reason": "stop"
+      },
+      "persisted": true,
+      "valid": true,
+      "validation_error": null
+    }
+  ],
+  "disposition": "No P2.3 adequacy claim. Probe stopped before canonical schedule after a harness serialization error; no retry or replacement call was made. The existing runtime has no committed fixed-fixture schedule/orchestrator or CLI command that can safely execute the approved 48/48/48/144 plan. Further calls require that in-scope implementation gap to be closed and a fresh prepared run envelope.",
+  "limitations": [
+    "The temporary probe artifact is outside the repository; this receipt is the durable sanitized record.",
+    "No assessment or evaluation calls were made in this probe.",
+    "The two calls count against the approved 296-call post-qualification pilot allowance if the pilot is resumed; they are not reclassified as qualification calls."
+  ]
+}

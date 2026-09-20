@@ -613,3 +613,7 @@
 ## 2026-09-20 P2.3 bounded pilot runtime candidate
 
 - Added an offline-only orchestration boundary that composes `PilotRun` reservations, `ContinuityService` developmental acceptance, interpretation result persistence/validation, `InterpretationPublisher`, and `FrozenEvaluationView` without introducing new semantic or learner rules. Stable coordinates are exact-once; uncertain provider calls are never regenerated; frozen evaluation publishes only external artifacts. Added four FakeHost regressions covering developmental idempotency, extraction/publication, frozen evaluation isolation, and private-snapshot binding. No provider call occurred.
+
+## 2026-09-20 P2.3 partial pilot probe
+
+- After the fixed polarity v8 assessor qualification passed, a bounded pilot probe used the existing PilotRuntime with the approved Gemma developing host. Exactly two post-qualification calls were dispatched at fixed coordinates: one development response and one extraction. Both provider results were returned and durably persisted; the extraction passed local residue validation. The probe stopped before any assessor or evaluation call after a harness serialization error, without retry or replacement. The repository currently lacks a committed fixed-fixture schedule/orchestrator and CLI path for the full 48-response/48-extraction/48-assessment/144-readout contract, so no P2.3 adequacy or completion claim is made. Evidence: `docs/receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.md` and `.json`.

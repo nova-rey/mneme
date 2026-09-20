@@ -138,6 +138,8 @@ The documents are preserved in their supplied form and are intentionally not mer
   ([JSON](receipts/MNEME_P2.3_Assessor_Qualification_Polarity_V8_Pass_Receipt.json));
   the bounded pilot may proceed under the unchanged ceiling.
 
+  The bounded partial pilot probe is recorded in [the partial pilot receipt](receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.md) ([JSON](receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.json)); it is not a P2.3 acceptance result.
+
   Future design context: [Developmental Self-Context](architecture/future/MNEME_Developmental_Self_Context_Architecture.md).
   This reference does not change the phase's implementation scope, frozen
   experimental contracts, acceptance requirements, or authorized call budget.

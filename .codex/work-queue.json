@@ -1116,7 +1116,7 @@
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_Polarity_V8_Pass_Receipt.json"
       ],
       "id": "P2.3",
-      "notes": "Polarity v8 qualification passed all fixed Q1/Q2/Q3 cases under p2-assessor-v5/prompt-v7; Q3 explicit negation now present/contradicted/negated and unavailable output unknown. Three calls, 3,610 input/790 output/4,400 total tokens, pilot still zero at gate publication. Pilot may proceed only under existing budget/stop rules.",
+      "notes": "Qualification v8 passed. A bounded pilot probe consumed 2 post-qualification Gemma calls (development + extraction) and produced valid persisted evidence, but stopped before canonical study execution after a harness serialization error. Pilot acceptance remains WAITING on an in-scope fixed-fixture schedule/orchestrator and CLI path; no assessment/evaluation calls or adequacy claim.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1143,7 +1143,7 @@
       "session_ids": [],
       "status": "WAITING",
       "title": "Assessor qualification and bounded developmental pilot",
-      "updated_at": "2026-09-20T23:06:01.372183+00:00",
+      "updated_at": "2026-09-20T23:30:00+00:00",
       "validation": {
         "required": [
           "p23-assessor-contract",
@@ -1182,13 +1182,22 @@
             "receipt": "PilotRun durable reservations/lifecycle, hard ceilings, pause/resume, sanitization; 13 focused tests",
             "recorded_at": "2026-09-20T17:05:14.751840Z",
             "status": "PASS"
+          },
+          "p23-pilot-probe": {
+            "status": "PARTIAL",
+            "receipt": "docs/receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.md",
+            "recorded_at": "2026-09-20T23:30:00+00:00"
           }
         }
       },
       "waiting_on": [
         "external:p2-assessor-qualification"
       ],
-      "workstream": "phase-two"
+      "workstream": "phase-two",
+      "evidence": [
+        "docs/receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.json"
+      ]
     }
   ],
   "project": "nova-rey/mneme",
