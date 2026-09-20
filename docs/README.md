@@ -92,6 +92,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   The additive [assessor role-separation addendum](decisions/MNEME_P2_Assessor_Role_Separation_Addendum.md)
   records the designated Qwen assessor configuration and does not alter the
   approved learner, fixtures, frozen contracts, or release criteria.
+  The resulting one-call semantic stop is recorded in [the Qwen assessor
+  qualification failure receipt](receipts/MNEME_P2.3_Assessor_Qualification_Qwen_V1_Failure_Receipt.md)
+  ([JSON](receipts/MNEME_P2.3_Assessor_Qualification_Qwen_V1_Failure_Receipt.json));
+  no pilot call was made.
 
   Future design context: [Developmental Self-Context](architecture/future/MNEME_Developmental_Self_Context_Architecture.md).
   This reference does not change the phase's implementation scope, frozen

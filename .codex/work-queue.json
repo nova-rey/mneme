@@ -1088,10 +1088,12 @@
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_V4_Failure_Receipt.json",
         "docs/decisions/MNEME_P2_Assessor_Role_Separation_Addendum.md",
         "docs/receipts/MNEME_P2_Assessor_Role_Separation_Offline_Receipt.md",
-        "docs/receipts/MNEME_P2_Assessor_Role_Separation_Offline_Receipt.json"
+        "docs/receipts/MNEME_P2_Assessor_Role_Separation_Offline_Receipt.json",
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Qwen_V1_Failure_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Qwen_V1_Failure_Receipt.json"
       ],
       "id": "P2.3",
-      "notes": "Offline boundary passed. Historical Gemma qualification failures remain unchanged. The additive assessor-separation amendment is implemented and audited at 7de05a2 with a separately fingerprinted Qwen assessor binding, while Gemma remains the developing host. The package remains WAITING on external:p2-assessor-qualification; the new Qwen qualification is explicitly authorized next, with no retries or pilot calls before it passes. The proposed ceiling remains 299 calls / 204,288 output tokens.",
+      "notes": "Offline boundary passed at 7de05a2/a3a8ee6. Historical Gemma qualification failures remain unchanged. The one authorized separated-assessor Qwen qualification dispatched only Q1, returned valid JSON, and failed the frozen semantic dependence assertion (`replay_linked` instead of `external_supported`); Q2/Q3 and the pilot were not dispatched. The credential/provider were functional. No further model, prompt, or resampling action is authorized automatically; the package remains WAITING on external:p2-assessor-qualification and the proposed ceiling remains 299 calls / 204,288 output tokens.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1143,10 +1145,15 @@
             "status": "PASS"
           },
           "p23-offline-validation": {
-          "receipt": "7de05a2; 275 pytest; Ruff; strict mypy src across 47 files; wheel/install CLI smoke; CI 35529994781; no provider calls",
-          "recorded_at": "2026-09-20T20:10:00.000000Z",
-            "status": "PASS"
-          },
+            "receipt": "7de05a2; 275 pytest; Ruff; strict mypy src across 47 files; wheel/install CLI smoke; CI 35529994781; no provider calls",
+            "recorded_at": "2026-09-20T20:10:00.000000Z",
+          "status": "PASS"
+        },
+      "p23-assessor-qualification": {
+        "receipt": "docs/receipts/MNEME_P2.3_Assessor_Qualification_Qwen_V1_Failure_Receipt.md and .json; Q1 returned then failed semantic dependence; Q2/Q3 skipped; pilot calls 0",
+        "recorded_at": "2026-09-20T20:50:00.000000Z",
+        "status": "FAIL"
+      },
           "p23-pilot-ledger": {
             "receipt": "PilotRun durable reservations/lifecycle, hard ceilings, pause/resume, sanitization; 13 focused tests",
             "recorded_at": "2026-09-20T17:05:14.751840Z",

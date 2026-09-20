@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "status": "FAIL",
+  "run_id": "qualification-20260920-qwen-v1",
+  "implementation_commit": "a3a8ee6025e9ce76deb1d310aad78c55bb9e0bc1",
+  "role_configuration": "p2-assessor-separation-01",
+  "interface": {
+    "prompt_version": "p2-assessor-production-v2",
+    "schema_version": "p2-assessor-v1"
+  },
+  "developing_model": "google/gemma-4-E4B-it",
+  "assessor_model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+  "assessor_provider": "DeepInfra",
+  "assessor_fingerprint_sha256": "ed86eefcec7b2d512ce93e0551f18e8e95bb9f9e283142b1e107a571c566daa4",
+  "calls": {
+    "authorized_maximum": 3,
+    "dispatched": 1,
+    "returned": 1,
+    "q2_dispatched": false,
+    "q3_dispatched": false,
+    "pilot": 0,
+    "retries": 0,
+    "repairs": 0,
+    "replacement_samples": 0
+  },
+  "usage": {
+    "input_tokens": 848,
+    "output_tokens": 371,
+    "total_tokens": 1219,
+    "provider_cost": null
+  },
+  "q1": {
+    "valid": false,
+    "returned": {
+      "latch": {
+        "status": "present",
+        "relation_support": "supported",
+        "dependence": "replay_linked",
+        "quote": "Pulling the lever released the latch."
+      },
+      "echo": {
+        "dependence": "current_input_echo"
+      },
+      "unrelated": {
+        "status": "absent",
+        "relation_support": "unsupported"
+      }
+    },
+    "required": {
+      "latch": {
+        "dependence": "external_supported"
+      }
+    },
+    "validation_error": "Q1 monitor latch has wrong dependence: expected 'external_supported', got 'replay_linked'"
+  },
+  "credential_functional": true,
+  "provider_returned_q1": true,
+  "pilot_started": false,
+  "historical_evidence_preserved": true
+}

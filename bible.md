@@ -520,3 +520,7 @@
 ## 2026-09-20 P2 assessor role-separation offline gate
 
 - Pushed correction `7de05a25077ae09c1579e7b4a2632985df1c6d74`. The offline gate passed at 275 pytest tests, Ruff, strict mypy across 47 source files, wheel/install CLI smoke, and CI run `35529994781`. The designated Qwen assessor binding is ready for the one authorized qualification attempt; Gemma remains the developing host and no provider call occurred during remediation.
+
+## 2026-09-20 P2 separated-assessor qualification stop
+
+- Executed the one authorized Qwen assessor qualification from configuration commit `a3a8ee6`. Qwen returned Q1 successfully (848 input, 371 output, 1,219 total tokens), but its structurally valid result classified the externally supplied latch evidence as `replay_linked` instead of the frozen required `external_supported`. The run stopped immediately after Q1; Q2/Q3 and the pilot were not dispatched. The credential and provider were functional. The sanitized receipts are `docs/receipts/MNEME_P2.3_Assessor_Qualification_Qwen_V1_Failure_Receipt.md` and `.json`; P2.3 remains blocked on semantic assessor suitability.
