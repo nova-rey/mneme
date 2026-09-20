@@ -101,6 +101,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   preserving semantic assessor judgments; its offline evidence is recorded in
   the [offline resolution receipt](receipts/MNEME_P2_Assessor_Provenance_Resolution_Offline_Receipt.md)
   ([JSON](receipts/MNEME_P2_Assessor_Provenance_Resolution_Offline_Receipt.json)).
+  The subsequent corrected Q1 stop is recorded in [the provenance v2 failure
+  receipt](receipts/MNEME_P2.3_Assessor_Qualification_Provenance_V2_Failure_Receipt.md)
+  ([JSON](receipts/MNEME_P2.3_Assessor_Qualification_Provenance_V2_Failure_Receipt.json));
+  Q2/Q3 and the pilot were not dispatched.
 
   Future design context: [Developmental Self-Context](architecture/future/MNEME_Developmental_Self_Context_Architecture.md).
   This reference does not change the phase's implementation scope, frozen

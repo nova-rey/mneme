@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "status": "FAILED",
+  "tested_commit": "0abd74ec2b9d856d432b1103ae815e029c87e2e4",
+  "run_id": "qualification-20260920-01",
+  "contract": {"assessor_schema":"p2-assessor-v2","prompt":"p2-assessor-production-v3","provenance":"p2-provenance-v1"},
+  "assessor": {"provider":"DeepInfra","model_id":"Qwen/Qwen3-235B-A22B-Instruct-2507","credential_functional":true},
+  "authorization": {"maximum_new_provider_calls":3,"calls_dispatched":1,"retries":0,"repairs":0,"replacement_samples":0,"pilot_calls":0},
+  "calls": [
+    {"call_id":"assessor-q1","case_id":"Q1","status":"RETURNED","validation":"FAILED","usage":{"input_tokens":781,"output_tokens":331,"total_tokens":1112},"validation_error":"Q1 monitor echo has wrong status: expected 'present', got 'absent'","request":{"schema_version":"p2-assessor-v2","prompt_version":"p2-assessor-production-v3","candidate":{"from":"lever","relation":"causes","to":"latch_release"},"sources":[{"slot":"s0","role":"external","available":true,"text":"Pulling the lever released the latch."},{"slot":"s1","role":"model_output","available":true,"text":"Pulling the lever released the latch."}],"current_input_source_slots":["s0"],"monitors":["latch","echo","unrelated"]},"result":{"latch":{"status":"present","relation_support":"supported","corresponding_source_slots":["s0"]},"echo":{"status":"absent","relation_support":"unsupported","corresponding_source_slots":[]},"unrelated":{"status":"present","relation_support":"supported","corresponding_source_slots":["s0"]}}},
+    {"call_id":"assessor-q2","case_id":"Q2","status":"NOT_DISPATCHED"},
+    {"call_id":"assessor-q3","case_id":"Q3","status":"NOT_DISPATCHED"}
+  ],
+  "pilot": {"calls": 0},
+  "historical_evidence_preserved": true,
+  "credential_in_repository_artifacts": false
+}
