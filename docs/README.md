@@ -30,9 +30,9 @@ The documents are preserved in their supplied form and are intentionally not mer
   confidence/salience bonuses, distinct revision/episode/graph/self-view counters,
   and explicit development-enabled creation with fail-closed legacy reuse.
   P1.1, P1.2, and the credential-free P1.3 preview implementation are present;
-  the required bounded live acceptance remains blocked by strict live extraction
-  validation, not provider availability ([historical receipt](receipts/MNEME_Phase_One_Live_Acceptance_Blocker.md),
-  [fresh failure receipt](receipts/MNEME_Phase_One_Live_Acceptance_Fresh_Failure_Receipt.md)).
+  the bounded live acceptance is recorded in the [final live acceptance receipt](receipts/MNEME_Phase_One_Live_Acceptance_Final_Receipt.md)
+  ([JSON](receipts/MNEME_Phase_One_Live_Acceptance_Final_Receipt.json)). Historical
+  failures remain preserved and are not reclassified.
   The offline adversarial remediation and machine-readable validation are recorded in
   [the Phase One remediation receipt](receipts/MNEME_Phase_One_Adversarial_Audit_Remediation_Receipt.md).
 * [Phase One live remediation receipt](receipts/MNEME_Phase_One_Live_Remediation_Receipt.md)
@@ -70,6 +70,7 @@ The documents are preserved in their supplied form and are intentionally not mer
 * [Collision-fixed P1.2 failure receipt](receipts/MNEME_Phase_One_Live_Collision_Fixed_P1.2_Failure_Receipt.md) records the next run: P1.1 passed with the repaired publication, while P1.2 stopped after its single permitted exact-quotation repair.
 * [Evidence-filtered P1.2 failure receipt](receipts/MNEME_Phase_One_Live_Evidence_Filter_P1.2_Failure_Receipt.md) records the subsequent run: P1.1 passed again, P1.2 reached the cold-start identity criterion, and the runner evidence gap is documented for remediation.
 * [Probe-evidence failure receipt](receipts/MNEME_Phase_One_Live_Probe_Evidence_Failure_Receipt.md) records the preserved cold-start output `Gemma 4` and the deterministic `Gemma4` versus `Gemma 4` comparison correction.
+* [Final Phase One live acceptance receipt](receipts/MNEME_Phase_One_Live_Acceptance_Final_Receipt.md) records the accepted 23-call DeepInfra run, route provenance, durable identity, frozen comparison, restart audit, and evaluation-isolation evidence.
 * [Phase One graph-wrapper preview runbook](PHASE_ONE_PREVIEW_RUNBOOK.md) documents
   the read-only matched no-memory, lexical, and graph comparison path.
 

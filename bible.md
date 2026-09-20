@@ -404,3 +404,9 @@
 
 - Full validation and CI passed for `56bee14`, including the recovered-name spacing regression. One fresh bounded `phase-one-v1` run is authorized from this commit with the 27-call ceiling and stop-on-failure/no-resampling rules.
 - `P1.LIVE` is RUNNING; all prior provider results remain immutable.
+
+## 2026-09-20 Phase One live acceptance closure
+
+- The isolated bounded run from `68bebde87f22ffed06e3d07676274546a2477a45` returned 23 of 27 authorized DeepInfra calls with no retries or uncertain calls. P1.1, P1.2, and P1.3 all passed their approved live criteria: the natural two-experience route was derived from accepted edges with provenance from both experiences; identity adoption, cold-start recovery, correction suppression, and unrelated abstention were traced; and the frozen 12-readout comparison preserved the developmental checkpoint and state digest.
+- Final audit verified exact-once developmental records, restart/reopen recovery, durable naming accounting, host provenance (`google/gemma-4-E4B-it`, hosted revision unknown), and separation of evaluation artifacts from developmental state. Usage was 6,829 tokens across 23 calls; provider cost was not supplied and remains unknown. The final sanitized receipt is `docs/receipts/MNEME_Phase_One_Live_Acceptance_Final_Receipt.md` with its JSON companion.
+- Offline validation passed: 222 pytest tests, Ruff, strict mypy across 41 source files, and fresh-install CLI smoke. `P1.LIVE` is DONE; historical failed attempts remain unchanged and are not reclassified. Phase One is complete as the graph-wrapper preview, with no Phase Two work started. The approved `mneme-phase-one-graph-preview` release tag is created only after this closure commit is pushed and independently verified.

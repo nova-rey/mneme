@@ -768,10 +768,7 @@
       "candidate": null,
       "completion_criterion": "Approved bounded DeepInfra Phase One live gate passes with honest host provenance, extraction/identity/comparison evidence, and no credential leakage.",
       "created_at": "2026-09-19T19:11:42.200099Z",
-      "dependencies": [
-        "external:gemma-phase-one-live",
-        "external:gemma-phase-one-live-rerun"
-      ],
+      "dependencies": [],
       "domain": "live-provider-acceptance",
       "edit_boundaries": [
         "docs/receipts",
@@ -791,11 +788,13 @@
         "docs/receipts/MNEME_Phase_One_Live_Edge_Key_Collision_Remediation_Receipt.md",
         "docs/receipts/MNEME_Phase_One_Live_Collision_Fixed_P1.2_Failure_Receipt.md",
         "docs/receipts/MNEME_Phase_One_Live_Evidence_Filter_P1.2_Failure_Receipt.md",
-        "docs/receipts/MNEME_Phase_One_Live_Probe_Evidence_Failure_Receipt.md"
+        "docs/receipts/MNEME_Phase_One_Live_Probe_Evidence_Failure_Receipt.md",
+        "docs/receipts/MNEME_Phase_One_Live_Acceptance_Final_Receipt.md",
+        "docs/receipts/MNEME_Phase_One_Live_Acceptance_Final_Receipt.json"
       ],
       "id": "P1.LIVE",
-      "notes": "Fresh bounded run authorized from 56bee14 after deterministic recovered-name normalization and full validation/CI. Maximum 27 calls; stop on any required failure; no retries or favorable-output resampling. Prior runs remain immutable.",
-      "owner": "/root",
+      "notes": "Bounded live acceptance passed on the isolated 23-call run from 68bebde; historical failures remain preserved and are not reclassified. Phase One release closure is recorded in the final live receipt.",
+      "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -813,12 +812,10 @@
         }
       ],
       "scope": "Run the already prepared bounded DeepInfra Phase One acceptance gate and publish the truthful release receipt; do not alter offline Phase One architecture or begin Phase Two.",
-      "session_ids": [
-        "phase-one-live-name-normalized-20260920"
-      ],
-      "status": "RUNNING",
+      "session_ids": [],
+      "status": "DONE",
       "title": "Phase One bounded live acceptance gate",
-      "updated_at": "2026-09-20T01:05:00Z",
+      "updated_at": "2026-09-20T02:00:00Z",
       "validation": {
         "required": [
           "bounded live gate",
@@ -850,6 +847,26 @@
             "sha": "950f596081aaf0457a933dd66d05609e5b9299bf",
             "check": "edge-key collision remediation",
             "result": "PASS; 221 pytest, Ruff, strict mypy, fresh-install smoke, CI 35476530136; reused local e1 preserves both edges and route"
+          },
+          {
+            "sha": "68bebde87f22ffed06e3d07676274546a2477a45",
+            "check": "bounded live gate",
+            "result": "PASS; 23 returned DeepInfra calls, P1.1/P1.2/P1.3 all PASS, no retries or uncertain calls"
+          },
+          {
+            "sha": "68bebde87f22ffed06e3d07676274546a2477a45",
+            "check": "persisted artifact audit",
+            "result": "PASS; route provenance, durable naming, exact-once records, restart/reopen, frozen checkpoint invariance, and 12 evaluation readouts verified"
+          },
+          {
+            "sha": "68bebde87f22ffed06e3d07676274546a2477a45",
+            "check": "final cheap validation",
+            "result": "PASS; 222 pytest, Ruff, strict mypy (41 source files), fresh-install CLI smoke"
+          },
+          {
+            "sha": "68bebde87f22ffed06e3d07676274546a2477a45",
+            "check": "sanitized acceptance receipt",
+            "result": "PASS; final live receipt and machine-readable companion published"
           }
         ]
       },

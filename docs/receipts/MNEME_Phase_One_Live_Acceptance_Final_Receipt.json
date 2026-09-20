@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "receipt_kind": "phase_one_live_acceptance_final",
+  "experiment_identity": "phase-one-graph-wrapper-preview",
+  "contract_revision": 1,
+  "software_revision": "68bebde87f22ffed06e3d07676274546a2477a45",
+  "provider": "DeepInfra",
+  "model": "google/gemma-4-E4B-it",
+  "status": "PASS",
+  "phase_one_live_acceptance": true,
+  "live_workspace_label": "20260920-name-normalized-68bebde",
+  "budget": {"maximum_calls": 27, "calls_used": 23, "automatic_retries": false},
+  "calls": {
+    "total": 23,
+    "by_gate": {"p1.1": 4, "p1.2": 7, "p1.3": 12},
+    "by_role": {"response": 4, "extraction": 4, "naming": 1, "frozen_probe": 2, "evaluation": 12},
+    "returned": 23,
+    "uncertain": 0,
+    "retries": 0,
+    "token_usage": {"input_tokens": 3746, "output_tokens": 3083, "total_tokens": 6829},
+    "cost": "unknown_provider_metadata"
+  },
+  "gates": {
+    "p1.1": {
+      "status": "PASS",
+      "fixture_id": "p1.1-natural-bridge-v1",
+      "accepted_episodes": 2,
+      "accepted_edges": [
+        {"source": "weather_check", "relationship": "causes", "target": "rain_jacket", "source_slot": "s0", "start": 0, "end": 71},
+        {"source": "rain_jacket", "relationship": "enables", "target": "shower", "source_slot": "s0", "start": 0, "end": 63}
+      ],
+      "route": {"route_key": "derived:c808ff5ddd7c4476", "edge_keys": ["e1", "keeps_shower_from_ending_hike"], "route_candidates_emitted": 0, "deterministically_discovered": true, "provenance_experiences": 2}
+    },
+    "p1.2": {
+      "status": "PASS",
+      "adopted_name": "Gemma4",
+      "cold_start_output": "Gemma 4",
+      "name_match_policy": "case-insensitive token adjacency for display spacing/punctuation",
+      "relevant_route": "derived:f6c9b021f922c769",
+      "correction_suppressed": true,
+      "unrelated_abstention": true,
+      "checkpoint_unchanged": true
+    },
+    "p1.3": {
+      "status": "PASS",
+      "probe_count": 4,
+      "treatment_count": 3,
+      "matched_readouts": 12,
+      "treatments": ["no_memory", "lexical", "graph"],
+      "checkpoint_unchanged": true,
+      "before_after_state_digest_equal": true,
+      "completed_reentry_host_free": true,
+      "measurements": {
+        "lexical_vs_graph": {"exact_match_rate": 0.0, "normalized_text_match_rate": 0.0},
+        "no_memory_vs_graph": {"exact_match_rate": 0.5, "normalized_text_match_rate": 0.5},
+        "no_memory_vs_lexical": {"exact_match_rate": 0.0, "normalized_text_match_rate": 0.0}
+      }
+    }
+  },
+  "checkpoint": {
+    "sha256": "5c918f39414bbb1e4eb3dff48ca3b2577da912ef8c5dd1c74b47bc05fbdf7c79",
+    "state_digest": "f3c368aa6041e272c28ed436296766a45cee1ba9a01379effbd80cd8eef11778"
+  },
+  "restart_resume": {"reopened": true, "accepted_episodes": 4, "interpretations": 4, "accepted_retry_generation_count_unchanged": true, "final_reopen": true},
+  "artifact_hashes": {
+    "lineage.sqlite3": "c6b474c5c391b642d11900ffaf2a4e9851b4b6d3351fc1870fb39cd14b44979f",
+    "p1.2.checkpoint.sqlite3": "5c918f39414bbb1e4eb3dff48ca3b2577da912ef8c5dd1c74b47bc05fbdf7c79",
+    "live_summary.json": "4168b7cdc06155b2b1d48a4c4c188a423150f91926a8dbab9521436bf8fbde6b",
+    "p1.3-comparison/comparison.json": "73d5e0032eab5f3cc6ace6ebb59f7313e154bc4f821a0122558dbf31595de3b5"
+  },
+  "host_provenance": {"provider": "DeepInfra", "model_id": "google/gemma-4-E4B-it", "hosted_model_revision": "unknown", "sampling": "provider-managed", "exact_weight_identity": "unestablished"},
+  "claims": {"developmental_influence": "disabled", "personality": false, "individuality": false, "causal_developmental_differentiation": false, "phase_two_started": false},
+  "validation": {"pytest": "222 passed", "ruff": "PASS", "mypy_strict": "PASS; 41 source files", "fresh_install_cli_smoke": "PASS", "artifact_audit": "PASS", "evaluation_isolation": "PASS"}
+}
