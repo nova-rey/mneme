@@ -565,3 +565,7 @@
 ## 2026-09-20 P2.3 complete monitor proposition queue reconciliation
 
 - Reconciled P2.3 to correction commit `037736e`. The queue records the schema-v3/prompt-v5 offline gate as PASS while preserving all historical qualification failures and `WAITING` on `external:p2-assessor-qualification`. No provider call or pilot dispatch occurred during correction.
+
+## 2026-09-20 P2.3 assessor source-role contract remediation
+
+- Applied the additive request-contract correction after the v5 Q2 stop. Assessor schema `p2-assessor-v4` and prompt `p2-assessor-production-v6` now serialize explicit `required_source_slots`, `evidence_source_slots`, and `correspondence_source_slots`; Q1 echo and Q2 shade identify model-output occurrence evidence separately from external/memory antecedents. The deterministic provenance resolver, semantic cases, learner, acceptance criteria, and historical evidence remain unchanged. Offline validation passed at 284 pytest tests, Ruff, strict mypy, wheel/install smoke, and zero provider calls. Evidence: `docs/receipts/MNEME_P2.3_Assessor_Source_Role_Contract_Remediation_Receipt.md` and `.json`.

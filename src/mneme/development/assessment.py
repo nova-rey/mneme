@@ -19,8 +19,8 @@ from typing import Any
 
 from ..contracts import GenerationRequest
 
-ASSESSOR_SCHEMA_VERSION = "p2-assessor-v3"
-ASSESSOR_PROMPT_VERSION = "p2-assessor-production-v5"
+ASSESSOR_SCHEMA_VERSION = "p2-assessor-v4"
+ASSESSOR_PROMPT_VERSION = "p2-assessor-production-v6"
 PROVENANCE_SCHEMA_VERSION = "p2-provenance-v1"
 
 ASSESSMENT_STATUSES = frozenset({"present", "absent", "unknown"})
@@ -101,6 +101,8 @@ class AssessorMonitor:
     monitor_id: str
     relation: Mapping[str, Any]
     required_source_slots: tuple[str, ...]
+    evidence_source_slots: tuple[str, ...]
+    correspondence_source_slots: tuple[str, ...] = ()
     context: str = "general"
 
     def __post_init__(self) -> None:
@@ -108,20 +110,43 @@ class AssessorMonitor:
         normalized = _proposition(self.relation, f"monitor {self.monitor_id}.relation")
         object.__setattr__(self, "relation", normalized)
         _text(self.context, f"monitor {self.monitor_id}.context")
-        if not self.required_source_slots:
+        required = _string_list(
+            self.required_source_slots,
+            f"monitor {self.monitor_id}.required_source_slots",
+        )
+        evidence = _string_list(
+            self.evidence_source_slots,
+            f"monitor {self.monitor_id}.evidence_source_slots",
+        )
+        correspondence = _string_list(
+            self.correspondence_source_slots,
+            f"monitor {self.monitor_id}.correspondence_source_slots",
+        )
+        if not required:
             raise AssessorValidationError(
                 f"monitor {self.monitor_id} requires at least one source slot"
             )
-        if len(self.required_source_slots) != len(set(self.required_source_slots)):
+        if not evidence or not set(evidence) <= set(required):
             raise AssessorValidationError(
-                f"monitor {self.monitor_id} has duplicate required source slots"
+                f"monitor {self.monitor_id}.evidence_source_slots must be a non-empty "
+                "subset of required source slots"
             )
+        if not set(correspondence) <= set(required):
+            raise AssessorValidationError(
+                f"monitor {self.monitor_id}.correspondence_source_slots must be a "
+                "subset of required source slots"
+            )
+        object.__setattr__(self, "required_source_slots", required)
+        object.__setattr__(self, "evidence_source_slots", evidence)
+        object.__setattr__(self, "correspondence_source_slots", correspondence)
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "monitor_id": self.monitor_id,
             "relation": dict(self.relation),
             "required_source_slots": list(self.required_source_slots),
+            "evidence_source_slots": list(self.evidence_source_slots),
+            "correspondence_source_slots": list(self.correspondence_source_slots),
             "context": self.context,
         }
 
@@ -439,9 +464,9 @@ def validate_assessor_result(
             evidence_raw = _mapping(row.get("evidence"), f"monitor {monitor_id}.evidence")
             source_slot = _text(evidence_raw.get("source_slot"), "evidence.source_slot")
             source = sources.get(source_slot)
-            if source is None or source_slot not in monitor.required_source_slots:
+            if source is None or source_slot not in monitor.evidence_source_slots:
                 raise AssessorValidationError(
-                    f"monitor {monitor_id} evidence references the wrong source slot"
+                    f"monitor {monitor_id} evidence references a non-evidence source slot"
                 )
             evidence = _unique_quote(source, evidence_raw.get("quote"), monitor_id)
         elif row.get("evidence") is not None:
@@ -453,9 +478,9 @@ def validate_assessor_result(
             raw_correspondence,
             f"monitor {monitor_id}.corresponding_source_slots",
         )
-        if not set(corresponding_source_slots) <= set(sources):
+        if not set(corresponding_source_slots) <= set(monitor.correspondence_source_slots):
             raise AssessorValidationError(
-                f"monitor {monitor_id} correspondence names unknown source slots"
+                f"monitor {monitor_id} correspondence names an undeclared source slot"
             )
         if any(not sources[slot].available for slot in corresponding_source_slots):
             raise AssessorValidationError(
@@ -672,7 +697,14 @@ def assessor_generation_request(
                     "identifies current external input only and must not make an available "
                     "model_output or memory source unavailable. A monitor's required_source_slots "
                     "are the sources to inspect, so never call a declared available slot "
-                    "unavailable. Every monitor relation is already a complete, self-contained "
+                    "unavailable. Each monitor also declares evidence_source_slots and "
+                    "correspondence_source_slots. Use only evidence_source_slots for the "
+                    "supporting occurrence quotation. Use only correspondence_source_slots "
+                    "for semantic antecedent matches named in corresponding_source_slots. "
+                    "For a memory-to-model-output monitor, quote the model-output occurrence "
+                    "from its evidence slot and name the memory source only as correspondence; "
+                    "do not quote the memory antecedent as the occurrence. Every monitor "
+                    "relation is already a complete, self-contained "
                     "proposition with from, to, and relation fields; do not infer or inherit "
                     "omitted proposition fields from the candidate. Compare that complete "
                     "monitor proposition, including participants, direction, relation, "
@@ -730,15 +762,19 @@ def qualification_cases() -> tuple[QualificationCase, ...]:
                 "latch",
                 {"from": "lever", "to": "latch_release", "relation": "causes"},
                 ("s0",),
+                ("s0",),
             ),
             AssessorMonitor(
                 "echo",
                 {"from": "lever", "to": "latch_release", "relation": "causes"},
+                ("s0", "s1"),
                 ("s1",),
+                ("s0",),
             ),
             AssessorMonitor(
                 "unrelated",
                 {"from": "lever", "to": "unrelated", "relation": "causes"},
+                ("s0",),
                 ("s0",),
             ),
         ),
@@ -756,11 +792,14 @@ def qualification_cases() -> tuple[QualificationCase, ...]:
                 "jacket_direction",
                 {"from": "rain_jacket", "to": "shade", "relation": "raises"},
                 ("s0",),
+                ("s0",),
             ),
             AssessorMonitor(
                 "shade",
                 {"from": "handle", "to": "shade", "relation": "raises"},
                 ("s1", "s2"),
+                ("s2",),
+                ("s1",),
             ),
         ),
         memory_exposure=(
@@ -784,10 +823,12 @@ def qualification_cases() -> tuple[QualificationCase, ...]:
                 "dial",
                 {"from": "dial", "to": "ticking", "relation": "stops"},
                 ("s0",),
+                ("s0",),
             ),
             AssessorMonitor(
                 "unavailable_output",
                 {"from": "dial", "to": "ticking", "relation": "stops"},
+                ("s1",),
                 ("s1",),
             ),
         ),

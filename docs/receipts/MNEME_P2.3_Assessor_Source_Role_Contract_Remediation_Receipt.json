@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "status": "OFFLINE_GATE_PASS",
+  "base_commit": "4c6e8f0839b69c4e879c1250824c9923a9abe63e",
+  "provider_calls": 0,
+  "assessor_schema": "p2-assessor-v4",
+  "prompt_version": "p2-assessor-production-v6",
+  "provenance_schema": "p2-provenance-v1",
+  "correction": {
+    "required_source_slots": "monitor inspection universe",
+    "evidence_source_slots": "allowed quotation occurrence sources",
+    "correspondence_source_slots": "allowed semantic antecedent sources",
+    "q1_echo": {
+      "required": ["s0", "s1"],
+      "evidence": ["s1"],
+      "correspondence": ["s0"]
+    },
+    "q2_shade": {
+      "required": ["s1", "s2"],
+      "evidence": ["s2"],
+      "correspondence": ["s1"]
+    },
+    "partial_or_undeclared_roles": "rejected before provider dispatch"
+  },
+  "shared_provider_request_builder": "assessor_generation_request",
+  "validation": {
+    "focused_tests": 22,
+    "pytest": "284 passed",
+    "ruff": "PASS",
+    "mypy_strict": "PASS",
+    "wheel_fresh_install_smoke": "PASS"
+  },
+  "historical_evidence_preserved": true,
+  "pilot_calls": 0,
+  "next_action": "one fixed Q1/Q2/Q3 qualification under p2-assessor-v4/p2-assessor-production-v6"
+}

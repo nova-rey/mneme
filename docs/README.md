@@ -117,7 +117,11 @@ The documents are preserved in their supplied form and are intentionally not mer
   The monitor-proposition contract correction and offline gate are recorded in
   [the monitor proposition remediation receipt](receipts/MNEME_P2.3_Assessor_Monitor_Proposition_Remediation_Receipt.md)
   ([JSON](receipts/MNEME_P2.3_Assessor_Monitor_Proposition_Remediation_Receipt.json));
-  all qualification monitors now serialize complete propositions.
+  all qualification monitors now serialize complete propositions. The subsequent
+  source-role contract remediation is recorded in [the source-role receipt](receipts/MNEME_P2.3_Assessor_Source_Role_Contract_Remediation_Receipt.md)
+  ([JSON](receipts/MNEME_P2.3_Assessor_Source_Role_Contract_Remediation_Receipt.json));
+  monitor inspection, evidence quotation, and semantic correspondence slots are
+  now explicit and fail closed.
 
   Future design context: [Developmental Self-Context](architecture/future/MNEME_Developmental_Self_Context_Architecture.md).
   This reference does not change the phase's implementation scope, frozen

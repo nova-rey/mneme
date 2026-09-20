@@ -47,7 +47,7 @@ def _row(
 def _valid_result(case_id: str) -> dict[str, object]:
     if case_id == "Q1":
         return {
-            "schema_version": "p2-assessor-v3",
+            "schema_version": "p2-assessor-v4",
             "assessments": [
                 _row(
                     "latch", status="present", support="supported", expression="expressed",
@@ -69,7 +69,7 @@ def _valid_result(case_id: str) -> dict[str, object]:
         }
     if case_id == "Q2":
         return {
-            "schema_version": "p2-assessor-v3",
+            "schema_version": "p2-assessor-v4",
             "assessments": [
                 _row(
                     "jacket_direction", status="absent", support="unsupported",
@@ -86,7 +86,7 @@ def _valid_result(case_id: str) -> dict[str, object]:
             ],
         }
     return {
-        "schema_version": "p2-assessor-v3",
+        "schema_version": "p2-assessor-v4",
         "assessments": [
             _row(
                 "dial", status="present", support="unsupported", expression="expressed",
@@ -126,7 +126,7 @@ def test_assessor_prompt_exposes_complete_enum_and_json_contract() -> None:
 
     assert "Return raw JSON only" in prompt
     assert "Do not use Markdown fences" in prompt
-    assert '"schema_version": "p2-assessor-v3"' in prompt
+    assert '"schema_version": "p2-assessor-v4"' in prompt
     assert '"assessments": [' in prompt
     for value in ("present", "absent", "unknown"):
         assert value in prompt
@@ -149,6 +149,9 @@ def test_assessor_prompt_exposes_complete_enum_and_json_contract() -> None:
         '"corresponding_source_slots"',
     ):
         assert field in prompt
+    assert "evidence_source_slots" in prompt
+    assert "correspondence_source_slots" in prompt
+    assert "quote the model-output occurrence" in prompt
     assert "no omitted or duplicated monitor IDs" in prompt
     assert "Do not invent enum values" in prompt
     assert "Do not emit dependence labels" in prompt
@@ -217,16 +220,21 @@ def test_qualification_requests_preserve_complete_proposition_and_source_roles()
     assert q3["monitors"][0]["relation"] == {
         "from": "dial", "to": "ticking", "relation": "stops"
     }
+    assert q1["monitors"][0]["evidence_source_slots"] == ["s0"]
+    assert q1["monitors"][1]["evidence_source_slots"] == ["s1"]
+    assert q1["monitors"][1]["correspondence_source_slots"] == ["s0"]
+    assert q2["monitors"][1]["evidence_source_slots"] == ["s2"]
+    assert q2["monitors"][1]["correspondence_source_slots"] == ["s1"]
 
 
 def test_partial_monitor_proposition_is_rejected_before_provider_dispatch() -> None:
     with pytest.raises(AssessorValidationError, match="complete proposition"):
-        AssessorMonitor("partial", {"relation": "causes"}, ("s0",))
+        AssessorMonitor("partial", {"relation": "causes"}, ("s0",), ("s0",))
 
 
 def test_monitor_proposition_is_frozen_before_provider_serialization() -> None:
     relation = {"from": "lever", "to": "latch_release", "relation": "causes"}
-    monitor = AssessorMonitor("latch", relation, ("s0",))
+    monitor = AssessorMonitor("latch", relation, ("s0",), ("s0",))
     relation.pop("to")
     assert monitor.to_dict()["relation"] == {
         "from": "lever", "to": "latch_release", "relation": "causes"
@@ -237,6 +245,21 @@ def test_all_qualification_monitors_serialize_complete_propositions() -> None:
     for case in qualification_cases():
         for monitor in case.request.monitors:
             assert set(monitor.relation) >= {"from", "to", "relation"}
+
+
+def test_monitor_source_roles_are_fail_closed() -> None:
+    case = next(case for case in qualification_cases() if case.case_id == "Q1")
+    invalid_evidence = _valid_result("Q1")
+    echo = invalid_evidence["assessments"][1]  # type: ignore[index]
+    echo["evidence"]["source_slot"] = "s0"  # type: ignore[index]
+    with pytest.raises(AssessorValidationError, match="non-evidence source slot"):
+        validate_assessor_result(case.request, invalid_evidence)  # type: ignore[arg-type]
+
+    invalid_correspondence = _valid_result("Q1")
+    echo = invalid_correspondence["assessments"][1]  # type: ignore[index]
+    echo["corresponding_source_slots"] = ["s1"]  # type: ignore[index]
+    with pytest.raises(AssessorValidationError, match="undeclared source slot"):
+        validate_assessor_result(case.request, invalid_correspondence)  # type: ignore[arg-type]
 
 
 def test_q3_negation_quote_and_unavailable_source_are_fail_closed() -> None:
@@ -274,7 +297,7 @@ def test_quote_must_be_unique_verbatim_and_from_declared_slot() -> None:
 
     result = _valid_result("Q1")
     result["assessments"][0]["evidence"]["source_slot"] = "s1"  # type: ignore[index]
-    with pytest.raises(AssessorValidationError, match="wrong source slot"):
+    with pytest.raises(AssessorValidationError, match="non-evidence source slot"):
         validate_assessor_result(case.request, result)  # type: ignore[arg-type]
 
     ambiguous_request = replace(
