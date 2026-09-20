@@ -1053,11 +1053,11 @@
       "base_sha": "7157845",
       "campaign": "mneme-phase-two",
       "candidate": {
-        "artifact": "P2.3 complete monitor proposition correction: assessor schema v3/prompt v5, fail-closed self-contained propositions, mutation-safe serialization; 283 pytest, Ruff, strict mypy, wheel/install smoke; no provider calls during remediation",
-        "base_sha": "fe31d6b0fda2f1069250f57cde769528b2fa2a1d",
-        "returned_at": "2026-09-20T21:25:00.000000Z",
+        "artifact": "P2.3 assessor source-role contract correction: schema v4/prompt v6, explicit required/evidence/correspondence source slots, fail-closed Q1/Q2 source binding; 284 pytest, Ruff, strict mypy, wheel/install smoke, CI 35539129367; no provider calls during remediation",
+        "base_sha": "4c6e8f0839b69c4e879c1250824c9923a9abe63e",
+        "returned_at": "2026-09-20T21:40:00.000000Z",
         "returned_by": "/root",
-        "sha": "037736e"
+        "sha": "831d726"
       },
       "completion_criterion": "Production-equivalent assessor qualification and separately authorized pilot execute/resume/replay with honest engineering, adequacy, and research outcomes, or publish a truthful blocker.",
       "created_at": "2026-09-20T16:16:33.650428Z",
@@ -1101,10 +1101,12 @@
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_PromptV4_Failure_Receipt.md",
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_PromptV4_Failure_Receipt.json",
         "docs/receipts/MNEME_P2.3_Assessor_Monitor_Proposition_Remediation_Receipt.md",
-        "docs/receipts/MNEME_P2.3_Assessor_Monitor_Proposition_Remediation_Receipt.json"
+        "docs/receipts/MNEME_P2.3_Assessor_Monitor_Proposition_Remediation_Receipt.json",
+        "docs/receipts/MNEME_P2.3_Assessor_Source_Role_Contract_Remediation_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Assessor_Source_Role_Contract_Remediation_Receipt.json"
       ],
       "id": "P2.3",
-      "notes": "Complete monitor-proposition correction passed offline at 037736e. Assessor schema p2-assessor-v3/prompt p2-assessor-production-v5 now serializes self-contained from/to/relation propositions, rejects partial construction, and freezes normalized mappings; all Q1/Q2/Q3 monitors are complete and provider builder remains shared. Historical prompt-v4 failure remains unchanged. One fixed Q1/Q2/Q3 qualification under the new contract is the next bounded verification; package remains WAITING on external:p2-assessor-qualification and ceiling remains 299 calls / 204,288 output tokens.",
+      "notes": "Source-role contract correction passed offline at 831d726. Assessor schema p2-assessor-v4/prompt p2-assessor-production-v6 now serializes explicit required/evidence/correspondence source slots; Q1 echo and Q2 shade bind output quotations separately from antecedent correspondence, with fail-closed validation and the shared provider builder. Historical qualification failures remain unchanged. One fixed Q1/Q2/Q3 qualification under the new contract is the next bounded verification; package remains WAITING on external:p2-assessor-qualification and ceiling remains 299 calls / 204,288 output tokens.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1147,7 +1149,7 @@
             "status": "PASS"
           },
           "p23-assessor-contract": {
-            "receipt": "assessment.py semantic assessor schema v2 and deterministic provenance resolver; Q1/Q2/Q3 strict quotes/coverage/correspondence tests",
+            "receipt": "assessment.py semantic assessor schema v4 and deterministic provenance resolver; Q1/Q2/Q3 strict quotes/coverage/source-role/correspondence tests",
             "recorded_at": "2026-09-20T17:05:14.693257Z",
             "status": "PASS"
           },
@@ -1162,8 +1164,8 @@
             "status": "PASS"
           },
           "p23-offline-validation": {
-            "receipt": "7de05a2; 275 pytest; Ruff; strict mypy src across 47 files; wheel/install CLI smoke; CI 35529994781; no provider calls",
-            "recorded_at": "2026-09-20T20:10:00.000000Z",
+            "receipt": "831d726; 284 pytest; Ruff; strict mypy src across 47 files; wheel/install CLI smoke; CI 35539129367; no provider calls",
+            "recorded_at": "2026-09-20T21:40:00.000000Z",
           "status": "PASS"
         },
       "p23-assessor-qualification": {
