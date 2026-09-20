@@ -455,3 +455,7 @@
 ## 2026-09-20 P2.3 assessor contract candidate
 
 - Added the production-shaped Phase Two semantic-assessor request/result contract and fail-closed validator. Qualification and pilot requests share source roles, immutable source slots, monitors, coverage declarations, memory exposure, replay ancestry, context, and prompt version; every monitor row is required, quotations are unique verbatim source evidence with deterministic code-point spans, absent requires complete available-source coverage, unknown records incomplete coverage, and recorded ancestry rejects claimed independence. Added fixed Q1/Q2/Q3 qualification fixtures and FakeHost-backed offline regression coverage. No provider calls or credentials were used; full integration and live qualification remain the parent P2.3 workstream's responsibility.
+
+## 2026-09-20 P2.3 pilot lifecycle candidate
+
+- Added the offline Phase Two pilot lifecycle ledger beside prepared experiment artifacts. It durably records PREPARED/QUALIFYING/QUALIFIED/RUNNING/PAUSED/COMPLETE/FAILED/UNCERTAIN state, bounded pre-dispatch reservations, DISPATCHED/RETURNED/FAILED/UNCERTAIN call outcomes, idempotent coordinates, output-token ceilings, qualification gating, sanitized report artifacts, and restart-safe integrity receipts. No provider calls or credentials were used; the live qualification and pilot remain outside this candidate.

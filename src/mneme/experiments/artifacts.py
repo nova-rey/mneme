@@ -446,8 +446,32 @@ class ArtifactStore:
                 "inputs",
                 "snapshots",
                 "evaluation",
+                # Phase Two adds a separate laboratory ledger and report
+                # inventory beside the immutable P0.3 publication.  These
+                # paths never contain writable lineage state.
+                "pilot",
+                "qualification",
+                "development",
+                "receipts",
+                "summary.json",
             }
             if {item.name for item in path.iterdir()} - allowed:
+                return False
+            for category in ("pilot", "qualification", "development", "receipts"):
+                directory = path / category
+                if not directory.exists():
+                    continue
+                if not directory.is_dir() or directory.is_symlink():
+                    return False
+                for candidate in directory.rglob("*"):
+                    if candidate.is_symlink():
+                        return False
+                    if candidate.is_file() and candidate.suffix == ".json":
+                        self._read_json(candidate)
+                    elif not candidate.is_file() and not candidate.is_dir():
+                        return False
+            summary = path / "summary.json"
+            if summary.exists() and (not summary.is_file() or summary.is_symlink()):
                 return False
             return True
         except (ArtifactError, KeyError, OSError, TypeError, ValueError):
