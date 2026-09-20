@@ -1174,6 +1174,17 @@ class InterpretationPublisher:
                                     "relevant": observation.relevant,
                                     "eligible": observation.eligible,
                                     "assessor_version": assessor_version,
+                                    "relation_support": getattr(
+                                        observation.relation_support,
+                                        "value",
+                                        str(observation.relation_support),
+                                    ),
+                                    "expression_status": getattr(
+                                        observation.expression_status,
+                                        "value",
+                                        str(observation.expression_status),
+                                    ),
+                                    "semantic_schema_version": observation.semantic_schema_version,
                                 }
                             ),
                             learner_result.reasons.get(

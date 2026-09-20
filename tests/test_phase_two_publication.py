@@ -321,6 +321,48 @@ def test_unknown_observation_is_durable_without_credit(tmp_path):
         ).fetchone()[0] == 0
 
 
+def test_contradicted_observation_is_durable_and_replays_without_credit(tmp_path):
+    store, instance, episode_id, residue = _episode_and_residue(tmp_path, learn=True)
+    with store:
+        publisher = InterpretationPublisher(store, instance)
+        operation_id = publisher.prepare(episode_id, operation_id="negated-interpretation")
+        publisher.publish(
+            operation_id,
+            residue,
+            development_operation_id="negated-development",
+            opportunity=1,
+            observations=(
+                Observation(
+                    target_key="edge-ab",
+                    relation_support="contradicted",
+                    expression_status="negated",
+                    semantic_schema_version="p2-assessor-v5",
+                    occurrence_key="negated-occurrence",
+                ),
+            ),
+        )
+        evidence = json.loads(
+            store.connection.execute(
+                "SELECT evidence_json FROM development_observations"
+            ).fetchone()[0]
+        )
+        assert evidence["relation_support"] == "contradicted"
+        assert evidence["expression_status"] == "negated"
+        assert evidence["semantic_schema_version"] == "p2-assessor-v5"
+        value = store.connection.execute(
+            "SELECT accessibility,support FROM learner_values"
+        ).fetchone()
+        assert tuple(value) == (0, 0)
+        replay = verify_replay(store)
+        assert replay["matches_materialized"] is True
+        replay_observation = json.loads(
+            store.connection.execute(
+                "SELECT evidence_json FROM development_observations"
+            ).fetchone()[0]
+        )
+        assert replay_observation["relation_support"] == "contradicted"
+
+
 def test_route_consequences_and_assessments_are_durable_in_learner_snapshot(tmp_path):
     store, instance, episode_id, residue = _episode_and_residue(tmp_path, learn=True)
     with store:

@@ -131,6 +131,9 @@ The documents are preserved in their supplied form and are intentionally not mer
   The subsequent self-contained-monitor v7 qualification is recorded in [the v7 monitor failure receipt](receipts/MNEME_P2.3_Assessor_Qualification_Monitor_V7_Failure_Receipt.md)
   ([JSON](receipts/MNEME_P2.3_Assessor_Qualification_Monitor_V7_Failure_Receipt.json));
   Q1/Q2 passed and Q3 again failed the frozen negation semantic case, so the pilot remains unrun.
+  The prospective polarity correction and learner-boundary audit are recorded in [the polarity remediation receipt](receipts/MNEME_P2.3_Assessor_Polarity_Contract_Remediation_Receipt.md)
+  ([JSON](receipts/MNEME_P2.3_Assessor_Polarity_Contract_Remediation_Receipt.json));
+  v5/v7 is offline-validated and historical v4/v6 evidence remains unchanged.
 
   Future design context: [Developmental Self-Context](architecture/future/MNEME_Developmental_Self_Context_Architecture.md).
   This reference does not change the phase's implementation scope, frozen

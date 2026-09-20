@@ -1,8 +1,11 @@
+import pytest
+
 from mneme.development import (
     FIXED_SCALE,
     ConsequenceAssessment,
     DevelopmentalLearner,
     EdgeState,
+    LearnerError,
     LearnerState,
     Observation,
     RouteSpec,
@@ -46,6 +49,65 @@ def test_current_input_echo_adds_no_model_credit() -> None:
     )
     assert result.deltas == {("edge-a", "general"): 0}
     assert result.reasons[("edge-a", "general")] == "support_seen_credit_capped"
+
+
+def test_contradicted_observation_is_retained_without_positive_credit_or_absence_decay() -> None:
+    state = {
+            ("edge-a", "general"): EdgeState(
+                "edge-a",
+                "general",
+                accessibility=400_000,
+            support=300_000,
+            relevant_opportunities=4,
+            inactivity_ticks=0,
+        )
+    }
+    result = apply_transition(
+        LearnerState(edge_states=tuple(state.values())),
+        TransitionInput(
+            "negated-1",
+            observations=(
+                Observation(
+                    "edge-a",
+                    relation_support="contradicted",
+                    expression_status="negated",
+                    occurrence_key="negated-occurrence",
+                ),
+            ),
+        ),
+    )
+    after = result.state.edge("edge-a")
+    assert after.accessibility == 400_000
+    assert after.support == 300_000
+    assert after.relevant_opportunities == 5
+    assert after.inactivity_ticks == 0
+    assert result.updates[0].credited == 0
+
+
+def test_conflicting_supported_and_contradicted_duplicate_fails_closed() -> None:
+    result = DevelopmentalLearner().apply(
+        {},
+        [
+            Observation("edge-a", occurrence_key="same", relation_support="supported"),
+            Observation(
+                "edge-a",
+                occurrence_key="same",
+                relation_support="contradicted",
+                expression_status="negated",
+            ),
+        ],
+        opportunity=1,
+    )
+    assert result.state == {}
+
+
+def test_observation_semantic_matrix_rejects_invalid_learner_boundary() -> None:
+    with pytest.raises(LearnerError, match="semantic disposition"):
+        Observation(
+            "edge-a",
+            relation_support="contradicted",
+            expression_status="affirmed",
+        )
 
 
 def test_induced_credit_requires_actual_exposure_but_retains_audit_contribution() -> None:

@@ -165,6 +165,21 @@ def _observations(store: SQLiteStore, operation_id: str) -> tuple[Observation, .
                 source_role=str(row[3]),
                 status=str(row[4]),
                 dependence=str(row[5]),
+                relation_support=(
+                    str(evidence["relation_support"])
+                    if evidence.get("relation_support")
+                    else None
+                ),
+                expression_status=(
+                    str(evidence["expression_status"])
+                    if evidence.get("expression_status")
+                    else None
+                ),
+                semantic_schema_version=(
+                    str(evidence["semantic_schema_version"])
+                    if evidence.get("semantic_schema_version")
+                    else None
+                ),
                 group_key=str(row[6]) if row[6] is not None else None,
                 provenance_group_keys=tuple(str(item) for item in provenance),
                 occurrence_key=(

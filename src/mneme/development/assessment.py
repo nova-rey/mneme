@@ -19,13 +19,16 @@ from typing import Any
 
 from ..contracts import GenerationRequest
 
-ASSESSOR_SCHEMA_VERSION = "p2-assessor-v4"
-ASSESSOR_PROMPT_VERSION = "p2-assessor-production-v6"
+ASSESSOR_SCHEMA_VERSION = "p2-assessor-v5"
+ASSESSOR_PROMPT_VERSION = "p2-assessor-production-v7"
+LEGACY_ASSESSOR_SCHEMA_VERSION = "p2-assessor-v4"
 PROVENANCE_SCHEMA_VERSION = "p2-provenance-v1"
 
 ASSESSMENT_STATUSES = frozenset({"present", "absent", "unknown"})
-RELATION_SUPPORT = frozenset({"supported", "unsupported", "unknown"})
-EXPRESSION_STATUS = frozenset({"expressed", "not_expressed", "unknown"})
+RELATION_SUPPORT = frozenset({"supported", "contradicted", "unsupported", "unknown"})
+EXPRESSION_STATUS = frozenset({"affirmed", "negated", "not_expressed", "unknown"})
+LEGACY_RELATION_SUPPORT = frozenset({"supported", "unsupported", "unknown"})
+LEGACY_EXPRESSION_STATUS = frozenset({"expressed", "not_expressed", "unknown"})
 class AssessorValidationError(ValueError):
     """A production-shaped assessor request or result is invalid."""
 
@@ -387,9 +390,14 @@ def _validate_coverage(
         if not _text(coverage.get("reason"), f"monitor {monitor.monitor_id}.coverage.reason"):
             raise AssessorValidationError("unknown coverage reason is required")
     else:
-        if not covered_slots:
+        if (
+            not complete
+            or set(covered_slots) != expected
+            or unavailable_expected
+        ):
             raise AssessorValidationError(
-                f"monitor {monitor.monitor_id} present requires covered source slots"
+                f"monitor {monitor.monitor_id} present requires complete coverage of "
+                "all available required source slots"
             )
     return {
         "complete": complete,
@@ -398,8 +406,46 @@ def _validate_coverage(
     }
 
 
+def _validate_semantic_matrix(status: str, support: str, expression: str, monitor_id: str) -> None:
+    """Enforce the prospective separation of coverage, polarity, and support."""
+
+    if status == "absent":
+        expected = ("unsupported", "not_expressed")
+        if (support, expression) != expected:
+            raise AssessorValidationError(
+                f"monitor {monitor_id} absent requires relation_support=unsupported "
+                "and expression_status=not_expressed"
+            )
+        return
+    if status == "unknown":
+        if (support, expression) != ("unknown", "unknown"):
+            raise AssessorValidationError(
+                f"monitor {monitor_id} unknown requires relation_support=unknown "
+                "and expression_status=unknown"
+            )
+        return
+    if status != "present":
+        raise AssessorValidationError(f"unsupported monitor status: {status}")
+    expected_expression = {
+        "supported": "affirmed",
+        "contradicted": "negated",
+    }
+    if support in expected_expression and expression != expected_expression[support]:
+        raise AssessorValidationError(
+            f"monitor {monitor_id} {support} requires "
+            f"expression_status={expected_expression[support]}"
+        )
+    if support in {"unsupported", "unknown"} and expression != "unknown":
+        raise AssessorValidationError(
+            f"monitor {monitor_id} {support} requires expression_status=unknown"
+        )
+
+
 def validate_assessor_result(
-    request: AssessorRequest, result: Mapping[str, Any]
+    request: AssessorRequest,
+    result: Mapping[str, Any],
+    *,
+    allow_legacy: bool = False,
 ) -> tuple[ValidatedSemanticAssessment, ...]:
     """Validate semantic judgments without accepting model provenance labels.
 
@@ -415,8 +461,12 @@ def validate_assessor_result(
         raise AssessorValidationError(
             "unknown assessor result field(s): " + ", ".join(sorted(unknown_fields))
         )
-    if top.get("schema_version") != ASSESSOR_SCHEMA_VERSION:
+    schema_version = top.get("schema_version")
+    legacy = schema_version == LEGACY_ASSESSOR_SCHEMA_VERSION
+    if schema_version != ASSESSOR_SCHEMA_VERSION and not (allow_legacy and legacy):
         raise AssessorValidationError("unsupported assessor result schema version")
+    allowed_support = LEGACY_RELATION_SUPPORT if legacy else RELATION_SUPPORT
+    allowed_expression = LEGACY_EXPRESSION_STATUS if legacy else EXPRESSION_STATUS
     rows = top.get("assessments")
     if not isinstance(rows, list):
         raise AssessorValidationError("assessments must be an array")
@@ -454,10 +504,12 @@ def validate_assessor_result(
         expression = _text(row.get("expression_status"), f"monitor {monitor_id}.expression_status")
         if status not in ASSESSMENT_STATUSES:
             raise AssessorValidationError(f"unsupported monitor status: {status}")
-        if support not in RELATION_SUPPORT:
+        if support not in allowed_support:
             raise AssessorValidationError(f"unsupported relation support: {support}")
-        if expression not in EXPRESSION_STATUS:
+        if expression not in allowed_expression:
             raise AssessorValidationError(f"unsupported expression status: {expression}")
+        if not legacy:
+            _validate_semantic_matrix(status, support, expression, monitor_id)
         coverage = _validate_coverage(request, monitor, row.get("coverage"), status)
         evidence: EvidenceQuote | None = None
         if status == "present":
@@ -502,6 +554,19 @@ def validate_assessor_result(
             )
         )
     return tuple(validated)
+
+
+def read_historical_assessor_result(
+    request: AssessorRequest, result: Mapping[str, Any]
+) -> tuple[ValidatedSemanticAssessment, ...]:
+    """Read a preserved v4 result without admitting it to the v5 contract.
+
+    Historical provider outputs retain their original ``expressed`` vocabulary
+    and interpretation.  The production validator remains v5-only unless this
+    explicit archival reader is selected.
+    """
+
+    return validate_assessor_result(request, result, allow_legacy=True)
 
 
 def _recorded_ancestry(
@@ -671,8 +736,10 @@ def assessor_generation_request(
                     "    {\n"
                     '      "monitor_id": "<exact monitor_id from the request>",\n'
                     '      "status": "present" | "absent" | "unknown",\n'
-                    '      "relation_support": "supported" | "unsupported" | "unknown",\n'
-                    '      "expression_status": "expressed" | "not_expressed" | "unknown",\n'
+                    '      "relation_support": "supported" | "contradicted" | '
+                    '"unsupported" | "unknown",\n'
+                    '      "expression_status": "affirmed" | "negated" | '
+                    '"not_expressed" | "unknown",\n'
                     '      "coverage": {\n'
                     '        "complete": true | false,\n'
                     '        "source_slots": ["<declared source slot>"],\n'
@@ -687,11 +754,24 @@ def assessor_generation_request(
                     "Use only the listed top-level and row fields. The schema_version "
                     f"must be exactly {ASSESSOR_SCHEMA_VERSION}. For status=present, coverage "
                     "must name covered declared source slots and evidence must contain "
-                    "a non-empty exact quotation from its source_slot. For status=absent, "
+                    "a non-empty exact quotation from its source_slot. For status=present, "
+                    "coverage.complete must be true and source_slots must include every "
+                    "available required source slot; an unavailable required source means "
+                    "status=unknown. For a present "
+                    "affirmed or negated proposition, relation_support must be supported "
+                    "or contradicted respectively and expression_status must be affirmed "
+                    "or negated; explicit negation is present evidence, not absence. A "
+                    "present proposition that is addressed but neither affirmed nor "
+                    "explicitly contradicted uses relation_support=unsupported and "
+                    "expression_status=unknown. For status=absent, "
                     "coverage must be complete for every available required source and "
-                    "reason must explain the absence; evidence must be null. For "
+                    "reason must explain that the proposition is not addressed; use "
+                    "relation_support=unsupported and expression_status=not_expressed; "
+                    "evidence must be null. For "
                     "status=unknown, coverage must be incomplete with a reason and "
-                    "evidence must be null. Copy monitor IDs and source slots exactly "
+                    "relation_support=unknown and expression_status=unknown; evidence "
+                    "must be null. Never use not_expressed for explicit negation. Copy "
+                    "monitor IDs and source slots exactly "
                     "from the request. Every source with available=true is available "
                     "for semantic inspection regardless of its role; current_input_source_slots "
                     "identifies current external input only and must not make an available "
@@ -841,11 +921,13 @@ def qualification_cases() -> tuple[QualificationCase, ...]:
                 "latch": {
                     "status": "present",
                     "relation_support": "supported",
+                    "expression_status": "affirmed",
                     "dependence": "external_supported",
                 },
                 "echo": {
                     "status": "present",
                     "relation_support": "supported",
+                    "expression_status": "affirmed",
                     "dependence": "current_input_echo",
                 },
                 "unrelated": {
@@ -867,6 +949,7 @@ def qualification_cases() -> tuple[QualificationCase, ...]:
                 "shade": {
                     "status": "present",
                     "relation_support": "supported",
+                    "expression_status": "affirmed",
                     "dependence": "exposure_linked",
                 },
             },
@@ -877,8 +960,8 @@ def qualification_cases() -> tuple[QualificationCase, ...]:
             {
                 "dial": {
                     "status": "present",
-                    "relation_support": "unsupported",
-                    "expression_status": "expressed",
+                    "relation_support": "contradicted",
+                    "expression_status": "negated",
                 },
                 "unavailable_output": {
                     "status": "unknown",
@@ -893,6 +976,7 @@ def qualification_cases() -> tuple[QualificationCase, ...]:
 __all__ = [
     "ASSESSOR_PROMPT_VERSION",
     "ASSESSOR_SCHEMA_VERSION",
+    "LEGACY_ASSESSOR_SCHEMA_VERSION",
     "PROVENANCE_SCHEMA_VERSION",
     "AssessorMonitor",
     "AssessorRequest",
@@ -906,6 +990,7 @@ __all__ = [
     "assessor_generation_request",
     "qualification_cases",
     "resolve_provenance",
+    "read_historical_assessor_result",
     "validate_and_resolve_assessor_result",
     "validate_qualification_case",
     "validate_assessor_result",

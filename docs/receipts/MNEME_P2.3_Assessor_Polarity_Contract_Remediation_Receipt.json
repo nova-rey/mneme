@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "phase-two-assessor-polarity-remediation",
+  "base_commit": "b8116de1b364c9c5c0c9689dc4109ae0a55c7a08",
+  "assessor_schema": "p2-assessor-v5",
+  "prompt_version": "p2-assessor-production-v7",
+  "provenance_schema": "p2-provenance-v1",
+  "semantic_matrix": {
+    "affirmed": "present/supported/affirmed",
+    "negated": "present/contradicted/negated",
+    "absent": "absent/unsupported/not_expressed",
+    "unknown": "unknown/unknown/unknown"
+  },
+  "learner_boundary": {
+    "persisted_fields": ["relation_support", "expression_status", "semantic_schema_version"],
+    "contradicted_credit": 0,
+    "contradiction_becomes_absence": false,
+    "conflicting_duplicate_disposition": "fail_closed"
+  },
+  "historical_reader": "explicit read_historical_assessor_result for p2-assessor-v4",
+  "validation": {
+    "focused_tests": 59,
+    "pytest": 304,
+    "ruff": "pass",
+    "mypy_strict": "pass",
+    "wheel_fresh_install_smoke": "pass",
+    "provider_calls": 0
+  },
+  "historical_receipts_rewritten": false,
+  "next_action": "one fixed Q1/Q2/Q3 qualification under p2-assessor-v5/p2-assessor-production-v7"
+}

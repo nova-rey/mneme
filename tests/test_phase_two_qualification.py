@@ -65,7 +65,7 @@ def _results() -> dict[str, str]:
                 }
             rows.append(row)
         outputs[case.case_id] = json.dumps(
-            {"schema_version": "p2-assessor-v4", "assessments": rows}
+            {"schema_version": "p2-assessor-v5", "assessments": rows}
         )
     return outputs
 

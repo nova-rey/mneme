@@ -21,7 +21,7 @@ from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass, field, replace
 from decimal import Decimal, InvalidOperation
 from enum import StrEnum
-from typing import Any, Literal
+from typing import Any, Literal, cast
 
 FIXED_SCALE = 1_000_000
 FIXED_ONE = FIXED_SCALE
@@ -47,6 +47,24 @@ class SourceRole(StrEnum):
 class ObservationStatus(StrEnum):
     PRESENT = "present"
     ABSENT = "absent"
+    UNKNOWN = "unknown"
+
+
+class RelationSupport(StrEnum):
+    """Semantic disposition of the assessed proposition."""
+
+    SUPPORTED = "supported"
+    CONTRADICTED = "contradicted"
+    UNSUPPORTED = "unsupported"
+    UNKNOWN = "unknown"
+
+
+class ExpressionStatus(StrEnum):
+    """How the assessed proposition was expressed in its source."""
+
+    AFFIRMED = "affirmed"
+    NEGATED = "negated"
+    NOT_EXPRESSED = "not_expressed"
     UNKNOWN = "unknown"
 
 
@@ -126,6 +144,60 @@ def _as_status(value: ObservationStatus | str) -> ObservationStatus:
         raise LearnerError(f"unsupported observation status: {value!r}") from exc
 
 
+def _as_relation_support(value: RelationSupport | str) -> RelationSupport:
+    try:
+        return value if isinstance(value, RelationSupport) else RelationSupport(value)
+    except ValueError as exc:
+        raise LearnerError(f"unsupported relation support: {value!r}") from exc
+
+
+def _as_expression_status(value: ExpressionStatus | str) -> ExpressionStatus:
+    try:
+        return value if isinstance(value, ExpressionStatus) else ExpressionStatus(value)
+    except ValueError as exc:
+        raise LearnerError(f"unsupported expression status: {value!r}") from exc
+
+
+def _semantic_defaults(status: ObservationStatus) -> tuple[RelationSupport, ExpressionStatus]:
+    if status is ObservationStatus.PRESENT:
+        return RelationSupport.SUPPORTED, ExpressionStatus.AFFIRMED
+    if status is ObservationStatus.ABSENT:
+        return RelationSupport.UNSUPPORTED, ExpressionStatus.NOT_EXPRESSED
+    return RelationSupport.UNKNOWN, ExpressionStatus.UNKNOWN
+
+
+def _validate_observation_semantics(
+    status: ObservationStatus,
+    support: RelationSupport,
+    expression: ExpressionStatus,
+) -> None:
+    if status is ObservationStatus.ABSENT:
+        valid = (support, expression) == (
+            RelationSupport.UNSUPPORTED,
+            ExpressionStatus.NOT_EXPRESSED,
+        )
+    elif status is ObservationStatus.UNKNOWN:
+        valid = (support, expression) == (
+            RelationSupport.UNKNOWN,
+            ExpressionStatus.UNKNOWN,
+        )
+    else:
+        valid = (
+            (support, expression)
+            in {
+                (RelationSupport.SUPPORTED, ExpressionStatus.AFFIRMED),
+                (RelationSupport.CONTRADICTED, ExpressionStatus.NEGATED),
+                (RelationSupport.UNSUPPORTED, ExpressionStatus.UNKNOWN),
+                (RelationSupport.UNKNOWN, ExpressionStatus.UNKNOWN),
+            }
+        )
+    if not valid:
+        raise LearnerError(
+            "observation semantic disposition is inconsistent with its status: "
+            f"{status.value}/{support.value}/{expression.value}"
+        )
+
+
 def _as_dependence(value: Dependence | str) -> Dependence:
     try:
         return value if isinstance(value, Dependence) else Dependence(value)
@@ -150,6 +222,9 @@ class Observation:
     source_role: SourceRole | str = SourceRole.EXTERNAL
     dependence: Dependence | str = Dependence.EXTERNAL_SUPPORTED
     status: ObservationStatus | str = ObservationStatus.PRESENT
+    relation_support: RelationSupport | str | None = None
+    expression_status: ExpressionStatus | str | None = None
+    semantic_schema_version: str | None = None
     group_key: str | None = None
     provenance_group_keys: tuple[str, ...] = ()
     occurrence_key: str | None = None
@@ -171,7 +246,23 @@ class Observation:
             object.__setattr__(self, "source_role", SourceRole.MODEL_OUTPUT)
         _as_role(self.source_role)
         _as_dependence(self.dependence)
-        _as_status(self.status)
+        status = _as_status(self.status)
+        default_support, default_expression = _semantic_defaults(status)
+        support = (
+            default_support
+            if self.relation_support is None
+            else _as_relation_support(self.relation_support)
+        )
+        expression = (
+            default_expression
+            if self.expression_status is None
+            else _as_expression_status(self.expression_status)
+        )
+        _validate_observation_semantics(status, support, expression)
+        object.__setattr__(self, "relation_support", support)
+        object.__setattr__(self, "expression_status", expression)
+        if self.semantic_schema_version is not None and not self.semantic_schema_version:
+            raise LearnerError("semantic_schema_version must be non-empty when supplied")
         if self.group_key is not None and not self.group_key:
             raise LearnerError("group_key must be non-empty when supplied")
         if len(self.provenance_group_keys) != len(set(self.provenance_group_keys)):
@@ -195,6 +286,13 @@ class Observation:
             "source_role": _as_role(self.source_role).value,
             "dependence": _as_dependence(self.dependence).value,
             "status": _as_status(self.status).value,
+            "relation_support": _as_relation_support(
+                cast(RelationSupport | str, self.relation_support)
+            ).value,
+            "expression_status": _as_expression_status(
+                cast(ExpressionStatus | str, self.expression_status)
+            ).value,
+            "semantic_schema_version": self.semantic_schema_version,
             "group_key": self.group_key,
             "provenance_group_keys": list(self.provenance_group_keys),
             "occurrence_key": self.occurrence_key,
@@ -651,13 +749,19 @@ def _dedupe_observations(observations: Sequence[Observation]) -> tuple[Observati
         existing = result.get(key)
         if existing is None:
             result[key] = item
-        elif existing.status != item.status:
+        elif (
+            existing.status != item.status
+            or existing.relation_support != item.relation_support
+            or existing.expression_status != item.expression_status
+        ):
             result[key] = Observation(
                 target_key=item.target_key,
                 context=item.context,
                 source_role=item.source_role,
                 dependence=Dependence.CONFLICT,
                 status=ObservationStatus.UNKNOWN,
+                relation_support=RelationSupport.UNKNOWN,
+                expression_status=ExpressionStatus.UNKNOWN,
                 group_key=item.group_key,
                 provenance_group_keys=item.provenance_group_keys,
                 occurrence_key=occurrence,
@@ -1025,6 +1129,12 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
                 and item.covered
                 and item.relevant
                 and _as_status(item.status) is ObservationStatus.PRESENT
+                and _as_relation_support(
+                    cast(RelationSupport | str, item.relation_support)
+                ) is RelationSupport.SUPPORTED
+                and _as_expression_status(
+                    cast(ExpressionStatus | str, item.expression_status)
+                ) is ExpressionStatus.AFFIRMED
                 and target_status.get(item.key) is ObservationStatus.PRESENT
             ]
             target_keys = sorted({item.key for item in role_observations})

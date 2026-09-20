@@ -1109,10 +1109,12 @@
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Audit_Correction.md",
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Audit_Correction.json",
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_Monitor_V7_Failure_Receipt.md",
-        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Monitor_V7_Failure_Receipt.json"
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Monitor_V7_Failure_Receipt.json",
+        "docs/receipts/MNEME_P2.3_Assessor_Polarity_Contract_Remediation_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Assessor_Polarity_Contract_Remediation_Receipt.json"
       ],
       "id": "P2.3",
-      "notes": "The fixed self-contained-monitor v7 qualification used p2-assessor-v4/p2-assessor-production-v6. All three Qwen calls returned and were durably retained: Q1/Q2 passed, Q3 returned absent/not_expressed for the explicitly negated dial proposition where the frozen case requires present/unsupported/expressed. Usage was 3,190 input, 819 output, 4,009 total tokens; provider cost unavailable. No retry, repair, resampling, model substitution, or pilot call occurred. The monitor serialization correction and offline validation are preserved; package remains WAITING on external:p2-assessor-qualification for assessor-suitability review.",
+      "notes": "Offline polarity correction is pushed in progress from b8116de: p2-assessor-v5/prompt-v7 separates coverage, support, and expression; contradicted observations are durable and zero-credit; historical v4 reader is explicit. Awaiting one fixed three-call Q1/Q2/Q3 verification under standing authorization; pilot remains forbidden until qualification passes.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1139,7 +1141,7 @@
       "session_ids": [],
       "status": "WAITING",
       "title": "Assessor qualification and bounded developmental pilot",
-      "updated_at": "2026-09-20T22:37:11.994268+00:00",
+      "updated_at": "2026-09-20T23:01:34.557091+00:00",
       "validation": {
         "required": [
           "p23-assessor-contract",
@@ -1155,8 +1157,8 @@
             "status": "FAIL"
           },
           "p23-assessor-contract": {
-            "receipt": "assessment.py semantic assessor schema v4 and deterministic provenance resolver; Q1/Q2/Q3 strict quotes/coverage/source-role/correspondence tests",
-            "recorded_at": "2026-09-20T17:05:14.693257Z",
+            "receipt": "p2-assessor-v5/p2-assessor-production-v7 semantic matrix, explicit archival v4 reader, learner polarity boundary, and fail-closed duplicate handling; see polarity remediation receipt",
+            "recorded_at": "2026-09-20T23:01:34.557091+00:00",
             "status": "PASS"
           },
           "p23-provenance-resolution": {
@@ -1170,8 +1172,8 @@
             "status": "PASS"
           },
           "p23-offline-validation": {
-            "receipt": "831d726; 284 pytest; Ruff; strict mypy src across 47 files; wheel/install CLI smoke; CI 35539129367; no provider calls",
-            "recorded_at": "2026-09-20T21:40:00.000000Z",
+            "receipt": "304 pytest; Ruff; strict mypy src across 48 files; wheel/install CLI smoke; no provider calls; polarity remediation receipt",
+            "recorded_at": "2026-09-20T23:01:34.557091+00:00",
             "status": "PASS"
           },
           "p23-pilot-ledger": {

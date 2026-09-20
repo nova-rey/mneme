@@ -10,6 +10,7 @@ from mneme.development import (
     AssessorValidationError,
     assessor_generation_request,
     qualification_cases,
+    read_historical_assessor_result,
     resolve_provenance,
     validate_assessor_result,
     validate_qualification_case,
@@ -47,16 +48,16 @@ def _row(
 def _valid_result(case_id: str) -> dict[str, object]:
     if case_id == "Q1":
         return {
-            "schema_version": "p2-assessor-v4",
+            "schema_version": "p2-assessor-v5",
             "assessments": [
                 _row(
-                    "latch", status="present", support="supported", expression="expressed",
+                    "latch", status="present", support="supported", expression="affirmed",
                     slots=["s0"], complete=True,
                     source_slot="s0", quote="Pulling the lever released the latch.",
                 ),
                 _row(
-                    "echo", status="present", support="supported", expression="expressed",
-                    slots=["s1"], complete=True,
+                    "echo", status="present", support="supported", expression="affirmed",
+                    slots=["s0", "s1"], complete=True,
                     source_slot="s1", quote="Pulling the lever released the latch.",
                     corresponding=["s0"],
                 ),
@@ -69,7 +70,7 @@ def _valid_result(case_id: str) -> dict[str, object]:
         }
     if case_id == "Q2":
         return {
-            "schema_version": "p2-assessor-v4",
+            "schema_version": "p2-assessor-v5",
             "assessments": [
                 _row(
                     "jacket_direction", status="absent", support="unsupported",
@@ -78,7 +79,7 @@ def _valid_result(case_id: str) -> dict[str, object]:
                     reason="The rain-jacket source does not express the candidate direction.",
                 ),
                 _row(
-                    "shade", status="present", support="supported", expression="expressed",
+                    "shade", status="present", support="supported", expression="affirmed",
                     slots=["s1", "s2"], complete=True,
                     source_slot="s2", quote="Turning the handle raises the shade.",
                     corresponding=["s1"],
@@ -86,10 +87,10 @@ def _valid_result(case_id: str) -> dict[str, object]:
             ],
         }
     return {
-        "schema_version": "p2-assessor-v4",
+        "schema_version": "p2-assessor-v5",
         "assessments": [
             _row(
-                "dial", status="present", support="unsupported", expression="expressed",
+                "dial", status="present", support="contradicted", expression="negated",
                 slots=["s0"], complete=True,
                 source_slot="s0", quote="did not stop the ticking",
             ),
@@ -126,13 +127,13 @@ def test_assessor_prompt_exposes_complete_enum_and_json_contract() -> None:
 
     assert "Return raw JSON only" in prompt
     assert "Do not use Markdown fences" in prompt
-    assert '"schema_version": "p2-assessor-v4"' in prompt
+    assert '"schema_version": "p2-assessor-v5"' in prompt
     assert '"assessments": [' in prompt
     for value in ("present", "absent", "unknown"):
         assert value in prompt
-    for value in ("supported", "unsupported", "unknown"):
+    for value in ("supported", "contradicted", "unsupported", "unknown"):
         assert value in prompt
-    for value in ("expressed", "not_expressed", "unknown"):
+    for value in ("affirmed", "negated", "not_expressed", "unknown"):
         assert value in prompt
     for field in (
         '"monitor_id"',
@@ -161,6 +162,7 @@ def test_assessor_prompt_exposes_complete_enum_and_json_contract() -> None:
     assert "current_input_source_slots" in prompt
     assert "complete monitor proposition" in prompt
     assert "does not support a different target" in prompt
+    assert "explicit negation is present evidence, not absence" in prompt
 
 
 def test_q1_echo_and_q2_exposure_ancestry_are_deterministically_resolved() -> None:
@@ -232,6 +234,32 @@ def test_partial_monitor_proposition_is_rejected_before_provider_dispatch() -> N
         AssessorMonitor("partial", {"relation": "causes"}, ("s0",), ("s0",))
 
 
+def test_historical_v4_result_is_readable_only_through_explicit_archive_reader() -> None:
+    case = next(case for case in qualification_cases() if case.case_id == "Q1")
+    historical = _valid_result("Q1")
+    historical["schema_version"] = "p2-assessor-v4"
+    for row in historical["assessments"]:  # type: ignore[union-attr]
+        if row["expression_status"] == "affirmed":  # type: ignore[index]
+            row["expression_status"] = "expressed"  # type: ignore[index]
+    with pytest.raises(AssessorValidationError, match="unsupported assessor result schema"):
+        validate_assessor_result(case.request, historical)  # type: ignore[arg-type]
+    rows = read_historical_assessor_result(case.request, historical)  # type: ignore[arg-type]
+    assert next(row for row in rows if row.monitor_id == "latch").expression_status == "expressed"
+
+
+def test_present_requires_complete_available_coverage() -> None:
+    case = next(case for case in qualification_cases() if case.case_id == "Q1")
+    result = _valid_result("Q1")
+    echo = result["assessments"][1]  # type: ignore[index]
+    echo["coverage"] = {  # type: ignore[index]
+        "complete": False,
+        "source_slots": ["s1"],
+        "reason": "s0 was omitted",
+    }
+    with pytest.raises(AssessorValidationError, match="present requires complete coverage"):
+        validate_assessor_result(case.request, result)  # type: ignore[arg-type]
+
+
 def test_monitor_proposition_is_frozen_before_provider_serialization() -> None:
     relation = {"from": "lever", "to": "latch_release", "relation": "causes"}
     monitor = AssessorMonitor("latch", relation, ("s0",), ("s0",))
@@ -268,10 +296,90 @@ def test_q3_negation_quote_and_unavailable_source_are_fail_closed() -> None:
     dial = next(row for row in rows if row.monitor_id == "dial")
     assert dial.evidence is not None
     assert dial.evidence.start == case.request.sources[0].text.index("did not stop")
+    assert dial.relation_support == "contradicted"
+    assert dial.expression_status == "negated"
     assert dial.provenance.credit_eligible is False
     unknown = next(row for row in rows if row.monitor_id == "unavailable_output")
     assert unknown.status == "unknown"
     assert unknown.evidence is None
+
+
+def test_semantic_matrix_distinguishes_affirmation_negation_absence_and_unknown() -> None:
+    cases = {case.case_id: case for case in qualification_cases()}
+    positive = validate_assessor_result(cases["Q1"].request, _valid_result("Q1"))
+    latch = next(row for row in positive if row.monitor_id == "latch")
+    assert (latch.status, latch.relation_support, latch.expression_status) == (
+        "present",
+        "supported",
+        "affirmed",
+    )
+    negated = validate_assessor_result(cases["Q3"].request, _valid_result("Q3"))
+    dial = next(row for row in negated if row.monitor_id == "dial")
+    assert (dial.status, dial.relation_support, dial.expression_status) == (
+        "present",
+        "contradicted",
+        "negated",
+    )
+    absent = next(row for row in positive if row.monitor_id == "unrelated")
+    assert (absent.status, absent.relation_support, absent.expression_status) == (
+        "absent",
+        "unsupported",
+        "not_expressed",
+    )
+    unknown = next(row for row in negated if row.monitor_id == "unavailable_output")
+    assert (unknown.status, unknown.relation_support, unknown.expression_status) == (
+        "unknown",
+        "unknown",
+        "unknown",
+    )
+
+
+@pytest.mark.parametrize(
+    ("status", "support", "expression"),
+    (
+        ("absent", "supported", "not_expressed"),
+        ("absent", "contradicted", "not_expressed"),
+        ("present", "unsupported", "not_expressed"),
+        ("present", "supported", "negated"),
+        ("present", "contradicted", "affirmed"),
+        ("unknown", "unsupported", "unknown"),
+    ),
+)
+def test_semantic_matrix_rejects_cross_field_contradictions(
+    status: str, support: str, expression: str
+) -> None:
+    case = next(case for case in qualification_cases() if case.case_id == "Q3")
+    result = _valid_result("Q3")
+    row = result["assessments"][0]  # type: ignore[index]
+    row["status"] = status  # type: ignore[index]
+    row["relation_support"] = support  # type: ignore[index]
+    row["expression_status"] = expression  # type: ignore[index]
+    if status != "present":
+        row["evidence"] = None  # type: ignore[index]
+    with pytest.raises(AssessorValidationError, match="requires"):
+        validate_assessor_result(case.request, result)  # type: ignore[arg-type]
+
+
+def test_present_unsupported_can_record_ambiguous_addressing_without_false_absence() -> None:
+    case = next(case for case in qualification_cases() if case.case_id == "Q3")
+    request = replace(
+        case.request,
+        sources=(
+            replace(case.request.sources[0], text="I turned the dial."),
+            case.request.sources[1],
+        ),
+    )
+    result = _valid_result("Q3")
+    row = result["assessments"][0]  # type: ignore[index]
+    row["status"] = "present"  # type: ignore[index]
+    row["relation_support"] = "unsupported"  # type: ignore[index]
+    row["expression_status"] = "unknown"  # type: ignore[index]
+    row["evidence"]["quote"] = "I turned the dial."  # type: ignore[index]
+    validated = validate_assessor_result(request, result)  # type: ignore[arg-type]
+    dial = next(item for item in validated if item.monitor_id == "dial")
+    assert dial.status == "present"
+    assert dial.relation_support == "unsupported"
+    assert dial.expression_status == "unknown"
 
 
 def test_missing_monitor_and_false_absence_fail_closed() -> None:
