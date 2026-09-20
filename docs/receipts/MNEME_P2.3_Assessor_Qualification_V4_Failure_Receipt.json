@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "status": "FAIL",
+  "run_id": "qualification-20260920-v4",
+  "implementation_commit": "3386d94561e15f877e5b621013f2d3365d7fe4ea",
+  "interface": {
+    "prompt_version": "p2-assessor-production-v2",
+    "schema_version": "p2-assessor-v1"
+  },
+  "provider": "DeepInfra",
+  "model_id": "google/gemma-4-E4B-it",
+  "calls": 3,
+  "pilot_calls": 0,
+  "usage": {
+    "input_tokens": 2866,
+    "output_tokens": 706,
+    "total_tokens": 3572,
+    "cost": null
+  },
+  "cases": [
+    {
+      "case_id": "Q1",
+      "valid": false,
+      "returned_classification": "unrelated present/supported; quote: Pulling the lever released the latch.",
+      "required": "unrelated absent/unsupported with complete coverage",
+      "validation_error": "Q1 monitor unrelated has wrong status: expected 'absent', got 'present'"
+    },
+    {
+      "case_id": "Q2",
+      "valid": false,
+      "returned_classification": "jacket_direction present/supported; quote: The rain jacket kept my shoulders dry.; shade replay_linked",
+      "required": "jacket_direction absent/unsupported and shade exposure_linked",
+      "validation_error": "Q2 monitor jacket_direction has wrong status: expected 'absent', got 'present'"
+    },
+    {
+      "case_id": "Q3",
+      "valid": false,
+      "returned_classification": "dial present/supported despite negating quote; unavailable_output absent",
+      "required": "dial unsupported and unavailable_output unknown",
+      "validation_error": "monitor unavailable_output absent requires complete available-source coverage"
+    }
+  ],
+  "credential_functional": true,
+  "provider_returned_all_calls": true,
+  "retries": 0,
+  "repairs": 0,
+  "replacement_samples": 0,
+  "notes": "Historical qualification evidence is preserved unchanged; no pilot execution is authorized from this failed gate."
+}
