@@ -476,3 +476,7 @@
 ## 2026-09-20 P2.3 assessor prompt remediation
 
 - Corrected the production assessor prompt contract after the first qualification failure. Prompt version `p2-assessor-production-v2` now enumerates every validator-constrained enum and the complete top-level/row JSON structure, coverage rules, exact quotation requirements, and raw-JSON-only boundary. Validator strictness and qualification criteria were unchanged. Offline validation passed at 267 pytest tests, Ruff, and strict mypy across 47 source files; no provider call occurred during remediation. A fresh fixed three-call qualification attempt is the next gate; the prior three results remain unchanged and the 299-call pilot remains untouched.
+
+## 2026-09-20 P2.3 remediation candidate reconciliation
+
+- Reconciled the P2.3 offline candidate to remediation commit `bd573a6`, which contains the explicit assessor prompt v2 contract, its regression test, the sanitized remediation receipt, and the 267-test offline validation evidence. The package remains at the fresh qualification boundary; no additional provider call occurred in this bookkeeping update.
