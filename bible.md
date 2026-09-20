@@ -439,3 +439,7 @@
 ## 2026-09-20 P2.1 controller and atomic publication candidate
 
 - Added the first production-boundary P2.1 slice: deterministic directed route discovery from accepted graph edges, fixed-v2 versus explicitly permitted learned-v1 selection, preserved system instructions, actual supplied-payload tracing, and highest-coverage exploration. Extended interpretation publication with optional atomic learner observations, stable semantic bindings, learner snapshots/values, manifest metadata, explicit learning-permission enforcement, unknown/no-credit recording, and idempotent retry behavior. Focused controller/publication/memory tests, Ruff, and strict mypy passed; no provider calls or credentials were used. P2.1 remains in progress pending full integration and adversarial validation.
+
+## 2026-09-20 P2.1 stop-audit completion
+
+- P2.1 passed its offline stop–audit gate and is DONE in the work queue. The candidate was validated with 236 pytest tests, Ruff, strict mypy, wheel build, and fresh-install CLI smoke. The audit retained evidence for fixed-point learner transitions, restraint/recovery, dependence caps, directed route discovery, actual payload tracing, schema-6 migration, atomic learner publication, unknown/no-credit behavior, explicit learning permission, and idempotent replay. No provider calls or credentials were used. P2.2 is now READY; P2.3 remains dependent on P2.2.

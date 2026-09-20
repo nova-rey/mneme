@@ -860,7 +860,13 @@
       },
       "base_sha": "7157845",
       "campaign": "mneme-phase-two",
-      "candidate": null,
+      "candidate": {
+        "artifact": "P2.1 offline foundation candidate: 236 pytest, Ruff, strict mypy, wheel/install CLI smoke",
+        "base_sha": "00ec31c",
+        "returned_at": "2026-09-20T16:36:50.004282Z",
+        "returned_by": "/root",
+        "sha": "28007bd"
+      },
       "completion_criterion": "P2.1 pure learner, exposure gate, provenance, atomic publication, replay, and foundation repairs pass adversarial audit with complete receipts.",
       "created_at": "2026-09-20T16:16:33.559371Z",
       "dependencies": [],
@@ -873,10 +879,12 @@
         "bible.md",
         ".codex/work-queue.json"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "P2.1 stop-audit receipt: commits 26ec958, 25207aa, c759cf2, 28007bd; pytest=236; Ruff pass; strict mypy pass; wheel/fresh CLI smoke pass; no provider calls; atomic publication/learner and route/controller evidence persisted in tests"
+      ],
       "id": "P2.1",
       "notes": "Approved Phase Two plan; implementation authorized by active goal.",
-      "owner": "/root/p21_supervisor",
+      "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -899,15 +907,39 @@
         }
       ],
       "scope": "Implement P2.1 foundation repairs, stable semantic bindings, production-equivalent assessor contract, pure replayable learner, learning opt-in, and atomic interpretation/learner publication. Exclude P2.2 retention/identity review and P2.3 paid pilot.",
-      "session_ids": [
-        "p21-supervisor-20260920"
-      ],
-      "status": "RUNNING",
+      "session_ids": [],
+      "status": "DONE",
       "title": "Replayable learner and trustworthy inputs",
-      "updated_at": "2026-09-20T16:16:42.878572Z",
+      "updated_at": "2026-09-20T16:38:08.309956Z",
       "validation": {
-        "required": [],
-        "results": {}
+        "required": [
+          "p21-prerequisites",
+          "p21-learner",
+          "p21-provenance",
+          "p21-publication"
+        ],
+        "results": {
+          "p21-learner": {
+            "receipt": "learner_transition_tests; restraint_recovery; dependence_caps; exploration_bounds; replayable_fixed_point",
+            "recorded_at": "2026-09-20T16:38:02.113193Z",
+            "status": "PASS"
+          },
+          "p21-prerequisites": {
+            "receipt": "pytest=236; ruff=pass; mypy_strict=pass; wheel=pass; fresh_cli_smoke=pass; provider_calls=0",
+            "recorded_at": "2026-09-20T16:38:02.070719Z",
+            "status": "PASS"
+          },
+          "p21-provenance": {
+            "receipt": "route_discovery; system_instruction_preserved; supplied_payload_trace; no route_candidate dependency",
+            "recorded_at": "2026-09-20T16:38:02.155440Z",
+            "status": "PASS"
+          },
+          "p21-publication": {
+            "receipt": "atomic learner bindings/observations/values/snapshot; unknown no-credit; permission gate; idempotent retry",
+            "recorded_at": "2026-09-20T16:38:02.233239Z",
+            "status": "PASS"
+          }
+        }
       },
       "waiting_on": [],
       "workstream": "phase-two"
@@ -961,16 +993,14 @@
       ],
       "scope": "Implement P2.2 retention, contextual consequences, quarantine/rebuild, reviewed identity transitions, fork inheritance, revocation, and recovery. Exclude P2.3 prospective pilot.",
       "session_ids": [],
-      "status": "WAITING",
+      "status": "READY",
       "title": "Restraint, retention, reviewed identity, and recovery",
-      "updated_at": "2026-09-20T16:16:33.604152Z",
+      "updated_at": "2026-09-20T16:38:08.309978Z",
       "validation": {
         "required": [],
         "results": {}
       },
-      "waiting_on": [
-        "package:P2.1"
-      ],
+      "waiting_on": [],
       "workstream": "phase-two"
     },
     {
@@ -1048,5 +1078,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-20T16:16:42.878701Z"
+  "updated_at": "2026-09-20T16:38:08.310053Z"
 }
