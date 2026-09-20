@@ -81,6 +81,8 @@ The documents are preserved in their supplied form and are intentionally not mer
   the fixed qualification failure is recorded in [the qualification failure receipt](receipts/MNEME_P2.3_Assessor_Qualification_Failure_Receipt.md);
   the reviewed prompt-contract remediation and its offline validation are recorded in
   [the remediation receipt](receipts/MNEME_P2.3_Assessor_Prompt_Contract_Remediation_Receipt.md);
+  the fresh semantic qualification stop is recorded in [the v2 qualification failure receipt](receipts/MNEME_P2.3_Assessor_Qualification_V2_Failure_Receipt.md)
+  ([JSON](receipts/MNEME_P2.3_Assessor_Qualification_V2_Failure_Receipt.json));
   the proposed 299-call pilot budget remains unrun.
 
 The P0.2 implementation is now present under `src/mneme/state/`; its acceptance

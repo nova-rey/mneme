@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "status": "FAILED",
+  "run_id": "qualification-20260920-v2",
+  "prompt_version": "p2-assessor-production-v2",
+  "assessor_schema_version": "p2-assessor-v1",
+  "implementation_commit": "888cb406cbbaa9b94fcefb9edfdc8f7a70d9a82f",
+  "provider": "DeepInfra",
+  "model_id": "google/gemma-4-E4B-it",
+  "calls": {
+    "authorized": 3,
+    "returned": 3,
+    "pilot": 0,
+    "retries": 0,
+    "uncertain": 0
+  },
+  "usage": {
+    "input_tokens": 2533,
+    "output_tokens": 709,
+    "total_tokens": 3242,
+    "cost": "unknown"
+  },
+  "cases": [
+    {
+      "case_id": "Q1",
+      "valid_json": true,
+      "accepted": false,
+      "reason": "echo marked absent with incomplete coverage despite available model-output source; unrelated monitor marked present"
+    },
+    {
+      "case_id": "Q2",
+      "valid_json": true,
+      "accepted": false,
+      "reason": "external rain-jacket monitor marked present; shade dependence did not satisfy recorded replay/exposure ancestry rule"
+    },
+    {
+      "case_id": "Q3",
+      "valid_json": true,
+      "accepted": false,
+      "reason": "unavailable model output marked absent instead of unknown"
+    }
+  ],
+  "pilot_calls_consumed": 0,
+  "credential_functional": true,
+  "automatic_retry": false
+}

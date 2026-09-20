@@ -480,3 +480,7 @@
 ## 2026-09-20 P2.3 remediation candidate reconciliation
 
 - Reconciled the P2.3 offline candidate to remediation commit `bd573a6`, which contains the explicit assessor prompt v2 contract, its regression test, the sanitized remediation receipt, and the 267-test offline validation evidence. The package remains at the fresh qualification boundary; no additional provider call occurred in this bookkeeping update.
+
+## 2026-09-20 P2.3 semantic qualification stop
+
+- Executed the one fresh fixed three-call assessor qualification authorized after prompt remediation, from commit `888cb40`. DeepInfra returned and the ledger durably retained all three calls (2,533 input, 709 output, 3,242 total tokens); the credential and transport were functional, and no retries or pilot calls occurred. Raw JSON structure passed, but Q1 made an incomplete absence claim and marked an unrelated monitor present, Q2 marked the external rain-jacket relation present and failed the recorded replay/exposure dependence rule, and Q3 marked unavailable output absent instead of unknown. P2.3 remains WAITING on the assessor qualification dependency; the proposed 299-call pilot remains untouched. Sanitized receipts are `docs/receipts/MNEME_P2.3_Assessor_Qualification_V2_Failure_Receipt.md` and `.json`.
