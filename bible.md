@@ -458,6 +458,7 @@
 - Completed the directly necessary P2.2 durability correction: contextual route consequence state and accepted outcome assessments now survive publication/reconstruction, and reviewed identity acceptance creates an atomic identity event/self-view transition. Full offline validation passed at 264 pytest tests, Ruff, and strict mypy across 46 source files. No provider call or credential access occurred; P2.3 live qualification and the proposed 299-call ceiling remain unrun.
 - Recorded P2.3 as a VALIDATING candidate in the work queue with assessor-contract, pilot-ledger, offline-validation, and boundary-audit receipts. The package remains open at the live qualification boundary; no qualification or pilot call is implied by this queue state.
 - Corrected the live assessor request boundary to use prompted raw JSON rather than DeepInfra's unsupported native response-format field, and added the fixed three-call qualification executor with durable result-before-validation receipts and no retry path. Offline validation now passes at 266 pytest tests, Ruff, and strict mypy across 47 source files; no provider call or credential access occurred.
+- Reconciled the P2.3 candidate receipt to `954173c`, including the raw-JSON qualification correction and the 266-test offline validation result. P2.3 remains at the fixed qualification boundary and has not consumed the proposed pilot budget.
 
 ## 2026-09-20 P2.3 assessor contract candidate
 
