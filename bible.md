@@ -581,3 +581,7 @@
 ## 2026-09-20 P2.3 source-role v6 queue reconciliation
 
 - Reconciled the P2.3 queue to the v6 qualification failure receipt and removed the stale duplicate qualification result entry so the queue now exposes the current Q1/Q2-pass, Q3-fail evidence. Package remains `WAITING` on `external:p2-assessor-qualification`; no pilot call was made.
+
+## 2026-09-20 P2.3 v6 evidence candidate pointer
+
+- Pointed the P2.3 candidate at the published v6 failure-evidence commit `2ebab41`; the queue remains `WAITING` on `external:p2-assessor-qualification` and records the final queue reconciliation at `c253314`. No new provider or pilot call occurred.
