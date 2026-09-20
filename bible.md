@@ -625,3 +625,7 @@
 ## 2026-09-20 P2.3 extraction repair binding correction
 
 - Offline audit found that a repair reservation used a new laboratory call ID while `InterpretationService` correctly retained the original episode interpretation operation. `PilotRuntime.extract()` now separates those coordinates, reuses the original operation for the single permitted repair, and persists/validates the repair result under the new call reservation without creating a second interpretation. Focused runtime tests, Ruff, and the complete 308-test suite pass; no provider call was made for this correction.
+
+## 2026-09-20 P2.3 assessment artifact restart correction
+
+- The pilot runtime writes assessor results under `assessment/`; the artifact verifier had allowed the runtime API to publish that directory but rejected it during restart verification. The verifier now admits and validates the existing assessment category alongside extraction, with runtime tests and Ruff passing. No provider call was made for this correction.

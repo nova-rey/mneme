@@ -453,12 +453,20 @@ class ArtifactStore:
                 "qualification",
                 "development",
                 "extraction",
+                "assessment",
                 "receipts",
                 "summary.json",
             }
             if {item.name for item in path.iterdir()} - allowed:
                 return False
-            for category in ("pilot", "qualification", "development", "extraction", "receipts"):
+            for category in (
+                "pilot",
+                "qualification",
+                "development",
+                "extraction",
+                "assessment",
+                "receipts",
+            ):
                 directory = path / category
                 if not directory.exists():
                     continue
