@@ -516,3 +516,7 @@
 ## 2026-09-20 P2 assessor role-separation amendment
 
 - Applied the additive `P2-ASSESSOR-SEPARATION-01` instruction. The developing Gemma binding remains unchanged; a separately fingerprinted DeepInfra Qwen assessor binding is now available through the existing Host boundary, with role-bound qualification accounting and fail-closed mixed-role reservations. Historical qualification receipts, learner semantics, frozen fixtures, budgets, and the P2.3 blocker remain unchanged. No provider call occurred in this offline correction.
+
+## 2026-09-20 P2 assessor role-separation offline gate
+
+- Pushed correction `7de05a25077ae09c1579e7b4a2632985df1c6d74`. The offline gate passed at 275 pytest tests, Ruff, strict mypy across 47 source files, wheel/install CLI smoke, and CI run `35529994781`. The designated Qwen assessor binding is ready for the one authorized qualification attempt; Gemma remains the developing host and no provider call occurred during remediation.

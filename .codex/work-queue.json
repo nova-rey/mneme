@@ -1057,7 +1057,7 @@
         "base_sha": "5ac5c0c",
         "returned_at": "2026-09-20T18:25:00.000000Z",
         "returned_by": "/root",
-        "sha": "5eb95b9"
+    "sha": "7de05a2"
       },
       "completion_criterion": "Production-equivalent assessor qualification and separately authorized pilot execute/resume/replay with honest engineering, adequacy, and research outcomes, or publish a truthful blocker.",
       "created_at": "2026-09-20T16:16:33.650428Z",
@@ -1085,10 +1085,13 @@
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_V3_Failure_Receipt.md",
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_V3_Failure_Receipt.json",
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_V4_Failure_Receipt.md",
-        "docs/receipts/MNEME_P2.3_Assessor_Qualification_V4_Failure_Receipt.json"
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_V4_Failure_Receipt.json",
+        "docs/decisions/MNEME_P2_Assessor_Role_Separation_Addendum.md",
+        "docs/receipts/MNEME_P2_Assessor_Role_Separation_Offline_Receipt.md",
+        "docs/receipts/MNEME_P2_Assessor_Role_Separation_Offline_Receipt.json"
       ],
       "id": "P2.3",
-      "notes": "Offline boundary passed. The first fixed three-call qualification failed structurally; prompt v2 corrected that contract without weakening validation. The second fixed three-call qualification failed semantic cases Q1/Q2/Q3; offline audit corrected validator ancestry scope. The explicitly authorized v3 fixed qualification again returned all three results but failed semantic cases Q1/Q2/Q3. The newly authorized v4 fixed qualification also returned all three results but failed semantic cases Q1/Q2/Q3; no retries or pilot calls occurred. Repeated semantic failure is preserved as evidence that the selected host has not demonstrated assessor suitability. The package remains WAITING on external:p2-assessor-qualification and the proposed ceiling remains 299 calls / 204,288 output tokens.",
+      "notes": "Offline boundary passed. Historical Gemma qualification failures remain unchanged. The additive assessor-separation amendment is implemented and audited at 7de05a2 with a separately fingerprinted Qwen assessor binding, while Gemma remains the developing host. The package remains WAITING on external:p2-assessor-qualification; the new Qwen qualification is explicitly authorized next, with no retries or pilot calls before it passes. The proposed ceiling remains 299 calls / 204,288 output tokens.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1140,8 +1143,8 @@
             "status": "PASS"
           },
           "p23-offline-validation": {
-            "receipt": "268 pytest; Ruff; strict mypy src across 47 files; prompt v2 plus scoped-ancestry validator; no provider calls",
-            "recorded_at": "2026-09-20T18:25:00.000000Z",
+          "receipt": "7de05a2; 275 pytest; Ruff; strict mypy src across 47 files; wheel/install CLI smoke; CI 35529994781; no provider calls",
+          "recorded_at": "2026-09-20T20:10:00.000000Z",
             "status": "PASS"
           },
           "p23-pilot-ledger": {
