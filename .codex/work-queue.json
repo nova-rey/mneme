@@ -1105,10 +1105,12 @@
         "docs/receipts/MNEME_P2.3_Assessor_Source_Role_Contract_Remediation_Receipt.md",
         "docs/receipts/MNEME_P2.3_Assessor_Source_Role_Contract_Remediation_Receipt.json",
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Failure_Receipt.md",
-        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Failure_Receipt.json"
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Failure_Receipt.json",
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Audit_Correction.md",
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Audit_Correction.json"
       ],
       "id": "P2.3",
-      "notes": "The fixed source-role v6 qualification from 46593a6 consumed exactly three Qwen calls: Q1/Q2 passed, Q3 returned absent for unavailable output coverage instead of unknown and failed strict validation. Pilot calls remain zero; no retry or resampling occurred. The sanitized failure receipt is published. Historical failures and the 299-call/204,288-token ceiling remain unchanged; package remains WAITING on external:p2-assessor-qualification for assessor-suitability review.",
+      "notes": "The fixed source-role v6 qualification from 46593a6 consumed exactly three Qwen calls: Q1/Q2 passed, Q3 failed both negation and unavailable-output semantics, with unavailable coverage surfaced first by strict validation. Pilot calls remain zero; no retry or resampling occurred. The failure receipt and append-only audit correction are published. Historical failures and the 299-call/204,288-token ceiling remain unchanged; package remains WAITING on external:p2-assessor-qualification for assessor-suitability review.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1146,7 +1148,7 @@
         ],
         "results": {
           "p23-assessor-qualification": {
-            "receipt": "docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Failure_Receipt.md and .json; Q1/Q2 passed, Q3 unavailable-source coverage returned absent instead of unknown; 3 calls, pilot 0",
+            "receipt": "docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Failure_Receipt.md and .json plus append-only audit correction; Q1/Q2 passed, Q3 failed negation and unavailable-source semantics; 3 calls, pilot 0",
             "recorded_at": "2026-09-20T22:10:00.000000Z",
             "status": "FAIL"
           },

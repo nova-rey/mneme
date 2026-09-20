@@ -585,3 +585,7 @@
 ## 2026-09-20 P2.3 v6 evidence candidate pointer
 
 - Pointed the P2.3 candidate at the published v6 failure-evidence commit `2ebab41`; the queue remains `WAITING` on `external:p2-assessor-qualification` and records the final queue reconciliation at `c253314`. No new provider or pilot call occurred.
+
+## 2026-09-20 P2.3 v6 qualification audit correction
+
+- Audited the persisted v6 Q3 result and found the failure receipt had incorrectly described the negated dial row as correct. The raw model output marked `dial → stops → ticking` supported despite an explicit negation, and marked unavailable output absent instead of unknown. Added an append-only audit correction without rewriting the original receipt, changing criteria, or making a provider call. Evidence: `docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Audit_Correction.md` and `.json`.

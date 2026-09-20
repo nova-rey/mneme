@@ -125,7 +125,9 @@ The documents are preserved in their supplied form and are intentionally not mer
   at Q3 and is recorded in [the v6 source-role qualification receipt](receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Failure_Receipt.md)
   ([JSON](receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Failure_Receipt.json));
   Q1/Q2 passed, Q3 returned `absent` for unavailable coverage instead of
-  `unknown`, and the pilot remains unrun.
+  `unknown`, and the pilot remains unrun. An append-only audit correction records
+  the additional Q3 negation failure in [the v6 audit correction](receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Audit_Correction.md)
+  ([JSON](receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Audit_Correction.json)).
 
   Future design context: [Developmental Self-Context](architecture/future/MNEME_Developmental_Self_Context_Architecture.md).
   This reference does not change the phase's implementation scope, frozen
