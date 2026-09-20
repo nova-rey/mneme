@@ -1053,11 +1053,11 @@
       "base_sha": "7157845",
       "campaign": "mneme-phase-two",
       "candidate": {
-        "artifact": "P2.3 source-role v6 qualification stop: Q1/Q2 passed, Q3 returned absent for unavailable coverage and failed strict validation; 3 Qwen calls, 3,190 input/804 output/3,994 total tokens, pilot 0; sanitized failure receipt published",
-        "base_sha": "46593a6f8ada594ac920d5da55dc7a71849fa1a6",
-        "returned_at": "2026-09-20T22:10:00.000000Z",
+        "artifact": "P2.3 self-contained-monitor v7 qualification stop: Q1/Q2 passed, Q3 failed frozen negation semantics; 3 Qwen calls, 3,190 input/819 output/4,009 total tokens, pilot 0",
+        "base_sha": "ce68af411d9530f1e8d32d4b4febef28dab50fd2",
+        "returned_at": "2026-09-20T22:37:11.994242+00:00",
         "returned_by": "/root",
-        "sha": "2ebab41"
+        "sha": "ce68af411d9530f1e8d32d4b4febef28dab50fd2"
       },
       "completion_criterion": "Production-equivalent assessor qualification and separately authorized pilot execute/resume/replay with honest engineering, adequacy, and research outcomes, or publish a truthful blocker.",
       "created_at": "2026-09-20T16:16:33.650428Z",
@@ -1107,10 +1107,12 @@
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Failure_Receipt.md",
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Failure_Receipt.json",
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Audit_Correction.md",
-        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Audit_Correction.json"
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Audit_Correction.json",
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Monitor_V7_Failure_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Monitor_V7_Failure_Receipt.json"
       ],
       "id": "P2.3",
-      "notes": "The fixed source-role v6 qualification from 46593a6 consumed exactly three Qwen calls: Q1/Q2 passed, Q3 failed both negation and unavailable-output semantics, with unavailable coverage surfaced first by strict validation. Pilot calls remain zero; no retry or resampling occurred. The failure receipt and append-only audit correction are published. Historical failures and the 299-call/204,288-token ceiling remain unchanged; package remains WAITING on external:p2-assessor-qualification for assessor-suitability review.",
+      "notes": "The fixed self-contained-monitor v7 qualification used p2-assessor-v4/p2-assessor-production-v6. All three Qwen calls returned and were durably retained: Q1/Q2 passed, Q3 returned absent/not_expressed for the explicitly negated dial proposition where the frozen case requires present/unsupported/expressed. Usage was 3,190 input, 819 output, 4,009 total tokens; provider cost unavailable. No retry, repair, resampling, model substitution, or pilot call occurred. The monitor serialization correction and offline validation are preserved; package remains WAITING on external:p2-assessor-qualification for assessor-suitability review.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1137,7 +1139,7 @@
       "session_ids": [],
       "status": "WAITING",
       "title": "Assessor qualification and bounded developmental pilot",
-      "updated_at": "2026-09-20T20:05:09.000000Z",
+      "updated_at": "2026-09-20T22:37:11.994268+00:00",
       "validation": {
         "required": [
           "p23-assessor-contract",
@@ -1148,8 +1150,8 @@
         ],
         "results": {
           "p23-assessor-qualification": {
-            "receipt": "docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Failure_Receipt.md and .json plus append-only audit correction; Q1/Q2 passed, Q3 failed negation and unavailable-source semantics; 3 calls, pilot 0",
-            "recorded_at": "2026-09-20T22:10:00.000000Z",
+            "receipt": "docs/receipts/MNEME_P2.3_Assessor_Qualification_Monitor_V7_Failure_Receipt.md and .json; Q1/Q2 passed, Q3 failed frozen negation semantic case; 3 calls, pilot 0",
+            "recorded_at": "2026-09-20T22:37:11.994266+00:00",
             "status": "FAIL"
           },
           "p23-assessor-contract": {
@@ -1170,8 +1172,8 @@
           "p23-offline-validation": {
             "receipt": "831d726; 284 pytest; Ruff; strict mypy src across 47 files; wheel/install CLI smoke; CI 35539129367; no provider calls",
             "recorded_at": "2026-09-20T21:40:00.000000Z",
-          "status": "PASS"
-        },
+            "status": "PASS"
+          },
           "p23-pilot-ledger": {
             "receipt": "PilotRun durable reservations/lifecycle, hard ceilings, pause/resume, sanitization; 13 focused tests",
             "recorded_at": "2026-09-20T17:05:14.751840Z",

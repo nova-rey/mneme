@@ -128,6 +128,9 @@ The documents are preserved in their supplied form and are intentionally not mer
   `unknown`, and the pilot remains unrun. An append-only audit correction records
   the additional Q3 negation failure in [the v6 audit correction](receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Audit_Correction.md)
   ([JSON](receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Audit_Correction.json)).
+  The subsequent self-contained-monitor v7 qualification is recorded in [the v7 monitor failure receipt](receipts/MNEME_P2.3_Assessor_Qualification_Monitor_V7_Failure_Receipt.md)
+  ([JSON](receipts/MNEME_P2.3_Assessor_Qualification_Monitor_V7_Failure_Receipt.json));
+  Q1/Q2 passed and Q3 again failed the frozen negation semantic case, so the pilot remains unrun.
 
   Future design context: [Developmental Self-Context](architecture/future/MNEME_Developmental_Self_Context_Architecture.md).
   This reference does not change the phase's implementation scope, frozen
