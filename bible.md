@@ -637,3 +637,7 @@
 ## 2026-09-20 P2.3 pilot extraction stop
 
 - The approved post-qualification pilot was dispatched at fixed coordinates and stopped under the finite-repair rule. Six provider calls returned: two Gemma development responses, two initial Gemma extractions, one Gemma extraction repair, and one Qwen assessment. Subject 0 episode 2 failed strict source-bound quotation validation on both initial and repair output; the model-output quotation did not occur verbatim in source `s1`. No evaluation calls were made, and no adequacy or completion claim is made. Usage was 3,411 input, 2,128 output, 5,539 total tokens; cost unavailable. Evidence: `docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md` and `.json`.
+
+## 2026-09-20 P2.3 extraction quotation formatting correction
+
+- After the finite pilot stop showed Gemma stripping Markdown markers from model-output quotations, the extraction prompt was tightened to state that every formatting marker, punctuation mark, and whitespace character is part of the immutable source and must be copied exactly. A prompt regression covers this instruction. The strict quotation validator is unchanged; no historical output or receipt was rewritten and no provider call was made for this correction. Focused semantic/interpreter tests and the complete 308-test suite pass.

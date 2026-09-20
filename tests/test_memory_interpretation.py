@@ -152,6 +152,8 @@ def test_extraction_prompt_declares_strict_residue_record_shape(tmp_path):
         system = request["request"]["system"]
         assert "Return raw JSON only" in system
         assert "no Markdown fences" in system
+        assert "Formatting is part of the immutable source" in system
+        assert "preserve every Markdown marker" in system
         assert "no introductory or concluding prose" in system
         assert "no other concept or relationship enum values" in system
         assert "core_concepts records require key, label, kind" in system
