@@ -19,8 +19,8 @@ from typing import Any
 
 from ..contracts import GenerationRequest
 
-ASSESSOR_SCHEMA_VERSION = "p2-assessor-v2"
-ASSESSOR_PROMPT_VERSION = "p2-assessor-production-v4"
+ASSESSOR_SCHEMA_VERSION = "p2-assessor-v3"
+ASSESSOR_PROMPT_VERSION = "p2-assessor-production-v5"
 PROVENANCE_SCHEMA_VERSION = "p2-provenance-v1"
 
 ASSESSMENT_STATUSES = frozenset({"present", "absent", "unknown"})
@@ -40,6 +40,19 @@ def _mapping(value: object, field: str) -> Mapping[str, Any]:
     if not isinstance(value, Mapping):
         raise AssessorValidationError(f"{field} must be an object")
     return value
+
+
+def _proposition(value: object, field: str) -> dict[str, str]:
+    """Validate the complete proposition required by the current relation schema."""
+
+    mapping = _mapping(value, field)
+    required = ("from", "to", "relation")
+    missing = [name for name in required if name not in mapping]
+    if missing:
+        raise AssessorValidationError(
+            f"{field} requires complete proposition field(s): {', '.join(missing)}"
+        )
+    return {name: _text(mapping[name], f"{field}.{name}") for name in required}
 
 
 def _string_list(value: object, field: str) -> tuple[str, ...]:
@@ -92,7 +105,8 @@ class AssessorMonitor:
 
     def __post_init__(self) -> None:
         _text(self.monitor_id, "monitor_id")
-        _mapping(self.relation, f"monitor {self.monitor_id}.relation")
+        normalized = _proposition(self.relation, f"monitor {self.monitor_id}.relation")
+        object.__setattr__(self, "relation", normalized)
         _text(self.context, f"monitor {self.monitor_id}.context")
         if not self.required_source_slots:
             raise AssessorValidationError(
@@ -126,7 +140,7 @@ class AssessorRequest:
     assessor_version: str = ASSESSOR_PROMPT_VERSION
 
     def __post_init__(self) -> None:
-        _mapping(self.candidate, "candidate")
+        object.__setattr__(self, "candidate", _proposition(self.candidate, "candidate"))
         if not self.sources:
             raise AssessorValidationError("assessor request requires sources")
         slots = [source.slot for source in self.sources]
@@ -658,10 +672,13 @@ def assessor_generation_request(
                     "identifies current external input only and must not make an available "
                     "model_output or memory source unavailable. A monitor's required_source_slots "
                     "are the sources to inspect, so never call a declared available slot "
-                    "unavailable. Compare the complete candidate proposition, including its "
-                    "from, to, and relation fields, against the monitor relation: a quotation "
-                    "supporting one target does not support a different target merely because "
-                    "the wording overlaps. For a present model-output expression, use "
+                    "unavailable. Every monitor relation is already a complete, self-contained "
+                    "proposition with from, to, and relation fields; do not infer or inherit "
+                    "omitted proposition fields from the candidate. Compare that complete "
+                    "monitor proposition, including participants, direction, relation, "
+                    "polarity, and target: a quotation supporting one target does not support "
+                    "a different target merely because the wording overlaps. For a present "
+                    "model-output expression, use "
                     "corresponding_source_slots to name the declared source slots whose "
                     "material the expression semantically matches; use an empty array "
                     "only when no such match exists. Do not emit dependence labels, "
@@ -709,9 +726,21 @@ def qualification_cases() -> tuple[QualificationCase, ...]:
             AssessorSource("s1", "model_output", True, "Pulling the lever released the latch."),
         ),
         monitors=(
-            AssessorMonitor("latch", {"relation": "causes"}, ("s0",)),
-            AssessorMonitor("echo", {"relation": "causes"}, ("s1",)),
-            AssessorMonitor("unrelated", {"relation": "causes", "to": "unrelated"}, ("s0",)),
+            AssessorMonitor(
+                "latch",
+                {"from": "lever", "to": "latch_release", "relation": "causes"},
+                ("s0",),
+            ),
+            AssessorMonitor(
+                "echo",
+                {"from": "lever", "to": "latch_release", "relation": "causes"},
+                ("s1",),
+            ),
+            AssessorMonitor(
+                "unrelated",
+                {"from": "lever", "to": "unrelated", "relation": "causes"},
+                ("s0",),
+            ),
         ),
         context={"current_input_source_slots": ["s0"]},
     )
@@ -723,8 +752,16 @@ def qualification_cases() -> tuple[QualificationCase, ...]:
             AssessorSource("s2", "model_output", True, "Turning the handle raises the shade."),
         ),
         monitors=(
-            AssessorMonitor("jacket_direction", {"relation": "raises"}, ("s0",)),
-            AssessorMonitor("shade", {"relation": "raises"}, ("s1", "s2")),
+            AssessorMonitor(
+                "jacket_direction",
+                {"from": "rain_jacket", "to": "shade", "relation": "raises"},
+                ("s0",),
+            ),
+            AssessorMonitor(
+                "shade",
+                {"from": "handle", "to": "shade", "relation": "raises"},
+                ("s1", "s2"),
+            ),
         ),
         memory_exposure=(
             {"source_slot": "s1", "exposure_id": "memory-1"},
@@ -743,8 +780,16 @@ def qualification_cases() -> tuple[QualificationCase, ...]:
             AssessorSource("s1", "model_output", False, None, "model-output-unavailable"),
         ),
         monitors=(
-            AssessorMonitor("dial", {"relation": "stops"}, ("s0",)),
-            AssessorMonitor("unavailable_output", {"relation": "stops"}, ("s1",)),
+            AssessorMonitor(
+                "dial",
+                {"from": "dial", "to": "ticking", "relation": "stops"},
+                ("s0",),
+            ),
+            AssessorMonitor(
+                "unavailable_output",
+                {"from": "dial", "to": "ticking", "relation": "stops"},
+                ("s1",),
+            ),
         ),
     )
     return (

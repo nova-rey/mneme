@@ -6,6 +6,7 @@ from dataclasses import replace
 import pytest
 
 from mneme.development import (
+    AssessorMonitor,
     AssessorValidationError,
     assessor_generation_request,
     qualification_cases,
@@ -46,7 +47,7 @@ def _row(
 def _valid_result(case_id: str) -> dict[str, object]:
     if case_id == "Q1":
         return {
-            "schema_version": "p2-assessor-v2",
+            "schema_version": "p2-assessor-v3",
             "assessments": [
                 _row(
                     "latch", status="present", support="supported", expression="expressed",
@@ -68,7 +69,7 @@ def _valid_result(case_id: str) -> dict[str, object]:
         }
     if case_id == "Q2":
         return {
-            "schema_version": "p2-assessor-v2",
+            "schema_version": "p2-assessor-v3",
             "assessments": [
                 _row(
                     "jacket_direction", status="absent", support="unsupported",
@@ -85,7 +86,7 @@ def _valid_result(case_id: str) -> dict[str, object]:
             ],
         }
     return {
-        "schema_version": "p2-assessor-v2",
+        "schema_version": "p2-assessor-v3",
         "assessments": [
             _row(
                 "dial", status="present", support="unsupported", expression="expressed",
@@ -125,7 +126,7 @@ def test_assessor_prompt_exposes_complete_enum_and_json_contract() -> None:
 
     assert "Return raw JSON only" in prompt
     assert "Do not use Markdown fences" in prompt
-    assert '"schema_version": "p2-assessor-v2"' in prompt
+    assert '"schema_version": "p2-assessor-v3"' in prompt
     assert '"assessments": [' in prompt
     for value in ("present", "absent", "unknown"):
         assert value in prompt
@@ -155,7 +156,7 @@ def test_assessor_prompt_exposes_complete_enum_and_json_contract() -> None:
     assert "MNEME resolves" in prompt
     assert "Every source with available=true is available" in prompt
     assert "current_input_source_slots" in prompt
-    assert "complete candidate proposition" in prompt
+    assert "complete monitor proposition" in prompt
     assert "does not support a different target" in prompt
 
 
@@ -201,7 +202,41 @@ def test_qualification_requests_preserve_complete_proposition_and_source_roles()
     q3 = cases["Q3"].request.to_dict()
     assert q3["sources"][1]["available"] is False
     assert q3["sources"][1]["role"] == "model_output"
-    assert q3["monitors"][0]["relation"] == {"relation": "stops"}
+    assert q1["monitors"][1]["relation"] == {
+        "from": "lever", "to": "latch_release", "relation": "causes"
+    }
+    assert q1["monitors"][2]["relation"] == {
+        "from": "lever", "to": "unrelated", "relation": "causes"
+    }
+    assert q2["monitors"][0]["relation"] == {
+        "from": "rain_jacket", "to": "shade", "relation": "raises"
+    }
+    assert q2["monitors"][1]["relation"] == {
+        "from": "handle", "to": "shade", "relation": "raises"
+    }
+    assert q3["monitors"][0]["relation"] == {
+        "from": "dial", "to": "ticking", "relation": "stops"
+    }
+
+
+def test_partial_monitor_proposition_is_rejected_before_provider_dispatch() -> None:
+    with pytest.raises(AssessorValidationError, match="complete proposition"):
+        AssessorMonitor("partial", {"relation": "causes"}, ("s0",))
+
+
+def test_monitor_proposition_is_frozen_before_provider_serialization() -> None:
+    relation = {"from": "lever", "to": "latch_release", "relation": "causes"}
+    monitor = AssessorMonitor("latch", relation, ("s0",))
+    relation.pop("to")
+    assert monitor.to_dict()["relation"] == {
+        "from": "lever", "to": "latch_release", "relation": "causes"
+    }
+
+
+def test_all_qualification_monitors_serialize_complete_propositions() -> None:
+    for case in qualification_cases():
+        for monitor in case.request.monitors:
+            assert set(monitor.relation) >= {"from", "to", "relation"}
 
 
 def test_q3_negation_quote_and_unavailable_source_are_fail_closed() -> None:

@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "status": "OFFLINE_GATE_PASS",
+  "base_commit": "ad588782faf2f6989333d0528130ee504fccdce7",
+  "provider_calls": 0,
+  "assessor_schema": "p2-assessor-v3",
+  "prompt_version": "p2-assessor-production-v5",
+  "provenance_schema": "p2-provenance-v1",
+  "correction": {
+    "complete_monitor_proposition": ["from", "to", "relation"],
+    "partial_construction": "rejected before provider dispatch",
+    "post_construction_mutation": "defensively normalized and frozen"
+  },
+  "qualification_monitors_complete": true,
+  "qualification_and_pilot_request_builder": "assessor_generation_request",
+  "validation": {
+    "focused_tests": 20,
+    "pytest": "283 passed",
+    "ruff": "PASS",
+    "mypy_strict": "PASS",
+    "wheel_fresh_install_smoke": "PASS"
+  },
+  "historical_evidence_preserved": true,
+  "pilot_calls": 0,
+  "next_action": "one fixed Q1/Q2/Q3 qualification under p2-assessor-v3/p2-assessor-production-v5"
+}

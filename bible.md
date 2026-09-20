@@ -557,3 +557,7 @@
 ## 2026-09-20 P2.3 prompt v4 queue reconciliation
 
 - Reconciled P2.3 to evidence commit `71b6323`, retaining `WAITING` on `external:p2-assessor-qualification`. The queue records the prompt-v4 Q1 semantic stop and preserves the historical v2 failure and offline remediation; Q2/Q3 and pilot calls remain zero.
+
+## 2026-09-20 P2.3 complete monitor proposition correction
+
+- Applied the additive request-contract correction after the prompt-v4 Q1 stop. Assessor schema `p2-assessor-v3` and prompt `p2-assessor-production-v5` now require complete self-contained `{from, to, relation}` propositions for candidates and every monitor; partial mappings are rejected and normalized copies prevent post-construction mutation from producing partial provider payloads. Q1/Q2/Q3 semantics, source texts, expected outcomes, provenance resolver, learner, and acceptance criteria remain unchanged. Offline validation passed at 283 pytest tests, Ruff, strict mypy, wheel build, and fresh-install CLI smoke with no provider call. Historical evidence remains unchanged; one fixed live qualification under the new contract is authorized by the standing bounded-verification rule.
