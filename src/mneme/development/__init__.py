@@ -6,6 +6,21 @@ same accepted observations without invoking a model.
 """
 
 from .authority import AuthorityError, IdentityReviewService, QuarantineRecord, QuarantineService
+from .assessment import (
+    ASSESSOR_PROMPT_VERSION,
+    ASSESSOR_SCHEMA_VERSION,
+    AssessorMonitor,
+    AssessorRequest,
+    AssessorSource,
+    AssessorValidationError,
+    EvidenceQuote,
+    QualificationCase,
+    ValidatedAssessment,
+    assessor_generation_request,
+    qualification_cases,
+    validate_qualification_case,
+    validate_assessor_result,
+)
 from .learner import (
     FIXED_SCALE,
     ConsequenceAssessment,
@@ -34,6 +49,14 @@ from .learner import (
 
 __all__ = [
     "AuthorityError",
+    "ASSESSOR_PROMPT_VERSION",
+    "ASSESSOR_SCHEMA_VERSION",
+    "AssessorMonitor",
+    "AssessorRequest",
+    "AssessorSource",
+    "AssessorValidationError",
+    "EvidenceQuote",
+    "QualificationCase",
     "IdentityReviewService",
     "QuarantineRecord",
     "QuarantineService",
@@ -55,9 +78,14 @@ __all__ = [
     "TerminalDisposition",
     "TransitionInput",
     "TransitionResult",
+    "ValidatedAssessment",
+    "assessor_generation_request",
+    "qualification_cases",
     "apply_consequence",
     "apply_transition",
     "route_exposure",
     "route_score",
     "select_routes",
+    "validate_assessor_result",
+    "validate_qualification_case",
 ]
