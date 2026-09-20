@@ -822,56 +822,218 @@
           "sanitized acceptance receipt",
           "complete cheap validation"
         ],
-        "results": [
-          {
-            "sha": "working-tree",
-            "check": "complete FakeHost live-driver control",
-            "result": "PASS; 23 calls, P1.1/P1.2/P1.3, exact-once re-entry"
+        "results": {
+          "bounded live gate": {
+            "receipt": "68bebde87f22ffed06e3d07676274546a2477a45; 23 returned DeepInfra calls; P1.1/P1.2/P1.3 PASS; historical failures remain preserved",
+            "recorded_at": "2026-09-20T02:00:00Z",
+            "status": "PASS"
           },
-          {
-            "sha": "working-tree",
-            "check": "pytest/ruff/mypy",
-            "result": "PASS; 218 pytest, Ruff, strict mypy 41 source files"
+          "complete FakeHost live-driver control": {
+            "receipt": "23-call P1.1/P1.2/P1.3 control with exact-once re-entry",
+            "recorded_at": "2026-09-20T02:00:00Z",
+            "status": "PASS"
           },
-          {
-            "sha": "44e9d75ddd16eebe757f0c7975a07636c0f9b318",
-            "check": "bounded DeepInfra bridged run",
-            "result": "P1.1 PASS; P1.2 FAILED after one repair; 8 calls; P1.3 not started"
+          "persisted artifact audit": {
+            "receipt": "68bebde87f22ffed06e3d07676274546a2477a45; route provenance, durable naming, restart/reopen, checkpoint invariance, and 12 readouts verified",
+            "recorded_at": "2026-09-20T02:00:00Z",
+            "status": "PASS"
           },
-          {
-            "sha": "2cdf3ac10572bf9424220aee50706b01fc9f15ee",
-            "check": "corrected-contract P1.1 live run",
-            "result": "STOPPED; 4 returned calls; route not formed; P1.2/P1.3 not attempted"
+          "pytest/ruff/mypy": {
+            "receipt": "222 pytest, Ruff, strict mypy across 41 source files, fresh-install CLI smoke",
+            "recorded_at": "2026-09-20T02:00:00Z",
+            "status": "PASS"
           },
-          {
-            "sha": "950f596081aaf0457a933dd66d05609e5b9299bf",
-            "check": "edge-key collision remediation",
-            "result": "PASS; 221 pytest, Ruff, strict mypy, fresh-install smoke, CI 35476530136; reused local e1 preserves both edges and route"
-          },
-          {
-            "sha": "68bebde87f22ffed06e3d07676274546a2477a45",
-            "check": "bounded live gate",
-            "result": "PASS; 23 returned DeepInfra calls, P1.1/P1.2/P1.3 all PASS, no retries or uncertain calls"
-          },
-          {
-            "sha": "68bebde87f22ffed06e3d07676274546a2477a45",
-            "check": "persisted artifact audit",
-            "result": "PASS; route provenance, durable naming, exact-once records, restart/reopen, frozen checkpoint invariance, and 12 evaluation readouts verified"
-          },
-          {
-            "sha": "68bebde87f22ffed06e3d07676274546a2477a45",
-            "check": "final cheap validation",
-            "result": "PASS; 222 pytest, Ruff, strict mypy (41 source files), fresh-install CLI smoke"
-          },
-          {
-            "sha": "68bebde87f22ffed06e3d07676274546a2477a45",
-            "check": "sanitized acceptance receipt",
-            "result": "PASS; final live receipt and machine-readable companion published"
+          "sanitized acceptance receipt": {
+            "receipt": "docs/receipts/MNEME_Phase_One_Live_Acceptance_Final_Receipt.md and .json",
+            "recorded_at": "2026-09-20T02:00:00Z",
+            "status": "PASS"
           }
-        ]
+        }
       },
       "waiting_on": [],
       "workstream": "phase-one"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "7157845",
+      "campaign": "mneme-phase-two",
+      "candidate": null,
+      "completion_criterion": "P2.1 pure learner, exposure gate, provenance, atomic publication, replay, and foundation repairs pass adversarial audit with complete receipts.",
+      "created_at": "2026-09-20T16:16:33.559371Z",
+      "dependencies": [],
+      "domain": "developmental-runtime",
+      "edit_boundaries": [
+        "src/mneme",
+        "tests",
+        "docs/receipts",
+        "docs",
+        "bible.md",
+        ".codex/work-queue.json"
+      ],
+      "evidence_refs": [],
+      "id": "P2.1",
+      "notes": "Approved Phase Two plan; implementation authorized by active goal.",
+      "owner": "/root/p21_supervisor",
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "p21-prerequisites",
+        "p21-learner",
+        "p21-provenance",
+        "p21-publication"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": false,
+          "name": "model-agent",
+          "units": 1
+        },
+        {
+          "exclusive": true,
+          "name": "canonical-integration",
+          "units": 1
+        }
+      ],
+      "scope": "Implement P2.1 foundation repairs, stable semantic bindings, production-equivalent assessor contract, pure replayable learner, learning opt-in, and atomic interpretation/learner publication. Exclude P2.2 retention/identity review and P2.3 paid pilot.",
+      "session_ids": [
+        "p21-supervisor-20260920"
+      ],
+      "status": "RUNNING",
+      "title": "Replayable learner and trustworthy inputs",
+      "updated_at": "2026-09-20T16:16:42.878572Z",
+      "validation": {
+        "required": [],
+        "results": {}
+      },
+      "waiting_on": [],
+      "workstream": "phase-two"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "7157845",
+      "campaign": "mneme-phase-two",
+      "candidate": null,
+      "completion_criterion": "P2.2 six scenarios, learned restraint/recovery, retention, identity review, quarantine, forks, and crash recovery pass adversarial audit with complete receipts.",
+      "created_at": "2026-09-20T16:16:33.604152Z",
+      "dependencies": [
+        "package:P2.1"
+      ],
+      "domain": "developmental-runtime",
+      "edit_boundaries": [
+        "src/mneme",
+        "tests",
+        "docs/receipts",
+        "docs",
+        "bible.md",
+        ".codex/work-queue.json"
+      ],
+      "evidence_refs": [],
+      "id": "P2.2",
+      "notes": "Blocked until P2.1 is accepted.",
+      "owner": null,
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "p22-restraint",
+        "p22-retention",
+        "p22-identity",
+        "p22-recovery"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": false,
+          "name": "model-agent",
+          "units": 1
+        },
+        {
+          "exclusive": true,
+          "name": "canonical-integration",
+          "units": 1
+        }
+      ],
+      "scope": "Implement P2.2 retention, contextual consequences, quarantine/rebuild, reviewed identity transitions, fork inheritance, revocation, and recovery. Exclude P2.3 prospective pilot.",
+      "session_ids": [],
+      "status": "WAITING",
+      "title": "Restraint, retention, reviewed identity, and recovery",
+      "updated_at": "2026-09-20T16:16:33.604152Z",
+      "validation": {
+        "required": [],
+        "results": {}
+      },
+      "waiting_on": [
+        "package:P2.1"
+      ],
+      "workstream": "phase-two"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "7157845",
+      "campaign": "mneme-phase-two",
+      "candidate": null,
+      "completion_criterion": "Production-equivalent assessor qualification and separately authorized pilot execute/resume/replay with honest engineering, adequacy, and research outcomes, or publish a truthful blocker.",
+      "created_at": "2026-09-20T16:16:33.650428Z",
+      "dependencies": [
+        "package:P2.2"
+      ],
+      "domain": "developmental-pilot",
+      "edit_boundaries": [
+        "src/mneme",
+        "tests",
+        "configs",
+        "docs/receipts",
+        "docs",
+        "bible.md",
+        ".codex/work-queue.json"
+      ],
+      "evidence_refs": [],
+      "id": "P2.3",
+      "notes": "Blocked until P2.2 is accepted; proposed live ceiling is 299 calls / 204,288 output tokens and is not yet a live authorization.",
+      "owner": null,
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "p23-qualification",
+        "p23-pilot",
+        "p23-replay",
+        "p23-release"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": false,
+          "name": "model-agent",
+          "units": 1
+        },
+        {
+          "exclusive": true,
+          "name": "canonical-integration",
+          "units": 1
+        }
+      ],
+      "scope": "Run the fixed three-call production-equivalent assessor qualification and, only if it passes and separately authorized, the 299-call proposed pilot. Exclude Phase Three.",
+      "session_ids": [],
+      "status": "WAITING",
+      "title": "Assessor qualification and bounded developmental pilot",
+      "updated_at": "2026-09-20T16:16:33.650428Z",
+      "validation": {
+        "required": [],
+        "results": {}
+      },
+      "waiting_on": [
+        "package:P2.2"
+      ],
+      "workstream": "phase-two"
     }
   ],
   "project": "nova-rey/mneme",
@@ -886,5 +1048,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-20T01:05:00Z"
+  "updated_at": "2026-09-20T16:16:42.878701Z"
 }
