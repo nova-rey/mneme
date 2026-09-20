@@ -951,7 +951,13 @@
       },
       "base_sha": "7157845",
       "campaign": "mneme-phase-two",
-      "candidate": null,
+      "candidate": {
+        "artifact": "P2.2 offline candidate: retention/consequence/authority/schema7/fork evidence; 249 pytest, Ruff, strict mypy",
+        "base_sha": "3233469",
+        "returned_at": "2026-09-20T16:52:44.384774Z",
+        "returned_by": "/root",
+        "sha": "5ac5c0c"
+      },
       "completion_criterion": "P2.2 six scenarios, learned restraint/recovery, retention, identity review, quarantine, forks, and crash recovery pass adversarial audit with complete receipts.",
       "created_at": "2026-09-20T16:16:33.604152Z",
       "dependencies": [
@@ -966,10 +972,12 @@
         "bible.md",
         ".codex/work-queue.json"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "P2.2 offline stop-audit: commits 23fcaa4, 5ac5c0c; retention/consequence/authority/schema7/fork evidence; complete offline validation; no provider calls"
+      ],
       "id": "P2.2",
       "notes": "Blocked until P2.1 is accepted.",
-      "owner": "/root",
+      "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -992,15 +1000,39 @@
         }
       ],
       "scope": "Implement P2.2 retention, contextual consequences, quarantine/rebuild, reviewed identity transitions, fork inheritance, revocation, and recovery. Exclude P2.3 prospective pilot.",
-      "session_ids": [
-        "p22-root-20260920"
-      ],
-      "status": "RUNNING",
+      "session_ids": [],
+      "status": "DONE",
       "title": "Restraint, retention, reviewed identity, and recovery",
-      "updated_at": "2026-09-20T16:38:33.086780Z",
+      "updated_at": "2026-09-20T16:52:53.408975Z",
       "validation": {
-        "required": [],
-        "results": {}
+        "required": [
+          "p22-dynamics",
+          "p22-authority",
+          "p22-fork-revocation",
+          "p22-recovery"
+        ],
+        "results": {
+          "p22-authority": {
+            "receipt": "schema7 outcome/quarantine/identity-review tables; failed-result durability; quarantine add/release; explicit learning permission",
+            "recorded_at": "2026-09-20T16:52:53.281136Z",
+            "status": "PASS"
+          },
+          "p22-dynamics": {
+            "receipt": "learner tests: measured absence, modeled advance, unsupported streak, unknown freeze, consequence caps, weak/established/saturated restraint and recovery, competing/hard gates",
+            "recorded_at": "2026-09-20T16:52:53.222095Z",
+            "status": "PASS"
+          },
+          "p22-fork-revocation": {
+            "receipt": "fork learner snapshot/value projection and active quarantine inheritance; parent/child independent current tips",
+            "recorded_at": "2026-09-20T16:52:53.325657Z",
+            "status": "PASS"
+          },
+          "p22-recovery": {
+            "receipt": "249 pytest; Ruff; strict mypy; fork/checkpoint and migration tests; no provider calls",
+            "recorded_at": "2026-09-20T16:52:53.366384Z",
+            "status": "PASS"
+          }
+        }
       },
       "waiting_on": [],
       "workstream": "phase-two"
@@ -1012,7 +1044,13 @@
       },
       "base_sha": "7157845",
       "campaign": "mneme-phase-two",
-      "candidate": null,
+      "candidate": {
+        "artifact": "P2.3 offline candidate: production-shaped assessor Q1/Q2/Q3, durable pilot ledger, P2.2 route/outcome/identity durability; 264 pytest, Ruff, strict mypy; no provider calls",
+        "base_sha": "5ac5c0c",
+        "returned_at": "2026-09-20T17:04:41.965235Z",
+        "returned_by": "/root",
+        "sha": "a442f02"
+      },
       "completion_criterion": "Production-equivalent assessor qualification and separately authorized pilot execute/resume/replay with honest engineering, adequacy, and research outcomes, or publish a truthful blocker.",
       "created_at": "2026-09-20T16:16:33.650428Z",
       "dependencies": [
@@ -1031,7 +1069,7 @@
       "evidence_refs": [],
       "id": "P2.3",
       "notes": "Blocked until P2.2 is accepted; proposed live ceiling is 299 calls / 204,288 output tokens and is not yet a live authorization.",
-      "owner": null,
+      "owner": "/root",
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -1054,17 +1092,43 @@
         }
       ],
       "scope": "Run the fixed three-call production-equivalent assessor qualification and, only if it passes and separately authorized, the 299-call proposed pilot. Exclude Phase Three.",
-      "session_ids": [],
-      "status": "WAITING",
-      "title": "Assessor qualification and bounded developmental pilot",
-      "updated_at": "2026-09-20T16:16:33.650428Z",
-      "validation": {
-        "required": [],
-        "results": {}
-      },
-      "waiting_on": [
-        "package:P2.2"
+      "session_ids": [
+        "p23-validation-20260920"
       ],
+      "status": "VALIDATING",
+      "title": "Assessor qualification and bounded developmental pilot",
+      "updated_at": "2026-09-20T17:05:14.831144Z",
+      "validation": {
+        "required": [
+          "p23-assessor-contract",
+          "p23-pilot-ledger",
+          "p23-offline-validation",
+          "p23-boundary-audit"
+        ],
+        "results": {
+          "p23-assessor-contract": {
+            "receipt": "assessment.py production-shaped request/result contract; Q1/Q2/Q3, strict quotes/coverage/ancestry tests",
+            "recorded_at": "2026-09-20T17:05:14.693257Z",
+            "status": "PASS"
+          },
+          "p23-boundary-audit": {
+            "receipt": "P2.2 route/outcome/identity durability correction audited; offline receipt docs/receipts/MNEME_P2.3_Offline_Assessor_Pilot_Boundary_Receipt.md",
+            "recorded_at": "2026-09-20T17:05:14.831129Z",
+            "status": "PASS"
+          },
+          "p23-offline-validation": {
+            "receipt": "264 pytest; Ruff; strict mypy src; no provider calls",
+            "recorded_at": "2026-09-20T17:05:14.792123Z",
+            "status": "PASS"
+          },
+          "p23-pilot-ledger": {
+            "receipt": "PilotRun durable reservations/lifecycle, hard ceilings, pause/resume, sanitization; 13 focused tests",
+            "recorded_at": "2026-09-20T17:05:14.751840Z",
+            "status": "PASS"
+          }
+        }
+      },
+      "waiting_on": [],
       "workstream": "phase-two"
     }
   ],
@@ -1080,5 +1144,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-20T16:38:33.086856Z"
+  "updated_at": "2026-09-20T17:05:14.831199Z"
 }
