@@ -148,11 +148,19 @@ def fork_from_checkpoint(
                 parent_manifest_row = (
                     (*tuple(parent_manifest_row), None, 0) if parent_manifest_row else None
                 )
+            elif source_schema >= 7:
+                parent_manifest_row = source.connection.execute(
+                    "SELECT graph_snapshot_id,graph_revision,accepted_history_digest,"
+                    "self_view_id,self_view_version,learner_snapshot_id,"
+                    "learner_configuration_digest,binding_version,opportunity,coverage_json,"
+                    "authority_revision "
+                    "FROM manifests WHERE manifest_id=?",
+                    (parent_manifest,),
+                ).fetchone()
             else:
                 parent_manifest_row = source.connection.execute(
                     "SELECT graph_snapshot_id,graph_revision,accepted_history_digest,"
-                    "self_view_id,self_view_version "
-                    "FROM manifests WHERE manifest_id=?",
+                    "self_view_id,self_view_version FROM manifests WHERE manifest_id=?",
                     (parent_manifest,),
                 ).fetchone()
             if parent_manifest_row is None:
@@ -197,6 +205,9 @@ def fork_from_checkpoint(
                     raise SnapshotError("checkpoint policy is missing")
                 now = _utc()
                 child_view_id: str | None = None
+                child_learner_snapshot_id: str | None = None
+                if len(parent_manifest_row) > 5 and parent_manifest_row[5] is not None:
+                    child_learner_snapshot_id = new_id()
                 db.execute(
                     "UPDATE store_info SET artifact_kind='working',active_instance_id=?",
                     (child_id,),
@@ -255,7 +266,9 @@ def fork_from_checkpoint(
                     "manifest_id,instance_id,revision,parent_manifest_id,inherited_base_manifest_id,"
                     "policy_id,self_ref_id,format_version,controller_version,integrity_digest,"
                     "accepted_history_digest,graph_snapshot_id,graph_revision,accepted_episode_count,"
-                    "self_view_id,self_view_version) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    "self_view_id,self_view_version,learner_snapshot_id,"
+                    "learner_configuration_digest,binding_version,opportunity,coverage_json,"
+                    "authority_revision) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     (
                         child_manifest,
                         child_id,
@@ -273,8 +286,91 @@ def fork_from_checkpoint(
                         0,
                         child_view_id,
                         parent_manifest_row[4],
+                        child_learner_snapshot_id,
+                        parent_manifest_row[6] if len(parent_manifest_row) > 6 else None,
+                        parent_manifest_row[7] if len(parent_manifest_row) > 7 else None,
+                        parent_manifest_row[8] if len(parent_manifest_row) > 8 else None,
+                        parent_manifest_row[9] if len(parent_manifest_row) > 9 else None,
+                        parent_manifest_row[10] if len(parent_manifest_row) > 10 else None,
                     ),
                 )
+                if child_learner_snapshot_id is not None:
+                    learner_snapshot = db.execute(
+                        "SELECT opportunity,learner_version,configuration_json,content_digest "
+                        "FROM learner_snapshots WHERE snapshot_id=?",
+                        (parent_manifest_row[5],),
+                    ).fetchone()
+                    if learner_snapshot is not None:
+                        db.execute(
+                            "INSERT INTO learner_snapshots VALUES(?,?,?,?,?,?,?,?)",
+                            (
+                                child_learner_snapshot_id,
+                                child_id,
+                                child_manifest,
+                                learner_snapshot[0],
+                                learner_snapshot[1],
+                                learner_snapshot[2],
+                                learner_snapshot[3],
+                                now,
+                            ),
+                        )
+                    for value in db.execute(
+                        "SELECT edge_key,context,accessibility,support,consequence,"
+                        "lifetime_credit,induced_credit,rolling_credit,last_consolidation_opportunity,"
+                        "inactivity_ticks,opportunity,content_digest,update_id "
+                        "FROM learner_values WHERE instance_id=?",
+                        (lineage["instance_id"],),
+                    ):
+                        db.execute(
+                            "INSERT INTO learner_values VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                            (
+                                new_id(),
+                                child_id,
+                                value[12],
+                                value[0],
+                                value[1],
+                                value[2],
+                                value[3],
+                                value[4],
+                                value[5],
+                                value[6],
+                                value[7],
+                                value[8],
+                                value[9],
+                                value[10],
+                                value[11],
+                                now,
+                            ),
+                        )
+                    active_quarantine = db.execute(
+                        "SELECT target_kind,target_id,reason,source_json FROM quarantine_events "
+                        "WHERE instance_id=? AND action='ADD' AND authority_revision IN "
+                        "(SELECT MAX(authority_revision) FROM quarantine_events "
+                        "WHERE instance_id=? GROUP BY target_kind,target_id)",
+                        (lineage["instance_id"], lineage["instance_id"]),
+                    )
+                    for target_kind, target_id, reason, source_json in active_quarantine:
+                        db.execute(
+                            "INSERT INTO quarantine_events VALUES(?,?,?,?,?,?,?,?,?,?)",
+                            (
+                                new_id(),
+                                child_id,
+                                target_kind,
+                                target_id,
+                                "ADD",
+                                reason,
+                                source_json,
+                                int(
+                                    db.execute(
+                                        "SELECT COALESCE(MAX(authority_revision),0)+1 "
+                                        "FROM quarantine_events WHERE instance_id=?",
+                                        (child_id,),
+                                    ).fetchone()[0]
+                                ),
+                                None,
+                                now,
+                            ),
+                        )
                 db.execute(
                     "INSERT INTO revisions VALUES(?,?,?,?,?,?,?,?)",
                     (child_id, 0, None, new_id(), "fork_created", None, child_manifest, now),

@@ -447,3 +447,7 @@
 ## 2026-09-20 P2.2 retention and authority candidate
 
 - Extended the P2.2 offline slice with measured absence and modeled-advance retention counters, unsupported-streak evidence, bounded contextual consequence caps and recovery, schema 7 outcome/quarantine/identity-review records, reversible append-only quarantine authority, durable failed identity-review attempts, explicit quarantine CLI operations, and migration coverage. Focused and full offline validation passed (248 pytest, Ruff, strict mypy); no provider calls or credentials were used. P2.2 remains in progress pending fork/revocation integration and adversarial stop-audit.
+
+## 2026-09-20 P2.2 fork and revocation boundary
+
+- Completed the offline P2.2 boundary for fork inheritance and authority isolation: private child forks receive an independent learner snapshot/value projection and active quarantine decisions, while parent and child stores retain independent administrative identities and writable tips. Added a fork regression and kept historical parent records intact. The CLI now supports explicit learning opt-in and quarantine add/release operations. Full validation passed at 249 pytest tests, Ruff, and strict mypy; no provider calls or credentials were used. P2.2 remains in progress pending final stop-audit receipts.
