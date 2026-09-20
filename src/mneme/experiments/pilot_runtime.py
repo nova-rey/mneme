@@ -352,10 +352,11 @@ class PilotRuntime:
         subject = self._subject(slot)
         service = InterpretationService(subject.store, subject.instance_id, extractor_host)
         prepared = service.prepare(episode_id, operation_id=call_id)
-        if prepared.operation_id != call_id:
+        if prepared.operation_id != call_id and not repair:
             raise PilotRuntimeError(
                 f"episode already has a different interpretation coordinate: {episode_id}"
             )
+        operation_id = prepared.operation_id
         _reservation, dispatched = self._reserve_dispatch(
             call_id=call_id,
             role="development-extraction",
@@ -368,19 +369,17 @@ class PilotRuntime:
         )
         if provider_called:
             try:
-                service.execute(call_id, repair=repair)
+                service.execute(operation_id, repair=repair)
             except InterpretationUncertain as exc:
                 self.pilot.mark_uncertain(call_id, str(exc))
                 raise PilotRuntimeUncertain(f"extraction call is uncertain: {call_id}") from exc
             except InterpretationError as exc:
-                status = self._interpretation_status(subject.store, call_id)
+                status = self._interpretation_status(subject.store, operation_id)
                 if status == "UNCERTAIN":
                     self.pilot.mark_uncertain(call_id, str(exc))
                     raise PilotRuntimeUncertain(f"extraction call is uncertain: {call_id}") from exc
                 raise PilotRuntimeError(f"extraction failed before result: {call_id}") from exc
-            persisted: Mapping[str, Any] = self._interpretation_payload(
-                subject.store, call_id
-            )
+            persisted: Mapping[str, Any] = self._interpretation_payload(subject.store, operation_id)
             usage = persisted.get("usage")
             _returned = self.pilot.return_call(
                 call_id,
@@ -395,7 +394,7 @@ class PilotRuntime:
             )
         else:
             if dispatched:
-                persisted = self._interpretation_payload(subject.store, call_id)
+                persisted = self._interpretation_payload(subject.store, operation_id)
                 usage = persisted.get("usage")
                 self.pilot.return_call(
                     call_id,
@@ -414,13 +413,13 @@ class PilotRuntime:
         residue: Residue | None = None
         validation_error: str | None = None
         try:
-            residue = service.validate(call_id)
+            residue = service.validate(operation_id)
         except InterpretationValidationError as exc:
             validation_error = str(exc)
-        attempt = int(self._interpretation_attempt(subject.store, call_id))
+        attempt = int(self._interpretation_attempt(subject.store, operation_id))
         self._publish_call_artifact(
             "extraction",
-            call_id,
+            operation_id,
             {
                 "coordinate": dict(coordinate),
                 "episode_id": episode_id,

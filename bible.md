@@ -621,3 +621,7 @@
 ## 2026-09-20 P2.3 pilot artifact restart correction
 
 - Offline audit of the partial pilot probe found that `PilotRuntime` publishes an `extraction/` artifact directory while `ArtifactStore.verify_run()` rejected that directory on restart. The verifier now admits and validates the existing extraction artifact category, with a regression proving a run containing extraction output reopens as `RUNNING`. Focused runtime tests and the complete 308-test suite pass; no provider call was made for this correction. The partial probe receipt remains historical and unchanged.
+
+## 2026-09-20 P2.3 extraction repair binding correction
+
+- Offline audit found that a repair reservation used a new laboratory call ID while `InterpretationService` correctly retained the original episode interpretation operation. `PilotRuntime.extract()` now separates those coordinates, reuses the original operation for the single permitted repair, and persists/validates the repair result under the new call reservation without creating a second interpretation. Focused runtime tests, Ruff, and the complete 308-test suite pass; no provider call was made for this correction.
