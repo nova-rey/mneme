@@ -460,6 +460,10 @@
 - Corrected the live assessor request boundary to use prompted raw JSON rather than DeepInfra's unsupported native response-format field, and added the fixed three-call qualification executor with durable result-before-validation receipts and no retry path. Offline validation now passes at 266 pytest tests, Ruff, and strict mypy across 47 source files; no provider call or credential access occurred.
 - Reconciled the P2.3 candidate receipt to `954173c`, including the raw-JSON qualification correction and the 266-test offline validation result. P2.3 remains at the fixed qualification boundary and has not consumed the proposed pilot budget.
 
+## 2026-09-20 P2.3 qualification stop
+
+- Executed exactly the fixed three-call DeepInfra assessor qualification under `p2-developmental-pilot / contract_revision 1`. All three provider calls returned and were durably retained with usage (1,450 input, 279 output, 1,729 total tokens), proving provider/credential functionality. Gemma returned newline-delimited single-object text with unsupported enum values instead of the required raw JSON object containing an `assessments` array; all three cases failed structural validation. No retries, repairs, replacement calls, or pilot calls were made. P2.3 is stopped at qualification failure; the proposed 299-call pilot ceiling remains untouched.
+
 ## 2026-09-20 P2.3 assessor contract candidate
 
 - Added the production-shaped Phase Two semantic-assessor request/result contract and fail-closed validator. Qualification and pilot requests share source roles, immutable source slots, monitors, coverage declarations, memory exposure, replay ancestry, context, and prompt version; every monitor row is required, quotations are unique verbatim source evidence with deterministic code-point spans, absent requires complete available-source coverage, unknown records incomplete coverage, and recorded ancestry rejects claimed independence. Added fixed Q1/Q2/Q3 qualification fixtures and FakeHost-backed offline regression coverage. No provider calls or credentials were used; full integration and live qualification remain the parent P2.3 workstream's responsibility.

@@ -78,7 +78,8 @@ The documents are preserved in their supplied form and are intentionally not mer
   accounting, production-equivalent assessor qualification, two-sibling pilot, and
   the three stop-audit-publish gates. The offline P2.3 assessor/pilot boundary is
   recorded in [the offline boundary receipt](receipts/MNEME_P2.3_Offline_Assessor_Pilot_Boundary_Receipt.md);
-  live qualification and the proposed budget remain unrun.
+  the fixed qualification failure is recorded in [the qualification failure receipt](receipts/MNEME_P2.3_Assessor_Qualification_Failure_Receipt.md);
+  the proposed 299-call pilot budget remains unrun.
 
 The P0.2 implementation is now present under `src/mneme/state/`; its acceptance
 status and receipts are recorded in `.codex/work-queue.json` and `bible.md`.

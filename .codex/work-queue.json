@@ -41,6 +41,14 @@
       "reference": "Dispatch at most 27 calls with no retries; stop on any required failure; preserve the new run and publish sanitized evidence.",
       "resolved_at": "2026-09-19T23:42:00Z",
       "status": "RESOLVED"
+    },
+    "external:p2-assessor-qualification": {
+      "created_at": "2026-09-20T17:11:01.012375Z",
+      "kind": "external",
+      "receipt": null,
+      "reference": "docs/receipts/MNEME_P2.3_Assessor_Qualification_Failure_Receipt.md: fixed three-call qualification returned structurally invalid assessor outputs; new reviewed correction/live authorization required",
+      "resolved_at": null,
+      "status": "UNRESOLVED"
     }
   },
   "hard_problem_repo": "nova-rey/codex-config-backup",
@@ -1054,7 +1062,8 @@
       "completion_criterion": "Production-equivalent assessor qualification and separately authorized pilot execute/resume/replay with honest engineering, adequacy, and research outcomes, or publish a truthful blocker.",
       "created_at": "2026-09-20T16:16:33.650428Z",
       "dependencies": [
-        "package:P2.2"
+        "package:P2.2",
+        "external:p2-assessor-qualification"
       ],
       "domain": "developmental-pilot",
       "edit_boundaries": [
@@ -1069,7 +1078,7 @@
       "evidence_refs": [],
       "id": "P2.3",
       "notes": "Blocked until P2.2 is accepted; proposed live ceiling is 299 calls / 204,288 output tokens and is not yet a live authorization.",
-      "owner": "/root",
+      "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -1092,12 +1101,10 @@
         }
       ],
       "scope": "Run the fixed three-call production-equivalent assessor qualification and, only if it passes and separately authorized, the 299-call proposed pilot. Exclude Phase Three.",
-      "session_ids": [
-        "p23-validation-20260920"
-      ],
-      "status": "VALIDATING",
+      "session_ids": [],
+      "status": "WAITING",
       "title": "Assessor qualification and bounded developmental pilot",
-      "updated_at": "2026-09-20T17:05:14.831144Z",
+      "updated_at": "2026-09-20T17:11:01.012397Z",
       "validation": {
         "required": [
           "p23-assessor-contract",
@@ -1116,8 +1123,8 @@
             "recorded_at": "2026-09-20T17:05:14.831129Z",
             "status": "PASS"
           },
-      "p23-offline-validation": {
-        "receipt": "266 pytest; Ruff; strict mypy src across 47 files; raw-JSON DeepInfra boundary; no provider calls",
+          "p23-offline-validation": {
+            "receipt": "266 pytest; Ruff; strict mypy src across 47 files; raw-JSON DeepInfra boundary; no provider calls",
             "recorded_at": "2026-09-20T17:05:14.792123Z",
             "status": "PASS"
           },
@@ -1128,7 +1135,9 @@
           }
         }
       },
-      "waiting_on": [],
+      "waiting_on": [
+        "external:p2-assessor-qualification"
+      ],
       "workstream": "phase-two"
     }
   ],
@@ -1144,5 +1153,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-20T17:05:14.831199Z"
+  "updated_at": "2026-09-20T17:11:01.012461Z"
 }
