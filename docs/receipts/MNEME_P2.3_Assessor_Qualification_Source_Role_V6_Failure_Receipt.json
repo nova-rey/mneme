@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "status": "FAILED",
+  "tested_commit": "46593a6f8ada594ac920d5da55dc7a71849fa1a6",
+  "run_id": "qualification-20260920-v6",
+  "artifact_root": "/tmp/mneme-p2-qualification-20260920-v6/experiments/p2-developmental-pilot/revisions/1/runs/qualification-20260920-v6",
+  "contract": {
+    "assessor_schema": "p2-assessor-v4",
+    "prompt": "p2-assessor-production-v6",
+    "provenance": "p2-provenance-v1"
+  },
+  "assessor": {
+    "provider": "DeepInfra",
+    "model_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+    "credential_functional": true
+  },
+  "authorization": {
+    "maximum_new_provider_calls": 3,
+    "calls_dispatched": 3,
+    "retries": 0,
+    "repairs": 0,
+    "replacement_samples": 0,
+    "pilot_calls": 0
+  },
+  "usage": {
+    "input_tokens": 3190,
+    "output_tokens": 804,
+    "total_tokens": 3994,
+    "cost": "unknown"
+  },
+  "cases": [
+    {
+      "case_id": "Q1",
+      "valid": true,
+      "usage": {"input_tokens": 1107, "output_tokens": 339, "total_tokens": 1446},
+      "disposition": "accepted"
+    },
+    {
+      "case_id": "Q2",
+      "valid": true,
+      "usage": {"input_tokens": 1092, "output_tokens": 228, "total_tokens": 1320},
+      "disposition": "accepted",
+      "shade_dependence": "exposure_linked"
+    },
+    {
+      "case_id": "Q3",
+      "valid": false,
+      "usage": {"input_tokens": 991, "output_tokens": 237, "total_tokens": 1228},
+      "validation_error": "monitor unavailable_output absent requires complete available-source coverage",
+      "model_classification": "absent",
+      "expected_classification": "unknown",
+      "disposition": "rejected"
+    }
+  ],
+  "historical_evidence_preserved": true,
+  "credential_in_repository_artifacts": false,
+  "disposition": "stop after Q3 semantic coverage failure; pilot remains unrun"
+}

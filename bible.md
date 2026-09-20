@@ -573,3 +573,7 @@
 ## 2026-09-20 P2.3 assessor source-role queue reconciliation
 
 - Reconciled P2.3 to correction commit `831d726` and CI run `35539129367` (passed). The queue records schema v4/prompt v6 source-role binding and its offline receipt while retaining `WAITING` on `external:p2-assessor-qualification`; the proposed 299-call ceiling and all historical failures remain unchanged. No provider call occurred during the correction.
+
+## 2026-09-20 P2.3 source-role v6 qualification stop
+
+- Executed the one fixed Q1/Q2/Q3 qualification from clean main `46593a6`. All three DeepInfra Qwen calls returned and were durably retained (3,190 input, 804 output, 3,994 total tokens; provider cost unavailable). Q1 and Q2 passed, including deterministic `external_supported`, `current_input_echo`, and `exposure_linked` resolution. Q3 returned `absent` for an unavailable model-output source where the contract requires `unknown`; strict validation rejected it and the run stopped. No retry, repair, resampling, model substitution, or pilot call occurred. The sanitized receipts are `docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Failure_Receipt.md` and `.json`; P2.3 remains stopped for assessor suitability review.

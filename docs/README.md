@@ -121,7 +121,11 @@ The documents are preserved in their supplied form and are intentionally not mer
   source-role contract remediation is recorded in [the source-role receipt](receipts/MNEME_P2.3_Assessor_Source_Role_Contract_Remediation_Receipt.md)
   ([JSON](receipts/MNEME_P2.3_Assessor_Source_Role_Contract_Remediation_Receipt.json));
   monitor inspection, evidence quotation, and semantic correspondence slots are
-  now explicit and fail closed.
+  now explicit and fail closed. The resulting fixed v6 qualification stopped
+  at Q3 and is recorded in [the v6 source-role qualification receipt](receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Failure_Receipt.md)
+  ([JSON](receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Failure_Receipt.json));
+  Q1/Q2 passed, Q3 returned `absent` for unavailable coverage instead of
+  `unknown`, and the pilot remains unrun.
 
   Future design context: [Developmental Self-Context](architecture/future/MNEME_Developmental_Self_Context_Architecture.md).
   This reference does not change the phase's implementation scope, frozen

@@ -1053,11 +1053,11 @@
       "base_sha": "7157845",
       "campaign": "mneme-phase-two",
       "candidate": {
-        "artifact": "P2.3 assessor source-role contract correction: schema v4/prompt v6, explicit required/evidence/correspondence source slots, fail-closed Q1/Q2 source binding; 284 pytest, Ruff, strict mypy, wheel/install smoke, CI 35539129367; no provider calls during remediation",
-        "base_sha": "4c6e8f0839b69c4e879c1250824c9923a9abe63e",
-        "returned_at": "2026-09-20T21:40:00.000000Z",
+        "artifact": "P2.3 source-role v6 qualification stop: Q1/Q2 passed, Q3 returned absent for unavailable coverage and failed strict validation; 3 Qwen calls, 3,190 input/804 output/3,994 total tokens, pilot 0; sanitized failure receipt published",
+        "base_sha": "46593a6f8ada594ac920d5da55dc7a71849fa1a6",
+        "returned_at": "2026-09-20T22:10:00.000000Z",
         "returned_by": "/root",
-        "sha": "831d726"
+        "sha": "46593a6"
       },
       "completion_criterion": "Production-equivalent assessor qualification and separately authorized pilot execute/resume/replay with honest engineering, adequacy, and research outcomes, or publish a truthful blocker.",
       "created_at": "2026-09-20T16:16:33.650428Z",
@@ -1103,10 +1103,12 @@
         "docs/receipts/MNEME_P2.3_Assessor_Monitor_Proposition_Remediation_Receipt.md",
         "docs/receipts/MNEME_P2.3_Assessor_Monitor_Proposition_Remediation_Receipt.json",
         "docs/receipts/MNEME_P2.3_Assessor_Source_Role_Contract_Remediation_Receipt.md",
-        "docs/receipts/MNEME_P2.3_Assessor_Source_Role_Contract_Remediation_Receipt.json"
+        "docs/receipts/MNEME_P2.3_Assessor_Source_Role_Contract_Remediation_Receipt.json",
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Failure_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Failure_Receipt.json"
       ],
       "id": "P2.3",
-      "notes": "Source-role contract correction passed offline at 831d726. Assessor schema p2-assessor-v4/prompt p2-assessor-production-v6 now serializes explicit required/evidence/correspondence source slots; Q1 echo and Q2 shade bind output quotations separately from antecedent correspondence, with fail-closed validation and the shared provider builder. Historical qualification failures remain unchanged. One fixed Q1/Q2/Q3 qualification under the new contract is the next bounded verification; package remains WAITING on external:p2-assessor-qualification and ceiling remains 299 calls / 204,288 output tokens.",
+      "notes": "The fixed source-role v6 qualification from 46593a6 consumed exactly three Qwen calls: Q1/Q2 passed, Q3 returned absent for unavailable output coverage instead of unknown and failed strict validation. Pilot calls remain zero; no retry or resampling occurred. The sanitized failure receipt is published. Historical failures and the 299-call/204,288-token ceiling remain unchanged; package remains WAITING on external:p2-assessor-qualification for assessor-suitability review.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1144,9 +1146,9 @@
         ],
         "results": {
           "p23-assessor-qualification": {
-            "receipt": "docs/receipts/MNEME_P2.3_Assessor_Monitor_Proposition_Remediation_Receipt.md and .json; schema v3/prompt v5; 283 pytest, Ruff, strict mypy, wheel/install smoke; provider calls 0",
-            "recorded_at": "2026-09-20T21:25:00.000000Z",
-            "status": "PASS"
+            "receipt": "docs/receipts/MNEME_P2.3_Assessor_Qualification_Source_Role_V6_Failure_Receipt.md and .json; Q1/Q2 passed, Q3 unavailable-source coverage returned absent instead of unknown; 3 calls, pilot 0",
+            "recorded_at": "2026-09-20T22:10:00.000000Z",
+            "status": "FAIL"
           },
           "p23-assessor-contract": {
             "receipt": "assessment.py semantic assessor schema v4 and deterministic provenance resolver; Q1/Q2/Q3 strict quotes/coverage/source-role/correspondence tests",
