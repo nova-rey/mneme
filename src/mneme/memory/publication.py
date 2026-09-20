@@ -80,6 +80,7 @@ def _edge_state_from_json(value: Mapping[str, Any]) -> EdgeState:
         consequence=int(value.get("consequence", 0)),
         relevant_opportunities=int(value.get("relevant_opportunities", 0)),
         inactivity_ticks=int(value.get("inactivity_ticks", 0)),
+        unsupported_streak=int(value.get("unsupported_streak", 0)),
         lifetime_by_group=tuple(
             (str(key), int(amount))
             for key, amount in sorted(dict(value.get("lifetime_by_group", {})).items())

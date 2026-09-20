@@ -22,7 +22,7 @@ from .contracts import (
     validate_id,
 )
 
-SCHEMA_VERSION = 6
+SCHEMA_VERSION = 7
 APPLICATION_ID = 0x4D4E454D  # ASCII "MNEM"
 
 _SCHEMA = """
@@ -461,6 +461,62 @@ CREATE TABLE IF NOT EXISTS development_assessor_attempts (
   created_at TEXT NOT NULL,
   PRIMARY KEY(operation_id, attempt)
 );
+CREATE TABLE IF NOT EXISTS outcome_assessments (
+  assessment_id TEXT PRIMARY KEY,
+  instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
+  operation_id TEXT REFERENCES development_operations(operation_id),
+  target_route_id TEXT NOT NULL,
+  context TEXT NOT NULL,
+  outcome TEXT NOT NULL CHECK (outcome IN ('known','unknown')),
+  direction INTEGER NOT NULL CHECK (direction IN (-1,1)),
+  exposure_id TEXT,
+  relevant INTEGER NOT NULL CHECK (relevant IN (0,1)),
+  evidence_json TEXT NOT NULL,
+  source_json TEXT NOT NULL,
+  status TEXT NOT NULL CHECK (status IN ('ACCEPTED','REJECTED','RETRACTED','UNCERTAIN')),
+  authority_revision INTEGER NOT NULL CHECK (authority_revision >= 0),
+  supersedes_assessment_id TEXT REFERENCES outcome_assessments(assessment_id),
+  created_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS quarantine_events (
+  event_id TEXT PRIMARY KEY,
+  instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
+  target_kind TEXT NOT NULL CHECK (target_kind IN ('concept','edge','route','interpretation','source','checkpoint','cache','lineage')),
+  target_id TEXT NOT NULL,
+  action TEXT NOT NULL CHECK (action IN ('ADD','RELEASE')),
+  reason TEXT NOT NULL,
+  source_json TEXT NOT NULL,
+  authority_revision INTEGER NOT NULL CHECK (authority_revision >= 1),
+  supersedes_event_id TEXT REFERENCES quarantine_events(event_id),
+  created_at TEXT NOT NULL,
+  UNIQUE(instance_id, authority_revision)
+);
+CREATE TABLE IF NOT EXISTS identity_review_operations (
+  review_id TEXT PRIMARY KEY,
+  instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
+  base_manifest_id TEXT NOT NULL REFERENCES manifests(manifest_id),
+  operation_key TEXT NOT NULL UNIQUE,
+  proposal_json TEXT NOT NULL,
+  stage TEXT NOT NULL CHECK (stage IN ('PREPARED','STARTED','RESULT_READY','ACCEPTED','REJECTED','UNCHANGED','UNCERTAIN')),
+  decision_json TEXT,
+  accepted_revision INTEGER,
+  authority_revision INTEGER NOT NULL CHECK (authority_revision >= 0),
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS identity_review_attempts (
+  review_id TEXT NOT NULL REFERENCES identity_review_operations(review_id),
+  attempt INTEGER NOT NULL CHECK (attempt >= 0),
+  request_json TEXT NOT NULL,
+  result_json TEXT,
+  usage_json TEXT,
+  host_ref TEXT,
+  status TEXT NOT NULL CHECK (status IN ('STARTED','RESULT_READY','VALID','INVALID','UNCERTAIN')),
+  validation_errors_json TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  PRIMARY KEY(review_id, attempt)
+);
 """
 
 # Additive portion used by the explicit v1 -> v2 migration.  It is derived
@@ -476,7 +532,12 @@ _SCHEMA_V2_TABLES = _SCHEMA[
         "CREATE TABLE IF NOT EXISTS identity_events"
     )
 ]
-_SCHEMA_V6_TABLES = _SCHEMA[_SCHEMA.index("CREATE TABLE IF NOT EXISTS development_operations") :]
+_SCHEMA_V6_TABLES = _SCHEMA[
+    _SCHEMA.index("CREATE TABLE IF NOT EXISTS development_operations") : _SCHEMA.index(
+        "CREATE TABLE IF NOT EXISTS outcome_assessments"
+    )
+]
+_SCHEMA_V7_TABLES = _SCHEMA[_SCHEMA.index("CREATE TABLE IF NOT EXISTS outcome_assessments") :]
 
 _IMMUTABLE = (
     "lineages",
@@ -509,6 +570,8 @@ _IMMUTABLE = (
     "learner_updates",
     "learner_values",
     "learner_snapshots",
+    "outcome_assessments",
+    "quarantine_events",
 )
 
 
@@ -631,7 +694,7 @@ class SQLiteStore:
         version = int(row[0]) if row else 0
         if version > SCHEMA_VERSION:
             raise SchemaError(f"unsupported newer schema version {version}")
-        if self.read_only and version in {1, 2, 3, 4, 5}:
+        if self.read_only and version in {1, 2, 3, 4, 5, 6}:
             # Historical Phase Zero checkpoints remain inspectable without
             # mutation.  Forking a v1 checkpoint stages and explicitly
             # migrates a private copy before opening it writable.
@@ -662,8 +725,10 @@ class SQLiteStore:
         interrupted or validation fails.
         """
 
-        if target_version not in {2, 3, 4, 5, SCHEMA_VERSION}:
-            raise SchemaError(f"only migration to schema 2, 3, 4, 5 or {SCHEMA_VERSION} is supported")
+        if target_version not in {2, 3, 4, 5, 6, SCHEMA_VERSION}:
+            raise SchemaError(
+                f"only migration to schema 2, 3, 4, 5, 6 or {SCHEMA_VERSION} is supported"
+            )
         source = Path(path)
         if not source.is_file():
             raise SchemaError(f"store does not exist: {source}")
@@ -682,7 +747,7 @@ class SQLiteStore:
             version = int(version_row[0]) if version_row else 0
             if version == target_version:
                 raise SchemaError("store is already at the requested schema version")
-            if version not in {1, 2, 3, 4, 5} or version > target_version:
+            if version not in {1, 2, 3, 4, 5, 6} or version > target_version:
                 raise SchemaError(f"cannot migrate unsupported schema version {version}")
             info = raw.execute("SELECT schema_version FROM store_info").fetchone()
             if info is None or int(info[0]) != version:
@@ -811,7 +876,7 @@ class SQLiteStore:
                 )
                 raw.execute("PRAGMA user_version = 5")
                 version = 5
-            if version == 5 and target_version >= SCHEMA_VERSION:
+            if version == 5 and target_version >= 6:
                 policy_table = raw.execute(
                     "SELECT 1 FROM sqlite_master WHERE type='table' AND name='policies'"
                 ).fetchone()
@@ -838,6 +903,16 @@ class SQLiteStore:
                 )
                 raw.execute("PRAGMA user_version = 6")
                 version = 6
+            if version == 6 and target_version >= SCHEMA_VERSION:
+                for statement in _SCHEMA_V7_TABLES.split(";"):
+                    statement = statement.strip()
+                    if statement:
+                        raw.execute(statement)
+                raw.execute(
+                    "UPDATE store_info SET schema_version=7,record_version=record_version+1"
+                )
+                raw.execute("PRAGMA user_version = 7")
+                version = 7
             for table in _IMMUTABLE:
                 exists = raw.execute(
                     "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (table,)

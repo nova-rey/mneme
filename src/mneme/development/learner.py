@@ -297,6 +297,7 @@ class EdgeState:
     consequence: int = 0
     relevant_opportunities: int = 0
     inactivity_ticks: int = 0
+    unsupported_streak: int = 0
     lifetime_by_group: tuple[tuple[str, int], ...] = ()
     induced_by_group: tuple[tuple[str, int], ...] = ()
     rolling_credits: tuple[CreditWindow, ...] = ()
@@ -313,6 +314,7 @@ class EdgeState:
         if min(
             self.relevant_opportunities,
             self.inactivity_ticks,
+            self.unsupported_streak,
             self.raw_occurrence_count,
         ) < 0:
             raise LearnerError("edge counters cannot be negative")
@@ -351,6 +353,7 @@ class EdgeState:
             "consequence": self.consequence,
             "relevant_opportunities": self.relevant_opportunities,
             "inactivity_ticks": self.inactivity_ticks,
+            "unsupported_streak": self.unsupported_streak,
             "lifetime_by_group": {key: amount for key, amount in self.lifetime_by_group},
             "induced_by_group": {key: amount for key, amount in self.induced_by_group},
             "rolling_credits": [
@@ -565,7 +568,27 @@ def _window(
 ) -> tuple[CreditWindow, ...]:
     merged = [item for item in values if item.opportunity != opportunity]
     merged.append(CreditWindow(opportunity, amount))
-    return tuple(sorted(merged, key=lambda item: item.opportunity)[-8:])
+    # The rolling cap is measured over the current opportunity and the seven
+    # preceding relevant opportunities, rather than over the last eight rows
+    # that happened to be persisted.  This matters when a route is observed
+    # at sparse coordinates (for example 1, 2, 9, 10, 17).
+    return tuple(
+        item
+        for item in sorted(merged, key=lambda item: item.opportunity)
+        if item.opportunity > opportunity - 8
+    )
+
+
+def _prune_window(
+    values: Iterable[CreditWindow], opportunity: int
+) -> tuple[CreditWindow, ...]:
+    """Drop entries outside the current eight-opportunity rolling window."""
+
+    return tuple(
+        item
+        for item in sorted(values, key=lambda item: item.opportunity)
+        if item.opportunity > opportunity - 8
+    )
 
 
 def _window_total(values: Iterable[CreditWindow]) -> int:
@@ -630,7 +653,13 @@ def _replace_route(routes: dict[tuple[str, str], RouteState], state: RouteState)
     routes[state.key] = state
 
 
-def _decay(edge: EdgeState, *, opportunity: int, ticks: int) -> EdgeState:
+def _decay(
+    edge: EdgeState,
+    *,
+    opportunity: int,
+    ticks: int,
+    increment_unsupported: bool = False,
+) -> EdgeState:
     current = edge
     for _ in range(ticks):
         inactivity = current.inactivity_ticks + 1
@@ -645,6 +674,11 @@ def _decay(edge: EdgeState, *, opportunity: int, ticks: int) -> EdgeState:
             consequence=current.consequence,
             relevant_opportunities=current.relevant_opportunities + 1,
             inactivity_ticks=inactivity,
+            unsupported_streak=(
+                current.unsupported_streak + 1
+                if increment_unsupported
+                else current.unsupported_streak
+            ),
             lifetime_by_group=current.lifetime_by_group,
             induced_by_group=current.induced_by_group,
             rolling_credits=_window(current.rolling_credits, opportunity, 0),
@@ -668,6 +702,7 @@ def _apply_consequence_mutable(
         _replace_route(routes, RouteState(**{**route.__dict__, "applied_assessments": applied}))
         return 0, "unknown_or_irrelevant", False
     exposure_key = assessment.exposure_id or assessment.operation_id
+    exposure_key = f"{exposure_key}:{assessment.direction}"
     by_exposure = dict(route.by_exposure)
     exposure_used = by_exposure.get(exposure_key, 0)
     opportunity = (
@@ -675,7 +710,8 @@ def _apply_consequence_mutable(
         if assessment.opportunity is not None
         else current_opportunity
     )
-    rolling_used = _window_total(route.rolling_consequences)
+    rolling = _prune_window(route.rolling_consequences, opportunity)
+    rolling_used = _window_total(rolling)
     remaining = min(
         CONSEQUENCE_STEP,
         CONSEQUENCE_EXPOSURE_CAP - exposure_used,
@@ -688,14 +724,18 @@ def _apply_consequence_mutable(
                 **{
                     **route.__dict__,
                     "applied_assessments": applied,
-                    "rolling_consequences": _window(route.rolling_consequences, opportunity, 0),
+                    "rolling_consequences": _window(rolling, opportunity, 0),
                 }
             ),
         )
         return 0, "consequence_cap_exhausted", False
     awarded = remaining * assessment.direction
     by_exposure[exposure_key] = exposure_used + remaining
-    rolling = _window(route.rolling_consequences, opportunity, rolling_used + remaining)
+    # Store this opportunity's awarded absolute amount.  The prior entries
+    # already account for the remainder of the rolling window; storing the
+    # cumulative total here would double-count them when the next assessment
+    # arrives.
+    rolling = _window(rolling, opportunity, remaining)
     # ``rolling`` stores absolute awarded amounts for the current eight-window
     # accounting.  Keep the route value itself signed.
     _replace_route(
@@ -994,7 +1034,9 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
             edge = edges.get(item.key, EdgeState(item.target_key, item.context))
             lifetime = dict(edge.lifetime_by_group)
             induced = dict(edge.induced_by_group)
-            rolling_used = _window_total(edge.rolling_credits)
+            rolling_used = _window_total(
+                _prune_window(edge.rolling_credits, current_opportunity + 1)
+            )
             allowed = min(
                 proposed,
                 max(0, LIFETIME_CAP - lifetime.get(group, 0)),
@@ -1038,6 +1080,7 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
                     consequence=edge.consequence,
                     relevant_opportunities=edge.relevant_opportunities,
                     inactivity_ticks=edge.inactivity_ticks,
+                    unsupported_streak=edge.unsupported_streak,
                     lifetime_by_group=_tuple_map(lifetime.items()),
                     induced_by_group=_tuple_map(induced.items()),
                     rolling_credits=edge.rolling_credits,
@@ -1056,7 +1099,12 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
                 retention: str | None = None
             elif status is ObservationStatus.ABSENT:
                 if edge.relevant_opportunities == before.relevant_opportunities:
-                    after = _decay(edge, opportunity=current_opportunity + 1, ticks=1)
+                    after = _decay(
+                        edge,
+                        opportunity=current_opportunity + 1,
+                        ticks=1,
+                        increment_unsupported=True,
+                    )
                 else:
                     after = edge
                 retention = "observed_nonrecurrence"
@@ -1077,6 +1125,7 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
                     consequence=edge.consequence,
                     relevant_opportunities=relevant,
                     inactivity_ticks=0,
+                    unsupported_streak=0,
                     lifetime_by_group=edge.lifetime_by_group,
                     induced_by_group=edge.induced_by_group,
                     rolling_credits=_window(edge.rolling_credits, opportunity, credited),

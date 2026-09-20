@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import sqlite3
 import uuid
 from collections.abc import Mapping
 from dataclasses import dataclass, field
@@ -361,6 +362,16 @@ class ResponseController:
 
     def _gate(self, route: RouteCandidate, intent: TurnIntent) -> RouteCandidate:
         text = " ".join((*route.labels, *route.relationships)).casefold()
+        try:
+            quarantine = self.store.connection.execute(
+                "SELECT action FROM quarantine_events WHERE instance_id=? AND "
+                "target_kind='route' AND target_id=? ORDER BY authority_revision DESC LIMIT 1",
+                (self.instance_id, route.route_key),
+            ).fetchone()
+        except sqlite3.OperationalError:
+            quarantine = None
+        if quarantine is not None and str(quarantine[0]) == "ADD":
+            return RouteCandidate(**{**route.__dict__, "suppressed_reason": "quarantined"})
         if "no joke" in intent.current_input.casefold() and "joke" in text:
             return RouteCandidate(**{**route.__dict__, "suppressed_reason": "explicit_no_jokes"})
         rows = self.store.connection.execute(

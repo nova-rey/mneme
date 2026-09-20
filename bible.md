@@ -443,3 +443,7 @@
 ## 2026-09-20 P2.1 stop-audit completion
 
 - P2.1 passed its offline stop–audit gate and is DONE in the work queue. The candidate was validated with 236 pytest tests, Ruff, strict mypy, wheel build, and fresh-install CLI smoke. The audit retained evidence for fixed-point learner transitions, restraint/recovery, dependence caps, directed route discovery, actual payload tracing, schema-6 migration, atomic learner publication, unknown/no-credit behavior, explicit learning permission, and idempotent replay. No provider calls or credentials were used. P2.2 is now READY; P2.3 remains dependent on P2.2.
+
+## 2026-09-20 P2.2 retention and authority candidate
+
+- Extended the P2.2 offline slice with measured absence and modeled-advance retention counters, unsupported-streak evidence, bounded contextual consequence caps and recovery, schema 7 outcome/quarantine/identity-review records, reversible append-only quarantine authority, durable failed identity-review attempts, explicit quarantine CLI operations, and migration coverage. Focused and full offline validation passed (248 pytest, Ruff, strict mypy); no provider calls or credentials were used. P2.2 remains in progress pending fork/revocation integration and adversarial stop-audit.

@@ -9,6 +9,7 @@ from typing import Any
 from . import __version__
 from .chat import ChatSession
 from .demo import DemoError, run_phase_one_gate
+from .development import QuarantineService
 from .experiments.cli import add_parser as add_experiment_parser
 from .experiments.cli import dispatch as dispatch_experiment
 from .experiments.cli import normalize_args as normalize_experiment_args
@@ -70,6 +71,7 @@ def main(argv: list[str] | None = None) -> int:
     create.add_argument("--scope", default="local")
     create.add_argument("--export", action="store_true")
     create.add_argument("--development-enabled", action="store_true")
+    create.add_argument("--learning-enabled", action="store_true")
     create.add_argument("--host")
     isub.add_parser("list")
     inspect = isub.add_parser("inspect")
@@ -115,7 +117,7 @@ def main(argv: list[str] | None = None) -> int:
     recover = ssub.add_parser("recover")
     recover.add_argument("id")
     migrate = ssub.add_parser("migrate")
-    migrate.add_argument("--to", type=int, choices=(3, 4), required=True)
+    migrate.add_argument("--to", type=int, choices=(3, 4, 5, 6, 7), required=True)
     migrate.add_argument("--backup", type=Path, required=True)
     inspect_cmd = sub.add_parser("inspect")
     inspect_sub = inspect_cmd.add_subparsers(dest="inspect_action", required=True)
@@ -146,6 +148,7 @@ def main(argv: list[str] | None = None) -> int:
     pgrant.add_argument("--interpret", action="store_true")
     pgrant.add_argument("--recall", action="store_true")
     pgrant.add_argument("--provider-reuse", action="store_true")
+    pgrant.add_argument("--learn", action="store_true")
     pgrant.add_argument("--host")
     pgrant.add_argument("--history", choices=("all",), default=None)
     pgrant.add_argument("host_name", nargs="?")
@@ -153,7 +156,16 @@ def main(argv: list[str] | None = None) -> int:
     prevoke.add_argument("--interpret", action="store_true")
     prevoke.add_argument("--recall", action="store_true")
     prevoke.add_argument("--provider-reuse", action="store_true")
+    prevoke.add_argument("--learn", action="store_true")
     prevoke.add_argument("policy_id", nargs="?")
+    quarantine = sub.add_parser("quarantine")
+    qsub = quarantine.add_subparsers(dest="quarantine_action", required=True)
+    qadd = qsub.add_parser("add")
+    qadd.add_argument("--target-kind", required=True)
+    qadd.add_argument("--target", required=True)
+    qadd.add_argument("--reason", required=True)
+    qrelease = qsub.add_parser("release")
+    qrelease.add_argument("event_id")
     add_experiment_parser(sub)
     args = normalize_experiment_args(parser.parse_args(argv))
     if args.command == "demo":
@@ -182,6 +194,7 @@ def main(argv: list[str] | None = None) -> int:
         "chat",
         "identity",
         "permission",
+        "quarantine",
         "inspect",
     }:
         if args.store is None:
@@ -189,6 +202,8 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "instance" and args.instance_action == "create":
             if args.development_enabled and not args.host:
                 raise SystemExit("--host is required with --development-enabled")
+            if args.learning_enabled and not args.development_enabled:
+                raise SystemExit("--learning-enabled requires --development-enabled")
             if args.store.exists() and args.store.is_dir():
                 path = args.store / f"{args.id or 'instance'}.sqlite3"
             elif args.store.suffix.lower() in {".sqlite3", ".sqlite", ".db"}:
@@ -208,6 +223,7 @@ def main(argv: list[str] | None = None) -> int:
                         interpret=args.development_enabled,
                         recall=args.development_enabled,
                         provider_reuse=args.development_enabled,
+                        learn=args.learning_enabled,
                     ),
                     host_binding=(
                         selected_host.fingerprint().to_dict() if selected_host is not None else None
@@ -228,6 +244,7 @@ def main(argv: list[str] | None = None) -> int:
                         ("interpret", args.interpret),
                         ("recall", args.recall),
                         ("provider_reuse", args.provider_reuse),
+                        ("learn", args.learn),
                     )
                     if selected
                 ]
@@ -249,6 +266,16 @@ def main(argv: list[str] | None = None) -> int:
                         ),
                     )
                 print(json.dumps({"revision": revision, **service.show()}, indent=2, sort_keys=True))
+                return 0
+        if args.command == "quarantine":
+            with SQLiteStore(args.store) as store:
+                current = store.current()
+                qservice = QuarantineService(store, str(current["active_instance_id"]))
+                if args.quarantine_action == "add":
+                    record = qservice.add(args.target_kind, args.target, args.reason)
+                else:
+                    record = qservice.release(args.event_id)
+                print(json.dumps(record.__dict__, indent=2, sort_keys=True))
                 return 0
         if args.command == "chat":
             text = args.text if args.text is not None else sys.stdin.readline().rstrip("\n")
