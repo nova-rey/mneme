@@ -304,8 +304,8 @@ def validate_assessor_result(
     """Validate and canonicalize one production-shaped assessor result.
 
     All monitors must be represented exactly once.  Recorded replay/exposure
-    ancestry overrides an assessor's claim of independence, so a row with a
-    known inherited source cannot claim ``no_identified_link``.
+    ancestry overrides an assessor's claim of independence only for the
+    monitor's referenced source slots, so unrelated monitors remain independent.
     """
 
     top = _mapping(result, "assessor result")
@@ -324,7 +324,11 @@ def validate_assessor_result(
         raise AssessorValidationError("every required monitor must have exactly one row")
     seen: set[str] = set()
     sources = _source_map(request)
-    known_ancestry = bool(request.memory_exposure or request.replay_ancestry)
+    ancestry_slots = {
+        str(item["source_slot"])
+        for item in (*request.memory_exposure, *request.replay_ancestry)
+        if isinstance(item.get("source_slot"), str)
+    }
     validated: list[ValidatedAssessment] = []
     for index, raw_row in enumerate(rows):
         row = _mapping(raw_row, f"assessments[{index}]")
@@ -362,7 +366,8 @@ def validate_assessor_result(
             raise AssessorValidationError(
                 f"monitor {monitor_id} {status} must not include evidence quotation"
             )
-        if known_ancestry and dependence == "no_identified_link":
+        monitor_has_ancestry = bool(ancestry_slots & set(monitor.required_source_slots))
+        if monitor_has_ancestry and dependence == "no_identified_link":
             raise AssessorValidationError(
                 f"monitor {monitor_id} claims independence despite recorded ancestry"
             )
@@ -440,7 +445,16 @@ def assessor_generation_request(
                     "reason must explain the absence; evidence must be null. For "
                     "status=unknown, coverage must be incomplete with a reason and "
                     "evidence must be null. Copy monitor IDs and source slots exactly "
-                    "from the request.\n\n"
+                    "from the request. Dependence meanings are strict: use "
+                    "external_supported for an independently supported external source; "
+                    "current_input_echo when model output repeats the current input; "
+                    "replay_linked when the evidence is directly replayed from a recorded "
+                    "source or replay ancestry; exposure_linked when supplied memory or "
+                    "exposure caused the model-output evidence; and no_identified_link "
+                    "only when the monitor's referenced source slots have no recorded "
+                    "exposure or replay ancestry. Recorded ancestry for one monitor does "
+                    "not apply to unrelated monitor source slots. Never use "
+                    "no_identified_link to erase recorded ancestry.\n\n"
                     + request.prompt_payload()
                 ),
             },

@@ -160,6 +160,9 @@ def test_assessor_prompt_exposes_complete_enum_and_json_contract() -> None:
         assert field in prompt
     assert "no omitted or duplicated monitor IDs" in prompt
     assert "Do not invent enum values" in prompt
+    assert "replay_linked when the evidence is directly replayed" in prompt
+    assert "exposure_linked when supplied memory or exposure caused" in prompt
+    assert "Recorded ancestry for one monitor does not apply" in prompt
 
 
 def test_q1_echo_and_q2_exposure_ancestry_are_classified() -> None:
@@ -247,3 +250,12 @@ def test_recorded_ancestry_rejects_claimed_independence() -> None:
     result["assessments"][1]["dependence"] = "no_identified_link"  # type: ignore[index]
     with pytest.raises(AssessorValidationError, match="despite recorded ancestry"):
         validate_assessor_result(case.request, result)  # type: ignore[arg-type]
+
+
+def test_recorded_ancestry_is_scoped_to_referenced_monitor_sources() -> None:
+    case = next(case for case in qualification_cases() if case.case_id == "Q2")
+    result = _valid_result("Q2")
+    result["assessments"][0]["dependence"] = "no_identified_link"  # type: ignore[index]
+    rows = validate_assessor_result(case.request, result)  # type: ignore[arg-type]
+    jacket = next(row for row in rows if row.monitor_id == "jacket_direction")
+    assert jacket.dependence == "no_identified_link"

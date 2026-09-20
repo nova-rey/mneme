@@ -1080,10 +1080,11 @@
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_Failure_Receipt.md",
         "docs/receipts/MNEME_P2.3_Assessor_Prompt_Contract_Remediation_Receipt.md",
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_V2_Failure_Receipt.md",
-        "docs/receipts/MNEME_P2.3_Assessor_Qualification_V2_Failure_Receipt.json"
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_V2_Failure_Receipt.json",
+        "docs/receipts/MNEME_P2.3_Assessor_Ancestry_Scope_Remediation_Receipt.md"
       ],
       "id": "P2.3",
-      "notes": "Offline boundary passed. The first fixed three-call qualification failed on structurally invalid Gemma outputs caused by an underspecified model-facing contract; prompt v2 corrected that contract without weakening validation. The fresh fixed three-call qualification returned all results but failed semantic cases Q1/Q2/Q3; no retries or pilot calls occurred. The package remains WAITING on external:p2-assessor-qualification and the proposed ceiling remains 299 calls / 204,288 output tokens.",
+      "notes": "Offline boundary passed. The first fixed three-call qualification failed on structurally invalid Gemma outputs caused by an underspecified model-facing contract; prompt v2 corrected that contract without weakening validation. The fresh fixed three-call qualification returned all results but failed semantic cases Q1/Q2/Q3; offline audit also found and corrected a validator defect that applied ancestry globally instead of by monitor source slots. No retries or pilot calls occurred. The package remains WAITING on external:p2-assessor-qualification and the proposed ceiling remains 299 calls / 204,288 output tokens.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1135,7 +1136,7 @@
             "status": "PASS"
           },
           "p23-offline-validation": {
-            "receipt": "267 pytest; Ruff; strict mypy src across 47 files; prompt v2 raw-JSON DeepInfra boundary; no provider calls",
+            "receipt": "268 pytest; Ruff; strict mypy src across 47 files; prompt v2 plus scoped-ancestry validator; no provider calls",
             "recorded_at": "2026-09-20T17:05:14.792123Z",
             "status": "PASS"
           },
