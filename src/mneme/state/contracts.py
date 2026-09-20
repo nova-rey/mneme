@@ -43,6 +43,7 @@ class StoragePermissions:
     interpret: bool = False
     recall: bool = False
     provider_reuse: bool = False
+    learn: bool = False
 
     def to_json(self) -> str:
         return canonical_json(
@@ -52,6 +53,7 @@ class StoragePermissions:
                 "provider_reuse": self.provider_reuse,
                 "recall": self.recall,
                 "store": self.store,
+                "learn": self.learn,
             }
         )
 

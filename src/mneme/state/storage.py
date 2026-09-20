@@ -22,7 +22,7 @@ from .contracts import (
     validate_id,
 )
 
-SCHEMA_VERSION = 5
+SCHEMA_VERSION = 6
 APPLICATION_ID = 0x4D4E454D  # ASCII "MNEM"
 
 _SCHEMA = """
@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS policies (
   interpretation_allowed INTEGER NOT NULL DEFAULT 0 CHECK (interpretation_allowed IN (0,1)),
   recall_allowed INTEGER NOT NULL DEFAULT 0 CHECK (recall_allowed IN (0,1)),
   provider_reuse_allowed INTEGER NOT NULL DEFAULT 0 CHECK (provider_reuse_allowed IN (0,1)),
+  learning_allowed INTEGER NOT NULL DEFAULT 0 CHECK (learning_allowed IN (0,1)),
   policy_version INTEGER NOT NULL,
   bound_host_ref TEXT,
   bound_host_fingerprint_json TEXT
@@ -83,6 +84,12 @@ CREATE TABLE IF NOT EXISTS manifests (
   accepted_episode_count INTEGER NOT NULL DEFAULT 0 CHECK (accepted_episode_count >= 0),
   self_view_id TEXT,
   self_view_version INTEGER NOT NULL DEFAULT 0 CHECK (self_view_version >= 0),
+  learner_snapshot_id TEXT,
+  learner_configuration_digest TEXT,
+  binding_version INTEGER,
+  opportunity INTEGER CHECK (opportunity IS NULL OR opportunity >= 0),
+  coverage_json TEXT,
+  authority_revision INTEGER CHECK (authority_revision IS NULL OR authority_revision >= 0),
   UNIQUE(instance_id, revision),
   FOREIGN KEY(instance_id) REFERENCES lineages(instance_id)
 );
@@ -361,17 +368,115 @@ CREATE TABLE IF NOT EXISTS turn_traces (
   context_truncated INTEGER NOT NULL CHECK (context_truncated IN (0,1)),
   created_at TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS development_operations (
+  operation_id TEXT PRIMARY KEY,
+  instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
+  episode_id TEXT NOT NULL UNIQUE REFERENCES episodes(episode_id),
+  base_manifest_id TEXT NOT NULL REFERENCES manifests(manifest_id),
+  opportunity INTEGER NOT NULL CHECK (opportunity >= 1),
+  stage TEXT NOT NULL,
+  terminal_disposition TEXT,
+  configuration_digest TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS semantic_bindings (
+  binding_id TEXT PRIMARY KEY,
+  instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
+  interpretation_id TEXT NOT NULL REFERENCES interpretations(interpretation_id),
+  candidate_id TEXT REFERENCES candidates(candidate_id),
+  local_key TEXT NOT NULL,
+  canonical_key TEXT NOT NULL,
+  canonical_label TEXT NOT NULL,
+  resolver_version TEXT NOT NULL,
+  binding_version INTEGER NOT NULL CHECK (binding_version >= 1),
+  source_json TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS development_observations (
+  observation_id TEXT PRIMARY KEY,
+  operation_id TEXT NOT NULL REFERENCES development_operations(operation_id),
+  binding_id TEXT REFERENCES semantic_bindings(binding_id),
+  edge_key TEXT NOT NULL,
+  context TEXT NOT NULL,
+  source_role TEXT NOT NULL,
+  status TEXT NOT NULL CHECK (status IN ('present','absent','unknown')),
+  dependence TEXT NOT NULL,
+  dependence_group TEXT,
+  covered INTEGER NOT NULL CHECK (covered IN (0,1)),
+  actual_exposure INTEGER NOT NULL CHECK (actual_exposure IN (0,1)),
+  evidence_json TEXT NOT NULL,
+  credit_reason TEXT,
+  created_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS learner_updates (
+  update_id TEXT PRIMARY KEY,
+  operation_id TEXT NOT NULL REFERENCES development_operations(operation_id),
+  application_key TEXT NOT NULL UNIQUE,
+  opportunity INTEGER NOT NULL CHECK (opportunity >= 1),
+  edge_key TEXT NOT NULL,
+  context TEXT NOT NULL,
+  delta INTEGER NOT NULL,
+  reason TEXT NOT NULL,
+  before_json TEXT NOT NULL,
+  after_json TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS learner_values (
+  value_id TEXT PRIMARY KEY,
+  instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
+  update_id TEXT NOT NULL REFERENCES learner_updates(update_id),
+  edge_key TEXT NOT NULL,
+  context TEXT NOT NULL,
+  accessibility INTEGER NOT NULL CHECK (accessibility BETWEEN 0 AND 1000000),
+  support INTEGER NOT NULL CHECK (support BETWEEN 0 AND 1000000),
+  consequence INTEGER NOT NULL CHECK (consequence BETWEEN -250000 AND 250000),
+  lifetime_credit INTEGER NOT NULL CHECK (lifetime_credit BETWEEN 0 AND 1000000),
+  induced_credit INTEGER NOT NULL CHECK (induced_credit BETWEEN 0 AND 1000000),
+  rolling_credit INTEGER NOT NULL CHECK (rolling_credit BETWEEN 0 AND 1000000),
+  last_consolidation_opportunity INTEGER,
+  inactivity_ticks INTEGER NOT NULL CHECK (inactivity_ticks >= 0),
+  opportunity INTEGER NOT NULL CHECK (opportunity >= 1),
+  content_digest TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS learner_snapshots (
+  snapshot_id TEXT PRIMARY KEY,
+  instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
+  base_manifest_id TEXT NOT NULL REFERENCES manifests(manifest_id),
+  opportunity INTEGER NOT NULL CHECK (opportunity >= 0),
+  learner_version TEXT NOT NULL,
+  configuration_json TEXT NOT NULL,
+  content_digest TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS development_assessor_attempts (
+  operation_id TEXT NOT NULL REFERENCES development_operations(operation_id),
+  attempt INTEGER NOT NULL CHECK (attempt >= 0),
+  request_json TEXT NOT NULL,
+  result_json TEXT,
+  usage_json TEXT,
+  status TEXT NOT NULL CHECK (status IN ('STARTED','RESULT_READY','VALID','INVALID','UNCERTAIN')),
+  validation_errors_json TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  PRIMARY KEY(operation_id, attempt)
+);
 """
 
 # Additive portion used by the explicit v1 -> v2 migration.  It is derived
 # from the same schema declaration so new stores and migrated stores receive
 # identical interpretation/graph tables.
-_SCHEMA_V3_TABLES = _SCHEMA[_SCHEMA.index("CREATE TABLE IF NOT EXISTS identity_events") :]
+_SCHEMA_V3_TABLES = _SCHEMA[
+    _SCHEMA.index("CREATE TABLE IF NOT EXISTS identity_events") : _SCHEMA.index(
+        "CREATE TABLE IF NOT EXISTS development_operations"
+    )
+]
 _SCHEMA_V2_TABLES = _SCHEMA[
     _SCHEMA.index("CREATE TABLE IF NOT EXISTS interpretation_operations") : _SCHEMA.index(
         "CREATE TABLE IF NOT EXISTS identity_events"
     )
 ]
+_SCHEMA_V6_TABLES = _SCHEMA[_SCHEMA.index("CREATE TABLE IF NOT EXISTS development_operations") :]
 
 _IMMUTABLE = (
     "lineages",
@@ -399,6 +504,13 @@ _IMMUTABLE = (
     "correction_directives",
     "declarations",
     "turn_traces",
+    "development_operations",
+    "semantic_bindings",
+    "development_observations",
+    "learner_updates",
+    "learner_values",
+    "learner_snapshots",
+    "development_assessor_attempts",
 )
 
 
@@ -521,7 +633,7 @@ class SQLiteStore:
         version = int(row[0]) if row else 0
         if version > SCHEMA_VERSION:
             raise SchemaError(f"unsupported newer schema version {version}")
-        if self.read_only and version in {1, 2, 3, 4}:
+        if self.read_only and version in {1, 2, 3, 4, 5}:
             # Historical Phase Zero checkpoints remain inspectable without
             # mutation.  Forking a v1 checkpoint stages and explicitly
             # migrates a private copy before opening it writable.
@@ -552,8 +664,8 @@ class SQLiteStore:
         interrupted or validation fails.
         """
 
-        if target_version not in {2, 3, 4, SCHEMA_VERSION}:
-            raise SchemaError(f"only migration to schema 2, 3, 4 or {SCHEMA_VERSION} is supported")
+        if target_version not in {2, 3, 4, 5, SCHEMA_VERSION}:
+            raise SchemaError(f"only migration to schema 2, 3, 4, 5 or {SCHEMA_VERSION} is supported")
         source = Path(path)
         if not source.is_file():
             raise SchemaError(f"store does not exist: {source}")
@@ -678,7 +790,7 @@ class SQLiteStore:
                 )
                 raw.execute("PRAGMA user_version = 4")
                 version = 4
-            if version == 4 and target_version >= SCHEMA_VERSION:
+            if version == 4 and target_version >= 5:
                 raw.execute(
                     "CREATE TABLE IF NOT EXISTS identity_generation_records ("
                     "generation_id TEXT PRIMARY KEY,"
@@ -701,6 +813,23 @@ class SQLiteStore:
                 )
                 raw.execute("PRAGMA user_version = 5")
                 version = 5
+            if version == 5 and target_version >= SCHEMA_VERSION:
+                policy_table = raw.execute(
+                    "SELECT 1 FROM sqlite_master WHERE type='table' AND name='policies'"
+                ).fetchone()
+                if policy_table is not None and not has_column("policies", "learning_allowed"):
+                    raw.execute(
+                        "ALTER TABLE policies ADD COLUMN learning_allowed INTEGER NOT NULL DEFAULT 0"
+                    )
+                for statement in _SCHEMA_V6_TABLES.split(";"):
+                    statement = statement.strip()
+                    if statement:
+                        raw.execute(statement)
+                raw.execute(
+                    "UPDATE store_info SET schema_version=6,record_version=record_version+1"
+                )
+                raw.execute("PRAGMA user_version = 6")
+                version = 6
             for table in _IMMUTABLE:
                 exists = raw.execute(
                     "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (table,)
@@ -777,8 +906,8 @@ class SQLiteStore:
             )
             db.execute(
                 "INSERT INTO policies(policy_id,scope_id,storage_allowed,export_allowed,"
-                "interpretation_allowed,recall_allowed,provider_reuse_allowed,policy_version,"
-                "bound_host_ref,bound_host_fingerprint_json) VALUES (?,?,?,?,?,?,?,?,?,?)",
+                "interpretation_allowed,recall_allowed,provider_reuse_allowed,learning_allowed,"
+                "policy_version,bound_host_ref,bound_host_fingerprint_json) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
                 (
                     policy_id,
                     scope_id,
@@ -787,6 +916,7 @@ class SQLiteStore:
                     int(permissions.interpret),
                     int(permissions.recall),
                     int(permissions.provider_reuse),
+                    int(permissions.learn),
                     3,
                     bound_ref,
                     bound_json,

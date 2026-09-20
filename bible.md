@@ -422,3 +422,8 @@
 
 - Added approved packages `P2.1`, `P2.2`, and `P2.3` to the persistent queue. `P2.1` is RUNNING under `/root/p21_supervisor`; `P2.2` waits on `package:P2.1`; `P2.3` waits on `package:P2.2`. The queue schema validates after repairing the historical `P1.LIVE` validation-results shape.
 - Phase Two execution is authorized by the active goal, but no provider call or credential access is authorized yet. P2.1 is offline/FakeHost work; the proposed 299-call qualification/pilot ceiling remains unspent and requires the plan's qualification gate and live execution boundary.
+
+## 2026-09-20 P2.1 learner foundation candidate
+
+- Added the first bounded P2.1 vertical slice: a pure fixed-point replayable learner with explicit observation/dependence categories, bounded source pools/caps, support-versus-presence handling, contextual consequence state, learned exposure eligibility, and highest-coverage-only exploration. Added deterministic FakeHost-free tests for model-origin credit, current-input echo zero credit, unknown/presence handling, contextual closure/recovery, and mixed-coverage exploration.
+- Added schema-6 storage scaffolding and explicit `learn` opt-in state for development operations, semantic bindings, observations, learner updates/values/snapshots, and assessor attempts. Schema migration remains explicit, backed up, and legacy learning-disabled. Focused validation passed: 19 storage/policy/learner tests, Ruff, and strict mypy. No provider call or credential access occurred; P2.1 remains in progress.

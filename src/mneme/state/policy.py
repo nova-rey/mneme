@@ -27,6 +27,8 @@ from typing import Any
 
 from .contracts import PHASE_ONE_PERMISSIONS
 
+PHASE_TWO_PERMISSIONS = ("learn",)
+
 
 class PolicyError(RuntimeError):
     """The current policy cannot authorize the requested operation."""
@@ -56,6 +58,7 @@ class PermissionState:
     interpretation_allowed: bool
     recall_allowed: bool
     provider_reuse_allowed: bool
+    learning_allowed: bool
     policy_version: int
     revocation_revision: int
     authority_path: str | None
@@ -71,6 +74,7 @@ class PermissionState:
             "interpret": self.interpretation_allowed,
             "recall": self.recall_allowed,
             "provider_reuse": self.provider_reuse_allowed,
+            "learn": self.learning_allowed,
         }
         if permission not in values:
             raise PolicyError(f"unknown permission: {permission}")
@@ -85,6 +89,7 @@ class PermissionState:
             "interpret": self.interpretation_allowed,
             "recall": self.recall_allowed,
             "provider_reuse": self.provider_reuse_allowed,
+            "learn": self.learning_allowed,
             "policy_version": self.policy_version,
             "revocation_revision": self.revocation_revision,
             "authority_path": self.authority_path,
@@ -180,6 +185,9 @@ class PolicyService:
             "provider_reuse": bool(row["provider_reuse_allowed"])
             if "provider_reuse_allowed" in columns
             else False,
+            "learn": bool(row["learning_allowed"])
+            if "learning_allowed" in columns
+            else False,
         }
         bound_ref = (
             str(row["bound_host_ref"])
@@ -211,7 +219,7 @@ class PolicyService:
         # A missing authority is an explicit fail-closed condition for every
         # Phase One permission, including copied legacy stores.
         if not authority_available:
-            values = {permission: False for permission in PHASE_ONE_PERMISSIONS}
+            values.update({permission: False for permission in PHASE_ONE_PERMISSIONS})
         return PermissionState(
             policy_id=str(row["policy_id"]),
             scope_id=str(row["scope_id"]),
@@ -220,6 +228,7 @@ class PolicyService:
             interpretation_allowed=values["interpret"],
             recall_allowed=values["recall"],
             provider_reuse_allowed=values["provider_reuse"],
+            learning_allowed=values["learn"],
             policy_version=int(row["policy_version"]) if "policy_version" in columns else 1,
             revocation_revision=revision,
             authority_path=str(self._authority_path()) if self._authority_path() else None,
@@ -313,6 +322,7 @@ class PolicyService:
 
 __all__ = [
     "PHASE_ONE_PERMISSIONS",
+    "PHASE_TWO_PERMISSIONS",
     "PermissionState",
     "PolicyError",
     "PolicyService",
