@@ -32,6 +32,19 @@ class QuarantineRecord:
     authority_revision: int
 
 
+@dataclass(frozen=True)
+class FeedbackRecord:
+    """An explicitly attributable contextual feedback proposal."""
+
+    assessment_id: str
+    operation_id: str
+    route_key: str
+    context: str
+    direction: int
+    status: str
+    authority_revision: int
+
+
 class QuarantineService:
     """Record and inspect reversible quarantine decisions."""
 
@@ -89,9 +102,20 @@ class QuarantineService:
                     _utc(),
                 ),
             )
-            return QuarantineRecord(
-                event_id, target_kind, target_id, action, reason, revision
-            )
+            record = QuarantineRecord(event_id, target_kind, target_id, action, reason, revision)
+        # Authority changes are not safe while stale learner materializations
+        # remain readable.  Rebuild from the immutable observation ledger
+        # after the event is durable; the rebuild publishes a new manifest and
+        # leaves all prior snapshots/rows available for audit.
+        try:
+            from .recovery import rebuild_learner
+
+            rebuild_learner(self.store, reason=f"quarantine:{event_id}")
+        except Exception as exc:
+            raise AuthorityError(
+                "quarantine authority recorded but learner rebuild failed"
+            ) from exc
+        return record
 
     def add(
         self,
@@ -110,8 +134,11 @@ class QuarantineService:
         source: Mapping[str, Any] | None = None,
     ) -> QuarantineRecord:
         row = self.store.connection.execute(
-            "SELECT target_kind,target_id,reason FROM quarantine_events "
-            "WHERE event_id=? AND instance_id=? AND action='ADD'",
+            "SELECT q.target_kind,q.target_id,q.reason FROM quarantine_events q "
+            "WHERE q.event_id=? AND q.instance_id=? AND q.action='ADD' "
+            "AND q.authority_revision=(SELECT MAX(q2.authority_revision) "
+            "FROM quarantine_events q2 WHERE q2.instance_id=q.instance_id "
+            "AND q2.target_kind=q.target_kind AND q2.target_id=q.target_id)",
             (event_id, self.instance_id),
         ).fetchone()
         if row is None:
@@ -169,6 +196,7 @@ class IdentityReviewService:
                 ),
             )
         return review_id
+
 
     def record_attempt(
         self,
@@ -373,4 +401,153 @@ class IdentityReviewService:
         return review_id
 
 
-__all__ = ["AuthorityError", "IdentityReviewService", "QuarantineRecord", "QuarantineService"]
+class FeedbackService:
+    """Persist and accept operator feedback through the outcome ledger.
+
+    Feedback is deliberately narrow: it must identify an already accepted
+    developmental operation and route, so the learner can replay the same
+    attributable consequence without treating free-form prose as authority.
+    """
+
+    def __init__(self, store: SQLiteStore, instance_id: str):
+        self.store = store
+        self.instance_id = instance_id
+
+    def _require_learning(self) -> None:
+        try:
+            PolicyService(self.store, self.instance_id).require("learn")
+        except PolicyError as exc:
+            raise AuthorityError(str(exc)) from exc
+
+    def propose(self, proposal: Mapping[str, Any]) -> FeedbackRecord:
+        self._require_learning()
+        operation_id = str(proposal.get("operation_id", ""))
+        route_key = str(proposal.get("route_key", proposal.get("target_route_id", "")))
+        context = str(proposal.get("context", "general"))
+        direction = int(proposal.get("direction", 0))
+        if not operation_id or not route_key or not context or direction not in {-1, 1}:
+            raise AuthorityError(
+                "feedback requires operation_id, route_key, context, and direction +/-1"
+            )
+        outcome = str(proposal.get("outcome", "known"))
+        if outcome not in {"known", "unknown"}:
+            raise AuthorityError("feedback outcome must be known or unknown")
+        if self.store.connection.execute(
+            "SELECT 1 FROM development_operations WHERE operation_id=? AND instance_id=? "
+            "AND stage='ACCEPTED'",
+            (operation_id, self.instance_id),
+        ).fetchone() is None:
+            raise AuthorityError("feedback operation must be an accepted developmental operation")
+        assessment_id = "feedback:" + _digest(
+            {"instance_id": self.instance_id, "proposal": dict(proposal)}
+        )
+        current = self.store.current()
+        authority_revision = int(current["current_revision"] or 0)
+        with self.store.transaction() as db:
+            existing = db.execute(
+                "SELECT assessment_id FROM outcome_assessments WHERE assessment_id=?",
+                (assessment_id,),
+            ).fetchone()
+            if existing is None:
+                db.execute(
+                    "INSERT INTO outcome_assessments VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    (
+                        assessment_id,
+                        self.instance_id,
+                        operation_id,
+                        route_key,
+                        context,
+                        outcome,
+                        direction,
+                        proposal.get("exposure_id"),
+                        int(bool(proposal.get("relevant", True))),
+                        json.dumps(dict(proposal), sort_keys=True),
+                        json.dumps({"source": "operator_feedback"}, sort_keys=True),
+                        "UNCERTAIN",
+                        authority_revision,
+                        None,
+                        _utc(),
+                    ),
+                )
+        return FeedbackRecord(
+            assessment_id,
+            operation_id,
+            route_key,
+            context,
+            direction,
+            "UNCERTAIN",
+            authority_revision,
+        )
+
+    def accept(self, assessment_id: str) -> FeedbackRecord:
+        self._require_learning()
+        with self.store.transaction() as db:
+            row = db.execute(
+                "SELECT operation_id,target_route_id,context,outcome,direction,"
+                "authority_revision,status "
+                "FROM outcome_assessments WHERE assessment_id=? AND instance_id=?",
+                (assessment_id, self.instance_id),
+            ).fetchone()
+            if row is None:
+                raise AuthorityError("unknown feedback proposal")
+            if str(row[6]) not in {"UNCERTAIN", "REJECTED"}:
+                raise AuthorityError("feedback proposal is not pending")
+            revision = int(row[5]) + 1
+            accepted_id = assessment_id + ":accepted"
+            prior = db.execute(
+                "SELECT assessment_id FROM outcome_assessments "
+                "WHERE supersedes_assessment_id=? AND status='ACCEPTED'",
+                (assessment_id,),
+            ).fetchone()
+            if prior is not None:
+                accepted_id = str(prior[0])
+            else:
+                source = db.execute(
+                    "SELECT exposure_id,relevant,evidence_json,source_json FROM "
+                    "outcome_assessments WHERE assessment_id=?",
+                    (assessment_id,),
+                ).fetchone()
+                if source is None:
+                    raise AuthorityError("feedback proposal disappeared")
+                db.execute(
+                    "INSERT INTO outcome_assessments VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    (
+                        accepted_id,
+                        self.instance_id,
+                        str(row[0]),
+                        str(row[1]),
+                        str(row[2]),
+                        str(row[3]),
+                        int(row[4]),
+                        source[0],
+                        int(source[1]),
+                        source[2],
+                        source[3],
+                        "ACCEPTED",
+                        revision,
+                        assessment_id,
+                        _utc(),
+                    ),
+                )
+            record = FeedbackRecord(
+                accepted_id,
+                str(row[0]),
+                str(row[1]),
+                str(row[2]),
+                int(row[4]),
+                "ACCEPTED",
+                revision,
+            )
+        from .recovery import rebuild_learner
+
+        rebuild_learner(self.store, reason=f"feedback:{assessment_id}")
+        return record
+
+__all__ = [
+    "AuthorityError",
+    "FeedbackRecord",
+    "FeedbackService",
+    "IdentityReviewService",
+    "QuarantineRecord",
+    "QuarantineService",
+]

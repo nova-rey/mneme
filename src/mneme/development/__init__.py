@@ -27,6 +27,8 @@ from .assessment import (
 )
 from .authority import (
     AuthorityError,
+    FeedbackRecord,
+    FeedbackService,
     IdentityReviewService,
     QuarantineRecord,
     QuarantineService,
@@ -60,6 +62,8 @@ from .learner import (
 
 __all__ = [
     "AuthorityError",
+    "FeedbackRecord",
+    "FeedbackService",
     "ASSESSOR_PROMPT_VERSION",
     "ASSESSOR_SCHEMA_VERSION",
     "PROVENANCE_SCHEMA_VERSION",

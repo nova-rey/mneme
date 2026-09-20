@@ -7,7 +7,12 @@ import json
 import pytest
 
 from mneme.contracts import GenerationRequest
-from mneme.development import ConsequenceAssessment, Observation, QuarantineService
+from mneme.development import (
+    ConsequenceAssessment,
+    FeedbackService,
+    Observation,
+    QuarantineService,
+)
 from mneme.development.recovery import verify_replay
 from mneme.hosts import FakeHost
 from mneme.memory import InterpretationPublisher, PublicationError, Residue, validate_residue
@@ -242,6 +247,50 @@ def test_replay_verification_and_quarantine_rebuild_use_canonical_binding(tmp_pa
         assert restored["skipped_operation_ids"] == []
         assert released.authority_revision > added.authority_revision
         assert receipt.status == "ACCEPTED"
+
+
+def test_feedback_proposal_acceptance_rebuilds_attributable_consequence(tmp_path):
+    store, instance, episode_id, residue = _episode_and_residue(tmp_path, learn=True)
+    with store:
+        publisher = InterpretationPublisher(store, instance)
+        publisher.publish(
+            publisher.prepare(episode_id, operation_id="feedback-interpretation"),
+            residue,
+            development_operation_id="feedback-development",
+            opportunity=1,
+            observations=(Observation(target_key="edge-ab", occurrence_key="feedback"),),
+        )
+        service = FeedbackService(store, instance)
+        proposed = service.propose(
+            {
+                "operation_id": "feedback-development",
+                "route_key": "route-ab",
+                "context": "general",
+                "direction": -1,
+                "outcome": "known",
+                "exposure_id": "feedback-exposure",
+                "reason": "operator-confirmed correction",
+            }
+        )
+        assert proposed.status == "UNCERTAIN"
+        accepted = service.accept(proposed.assessment_id)
+        assert accepted.status == "ACCEPTED"
+        row = store.connection.execute(
+            "SELECT status,direction FROM outcome_assessments WHERE assessment_id=?",
+            (accepted.assessment_id,),
+        ).fetchone()
+        assert tuple(row) == ("ACCEPTED", -1)
+        assert store.connection.execute(
+            "SELECT status FROM outcome_assessments WHERE assessment_id=?",
+            (proposed.assessment_id,),
+        ).fetchone()[0] == "UNCERTAIN"
+        snapshot = json.loads(
+            store.connection.execute(
+                "SELECT configuration_json FROM learner_snapshots "
+                "ORDER BY opportunity DESC,rowid DESC LIMIT 1"
+            ).fetchone()[0]
+        )
+        assert snapshot["state"]["routes"]["route-ab:general"]["consequence"] == -50_000
 
 
 def test_unknown_observation_is_durable_without_credit(tmp_path):

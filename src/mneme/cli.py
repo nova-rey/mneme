@@ -1,4 +1,5 @@
 import argparse
+import hashlib
 import json
 import os
 import sqlite3
@@ -9,7 +10,8 @@ from typing import Any
 from . import __version__
 from .chat import ChatSession
 from .demo import DemoError, run_phase_one_gate
-from .development import QuarantineService
+from .development import FeedbackService, IdentityReviewService, QuarantineService
+from .development.recovery import replay_learner, verify_replay
 from .experiments.cli import add_parser as add_experiment_parser
 from .experiments.cli import dispatch as dispatch_experiment
 from .experiments.cli import normalize_args as normalize_experiment_args
@@ -138,6 +140,12 @@ def main(argv: list[str] | None = None) -> int:
     adopt.add_argument("--name")
     idshow = idsub.add_parser("show")
     idshow.add_argument("--json", action="store_true")
+    ipropose = idsub.add_parser("propose")
+    ipropose.add_argument("--name", required=True)
+    ipropose.add_argument("--operation-key")
+    ireview = idsub.add_parser("review")
+    ireview.add_argument("proposal_id")
+    ireview.add_argument("--host", default="fake")
     alias = idsub.add_parser("alias")
     alias_sub = alias.add_subparsers(dest="alias_action", required=True)
     alias_add = alias_sub.add_parser("add")
@@ -168,6 +176,23 @@ def main(argv: list[str] | None = None) -> int:
     qadd.add_argument("--reason", required=True)
     qrelease = qsub.add_parser("release")
     qrelease.add_argument("event_id")
+    learner = sub.add_parser("learner")
+    lsub = learner.add_subparsers(dest="learner_action", required=True)
+    linspect = lsub.add_parser("inspect")
+    linspect.add_argument("--json", action="store_true")
+    lreplay = lsub.add_parser("replay")
+    lreplay.add_argument("--verify", action="store_true")
+    lrebuild = lsub.add_parser("rebuild")
+    lrebuild.add_argument("--reason", required=True)
+    ladvance = lsub.add_parser("advance")
+    ladvance.add_argument("--context", required=True)
+    ladvance.add_argument("--steps", required=True, type=int)
+    feedback = sub.add_parser("feedback")
+    fsub = feedback.add_subparsers(dest="feedback_action", required=True)
+    fpropose = fsub.add_parser("propose")
+    fpropose.add_argument("--file", required=True, type=Path)
+    faccept = fsub.add_parser("accept")
+    faccept.add_argument("proposal_id")
     add_experiment_parser(sub)
     args = normalize_experiment_args(parser.parse_args(argv))
     if args.command == "demo":
@@ -197,6 +222,8 @@ def main(argv: list[str] | None = None) -> int:
         "identity",
         "permission",
         "quarantine",
+        "learner",
+        "feedback",
         "inspect",
     }:
         if args.store is None:
@@ -279,6 +306,53 @@ def main(argv: list[str] | None = None) -> int:
                     record = qservice.release(args.event_id)
                 print(json.dumps(record.__dict__, indent=2, sort_keys=True))
                 return 0
+        if args.command == "learner":
+            with SQLiteStore(args.store, read_only=args.learner_action == "replay") as store:
+                if args.learner_action == "inspect":
+                    current = store.current()
+                    row = store.connection.execute(
+                        "SELECT snapshot_id,opportunity,learner_version,content_digest "
+                        "FROM learner_snapshots WHERE instance_id=? "
+                        "ORDER BY opportunity DESC,rowid DESC LIMIT 1",
+                        (str(current["active_instance_id"]),),
+                    ).fetchone()
+                    payload = {
+                        "instance_id": str(current["active_instance_id"]),
+                        "lineage_revision": int(current["current_revision"]),
+                        "snapshot": dict(row) if row is not None else None,
+                    }
+                    print(json.dumps(payload, indent=2, sort_keys=True))
+                    return 0
+                if args.learner_action == "replay":
+                    if not args.verify:
+                        report = replay_learner(store)
+                        print(json.dumps(report.to_dict(), indent=2, sort_keys=True))
+                        return 0
+                    result = verify_replay(store)
+                    print(json.dumps(result, indent=2, sort_keys=True))
+                    return 0 if result["matches_materialized"] else 1
+                raise SystemExit(
+                    "learner rebuild/advance require the Phase Two authority service"
+                )
+        if args.command == "feedback":
+            with SQLiteStore(args.store) as store:
+                current = store.current()
+                feedback_service = FeedbackService(
+                    store, str(current["active_instance_id"])
+                )
+                if args.feedback_action == "propose":
+                    try:
+                        proposal = json.loads(args.file.read_text(encoding="utf-8"))
+                    except (OSError, json.JSONDecodeError) as exc:
+                        raise SystemExit(f"invalid feedback proposal: {exc}") from exc
+                    if not isinstance(proposal, dict):
+                        raise SystemExit("feedback proposal must be a JSON object")
+                    feedback_record = feedback_service.propose(proposal)
+                    print(json.dumps(feedback_record.__dict__, indent=2, sort_keys=True))
+                    return 0
+                feedback_record = feedback_service.accept(args.proposal_id)
+                print(json.dumps(feedback_record.__dict__, indent=2, sort_keys=True))
+                return 0
         if args.command == "chat":
             text = args.text if args.text is not None else sys.stdin.readline().rstrip("\n")
             with SQLiteStore(args.store) as store:
@@ -290,11 +364,11 @@ def main(argv: list[str] | None = None) -> int:
                     mode=args.mode,
                     memory=args.memory,
                 )
-                result = session.turn(text)
+                chat_result = session.turn(text)
             if args.json:
-                print(json.dumps(result.to_dict(), indent=2))
+                print(json.dumps(chat_result.to_dict(), indent=2))
             else:
-                print(result.output_text)
+                print(chat_result.output_text)
             return 0
         if args.command == "identity":
             with SQLiteStore(args.store) as store:
@@ -307,10 +381,74 @@ def main(argv: list[str] | None = None) -> int:
                         else identity_service.adopt_from_host(_host(args.host))
                     )
                     print(json.dumps(adopted_view.to_dict(), indent=2))
+                elif args.identity_action == "propose":
+                    operation_key = args.operation_key or f"identity-name:{args.name}"
+                    review_id = IdentityReviewService(store, str(current["active_instance_id"])).prepare(
+                        {"name": args.name}, operation_key=operation_key
+                    )
+                    print(json.dumps({"review_id": review_id, "proposal": {"name": args.name}}, indent=2))
+                elif args.identity_action == "review":
+                    from .contracts import GenerationRequest
+
+                    review_service = IdentityReviewService(
+                        store, str(current["active_instance_id"])
+                    )
+                    proposal_row = store.connection.execute(
+                        "SELECT proposal_json FROM identity_review_operations "
+                        "WHERE review_id=? AND instance_id=?",
+                        (args.proposal_id, str(current["active_instance_id"])),
+                    ).fetchone()
+                    if proposal_row is None:
+                        raise SystemExit("unknown identity proposal")
+                    host = _host(args.host)
+                    fingerprint = host.fingerprint().to_dict()
+                    request = GenerationRequest(
+                        messages=(
+                            {
+                                "role": "user",
+                                "content": (
+                                    "Choose one concise name for this model instance. "
+                                    'Return exactly one JSON object with one string field: {"name":"…"}. '
+                                    "Do not include markdown or any other fields."
+                                ),
+                            },
+                        ),
+                        system=(
+                            "You are performing a deliberate naming operation. "
+                            "The result is an administrative self-view label, not a personality claim."
+                        ),
+                        parameters={"max_new_tokens": 64, "temperature": 0.0},
+                    )
+                    result = host.generate(request)
+                    host_ref = hashlib.sha256(
+                        json.dumps(fingerprint, sort_keys=True, separators=(",", ":")).encode()
+                    ).hexdigest()
+                    try:
+                        decoded = json.loads(result.content)
+                        valid = (
+                            isinstance(decoded, dict)
+                            and set(decoded) == {"name"}
+                            and isinstance(decoded.get("name"), str)
+                        )
+                    except json.JSONDecodeError:
+                        decoded, valid = result.content, False
+                    review_service.record_attempt(
+                        args.proposal_id,
+                        decoded,
+                        status="VALID" if valid else "INVALID",
+                        usage=(result.token_usage.__dict__ if result.token_usage else None),
+                        host_ref=host_ref,
+                        errors=() if valid else ("name schema failed",),
+                    )
+                    if not valid:
+                        print(json.dumps({"review_id": args.proposal_id, "status": "INVALID"}, indent=2))
+                        return 1
+                    review_service.accept(args.proposal_id, name=str(decoded["name"]))
+                    print(json.dumps({"review_id": args.proposal_id, "status": "ACCEPTED", "name": decoded["name"]}, indent=2))
                 elif args.identity_action == "show":
                     shown_view = identity_service.current()
-                    payload = shown_view.to_dict() if shown_view is not None else None
-                    print(json.dumps(payload, indent=2))
+                    identity_payload = shown_view.to_dict() if shown_view is not None else None
+                    print(json.dumps(identity_payload, indent=2))
                 elif args.identity_action == "alias" and args.alias_action == "add":
                     print(identity_service.add_alias(args.alias, source={"actor": "operator"}))
                 return 0
@@ -455,12 +593,12 @@ def main(argv: list[str] | None = None) -> int:
     if args.action == "inspect":
         print(json.dumps(selected.fingerprint().to_dict(), indent=2))
         return 0
-    report = qualify(selected)
+    qualification_report = qualify(selected)
     if args.json:
         args.json.parent.mkdir(parents=True, exist_ok=True)
-        args.json.write_text(json.dumps(report.to_dict(), indent=2) + "\n")
+        args.json.write_text(json.dumps(qualification_report.to_dict(), indent=2) + "\n")
     if args.report:
         args.report.parent.mkdir(parents=True, exist_ok=True)
-        args.report.write_text(report.text())
-    print(report.text(), end="")
-    return 0 if report.summary["overall"] == "pass" else 1
+        args.report.write_text(qualification_report.text())
+    print(qualification_report.text(), end="")
+    return 0 if qualification_report.summary["overall"] == "pass" else 1
