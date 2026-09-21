@@ -696,3 +696,7 @@
 ## 2026-09-21 P2.3 lifetime budget reconciliation correction
 
 - Audited all persisted Phase Two qualification and pilot receipts against the governing assessor-role addendum. The prior queue note undercounted historical qualification attempts. Counting each persisted provider call once, while deduplicating the pilot partial probe already included in the later six-call stop, yields 42 campaign calls, 34,591 input tokens, 11,988 output tokens, and 46,579 total tokens; provider cost remains unknown. The unchanged 299-call ceiling leaves 257 calls, below the 288-call no-repair pilot minimum. Historical receipts remain unchanged; no provider call was made for this reconciliation. Evidence: `docs/receipts/MNEME_P2.3_Budget_Reconciliation_Receipt.md` and `.json`.
+
+## 2026-09-21 P2.3 budget schedule terminology correction
+
+- Clarified that 288 calls is the pilot-only no-repair schedule, while the governing assessor-role addendum calls the full no-repair schedule 291 calls including the three qualification calls. The 299-call ceiling, 42 consumed calls, 257 remaining calls, and zero post-v9 pilot calls are unchanged. No provider call was made; historical receipts remain unchanged. Evidence: `docs/receipts/MNEME_P2.3_Budget_Reconciliation_Correction_Receipt.md` and `.json`.

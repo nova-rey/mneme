@@ -159,6 +159,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   attempts, is recorded in [the budget reconciliation receipt](receipts/MNEME_P2.3_Budget_Reconciliation_Receipt.md)
   ([JSON](receipts/MNEME_P2.3_Budget_Reconciliation_Receipt.json)); it corrects
   the undercount to 42 calls with 257 remaining.
+  A terminology correction distinguishes the 288-call pilot-only no-repair
+  schedule from the 291-call full no-repair schedule including qualification
+  in [the correction receipt](receipts/MNEME_P2.3_Budget_Reconciliation_Correction_Receipt.md)
+  ([JSON](receipts/MNEME_P2.3_Budget_Reconciliation_Correction_Receipt.json)).
 
   The pilot extraction stop and its six returned calls are recorded in [the extraction-stop receipt](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md) ([JSON](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json)); the finite-repair rule halted the pilot before evaluation.
 
