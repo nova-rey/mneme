@@ -155,6 +155,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   ([JSON](receipts/MNEME_P2.3_Assessor_Qualification_Coverage_Polarity_V9_Pass_Receipt.json));
   no pilot call was dispatched because the remaining campaign ceiling is below
   the approved no-repair pilot schedule.
+  The complete lifetime/campaign reconciliation, including all prior qualification
+  attempts, is recorded in [the budget reconciliation receipt](receipts/MNEME_P2.3_Budget_Reconciliation_Receipt.md)
+  ([JSON](receipts/MNEME_P2.3_Budget_Reconciliation_Receipt.json)); it corrects
+  the undercount to 42 calls with 257 remaining.
 
   The pilot extraction stop and its six returned calls are recorded in [the extraction-stop receipt](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md) ([JSON](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json)); the finite-repair rule halted the pilot before evaluation.
 

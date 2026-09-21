@@ -1128,10 +1128,12 @@
         "docs/receipts/MNEME_P2.3_Assessor_Coverage_Polarity_V9_Offline_Receipt.md",
         "docs/receipts/MNEME_P2.3_Assessor_Coverage_Polarity_V9_Offline_Receipt.json",
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_Coverage_Polarity_V9_Pass_Receipt.md",
-        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Coverage_Polarity_V9_Pass_Receipt.json"
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Coverage_Polarity_V9_Pass_Receipt.json",
+        "docs/receipts/MNEME_P2.3_Budget_Reconciliation_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Budget_Reconciliation_Receipt.json"
       ],
       "id": "P2.3",
-      "notes": "P2.2 accepted. Historical polarity-v8 qualification, pilot extraction stops, and all prior receipts remain unchanged. Offline edge-less extraction correction passed at commit 2885332 and CI 35548448495. The fresh corrected pilot run p2-pilot-live-20260921b consumed 6 calls and stopped at episode 1 after its one permitted extraction repair failed strict source-bound quotation validation; no evaluation calls or resampling occurred. The additive v9 coverage/polarity correction is pushed at 41bd31f with 318 pytest, Ruff, strict mypy, wheel/fresh-install smoke, and CI 35549781907. The fixed v9 Q1/Q2/Q3 qualification then passed in 3 DeepInfra Qwen calls (4,585 tokens; cost unknown), with persisted semantic/provenance evidence and zero pilot calls. Total campaign usage is now 21 calls, leaving 278 under the unchanged 299 ceiling; the approved 288-call no-repair pilot schedule cannot fit, so P2.3 remains WAITING on budget review.",
+      "notes": "P2.2 accepted. Historical qualification/pilot receipts remain unchanged. Offline edge-less extraction correction passed at commit 2885332 and CI 35548448495. The fresh corrected pilot run p2-pilot-live-20260921b consumed 6 calls and stopped at episode 1 after its one permitted extraction repair failed strict source-bound quotation validation; no evaluation calls or resampling occurred. The additive v9 coverage/polarity correction is pushed at 41bd31f with 318 pytest, Ruff, strict mypy, wheel/fresh-install smoke, and CI 35549781907. The fixed v9 Q1/Q2/Q3 qualification passed in 3 DeepInfra Qwen calls (4,585 tokens; cost unknown), with persisted semantic/provenance evidence and zero pilot calls. Reconciled unique campaign usage is 42 calls (34,591 input / 11,988 output / 46,579 total tokens; cost unknown), leaving 257 under the unchanged 299 ceiling. The approved 288-call no-repair pilot schedule cannot fit, so P2.3 remains WAITING on budget review and the extraction-stop review; no pilot call was dispatched after v9.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1158,7 +1160,7 @@
       "session_ids": [],
       "status": "WAITING",
       "title": "Assessor qualification and bounded developmental pilot",
-      "updated_at": "2026-09-21T01:20:00Z",
+      "updated_at": "2026-09-21T01:30:00Z",
       "validation": {
         "required": [
           "p23-assessor-contract",
@@ -1217,6 +1219,11 @@
             "receipt": "docs/receipts/MNEME_P2.3_Assessor_Qualification_Coverage_Polarity_V9_Pass_Receipt.md/.json; Q1/Q2/Q3 passed; 3 calls; 4,585 total tokens; no pilot calls",
             "recorded_at": "2026-09-21T01:20:00Z",
             "status": "PASS"
+          },
+          "p23-budget-reconciliation": {
+            "receipt": "docs/receipts/MNEME_P2.3_Budget_Reconciliation_Receipt.md/.json; 42 unique campaign calls, 257 remaining, unchanged 299-call ceiling; no provider calls for reconciliation",
+            "recorded_at": "2026-09-21T01:30:00Z",
+            "status": "PASS"
           }
         }
       },
@@ -1231,7 +1238,9 @@
         "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md",
         "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json",
         "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md",
-        "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json"
+        "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json",
+        "docs/receipts/MNEME_P2.3_Budget_Reconciliation_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Budget_Reconciliation_Receipt.json"
       ]
     }
   ],
