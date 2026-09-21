@@ -44,9 +44,10 @@ proposition to assess and publish, the adapter failed closed with:
 > `PilotStudyError: extraction has no assessable relationship: extraction-s0-e0`
 
 The repair was not regenerated and the pilot was not restarted. The complete
-sanitized request/result/source artifacts remain in the external prepared run
-under the preserved laboratory root; this receipt contains no credential,
-authorization header, or unrelated private data.
+sanitized request/result/source artifacts are preserved in
+`MNEME_P2.3_Pilot_Live_Extraction_Stop_20260920_Bundle.json`; the original
+prepared run remains under the external laboratory root. This receipt contains
+no credential, authorization header, or unrelated private data.
 
 ## Disposition
 

@@ -1,0 +1,532 @@
+{
+  "development": {
+    "coordinate": {
+      "episode": 0,
+      "family": "parts",
+      "subject": 0
+    },
+    "request": {
+      "messages": [
+        {
+          "content": "I sorted socket wrenches into labeled bins, so finding a repair size takes less time.",
+          "role": "user"
+        }
+      ],
+      "parameters": {},
+      "response_format": null,
+      "run_metadata": {},
+      "seed": null,
+      "system": null
+    },
+    "result": {
+      "content": "That sounds like a very practical and smart way to organize your tools! Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\n\nDid you use any specific organizational system (like size gradient, or tool type) when labeling your bins?",
+      "finish_reason": "stop",
+      "model_id": "google/gemma-4-E4B-it",
+      "provenance": {
+        "finish_reason": "stop",
+        "model_id": "google/gemma-4-E4B-it",
+        "provenance": {
+          "host": {
+            "capabilities": [
+              "text_generation",
+              "token_usage"
+            ],
+            "chat_template": "deepinfra_openai_chat",
+            "execution": {
+              "base_url": "https://api.deepinfra.com/v1/openai",
+              "canonical_upstream_model": "google/gemma-4-E4B-it",
+              "catalog_context_length": 131072,
+              "catalog_quantization": "unknown/provider-managed",
+              "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+              "hosted_model_revision": "unknown",
+              "rendering_mode": "deepinfra_openai_chat",
+              "service_tier": "standard"
+            },
+            "model_family": "Gemma 4 E4B IT",
+            "model_id": "google/gemma-4-E4B-it",
+            "model_revision": null,
+            "provider": "DeepInfra",
+            "quantization": "unknown/provider-managed",
+            "runtime": "deepinfra-openai-compatible",
+            "runtime_version": null,
+            "tokenizer_id": "google/gemma-4-E4B-it",
+            "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+          },
+          "request_chars": 85
+        },
+        "provider": "DeepInfra"
+      },
+      "provider": "DeepInfra",
+      "usage": {
+        "input_tokens": 26,
+        "output_tokens": 66,
+        "total_tokens": 92
+      }
+    }
+  },
+  "extraction_initial": {
+    "coordinate": {
+      "attempt": 0,
+      "episode": 0,
+      "family": "parts",
+      "subject": 0
+    },
+    "provider_reservation_status": "RETURNED",
+    "request": {
+      "host_ref": "e88374a46a446376f70d6190f714195139396befbc474ebc1cf4610197ec2c6e",
+      "request": {
+        "messages": [
+          {
+            "content": "{\"source_slots\":{\"s0\":\"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\",\"s1\":\"That sounds like a very practical and smart way to organize your tools! Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\\n\\nDid you use any specific organizational system (like size gradient, or tool type) when labeling your bins?\"}}",
+            "role": "user"
+          }
+        ],
+        "parameters": {
+          "max_new_tokens": 1536,
+          "temperature": 0
+        },
+        "response_format": null,
+        "run_metadata": {},
+        "seed": null,
+        "system": "Extract residue v1 as one JSON object. Use only the supplied source slots. For every supported assertion, provide evidence as an array of objects with exactly {source, evidence}, where source is the source slot and evidence is a short, exact, non-empty quotation copied verbatim from that source. Do not calculate or provide numeric offsets; MNEME resolves quotations to canonical Unicode code-point spans. If no supported candidate exists, return {}. Return raw JSON only: no Markdown fences, no introductory or concluding prose, and no comments. Never invent enum values or labels for constrained fields. Before returning each concept or relationship, check that every evidence quotation is one contiguous substring of the referenced source slot. If an assertion has no exact source substring, omit that assertion instead of paraphrasing, shortening, combining, or explaining the source in new words. This rule applies equally to model-output sources and to repair attempts. Formatting is part of the immutable source: preserve every Markdown marker, asterisk, underscore, backtick, punctuation mark, and whitespace character inside a quotation; do not quote rendered text after stripping formatting. The validator accepts exactly these top-level fields: store, episode_id, core_concepts, salient_phrases, observed_patterns, edge_candidates, route_candidates, declared_memories, earned_candidates, identity_candidates, developmental_observation_refs, evidence_refs, extraction_confidence, intrusion_risk_estimate. Use only the canonical record fields described below. The complete allowed concept kind vocabulary is: behavior, concept, constraint, entity, event, fact, identity, object, pattern, person, process, question, resource, strategy, style, topic, trait, value, warning. The complete allowed relationship kind vocabulary is: analogy, association, causal, caused-by, caused_by, causes, constrains, contradiction, contrast, conversational-pattern, corrects, dependency, depends-on, depends_on, enables, explains, explanation, habit, identity, part-of, part_of, reasoning-strategy, refines, related, same-as, same_as, semantic, style, supports, task-utility, temporal, user-specific, warning. There are no other concept or relationship enum values. core_concepts records require key, label, kind, evidence, and confidence; edge_candidates records require key, from, to, relationship, evidence, and confidence, with from/to equal to concept keys; route_candidates records require key, edge_keys, evidence, and confidence. Every evidence object must contain only source and evidence; do not return source_spans, start, or end. route_candidates are optional source-backed groupings. MNEME derives bounded directed routes from accepted graph edges, so do not invent a route solely to restate an edge. Use at most two concepts, one edge, and one route. Use only supported kinds from the vocabularies above, keep labels short, and return only the JSON object. Correct these validation errors: [\"residue.core_concepts[0].evidence[0]: must be an object\"]"
+      },
+      "source_bundle": {
+        "eligible": [
+          {
+            "content": "I sorted socket wrenches into labeled bins, so finding a repair size takes less time.",
+            "content_digest": "2c06144768b5b21006a64d3ca9ee45ed3dd997b59d9ffea7eb26333afc7747d2",
+            "independent_evidence": true,
+            "ordinal": 0,
+            "purpose": "external_evidence",
+            "role": "user",
+            "slot": "s0",
+            "source_id": "c3256468-b1ef-4a8d-859b-a4b85a994bcb",
+            "supplier": "external"
+          },
+          {
+            "content": "That sounds like a very practical and smart way to organize your tools! Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\n\nDid you use any specific organizational system (like size gradient, or tool type) when labeling your bins?",
+            "content_digest": "fb9e567f61420682a0fe01c62875559c6047d91db28b8efbe770667bb746c370",
+            "independent_evidence": false,
+            "ordinal": 1000000,
+            "purpose": "model_output",
+            "role": "model_output",
+            "slot": "s1",
+            "source_id": "26de260c-31dc-4a3d-9826-ecf93a0ad39e",
+            "supplier": "model"
+          }
+        ],
+        "episode_id": "67f50678-7e41-43bb-be6f-3d05eb374f46",
+        "sources": [
+          {
+            "content": "I sorted socket wrenches into labeled bins, so finding a repair size takes less time.",
+            "content_digest": "2c06144768b5b21006a64d3ca9ee45ed3dd997b59d9ffea7eb26333afc7747d2",
+            "independent_evidence": true,
+            "ordinal": 0,
+            "purpose": "external_evidence",
+            "role": "user",
+            "slot": "s0",
+            "source_id": "c3256468-b1ef-4a8d-859b-a4b85a994bcb",
+            "supplier": "external"
+          },
+          {
+            "content": "That sounds like a very practical and smart way to organize your tools! Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\n\nDid you use any specific organizational system (like size gradient, or tool type) when labeling your bins?",
+            "content_digest": "fb9e567f61420682a0fe01c62875559c6047d91db28b8efbe770667bb746c370",
+            "independent_evidence": false,
+            "ordinal": 1000000,
+            "purpose": "model_output",
+            "role": "model_output",
+            "slot": "s1",
+            "source_id": "26de260c-31dc-4a3d-9826-ecf93a0ad39e",
+            "supplier": "model"
+          }
+        ]
+      }
+    },
+    "result": {
+      "content": "{\"core_concepts\": [{\"key\": \"socket_wrenches\", \"label\": \"socket wrenches\", \"kind\": \"object\", \"evidence\": [\"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\"], \"confidence\": 1.0}, {\"key\": \"labeled_bins\", \"label\": \"labeled bins\", \"kind\": \"object\", \"evidence\": [\"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\"]}, {\"key\": \"finding_repair_size\", \"label\": \"finding a repair size\", \"kind\": \"process\", \"evidence\": [\"so finding a repair size takes less time.\"]}, {\"key\": \"speed_up_workflow\", \"label\": \"speed up your workflow\", \"kind\": \"value\", \"evidence\": [\"Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\"]}, {\"key\": \"reduce_frustration\", \"label\": \"reduce frustration\", \"kind\": \"value\", \"evidence\": [\"Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\"]}], \"edge_candidates\": [{\"key\": \"e1\", \"from\": \"socket_wrenches\", \"to\": \"labeled_bins\", \"relationship\": \"part_of\", \"evidence\": [\"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\"], \"confidence\": 1.0}, {\"key\": \"e2\", \"from\": \"labeled_bins\", \"to\": \"finding_repair_size\", \"relationship\": \"enables\", \"evidence\": [\"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\"], \"confidence\": 1.0}, {\"key\": \"e3\", \"from\": \"labeled_bins\", \"to\": \"speed_up_workflow\", \"relationship\": \"causes\", \"evidence\": [\"Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\"], \"confidence\": 1.0}, {\"key\": \"e4\", \"from\": \"labeled_bins\", \"to\": \"reduce_frustration\", \"relationship\": \"causes\", \"evidence\": [\"Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\"], \"confidence\": 1.0}], \"route_candidates\": [{\"key\": \"r1\", \"edge_keys\": [\"e2\", \"e3\"], \"evidence\": [\"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\"], \"confidence\": 0.9}]}",
+      "effective_parameters": {
+        "max_tokens": 1536,
+        "temperature": 0
+      },
+      "finish_reason": "stop",
+      "latency_ms": 11423.060119966976,
+      "model_id": "google/gemma-4-E4B-it",
+      "provenance": {
+        "host": {
+          "capabilities": [
+            "text_generation",
+            "token_usage"
+          ],
+          "chat_template": "deepinfra_openai_chat",
+          "execution": {
+            "base_url": "https://api.deepinfra.com/v1/openai",
+            "canonical_upstream_model": "google/gemma-4-E4B-it",
+            "catalog_context_length": 131072,
+            "catalog_quantization": "unknown/provider-managed",
+            "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+            "hosted_model_revision": "unknown",
+            "rendering_mode": "deepinfra_openai_chat",
+            "service_tier": "standard"
+          },
+          "model_family": "Gemma 4 E4B IT",
+          "model_id": "google/gemma-4-E4B-it",
+          "model_revision": null,
+          "provider": "DeepInfra",
+          "quantization": "unknown/provider-managed",
+          "runtime": "deepinfra-openai-compatible",
+          "runtime_version": null,
+          "tokenizer_id": "google/gemma-4-E4B-it",
+          "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+        },
+        "request_chars": 3411
+      },
+      "provider": "DeepInfra",
+      "raw_metadata": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": "{\"core_concepts\": [{\"key\": \"socket_wrenches\", \"label\": \"socket wrenches\", \"kind\": \"object\", \"evidence\": [\"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\"], \"confidence\": 1.0}, {\"key\": \"labeled_bins\", \"label\": \"labeled bins\", \"kind\": \"object\", \"evidence\": [\"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\"]}, {\"key\": \"finding_repair_size\", \"label\": \"finding a repair size\", \"kind\": \"process\", \"evidence\": [\"so finding a repair size takes less time.\"]}, {\"key\": \"speed_up_workflow\", \"label\": \"speed up your workflow\", \"kind\": \"value\", \"evidence\": [\"Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\"]}, {\"key\": \"reduce_frustration\", \"label\": \"reduce frustration\", \"kind\": \"value\", \"evidence\": [\"Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\"]}], \"edge_candidates\": [{\"key\": \"e1\", \"from\": \"socket_wrenches\", \"to\": \"labeled_bins\", \"relationship\": \"part_of\", \"evidence\": [\"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\"], \"confidence\": 1.0}, {\"key\": \"e2\", \"from\": \"labeled_bins\", \"to\": \"finding_repair_size\", \"relationship\": \"enables\", \"evidence\": [\"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\"], \"confidence\": 1.0}, {\"key\": \"e3\", \"from\": \"labeled_bins\", \"to\": \"speed_up_workflow\", \"relationship\": \"causes\", \"evidence\": [\"Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\"], \"confidence\": 1.0}, {\"key\": \"e4\", \"from\": \"labeled_bins\", \"to\": \"reduce_frustration\", \"relationship\": \"causes\", \"evidence\": [\"Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\"], \"confidence\": 1.0}], \"route_candidates\": [{\"key\": \"r1\", \"edge_keys\": [\"e2\", \"e3\"], \"evidence\": [\"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\"], \"confidence\": 0.9}]}",
+              "name": null,
+              "reasoning_content": null,
+              "role": "assistant",
+              "tool_calls": []
+            }
+          }
+        ],
+        "created": 1789950044,
+        "id": "chatcmpl-RFwXB0oo7HOF5WvTrrz4tPUS",
+        "model": "google/gemma-4-E4B-it",
+        "object": "chat.completion",
+        "service_tier": "default",
+        "usage": {
+          "completion_tokens": 581,
+          "estimated_cost": 7.248e-05,
+          "prompt_tokens": 719,
+          "prompt_tokens_details": null,
+          "total_tokens": 1300
+        }
+      },
+      "seed": null,
+      "token_usage": "[REDACTED]"
+    }
+  },
+  "extraction_repair": {
+    "coordinate": {
+      "attempt": 1,
+      "episode": 0,
+      "family": "parts",
+      "subject": 0
+    },
+    "provider_reservation_status": "RETURNED",
+    "request": {
+      "host_ref": "e88374a46a446376f70d6190f714195139396befbc474ebc1cf4610197ec2c6e",
+      "request": {
+        "messages": [
+          {
+            "content": "{\"source_slots\":{\"s0\":\"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\",\"s1\":\"That sounds like a very practical and smart way to organize your tools! Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\\n\\nDid you use any specific organizational system (like size gradient, or tool type) when labeling your bins?\"}}",
+            "role": "user"
+          }
+        ],
+        "parameters": {
+          "max_new_tokens": 1536,
+          "temperature": 0
+        },
+        "response_format": null,
+        "run_metadata": {},
+        "seed": null,
+        "system": "Extract residue v1 as one JSON object. Use only the supplied source slots. For every supported assertion, provide evidence as an array of objects with exactly {source, evidence}, where source is the source slot and evidence is a short, exact, non-empty quotation copied verbatim from that source. Do not calculate or provide numeric offsets; MNEME resolves quotations to canonical Unicode code-point spans. If no supported candidate exists, return {}. Return raw JSON only: no Markdown fences, no introductory or concluding prose, and no comments. Never invent enum values or labels for constrained fields. Before returning each concept or relationship, check that every evidence quotation is one contiguous substring of the referenced source slot. If an assertion has no exact source substring, omit that assertion instead of paraphrasing, shortening, combining, or explaining the source in new words. This rule applies equally to model-output sources and to repair attempts. Formatting is part of the immutable source: preserve every Markdown marker, asterisk, underscore, backtick, punctuation mark, and whitespace character inside a quotation; do not quote rendered text after stripping formatting. The validator accepts exactly these top-level fields: store, episode_id, core_concepts, salient_phrases, observed_patterns, edge_candidates, route_candidates, declared_memories, earned_candidates, identity_candidates, developmental_observation_refs, evidence_refs, extraction_confidence, intrusion_risk_estimate. Use only the canonical record fields described below. The complete allowed concept kind vocabulary is: behavior, concept, constraint, entity, event, fact, identity, object, pattern, person, process, question, resource, strategy, style, topic, trait, value, warning. The complete allowed relationship kind vocabulary is: analogy, association, causal, caused-by, caused_by, causes, constrains, contradiction, contrast, conversational-pattern, corrects, dependency, depends-on, depends_on, enables, explains, explanation, habit, identity, part-of, part_of, reasoning-strategy, refines, related, same-as, same_as, semantic, style, supports, task-utility, temporal, user-specific, warning. There are no other concept or relationship enum values. core_concepts records require key, label, kind, evidence, and confidence; edge_candidates records require key, from, to, relationship, evidence, and confidence, with from/to equal to concept keys; route_candidates records require key, edge_keys, evidence, and confidence. Every evidence object must contain only source and evidence; do not return source_spans, start, or end. route_candidates are optional source-backed groupings. MNEME derives bounded directed routes from accepted graph edges, so do not invent a route solely to restate an edge. Use at most two concepts, one edge, and one route. Use only supported kinds from the vocabularies above, keep labels short, and return only the JSON object. Correct these validation errors: [\"residue.core_concepts[0].evidence[0]: must be an object\"]"
+      },
+      "source_bundle": {
+        "eligible": [
+          {
+            "content": "I sorted socket wrenches into labeled bins, so finding a repair size takes less time.",
+            "content_digest": "2c06144768b5b21006a64d3ca9ee45ed3dd997b59d9ffea7eb26333afc7747d2",
+            "independent_evidence": true,
+            "ordinal": 0,
+            "purpose": "external_evidence",
+            "role": "user",
+            "slot": "s0",
+            "source_id": "c3256468-b1ef-4a8d-859b-a4b85a994bcb",
+            "supplier": "external"
+          },
+          {
+            "content": "That sounds like a very practical and smart way to organize your tools! Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\n\nDid you use any specific organizational system (like size gradient, or tool type) when labeling your bins?",
+            "content_digest": "fb9e567f61420682a0fe01c62875559c6047d91db28b8efbe770667bb746c370",
+            "independent_evidence": false,
+            "ordinal": 1000000,
+            "purpose": "model_output",
+            "role": "model_output",
+            "slot": "s1",
+            "source_id": "26de260c-31dc-4a3d-9826-ecf93a0ad39e",
+            "supplier": "model"
+          }
+        ],
+        "episode_id": "67f50678-7e41-43bb-be6f-3d05eb374f46",
+        "sources": [
+          {
+            "content": "I sorted socket wrenches into labeled bins, so finding a repair size takes less time.",
+            "content_digest": "2c06144768b5b21006a64d3ca9ee45ed3dd997b59d9ffea7eb26333afc7747d2",
+            "independent_evidence": true,
+            "ordinal": 0,
+            "purpose": "external_evidence",
+            "role": "user",
+            "slot": "s0",
+            "source_id": "c3256468-b1ef-4a8d-859b-a4b85a994bcb",
+            "supplier": "external"
+          },
+          {
+            "content": "That sounds like a very practical and smart way to organize your tools! Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\n\nDid you use any specific organizational system (like size gradient, or tool type) when labeling your bins?",
+            "content_digest": "fb9e567f61420682a0fe01c62875559c6047d91db28b8efbe770667bb746c370",
+            "independent_evidence": false,
+            "ordinal": 1000000,
+            "purpose": "model_output",
+            "role": "model_output",
+            "slot": "s1",
+            "source_id": "26de260c-31dc-4a3d-9826-ecf93a0ad39e",
+            "supplier": "model"
+          }
+        ]
+      }
+    },
+    "result": {
+      "content": "{\"core_concepts\": [{\"key\": \"tool_organization\", \"label\": \"tool organization\", \"kind\": \"process\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted socket wrenches into labeled bins\"}], \"confidence\": 0.9}, {\"key\": \"time_saving\", \"label\": \"time saving\", \"kind\": \"value\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"finding a repair size takes less time\"}], \"confidence\": 0.9}, {\"key\": \"workflow_improvement\", \"label\": \"workflow improvement\", \"kind\": \"trait\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\"}], \"confidence\": 0.9}]}",
+      "effective_parameters": {
+        "max_tokens": 1536,
+        "temperature": 0
+      },
+      "finish_reason": "stop",
+      "latency_ms": 3223.9739729557186,
+      "model_id": "google/gemma-4-E4B-it",
+      "provenance": {
+        "host": {
+          "capabilities": [
+            "text_generation",
+            "token_usage"
+          ],
+          "chat_template": "deepinfra_openai_chat",
+          "execution": {
+            "base_url": "https://api.deepinfra.com/v1/openai",
+            "canonical_upstream_model": "google/gemma-4-E4B-it",
+            "catalog_context_length": 131072,
+            "catalog_quantization": "unknown/provider-managed",
+            "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+            "hosted_model_revision": "unknown",
+            "rendering_mode": "deepinfra_openai_chat",
+            "service_tier": "standard"
+          },
+          "model_family": "Gemma 4 E4B IT",
+          "model_id": "google/gemma-4-E4B-it",
+          "model_revision": null,
+          "provider": "DeepInfra",
+          "quantization": "unknown/provider-managed",
+          "runtime": "deepinfra-openai-compatible",
+          "runtime_version": null,
+          "tokenizer_id": "google/gemma-4-E4B-it",
+          "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+        },
+        "request_chars": 3504
+      },
+      "provider": "DeepInfra",
+      "raw_metadata": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": "{\"core_concepts\": [{\"key\": \"tool_organization\", \"label\": \"tool organization\", \"kind\": \"process\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted socket wrenches into labeled bins\"}], \"confidence\": 0.9}, {\"key\": \"time_saving\", \"label\": \"time saving\", \"kind\": \"value\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"finding a repair size takes less time\"}], \"confidence\": 0.9}, {\"key\": \"workflow_improvement\", \"label\": \"workflow improvement\", \"kind\": \"trait\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\"}], \"confidence\": 0.9}]}",
+              "name": null,
+              "reasoning_content": null,
+              "role": "assistant",
+              "tool_calls": []
+            }
+          }
+        ],
+        "created": 1789950047,
+        "id": "chatcmpl-RB4JW3fwweRihzB8s8U0iqSq",
+        "model": "google/gemma-4-E4B-it",
+        "object": "chat.completion",
+        "service_tier": "default",
+        "usage": {
+          "completion_tokens": 183,
+          "estimated_cost": 3.316e-05,
+          "prompt_tokens": 743,
+          "prompt_tokens_details": null,
+          "total_tokens": 926
+        }
+      },
+      "seed": null,
+      "token_usage": "[REDACTED]"
+    }
+  },
+  "report": {
+    "admitted_relationships": 0,
+    "assessments_completed": 0,
+    "development_completed": 1,
+    "engineering_adequate": false,
+    "evaluations_completed": 0,
+    "extraction_repairs": 1,
+    "extractions_valid": 1,
+    "failure": "PilotStudyError: extraction has no assessable relationship: extraction-s0-e0",
+    "status": "FAILED"
+  },
+  "run_id": "p2-pilot-live-20260920",
+  "sanitization": "Provider credentials, authorization headers, and unrelated private data are absent.",
+  "status": "FAIL_STOP",
+  "validated_repair_artifact": {
+    "attempt": 1,
+    "coordinate": {
+      "attempt": 1,
+      "episode": 0,
+      "family": "parts",
+      "subject": 0
+    },
+    "episode_id": "67f50678-7e41-43bb-be6f-3d05eb374f46",
+    "provider_called": true,
+    "request": {
+      "host_ref": "e88374a46a446376f70d6190f714195139396befbc474ebc1cf4610197ec2c6e",
+      "request": {
+        "messages": [
+          {
+            "content": "{\"source_slots\":{\"s0\":\"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\",\"s1\":\"That sounds like a very practical and smart way to organize your tools! Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\\n\\nDid you use any specific organizational system (like size gradient, or tool type) when labeling your bins?\"}}",
+            "role": "user"
+          }
+        ],
+        "parameters": {
+          "max_new_tokens": 1536,
+          "temperature": 0
+        },
+        "response_format": null,
+        "run_metadata": {},
+        "seed": null,
+        "system": "Extract residue v1 as one JSON object. Use only the supplied source slots. For every supported assertion, provide evidence as an array of objects with exactly {source, evidence}, where source is the source slot and evidence is a short, exact, non-empty quotation copied verbatim from that source. Do not calculate or provide numeric offsets; MNEME resolves quotations to canonical Unicode code-point spans. If no supported candidate exists, return {}. Return raw JSON only: no Markdown fences, no introductory or concluding prose, and no comments. Never invent enum values or labels for constrained fields. Before returning each concept or relationship, check that every evidence quotation is one contiguous substring of the referenced source slot. If an assertion has no exact source substring, omit that assertion instead of paraphrasing, shortening, combining, or explaining the source in new words. This rule applies equally to model-output sources and to repair attempts. Formatting is part of the immutable source: preserve every Markdown marker, asterisk, underscore, backtick, punctuation mark, and whitespace character inside a quotation; do not quote rendered text after stripping formatting. The validator accepts exactly these top-level fields: store, episode_id, core_concepts, salient_phrases, observed_patterns, edge_candidates, route_candidates, declared_memories, earned_candidates, identity_candidates, developmental_observation_refs, evidence_refs, extraction_confidence, intrusion_risk_estimate. Use only the canonical record fields described below. The complete allowed concept kind vocabulary is: behavior, concept, constraint, entity, event, fact, identity, object, pattern, person, process, question, resource, strategy, style, topic, trait, value, warning. The complete allowed relationship kind vocabulary is: analogy, association, causal, caused-by, caused_by, causes, constrains, contradiction, contrast, conversational-pattern, corrects, dependency, depends-on, depends_on, enables, explains, explanation, habit, identity, part-of, part_of, reasoning-strategy, refines, related, same-as, same_as, semantic, style, supports, task-utility, temporal, user-specific, warning. There are no other concept or relationship enum values. core_concepts records require key, label, kind, evidence, and confidence; edge_candidates records require key, from, to, relationship, evidence, and confidence, with from/to equal to concept keys; route_candidates records require key, edge_keys, evidence, and confidence. Every evidence object must contain only source and evidence; do not return source_spans, start, or end. route_candidates are optional source-backed groupings. MNEME derives bounded directed routes from accepted graph edges, so do not invent a route solely to restate an edge. Use at most two concepts, one edge, and one route. Use only supported kinds from the vocabularies above, keep labels short, and return only the JSON object. Correct these validation errors: [\"residue.core_concepts[0].evidence[0]: must be an object\"]"
+      },
+      "source_bundle": {
+        "eligible": [
+          {
+            "content": "I sorted socket wrenches into labeled bins, so finding a repair size takes less time.",
+            "content_digest": "2c06144768b5b21006a64d3ca9ee45ed3dd997b59d9ffea7eb26333afc7747d2",
+            "independent_evidence": true,
+            "ordinal": 0,
+            "purpose": "external_evidence",
+            "role": "user",
+            "slot": "s0",
+            "source_id": "c3256468-b1ef-4a8d-859b-a4b85a994bcb",
+            "supplier": "external"
+          },
+          {
+            "content": "That sounds like a very practical and smart way to organize your tools! Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\n\nDid you use any specific organizational system (like size gradient, or tool type) when labeling your bins?",
+            "content_digest": "fb9e567f61420682a0fe01c62875559c6047d91db28b8efbe770667bb746c370",
+            "independent_evidence": false,
+            "ordinal": 1000000,
+            "purpose": "model_output",
+            "role": "model_output",
+            "slot": "s1",
+            "source_id": "26de260c-31dc-4a3d-9826-ecf93a0ad39e",
+            "supplier": "model"
+          }
+        ],
+        "episode_id": "67f50678-7e41-43bb-be6f-3d05eb374f46",
+        "sources": [
+          {
+            "content": "I sorted socket wrenches into labeled bins, so finding a repair size takes less time.",
+            "content_digest": "2c06144768b5b21006a64d3ca9ee45ed3dd997b59d9ffea7eb26333afc7747d2",
+            "independent_evidence": true,
+            "ordinal": 0,
+            "purpose": "external_evidence",
+            "role": "user",
+            "slot": "s0",
+            "source_id": "c3256468-b1ef-4a8d-859b-a4b85a994bcb",
+            "supplier": "external"
+          },
+          {
+            "content": "That sounds like a very practical and smart way to organize your tools! Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\n\nDid you use any specific organizational system (like size gradient, or tool type) when labeling your bins?",
+            "content_digest": "fb9e567f61420682a0fe01c62875559c6047d91db28b8efbe770667bb746c370",
+            "independent_evidence": false,
+            "ordinal": 1000000,
+            "purpose": "model_output",
+            "role": "model_output",
+            "slot": "s1",
+            "source_id": "26de260c-31dc-4a3d-9826-ecf93a0ad39e",
+            "supplier": "model"
+          }
+        ]
+      }
+    },
+    "result": {
+      "content": "{\"core_concepts\": [{\"key\": \"tool_organization\", \"label\": \"tool organization\", \"kind\": \"process\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted socket wrenches into labeled bins\"}], \"confidence\": 0.9}, {\"key\": \"time_saving\", \"label\": \"time saving\", \"kind\": \"value\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"finding a repair size takes less time\"}], \"confidence\": 0.9}, {\"key\": \"workflow_improvement\", \"label\": \"workflow improvement\", \"kind\": \"trait\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\"}], \"confidence\": 0.9}]}",
+      "effective_parameters": {
+        "max_tokens": 1536,
+        "temperature": 0
+      },
+      "finish_reason": "stop",
+      "latency_ms": 3223.9739729557186,
+      "model_id": "google/gemma-4-E4B-it",
+      "provenance": {
+        "host": {
+          "capabilities": [
+            "text_generation",
+            "token_usage"
+          ],
+          "chat_template": "deepinfra_openai_chat",
+          "execution": {
+            "base_url": "https://api.deepinfra.com/v1/openai",
+            "canonical_upstream_model": "google/gemma-4-E4B-it",
+            "catalog_context_length": 131072,
+            "catalog_quantization": "unknown/provider-managed",
+            "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+            "hosted_model_revision": "unknown",
+            "rendering_mode": "deepinfra_openai_chat",
+            "service_tier": "standard"
+          },
+          "model_family": "Gemma 4 E4B IT",
+          "model_id": "google/gemma-4-E4B-it",
+          "model_revision": null,
+          "provider": "DeepInfra",
+          "quantization": "unknown/provider-managed",
+          "runtime": "deepinfra-openai-compatible",
+          "runtime_version": null,
+          "tokenizer_id": "google/gemma-4-E4B-it",
+          "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+        },
+        "request_chars": 3504
+      },
+      "provider": "DeepInfra",
+      "raw_metadata": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": "{\"core_concepts\": [{\"key\": \"tool_organization\", \"label\": \"tool organization\", \"kind\": \"process\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted socket wrenches into labeled bins\"}], \"confidence\": 0.9}, {\"key\": \"time_saving\", \"label\": \"time saving\", \"kind\": \"value\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"finding a repair size takes less time\"}], \"confidence\": 0.9}, {\"key\": \"workflow_improvement\", \"label\": \"workflow improvement\", \"kind\": \"trait\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Having labeled bins for your socket wrenches will definitely **speed up your workflow and reduce frustration** when you're in the middle of a repair.\"}], \"confidence\": 0.9}]}",
+              "name": null,
+              "reasoning_content": null,
+              "role": "assistant",
+              "tool_calls": []
+            }
+          }
+        ],
+        "created": 1789950047,
+        "id": "chatcmpl-RB4JW3fwweRihzB8s8U0iqSq",
+        "model": "google/gemma-4-E4B-it",
+        "object": "chat.completion",
+        "service_tier": "default",
+        "usage": {
+          "completion_tokens": 183,
+          "estimated_cost": 3.316e-05,
+          "prompt_tokens": 743,
+          "prompt_tokens_details": null,
+          "total_tokens": 926
+        }
+      },
+      "seed": null,
+      "token_usage": "[REDACTED]"
+    },
+    "valid": true,
+    "validation_error": null
+  }
+}

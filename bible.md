@@ -672,3 +672,7 @@
 ## 2026-09-21 P2.3 fresh pilot extraction/assessment stop
 
 - Reused the preserved polarity-v8 qualification evidence and dispatched exactly three new Gemma calls for a fresh fixed pilot coordinate: one development response, one initial extraction, and one permitted repair. All returned and were durably retained. The initial extraction failed strict source-bound evidence validation; the repair passed residue validation but supplied no relationship edge, so the production assessor/publication boundary stopped with `extraction has no assessable relationship`. No Qwen assessor or evaluation calls were made. Usage was 1,488 input, 830 output, 2,318 total tokens; cost unavailable. Evidence is preserved in `docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260920.md` and `.json`; no historical receipt was rewritten and no automatic resampling occurred.
+
+## 2026-09-21 P2.3 live evidence bundle
+
+- Added the complete sanitized development/extraction request and result bundle for `p2-pilot-live-20260920` under `docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260920_Bundle.json`. It contains no credential or authorization data and preserves the exact three returned provider results needed to audit the stop.
