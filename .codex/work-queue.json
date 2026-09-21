@@ -1124,10 +1124,12 @@
         "docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260920_Bundle.json",
         "docs/receipts/MNEME_P2.3_Edge_Less_Extraction_Correction_Receipt.md/.json",
         "docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260921.md/.json",
-        "docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260921_Bundle.json"
+        "docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260921_Bundle.json",
+        "docs/receipts/MNEME_P2.3_Assessor_Coverage_Polarity_V9_Offline_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Assessor_Coverage_Polarity_V9_Offline_Receipt.json"
       ],
       "id": "P2.3",
-      "notes": "P2.2 accepted. Polarity v8 qualification passed and remains preserved. Offline edge-less extraction correction passed at commit 2885332 and CI 35548448495. Fresh corrected run p2-pilot-live-20260921b consumed 6 calls (2 Gemma development, 3 extraction including repair, 1 Qwen assessment) and stopped at episode 1 after strict source-bound quotation failure on the repair. No evaluation calls or resampling occurred. Total campaign usage is 18 calls; 281 remain, below the 288 scheduled pilot calls before repairs, so no further provider call is dispatched without budget review.",
+      "notes": "P2.2 accepted. Polarity v8 qualification passed and remains preserved. Offline edge-less extraction correction passed at commit 2885332 and CI 35548448495. Fresh corrected run p2-pilot-live-20260921b consumed 6 calls (2 Gemma development, 3 extraction including repair, 1 Qwen assessment) and stopped at episode 1 after strict source-bound quotation failure on the repair. No evaluation calls or resampling occurred. Total campaign usage is 18 calls; 281 remain, below the 288 scheduled pilot calls before repairs, so no further provider call is dispatched without budget review. Additive coverage/polarity v9 correction is offline-validated at the prospective p2-assessor-v6/p2-assessor-production-v8 contract; historical v5/v7 live evidence remains unchanged and no provider call has yet been made for this correction.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1203,6 +1205,11 @@
             "status": "FAIL_STOP",
             "receipt": "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md",
             "recorded_at": "2026-09-20T23:29:00+00:00"
+          },
+          "p23-assessor-coverage-polarity-v9": {
+            "receipt": "docs/receipts/MNEME_P2.3_Assessor_Coverage_Polarity_V9_Offline_Receipt.md/.json; 318 pytest; Ruff; strict mypy; wheel/fresh-install smoke; zero provider calls",
+            "recorded_at": "2026-09-21T01:05:00Z",
+            "status": "PASS"
           }
         }
       },
@@ -1233,5 +1240,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-20T17:11:01.012461Z"
+  "updated_at": "2026-09-21T01:05:00Z"
 }

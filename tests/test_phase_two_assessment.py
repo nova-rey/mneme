@@ -48,7 +48,7 @@ def _row(
 def _valid_result(case_id: str) -> dict[str, object]:
     if case_id == "Q1":
         return {
-            "schema_version": "p2-assessor-v5",
+            "schema_version": "p2-assessor-v6",
             "assessments": [
                 _row(
                     "latch", status="present", support="supported", expression="affirmed",
@@ -70,7 +70,7 @@ def _valid_result(case_id: str) -> dict[str, object]:
         }
     if case_id == "Q2":
         return {
-            "schema_version": "p2-assessor-v5",
+            "schema_version": "p2-assessor-v6",
             "assessments": [
                 _row(
                     "jacket_direction", status="absent", support="unsupported",
@@ -87,7 +87,7 @@ def _valid_result(case_id: str) -> dict[str, object]:
             ],
         }
     return {
-        "schema_version": "p2-assessor-v5",
+        "schema_version": "p2-assessor-v6",
         "assessments": [
             _row(
                 "dial", status="present", support="contradicted", expression="negated",
@@ -127,7 +127,7 @@ def test_assessor_prompt_exposes_complete_enum_and_json_contract() -> None:
 
     assert "Return raw JSON only" in prompt
     assert "Do not use Markdown fences" in prompt
-    assert '"schema_version": "p2-assessor-v5"' in prompt
+    assert '"schema_version": "p2-assessor-v6"' in prompt
     assert '"assessments": [' in prompt
     for value in ("present", "absent", "unknown"):
         assert value in prompt
@@ -245,6 +245,23 @@ def test_historical_v4_result_is_readable_only_through_explicit_archive_reader()
         validate_assessor_result(case.request, historical)  # type: ignore[arg-type]
     rows = read_historical_assessor_result(case.request, historical)  # type: ignore[arg-type]
     assert next(row for row in rows if row.monitor_id == "latch").expression_status == "expressed"
+
+
+def test_previous_v5_result_is_readable_only_through_explicit_archive_reader() -> None:
+    """The prior polarity contract remains readable without becoming current."""
+
+    case = next(case for case in qualification_cases() if case.case_id == "Q3")
+    historical = _valid_result("Q3")
+    historical["schema_version"] = "p2-assessor-v5"
+    with pytest.raises(AssessorValidationError, match="unsupported assessor result schema"):
+        validate_assessor_result(case.request, historical)  # type: ignore[arg-type]
+    rows = read_historical_assessor_result(case.request, historical)  # type: ignore[arg-type]
+    dial = next(row for row in rows if row.monitor_id == "dial")
+    assert (dial.status, dial.relation_support, dial.expression_status) == (
+        "present",
+        "contradicted",
+        "negated",
+    )
 
 
 def test_present_requires_complete_available_coverage() -> None:

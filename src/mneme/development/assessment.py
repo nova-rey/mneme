@@ -19,9 +19,10 @@ from typing import Any
 
 from ..contracts import GenerationRequest
 
-ASSESSOR_SCHEMA_VERSION = "p2-assessor-v5"
-ASSESSOR_PROMPT_VERSION = "p2-assessor-production-v7"
+ASSESSOR_SCHEMA_VERSION = "p2-assessor-v6"
+ASSESSOR_PROMPT_VERSION = "p2-assessor-production-v8"
 LEGACY_ASSESSOR_SCHEMA_VERSION = "p2-assessor-v4"
+PREVIOUS_ASSESSOR_SCHEMA_VERSION = "p2-assessor-v5"
 PROVENANCE_SCHEMA_VERSION = "p2-provenance-v1"
 
 ASSESSMENT_STATUSES = frozenset({"present", "absent", "unknown"})
@@ -463,7 +464,8 @@ def validate_assessor_result(
         )
     schema_version = top.get("schema_version")
     legacy = schema_version == LEGACY_ASSESSOR_SCHEMA_VERSION
-    if schema_version != ASSESSOR_SCHEMA_VERSION and not (allow_legacy and legacy):
+    previous = schema_version == PREVIOUS_ASSESSOR_SCHEMA_VERSION
+    if schema_version != ASSESSOR_SCHEMA_VERSION and not (allow_legacy and (legacy or previous)):
         raise AssessorValidationError("unsupported assessor result schema version")
     allowed_support = LEGACY_RELATION_SUPPORT if legacy else RELATION_SUPPORT
     allowed_expression = LEGACY_EXPRESSION_STATUS if legacy else EXPRESSION_STATUS
@@ -559,10 +561,10 @@ def validate_assessor_result(
 def read_historical_assessor_result(
     request: AssessorRequest, result: Mapping[str, Any]
 ) -> tuple[ValidatedSemanticAssessment, ...]:
-    """Read a preserved v4 result without admitting it to the v5 contract.
+    """Read preserved v4/v5 results without admitting them to the v6 contract.
 
-    Historical provider outputs retain their original ``expressed`` vocabulary
-    and interpretation.  The production validator remains v5-only unless this
+    Historical provider outputs retain their original schema vocabulary and
+    interpretation.  The production validator remains v6-only unless this
     explicit archival reader is selected.
     """
 
@@ -754,7 +756,9 @@ def assessor_generation_request(
                     "Use only the listed top-level and row fields. The schema_version "
                     f"must be exactly {ASSESSOR_SCHEMA_VERSION}. For status=present, coverage "
                     "must name covered declared source slots and evidence must contain "
-                    "a non-empty exact quotation from its source_slot. For status=present, "
+                    "a non-empty exact quotation from its source_slot. Status=present means "
+                    "the proposition is addressed by the available required sources; it "
+                    "does not by itself mean the proposition is affirmed. For status=present, "
                     "coverage.complete must be true and source_slots must include every "
                     "available required source slot; an unavailable required source means "
                     "status=unknown. For a present "
@@ -763,7 +767,10 @@ def assessor_generation_request(
                     "or negated; explicit negation is present evidence, not absence. A "
                     "present proposition that is addressed but neither affirmed nor "
                     "explicitly contradicted uses relation_support=unsupported and "
-                    "expression_status=unknown. For status=absent, "
+                    "expression_status=unknown. Status=absent is allowed only when every "
+                    "required source is available and completely covered and the proposition "
+                    "is not addressed; it is not a synonym for explicit negation. For "
+                    "status=absent, "
                     "coverage must be complete for every available required source and "
                     "reason must explain that the proposition is not addressed; use "
                     "relation_support=unsupported and expression_status=not_expressed; "
@@ -977,6 +984,7 @@ __all__ = [
     "ASSESSOR_PROMPT_VERSION",
     "ASSESSOR_SCHEMA_VERSION",
     "LEGACY_ASSESSOR_SCHEMA_VERSION",
+    "PREVIOUS_ASSESSOR_SCHEMA_VERSION",
     "PROVENANCE_SCHEMA_VERSION",
     "AssessorMonitor",
     "AssessorRequest",

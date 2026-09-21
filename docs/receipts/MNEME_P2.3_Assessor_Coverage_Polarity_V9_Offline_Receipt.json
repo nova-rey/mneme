@@ -1,0 +1,36 @@
+{
+  "kind": "phase-two-assessor-coverage-polarity-v9-offline",
+  "status": "PASS_OFFLINE",
+  "assessor_schema": "p2-assessor-v6",
+  "prompt_version": "p2-assessor-production-v8",
+  "provenance_schema": "p2-provenance-v1",
+  "provider_calls": 0,
+  "validation": {
+    "pytest": "318 passed",
+    "ruff": "PASS",
+    "mypy_strict": "PASS; 50 source files",
+    "wheel_fresh_install_smoke": "PASS"
+  },
+  "semantic_contract": {
+    "coverage": ["present", "absent", "unknown"],
+    "relation_support": ["supported", "contradicted", "unsupported", "unknown"],
+    "expression_status": ["affirmed", "negated", "not_expressed", "unknown"],
+    "explicit_negation": "present/contradicted/negated",
+    "incomplete_required_coverage": "unknown/unknown/unknown",
+    "historical_reader": ["p2-assessor-v4", "p2-assessor-v5"]
+  },
+  "learner_boundary": {
+    "contradicted_positive_credit": false,
+    "contradicted_becomes_absence": false,
+    "automatic_contextual_consequence": false,
+    "replay_disposition_preserved": true
+  },
+  "new_regressions": [
+    "previous v5 result readable only through explicit archival reader",
+    "Q3 explicit negation remains present/contradicted/negated",
+    "contradicted observation persists and replays without positive credit",
+    "invalid coverage/polarity combinations remain rejected"
+  ],
+  "historical_evidence": "unchanged",
+  "next_action": "one fixed Q1/Q2/Q3 qualification under p2-assessor-v6/p2-assessor-production-v8"
+}

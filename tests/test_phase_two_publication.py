@@ -379,7 +379,7 @@ def test_contradicted_observation_is_durable_and_replays_without_credit(tmp_path
                     target_key="edge-ab",
                     relation_support="contradicted",
                     expression_status="negated",
-                    semantic_schema_version="p2-assessor-v5",
+                    semantic_schema_version="p2-assessor-v6",
                     occurrence_key="negated-occurrence",
                 ),
             ),
@@ -391,7 +391,7 @@ def test_contradicted_observation_is_durable_and_replays_without_credit(tmp_path
         )
         assert evidence["relation_support"] == "contradicted"
         assert evidence["expression_status"] == "negated"
-        assert evidence["semantic_schema_version"] == "p2-assessor-v5"
+        assert evidence["semantic_schema_version"] == "p2-assessor-v6"
         value = store.connection.execute(
             "SELECT accessibility,support FROM learner_values"
         ).fetchone()

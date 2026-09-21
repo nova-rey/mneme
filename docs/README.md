@@ -146,6 +146,12 @@ The documents are preserved in their supplied form and are intentionally not mer
   ([JSON](receipts/MNEME_P2.3_Assessor_Polarity_Contract_Regression_Receipt.json));
   it adds no provider calls and leaves historical qualification evidence unchanged.
 
+  The additive coverage/polarity correction is prospectively versioned as
+  `p2-assessor-v6` / `p2-assessor-production-v8` and is recorded in [the v9
+  offline receipt](receipts/MNEME_P2.3_Assessor_Coverage_Polarity_V9_Offline_Receipt.md)
+  ([JSON](receipts/MNEME_P2.3_Assessor_Coverage_Polarity_V9_Offline_Receipt.json));
+  historical v4/v5 results remain archival and unchanged.
+
   The pilot extraction stop and its six returned calls are recorded in [the extraction-stop receipt](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md) ([JSON](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json)); the finite-repair rule halted the pilot before evaluation.
 
   The pilot extraction stop and its six returned calls are recorded in [the extraction-stop receipt](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md) ([JSON](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json)); the finite-repair rule halted the pilot before evaluation.
