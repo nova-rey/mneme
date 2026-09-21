@@ -680,3 +680,7 @@
 ## 2026-09-21 P2.3 edge-less extraction boundary correction
 
 - Corrected the in-scope pilot integration defect exposed by the fresh stop: a structurally valid residue with no relationship edge is now recorded as an explicit excluded terminal opportunity with zero learner credit, atomically accepted through the existing publication boundary, and allowed to continue the fixed schedule without an assessor call or invented proposition. Focused regressions, Ruff, and strict mypy passed; no provider call occurred. Historical live stop evidence remains unchanged.
+
+## 2026-09-21 P2.3 second live extraction stop and budget boundary
+
+- After the edge-less exclusion correction passed offline and CI, a fresh bounded run used the remaining 287-call/189,696-output-token envelope. Six calls returned: two Gemma development responses, three Gemma extraction attempts including one repair, and one Qwen assessment. The first episode reached accepted extraction, assessment, and publication; episode 1 failed strict source-bound validation after its one repair because Gemma omitted Markdown emphasis delimiters from a model-output quotation. No evaluation calls or resampling occurred. Usage was 3,697 input, 2,371 output, 6,068 total tokens; cost unavailable. Historical evidence is unchanged. With 18 calls now consumed, 281 calls remain, below the 288 scheduled pilot calls before repairs; continuation requires budget review.

@@ -1121,10 +1121,13 @@
         "docs/receipts/MNEME_P2.3_Assessor_Polarity_Contract_Regression_Receipt.md",
         "docs/receipts/MNEME_P2.3_Assessor_Polarity_Contract_Regression_Receipt.json",
         "docs/receipts/MNEME_P2.3_Pilot_Production_Path_Receipt.md/.json; production residue→assessor→provenance→publication adapter, durable coordinate resume, and role-binding correction; CI 35547126266",
-        "docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260920_Bundle.json"
+        "docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260920_Bundle.json",
+        "docs/receipts/MNEME_P2.3_Edge_Less_Extraction_Correction_Receipt.md/.json",
+        "docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260921.md/.json",
+        "docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260921_Bundle.json"
       ],
       "id": "P2.3",
-      "notes": "P2.2 accepted. Polarity v8 qualification remains latest fixed live evidence and passed all three cases. Historical pilot stop and 3-call fresh pilot stop remain unchanged. Offline correction now treats structurally valid edge-less residue as an explicit zero-credit excluded terminal opportunity and continues the fixed schedule; focused tests, full validation, and CI are required before any new bounded live verification.",
+      "notes": "P2.2 accepted. Polarity v8 qualification passed and remains preserved. Offline edge-less extraction correction passed at commit 2885332 and CI 35548448495. Fresh corrected run p2-pilot-live-20260921b consumed 6 calls (2 Gemma development, 3 extraction including repair, 1 Qwen assessment) and stopped at episode 1 after strict source-bound quotation failure on the repair. No evaluation calls or resampling occurred. Total campaign usage is 18 calls; 281 remain, below the 288 scheduled pilot calls before repairs, so no further provider call is dispatched without budget review.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1149,9 +1152,9 @@
       ],
       "scope": "Run the fixed three-call production-equivalent assessor qualification and, only if it passes and separately authorized, the 299-call proposed pilot. Exclude Phase Three.",
       "session_ids": [],
-      "status": "VALIDATING",
+      "status": "WAITING",
       "title": "Assessor qualification and bounded developmental pilot",
-      "updated_at": "2026-09-21T00:40:00Z",
+      "updated_at": "2026-09-21T01:05:00Z",
       "validation": {
         "required": [
           "p23-assessor-contract",
@@ -1203,7 +1206,10 @@
           }
         }
       },
-      "waiting_on": [],
+      "waiting_on": [
+        "review:p2.3-budget-after-historical-calls",
+        "review:p2.3-extraction-stop-20260921"
+      ],
       "workstream": "phase-two",
       "evidence": [
         "docs/receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.md",

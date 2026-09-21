@@ -1,0 +1,1458 @@
+{
+  "assessment_artifacts": [
+    {
+      "publication": {
+        "graph_revision": 1,
+        "lineage_revision": 2,
+        "operation_id": "extraction-s0-e0"
+      },
+      "request": {
+        "candidate": {
+          "from": "tool_organization",
+          "relation": "causes",
+          "to": "time_saving"
+        },
+        "context": {
+          "current_input_source_slots": [
+            "s0"
+          ]
+        },
+        "memory_exposure": [],
+        "monitors": [
+          {
+            "context": "general",
+            "correspondence_source_slots": [
+              "s1"
+            ],
+            "evidence_source_slots": [
+              "s0",
+              "s1"
+            ],
+            "monitor_id": "candidate",
+            "relation": {
+              "from": "tool_organization",
+              "relation": "causes",
+              "to": "time_saving"
+            },
+            "required_source_slots": [
+              "s0",
+              "s1"
+            ]
+          }
+        ],
+        "prompt_version": "p2-assessor-production-v7",
+        "replay_ancestry": [],
+        "schema_version": "p2-assessor-v5",
+        "source_purpose_mask": [
+          "external_evidence",
+          "model_output"
+        ],
+        "sources": [
+          {
+            "available": true,
+            "role": "external",
+            "slot": "s0",
+            "source_id": "b3c1896f-090c-4600-abd0-497fae66c187",
+            "text": "I sorted socket wrenches into labeled bins, so finding a repair size takes less time."
+          },
+          {
+            "available": true,
+            "role": "model_output",
+            "slot": "s1",
+            "source_id": "1b50859d-e896-471c-8f1b-f01f1a1de413",
+            "text": "That sounds like a really smart way to organize your tools! Having everything put away by size in labeled bins is a huge time-saver when you're troubleshooting or on a job site.\n\n**It makes a big difference for efficiency!**\n\nDo you have a system you like best, like organizing them by **metric vs. standard**, or maybe by **type of socket** (e.g., deep vs. shallow)?"
+          }
+        ]
+      },
+      "resolved": [
+        {
+          "provenance": {
+            "ancestry": [],
+            "applicable_categories": [
+              "no_identified_link"
+            ],
+            "corresponding_source_slots": [
+              "s1"
+            ],
+            "credit_eligible": true,
+            "dependence": "no_identified_link",
+            "monitor_id": "candidate",
+            "provenance_group_keys": [],
+            "resolution_reason": "runtime_source_role_and_recorded_ancestry",
+            "schema_version": "p2-provenance-v1"
+          },
+          "semantic": {
+            "corresponding_source_slots": [
+              "s1"
+            ],
+            "coverage": {
+              "complete": true,
+              "reason": null,
+              "source_slots": [
+                "s0",
+                "s1"
+              ]
+            },
+            "evidence": {
+              "end": 222,
+              "quote": "It makes a big difference for efficiency!",
+              "source_slot": "s1",
+              "start": 181
+            },
+            "expression_status": "affirmed",
+            "monitor_id": "candidate",
+            "relation_support": "supported",
+            "status": "present"
+          }
+        }
+      ]
+    },
+    {
+      "coordinate": {
+        "episode": 0,
+        "family": "parts",
+        "subject": 0
+      },
+      "provider_called": true,
+      "request": {
+        "messages": [
+          {
+            "content": "Return raw JSON only. Do not use Markdown fences, introductory or concluding prose, comments, or any text outside the JSON. Do not invent enum values. Return exactly one row for every requested monitor, with no omitted or duplicated monitor IDs. The complete output contract is:\n{\n  \"schema_version\": \"p2-assessor-v5\",\n  \"assessments\": [\n    {\n      \"monitor_id\": \"<exact monitor_id from the request>\",\n      \"status\": \"present\" | \"absent\" | \"unknown\",\n      \"relation_support\": \"supported\" | \"contradicted\" | \"unsupported\" | \"unknown\",\n      \"expression_status\": \"affirmed\" | \"negated\" | \"not_expressed\" | \"unknown\",\n      \"coverage\": {\n        \"complete\": true | false,\n        \"source_slots\": [\"<declared source slot>\"],\n        \"reason\": \"<reason>\" | null\n      },\n      \"evidence\": {\"source_slot\": \"<declared source slot>\", \"quote\": \"<short exact verbatim quotation>\"} | null,\n      \"corresponding_source_slots\": [\"<declared antecedent source slot>\"]\n    }\n  ]\n}\nUse only the listed top-level and row fields. The schema_version must be exactly p2-assessor-v5. For status=present, coverage must name covered declared source slots and evidence must contain a non-empty exact quotation from its source_slot. For status=present, coverage.complete must be true and source_slots must include every available required source slot; an unavailable required source means status=unknown. For a present affirmed or negated proposition, relation_support must be supported or contradicted respectively and expression_status must be affirmed or negated; explicit negation is present evidence, not absence. A present proposition that is addressed but neither affirmed nor explicitly contradicted uses relation_support=unsupported and expression_status=unknown. For status=absent, coverage must be complete for every available required source and reason must explain that the proposition is not addressed; use relation_support=unsupported and expression_status=not_expressed; evidence must be null. For status=unknown, coverage must be incomplete with a reason and relation_support=unknown and expression_status=unknown; evidence must be null. Never use not_expressed for explicit negation. Copy monitor IDs and source slots exactly from the request. Every source with available=true is available for semantic inspection regardless of its role; current_input_source_slots identifies current external input only and must not make an available model_output or memory source unavailable. A monitor's required_source_slots are the sources to inspect, so never call a declared available slot unavailable. Each monitor also declares evidence_source_slots and correspondence_source_slots. Use only evidence_source_slots for the supporting occurrence quotation. Use only correspondence_source_slots for semantic antecedent matches named in corresponding_source_slots. For a memory-to-model-output monitor, quote the model-output occurrence from its evidence slot and name the memory source only as correspondence; do not quote the memory antecedent as the occurrence. Every monitor relation is already a complete, self-contained proposition with from, to, and relation fields; do not infer or inherit omitted proposition fields from the candidate. Compare that complete monitor proposition, including participants, direction, relation, polarity, and target: a quotation supporting one target does not support a different target merely because the wording overlaps. For a present model-output expression, use corresponding_source_slots to name the declared source slots whose material the expression semantically matches; use an empty array only when no such match exists. Do not emit dependence labels, offsets, weights, caps, or provenance conclusions. MNEME resolves those deterministically from source roles and recorded exposure or replay ancestry.\n\n{\n  \"candidate\": {\n    \"from\": \"tool_organization\",\n    \"relation\": \"causes\",\n    \"to\": \"time_saving\"\n  },\n  \"context\": {\n    \"current_input_source_slots\": [\n      \"s0\"\n    ]\n  },\n  \"memory_exposure\": [],\n  \"monitors\": [\n    {\n      \"context\": \"general\",\n      \"correspondence_source_slots\": [\n        \"s1\"\n      ],\n      \"evidence_source_slots\": [\n        \"s0\",\n        \"s1\"\n      ],\n      \"monitor_id\": \"candidate\",\n      \"relation\": {\n        \"from\": \"tool_organization\",\n        \"relation\": \"causes\",\n        \"to\": \"time_saving\"\n      },\n      \"required_source_slots\": [\n        \"s0\",\n        \"s1\"\n      ]\n    }\n  ],\n  \"prompt_version\": \"p2-assessor-production-v7\",\n  \"replay_ancestry\": [],\n  \"schema_version\": \"p2-assessor-v5\",\n  \"source_purpose_mask\": [\n    \"external_evidence\",\n    \"model_output\"\n  ],\n  \"sources\": [\n    {\n      \"available\": true,\n      \"role\": \"external\",\n      \"slot\": \"s0\",\n      \"source_id\": \"b3c1896f-090c-4600-abd0-497fae66c187\",\n      \"text\": \"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\"\n    },\n    {\n      \"available\": true,\n      \"role\": \"model_output\",\n      \"slot\": \"s1\",\n      \"source_id\": \"1b50859d-e896-471c-8f1b-f01f1a1de413\",\n      \"text\": \"That sounds like a really smart way to organize your tools! Having everything put away by size in labeled bins is a huge time-saver when you're troubleshooting or on a job site.\\n\\n**It makes a big difference for efficiency!**\\n\\nDo you have a system you like best, like organizing them by **metric vs. standard**, or maybe by **type of socket** (e.g., deep vs. shallow)?\"\n    }\n  ]\n}",
+            "role": "user"
+          }
+        ],
+        "parameters": {
+          "max_new_tokens": 1536,
+          "temperature": 0.0
+        },
+        "response_format": null,
+        "run_metadata": {},
+        "seed": null,
+        "system": null
+      },
+      "result": {
+        "content": "{\n  \"schema_version\": \"p2-assessor-v5\",\n  \"assessments\": [\n    {\n      \"monitor_id\": \"candidate\",\n      \"status\": \"present\",\n      \"relation_support\": \"supported\",\n      \"expression_status\": \"affirmed\",\n      \"coverage\": {\n        \"complete\": true,\n        \"source_slots\": [\n          \"s0\",\n          \"s1\"\n        ],\n        \"reason\": null\n      },\n      \"evidence\": {\n        \"source_slot\": \"s1\",\n        \"quote\": \"It makes a big difference for efficiency!\"\n      },\n      \"corresponding_source_slots\": [\n        \"s1\"\n      ]\n    }\n  ]\n}",
+        "effective_parameters": {
+          "max_tokens": 1536,
+          "temperature": 0.0
+        },
+        "finish_reason": "stop",
+        "model_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "provenance": {
+          "host": {
+            "capabilities": [
+              "text_generation",
+              "token_usage"
+            ],
+            "chat_template": "deepinfra_openai_chat",
+            "execution": {
+              "base_url": "https://api.deepinfra.com/v1/openai",
+              "canonical_upstream_model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+              "catalog_context_length": 262144,
+              "catalog_quantization": "fp8",
+              "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+              "hosted_model_revision": "unknown",
+              "rendering_mode": "deepinfra_openai_chat",
+              "service_tier": "standard"
+            },
+            "model_family": "Qwen3 235B A22B Instruct 2507",
+            "model_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+            "model_revision": null,
+            "provider": "DeepInfra",
+            "quantization": "fp8",
+            "runtime": "deepinfra-openai-compatible",
+            "runtime_version": null,
+            "tokenizer_id": null,
+            "tokenizer_revision": null
+          },
+          "request_chars": 5442
+        },
+        "provider": "DeepInfra",
+        "seed": null,
+        "usage": {
+          "input_tokens": 1247,
+          "output_tokens": 144,
+          "total_tokens": 1391
+        }
+      },
+      "valid": true,
+      "validation_error": null
+    }
+  ],
+  "development_artifacts": [
+    {
+      "coordinate": {
+        "episode": 0,
+        "family": "parts",
+        "subject": 0
+      },
+      "operation": {
+        "episode_id": "34847ff1-d539-45b1-95c5-7b058f6c4f68",
+        "manifest_id": "a702f66b-fec1-47d2-9140-8ed86af798dc",
+        "operation_id": "development-s0-e0",
+        "revision": 1,
+        "status": "ACCEPTED"
+      },
+      "provider_called": true,
+      "request": {
+        "messages": [
+          {
+            "content": "I sorted socket wrenches into labeled bins, so finding a repair size takes less time.",
+            "role": "user"
+          }
+        ],
+        "parameters": {},
+        "response_format": null,
+        "run_metadata": {},
+        "seed": null,
+        "system": null
+      },
+      "result": {
+        "content": "That sounds like a really smart way to organize your tools! Having everything put away by size in labeled bins is a huge time-saver when you're troubleshooting or on a job site.\n\n**It makes a big difference for efficiency!**\n\nDo you have a system you like best, like organizing them by **metric vs. standard**, or maybe by **type of socket** (e.g., deep vs. shallow)?",
+        "finish_reason": "stop",
+        "model_id": "google/gemma-4-E4B-it",
+        "provenance": {
+          "finish_reason": "stop",
+          "model_id": "google/gemma-4-E4B-it",
+          "provenance": {
+            "host": {
+              "capabilities": [
+                "text_generation",
+                "token_usage"
+              ],
+              "chat_template": "deepinfra_openai_chat",
+              "execution": {
+                "base_url": "https://api.deepinfra.com/v1/openai",
+                "canonical_upstream_model": "google/gemma-4-E4B-it",
+                "catalog_context_length": 131072,
+                "catalog_quantization": "unknown/provider-managed",
+                "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+                "hosted_model_revision": "unknown",
+                "rendering_mode": "deepinfra_openai_chat",
+                "service_tier": "standard"
+              },
+              "model_family": "Gemma 4 E4B IT",
+              "model_id": "google/gemma-4-E4B-it",
+              "model_revision": null,
+              "provider": "DeepInfra",
+              "quantization": "unknown/provider-managed",
+              "runtime": "deepinfra-openai-compatible",
+              "runtime_version": null,
+              "tokenizer_id": "google/gemma-4-E4B-it",
+              "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+            },
+            "request_chars": 85
+          },
+          "provider": "DeepInfra"
+        },
+        "provider": "DeepInfra",
+        "usage": {
+          "input_tokens": 26,
+          "output_tokens": 88,
+          "total_tokens": 114
+        }
+      }
+    },
+    {
+      "coordinate": {
+        "episode": 1,
+        "family": "garden",
+        "subject": 0
+      },
+      "operation": {
+        "episode_id": "0a8bad6c-82c0-4888-be21-d03612d0e894",
+        "manifest_id": "d2dd1717-5ab0-45db-aae6-b18e39c16df1",
+        "operation_id": "development-s0-e1",
+        "revision": 3,
+        "status": "ACCEPTED"
+      },
+      "provider_called": true,
+      "request": {
+        "messages": [
+          {
+            "content": "Mulch around the tomatoes helps the soil stay damp on hot afternoons.",
+            "role": "user"
+          }
+        ],
+        "parameters": {},
+        "response_format": null,
+        "run_metadata": {},
+        "seed": null,
+        "system": null
+      },
+      "result": {
+        "content": "That's a **great tip** for tomato growing!\n\nMulching definitely helps in several ways, especially when it gets hot:\n\n* **Moisture Retention:** This is the big one you mentioned. The mulch acts like a blanket, significantly reducing water evaporation from the soil surface.\n* **Temperature Moderation:** It keeps the soil cooler during intense heat, which is beneficial for the roots.\n* **Weed Suppression:** It blocks sunlight, preventing weeds from germinating and competing with your tomatoes for nutrients and water.\n* **Soil Health:** As organic mulches (like straw or wood chips) break down, they add organic matter to the soil.\n\n**What kind of mulch are you thinking of using, or are you curious about the best options for tomatoes?**",
+        "finish_reason": "stop",
+        "model_id": "google/gemma-4-E4B-it",
+        "provenance": {
+          "finish_reason": "stop",
+          "model_id": "google/gemma-4-E4B-it",
+          "provenance": {
+            "host": {
+              "capabilities": [
+                "text_generation",
+                "token_usage"
+              ],
+              "chat_template": "deepinfra_openai_chat",
+              "execution": {
+                "base_url": "https://api.deepinfra.com/v1/openai",
+                "canonical_upstream_model": "google/gemma-4-E4B-it",
+                "catalog_context_length": 131072,
+                "catalog_quantization": "unknown/provider-managed",
+                "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+                "hosted_model_revision": "unknown",
+                "rendering_mode": "deepinfra_openai_chat",
+                "service_tier": "standard"
+              },
+              "model_family": "Gemma 4 E4B IT",
+              "model_id": "google/gemma-4-E4B-it",
+              "model_revision": null,
+              "provider": "DeepInfra",
+              "quantization": "unknown/provider-managed",
+              "runtime": "deepinfra-openai-compatible",
+              "runtime_version": null,
+              "tokenizer_id": "google/gemma-4-E4B-it",
+              "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+            },
+            "request_chars": 69
+          },
+          "provider": "DeepInfra"
+        },
+        "provider": "DeepInfra",
+        "usage": {
+          "input_tokens": 23,
+          "output_tokens": 160,
+          "total_tokens": 183
+        }
+      }
+    }
+  ],
+  "extraction_artifacts": [
+    {
+      "attempt": 1,
+      "coordinate": {
+        "attempt": 1,
+        "episode": 1,
+        "family": "garden",
+        "subject": 0
+      },
+      "episode_id": "0a8bad6c-82c0-4888-be21-d03612d0e894",
+      "provider_called": true,
+      "request": {
+        "host_ref": "e88374a46a446376f70d6190f714195139396befbc474ebc1cf4610197ec2c6e",
+        "request": {
+          "messages": [
+            {
+              "content": "{\"source_slots\":{\"s0\":\"Mulch around the tomatoes helps the soil stay damp on hot afternoons.\",\"s1\":\"That's a **great tip** for tomato growing!\\n\\nMulching definitely helps in several ways, especially when it gets hot:\\n\\n* **Moisture Retention:** This is the big one you mentioned. The mulch acts like a blanket, significantly reducing water evaporation from the soil surface.\\n* **Temperature Moderation:** It keeps the soil cooler during intense heat, which is beneficial for the roots.\\n* **Weed Suppression:** It blocks sunlight, preventing weeds from germinating and competing with your tomatoes for nutrients and water.\\n* **Soil Health:** As organic mulches (like straw or wood chips) break down, they add organic matter to the soil.\\n\\n**What kind of mulch are you thinking of using, or are you curious about the best options for tomatoes?**\"}}",
+              "role": "user"
+            }
+          ],
+          "parameters": {
+            "max_new_tokens": 1536,
+            "temperature": 0
+          },
+          "response_format": null,
+          "run_metadata": {},
+          "seed": null,
+          "system": "Extract residue v1 as one JSON object. Use only the supplied source slots. For every supported assertion, provide evidence as an array of objects with exactly {source, evidence}, where source is the source slot and evidence is a short, exact, non-empty quotation copied verbatim from that source. Do not calculate or provide numeric offsets; MNEME resolves quotations to canonical Unicode code-point spans. If no supported candidate exists, return {}. Return raw JSON only: no Markdown fences, no introductory or concluding prose, and no comments. Never invent enum values or labels for constrained fields. Before returning each concept or relationship, check that every evidence quotation is one contiguous substring of the referenced source slot. If an assertion has no exact source substring, omit that assertion instead of paraphrasing, shortening, combining, or explaining the source in new words. This rule applies equally to model-output sources and to repair attempts. Formatting is part of the immutable source: preserve every Markdown marker, asterisk, underscore, backtick, punctuation mark, and whitespace character inside a quotation; do not quote rendered text after stripping formatting. The validator accepts exactly these top-level fields: store, episode_id, core_concepts, salient_phrases, observed_patterns, edge_candidates, route_candidates, declared_memories, earned_candidates, identity_candidates, developmental_observation_refs, evidence_refs, extraction_confidence, intrusion_risk_estimate. Use only the canonical record fields described below. The complete allowed concept kind vocabulary is: behavior, concept, constraint, entity, event, fact, identity, object, pattern, person, process, question, resource, strategy, style, topic, trait, value, warning. The complete allowed relationship kind vocabulary is: analogy, association, causal, caused-by, caused_by, causes, constrains, contradiction, contrast, conversational-pattern, corrects, dependency, depends-on, depends_on, enables, explains, explanation, habit, identity, part-of, part_of, reasoning-strategy, refines, related, same-as, same_as, semantic, style, supports, task-utility, temporal, user-specific, warning. There are no other concept or relationship enum values. core_concepts records require key, label, kind, evidence, and confidence; edge_candidates records require key, from, to, relationship, evidence, and confidence, with from/to equal to concept keys; route_candidates records require key, edge_keys, evidence, and confidence. Every evidence object must contain only source and evidence; do not return source_spans, start, or end. route_candidates are optional source-backed groupings. MNEME derives bounded directed routes from accepted graph edges, so do not invent a route solely to restate an edge. Use at most two concepts, one edge, and one route. Use only supported kinds from the vocabularies above, keep labels short, and return only the JSON object. Correct these validation errors: [\"residue.core_concepts[3].evidence[0]: evidence quotation does not occur verbatim in source\"]"
+        },
+        "source_bundle": {
+          "eligible": [
+            {
+              "content": "Mulch around the tomatoes helps the soil stay damp on hot afternoons.",
+              "content_digest": "8bdbbf9b5826e554eae8e840a9ef184f1e0f45cccae0b7523f1520d4e99e01d1",
+              "independent_evidence": true,
+              "ordinal": 0,
+              "purpose": "external_evidence",
+              "role": "user",
+              "slot": "s0",
+              "source_id": "29a53fbe-07f9-45be-ac12-0871482c085c",
+              "supplier": "external"
+            },
+            {
+              "content": "That's a **great tip** for tomato growing!\n\nMulching definitely helps in several ways, especially when it gets hot:\n\n* **Moisture Retention:** This is the big one you mentioned. The mulch acts like a blanket, significantly reducing water evaporation from the soil surface.\n* **Temperature Moderation:** It keeps the soil cooler during intense heat, which is beneficial for the roots.\n* **Weed Suppression:** It blocks sunlight, preventing weeds from germinating and competing with your tomatoes for nutrients and water.\n* **Soil Health:** As organic mulches (like straw or wood chips) break down, they add organic matter to the soil.\n\n**What kind of mulch are you thinking of using, or are you curious about the best options for tomatoes?**",
+              "content_digest": "94fff1f4a119512a4136fe89525006b44d002090e96fd698234d3d40bab8b5cb",
+              "independent_evidence": false,
+              "ordinal": 1000000,
+              "purpose": "model_output",
+              "role": "model_output",
+              "slot": "s1",
+              "source_id": "53c6e7a9-a8aa-48d5-b229-d1dc8d4d92ec",
+              "supplier": "model"
+            }
+          ],
+          "episode_id": "0a8bad6c-82c0-4888-be21-d03612d0e894",
+          "sources": [
+            {
+              "content": "Mulch around the tomatoes helps the soil stay damp on hot afternoons.",
+              "content_digest": "8bdbbf9b5826e554eae8e840a9ef184f1e0f45cccae0b7523f1520d4e99e01d1",
+              "independent_evidence": true,
+              "ordinal": 0,
+              "purpose": "external_evidence",
+              "role": "user",
+              "slot": "s0",
+              "source_id": "29a53fbe-07f9-45be-ac12-0871482c085c",
+              "supplier": "external"
+            },
+            {
+              "content": "That's a **great tip** for tomato growing!\n\nMulching definitely helps in several ways, especially when it gets hot:\n\n* **Moisture Retention:** This is the big one you mentioned. The mulch acts like a blanket, significantly reducing water evaporation from the soil surface.\n* **Temperature Moderation:** It keeps the soil cooler during intense heat, which is beneficial for the roots.\n* **Weed Suppression:** It blocks sunlight, preventing weeds from germinating and competing with your tomatoes for nutrients and water.\n* **Soil Health:** As organic mulches (like straw or wood chips) break down, they add organic matter to the soil.\n\n**What kind of mulch are you thinking of using, or are you curious about the best options for tomatoes?**",
+              "content_digest": "94fff1f4a119512a4136fe89525006b44d002090e96fd698234d3d40bab8b5cb",
+              "independent_evidence": false,
+              "ordinal": 1000000,
+              "purpose": "model_output",
+              "role": "model_output",
+              "slot": "s1",
+              "source_id": "53c6e7a9-a8aa-48d5-b229-d1dc8d4d92ec",
+              "supplier": "model"
+            }
+          ]
+        }
+      },
+      "result": {
+        "content": "{\"core_concepts\": [{\"key\": \"tomato_growing\", \"label\": \"tomato growing\", \"kind\": \"topic\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"That's a **great tip** for tomato growing!\"}], \"confidence\": 1.0}, {\"key\": \"mulch\", \"label\": \"mulch\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Mulch around the tomatoes helps the soil stay damp on hot afternoons.\"}], \"confidence\": 1.0}, {\"key\": \"soil_dampness\", \"label\": \"soil dampness\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Mulch around the tomatoes helps the soil stay damp on hot afternoons.\"}], \"confidence\": 1.0}, {\"key\": \"moisture_retention\", \"label\": \"moisture retention\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Moisture Retention: This is the big one you mentioned. The mulch acts like a blanket, significantly reducing water evaporation from the soil surface.\"}], \"confidence\": 1.0}, {\"key\": \"temperature_moderation\", \"label\": \"temperature moderation\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Temperature Moderation: It keeps the soil cooler during intense heat, which is beneficial for the roots.\"}], \"confidence\": 1.0}, {\"key\": \"weed_suppression\", \"label\": \"weed suppression\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Weed Suppression: It blocks sunlight, preventing weeds from germinating and competing with your tomatoes for nutrients and water.\"}], \"confidence\": 1.0}, {\"key\": \"soil_health\", \"label\": \"soil health\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Soil Health: As organic mulches (like straw or wood chips) break down, they add organic matter to the soil.\"}], \"confidence\": 1.0}], \"salient_phrases\": [\"great tip\", \"Moisture Retention\", \"Temperature Moderation\", \"Weed Suppression\", \"Soil Health\"], \"observed_patterns\": [], \"edge_candidates\": [{\"key\": \"helps_soil_damp\", \"from\": \"mulch\", \"to\": \"soil_dampness\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Mulch around the tomatoes helps the soil stay damp on hot afternoons.\"}], \"confidence\": 1.0}, {\"key\": \"reduces_evaporation\", \"from\": \"mulch\", \"to\": \"moisture_retention\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"The mulch acts like a blanket, significantly reducing water evaporation from the soil surface.\"}], \"confidence\": 1.0}, {\"key\": \"moderates_temp\", \"from\": \"mulch\", \"to\": \"temperature_moderation\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"It keeps the soil cooler during intense heat, which is beneficial for the roots.\"}], \"confidence\": 1.0}, {\"key\": \"suppresses_weeds\", \"from\": \"mulch\", \"to\": \"weed_suppression\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"It blocks sunlight, preventing weeds from germinating and competing with your tomatoes for nutrients and water.\"}], \"confidence\": 1.0}, {\"key\": \"improves_soil\", \"from\": \"mulch\", \"to\": \"soil_health\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"As organic mulches (like straw or wood chips) break down, they add organic matter to the soil.\"}], \"confidence\": 1.0}], \"route_candidates\": [{\"key\": \"mulch_benefits\", \"edge_keys\": [\"helps_soil_damp\", \"reduces_evaporation\", \"moderates_temp\", \"suppresses_weeds\", \"improves_soil\"], \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Mulching definitely helps in several ways, especially when it gets hot:\"}], \"confidence\": 1.0}], \"declared_memories\": [], \"earned_candidates\": [], \"identity_candidates\": [], \"developmental_observation_refs\": [], \"evidence_refs\": [], \"extraction_confidence\": 0.95, \"intrusion_risk_estimate\": 0.0}",
+        "effective_parameters": {
+          "max_tokens": 1536,
+          "temperature": 0
+        },
+        "finish_reason": "stop",
+        "latency_ms": 24650.823488947935,
+        "model_id": "google/gemma-4-E4B-it",
+        "provenance": {
+          "host": {
+            "capabilities": [
+              "text_generation",
+              "token_usage"
+            ],
+            "chat_template": "deepinfra_openai_chat",
+            "execution": {
+              "base_url": "https://api.deepinfra.com/v1/openai",
+              "canonical_upstream_model": "google/gemma-4-E4B-it",
+              "catalog_context_length": 131072,
+              "catalog_quantization": "unknown/provider-managed",
+              "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+              "hosted_model_revision": "unknown",
+              "rendering_mode": "deepinfra_openai_chat",
+              "service_tier": "standard"
+            },
+            "model_family": "Gemma 4 E4B IT",
+            "model_id": "google/gemma-4-E4B-it",
+            "model_revision": null,
+            "provider": "DeepInfra",
+            "quantization": "unknown/provider-managed",
+            "runtime": "deepinfra-openai-compatible",
+            "runtime_version": null,
+            "tokenizer_id": "google/gemma-4-E4B-it",
+            "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+          },
+          "request_chars": 3941
+        },
+        "provider": "DeepInfra",
+        "raw_metadata": {
+          "choices": [
+            {
+              "finish_reason": "stop",
+              "index": 0,
+              "logprobs": null,
+              "message": {
+                "content": "{\"core_concepts\": [{\"key\": \"tomato_growing\", \"label\": \"tomato growing\", \"kind\": \"topic\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"That's a **great tip** for tomato growing!\"}], \"confidence\": 1.0}, {\"key\": \"mulch\", \"label\": \"mulch\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Mulch around the tomatoes helps the soil stay damp on hot afternoons.\"}], \"confidence\": 1.0}, {\"key\": \"soil_dampness\", \"label\": \"soil dampness\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Mulch around the tomatoes helps the soil stay damp on hot afternoons.\"}], \"confidence\": 1.0}, {\"key\": \"moisture_retention\", \"label\": \"moisture retention\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Moisture Retention: This is the big one you mentioned. The mulch acts like a blanket, significantly reducing water evaporation from the soil surface.\"}], \"confidence\": 1.0}, {\"key\": \"temperature_moderation\", \"label\": \"temperature moderation\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Temperature Moderation: It keeps the soil cooler during intense heat, which is beneficial for the roots.\"}], \"confidence\": 1.0}, {\"key\": \"weed_suppression\", \"label\": \"weed suppression\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Weed Suppression: It blocks sunlight, preventing weeds from germinating and competing with your tomatoes for nutrients and water.\"}], \"confidence\": 1.0}, {\"key\": \"soil_health\", \"label\": \"soil health\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Soil Health: As organic mulches (like straw or wood chips) break down, they add organic matter to the soil.\"}], \"confidence\": 1.0}], \"salient_phrases\": [\"great tip\", \"Moisture Retention\", \"Temperature Moderation\", \"Weed Suppression\", \"Soil Health\"], \"observed_patterns\": [], \"edge_candidates\": [{\"key\": \"helps_soil_damp\", \"from\": \"mulch\", \"to\": \"soil_dampness\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Mulch around the tomatoes helps the soil stay damp on hot afternoons.\"}], \"confidence\": 1.0}, {\"key\": \"reduces_evaporation\", \"from\": \"mulch\", \"to\": \"moisture_retention\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"The mulch acts like a blanket, significantly reducing water evaporation from the soil surface.\"}], \"confidence\": 1.0}, {\"key\": \"moderates_temp\", \"from\": \"mulch\", \"to\": \"temperature_moderation\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"It keeps the soil cooler during intense heat, which is beneficial for the roots.\"}], \"confidence\": 1.0}, {\"key\": \"suppresses_weeds\", \"from\": \"mulch\", \"to\": \"weed_suppression\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"It blocks sunlight, preventing weeds from germinating and competing with your tomatoes for nutrients and water.\"}], \"confidence\": 1.0}, {\"key\": \"improves_soil\", \"from\": \"mulch\", \"to\": \"soil_health\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"As organic mulches (like straw or wood chips) break down, they add organic matter to the soil.\"}], \"confidence\": 1.0}], \"route_candidates\": [{\"key\": \"mulch_benefits\", \"edge_keys\": [\"helps_soil_damp\", \"reduces_evaporation\", \"moderates_temp\", \"suppresses_weeds\", \"improves_soil\"], \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Mulching definitely helps in several ways, especially when it gets hot:\"}], \"confidence\": 1.0}], \"declared_memories\": [], \"earned_candidates\": [], \"identity_candidates\": [], \"developmental_observation_refs\": [], \"evidence_refs\": [], \"extraction_confidence\": 0.95, \"intrusion_risk_estimate\": 0.0}",
+                "name": null,
+                "reasoning_content": null,
+                "role": "assistant",
+                "tool_calls": []
+              }
+            }
+          ],
+          "created": 1789951443,
+          "id": "chatcmpl-RRdZMC4THdrTVJNoQ6XGKhPz",
+          "model": "google/gemma-4-E4B-it",
+          "object": "chat.completion",
+          "service_tier": "default",
+          "usage": {
+            "completion_tokens": 1009,
+            "estimated_cost": 0.00011774,
+            "prompt_tokens": 842,
+            "prompt_tokens_details": null,
+            "total_tokens": 1851
+          }
+        },
+        "seed": null,
+        "token_usage": "[REDACTED]"
+      },
+      "valid": false,
+      "validation_error": "residue.core_concepts[3].evidence[0]: evidence quotation does not occur verbatim in source"
+    },
+    {
+      "attempt": 0,
+      "coordinate": {
+        "attempt": 0,
+        "episode": 0,
+        "family": "parts",
+        "subject": 0
+      },
+      "episode_id": "34847ff1-d539-45b1-95c5-7b058f6c4f68",
+      "provider_called": true,
+      "request": {
+        "host_ref": "e88374a46a446376f70d6190f714195139396befbc474ebc1cf4610197ec2c6e",
+        "request": {
+          "messages": [
+            {
+              "content": "{\"source_slots\":{\"s0\":\"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\",\"s1\":\"That sounds like a really smart way to organize your tools! Having everything put away by size in labeled bins is a huge time-saver when you're troubleshooting or on a job site.\\n\\n**It makes a big difference for efficiency!**\\n\\nDo you have a system you like best, like organizing them by **metric vs. standard**, or maybe by **type of socket** (e.g., deep vs. shallow)?\"}}",
+              "role": "user"
+            }
+          ],
+          "parameters": {
+            "max_new_tokens": 1536,
+            "temperature": 0
+          },
+          "response_format": null,
+          "run_metadata": {},
+          "seed": null,
+          "system": "Extract residue v1 as one JSON object. Use only the supplied source slots. For every supported assertion, provide evidence as an array of objects with exactly {source, evidence}, where source is the source slot and evidence is a short, exact, non-empty quotation copied verbatim from that source. Do not calculate or provide numeric offsets; MNEME resolves quotations to canonical Unicode code-point spans. If no supported candidate exists, return {}. Return raw JSON only: no Markdown fences, no introductory or concluding prose, and no comments. Never invent enum values or labels for constrained fields. Before returning each concept or relationship, check that every evidence quotation is one contiguous substring of the referenced source slot. If an assertion has no exact source substring, omit that assertion instead of paraphrasing, shortening, combining, or explaining the source in new words. This rule applies equally to model-output sources and to repair attempts. Formatting is part of the immutable source: preserve every Markdown marker, asterisk, underscore, backtick, punctuation mark, and whitespace character inside a quotation; do not quote rendered text after stripping formatting. The validator accepts exactly these top-level fields: store, episode_id, core_concepts, salient_phrases, observed_patterns, edge_candidates, route_candidates, declared_memories, earned_candidates, identity_candidates, developmental_observation_refs, evidence_refs, extraction_confidence, intrusion_risk_estimate. Use only the canonical record fields described below. The complete allowed concept kind vocabulary is: behavior, concept, constraint, entity, event, fact, identity, object, pattern, person, process, question, resource, strategy, style, topic, trait, value, warning. The complete allowed relationship kind vocabulary is: analogy, association, causal, caused-by, caused_by, causes, constrains, contradiction, contrast, conversational-pattern, corrects, dependency, depends-on, depends_on, enables, explains, explanation, habit, identity, part-of, part_of, reasoning-strategy, refines, related, same-as, same_as, semantic, style, supports, task-utility, temporal, user-specific, warning. There are no other concept or relationship enum values. core_concepts records require key, label, kind, evidence, and confidence; edge_candidates records require key, from, to, relationship, evidence, and confidence, with from/to equal to concept keys; route_candidates records require key, edge_keys, evidence, and confidence. Every evidence object must contain only source and evidence; do not return source_spans, start, or end. route_candidates are optional source-backed groupings. MNEME derives bounded directed routes from accepted graph edges, so do not invent a route solely to restate an edge. Use at most two concepts, one edge, and one route. Use only supported kinds from the vocabularies above, keep labels short, and return only the JSON object."
+        },
+        "source_bundle": {
+          "eligible": [
+            {
+              "content": "I sorted socket wrenches into labeled bins, so finding a repair size takes less time.",
+              "content_digest": "2c06144768b5b21006a64d3ca9ee45ed3dd997b59d9ffea7eb26333afc7747d2",
+              "independent_evidence": true,
+              "ordinal": 0,
+              "purpose": "external_evidence",
+              "role": "user",
+              "slot": "s0",
+              "source_id": "b3c1896f-090c-4600-abd0-497fae66c187",
+              "supplier": "external"
+            },
+            {
+              "content": "That sounds like a really smart way to organize your tools! Having everything put away by size in labeled bins is a huge time-saver when you're troubleshooting or on a job site.\n\n**It makes a big difference for efficiency!**\n\nDo you have a system you like best, like organizing them by **metric vs. standard**, or maybe by **type of socket** (e.g., deep vs. shallow)?",
+              "content_digest": "95b2f79acb24a802c8e8cf0d933a741e6076d9875df6eab7a9895e0cc5ffdb58",
+              "independent_evidence": false,
+              "ordinal": 1000000,
+              "purpose": "model_output",
+              "role": "model_output",
+              "slot": "s1",
+              "source_id": "1b50859d-e896-471c-8f1b-f01f1a1de413",
+              "supplier": "model"
+            }
+          ],
+          "episode_id": "34847ff1-d539-45b1-95c5-7b058f6c4f68",
+          "sources": [
+            {
+              "content": "I sorted socket wrenches into labeled bins, so finding a repair size takes less time.",
+              "content_digest": "2c06144768b5b21006a64d3ca9ee45ed3dd997b59d9ffea7eb26333afc7747d2",
+              "independent_evidence": true,
+              "ordinal": 0,
+              "purpose": "external_evidence",
+              "role": "user",
+              "slot": "s0",
+              "source_id": "b3c1896f-090c-4600-abd0-497fae66c187",
+              "supplier": "external"
+            },
+            {
+              "content": "That sounds like a really smart way to organize your tools! Having everything put away by size in labeled bins is a huge time-saver when you're troubleshooting or on a job site.\n\n**It makes a big difference for efficiency!**\n\nDo you have a system you like best, like organizing them by **metric vs. standard**, or maybe by **type of socket** (e.g., deep vs. shallow)?",
+              "content_digest": "95b2f79acb24a802c8e8cf0d933a741e6076d9875df6eab7a9895e0cc5ffdb58",
+              "independent_evidence": false,
+              "ordinal": 1000000,
+              "purpose": "model_output",
+              "role": "model_output",
+              "slot": "s1",
+              "source_id": "1b50859d-e896-471c-8f1b-f01f1a1de413",
+              "supplier": "model"
+            }
+          ]
+        }
+      },
+      "result": {
+        "content": "{\"core_concepts\": [{\"key\": \"tool_organization\", \"label\": \"tool organization\", \"kind\": \"process\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted socket wrenches into labeled bins\"}], \"confidence\": 0.9}, {\"key\": \"time_saving\", \"label\": \"time saving\", \"kind\": \"value\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"finding a repair size takes less time.\"}], \"confidence\": 0.9}, {\"key\": \"efficiency\", \"label\": \"efficiency\", \"kind\": \"trait\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"It makes a big difference for efficiency!\"}], \"confidence\": 0.9}, {\"key\": \"socket_wrenches\", \"label\": \"socket wrenches\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted socket wrenches into labeled bins\"}], \"confidence\": 0.9}], \"salient_phrases\": [\"finding a repair size takes less time\", \"It makes a big difference for efficiency!\"], \"observed_patterns\": [], \"edge_candidates\": [{\"key\": \"e1\", \"from\": \"tool_organization\", \"to\": \"time_saving\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\"}], \"confidence\": 0.9}, {\"key\": \"e2\", \"from\": \"tool_organization\", \"to\": \"efficiency\", \"relationship\": \"supports\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Having everything put away by size in labeled bins is a huge time-saver when you're troubleshooting or on a job site.\"}], \"confidence\": 0.9}], \"route_candidates\": [{\"key\": \"r1\", \"edge_keys\": [\"e1\"], \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\"}], \"confidence\": 0.9}], \"declared_memories\": [], \"earned_candidates\": [], \"identity_candidates\": [], \"developmental_observation_refs\": [], \"evidence_refs\": [], \"extraction_confidence\": 0.95, \"intrusion_risk_estimate\": 0.0}",
+        "effective_parameters": {
+          "max_tokens": 1536,
+          "temperature": 0
+        },
+        "finish_reason": "stop",
+        "latency_ms": 9463.679585023783,
+        "model_id": "google/gemma-4-E4B-it",
+        "provenance": {
+          "host": {
+            "capabilities": [
+              "text_generation",
+              "token_usage"
+            ],
+            "chat_template": "deepinfra_openai_chat",
+            "execution": {
+              "base_url": "https://api.deepinfra.com/v1/openai",
+              "canonical_upstream_model": "google/gemma-4-E4B-it",
+              "catalog_context_length": 131072,
+              "catalog_quantization": "unknown/provider-managed",
+              "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+              "hosted_model_revision": "unknown",
+              "rendering_mode": "deepinfra_openai_chat",
+              "service_tier": "standard"
+            },
+            "model_family": "Gemma 4 E4B IT",
+            "model_id": "google/gemma-4-E4B-it",
+            "model_revision": null,
+            "provider": "DeepInfra",
+            "quantization": "unknown/provider-managed",
+            "runtime": "deepinfra-openai-compatible",
+            "runtime_version": null,
+            "tokenizer_id": "google/gemma-4-E4B-it",
+            "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+          },
+          "request_chars": 3451
+        },
+        "provider": "DeepInfra",
+        "raw_metadata": {
+          "choices": [
+            {
+              "finish_reason": "stop",
+              "index": 0,
+              "logprobs": null,
+              "message": {
+                "content": "{\"core_concepts\": [{\"key\": \"tool_organization\", \"label\": \"tool organization\", \"kind\": \"process\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted socket wrenches into labeled bins\"}], \"confidence\": 0.9}, {\"key\": \"time_saving\", \"label\": \"time saving\", \"kind\": \"value\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"finding a repair size takes less time.\"}], \"confidence\": 0.9}, {\"key\": \"efficiency\", \"label\": \"efficiency\", \"kind\": \"trait\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"It makes a big difference for efficiency!\"}], \"confidence\": 0.9}, {\"key\": \"socket_wrenches\", \"label\": \"socket wrenches\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted socket wrenches into labeled bins\"}], \"confidence\": 0.9}], \"salient_phrases\": [\"finding a repair size takes less time\", \"It makes a big difference for efficiency!\"], \"observed_patterns\": [], \"edge_candidates\": [{\"key\": \"e1\", \"from\": \"tool_organization\", \"to\": \"time_saving\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\"}], \"confidence\": 0.9}, {\"key\": \"e2\", \"from\": \"tool_organization\", \"to\": \"efficiency\", \"relationship\": \"supports\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Having everything put away by size in labeled bins is a huge time-saver when you're troubleshooting or on a job site.\"}], \"confidence\": 0.9}], \"route_candidates\": [{\"key\": \"r1\", \"edge_keys\": [\"e1\"], \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\"}], \"confidence\": 0.9}], \"declared_memories\": [], \"earned_candidates\": [], \"identity_candidates\": [], \"developmental_observation_refs\": [], \"evidence_refs\": [], \"extraction_confidence\": 0.95, \"intrusion_risk_estimate\": 0.0}",
+                "name": null,
+                "reasoning_content": null,
+                "role": "assistant",
+                "tool_calls": []
+              }
+            }
+          ],
+          "created": 1789951399,
+          "id": "chatcmpl-RZEm4ZUXpDdoFu0WwK6OhTk6",
+          "model": "google/gemma-4-E4B-it",
+          "object": "chat.completion",
+          "service_tier": "default",
+          "usage": {
+            "completion_tokens": 513,
+            "estimated_cost": 6.62e-05,
+            "prompt_tokens": 745,
+            "prompt_tokens_details": null,
+            "total_tokens": 1258
+          }
+        },
+        "seed": null,
+        "token_usage": "[REDACTED]"
+      },
+      "valid": true,
+      "validation_error": null
+    }
+  ],
+  "reservations": {
+    "assessment-s0-e0.json": {
+      "actual_host_fingerprint": {
+        "capabilities": [
+          "text_generation",
+          "token_usage"
+        ],
+        "chat_template": "deepinfra_openai_chat",
+        "execution": {
+          "base_url": "https://api.deepinfra.com/v1/openai",
+          "canonical_upstream_model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+          "catalog_context_length": 262144,
+          "catalog_quantization": "fp8",
+          "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+          "hosted_model_revision": "unknown",
+          "rendering_mode": "deepinfra_openai_chat",
+          "service_tier": "standard"
+        },
+        "model_family": "Qwen3 235B A22B Instruct 2507",
+        "model_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "model_revision": null,
+        "provider": "DeepInfra",
+        "quantization": "fp8",
+        "runtime": "deepinfra-openai-compatible",
+        "runtime_version": null,
+        "tokenizer_id": null,
+        "tokenizer_revision": null
+      },
+      "call_id": "assessment-s0-e0",
+      "coordinate": {
+        "episode": 0,
+        "family": "parts",
+        "subject": 0
+      },
+      "expected_host_fingerprint": {
+        "capabilities": [
+          "text_generation",
+          "token_usage"
+        ],
+        "chat_template": "deepinfra_openai_chat",
+        "execution": {
+          "base_url": "https://api.deepinfra.com/v1/openai",
+          "canonical_upstream_model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+          "catalog_context_length": 262144,
+          "catalog_quantization": "fp8",
+          "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+          "hosted_model_revision": "unknown",
+          "rendering_mode": "deepinfra_openai_chat",
+          "service_tier": "standard"
+        },
+        "model_family": "Qwen3 235B A22B Instruct 2507",
+        "model_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "model_revision": null,
+        "provider": "DeepInfra",
+        "quantization": "fp8",
+        "runtime": "deepinfra-openai-compatible",
+        "runtime_version": null,
+        "tokenizer_id": null,
+        "tokenizer_revision": null
+      },
+      "intent_sha256": "6ea36d07b183095092cd8b25259176761ff2ffcf355a227d195577aa23803482",
+      "max_output_tokens": 1536,
+      "output_tokens": 144,
+      "receipt_sha256": "5edc2edd2a286deb15861cf873a8e2a78b3a471d53e587e3ffae6d07dfc6f6ec",
+      "reserved_at": "2026-09-21T00:43:19.374847+00:00",
+      "result": {
+        "content": "{\n  \"schema_version\": \"p2-assessor-v5\",\n  \"assessments\": [\n    {\n      \"monitor_id\": \"candidate\",\n      \"status\": \"present\",\n      \"relation_support\": \"supported\",\n      \"expression_status\": \"affirmed\",\n      \"coverage\": {\n        \"complete\": true,\n        \"source_slots\": [\n          \"s0\",\n          \"s1\"\n        ],\n        \"reason\": null\n      },\n      \"evidence\": {\n        \"source_slot\": \"s1\",\n        \"quote\": \"It makes a big difference for efficiency!\"\n      },\n      \"corresponding_source_slots\": [\n        \"s1\"\n      ]\n    }\n  ]\n}",
+        "effective_parameters": {
+          "max_tokens": 1536,
+          "temperature": 0.0
+        },
+        "finish_reason": "stop",
+        "model_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "provenance": {
+          "host": {
+            "capabilities": [
+              "text_generation",
+              "token_usage"
+            ],
+            "chat_template": "deepinfra_openai_chat",
+            "execution": {
+              "base_url": "https://api.deepinfra.com/v1/openai",
+              "canonical_upstream_model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+              "catalog_context_length": 262144,
+              "catalog_quantization": "fp8",
+              "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+              "hosted_model_revision": "unknown",
+              "rendering_mode": "deepinfra_openai_chat",
+              "service_tier": "standard"
+            },
+            "model_family": "Qwen3 235B A22B Instruct 2507",
+            "model_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+            "model_revision": null,
+            "provider": "DeepInfra",
+            "quantization": "fp8",
+            "runtime": "deepinfra-openai-compatible",
+            "runtime_version": null,
+            "tokenizer_id": null,
+            "tokenizer_revision": null
+          },
+          "request_chars": 5442
+        },
+        "provider": "DeepInfra",
+        "seed": null,
+        "usage": {
+          "input_tokens": 1247,
+          "output_tokens": 144,
+          "total_tokens": 1391
+        }
+      },
+      "returned_at": "2026-09-21T00:43:26.621730+00:00",
+      "role": "assessor",
+      "run_id": "p2-pilot-live-20260921b",
+      "schema_version": 1,
+      "status": "RETURNED",
+      "updated_at": "2026-09-21T00:43:26.622872+00:00",
+      "usage": {
+        "input_tokens": 1247,
+        "output_tokens": 144,
+        "total_tokens": 1391
+      }
+    },
+    "development-s0-e0.json": {
+      "actual_host_fingerprint": {
+        "capabilities": [
+          "text_generation",
+          "token_usage"
+        ],
+        "chat_template": "deepinfra_openai_chat",
+        "execution": {
+          "base_url": "https://api.deepinfra.com/v1/openai",
+          "canonical_upstream_model": "google/gemma-4-E4B-it",
+          "catalog_context_length": 131072,
+          "catalog_quantization": "unknown/provider-managed",
+          "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+          "hosted_model_revision": "unknown",
+          "rendering_mode": "deepinfra_openai_chat",
+          "service_tier": "standard"
+        },
+        "model_family": "Gemma 4 E4B IT",
+        "model_id": "google/gemma-4-E4B-it",
+        "model_revision": null,
+        "provider": "DeepInfra",
+        "quantization": "unknown/provider-managed",
+        "runtime": "deepinfra-openai-compatible",
+        "runtime_version": null,
+        "tokenizer_id": "google/gemma-4-E4B-it",
+        "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+      },
+      "call_id": "development-s0-e0",
+      "coordinate": {
+        "episode": 0,
+        "family": "parts",
+        "subject": 0
+      },
+      "expected_host_fingerprint": {
+        "capabilities": [
+          "text_generation",
+          "token_usage"
+        ],
+        "chat_template": "deepinfra_openai_chat",
+        "execution": {
+          "base_url": "https://api.deepinfra.com/v1/openai",
+          "canonical_upstream_model": "google/gemma-4-E4B-it",
+          "catalog_context_length": 131072,
+          "catalog_quantization": "unknown/provider-managed",
+          "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+          "hosted_model_revision": "unknown",
+          "rendering_mode": "deepinfra_openai_chat",
+          "service_tier": "standard"
+        },
+        "model_family": "Gemma 4 E4B IT",
+        "model_id": "google/gemma-4-E4B-it",
+        "model_revision": null,
+        "provider": "DeepInfra",
+        "quantization": "unknown/provider-managed",
+        "runtime": "deepinfra-openai-compatible",
+        "runtime_version": null,
+        "tokenizer_id": "google/gemma-4-E4B-it",
+        "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+      },
+      "intent_sha256": "4bab7540e15c8939fcb13f220a270b41f7f257abc7013065eea70d122775cee2",
+      "max_output_tokens": 256,
+      "output_tokens": 88,
+      "receipt_sha256": "3c7da3417c3512dab42dcc51fd01eb92e18596373f0b9f3f1344574afc3b09e1",
+      "reserved_at": "2026-09-21T00:43:07.330345+00:00",
+      "result": {
+        "content": "That sounds like a really smart way to organize your tools! Having everything put away by size in labeled bins is a huge time-saver when you're troubleshooting or on a job site.\n\n**It makes a big difference for efficiency!**\n\nDo you have a system you like best, like organizing them by **metric vs. standard**, or maybe by **type of socket** (e.g., deep vs. shallow)?",
+        "finish_reason": "stop",
+        "model_id": "google/gemma-4-E4B-it",
+        "provenance": {
+          "finish_reason": "stop",
+          "model_id": "google/gemma-4-E4B-it",
+          "provenance": {
+            "host": {
+              "capabilities": [
+                "text_generation",
+                "token_usage"
+              ],
+              "chat_template": "deepinfra_openai_chat",
+              "execution": {
+                "base_url": "https://api.deepinfra.com/v1/openai",
+                "canonical_upstream_model": "google/gemma-4-E4B-it",
+                "catalog_context_length": 131072,
+                "catalog_quantization": "unknown/provider-managed",
+                "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+                "hosted_model_revision": "unknown",
+                "rendering_mode": "deepinfra_openai_chat",
+                "service_tier": "standard"
+              },
+              "model_family": "Gemma 4 E4B IT",
+              "model_id": "google/gemma-4-E4B-it",
+              "model_revision": null,
+              "provider": "DeepInfra",
+              "quantization": "unknown/provider-managed",
+              "runtime": "deepinfra-openai-compatible",
+              "runtime_version": null,
+              "tokenizer_id": "google/gemma-4-E4B-it",
+              "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+            },
+            "request_chars": 85
+          },
+          "provider": "DeepInfra"
+        },
+        "provider": "DeepInfra",
+        "usage": {
+          "input_tokens": 26,
+          "output_tokens": 88,
+          "total_tokens": 114
+        }
+      },
+      "returned_at": "2026-09-21T00:43:09.661248+00:00",
+      "role": "development-response",
+      "run_id": "p2-pilot-live-20260921b",
+      "schema_version": 1,
+      "status": "RETURNED",
+      "updated_at": "2026-09-21T00:43:09.662093+00:00",
+      "usage": {
+        "input_tokens": 26,
+        "output_tokens": 88,
+        "total_tokens": 114
+      }
+    },
+    "development-s0-e1.json": {
+      "actual_host_fingerprint": {
+        "capabilities": [
+          "text_generation",
+          "token_usage"
+        ],
+        "chat_template": "deepinfra_openai_chat",
+        "execution": {
+          "base_url": "https://api.deepinfra.com/v1/openai",
+          "canonical_upstream_model": "google/gemma-4-E4B-it",
+          "catalog_context_length": 131072,
+          "catalog_quantization": "unknown/provider-managed",
+          "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+          "hosted_model_revision": "unknown",
+          "rendering_mode": "deepinfra_openai_chat",
+          "service_tier": "standard"
+        },
+        "model_family": "Gemma 4 E4B IT",
+        "model_id": "google/gemma-4-E4B-it",
+        "model_revision": null,
+        "provider": "DeepInfra",
+        "quantization": "unknown/provider-managed",
+        "runtime": "deepinfra-openai-compatible",
+        "runtime_version": null,
+        "tokenizer_id": "google/gemma-4-E4B-it",
+        "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+      },
+      "call_id": "development-s0-e1",
+      "coordinate": {
+        "episode": 1,
+        "family": "garden",
+        "subject": 0
+      },
+      "expected_host_fingerprint": {
+        "capabilities": [
+          "text_generation",
+          "token_usage"
+        ],
+        "chat_template": "deepinfra_openai_chat",
+        "execution": {
+          "base_url": "https://api.deepinfra.com/v1/openai",
+          "canonical_upstream_model": "google/gemma-4-E4B-it",
+          "catalog_context_length": 131072,
+          "catalog_quantization": "unknown/provider-managed",
+          "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+          "hosted_model_revision": "unknown",
+          "rendering_mode": "deepinfra_openai_chat",
+          "service_tier": "standard"
+        },
+        "model_family": "Gemma 4 E4B IT",
+        "model_id": "google/gemma-4-E4B-it",
+        "model_revision": null,
+        "provider": "DeepInfra",
+        "quantization": "unknown/provider-managed",
+        "runtime": "deepinfra-openai-compatible",
+        "runtime_version": null,
+        "tokenizer_id": "google/gemma-4-E4B-it",
+        "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+      },
+      "intent_sha256": "a6fb5c4554e4bd7636099b9403445d7407f7f7c61de19678ca2579f4e772bb4f",
+      "max_output_tokens": 256,
+      "output_tokens": 160,
+      "receipt_sha256": "a2fdb39fc00e2a67da030d96dcaa40499e7ebc4882da3444176dc8d954a65bc0",
+      "reserved_at": "2026-09-21T00:43:26.750665+00:00",
+      "result": {
+        "content": "That's a **great tip** for tomato growing!\n\nMulching definitely helps in several ways, especially when it gets hot:\n\n* **Moisture Retention:** This is the big one you mentioned. The mulch acts like a blanket, significantly reducing water evaporation from the soil surface.\n* **Temperature Moderation:** It keeps the soil cooler during intense heat, which is beneficial for the roots.\n* **Weed Suppression:** It blocks sunlight, preventing weeds from germinating and competing with your tomatoes for nutrients and water.\n* **Soil Health:** As organic mulches (like straw or wood chips) break down, they add organic matter to the soil.\n\n**What kind of mulch are you thinking of using, or are you curious about the best options for tomatoes?**",
+        "finish_reason": "stop",
+        "model_id": "google/gemma-4-E4B-it",
+        "provenance": {
+          "finish_reason": "stop",
+          "model_id": "google/gemma-4-E4B-it",
+          "provenance": {
+            "host": {
+              "capabilities": [
+                "text_generation",
+                "token_usage"
+              ],
+              "chat_template": "deepinfra_openai_chat",
+              "execution": {
+                "base_url": "https://api.deepinfra.com/v1/openai",
+                "canonical_upstream_model": "google/gemma-4-E4B-it",
+                "catalog_context_length": 131072,
+                "catalog_quantization": "unknown/provider-managed",
+                "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+                "hosted_model_revision": "unknown",
+                "rendering_mode": "deepinfra_openai_chat",
+                "service_tier": "standard"
+              },
+              "model_family": "Gemma 4 E4B IT",
+              "model_id": "google/gemma-4-E4B-it",
+              "model_revision": null,
+              "provider": "DeepInfra",
+              "quantization": "unknown/provider-managed",
+              "runtime": "deepinfra-openai-compatible",
+              "runtime_version": null,
+              "tokenizer_id": "google/gemma-4-E4B-it",
+              "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+            },
+            "request_chars": 69
+          },
+          "provider": "DeepInfra"
+        },
+        "provider": "DeepInfra",
+        "usage": {
+          "input_tokens": 23,
+          "output_tokens": 160,
+          "total_tokens": 183
+        }
+      },
+      "returned_at": "2026-09-21T00:43:30.438377+00:00",
+      "role": "development-response",
+      "run_id": "p2-pilot-live-20260921b",
+      "schema_version": 1,
+      "status": "RETURNED",
+      "updated_at": "2026-09-21T00:43:30.439186+00:00",
+      "usage": {
+        "input_tokens": 23,
+        "output_tokens": 160,
+        "total_tokens": 183
+      }
+    },
+    "extraction-s0-e0.json": {
+      "actual_host_fingerprint": {
+        "capabilities": [
+          "text_generation",
+          "token_usage"
+        ],
+        "chat_template": "deepinfra_openai_chat",
+        "execution": {
+          "base_url": "https://api.deepinfra.com/v1/openai",
+          "canonical_upstream_model": "google/gemma-4-E4B-it",
+          "catalog_context_length": 131072,
+          "catalog_quantization": "unknown/provider-managed",
+          "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+          "hosted_model_revision": "unknown",
+          "rendering_mode": "deepinfra_openai_chat",
+          "service_tier": "standard"
+        },
+        "model_family": "Gemma 4 E4B IT",
+        "model_id": "google/gemma-4-E4B-it",
+        "model_revision": null,
+        "provider": "DeepInfra",
+        "quantization": "unknown/provider-managed",
+        "runtime": "deepinfra-openai-compatible",
+        "runtime_version": null,
+        "tokenizer_id": "google/gemma-4-E4B-it",
+        "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+      },
+      "call_id": "extraction-s0-e0",
+      "coordinate": {
+        "attempt": 0,
+        "episode": 0,
+        "family": "parts",
+        "subject": 0
+      },
+      "expected_host_fingerprint": {
+        "capabilities": [
+          "text_generation",
+          "token_usage"
+        ],
+        "chat_template": "deepinfra_openai_chat",
+        "execution": {
+          "base_url": "https://api.deepinfra.com/v1/openai",
+          "canonical_upstream_model": "google/gemma-4-E4B-it",
+          "catalog_context_length": 131072,
+          "catalog_quantization": "unknown/provider-managed",
+          "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+          "hosted_model_revision": "unknown",
+          "rendering_mode": "deepinfra_openai_chat",
+          "service_tier": "standard"
+        },
+        "model_family": "Gemma 4 E4B IT",
+        "model_id": "google/gemma-4-E4B-it",
+        "model_revision": null,
+        "provider": "DeepInfra",
+        "quantization": "unknown/provider-managed",
+        "runtime": "deepinfra-openai-compatible",
+        "runtime_version": null,
+        "tokenizer_id": "google/gemma-4-E4B-it",
+        "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+      },
+      "intent_sha256": "e1837fdf2b4d24ac3f22066579a45c1b5dd3a53fda03cd117f378a9f659eed80",
+      "max_output_tokens": 1536,
+      "output_tokens": 513,
+      "receipt_sha256": "a9a7481c159eac157b57797be79211fc2f4272f9b14338e38413f99bab326aba",
+      "reserved_at": "2026-09-21T00:43:09.758577+00:00",
+      "result": {
+        "content": "{\"core_concepts\": [{\"key\": \"tool_organization\", \"label\": \"tool organization\", \"kind\": \"process\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted socket wrenches into labeled bins\"}], \"confidence\": 0.9}, {\"key\": \"time_saving\", \"label\": \"time saving\", \"kind\": \"value\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"finding a repair size takes less time.\"}], \"confidence\": 0.9}, {\"key\": \"efficiency\", \"label\": \"efficiency\", \"kind\": \"trait\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"It makes a big difference for efficiency!\"}], \"confidence\": 0.9}, {\"key\": \"socket_wrenches\", \"label\": \"socket wrenches\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted socket wrenches into labeled bins\"}], \"confidence\": 0.9}], \"salient_phrases\": [\"finding a repair size takes less time\", \"It makes a big difference for efficiency!\"], \"observed_patterns\": [], \"edge_candidates\": [{\"key\": \"e1\", \"from\": \"tool_organization\", \"to\": \"time_saving\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\"}], \"confidence\": 0.9}, {\"key\": \"e2\", \"from\": \"tool_organization\", \"to\": \"efficiency\", \"relationship\": \"supports\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Having everything put away by size in labeled bins is a huge time-saver when you're troubleshooting or on a job site.\"}], \"confidence\": 0.9}], \"route_candidates\": [{\"key\": \"r1\", \"edge_keys\": [\"e1\"], \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\"}], \"confidence\": 0.9}], \"declared_memories\": [], \"earned_candidates\": [], \"identity_candidates\": [], \"developmental_observation_refs\": [], \"evidence_refs\": [], \"extraction_confidence\": 0.95, \"intrusion_risk_estimate\": 0.0}",
+        "effective_parameters": {
+          "max_tokens": 1536,
+          "temperature": 0
+        },
+        "finish_reason": "stop",
+        "latency_ms": 9463.679585023783,
+        "model_id": "google/gemma-4-E4B-it",
+        "provenance": {
+          "host": {
+            "capabilities": [
+              "text_generation",
+              "token_usage"
+            ],
+            "chat_template": "deepinfra_openai_chat",
+            "execution": {
+              "base_url": "https://api.deepinfra.com/v1/openai",
+              "canonical_upstream_model": "google/gemma-4-E4B-it",
+              "catalog_context_length": 131072,
+              "catalog_quantization": "unknown/provider-managed",
+              "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+              "hosted_model_revision": "unknown",
+              "rendering_mode": "deepinfra_openai_chat",
+              "service_tier": "standard"
+            },
+            "model_family": "Gemma 4 E4B IT",
+            "model_id": "google/gemma-4-E4B-it",
+            "model_revision": null,
+            "provider": "DeepInfra",
+            "quantization": "unknown/provider-managed",
+            "runtime": "deepinfra-openai-compatible",
+            "runtime_version": null,
+            "tokenizer_id": "google/gemma-4-E4B-it",
+            "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+          },
+          "request_chars": 3451
+        },
+        "provider": "DeepInfra",
+        "raw_metadata": {
+          "choices": [
+            {
+              "finish_reason": "stop",
+              "index": 0,
+              "logprobs": null,
+              "message": {
+                "content": "{\"core_concepts\": [{\"key\": \"tool_organization\", \"label\": \"tool organization\", \"kind\": \"process\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted socket wrenches into labeled bins\"}], \"confidence\": 0.9}, {\"key\": \"time_saving\", \"label\": \"time saving\", \"kind\": \"value\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"finding a repair size takes less time.\"}], \"confidence\": 0.9}, {\"key\": \"efficiency\", \"label\": \"efficiency\", \"kind\": \"trait\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"It makes a big difference for efficiency!\"}], \"confidence\": 0.9}, {\"key\": \"socket_wrenches\", \"label\": \"socket wrenches\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted socket wrenches into labeled bins\"}], \"confidence\": 0.9}], \"salient_phrases\": [\"finding a repair size takes less time\", \"It makes a big difference for efficiency!\"], \"observed_patterns\": [], \"edge_candidates\": [{\"key\": \"e1\", \"from\": \"tool_organization\", \"to\": \"time_saving\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\"}], \"confidence\": 0.9}, {\"key\": \"e2\", \"from\": \"tool_organization\", \"to\": \"efficiency\", \"relationship\": \"supports\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Having everything put away by size in labeled bins is a huge time-saver when you're troubleshooting or on a job site.\"}], \"confidence\": 0.9}], \"route_candidates\": [{\"key\": \"r1\", \"edge_keys\": [\"e1\"], \"evidence\": [{\"source\": \"s0\", \"evidence\": \"I sorted socket wrenches into labeled bins, so finding a repair size takes less time.\"}], \"confidence\": 0.9}], \"declared_memories\": [], \"earned_candidates\": [], \"identity_candidates\": [], \"developmental_observation_refs\": [], \"evidence_refs\": [], \"extraction_confidence\": 0.95, \"intrusion_risk_estimate\": 0.0}",
+                "name": null,
+                "reasoning_content": null,
+                "role": "assistant",
+                "tool_calls": []
+              }
+            }
+          ],
+          "created": 1789951399,
+          "id": "chatcmpl-RZEm4ZUXpDdoFu0WwK6OhTk6",
+          "model": "google/gemma-4-E4B-it",
+          "object": "chat.completion",
+          "service_tier": "default",
+          "usage": {
+            "completion_tokens": 513,
+            "estimated_cost": 6.62e-05,
+            "prompt_tokens": 745,
+            "prompt_tokens_details": null,
+            "total_tokens": 1258
+          }
+        },
+        "seed": null,
+        "token_usage": "[REDACTED]"
+      },
+      "returned_at": "2026-09-21T00:43:19.315615+00:00",
+      "role": "development-extraction",
+      "run_id": "p2-pilot-live-20260921b",
+      "schema_version": 1,
+      "status": "RETURNED",
+      "updated_at": "2026-09-21T00:43:19.316796+00:00",
+      "usage": {
+        "input_tokens": 745,
+        "output_tokens": 513,
+        "total_tokens": 1258
+      }
+    },
+    "extraction-s0-e1-repair.json": {
+      "actual_host_fingerprint": {
+        "capabilities": [
+          "text_generation",
+          "token_usage"
+        ],
+        "chat_template": "deepinfra_openai_chat",
+        "execution": {
+          "base_url": "https://api.deepinfra.com/v1/openai",
+          "canonical_upstream_model": "google/gemma-4-E4B-it",
+          "catalog_context_length": 131072,
+          "catalog_quantization": "unknown/provider-managed",
+          "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+          "hosted_model_revision": "unknown",
+          "rendering_mode": "deepinfra_openai_chat",
+          "service_tier": "standard"
+        },
+        "model_family": "Gemma 4 E4B IT",
+        "model_id": "google/gemma-4-E4B-it",
+        "model_revision": null,
+        "provider": "DeepInfra",
+        "quantization": "unknown/provider-managed",
+        "runtime": "deepinfra-openai-compatible",
+        "runtime_version": null,
+        "tokenizer_id": "google/gemma-4-E4B-it",
+        "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+      },
+      "call_id": "extraction-s0-e1-repair",
+      "coordinate": {
+        "attempt": 1,
+        "episode": 1,
+        "family": "garden",
+        "subject": 0
+      },
+      "expected_host_fingerprint": {
+        "capabilities": [
+          "text_generation",
+          "token_usage"
+        ],
+        "chat_template": "deepinfra_openai_chat",
+        "execution": {
+          "base_url": "https://api.deepinfra.com/v1/openai",
+          "canonical_upstream_model": "google/gemma-4-E4B-it",
+          "catalog_context_length": 131072,
+          "catalog_quantization": "unknown/provider-managed",
+          "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+          "hosted_model_revision": "unknown",
+          "rendering_mode": "deepinfra_openai_chat",
+          "service_tier": "standard"
+        },
+        "model_family": "Gemma 4 E4B IT",
+        "model_id": "google/gemma-4-E4B-it",
+        "model_revision": null,
+        "provider": "DeepInfra",
+        "quantization": "unknown/provider-managed",
+        "runtime": "deepinfra-openai-compatible",
+        "runtime_version": null,
+        "tokenizer_id": "google/gemma-4-E4B-it",
+        "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+      },
+      "intent_sha256": "d491ac02d48b2644aa328b5c8b3747e23fe9cbad027304a299f05e81c35a782b",
+      "max_output_tokens": 1536,
+      "output_tokens": 1009,
+      "receipt_sha256": "a88a7df86386144b8e85c23402e51bb122d24ef4b9e6dd5d94e311ee94cbcb8e",
+      "reserved_at": "2026-09-21T00:43:39.256084+00:00",
+      "result": {
+        "content": "{\"core_concepts\": [{\"key\": \"tomato_growing\", \"label\": \"tomato growing\", \"kind\": \"topic\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"That's a **great tip** for tomato growing!\"}], \"confidence\": 1.0}, {\"key\": \"mulch\", \"label\": \"mulch\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Mulch around the tomatoes helps the soil stay damp on hot afternoons.\"}], \"confidence\": 1.0}, {\"key\": \"soil_dampness\", \"label\": \"soil dampness\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Mulch around the tomatoes helps the soil stay damp on hot afternoons.\"}], \"confidence\": 1.0}, {\"key\": \"moisture_retention\", \"label\": \"moisture retention\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Moisture Retention: This is the big one you mentioned. The mulch acts like a blanket, significantly reducing water evaporation from the soil surface.\"}], \"confidence\": 1.0}, {\"key\": \"temperature_moderation\", \"label\": \"temperature moderation\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Temperature Moderation: It keeps the soil cooler during intense heat, which is beneficial for the roots.\"}], \"confidence\": 1.0}, {\"key\": \"weed_suppression\", \"label\": \"weed suppression\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Weed Suppression: It blocks sunlight, preventing weeds from germinating and competing with your tomatoes for nutrients and water.\"}], \"confidence\": 1.0}, {\"key\": \"soil_health\", \"label\": \"soil health\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Soil Health: As organic mulches (like straw or wood chips) break down, they add organic matter to the soil.\"}], \"confidence\": 1.0}], \"salient_phrases\": [\"great tip\", \"Moisture Retention\", \"Temperature Moderation\", \"Weed Suppression\", \"Soil Health\"], \"observed_patterns\": [], \"edge_candidates\": [{\"key\": \"helps_soil_damp\", \"from\": \"mulch\", \"to\": \"soil_dampness\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Mulch around the tomatoes helps the soil stay damp on hot afternoons.\"}], \"confidence\": 1.0}, {\"key\": \"reduces_evaporation\", \"from\": \"mulch\", \"to\": \"moisture_retention\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"The mulch acts like a blanket, significantly reducing water evaporation from the soil surface.\"}], \"confidence\": 1.0}, {\"key\": \"moderates_temp\", \"from\": \"mulch\", \"to\": \"temperature_moderation\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"It keeps the soil cooler during intense heat, which is beneficial for the roots.\"}], \"confidence\": 1.0}, {\"key\": \"suppresses_weeds\", \"from\": \"mulch\", \"to\": \"weed_suppression\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"It blocks sunlight, preventing weeds from germinating and competing with your tomatoes for nutrients and water.\"}], \"confidence\": 1.0}, {\"key\": \"improves_soil\", \"from\": \"mulch\", \"to\": \"soil_health\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"As organic mulches (like straw or wood chips) break down, they add organic matter to the soil.\"}], \"confidence\": 1.0}], \"route_candidates\": [{\"key\": \"mulch_benefits\", \"edge_keys\": [\"helps_soil_damp\", \"reduces_evaporation\", \"moderates_temp\", \"suppresses_weeds\", \"improves_soil\"], \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Mulching definitely helps in several ways, especially when it gets hot:\"}], \"confidence\": 1.0}], \"declared_memories\": [], \"earned_candidates\": [], \"identity_candidates\": [], \"developmental_observation_refs\": [], \"evidence_refs\": [], \"extraction_confidence\": 0.95, \"intrusion_risk_estimate\": 0.0}",
+        "effective_parameters": {
+          "max_tokens": 1536,
+          "temperature": 0
+        },
+        "finish_reason": "stop",
+        "latency_ms": 24650.823488947935,
+        "model_id": "google/gemma-4-E4B-it",
+        "provenance": {
+          "host": {
+            "capabilities": [
+              "text_generation",
+              "token_usage"
+            ],
+            "chat_template": "deepinfra_openai_chat",
+            "execution": {
+              "base_url": "https://api.deepinfra.com/v1/openai",
+              "canonical_upstream_model": "google/gemma-4-E4B-it",
+              "catalog_context_length": 131072,
+              "catalog_quantization": "unknown/provider-managed",
+              "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+              "hosted_model_revision": "unknown",
+              "rendering_mode": "deepinfra_openai_chat",
+              "service_tier": "standard"
+            },
+            "model_family": "Gemma 4 E4B IT",
+            "model_id": "google/gemma-4-E4B-it",
+            "model_revision": null,
+            "provider": "DeepInfra",
+            "quantization": "unknown/provider-managed",
+            "runtime": "deepinfra-openai-compatible",
+            "runtime_version": null,
+            "tokenizer_id": "google/gemma-4-E4B-it",
+            "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+          },
+          "request_chars": 3941
+        },
+        "provider": "DeepInfra",
+        "raw_metadata": {
+          "choices": [
+            {
+              "finish_reason": "stop",
+              "index": 0,
+              "logprobs": null,
+              "message": {
+                "content": "{\"core_concepts\": [{\"key\": \"tomato_growing\", \"label\": \"tomato growing\", \"kind\": \"topic\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"That's a **great tip** for tomato growing!\"}], \"confidence\": 1.0}, {\"key\": \"mulch\", \"label\": \"mulch\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Mulch around the tomatoes helps the soil stay damp on hot afternoons.\"}], \"confidence\": 1.0}, {\"key\": \"soil_dampness\", \"label\": \"soil dampness\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Mulch around the tomatoes helps the soil stay damp on hot afternoons.\"}], \"confidence\": 1.0}, {\"key\": \"moisture_retention\", \"label\": \"moisture retention\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Moisture Retention: This is the big one you mentioned. The mulch acts like a blanket, significantly reducing water evaporation from the soil surface.\"}], \"confidence\": 1.0}, {\"key\": \"temperature_moderation\", \"label\": \"temperature moderation\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Temperature Moderation: It keeps the soil cooler during intense heat, which is beneficial for the roots.\"}], \"confidence\": 1.0}, {\"key\": \"weed_suppression\", \"label\": \"weed suppression\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Weed Suppression: It blocks sunlight, preventing weeds from germinating and competing with your tomatoes for nutrients and water.\"}], \"confidence\": 1.0}, {\"key\": \"soil_health\", \"label\": \"soil health\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Soil Health: As organic mulches (like straw or wood chips) break down, they add organic matter to the soil.\"}], \"confidence\": 1.0}], \"salient_phrases\": [\"great tip\", \"Moisture Retention\", \"Temperature Moderation\", \"Weed Suppression\", \"Soil Health\"], \"observed_patterns\": [], \"edge_candidates\": [{\"key\": \"helps_soil_damp\", \"from\": \"mulch\", \"to\": \"soil_dampness\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Mulch around the tomatoes helps the soil stay damp on hot afternoons.\"}], \"confidence\": 1.0}, {\"key\": \"reduces_evaporation\", \"from\": \"mulch\", \"to\": \"moisture_retention\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"The mulch acts like a blanket, significantly reducing water evaporation from the soil surface.\"}], \"confidence\": 1.0}, {\"key\": \"moderates_temp\", \"from\": \"mulch\", \"to\": \"temperature_moderation\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"It keeps the soil cooler during intense heat, which is beneficial for the roots.\"}], \"confidence\": 1.0}, {\"key\": \"suppresses_weeds\", \"from\": \"mulch\", \"to\": \"weed_suppression\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"It blocks sunlight, preventing weeds from germinating and competing with your tomatoes for nutrients and water.\"}], \"confidence\": 1.0}, {\"key\": \"improves_soil\", \"from\": \"mulch\", \"to\": \"soil_health\", \"relationship\": \"causes\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"As organic mulches (like straw or wood chips) break down, they add organic matter to the soil.\"}], \"confidence\": 1.0}], \"route_candidates\": [{\"key\": \"mulch_benefits\", \"edge_keys\": [\"helps_soil_damp\", \"reduces_evaporation\", \"moderates_temp\", \"suppresses_weeds\", \"improves_soil\"], \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Mulching definitely helps in several ways, especially when it gets hot:\"}], \"confidence\": 1.0}], \"declared_memories\": [], \"earned_candidates\": [], \"identity_candidates\": [], \"developmental_observation_refs\": [], \"evidence_refs\": [], \"extraction_confidence\": 0.95, \"intrusion_risk_estimate\": 0.0}",
+                "name": null,
+                "reasoning_content": null,
+                "role": "assistant",
+                "tool_calls": []
+              }
+            }
+          ],
+          "created": 1789951443,
+          "id": "chatcmpl-RRdZMC4THdrTVJNoQ6XGKhPz",
+          "model": "google/gemma-4-E4B-it",
+          "object": "chat.completion",
+          "service_tier": "default",
+          "usage": {
+            "completion_tokens": 1009,
+            "estimated_cost": 0.00011774,
+            "prompt_tokens": 842,
+            "prompt_tokens_details": null,
+            "total_tokens": 1851
+          }
+        },
+        "seed": null,
+        "token_usage": "[REDACTED]"
+      },
+      "returned_at": "2026-09-21T00:44:04.043259+00:00",
+      "role": "development-extraction",
+      "run_id": "p2-pilot-live-20260921b",
+      "schema_version": 1,
+      "status": "RETURNED",
+      "updated_at": "2026-09-21T00:44:04.044473+00:00",
+      "usage": {
+        "input_tokens": 842,
+        "output_tokens": 1009,
+        "total_tokens": 1851
+      }
+    },
+    "extraction-s0-e1.json": {
+      "actual_host_fingerprint": {
+        "capabilities": [
+          "text_generation",
+          "token_usage"
+        ],
+        "chat_template": "deepinfra_openai_chat",
+        "execution": {
+          "base_url": "https://api.deepinfra.com/v1/openai",
+          "canonical_upstream_model": "google/gemma-4-E4B-it",
+          "catalog_context_length": 131072,
+          "catalog_quantization": "unknown/provider-managed",
+          "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+          "hosted_model_revision": "unknown",
+          "rendering_mode": "deepinfra_openai_chat",
+          "service_tier": "standard"
+        },
+        "model_family": "Gemma 4 E4B IT",
+        "model_id": "google/gemma-4-E4B-it",
+        "model_revision": null,
+        "provider": "DeepInfra",
+        "quantization": "unknown/provider-managed",
+        "runtime": "deepinfra-openai-compatible",
+        "runtime_version": null,
+        "tokenizer_id": "google/gemma-4-E4B-it",
+        "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+      },
+      "call_id": "extraction-s0-e1",
+      "coordinate": {
+        "attempt": 0,
+        "episode": 1,
+        "family": "garden",
+        "subject": 0
+      },
+      "expected_host_fingerprint": {
+        "capabilities": [
+          "text_generation",
+          "token_usage"
+        ],
+        "chat_template": "deepinfra_openai_chat",
+        "execution": {
+          "base_url": "https://api.deepinfra.com/v1/openai",
+          "canonical_upstream_model": "google/gemma-4-E4B-it",
+          "catalog_context_length": 131072,
+          "catalog_quantization": "unknown/provider-managed",
+          "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+          "hosted_model_revision": "unknown",
+          "rendering_mode": "deepinfra_openai_chat",
+          "service_tier": "standard"
+        },
+        "model_family": "Gemma 4 E4B IT",
+        "model_id": "google/gemma-4-E4B-it",
+        "model_revision": null,
+        "provider": "DeepInfra",
+        "quantization": "unknown/provider-managed",
+        "runtime": "deepinfra-openai-compatible",
+        "runtime_version": null,
+        "tokenizer_id": "google/gemma-4-E4B-it",
+        "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+      },
+      "intent_sha256": "c78d0e5eb7536dff54e7517b230ee6b30076d6f0f5d0d79c0931a76de9c97d14",
+      "max_output_tokens": 1536,
+      "output_tokens": 457,
+      "receipt_sha256": "deca4b2169ce8542ed2ced1d52d37245d49af5f2b399944afff9e4e10ffa1382",
+      "reserved_at": "2026-09-21T00:43:30.475306+00:00",
+      "result": {
+        "content": "{\"core_concepts\": [{\"key\": \"tomato_growing\", \"label\": \"tomato growing\", \"kind\": \"topic\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"That's a **great tip** for tomato growing!\"}], \"confidence\": 0.9}, {\"key\": \"mulch\", \"label\": \"mulch\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Mulch around the tomatoes helps the soil stay damp on hot afternoons.\"}], \"confidence\": 0.9}, {\"key\": \"soil_dampness\", \"label\": \"soil dampness\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Mulch around the tomatoes helps the soil stay damp on hot afternoons.\"}], \"confidence\": 0.9}, {\"key\": \"moisture_retention\", \"label\": \"moisture retention\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Moisture Retention: This is the big one you mentioned. The mulch acts like a blanket, significantly reducing water evaporation from the soil surface.\"}], \"confidence\": 0.9}, {\"key\": \"temperature_moderation\", \"label\": \"temperature moderation\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Temperature Moderation: It keeps the soil cooler during intense heat, which is beneficial for the roots.\"}], \"confidence\": 0.9}, {\"key\": \"weed_suppression\", \"label\": \"weed suppression\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Weed Suppression: It blocks sunlight, preventing weeds from germinating and competing with your tomatoes for nutrients and water.\"}], \"confidence\": 0.9}, {\"key\": \"soil_health\", \"label\": \"soil health\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Soil Health: As organic mulches (like straw or wood chips) break down, they add organic matter to the soil.\"}], \"confidence\": 0.9}]}",
+        "effective_parameters": {
+          "max_tokens": 1536,
+          "temperature": 0
+        },
+        "finish_reason": "stop",
+        "latency_ms": 8627.808884950355,
+        "model_id": "google/gemma-4-E4B-it",
+        "provenance": {
+          "host": {
+            "capabilities": [
+              "text_generation",
+              "token_usage"
+            ],
+            "chat_template": "deepinfra_openai_chat",
+            "execution": {
+              "base_url": "https://api.deepinfra.com/v1/openai",
+              "canonical_upstream_model": "google/gemma-4-E4B-it",
+              "catalog_context_length": 131072,
+              "catalog_quantization": "unknown/provider-managed",
+              "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+              "hosted_model_revision": "unknown",
+              "rendering_mode": "deepinfra_openai_chat",
+              "service_tier": "standard"
+            },
+            "model_family": "Gemma 4 E4B IT",
+            "model_id": "google/gemma-4-E4B-it",
+            "model_revision": null,
+            "provider": "DeepInfra",
+            "quantization": "unknown/provider-managed",
+            "runtime": "deepinfra-openai-compatible",
+            "runtime_version": null,
+            "tokenizer_id": "google/gemma-4-E4B-it",
+            "tokenizer_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2"
+          },
+          "request_chars": 3813
+        },
+        "provider": "DeepInfra",
+        "raw_metadata": {
+          "choices": [
+            {
+              "finish_reason": "stop",
+              "index": 0,
+              "logprobs": null,
+              "message": {
+                "content": "{\"core_concepts\": [{\"key\": \"tomato_growing\", \"label\": \"tomato growing\", \"kind\": \"topic\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"That's a **great tip** for tomato growing!\"}], \"confidence\": 0.9}, {\"key\": \"mulch\", \"label\": \"mulch\", \"kind\": \"object\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Mulch around the tomatoes helps the soil stay damp on hot afternoons.\"}], \"confidence\": 0.9}, {\"key\": \"soil_dampness\", \"label\": \"soil dampness\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s0\", \"evidence\": \"Mulch around the tomatoes helps the soil stay damp on hot afternoons.\"}], \"confidence\": 0.9}, {\"key\": \"moisture_retention\", \"label\": \"moisture retention\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Moisture Retention: This is the big one you mentioned. The mulch acts like a blanket, significantly reducing water evaporation from the soil surface.\"}], \"confidence\": 0.9}, {\"key\": \"temperature_moderation\", \"label\": \"temperature moderation\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Temperature Moderation: It keeps the soil cooler during intense heat, which is beneficial for the roots.\"}], \"confidence\": 0.9}, {\"key\": \"weed_suppression\", \"label\": \"weed suppression\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Weed Suppression: It blocks sunlight, preventing weeds from germinating and competing with your tomatoes for nutrients and water.\"}], \"confidence\": 0.9}, {\"key\": \"soil_health\", \"label\": \"soil health\", \"kind\": \"concept\", \"evidence\": [{\"source\": \"s1\", \"evidence\": \"Soil Health: As organic mulches (like straw or wood chips) break down, they add organic matter to the soil.\"}], \"confidence\": 0.9}]}",
+                "name": null,
+                "reasoning_content": null,
+                "role": "assistant",
+                "tool_calls": []
+              }
+            }
+          ],
+          "created": 1789951419,
+          "id": "chatcmpl-RSuJLYwG2ZJnJpanDz5rGra5",
+          "model": "google/gemma-4-E4B-it",
+          "object": "chat.completion",
+          "service_tier": "default",
+          "usage": {
+            "completion_tokens": 457,
+            "estimated_cost": 6.198e-05,
+            "prompt_tokens": 814,
+            "prompt_tokens_details": null,
+            "total_tokens": 1271
+          }
+        },
+        "seed": null,
+        "token_usage": "[REDACTED]"
+      },
+      "returned_at": "2026-09-21T00:43:39.178826+00:00",
+      "role": "development-extraction",
+      "run_id": "p2-pilot-live-20260921b",
+      "schema_version": 1,
+      "status": "RETURNED",
+      "updated_at": "2026-09-21T00:43:39.180123+00:00",
+      "usage": {
+        "input_tokens": 814,
+        "output_tokens": 457,
+        "total_tokens": 1271
+      }
+    }
+  },
+  "run_id": "p2-pilot-live-20260921b",
+  "sanitization": "No credentials, authorization headers, or unrelated private data.",
+  "status": "FAIL_STOP",
+  "study_report": {
+    "admitted_relationships": 1,
+    "assessments_completed": 1,
+    "development_completed": 2,
+    "engineering_adequate": false,
+    "evaluations_completed": 0,
+    "extraction_repairs": 1,
+    "extractions_valid": 1,
+    "failure": "PilotStudyError: extraction failed after one permitted repair: extraction-s0-e1",
+    "status": "FAILED"
+  }
+}
