@@ -1126,10 +1126,12 @@
         "docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260921.md/.json",
         "docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260921_Bundle.json",
         "docs/receipts/MNEME_P2.3_Assessor_Coverage_Polarity_V9_Offline_Receipt.md",
-        "docs/receipts/MNEME_P2.3_Assessor_Coverage_Polarity_V9_Offline_Receipt.json"
+        "docs/receipts/MNEME_P2.3_Assessor_Coverage_Polarity_V9_Offline_Receipt.json",
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Coverage_Polarity_V9_Pass_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Assessor_Qualification_Coverage_Polarity_V9_Pass_Receipt.json"
       ],
       "id": "P2.3",
-      "notes": "P2.2 accepted. Polarity v8 qualification passed and remains preserved. Offline edge-less extraction correction passed at commit 2885332 and CI 35548448495. Fresh corrected run p2-pilot-live-20260921b consumed 6 calls (2 Gemma development, 3 extraction including repair, 1 Qwen assessment) and stopped at episode 1 after strict source-bound quotation failure on the repair. No evaluation calls or resampling occurred. Total campaign usage is 18 calls; 281 remain, below the 288 scheduled pilot calls before repairs, so no further provider call is dispatched without budget review. Additive coverage/polarity v9 correction is offline-validated at the prospective p2-assessor-v6/p2-assessor-production-v8 contract; historical v5/v7 live evidence remains unchanged and no provider call has yet been made for this correction.",
+      "notes": "P2.2 accepted. Historical polarity-v8 qualification, pilot extraction stops, and all prior receipts remain unchanged. Offline edge-less extraction correction passed at commit 2885332 and CI 35548448495. The fresh corrected pilot run p2-pilot-live-20260921b consumed 6 calls and stopped at episode 1 after its one permitted extraction repair failed strict source-bound quotation validation; no evaluation calls or resampling occurred. The additive v9 coverage/polarity correction is pushed at 41bd31f with 318 pytest, Ruff, strict mypy, wheel/fresh-install smoke, and CI 35549781907. The fixed v9 Q1/Q2/Q3 qualification then passed in 3 DeepInfra Qwen calls (4,585 tokens; cost unknown), with persisted semantic/provenance evidence and zero pilot calls. Total campaign usage is now 21 calls, leaving 278 under the unchanged 299 ceiling; the approved 288-call no-repair pilot schedule cannot fit, so P2.3 remains WAITING on budget review.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1156,7 +1158,7 @@
       "session_ids": [],
       "status": "WAITING",
       "title": "Assessor qualification and bounded developmental pilot",
-      "updated_at": "2026-09-21T01:05:00Z",
+      "updated_at": "2026-09-21T01:20:00Z",
       "validation": {
         "required": [
           "p23-assessor-contract",
@@ -1210,6 +1212,11 @@
             "receipt": "docs/receipts/MNEME_P2.3_Assessor_Coverage_Polarity_V9_Offline_Receipt.md/.json; 318 pytest; Ruff; strict mypy; wheel/fresh-install smoke; zero provider calls",
             "recorded_at": "2026-09-21T01:05:00Z",
             "status": "PASS"
+          },
+          "p23-assessor-coverage-polarity-v9-live": {
+            "receipt": "docs/receipts/MNEME_P2.3_Assessor_Qualification_Coverage_Polarity_V9_Pass_Receipt.md/.json; Q1/Q2/Q3 passed; 3 calls; 4,585 total tokens; no pilot calls",
+            "recorded_at": "2026-09-21T01:20:00Z",
+            "status": "PASS"
           }
         }
       },
@@ -1240,5 +1247,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-21T01:05:00Z"
+  "updated_at": "2026-09-21T01:20:00Z"
 }

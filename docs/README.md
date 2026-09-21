@@ -151,6 +151,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   offline receipt](receipts/MNEME_P2.3_Assessor_Coverage_Polarity_V9_Offline_Receipt.md)
   ([JSON](receipts/MNEME_P2.3_Assessor_Coverage_Polarity_V9_Offline_Receipt.json));
   historical v4/v5 results remain archival and unchanged.
+  The fixed v9 Q1/Q2/Q3 qualification passed in [the v9 qualification receipt](receipts/MNEME_P2.3_Assessor_Qualification_Coverage_Polarity_V9_Pass_Receipt.md)
+  ([JSON](receipts/MNEME_P2.3_Assessor_Qualification_Coverage_Polarity_V9_Pass_Receipt.json));
+  no pilot call was dispatched because the remaining campaign ceiling is below
+  the approved no-repair pilot schedule.
 
   The pilot extraction stop and its six returned calls are recorded in [the extraction-stop receipt](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md) ([JSON](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json)); the finite-repair rule halted the pilot before evaluation.
 
