@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from pathlib import Path
 from types import SimpleNamespace
@@ -12,6 +13,7 @@ from mneme.experiments.pilot_study import (
     PilotSchedule,
     PilotStatus,
     PilotStudy,
+    ProductionAssessmentAdapter,
 )
 from mneme.hosts import FakeHost
 
@@ -19,6 +21,7 @@ from mneme.hosts import FakeHost
 @dataclass
 class _FakePilot:
     state: str = PilotStatus.QUALIFIED.value
+    progress: dict[str, Any] | None = None
 
     def status(self) -> dict[str, str]:
         return {"status": self.state}
@@ -47,6 +50,15 @@ class _FakePilot:
 
     def reservations_report(self) -> dict[str, Any]:
         return {"calls": []}
+
+    def publish_artifact(self, _category: str, _name: str, value: dict[str, Any]) -> None:
+        self.report = value
+
+    def study_progress(self) -> dict[str, Any]:
+        return dict(self.progress or {})
+
+    def record_study_progress(self, **fields: Any) -> None:
+        self.progress = {**self.study_progress(), **fields}
 
 
 class _FakeRuntime:
@@ -128,6 +140,62 @@ def test_study_pause_resume_reuses_stable_coordinates(tmp_path: Path) -> None:
     assert completed.assessments_completed == 48
     assert completed.evaluations_completed == 144
     assert completed.admitted_relationships == 48
-    assert runtime.development_ids.count("development-s0-e0") == 2
+    assert runtime.development_ids.count("development-s0-e0") == 1
     assert len(set(runtime.development_ids)) == 48
     assert runtime.evaluation_ids[-1] == "evaluation-s1-p11-r5"
+
+
+def test_production_assessment_adapter_serializes_complete_monitor_and_resolves_sources() -> None:
+    class _Connection:
+        def execute(self, _query: str, _args: tuple[str, ...]) -> Any:
+            return SimpleNamespace(
+                fetchall=lambda: [
+                    ("source-0", 0, "A supports B.", "user", "external_evidence", None),
+                    (
+                        "source-1",
+                        1,
+                        "The host repeated A supports B.",
+                        "model_output",
+                        "model_output",
+                        None,
+                    ),
+                ]
+            )
+
+    runtime = SimpleNamespace(
+        subjects={0: SimpleNamespace(store=SimpleNamespace(connection=_Connection()))}
+    )
+    adapter = ProductionAssessmentAdapter(runtime, FakeHost())  # type: ignore[arg-type]
+    development = SimpleNamespace(operation=SimpleNamespace(operation_id="development-s0-e0"))
+    extraction = SimpleNamespace(
+        episode_id="episode-s0-e0",
+        operation_id="interpretation-s0-e0",
+        residue=SimpleNamespace(
+            edge_candidates=(
+                {"key": "edge-ab", "from": "A", "to": "B", "relationship": "supports"},
+            )
+        ),
+    )
+
+    plan = adapter(0, PilotSchedule.fixed().episodes[0], development, extraction)
+    assert plan.semantic_request is not None
+    payload = plan.semantic_request.to_dict()
+    monitor = payload["monitors"][0]
+    assert monitor["relation"] == {"from": "A", "to": "B", "relation": "supports"}
+    assert monitor["required_source_slots"] == ["s0", "s1"]
+    result = {
+        "schema_version": "p2-assessor-v5",
+        "assessments": [
+            {
+                "monitor_id": "candidate",
+                "status": "present",
+                "relation_support": "supported",
+                "expression_status": "affirmed",
+                "coverage": {"complete": True, "source_slots": ["s0", "s1"], "reason": None},
+                "evidence": {"source_slot": "s0", "quote": "A supports B."},
+                "corresponding_source_slots": [],
+            }
+        ],
+    }
+    resolved = plan.validator(json.dumps(result))
+    assert resolved[0].provenance.dependence == "external_supported"

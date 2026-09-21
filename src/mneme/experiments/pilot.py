@@ -225,6 +225,28 @@ class PilotRun:
             raise PilotError("pilot state integrity check failed")
         return value
 
+    def study_progress(self) -> dict[str, Any]:
+        """Return the durable P2.3 coordinate ledger, if one exists."""
+
+        value = self.status().get("study_progress")
+        if value is None:
+            return {}
+        if not isinstance(value, Mapping):
+            raise PilotError("pilot study progress is not an object")
+        return dict(value)
+
+    def record_study_progress(self, **fields: Any) -> dict[str, Any]:
+        """Atomically persist completed study coordinates and counters."""
+
+        state = self.status()
+        try:
+            status = PilotStatus(str(state["status"]))
+        except (KeyError, ValueError) as exc:
+            raise PilotError("pilot state has an invalid lifecycle status") from exc
+        current = self.study_progress()
+        current.update(_safe_value(fields))
+        return self._write_state(status, study_progress=current)
+
     def prepare(
         self,
         *,

@@ -151,7 +151,17 @@ class PilotRuntime:
         state = self.pilot.status()
         envelope = state.get("envelope")
         if isinstance(envelope, Mapping) and isinstance(envelope.get("role_bindings"), Mapping):
-            configured = self.pilot.require_role_host(role, host)
+            # The prepared envelope binds the developing host once, while
+            # the ledger keeps response and extraction calls as separate
+            # accounting roles.  Both developmental call roles must resolve
+            # to that one scientific host binding; assessor/evaluation roles
+            # remain independently bound.
+            binding_role = (
+                "developing"
+                if role in {"development-response", "development-extraction"}
+                else role
+            )
+            configured = self.pilot.require_role_host(binding_role, host)
             expected = configured.get("fingerprint")
             if isinstance(expected, Mapping):
                 return dict(expected)

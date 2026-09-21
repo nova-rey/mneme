@@ -10,12 +10,23 @@ or learner path.
 
 from __future__ import annotations
 
+import json
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 from ..contracts import GenerationRequest
+from ..development.assessment import (
+    ASSESSOR_SCHEMA_VERSION,
+    AssessorMonitor,
+    AssessorRequest,
+    AssessorSource,
+    ResolvedAssessment,
+    assessor_generation_request,
+    validate_and_resolve_assessor_result,
+)
+from ..development.learner import DevelopmentalLearner, Observation
 from ..host import Host
 from ..memory.publication import PublicationError
 from .evaluation import EvaluationError
@@ -257,6 +268,193 @@ class AssessmentPlan:
     validator: Callable[[str], Any]
     publish: Callable[[Any], int]
     role: str = "assessor"
+    semantic_request: AssessorRequest | None = None
+
+
+class ProductionAssessmentAdapter:
+    """Build the production assessor request and atomic learner publication.
+
+    This adapter is intentionally narrow: accepted source rows and the
+    validated residue determine the candidate; the assessor only supplies
+    semantic rows, while ``validate_and_resolve_assessor_result`` derives
+    provenance from those immutable source records.
+    """
+
+    def __init__(
+        self,
+        runtime: PilotRuntime,
+        assessor_host: Host,
+        *,
+        memory_exposure: Mapping[int, tuple[Mapping[str, Any], ...]] | None = None,
+        replay_ancestry: Mapping[int, tuple[Mapping[str, Any], ...]] | None = None,
+    ) -> None:
+        self.runtime = runtime
+        self.assessor_host = assessor_host
+        self.memory_exposure = dict(memory_exposure or {})
+        self.replay_ancestry = dict(replay_ancestry or {})
+
+    @staticmethod
+    def _sources(
+        runtime: PilotRuntime, slot: int, episode_id: str
+    ) -> tuple[tuple[AssessorSource, ...], tuple[str, ...], tuple[Mapping[str, Any], ...]]:
+        subject = runtime.subjects.get(slot)
+        if subject is None:
+            raise PilotStudyError(f"no subject for assessment slot {slot}")
+        rows = subject.store.connection.execute(
+            "SELECT s.source_id,s.ordinal,s.content,s.role,b.purpose,b.origin_source_id "
+            "FROM sources s JOIN source_bindings b ON b.source_id=s.source_id "
+            "WHERE s.operation_id=(SELECT operation_id FROM episodes WHERE episode_id=?) "
+            "ORDER BY s.ordinal,s.source_id",
+            (episode_id,),
+        ).fetchall()
+        if not rows:
+            raise PilotStudyError(f"episode has no bound source rows: {episode_id}")
+        sources: list[AssessorSource] = []
+        current_input: list[str] = []
+        replay: list[Mapping[str, Any]] = []
+        for index, row in enumerate(rows):
+            slot_name = f"s{index}"
+            purpose = str(row[4])
+            role = "external" if purpose == "external_evidence" else "model_output"
+            sources.append(
+                AssessorSource(
+                    slot_name,
+                    role,
+                    True,
+                    str(row[2]),
+                    str(row[0]),
+                )
+            )
+            if role == "external":
+                current_input.append(slot_name)
+            if purpose == "replayed_context":
+                replay.append(
+                    {
+                        "source_slot": slot_name,
+                        "root": str(row[5] or row[0]),
+                    }
+                )
+        return tuple(sources), tuple(current_input), tuple(replay)
+
+    def __call__(
+        self,
+        slot: int,
+        episode: DevelopmentFixture,
+        development: DevelopmentOutcome,
+        extraction: ExtractionOutcome,
+    ) -> AssessmentPlan:
+        residue = extraction.residue
+        if residue is None:
+            raise PilotStudyError("cannot assess an invalid extraction")
+        edges = sorted(residue.edge_candidates, key=lambda value: str(value.get("key", "")))
+        if not edges:
+            raise PilotStudyError(
+                f"extraction has no assessable relationship: {extraction.operation_id}"
+            )
+        edge = edges[0]
+        relation = {
+            "from": str(edge["from"]),
+            "to": str(edge["to"]),
+            "relation": str(edge["relationship"]),
+        }
+        sources, current_input, replay = self._sources(self.runtime, slot, extraction.episode_id)
+        required = tuple(source.slot for source in sources)
+        request = AssessorRequest(
+            candidate=relation,
+            sources=sources,
+            monitors=(
+                AssessorMonitor(
+                    "candidate",
+                    relation,
+                    required,
+                    required,
+                    tuple(source.slot for source in sources if source.role == "model_output"),
+                ),
+            ),
+            memory_exposure=self.memory_exposure.get(slot, ()),
+            replay_ancestry=tuple((*replay, *self.replay_ancestry.get(slot, ()))),
+            context={"current_input_source_slots": list(current_input)},
+            source_purpose_mask=("external_evidence", "model_output"),
+        )
+        call_id = f"assessment-s{slot}-e{episode.ordinal}"
+
+        def validate(content: str) -> tuple[ResolvedAssessment, ...]:
+            decoded = json.loads(content)
+            if not isinstance(decoded, Mapping):
+                raise PilotStudyError("assessor result must be a JSON object")
+            return validate_and_resolve_assessor_result(request, decoded)
+
+        def publish(value: Any) -> int:
+            if not isinstance(value, tuple) or not all(
+                isinstance(item, ResolvedAssessment) for item in value
+            ):
+                raise PilotStudyError("assessor adapter received an invalid resolved result")
+            resolved = tuple(value)
+            source_by_slot = {source.slot: source for source in request.sources}
+            observations: list[Observation] = []
+            for item in resolved:
+                evidence_slot = item.evidence.source_slot if item.evidence else None
+                evidence_source = source_by_slot.get(evidence_slot) if evidence_slot else None
+                source_role = (
+                    "model_output"
+                    if evidence_source and evidence_source.role == "model_output"
+                    else "external"
+                )
+                groups = item.provenance.provenance_group_keys
+                observations.append(
+                    Observation(
+                        target_key=str(edge["key"]),
+                        context=request.monitors[0].context,
+                        source_role=source_role,
+                        dependence=item.provenance.dependence,
+                        status=item.status,
+                        relation_support=item.relation_support,
+                        expression_status=item.expression_status,
+                        semantic_schema_version=ASSESSOR_SCHEMA_VERSION,
+                        group_key=groups[0] if groups else None,
+                        provenance_group_keys=groups,
+                        occurrence_key=f"{call_id}:{item.monitor_id}",
+                        covered=bool(item.coverage.get("complete")),
+                        relevant=True,
+                        actual_exposure=False,
+                        eligible=item.provenance.credit_eligible,
+                        observation_id=f"{call_id}:{item.monitor_id}",
+                    )
+                )
+            receipt = self.runtime.publish_interpretation(
+                slot=slot,
+                operation_id=extraction.operation_id,
+                residue=residue,
+                observations=tuple(observations),
+                learner=DevelopmentalLearner(),
+                development_operation_id=development.operation.operation_id,
+                assessor_version=request.assessor_version,
+            )
+            self.runtime.pilot.publish_artifact(
+                "assessment",
+                f"{call_id}-resolution.json",
+                {
+                    "request": request.to_dict(),
+                    "resolved": [item.to_dict() for item in resolved],
+                    "publication": {
+                        "operation_id": receipt.operation_id,
+                        "lineage_revision": receipt.lineage_revision,
+                        "graph_revision": receipt.graph_revision,
+                    },
+                },
+            )
+            return sum(
+                item.status == "present" and item.relation_support == "supported"
+                for item in resolved
+            )
+
+        return AssessmentPlan(
+            self.assessor_host,
+            assessor_generation_request(request),
+            validate,
+            publish,
+            semantic_request=request,
+        )
 
 
 @dataclass(frozen=True)
@@ -282,6 +480,19 @@ class PilotStudyReport:
     evaluations_completed: int
     admitted_relationships: int
     failure: str | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "status": self.status,
+            "development_completed": self.development_completed,
+            "extractions_valid": self.extractions_valid,
+            "extraction_repairs": self.extraction_repairs,
+            "assessments_completed": self.assessments_completed,
+            "evaluations_completed": self.evaluations_completed,
+            "admitted_relationships": self.admitted_relationships,
+            "engineering_adequate": self.engineering_adequate,
+            "failure": self.failure,
+        }
 
     @property
     def engineering_adequate(self) -> bool:
@@ -325,6 +536,18 @@ class PilotStudy:
             for item in report["calls"]
         )
 
+    def _study_progress(self) -> dict[str, Any]:
+        reader = getattr(self.pilot, "study_progress", None)
+        if not callable(reader):
+            return {}
+        value = reader()
+        return dict(value) if isinstance(value, Mapping) else {}
+
+    def _record_progress(self, **fields: Any) -> None:
+        writer = getattr(self.pilot, "record_study_progress", None)
+        if callable(writer):
+            writer(**fields)
+
     def _report(
         self,
         *,
@@ -337,7 +560,7 @@ class PilotStudy:
         relationships: int,
         failure: str | None = None,
     ) -> PilotStudyReport:
-        return PilotStudyReport(
+        report = PilotStudyReport(
             status,
             development,
             extractions,
@@ -347,6 +570,8 @@ class PilotStudy:
             relationships,
             failure,
         )
+        self.pilot.publish_artifact("receipts", "pilot-study-report.json", report.to_dict())
+        return report
 
     def run(
         self,
@@ -385,21 +610,31 @@ class PilotStudy:
         }
         if max_output_tokens is not None:
             limits.update({str(key): int(value) for key, value in max_output_tokens.items()})
-        completed_development = 0
-        valid_extractions = 0
-        repair_count = self._existing_repairs()
-        assessments = 0
-        relationships = 0
-        evaluations = 0
+        progress = self._study_progress()
+        completed_development_ids = {
+            str(value) for value in progress.get("completed_development_ids", [])
+        }
+        completed_evaluation_ids = {
+            str(value) for value in progress.get("completed_evaluations", [])
+        }
+        completed_development = int(progress.get("development_completed", 0))
+        valid_extractions = int(progress.get("extractions_valid", 0))
+        repair_count = max(self._existing_repairs(), int(progress.get("extraction_repairs", 0)))
+        assessments = int(progress.get("assessments_completed", 0))
+        relationships = int(progress.get("admitted_relationships", 0))
+        evaluations = int(progress.get("evaluations_completed", 0))
         processed = 0
         try:
             for slot in self.schedule.subject_slots:
                 subject = self.runtime.subjects[slot]
                 for episode in self.schedule.episodes:
+                    development_id = f"development-s{slot}-e{episode.ordinal}"
+                    if development_id in completed_development_ids:
+                        continue
                     request = request_factory(slot, episode)
                     development = self.runtime.execute_development(
                         slot=slot,
-                        call_id=f"development-s{slot}-e{episode.ordinal}",
+                        call_id=development_id,
                         coordinate=self.schedule.development_coordinate(slot, episode),
                         request=request,
                         max_output_tokens=limits["development-response"],
@@ -452,6 +687,16 @@ class PilotStudy:
                         )
                     relationships += int(plan.publish(provider.validated))
                     assessments += 1
+                    completed_development_ids.add(development_id)
+                    self._record_progress(
+                        development_completed=completed_development,
+                        extractions_valid=valid_extractions,
+                        extraction_repairs=repair_count,
+                        assessments_completed=assessments,
+                        admitted_relationships=relationships,
+                        evaluations_completed=evaluations,
+                        completed_development_ids=sorted(completed_development_ids),
+                    )
                     processed += 1
                     if stop_after_episodes is not None and processed >= stop_after_episodes:
                         self.pilot.pause("operator pause at accepted developmental boundary")
@@ -469,10 +714,13 @@ class PilotStudy:
             for slot in self.schedule.subject_slots:
                 for probe in self.schedule.probes:
                     for repetition in range(self.schedule.evaluation_repetitions):
+                        evaluation_id = f"evaluation-s{slot}-p{probe.ordinal}-r{repetition}"
+                        if evaluation_id in completed_evaluation_ids:
+                            continue
                         evaluation_plan = evaluation(slot, probe, repetition)
                         self.runtime.evaluate(
                             slot=slot,
-                            call_id=f"evaluation-s{slot}-p{probe.ordinal}-r{repetition}",
+                            call_id=evaluation_id,
                             coordinate=self.schedule.evaluation_coordinate(slot, probe, repetition),
                             checkpoint=evaluation_plan.checkpoint,
                             private_snapshot=evaluation_plan.private_snapshot,
@@ -484,6 +732,17 @@ class PilotStudy:
                             system=evaluation_plan.system,
                         )
                         evaluations += 1
+                        completed_evaluation_ids.add(evaluation_id)
+                        self._record_progress(
+                            development_completed=completed_development,
+                            extractions_valid=valid_extractions,
+                            extraction_repairs=repair_count,
+                            assessments_completed=assessments,
+                            admitted_relationships=relationships,
+                            evaluations_completed=evaluations,
+                            completed_development_ids=sorted(completed_development_ids),
+                            completed_evaluations=sorted(completed_evaluation_ids),
+                        )
             final = self.pilot.finish(
                 summary={
                     "development_completed": completed_development,
@@ -538,6 +797,7 @@ __all__ = [
     "PilotStudy",
     "PilotStudyError",
     "PilotStudyReport",
+    "ProductionAssessmentAdapter",
     "EXPECTED_ASSESSMENT_CALLS",
     "EXPECTED_DEVELOPMENT_CALLS",
     "EXPECTED_EVALUATION_CALLS",

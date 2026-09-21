@@ -660,3 +660,7 @@
 ## 2026-09-20 P2.2 acceptance and P2.3 queue transition
 
 - P2.2 is marked `DONE` after the five receipts, 313-test offline suite, Ruff, strict mypy, wheel/fresh-install smoke, and CI run `35546205491` passed. P2.3 no longer waits on the stale external qualification dependency: its polarity-v8 Q1/Q2/Q3 pass remains preserved, while the package validates the fixed pilot execution boundary before any new pilot calls.
+
+## 2026-09-20 P2.3 production-path integration correction
+
+- The fixed pilot now has a production-shaped assessor adapter that serializes complete source-bound requests, validates semantic observations, resolves provenance deterministically, and publishes learner observations through the existing atomic interpretation boundary. Pilot study reports and completed development/evaluation coordinates are persisted for restart-safe resume without repeating returned provider calls or completed probes. Development-response and extraction accounting roles now resolve to the single prepared `developing` host binding. FakeHost adapter, role-binding, and resume regressions pass; no provider call occurred.

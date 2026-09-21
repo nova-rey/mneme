@@ -7,7 +7,7 @@ from pathlib import Path
 
 from mneme.contracts import GenerationRequest, GenerationResult, TokenUsage
 from mneme.experiments.artifacts import ArtifactStore
-from mneme.experiments.pilot import PilotRun
+from mneme.experiments.pilot import PilotRun, host_role_binding
 from mneme.experiments.pilot_runtime import PilotRuntime, RuntimeSubject
 from mneme.hosts import FakeHost
 from mneme.state.contracts import StoragePermissions
@@ -143,6 +143,55 @@ def test_development_coordinate_is_exactly_once_and_persisted_before_acceptance(
     )
     assert receipt["operation"]["status"] == "ACCEPTED"
     assert receipt["result"]["content"]
+
+
+def test_development_call_roles_use_prepared_developing_binding(tmp_path: Path) -> None:
+    host = CountingHost()
+    artifacts = ArtifactStore(tmp_path / "bound-lab")
+    artifacts.publish_run(
+        experiment={"name": "p2-runtime-bound", "contract_revision": 1},
+        preflight={"valid": True},
+        study_plan={"budgets": {"max_model_calls": 4}},
+        bindings={"subjects": [], "roles": {"developing": "fake", "assessor": "fake"}},
+        run_id="run-bound",
+    )
+    pilot = PilotRun(artifacts, "run-bound")
+    pilot.prepare(
+        planned_calls=4,
+        max_output_tokens=100,
+        qualification_calls=3,
+        pilot_calls=1,
+        role_bindings={
+            "developing": host_role_binding("developing", host),
+            "assessor": host_role_binding("assessor", FakeHost(model_id="assessor")),
+        },
+    )
+    pilot.begin_qualification()
+    for ordinal in range(3):
+        call_id = f"q-bound-{ordinal}"
+        pilot.reserve_call(
+            call_id=call_id,
+            role="assessor-qualification",
+            coordinate={"case": ordinal},
+            max_output_tokens=10,
+        )
+        pilot.dispatch_call(call_id)
+        pilot.return_call(call_id, result={"valid": True}, output_tokens=1)
+    pilot.complete_qualification(passed=True)
+    pilot.begin_pilot()
+    store = SQLiteStore(tmp_path / "bound-subject.sqlite3")
+    instance = store.create_root(
+        permissions=StoragePermissions(store=True, export=True, interpret=True, learn=True)
+    )
+    runtime = PilotRuntime(pilot, {0: RuntimeSubject(0, store, instance, host)})
+    outcome = runtime.execute_development(
+        slot=0,
+        call_id="development-s0-e0",
+        coordinate={"subject": 0, "episode": 0},
+        request=GenerationRequest(({"role": "user", "content": "bound"},)),
+        max_output_tokens=20,
+    )
+    assert outcome.operation.status == "ACCEPTED"
 
 
 def test_evaluation_uses_frozen_snapshot_and_never_writes_lineage(
