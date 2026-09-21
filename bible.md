@@ -664,3 +664,7 @@
 ## 2026-09-20 P2.3 production-path integration correction
 
 - The fixed pilot now has a production-shaped assessor adapter that serializes complete source-bound requests, validates semantic observations, resolves provenance deterministically, and publishes learner observations through the existing atomic interpretation boundary. Pilot study reports and completed development/evaluation coordinates are persisted for restart-safe resume without repeating returned provider calls or completed probes. Development-response and extraction accounting roles now resolve to the single prepared `developing` host binding. FakeHost adapter, role-binding, and resume regressions pass; no provider call occurred.
+
+## 2026-09-20 P2.3 offline integration receipt
+
+- Published `MNEME_P2.3_Pilot_Production_Path_Receipt` and reconciled the queue to commit `2db5aed`. The pushed offline gate passed 315 pytest tests, Ruff, strict mypy, wheel build, fresh-install CLI smoke, and CI `35547126266`; no provider call occurred. P2.3 remains validating for the bounded live pilot, with historical qualification and extraction-stop evidence preserved unchanged.
