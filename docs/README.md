@@ -163,6 +163,8 @@ The documents are preserved in their supplied form and are intentionally not mer
   schedule from the 291-call full no-repair schedule including qualification
   in [the correction receipt](receipts/MNEME_P2.3_Budget_Reconciliation_Correction_Receipt.md)
   ([JSON](receipts/MNEME_P2.3_Budget_Reconciliation_Correction_Receipt.json)).
+  The reproducible hard-idle queue census is recorded in [the blocker census receipt](receipts/MNEME_P2.3_Budget_Blocker_Census_Receipt.md)
+  ([JSON](receipts/MNEME_P2.3_Budget_Blocker_Census_Receipt.json)).
 
   The pilot extraction stop and its six returned calls are recorded in [the extraction-stop receipt](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md) ([JSON](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json)); the finite-repair rule halted the pilot before evaluation.
 

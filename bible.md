@@ -704,3 +704,7 @@
 ## 2026-09-21 P2.3 queue dependency registration correction
 
 - Registered the two unresolved P2.3 review dependencies in `.codex/work-queue.json` using the canonical queue transition. A controller status audit now preserves `WAITING` with `READY=0`, `RUNNING=0`, `VALIDATING=0`, and `WAITING=1`; no provider call or pilot dispatch occurred. This changes queue bookkeeping only and does not resolve either review dependency.
+
+## 2026-09-21 P2.3 hard-idle budget blocker census
+
+- Recorded the canonical queue census at `d1f874d`: 10 DONE, 0 READY, 0 RUNNING, 0 VALIDATING, and one required P2.3 package WAITING on the two unresolved review dependencies. The reconciled 42-call ledger leaves 257 calls, below both the 288-call pilot-only and 291-call full no-repair schedules. No provider call was made and Phase Three did not begin. Evidence: `docs/receipts/MNEME_P2.3_Budget_Blocker_Census_Receipt.md` and `.json`.
