@@ -668,3 +668,7 @@
 ## 2026-09-20 P2.3 offline integration receipt
 
 - Published `MNEME_P2.3_Pilot_Production_Path_Receipt` and reconciled the queue to commit `2db5aed`. The pushed offline gate passed 315 pytest tests, Ruff, strict mypy, wheel build, fresh-install CLI smoke, and CI `35547126266`; no provider call occurred. P2.3 remains validating for the bounded live pilot, with historical qualification and extraction-stop evidence preserved unchanged.
+
+## 2026-09-21 P2.3 fresh pilot extraction/assessment stop
+
+- Reused the preserved polarity-v8 qualification evidence and dispatched exactly three new Gemma calls for a fresh fixed pilot coordinate: one development response, one initial extraction, and one permitted repair. All returned and were durably retained. The initial extraction failed strict source-bound evidence validation; the repair passed residue validation but supplied no relationship edge, so the production assessor/publication boundary stopped with `extraction has no assessable relationship`. No Qwen assessor or evaluation calls were made. Usage was 1,488 input, 830 output, 2,318 total tokens; cost unavailable. Evidence is preserved in `docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260920.md` and `.json`; no historical receipt was rewritten and no automatic resampling occurred.

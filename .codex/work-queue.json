@@ -1123,7 +1123,7 @@
         "docs/receipts/MNEME_P2.3_Pilot_Production_Path_Receipt.md/.json; production residue→assessor→provenance→publication adapter, durable coordinate resume, and role-binding correction; CI 35547126266"
       ],
       "id": "P2.3",
-      "notes": "P2.2 accepted. Polarity v8 Q1/Q2/Q3 qualification remains the latest fixed live evidence and passed all three cases. Historical pilot stop remains unchanged. Offline fixed-pilot integration now passes at 315 pytest, Ruff, strict mypy, wheel/install smoke, and CI; no new provider calls. Remaining P2.3 work is the explicitly bounded live pilot and final audit.",
+      "notes": "P2.2 accepted. Polarity v8 Q1/Q2/Q3 qualification remains the latest fixed live evidence and passed all three cases. Offline fixed-pilot integration passed at 315 pytest, Ruff, strict mypy, wheel/install smoke, and CI 35547126266. Fresh pilot run p2-pilot-live-20260920 consumed exactly 3 Gemma calls: initial extraction failed strict source validation and the one permitted repair returned no relationship edge, so the production assessor boundary stopped before Qwen/evaluation. Evidence is published; no automatic resampling.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1148,9 +1148,9 @@
       ],
       "scope": "Run the fixed three-call production-equivalent assessor qualification and, only if it passes and separately authorized, the 299-call proposed pilot. Exclude Phase Three.",
       "session_ids": [],
-      "status": "VALIDATING",
+      "status": "WAITING",
       "title": "Assessor qualification and bounded developmental pilot",
-      "updated_at": "2026-09-20T23:59:00Z",
+      "updated_at": "2026-09-21T00:25:00Z",
       "validation": {
         "required": [
           "p23-assessor-contract",
@@ -1202,7 +1202,9 @@
           }
         }
       },
-      "waiting_on": [],
+      "waiting_on": [
+        "review:p2.3-live-extraction-stop"
+      ],
       "workstream": "phase-two",
       "evidence": [
         "docs/receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.md",

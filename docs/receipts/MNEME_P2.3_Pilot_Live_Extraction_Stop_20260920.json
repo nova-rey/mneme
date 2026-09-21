@@ -1,0 +1,19 @@
+{
+  "status": "FAIL_STOP",
+  "run_id": "p2-pilot-live-20260920",
+  "new_provider_calls": 3,
+  "calls": [
+    {"call_id":"development-s0-e0","role":"development-response","provider":"DeepInfra","model_id":"google/gemma-4-E4B-it","status":"RETURNED","input_tokens":26,"output_tokens":66,"total_tokens":92,"disposition":"accepted"},
+    {"call_id":"extraction-s0-e0","role":"development-extraction","provider":"DeepInfra","model_id":"google/gemma-4-E4B-it","status":"RETURNED","input_tokens":719,"output_tokens":581,"total_tokens":1300,"disposition":"rejected_initial_strict_source_validation"},
+    {"call_id":"extraction-s0-e0-repair","role":"development-extraction","provider":"DeepInfra","model_id":"google/gemma-4-E4B-it","status":"RETURNED","input_tokens":743,"output_tokens":183,"total_tokens":926,"disposition":"valid_residue_without_edge_candidates"}
+  ],
+  "usage": {"input_tokens":1488,"output_tokens":830,"total_tokens":2318,"cost":"unknown"},
+  "qualification": {"receipt":"MNEME_P2.3_Assessor_Qualification_Polarity_V8_Pass_Receipt.json","new_calls":0},
+  "assessor_calls": 0,
+  "evaluation_calls": 0,
+  "failure": "PilotStudyError: extraction has no assessable relationship: extraction-s0-e0",
+  "credential_functional": true,
+  "historical_evidence_unchanged": true,
+  "pilot_adequacy": "not_assessed",
+  "research_outcome": "not_assessed"
+}
