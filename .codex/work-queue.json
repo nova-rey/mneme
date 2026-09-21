@@ -49,6 +49,22 @@
       "reference": "docs/receipts/MNEME_P2.3_Assessor_Qualification_Failure_Receipt.md: fixed three-call qualification returned structurally invalid assessor outputs; new reviewed correction/live authorization required",
       "resolved_at": null,
       "status": "UNRESOLVED"
+    },
+    "review:p2.3-budget-after-historical-calls": {
+      "created_at": "2026-09-21T01:39:49.011154Z",
+      "kind": "other",
+      "receipt": null,
+      "reference": "Budget review required because historical calls leave fewer calls than approved schedule",
+      "resolved_at": null,
+      "status": "UNRESOLVED"
+    },
+    "review:p2.3-extraction-stop-20260921": {
+      "created_at": "2026-09-21T01:39:49.128975Z",
+      "kind": "other",
+      "receipt": null,
+      "reference": "Prior pilot extraction stop requires review",
+      "resolved_at": null,
+      "status": "UNRESOLVED"
     }
   },
   "hard_problem_repo": "nova-rey/codex-config-backup",
@@ -1067,7 +1083,9 @@
       "completion_criterion": "Production-equivalent assessor qualification and separately authorized pilot execute/resume/replay with honest engineering, adequacy, and research outcomes, or publish a truthful blocker.",
       "created_at": "2026-09-20T16:16:33.650428Z",
       "dependencies": [
-        "package:P2.2"
+        "package:P2.2",
+        "review:p2.3-budget-after-historical-calls",
+        "review:p2.3-extraction-stop-20260921"
       ],
       "domain": "developmental-pilot",
       "edit_boundaries": [
@@ -1078,6 +1096,18 @@
         "docs",
         "bible.md",
         ".codex/work-queue.json"
+      ],
+      "evidence": [
+        "docs/receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.json",
+        "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json",
+        "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json",
+        "docs/receipts/MNEME_P2.3_Budget_Reconciliation_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Budget_Reconciliation_Receipt.json",
+        "docs/receipts/MNEME_P2.3_Budget_Reconciliation_Correction_Receipt.md",
+        "docs/receipts/MNEME_P2.3_Budget_Reconciliation_Correction_Receipt.json"
       ],
       "evidence_refs": [
         "docs/receipts/MNEME_P2.3_Offline_Assessor_Pilot_Boundary_Receipt.md",
@@ -1120,7 +1150,7 @@
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_Polarity_V8_Pass_Receipt.json",
         "docs/receipts/MNEME_P2.3_Assessor_Polarity_Contract_Regression_Receipt.md",
         "docs/receipts/MNEME_P2.3_Assessor_Polarity_Contract_Regression_Receipt.json",
-        "docs/receipts/MNEME_P2.3_Pilot_Production_Path_Receipt.md/.json; production residue→assessor→provenance→publication adapter, durable coordinate resume, and role-binding correction; CI 35547126266",
+        "docs/receipts/MNEME_P2.3_Pilot_Production_Path_Receipt.md/.json; production residue\u2192assessor\u2192provenance\u2192publication adapter, durable coordinate resume, and role-binding correction; CI 35547126266",
         "docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260920_Bundle.json",
         "docs/receipts/MNEME_P2.3_Edge_Less_Extraction_Correction_Receipt.md/.json",
         "docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260921.md/.json",
@@ -1162,7 +1192,7 @@
       "session_ids": [],
       "status": "WAITING",
       "title": "Assessor qualification and bounded developmental pilot",
-      "updated_at": "2026-09-21T01:35:00Z",
+      "updated_at": "2026-09-21T01:39:49.129068Z",
       "validation": {
         "required": [
           "p23-assessor-contract",
@@ -1172,45 +1202,10 @@
           "p23-provenance-resolution"
         ],
         "results": {
-          "p23-assessor-qualification": {
-            "receipt": "docs/receipts/MNEME_P2.3_Assessor_Qualification_Polarity_V8_Pass_Receipt.md and .json; Q1/Q2/Q3 passed, 3 calls, 4,400 total tokens, pilot not yet dispatched",
-            "recorded_at": "2026-09-20T23:06:01.372183+00:00",
-            "status": "PASS"
-          },
           "p23-assessor-contract": {
             "receipt": "p2-assessor-v5/p2-assessor-production-v7 semantic matrix, explicit archival v4 reader, learner polarity boundary, and fail-closed duplicate handling; see polarity remediation receipt",
             "recorded_at": "2026-09-20T23:01:34.557091+00:00",
             "status": "PASS"
-          },
-          "p23-provenance-resolution": {
-            "receipt": "docs/receipts/MNEME_P2_Assessor_Provenance_Resolution_Offline_Receipt.md and .json; 280 pytest; Ruff; strict mypy; wheel/install smoke; no provider calls",
-            "recorded_at": "2026-09-20T20:05:09.000000Z",
-            "status": "PASS"
-          },
-          "p23-boundary-audit": {
-            "receipt": "P2.2 route/outcome/identity durability correction audited; offline receipt docs/receipts/MNEME_P2.3_Offline_Assessor_Pilot_Boundary_Receipt.md",
-            "recorded_at": "2026-09-20T17:05:14.831129Z",
-            "status": "PASS"
-          },
-          "p23-offline-validation": {
-            "receipt": "304 pytest; Ruff; strict mypy src across 48 files; wheel/install CLI smoke; no provider calls; polarity remediation receipt",
-            "recorded_at": "2026-09-20T23:01:34.557091+00:00",
-            "status": "PASS"
-          },
-          "p23-pilot-ledger": {
-            "receipt": "PilotRun durable reservations/lifecycle, hard ceilings, pause/resume, sanitization; 13 focused tests",
-            "recorded_at": "2026-09-20T17:05:14.751840Z",
-            "status": "PASS"
-          },
-          "p23-pilot-probe": {
-            "status": "PARTIAL",
-            "receipt": "docs/receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.md",
-            "recorded_at": "2026-09-20T23:30:00+00:00"
-          },
-          "p23-pilot-execution": {
-            "status": "FAIL_STOP",
-            "receipt": "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md",
-            "recorded_at": "2026-09-20T23:29:00+00:00"
           },
           "p23-assessor-coverage-polarity-v9": {
             "receipt": "docs/receipts/MNEME_P2.3_Assessor_Coverage_Polarity_V9_Offline_Receipt.md/.json; 318 pytest; Ruff; strict mypy; wheel/fresh-install smoke; zero provider calls",
@@ -1222,6 +1217,16 @@
             "recorded_at": "2026-09-21T01:20:00Z",
             "status": "PASS"
           },
+          "p23-assessor-qualification": {
+            "receipt": "docs/receipts/MNEME_P2.3_Assessor_Qualification_Polarity_V8_Pass_Receipt.md and .json; Q1/Q2/Q3 passed, 3 calls, 4,400 total tokens, pilot not yet dispatched",
+            "recorded_at": "2026-09-20T23:06:01.372183+00:00",
+            "status": "PASS"
+          },
+          "p23-boundary-audit": {
+            "receipt": "P2.2 route/outcome/identity durability correction audited; offline receipt docs/receipts/MNEME_P2.3_Offline_Assessor_Pilot_Boundary_Receipt.md",
+            "recorded_at": "2026-09-20T17:05:14.831129Z",
+            "status": "PASS"
+          },
           "p23-budget-reconciliation": {
             "receipt": "docs/receipts/MNEME_P2.3_Budget_Reconciliation_Receipt.md/.json; 42 unique campaign calls, 257 remaining, unchanged 299-call ceiling; no provider calls for reconciliation",
             "recorded_at": "2026-09-21T01:30:00Z",
@@ -1231,6 +1236,31 @@
             "receipt": "docs/receipts/MNEME_P2.3_Budget_Reconciliation_Correction_Receipt.md/.json; distinguishes 288-call pilot-only and 291-call full no-repair schedules; no provider calls",
             "recorded_at": "2026-09-21T01:35:00Z",
             "status": "PASS"
+          },
+          "p23-offline-validation": {
+            "receipt": "304 pytest; Ruff; strict mypy src across 48 files; wheel/install CLI smoke; no provider calls; polarity remediation receipt",
+            "recorded_at": "2026-09-20T23:01:34.557091+00:00",
+            "status": "PASS"
+          },
+          "p23-pilot-execution": {
+            "receipt": "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md",
+            "recorded_at": "2026-09-20T23:29:00+00:00",
+            "status": "FAIL_STOP"
+          },
+          "p23-pilot-ledger": {
+            "receipt": "PilotRun durable reservations/lifecycle, hard ceilings, pause/resume, sanitization; 13 focused tests",
+            "recorded_at": "2026-09-20T17:05:14.751840Z",
+            "status": "PASS"
+          },
+          "p23-pilot-probe": {
+            "receipt": "docs/receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.md",
+            "recorded_at": "2026-09-20T23:30:00+00:00",
+            "status": "PARTIAL"
+          },
+          "p23-provenance-resolution": {
+            "receipt": "docs/receipts/MNEME_P2_Assessor_Provenance_Resolution_Offline_Receipt.md and .json; 280 pytest; Ruff; strict mypy; wheel/install smoke; no provider calls",
+            "recorded_at": "2026-09-20T20:05:09.000000Z",
+            "status": "PASS"
           }
         }
       },
@@ -1238,19 +1268,7 @@
         "review:p2.3-budget-after-historical-calls",
         "review:p2.3-extraction-stop-20260921"
       ],
-      "workstream": "phase-two",
-      "evidence": [
-        "docs/receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.md",
-        "docs/receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.json",
-        "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md",
-        "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json",
-        "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md",
-        "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json",
-        "docs/receipts/MNEME_P2.3_Budget_Reconciliation_Receipt.md",
-        "docs/receipts/MNEME_P2.3_Budget_Reconciliation_Receipt.json",
-        "docs/receipts/MNEME_P2.3_Budget_Reconciliation_Correction_Receipt.md",
-        "docs/receipts/MNEME_P2.3_Budget_Reconciliation_Correction_Receipt.json"
-      ]
+      "workstream": "phase-two"
     }
   ],
   "project": "nova-rey/mneme",
@@ -1265,5 +1283,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-21T01:20:00Z"
+  "updated_at": "2026-09-21T01:39:49.129250Z"
 }

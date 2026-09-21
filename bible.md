@@ -700,3 +700,7 @@
 ## 2026-09-21 P2.3 budget schedule terminology correction
 
 - Clarified that 288 calls is the pilot-only no-repair schedule, while the governing assessor-role addendum calls the full no-repair schedule 291 calls including the three qualification calls. The 299-call ceiling, 42 consumed calls, 257 remaining calls, and zero post-v9 pilot calls are unchanged. No provider call was made; historical receipts remain unchanged. Evidence: `docs/receipts/MNEME_P2.3_Budget_Reconciliation_Correction_Receipt.md` and `.json`.
+
+## 2026-09-21 P2.3 queue dependency registration correction
+
+- Registered the two unresolved P2.3 review dependencies in `.codex/work-queue.json` using the canonical queue transition. A controller status audit now preserves `WAITING` with `READY=0`, `RUNNING=0`, `VALIDATING=0`, and `WAITING=1`; no provider call or pilot dispatch occurred. This changes queue bookkeeping only and does not resolve either review dependency.
