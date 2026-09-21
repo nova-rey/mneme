@@ -264,11 +264,12 @@ class AssessmentPlan:
     """Provider request plus strict validator and publication adapter."""
 
     host: Host
-    request: GenerationRequest
-    validator: Callable[[str], Any]
+    request: GenerationRequest | None
+    validator: Callable[[str], Any] | None
     publish: Callable[[Any], int]
     role: str = "assessor"
     semantic_request: AssessorRequest | None = None
+    excluded_reason: str | None = None
 
 
 class ProductionAssessmentAdapter:
@@ -348,8 +349,36 @@ class ProductionAssessmentAdapter:
             raise PilotStudyError("cannot assess an invalid extraction")
         edges = sorted(residue.edge_candidates, key=lambda value: str(value.get("key", "")))
         if not edges:
-            raise PilotStudyError(
-                f"extraction has no assessable relationship: {extraction.operation_id}"
+            reason = "extraction contained no relationship edge"
+
+            def publish_excluded(_value: Any) -> int:
+                receipt = self.runtime.publish_interpretation(
+                    slot=slot,
+                    operation_id=extraction.operation_id,
+                    residue=residue,
+                    observations=(),
+                    learner=DevelopmentalLearner(),
+                    development_operation_id=development.operation.operation_id,
+                    assessor_version=ASSESSOR_SCHEMA_VERSION,
+                )
+                self.runtime.pilot.publish_artifact(
+                    "assessment",
+                    f"assessment-s{slot}-e{episode.ordinal}-excluded.json",
+                    {
+                        "status": "EXCLUDED",
+                        "reason": reason,
+                        "operation_id": extraction.operation_id,
+                        "publication": receipt.to_dict(),
+                    },
+                )
+                return 0
+
+            return AssessmentPlan(
+                self.assessor_host,
+                None,
+                None,
+                publish_excluded,
+                excluded_reason=reason,
             )
         edge = edges[0]
         relation = {
@@ -670,22 +699,30 @@ class PilotStudy:
                         )
                     valid_extractions += 1
                     plan = assessment(slot, episode, development, extraction)
-                    provider = self.runtime.provider_call(
-                        call_id=f"assessment-s{slot}-e{episode.ordinal}",
-                        role=plan.role,
-                        coordinate=self.schedule.assessment_coordinate(slot, episode),
-                        host=plan.host,
-                        request=plan.request,
-                        max_output_tokens=limits["development-assessment"],
-                        validator=plan.validator,
-                        artifact_category="assessment",
-                    )
-                    if provider.validation_error is not None:
-                        raise PilotStudyError(
-                            f"assessment validation failed: assessment-s{slot}-e{episode.ordinal}: "
-                            f"{provider.validation_error}"
+                    if plan.excluded_reason is not None:
+                        relationships += int(plan.publish(None))
+                    else:
+                        if plan.request is None or plan.validator is None:
+                            raise PilotStudyError(
+                                "non-excluded assessment plan is missing request or validator"
+                            )
+                        provider = self.runtime.provider_call(
+                            call_id=f"assessment-s{slot}-e{episode.ordinal}",
+                            role=plan.role,
+                            coordinate=self.schedule.assessment_coordinate(slot, episode),
+                            host=plan.host,
+                            request=plan.request,
+                            max_output_tokens=limits["development-assessment"],
+                            validator=plan.validator,
+                            artifact_category="assessment",
                         )
-                    relationships += int(plan.publish(provider.validated))
+                        if provider.validation_error is not None:
+                            raise PilotStudyError(
+                                "assessment validation failed: "
+                                f"assessment-s{slot}-e{episode.ordinal}: "
+                                f"{provider.validation_error}"
+                            )
+                        relationships += int(plan.publish(provider.validated))
                     assessments += 1
                     completed_development_ids.add(development_id)
                     self._record_progress(

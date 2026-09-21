@@ -199,3 +199,58 @@ def test_production_assessment_adapter_serializes_complete_monitor_and_resolves_
     }
     resolved = plan.validator(json.dumps(result))
     assert resolved[0].provenance.dependence == "external_supported"
+
+
+def test_edge_less_residue_is_excluded_without_provider_assessment() -> None:
+    published: list[dict[str, Any]] = []
+
+    class _Pilot:
+        def publish_artifact(self, _category: str, _name: str, value: dict[str, Any]) -> None:
+            published.append(value)
+
+    class _Runtime:
+        pilot = _Pilot()
+
+        def publish_interpretation(self, **_kwargs: Any) -> Any:
+            return SimpleNamespace(
+                operation_id="interpretation-s0-e0",
+                lineage_revision=1,
+                graph_revision=0,
+                to_dict=lambda: {"operation_id": "interpretation-s0-e0"},
+            )
+
+    runtime = _Runtime()
+    adapter = ProductionAssessmentAdapter(runtime, FakeHost())  # type: ignore[arg-type]
+    development = SimpleNamespace(operation=SimpleNamespace(operation_id="development-s0-e0"))
+    extraction = SimpleNamespace(
+        episode_id="episode-s0-e0",
+        operation_id="interpretation-s0-e0",
+        residue=SimpleNamespace(core_concepts=(), edge_candidates=()),
+    )
+
+    plan = adapter(0, PilotSchedule.fixed().episodes[0], development, extraction)
+    assert plan.excluded_reason == "extraction contained no relationship edge"
+    assert plan.request is None
+    assert plan.publish(None) == 0
+    assert published[0]["status"] == "EXCLUDED"
+
+
+def test_study_continues_after_excluded_edge_less_residue() -> None:
+    pilot = _FakePilot()
+    runtime = _FakeRuntime()
+    study = PilotStudy(pilot, runtime)  # type: ignore[arg-type]
+
+    def assessment(*_args: Any) -> AssessmentPlan:
+        return AssessmentPlan(
+            FakeHost(),
+            None,
+            None,
+            lambda _value: 0,
+            excluded_reason="extraction contained no relationship edge",
+        )
+
+    paused = study.run(assessment=assessment, evaluation=None, stop_after_episodes=1)
+    assert paused.status == PilotStatus.PAUSED.value
+    assert paused.assessments_completed == 1
+    assert paused.admitted_relationships == 0
+    assert runtime.assessment_ids == []

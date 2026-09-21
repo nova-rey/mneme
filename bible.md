@@ -676,3 +676,7 @@
 ## 2026-09-21 P2.3 live evidence bundle
 
 - Added the complete sanitized development/extraction request and result bundle for `p2-pilot-live-20260920` under `docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260920_Bundle.json`. It contains no credential or authorization data and preserves the exact three returned provider results needed to audit the stop.
+
+## 2026-09-21 P2.3 edge-less extraction boundary correction
+
+- Corrected the in-scope pilot integration defect exposed by the fresh stop: a structurally valid residue with no relationship edge is now recorded as an explicit excluded terminal opportunity with zero learner credit, atomically accepted through the existing publication boundary, and allowed to continue the fixed schedule without an assessor call or invented proposition. Focused regressions, Ruff, and strict mypy passed; no provider call occurred. Historical live stop evidence remains unchanged.
