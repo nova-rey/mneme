@@ -981,10 +981,15 @@
         ".codex/work-queue.json"
       ],
       "evidence_refs": [
-        "P2.2 offline stop-audit: commits 23fcaa4, 5ac5c0c; current recovery/identity candidate f11b884; dedicated receipts and final adversarial audit remain open; no provider calls"
+        "docs/receipts/MNEME_P2.2_Six_Scenarios_Receipt.md",
+        "docs/receipts/MNEME_P2.2_Feedback_Rebuild_Receipt.md",
+        "docs/receipts/MNEME_P2.2_Identity_Receipt.md",
+        "docs/receipts/MNEME_P2.2_Fork_Revocation_Receipt.md",
+        "docs/receipts/MNEME_P2.2_Recovery_Receipt.md",
+        "candidate f11b884; full offline validation and CI; no provider calls"
       ],
       "id": "P2.2",
-      "notes": "Offline recovery/identity fixes are present in the current candidate worktree; package remains in validation pending dedicated receipts and adversarial replay/recovery audit.",
+      "notes": "Accepted after candidate f11b884, five dedicated receipts, simulated quarantine-rebuild interruption recovery, full offline validation, and CI. No provider calls.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1009,9 +1014,9 @@
       ],
       "scope": "Implement P2.2 retention, contextual consequences, quarantine/rebuild, reviewed identity transitions, fork inheritance, revocation, and recovery. Exclude P2.3 prospective pilot.",
       "session_ids": [],
-      "status": "VALIDATING",
+      "status": "DONE",
       "title": "Restraint, retention, reviewed identity, and recovery",
-      "updated_at": "2026-09-20T23:00:00Z",
+      "updated_at": "2026-09-20T23:45:00Z",
       "validation": {
         "required": [
           "p22-dynamics",
@@ -1020,23 +1025,23 @@
           "p22-recovery"
         ],
         "results": {
-          "p22-authority": {
-            "receipt": "schema7 outcome/quarantine/identity-review tables; failed-result durability; quarantine add/release; explicit learning permission",
+        "p22-authority": {
+            "receipt": "docs/receipts/MNEME_P2.2_Identity_Receipt.md/.json; schema7 outcome/quarantine/identity-review tables; failed-result durability; quarantine add/release; explicit learning permission",
             "recorded_at": "2026-09-20T16:52:53.281136Z",
             "status": "PASS"
           },
           "p22-dynamics": {
-            "receipt": "learner tests: measured absence, modeled advance, unsupported streak, unknown freeze, consequence caps, weak/established/saturated restraint and recovery, competing/hard gates",
+            "receipt": "docs/receipts/MNEME_P2.2_Six_Scenarios_Receipt.md/.json; learner tests: measured absence, modeled advance, unsupported streak, unknown freeze, consequence caps, weak/established/saturated restraint and recovery, competing/hard gates",
             "recorded_at": "2026-09-20T16:52:53.222095Z",
             "status": "PASS"
           },
           "p22-fork-revocation": {
-            "receipt": "fork learner snapshot/value projection and active quarantine inheritance; parent/child independent current tips",
+            "receipt": "docs/receipts/MNEME_P2.2_Fork_Revocation_Receipt.md/.json; fork learner snapshot/value projection and active quarantine inheritance; parent/child independent current tips",
             "recorded_at": "2026-09-20T16:52:53.325657Z",
             "status": "PASS"
           },
           "p22-recovery": {
-            "receipt": "249 pytest; Ruff; strict mypy; fork/checkpoint and migration tests; no provider calls",
+            "receipt": "docs/receipts/MNEME_P2.2_Recovery_Receipt.md/.json and docs/receipts/MNEME_P2.2_Feedback_Rebuild_Receipt.md/.json; 313 pytest; Ruff; strict mypy; fork/checkpoint, migration, and interruption recovery tests; no provider calls",
             "recorded_at": "2026-09-20T16:52:53.366384Z",
             "status": "PASS"
           }
@@ -1062,8 +1067,7 @@
       "completion_criterion": "Production-equivalent assessor qualification and separately authorized pilot execute/resume/replay with honest engineering, adequacy, and research outcomes, or publish a truthful blocker.",
       "created_at": "2026-09-20T16:16:33.650428Z",
       "dependencies": [
-        "package:P2.2",
-        "external:p2-assessor-qualification"
+        "package:P2.2"
       ],
       "domain": "developmental-pilot",
       "edit_boundaries": [
@@ -1118,7 +1122,7 @@
         "docs/receipts/MNEME_P2.3_Assessor_Polarity_Contract_Regression_Receipt.json"
       ],
       "id": "P2.3",
-      "notes": "Polarity v8 qualification remains the latest fixed live evidence and passed all three cases. Offline polarity regression audit f11b884 added no provider calls. Pilot stop: 6 provider calls were consumed; subject 0 episode 2 extraction failed strict source-bound validation on initial and one permitted repair, so no evaluation calls were made and pilot adequacy is unassessed. P2.3 remains waiting on P2.2 validation and the fixed pilot execution boundary; no unchanged resampling.",
+      "notes": "P2.2 is accepted. Polarity v8 qualification remains the latest fixed live evidence and passed all three cases. Offline polarity regression audit f11b884 added no provider calls. Pilot stop: 6 provider calls were consumed; subject 0 episode 2 extraction failed strict source-bound validation on initial and one permitted repair, so no evaluation calls were made and pilot adequacy is unassessed. P2.3 is validating the committed fixed pilot execution boundary; no unchanged qualification resampling.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1143,9 +1147,9 @@
       ],
       "scope": "Run the fixed three-call production-equivalent assessor qualification and, only if it passes and separately authorized, the 299-call proposed pilot. Exclude Phase Three.",
       "session_ids": [],
-      "status": "WAITING",
+      "status": "VALIDATING",
       "title": "Assessor qualification and bounded developmental pilot",
-      "updated_at": "2026-09-20T23:30:00+00:00",
+      "updated_at": "2026-09-20T23:45:00Z",
       "validation": {
         "required": [
           "p23-assessor-contract",
@@ -1197,9 +1201,7 @@
           }
         }
       },
-      "waiting_on": [
-        "external:p2-assessor-qualification"
-      ],
+      "waiting_on": [],
       "workstream": "phase-two",
       "evidence": [
         "docs/receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.md",

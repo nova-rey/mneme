@@ -656,3 +656,7 @@
 ## 2026-09-20 P2.2 recovery and evidence audit
 
 - Added the five required P2.2 evidence receipts covering six deterministic dynamics scenarios, feedback/rebuild, reviewed identity, fork/revocation, and recovery. Added a simulated quarantine-rebuild interruption proving the authority event remains durable and explicit replay rebuild recovers a coherent materialized state. Offline validation passed at 313 pytest tests, Ruff, strict mypy, and no provider calls; P2.2 remains validating until the pushed CI result is recorded.
+
+## 2026-09-20 P2.2 acceptance and P2.3 queue transition
+
+- P2.2 is marked `DONE` after the five receipts, 313-test offline suite, Ruff, strict mypy, wheel/fresh-install smoke, and CI run `35546205491` passed. P2.3 no longer waits on the stale external qualification dependency: its polarity-v8 Q1/Q2/Q3 pass remains preserved, while the package validates the fixed pilot execution boundary before any new pilot calls.
