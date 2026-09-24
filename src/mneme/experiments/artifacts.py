@@ -196,8 +196,10 @@ class ArtifactStore:
                 # A retry from an older caller may omit payload arguments.  In
                 # that case preserve the already-published payload binding;
                 # explicitly supplied empty mappings still mean "no payload".
-                if inputs is None and snapshots is None and isinstance(
-                    existing.get("payloads"), Mapping
+                if (
+                    inputs is None
+                    and snapshots is None
+                    and isinstance(existing.get("payloads"), Mapping)
                 ):
                     retry_manifest = dict(manifest)
                     retry_manifest.pop("publication_intent_sha256", None)
@@ -493,6 +495,9 @@ class ArtifactStore:
                 "extraction",
                 "assessment",
                 "receipts",
+                # Additive Phase Two contingent-conversation records remain
+                # outside lineage state but are part of the verified run tree.
+                "contingent",
                 "summary.json",
             }
             if {item.name for item in path.iterdir()} - allowed:
@@ -504,6 +509,7 @@ class ArtifactStore:
                 "extraction",
                 "assessment",
                 "receipts",
+                "contingent",
             ):
                 directory = path / category
                 if not directory.exists():
@@ -525,9 +531,7 @@ class ArtifactStore:
             return False
 
     @staticmethod
-    def _verify_started(
-        value: Mapping[str, Any], run_id: Any = None, check_id: Any = None
-    ) -> bool:
+    def _verify_started(value: Mapping[str, Any], run_id: Any = None, check_id: Any = None) -> bool:
         request = value.get("request")
         return (
             value.get("schema_version") == 1
@@ -539,17 +543,13 @@ class ArtifactStore:
         )
 
     @staticmethod
-    def _verify_result(
-        value: Mapping[str, Any], run_id: Any = None, check_id: Any = None
-    ) -> bool:
+    def _verify_result(value: Mapping[str, Any], run_id: Any = None, check_id: Any = None) -> bool:
         return (
             value.get("schema_version") == 1
             and value.get("status") == "RESULT"
             and isinstance(value.get("result_sha256"), str)
             and value.get("result_sha256")
-            == content_digest(
-                {key: item for key, item in value.items() if key != "result_sha256"}
-            )
+            == content_digest({key: item for key, item in value.items() if key != "result_sha256"})
             and (run_id is None or value.get("run_id") == run_id)
             and (check_id is None or value.get("check_id") == check_id)
         )
@@ -563,9 +563,7 @@ class ArtifactStore:
             and value.get("status") == "UNCERTAIN"
             and isinstance(value.get("receipt_sha256"), str)
             and value.get("receipt_sha256")
-            == content_digest(
-                {key: item for key, item in value.items() if key != "receipt_sha256"}
-            )
+            == content_digest({key: item for key, item in value.items() if key != "receipt_sha256"})
             and (run_id is None or value.get("run_id") == run_id)
             and (check_id is None or value.get("check_id") == check_id)
         )

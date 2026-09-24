@@ -848,3 +848,7 @@
 ## 2026-09-24 P2 contingent-conversation supplement wired offline
 
 - Filed owner-supplied `P2-SUPPLEMENT-INTERLOPER-01` as additive Phase Two work. Added a bounded interactive-versus-open-loop adapter using the existing PilotRuntime, P0.2 checkpoints, production extraction/assessment/publication path, and FrozenComparator. The interloper and assessor are separate ledger roles even when they share the Qwen fingerprint; partner context is synthetic environment evidence, not developmental memory. Offline preflight and focused production-path regression checks passed with zero provider calls. Historical P2.3 remains `COMPLETED_INADEQUATE`; no Phase Three work began. Evidence: `docs/decisions/MNEME_P2_Contingent_Interloper_Addendum.md`, `docs/experiments/contingent-conversation/README.md`, and `docs/receipts/MNEME_P2_Contingent_Interloper_Offline_Preflight_Receipt.md`.
+
+## 2026-09-24 P2 contingent run-tree verification correction
+
+- The first prepared supplement run exposed an artifact-verifier omission: the new `contingent/` receipt directory was not in the existing P0.3 run-tree allowlist, so a valid prepared run failed restart verification before any provider call. Added the additive directory to the verifier and regression coverage; no scientific or lineage behavior changed and no provider call was made for the correction.

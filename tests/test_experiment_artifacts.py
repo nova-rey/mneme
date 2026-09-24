@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from mneme.experiments.artifacts import ArtifactError, ArtifactStore, content_digest
+from mneme.experiments.pilot import PilotRun
 
 
 def _payload() -> tuple[dict[str, object], dict[str, object], dict[str, object], dict[str, object]]:
@@ -42,6 +43,21 @@ def test_publish_run_preserves_scientific_identity_and_is_idempotent(tmp_path: P
         run_id="run-001",
     )
     assert again.path == run.path
+
+
+def test_verify_run_allows_contingent_supplement_artifacts(tmp_path: Path) -> None:
+    store = ArtifactStore(tmp_path / "lab")
+    run = store.publish_run(
+        experiment={"name": "contingent", "contract_revision": 1},
+        preflight={"valid": True},
+        study_plan={"supplement": "P2-SUPPLEMENT-INTERLOPER-01"},
+        bindings={"subjects": [], "checkpoints": {}},
+        run_id="run-contingent",
+    )
+    pilot = PilotRun(store, "run-contingent")
+    pilot.prepare(planned_calls=3, max_output_tokens=10, qualification_calls=3, pilot_calls=0)
+    pilot.publish_artifact("contingent", "fit-check.json", {"status": "PASS"})
+    assert store.verify_run(run.path)
     assert store.verify_run(run.path)
 
 
