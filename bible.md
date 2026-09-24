@@ -776,3 +776,7 @@
 ## 2026-09-24 P2.3 evidence-review empty-placeholder normalization
 
 - Corrected only the reviewer result boundary exposed by Q3: false/unknown judgments now accept omitted, null, empty-string, empty-object, or empty-list evidence and canonicalize to no quotation; any non-empty evidence remains rejected, while grounded=true remains strict exact unique quotation. Added historical-Q3 and shape regressions, preserved all prior receipts unchanged, and made zero provider calls. Evidence: `docs/receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_Empty_Normalization_Receipt.md` and `.json`.
+
+## 2026-09-24 P2.3 semantic evidence reviewer qualification v3 stop
+
+- The bounded post-normalization qualification reached DeepInfra for Q1 and Q2. Q1 passed with an exact formatted quotation. Q2 returned an empty response with `finish_reason=length`, so strict JSON validation failed closed; Q3 was not dispatched and the pilot remained untouched. Two calls used 426 input, 674 output, and 1,100 total tokens; cost was unavailable. The provider and credential were functional. Evidence: `docs/receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V3_Failure_20260924.md` and `.json`.

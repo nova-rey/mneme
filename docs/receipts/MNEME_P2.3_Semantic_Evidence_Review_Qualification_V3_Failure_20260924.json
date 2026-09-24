@@ -1,0 +1,47 @@
+{
+  "receipt": "MNEME_P2.3_Semantic_Evidence_Review_Qualification_V3_Failure_20260924",
+  "date": "2026-09-24",
+  "contract": "semantic-evidence-reconciliation-v2",
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "provider": "DeepInfra",
+  "new_provider_calls": 2,
+  "pilot_calls": 0,
+  "historical_evidence_unchanged": true,
+  "stopped_at": "Q2-grounded-paraphrase",
+  "cases": [
+    {
+      "id": "Q1-markdown-formatting",
+      "status": "passed",
+      "input_tokens": 214,
+      "output_tokens": 290,
+      "total_tokens": 504,
+      "provider_returned": true,
+      "validation": "grounded=true with exact unique formatted quotation"
+    },
+    {
+      "id": "Q2-grounded-paraphrase",
+      "status": "failed_closed",
+      "input_tokens": 212,
+      "output_tokens": 384,
+      "total_tokens": 596,
+      "provider_returned": true,
+      "finish_reason": "length",
+      "raw_content": "",
+      "validation_error": "reviewer result is not JSON"
+    },
+    {
+      "id": "Q3-unsupported",
+      "status": "unused",
+      "provider_called": false
+    }
+  ],
+  "usage": {
+    "input_tokens": 426,
+    "output_tokens": 674,
+    "total_tokens": 1100,
+    "cost": "unknown"
+  },
+  "credential_functional": true,
+  "pilot_resumed": false,
+  "artifact_root": "/tmp/mneme-p23-semantic-evidence-review-qualification-v3-20260924"
+}
