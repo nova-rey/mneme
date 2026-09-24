@@ -20,7 +20,7 @@ from typing import Any
 from ..contracts import GenerationRequest
 
 ASSESSOR_SCHEMA_VERSION = "p2-assessor-v6"
-ASSESSOR_PROMPT_VERSION = "p2-assessor-production-v8"
+ASSESSOR_PROMPT_VERSION = "p2-assessor-production-v9"
 LEGACY_ASSESSOR_SCHEMA_VERSION = "p2-assessor-v4"
 PREVIOUS_ASSESSOR_SCHEMA_VERSION = "p2-assessor-v5"
 PROVENANCE_SCHEMA_VERSION = "p2-provenance-v1"
@@ -778,6 +778,10 @@ def assessor_generation_request(
                     "status=unknown, coverage must be incomplete with a reason and "
                     "relation_support=unknown and expression_status=unknown; evidence "
                     "must be null. Never use not_expressed for explicit negation. Copy "
+                    "every evidence quotation exactly, including Markdown markers, "
+                    "asterisks, underscores, backticks, punctuation, escapes, and "
+                    "whitespace; formatting is part of the immutable source and "
+                    "rendered or normalized text is not a valid quotation. Copy "
                     "monitor IDs and source slots exactly "
                     "from the request. Every source with available=true is available "
                     "for semantic inspection regardless of its role; current_input_source_slots "

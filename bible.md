@@ -724,3 +724,7 @@
 ## 2026-09-24 P2.3 recovery migration correction
 
 - The first continuation's one recovery extraction call reached publication but exposed a v7→v8 SQLite migration foreign-key rewrite to temporary `__v7_*` names. Legacy ALTER semantics are now enabled during the explicit table rebuild; focused migration checks and the complete 319-test, Ruff, strict mypy, and package-smoke suite pass with zero calls for this correction. The failed continuation evidence remains unchanged. Evidence: `docs/receipts/MNEME_P2.3_Recovery_Migration_Fix_Receipt.md` and `.json`.
+
+## 2026-09-24 P2.3 assessor quotation prompt correction
+
+- The fixed continuation reached 20 returned calls before Qwen's semantically correct relationship judgment was rejected because Markdown markers were omitted from its evidence quotation. The production assessor prompt is versioned from v8 to v9 with explicit formatting-preservation instructions; strict source validation is unchanged, 319 tests/Ruff/strict mypy/package smoke pass, and no corrective provider call was made. Historical v8 evidence remains unchanged. Evidence: `docs/receipts/MNEME_P2.3_Assessor_Quote_Prompt_Correction_Receipt.md` and `.json`.
