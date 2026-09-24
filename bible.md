@@ -884,3 +884,7 @@
 ## 2026-09-24 P2 contingent evidence-review idempotency correction
 
 - Resuming a branch re-entered an already result-ready or accepted evidence-review recovery operation. The runtime now reuses and validates that durable recovery instead of attempting a second publication or reviewer call; regression coverage confirms repeated review is provider-idempotent.
+
+## 2026-09-24 P2 contingent review-bridge JSON normalization correction
+
+- The evidence-review bridge had one remaining plain-JSON parse of a persisted extractor result, bypassing the bounded disjoint-object normalization used by interpretation validation. Routed that bridge through the same helper; offline focused tests, Ruff, and strict mypy pass, with no provider call made.

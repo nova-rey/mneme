@@ -28,6 +28,7 @@ from ..memory.interpretation import (
     InterpretationService,
     InterpretationUncertain,
     InterpretationValidationError,
+    _decode_json_document,
 )
 from ..memory.publication import InterpretationPublisher, PublicationReceipt
 from ..memory.residue import Residue
@@ -602,7 +603,7 @@ class PilotRuntime:
         payload: Any = persisted
         if isinstance(payload.get("content"), str):
             try:
-                payload = json.loads(str(payload["content"]))
+                payload = _decode_json_document(str(payload["content"]))
             except json.JSONDecodeError as exc:
                 raise PilotRuntimeError("extraction payload is not JSON") from exc
         if isinstance(payload, Mapping) and isinstance(payload.get("residue"), Mapping):
