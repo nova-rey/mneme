@@ -401,6 +401,42 @@ def test_explicit_revalidation_reclassifies_persisted_result_without_provider_ca
         assert status == "RESULT_READY"
 
 
+def test_repair_with_adjacent_disjoint_json_sections_is_normalized(tmp_path):
+    first = json.dumps(
+        {
+            "core_concepts": [
+                {
+                    "key": "a",
+                    "label": "hello",
+                    "kind": "concept",
+                    "evidence": [{"source": "s0", "evidence": "hello"}],
+                    "confidence": 0.9,
+                }
+            ]
+        }
+    )
+    second = json.dumps({"edge_candidates": [], "observed_patterns": []})
+    host = ResidueHost(first + "\n" + second)
+    store, instance, episode_id = _accepted(tmp_path, host)
+    with store:
+        service = InterpretationService(store, instance, host)
+        prepared = service.prepare(episode_id, operation_id="interp-adjacent-json")
+        service.execute(prepared)
+        residue = service.validate(prepared)
+        assert [item["key"] for item in residue.core_concepts] == ["a"]
+
+
+def test_adjacent_json_sections_with_duplicate_fields_remain_invalid(tmp_path):
+    host = ResidueHost('{"core_concepts": []}{"core_concepts": []}')
+    store, instance, episode_id = _accepted(tmp_path, host)
+    with store:
+        service = InterpretationService(store, instance, host)
+        prepared = service.prepare(episode_id, operation_id="interp-duplicate-json")
+        service.execute(prepared)
+        with pytest.raises(InterpretationValidationError, match="not JSON"):
+            service.validate(prepared)
+
+
 def test_invalid_evidence_allows_one_explicit_repair_and_resolves_offsets(tmp_path):
     invalid = json.dumps(
         {

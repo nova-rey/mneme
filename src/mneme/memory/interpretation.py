@@ -122,6 +122,41 @@ def _result_payload(result: GenerationResult | Mapping[str, Any] | str) -> dict[
     raise InterpretationError("result must be GenerationResult, mapping, or string")
 
 
+def _decode_json_document(content: str) -> Any:
+    """Decode one JSON object, or adjacent disjoint JSON objects from a repair.
+
+    Some hosted repair responses have returned separate top-level residue
+    sections as adjacent objects. This narrow acquisition normalization only
+    merges complete object documents with disjoint keys; prose, malformed
+    fragments, duplicate keys, and non-object values remain invalid.
+    """
+
+    try:
+        return json.loads(content)
+    except json.JSONDecodeError as original:
+        decoder = json.JSONDecoder()
+        position = 0
+        objects: list[Mapping[str, Any]] = []
+        while True:
+            while position < len(content) and content[position].isspace():
+                position += 1
+            if position >= len(content):
+                break
+            try:
+                value, position = decoder.raw_decode(content, position)
+            except json.JSONDecodeError:
+                raise original
+            if not isinstance(value, Mapping):
+                raise original
+            objects.append(value)
+        if len(objects) < 2:
+            raise original
+        merged: dict[str, Any] = {}
+        for value in objects:
+            if set(merged).intersection(value):
+                raise original
+            merged.update(value)
+        return merged
 class InterpretationService:
     """Prepare, execute, validate, and publish one episode interpretation."""
 
@@ -671,7 +706,7 @@ class InterpretationService:
             raise InterpretationValidationError("provider result is not JSON") from exc
         if isinstance(payload, Mapping) and isinstance(payload.get("content"), str):
             try:
-                payload = json.loads(str(payload["content"]))
+                payload = _decode_json_document(str(payload["content"]))
             except json.JSONDecodeError as exc:
                 raise InterpretationValidationError("provider content is not JSON") from exc
         if isinstance(payload, Mapping) and isinstance(payload.get("residue"), Mapping):

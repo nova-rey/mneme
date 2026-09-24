@@ -872,3 +872,7 @@
 ## 2026-09-24 P2 contingent evidence-review restart verification correction
 
 - Restart of the preserved supplement coordinate exposed a run-tree allowlist omission for the existing `evidence-review/` receipts. Added that category to the established artifact verifier and regression coverage; no scientific state or provider result changed.
+
+## 2026-09-24 P2 contingent adjacent-JSON repair normalization correction
+
+- The preserved turn-1 extraction repair returned two complete adjacent top-level JSON objects with disjoint residue fields. Added a narrow acquisition normalization that merges only complete disjoint object documents and rejects prose, malformed fragments, duplicate fields, and non-object values; strict residue and evidence validation remain authoritative. No provider call was made for this correction.
