@@ -708,3 +708,7 @@
 ## 2026-09-21 P2.3 hard-idle budget blocker census
 
 - Recorded the canonical queue census at `d1f874d`: 10 DONE, 0 READY, 0 RUNNING, 0 VALIDATING, and one required P2.3 package WAITING on the two unresolved review dependencies. The reconciled 42-call ledger leaves 257 calls, below both the 288-call pilot-only and 291-call full no-repair schedules. No provider call was made and Phase Three did not begin. Evidence: `docs/receipts/MNEME_P2.3_Budget_Blocker_Census_Receipt.md` and `.json`.
+
+## 2026-09-24 Phase Two operational budget contingency
+
+- Recorded the standing in-scope contingency authority: the larger of +100 calls or +25% of the approved campaign ceiling, with cumulative accounting, no favorable resampling, and an unchanged 204,288 output-token ceiling. For P2.3 this makes a 399-call operational cap after the nominal 299-call ceiling; 42 historical calls leave 357 calls in the contingency envelope. The budget review is resolved, while the extraction-stop review remains substantive. Evidence: `docs/decisions/MNEME_P2_Operational_Budget_Contingency_Addendum.md` and `docs/receipts/MNEME_P2.3_Budget_Contingency_Authorization_Receipt.md`.

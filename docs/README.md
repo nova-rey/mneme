@@ -166,6 +166,8 @@ The documents are preserved in their supplied form and are intentionally not mer
   The reproducible hard-idle queue census is recorded in [the blocker census receipt](receipts/MNEME_P2.3_Budget_Blocker_Census_Receipt.md)
   ([JSON](receipts/MNEME_P2.3_Budget_Blocker_Census_Receipt.json)).
 
+  The standing Phase Two call-contingency authority is recorded in [the operational budget addendum](decisions/MNEME_P2_Operational_Budget_Contingency_Addendum.md) and [its P2.3 authorization receipt](receipts/MNEME_P2.3_Budget_Contingency_Authorization_Receipt.md) ([JSON](receipts/MNEME_P2.3_Budget_Contingency_Authorization_Receipt.json)). It preserves cumulative accounting and the unchanged output-token ceiling.
+
   The pilot extraction stop and its six returned calls are recorded in [the extraction-stop receipt](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md) ([JSON](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json)); the finite-repair rule halted the pilot before evaluation.
 
   The pilot extraction stop and its six returned calls are recorded in [the extraction-stop receipt](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md) ([JSON](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json)); the finite-repair rule halted the pilot before evaluation.

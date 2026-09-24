@@ -45,18 +45,18 @@
     "external:p2-assessor-qualification": {
       "created_at": "2026-09-20T17:11:01.012375Z",
       "kind": "external",
-      "receipt": null,
+      "receipt": "docs/receipts/MNEME_P2.3_Assessor_Qualification_Coverage_Polarity_V9_Pass_Receipt.md",
       "reference": "docs/receipts/MNEME_P2.3_Assessor_Qualification_Failure_Receipt.md: fixed three-call qualification returned structurally invalid assessor outputs; new reviewed correction/live authorization required",
-      "resolved_at": null,
-      "status": "UNRESOLVED"
+      "resolved_at": "2026-09-24T13:10:35.374237Z",
+      "status": "RESOLVED"
     },
     "review:p2.3-budget-after-historical-calls": {
       "created_at": "2026-09-21T01:39:49.011154Z",
       "kind": "other",
-      "receipt": null,
+      "receipt": "docs/receipts/MNEME_P2.3_Budget_Contingency_Authorization_Receipt.md",
       "reference": "Budget review required because historical calls leave fewer calls than approved schedule",
-      "resolved_at": null,
-      "status": "UNRESOLVED"
+      "resolved_at": "2026-09-24T13:10:23.709489Z",
+      "status": "RESOLVED"
     },
     "review:p2.3-extraction-stop-20260921": {
       "created_at": "2026-09-21T01:39:49.128975Z",
@@ -1152,7 +1152,7 @@
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_Polarity_V8_Pass_Receipt.json",
         "docs/receipts/MNEME_P2.3_Assessor_Polarity_Contract_Regression_Receipt.md",
         "docs/receipts/MNEME_P2.3_Assessor_Polarity_Contract_Regression_Receipt.json",
-        "docs/receipts/MNEME_P2.3_Pilot_Production_Path_Receipt.md/.json; production residue\u2192assessor\u2192provenance\u2192publication adapter, durable coordinate resume, and role-binding correction; CI 35547126266",
+        "docs/receipts/MNEME_P2.3_Pilot_Production_Path_Receipt.md/.json; production residue→assessor→provenance→publication adapter, durable coordinate resume, and role-binding correction; CI 35547126266",
         "docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260920_Bundle.json",
         "docs/receipts/MNEME_P2.3_Edge_Less_Extraction_Correction_Receipt.md/.json",
         "docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260921.md/.json",
@@ -1166,10 +1166,11 @@
         "docs/receipts/MNEME_P2.3_Budget_Reconciliation_Correction_Receipt.md",
         "docs/receipts/MNEME_P2.3_Budget_Reconciliation_Correction_Receipt.json",
         "docs/receipts/MNEME_P2.3_Budget_Blocker_Census_Receipt.md",
-        "docs/receipts/MNEME_P2.3_Budget_Blocker_Census_Receipt.json"
+        "docs/receipts/MNEME_P2.3_Budget_Blocker_Census_Receipt.json",
+        "docs/receipts/MNEME_P2.3_Budget_Contingency_Authorization_Receipt.md"
       ],
       "id": "P2.3",
-      "notes": "P2.2 accepted. Historical qualification/pilot receipts remain unchanged. Offline edge-less extraction correction passed at commit 2885332 and CI 35548448495. The fresh corrected pilot run p2-pilot-live-20260921b consumed 6 calls and stopped at episode 1 after its one permitted extraction repair failed strict source-bound quotation validation; no evaluation calls or resampling occurred. The additive v9 coverage/polarity correction is pushed at 41bd31f with 318 pytest, Ruff, strict mypy, wheel/fresh-install smoke, and CI 35549781907. The fixed v9 Q1/Q2/Q3 qualification passed in 3 DeepInfra Qwen calls (4,585 tokens; cost unknown), with persisted semantic/provenance evidence and zero pilot calls. Reconciled unique campaign usage is 42 calls (34,591 input / 11,988 output / 46,579 total tokens; cost unknown), leaving 257 under the unchanged 299 ceiling. The 288-call pilot-only no-repair schedule, and the 291-call full no-repair schedule including qualification, cannot fit. P2.3 remains WAITING on budget review and the extraction-stop review; no pilot call was dispatched after v9.",
+      "notes": "P2.2 accepted. Historical qualification/pilot receipts remain unchanged. Offline edge-less extraction correction passed at commit 2885332 and CI 35548448495. The fresh corrected pilot run p2-pilot-live-20260921b consumed 6 calls and stopped at episode 1 after its one permitted extraction repair failed strict source-bound quotation validation; no evaluation calls or resampling occurred. The additive v9 coverage/polarity correction is pushed at 41bd31f with 318 pytest, Ruff, strict mypy, wheel/fresh-install smoke, and CI 35549781907. The fixed v9 Q1/Q2/Q3 qualification passed in 3 DeepInfra Qwen calls (4,585 tokens; cost unknown), with persisted semantic/provenance evidence and zero pilot calls. Reconciled unique campaign usage is 42 calls (34,591 input / 11,988 output / 46,579 total tokens; cost unknown), leaving 257 under the unchanged 299 ceiling. The 288-call pilot-only no-repair schedule, and the 291-call full no-repair schedule including qualification, cannot fit. P2.3 remains WAITING on budget review and the extraction-stop review; no pilot call was dispatched after v9. Standing +100-call / +25% contingency recorded; budget review resolved, extraction-stop review remains unresolved.",
       "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1196,7 +1197,7 @@
       "session_ids": [],
       "status": "WAITING",
       "title": "Assessor qualification and bounded developmental pilot",
-      "updated_at": "2026-09-21T01:45:00Z",
+      "updated_at": "2026-09-24T00:00:00Z",
       "validation": {
         "required": [
           "p23-assessor-contract",
@@ -1231,6 +1232,11 @@
             "recorded_at": "2026-09-20T17:05:14.831129Z",
             "status": "PASS"
           },
+          "p23-budget-blocker-census": {
+            "receipt": "docs/receipts/MNEME_P2.3_Budget_Blocker_Census_Receipt.md/.json; canonical hard-idle census 10 DONE, 0 READY, 0 RUNNING, 0 VALIDATING, 1 WAITING; no provider calls",
+            "recorded_at": "2026-09-21T01:45:00Z",
+            "status": "PASS"
+          },
           "p23-budget-reconciliation": {
             "receipt": "docs/receipts/MNEME_P2.3_Budget_Reconciliation_Receipt.md/.json; 42 unique campaign calls, 257 remaining, unchanged 299-call ceiling; no provider calls for reconciliation",
             "recorded_at": "2026-09-21T01:30:00Z",
@@ -1239,11 +1245,6 @@
           "p23-budget-reconciliation-correction": {
             "receipt": "docs/receipts/MNEME_P2.3_Budget_Reconciliation_Correction_Receipt.md/.json; distinguishes 288-call pilot-only and 291-call full no-repair schedules; no provider calls",
             "recorded_at": "2026-09-21T01:35:00Z",
-            "status": "PASS"
-          },
-          "p23-budget-blocker-census": {
-            "receipt": "docs/receipts/MNEME_P2.3_Budget_Blocker_Census_Receipt.md/.json; canonical hard-idle census 10 DONE, 0 READY, 0 RUNNING, 0 VALIDATING, 1 WAITING; no provider calls",
-            "recorded_at": "2026-09-21T01:45:00Z",
             "status": "PASS"
           },
           "p23-offline-validation": {
@@ -1274,7 +1275,6 @@
         }
       },
       "waiting_on": [
-        "review:p2.3-budget-after-historical-calls",
         "review:p2.3-extraction-stop-20260921"
       ],
       "workstream": "phase-two"
@@ -1292,5 +1292,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-21T01:39:49.129250Z"
+  "updated_at": "2026-09-24T13:10:35.374641Z"
 }
