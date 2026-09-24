@@ -694,9 +694,10 @@ def normalize_relationship_items(
 ) -> tuple[dict[str, Any], tuple[dict[str, Any], ...]]:
     """Normalize one approved alias and reject unrelated edge items.
 
-    This is deliberately narrower than residue validation.  Only a well-shaped
-    edge with a stable key is eligible for alias normalization or item-level
-    rejection.  Other malformed structures continue through
+    This is deliberately narrower than residue validation.  A keyed edge is
+    eligible for alias normalization or item-level rejection when its
+    relationship label or concept endpoints are invalid. Other malformed
+    structures continue through
     :func:`validate_residue` and fail closed.  Route candidates that depend on
     a rejected edge are rejected as well; no route is invented.
 
@@ -709,6 +710,21 @@ def normalize_relationship_items(
     raw_edges = normalized.get("edge_candidates")
     if not isinstance(raw_edges, list):
         return normalized, ()
+    raw_concepts = normalized.get("core_concepts")
+    concept_keys: set[str] | None = set()
+    if isinstance(raw_concepts, list):
+        for concept in raw_concepts:
+            if not isinstance(concept, Mapping):
+                concept_keys = None
+                break
+            key = concept.get("key", concept.get("id"))
+            if not isinstance(key, str) or not key:
+                concept_keys = None
+                break
+            if concept_keys is not None:
+                concept_keys.add(key)
+    else:
+        concept_keys = None
     kept_edges: list[Any] = []
     rejected_keys: set[str] = set()
     rejected: list[dict[str, Any]] = []
@@ -744,6 +760,26 @@ def normalize_relationship_items(
                 )
                 continue
             if relationship in SUPPORTED_RELATIONSHIP_KINDS:
+                source = value.get("from", value.get("from_concept"))
+                target = value.get("to", value.get("to_concept"))
+                if (
+                    concept_keys is None
+                    or not isinstance(source, str)
+                    or not isinstance(target, str)
+                    or source not in concept_keys
+                    or target not in concept_keys
+                ):
+                    rejected_keys.add(key)
+                    rejected.append(
+                        {
+                            "kind": "invalid_relationship_item",
+                            "path": f"residue.edge_candidates[{index}]",
+                            "key": key,
+                            "reason": "relationship endpoint does not reference a declared concept",
+                            "raw_record": dict(value),
+                        }
+                    )
+                    continue
                 kept_edges.append(value)
                 continue
             rejected_keys.add(key)

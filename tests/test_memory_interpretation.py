@@ -536,6 +536,34 @@ def test_unsupported_relationship_normalization_is_deterministic_and_other_error
         validate_residue(normalized, source_slots={"s0": "source"})
 
 
+def test_keyed_edge_with_undeclared_endpoint_is_rejected_without_losing_valid_concepts() -> None:
+    payload = {
+        "core_concepts": [
+            {"key": "c1", "label": "slow practice", "kind": "process", "confidence": 0.9,
+             "evidence": [{"source": "s0", "evidence": "slow practice"}]},
+        ],
+        "salient_phrases": [
+            {"key": "s1", "label": "focused effort", "kind": "trait", "confidence": 0.9,
+             "evidence": [{"source": "s0", "evidence": "focused effort"}]},
+        ],
+        "edge_candidates": [
+            {"key": "e1", "from": "c1", "to": "c2", "relationship": "causes",
+             "confidence": 0.9, "evidence": [{"source": "s0", "evidence": "slow practice"}]}
+        ],
+    }
+    normalized, decisions = normalize_relationship_items(payload)
+    assert normalized["core_concepts"] == payload["core_concepts"]
+    assert normalized["edge_candidates"] == []
+    assert decisions[0]["kind"] == "invalid_relationship_item"
+    residue = validate_residue(
+        normalized,
+        source_slots={"s0": "Daily slow practice improved my accuracy through focused effort."},
+        require_evidence_quotes=True,
+    )
+    assert len(residue.core_concepts) == 1
+    assert residue.edge_candidates == ()
+
+
 def test_interpretation_reports_raw_holds_and_admits_unrelated_valid_edge(tmp_path) -> None:
     payload = {
         "core_concepts": [

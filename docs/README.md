@@ -238,7 +238,8 @@ The documents are preserved in their supplied form and are intentionally not mer
   The narrow `relationship-normalization-v1` correction adds canonical
   `retains`, deterministically aliases `holds` to it, and rejects other
   unsupported keyed relationship items without discarding unrelated valid
-  evidence. Raw results remain unchanged. The decision and offline evidence
+  evidence; keyed edges with undeclared endpoints are handled by the same
+  item-level rule. Raw results remain unchanged. The decision and offline evidence
   are recorded in [the relationship-normalization decision](decisions/MNEME_P2_Extractor_Relationship_Normalization_Addendum.md) and [its receipt](receipts/MNEME_P2.3_Extractor_Relationship_Normalization_Receipt_20260924.md) ([JSON](receipts/MNEME_P2.3_Extractor_Relationship_Normalization_Receipt_20260924.json)).
 
   The resumed pilot then stopped at `extraction-s1-e5` because Gemma omitted

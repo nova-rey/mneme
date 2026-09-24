@@ -21,15 +21,18 @@ extraction boundary. No prompt prohibition or stochastic resampling was used.
 The raw extractor label remains in the persisted provider result. The
 normalized residue, alias decision, and any rejected items are exposed through
 the versioned `relationship-normalization-v1` report. An unrelated unsupported
-label such as `processed by` is rejected item-wise when keyed; routes depending
-on it are rejected, while independently valid graph evidence remains eligible.
-Malformed structure, unsupported concepts, invalid source quotations, missing
-endpoints, and other validation failures still fail closed.
+label such as `processed by`, or a keyed edge with an undeclared endpoint, is
+rejected item-wise; routes depending on it are rejected, while independently
+valid graph evidence remains eligible. Missing stable keys, malformed concept
+collections, unsupported concepts, invalid source quotations, and other
+validation failures still fail closed.
 
 ## Offline evidence
 
 - `holds` → `retains` preserves the source-backed edge and route continuity.
 - `processed by` is rejected without discarding an independently valid edge.
+- A keyed edge pointing to an undeclared concept is rejected without
+  discarding valid concepts or salient evidence.
 - Raw provider JSON remains unchanged and separately inspectable.
 - Alias/rejection decisions are deterministic across replay.
 - Historical invalid-output fixtures remain fail-closed except for the newly
@@ -38,11 +41,13 @@ endpoints, and other validation failures still fail closed.
 Validation before any live continuation:
 
 - focused interpretation tests: pass;
-- complete pytest suite: pass;
+- complete pytest suite: pass (359 tests);
 - Ruff: pass;
 - strict mypy: pass;
 - package/fresh-install smoke: pass (wheel built and installed in a fresh venv).
 
 The preserved 157 returned calls and all prior receipts remain unchanged. The
-next live action is a bounded continuation from the failed `s1-e7` coordinate,
-not a restarted pilot or favorable resampling campaign.
+five-call continuation reached `s1-e7`, applied this normalization, and then
+stopped at the next preserved `s1-e8` coordinate on an undeclared endpoint.
+The next live action is a bounded continuation from `s1-e8`, not a restarted
+pilot or favorable resampling campaign.

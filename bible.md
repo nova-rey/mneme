@@ -816,3 +816,11 @@
 ## 2026-09-24 P2.3 relationship normalization correction
 
 - For preserved `extraction-s1-e7`, Gemma's `holds` means physical retention/containment of moisture by the mulched bed; it is not equivalent to `supports` or `causes`, and the prior vocabulary lacked a neutral retention relation. Added canonical `retains` plus deterministic `holds` → `retains` normalization at the extraction boundary (`relationship-normalization-v1`), preserving raw provider JSON and recording normalized/admitted residue separately. Other unsupported keyed relationship items are rejected individually, dependent routes are rejected, and malformed/structurally invalid records remain fail-closed. Focused tests, 358-test pytest, Ruff, and strict mypy pass; no provider call was made. Evidence: `docs/decisions/MNEME_P2_Extractor_Relationship_Normalization_Addendum.md` and `docs/receipts/MNEME_P2.3_Extractor_Relationship_Normalization_Receipt_20260924.md`.
+
+## 2026-09-24 P2.3 keyed malformed-edge correction
+
+- The first continuation after relationship normalization reached `s1-e7`, admitted the normalized retention route, and then stopped at `s1-e8` because a keyed `causes` edge pointed to undeclared concept `c2` while unrelated source-backed concept/evidence material was valid. The deterministic boundary now rejects keyed edges with invalid concept endpoints item-wise, drops dependent routes, and preserves valid residue; missing keys, malformed concept collections, unsupported concepts, and invalid evidence remain fail-closed. Five provider calls in continuation `p2-pilot-recovery-20260924n` remain preserved; no retry was made after the stop. Focused tests and offline validation accompany the correction.
+
+## 2026-09-24 P2.3 keyed malformed-edge correction offline gate
+
+- Added regression coverage for the preserved `s1-e8` shape. The endpoint correction passes 359 pytest tests, Ruff, strict mypy, wheel build, and fresh-install smoke; CI is required before live continuation. No provider call was made for this correction, and the five-call continuation n remains historical evidence.
