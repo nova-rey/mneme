@@ -748,3 +748,7 @@
 ## 2026-09-24 P2.3 recovery-v3 stop
 
 - The i continuation used one residue-v3 recovery extraction after reusing the accepted h response. Gemma again omitted immutable Markdown list/bold markers despite the concrete v3 instruction; strict validation rejected it and the exhausted eight-call repair pool prevented a repair. No assessment or evaluation call followed. Cumulative campaign usage is 120 returned calls. Evidence: `docs/receipts/MNEME_P2.3_Pilot_Recovery_V3_Failure_20260924.md`.
+
+## 2026-09-24 P2.3 queue blocker update
+
+- P2.3 is recorded as `WAITING` on `review:p2.3-extractor-host-suitability-after-v3`. The queue preserves the v2/v3 offline correction receipts and h/i live-stop evidence; the standing 399-call operational cap was not the blocker, and no unchanged resampling is authorized.
