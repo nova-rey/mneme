@@ -534,8 +534,7 @@ def validate_residue(
     if unknown:
         raise _error("residue", f"unknown fields: {sorted(unknown)}")
     if not isinstance(sources, Mapping) or any(
-        not isinstance(key, str) or not isinstance(value, str)
-        for key, value in sources.items()
+        not isinstance(key, str) or not isinstance(value, str) for key, value in sources.items()
     ):
         raise ResidueValidationError("sources must map string slots to string content")
     normalized: dict[str, Any] = {}
@@ -678,7 +677,7 @@ def validate_residue(
     for field in ("developmental_observation_refs", "evidence_refs"):
         values = _list(root.get(field, []), f"residue.{field}", maximum=MAX_AUXILIARY_RECORDS)
         normalized[field] = tuple(
-            _require_string(value, f"residue.{field}[{index}]" )
+            _require_string(value, f"residue.{field}[{index}]")
             for index, value in enumerate(values)
         )
 
@@ -765,11 +764,7 @@ def normalize_relationship_items(
             continue
         relationship = value.get("relationship", value.get("edge_type", "association"))
         key = value.get("key", value.get("id"))
-        if (
-            isinstance(relationship, str)
-            and isinstance(key, str)
-            and bool(key)
-        ):
+        if isinstance(relationship, str) and isinstance(key, str) and bool(key):
             source = value.get("from", value.get("from_concept"))
             target = value.get("to", value.get("to_concept"))
             supported_or_alias = relationship in SUPPORTED_RELATIONSHIP_KINDS or (
@@ -839,14 +834,18 @@ def normalize_relationship_items(
     raw_routes = normalized.get("route_candidates")
     if isinstance(raw_routes, list):
         kept_routes: list[Any] = []
+        edge_by_key = {
+            str(item.get("key")): item
+            for item in kept_edges
+            if isinstance(item, Mapping) and isinstance(item.get("key"), str)
+        }
         for index, value in enumerate(raw_routes):
             if not isinstance(value, Mapping):
                 kept_routes.append(value)
                 continue
             refs = value.get("edge_keys", value.get("edges"))
-            if (
-                isinstance(refs, list)
-                and any(isinstance(ref, str) and ref in rejected_keys for ref in refs)
+            if isinstance(refs, list) and any(
+                isinstance(ref, str) and ref in rejected_keys for ref in refs
             ):
                 decisions.append(
                     {
@@ -859,6 +858,27 @@ def normalize_relationship_items(
                     }
                 )
                 continue
+            if (
+                isinstance(refs, list)
+                and 1 <= len(refs) <= MAX_ROUTE_EDGES
+                and all(isinstance(ref, str) and ref in edge_by_key for ref in refs)
+            ):
+                route_edges = [edge_by_key[str(ref)] for ref in refs]
+                if any(
+                    left.get("to") != right.get("from")
+                    for left, right in zip(route_edges, route_edges[1:])
+                ):
+                    decisions.append(
+                        {
+                            "kind": "invalid_route_item",
+                            "path": f"residue.route_candidates[{index}]",
+                            "key": value.get("key", value.get("id")),
+                            "edge_keys": list(refs),
+                            "reason": "route edges are discontinuous or reversed",
+                            "raw_record": dict(value),
+                        }
+                    )
+                    continue
             kept_routes.append(value)
         normalized["route_candidates"] = kept_routes
     return normalized, tuple(decisions)

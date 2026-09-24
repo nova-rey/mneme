@@ -12,6 +12,7 @@ from mneme.memory import (
     materialize_graph,
     validate_residue,
 )
+from mneme.memory.residue import normalize_relationship_items
 
 
 def residue_payload() -> dict[str, object]:
@@ -66,6 +67,25 @@ def test_empty_residue_is_valid() -> None:
     assert residue.core_concepts == ()
     assert residue.edge_candidates == ()
     assert residue.route_candidates == ()
+
+
+def test_normalization_rejects_discontinuous_optional_route_without_losing_edges() -> None:
+    payload = {
+        "core_concepts": [
+            {"key": "a", "label": "A", "kind": "concept", "confidence": 0.9},
+            {"key": "b", "label": "B", "kind": "concept", "confidence": 0.9},
+            {"key": "c", "label": "C", "kind": "concept", "confidence": 0.9},
+        ],
+        "edge_candidates": [
+            {"key": "e1", "from": "a", "to": "b", "relationship": "supports", "confidence": 0.9},
+            {"key": "e2", "from": "c", "to": "a", "relationship": "supports", "confidence": 0.9},
+        ],
+        "route_candidates": [{"key": "r1", "edge_keys": ["e1", "e2"], "confidence": 0.9}],
+    }
+    normalized, decisions = normalize_relationship_items(payload)
+    assert len(normalized["edge_candidates"]) == 2
+    assert normalized["route_candidates"] == []
+    assert decisions[-1]["kind"] == "invalid_route_item"
 
 
 def test_valid_residue_preserves_source_evidence_and_model_origin() -> None:
@@ -378,7 +398,5 @@ def test_graph_content_digest_excludes_administrative_snapshot_identity() -> Non
     reversed_payload["core_concepts"].reverse()  # type: ignore[union-attr]
     reversed_payload["edge_candidates"].reverse()  # type: ignore[union-attr]
     reversed_payload["route_candidates"].reverse()  # type: ignore[union-attr]
-    reordered = materialize_graph(
-        validate_residue(reversed_payload, {"s0": "Resource Bandwidth"})
-    )
+    reordered = materialize_graph(validate_residue(reversed_payload, {"s0": "Resource Bandwidth"}))
     assert first.content_digest == reordered.content_digest

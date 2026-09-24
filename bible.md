@@ -856,3 +856,7 @@
 ## 2026-09-24 P2 contingent extraction repair correction
 
 - The first live supplement attempt reached the prepared open-loop partner schedule and stopped at interactive turn 0 because Gemma's extraction result was not JSON. No assessment or evaluation call followed. Added the existing one-repair extraction lifecycle before the already authorized evidence-review fallback; this preserves the strict validator and finite-repair rule. The saved partner message, subject episode, and invalid extraction remain unchanged and will be resumed by coordinate.
+
+## 2026-09-24 P2 contingent optional-route correction
+
+- The resumed coordinate returned valid graph edges plus an optional route candidate whose edges were discontinuous. The strict route validator correctly rejected that route, but the acquisition normalization boundary had not dropped this optional malformed item before validation. Added item-level rejection for discontinuous/reversed optional routes while retaining valid source-backed edges; no route is fabricated and no learner semantics change. The historical live result remains preserved and the same coordinate will resume after CI.
