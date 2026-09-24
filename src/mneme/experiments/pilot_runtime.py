@@ -40,6 +40,7 @@ from .evidence_review import (
     EvidenceReviewError,
     apply_replacements,
     collect_unresolved_evidence,
+    drop_candidate_items,
     resolve_review,
     reviewer_request,
     validate_reviewer_result,
@@ -626,6 +627,7 @@ class PilotRuntime:
         if len(candidates) > 4:
             raise PilotRuntimeError("bounded evidence review has too many unresolved items")
         replacements: dict[tuple[str | int, ...], str] = {}
+        rejected_candidates: list[Any] = []
         review_records: list[dict[str, Any]] = []
         for index, candidate in enumerate(candidates):
             call_id = f"{extraction.call_id}-evidence-review-{index}"
@@ -649,7 +651,21 @@ class PilotRuntime:
             try:
                 quote = resolve_review(candidate, review)
             except EvidenceReviewError as exc:
-                raise PilotRuntimeError(str(exc)) from exc
+                rejected_candidates.append(candidate)
+                review_records.append(
+                    {
+                        "call_id": call_id,
+                        "source_slot": candidate.source_slot,
+                        "source_role": candidate.source_role,
+                        "proposition": dict(candidate.proposition),
+                        "proposed_evidence": candidate.proposed_quote,
+                        "grounded": review.grounded,
+                        "replacement_evidence": None,
+                        "disposition": "rejected",
+                        "rejection_reason": str(exc),
+                    }
+                )
+                continue
             for path in candidate.paths:
                 replacements[path] = quote
             review_records.append(
@@ -661,9 +677,12 @@ class PilotRuntime:
                     "proposed_evidence": candidate.proposed_quote,
                     "grounded": review.grounded,
                     "replacement_evidence": quote,
+                    "disposition": "accepted",
                 }
             )
         corrected = apply_replacements(payload, replacements)
+        if rejected_candidates:
+            corrected = drop_candidate_items(corrected, rejected_candidates)
         service = InterpretationService(
             subject.store,
             subject.instance_id,

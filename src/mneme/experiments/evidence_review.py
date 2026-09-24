@@ -232,6 +232,44 @@ def apply_replacements(
     return result
 
 
+def drop_candidate_items(
+    payload: Mapping[str, Any], candidates: Sequence[EvidenceCandidate]
+) -> dict[str, Any]:
+    """Reject residue records whose evidence review did not resolve exactly.
+
+    The raw extractor result and reviewer receipt remain durable.  This helper
+    only removes the affected optional record(s), allowing unrelated valid
+    residue to continue through the strict validator without inventing
+    replacement evidence.
+    """
+
+    result: dict[str, Any] = copy.deepcopy(dict(payload))
+    parents: set[tuple[PathPart, ...]] = set()
+    for candidate in candidates:
+        for path in candidate.paths:
+            try:
+                evidence_index = path.index("evidence")
+            except ValueError as exc:
+                raise EvidenceReviewError("evidence path is not a residue record") from exc
+            if evidence_index == 0:
+                raise EvidenceReviewError("evidence path has no owning record")
+            parents.add(path[:evidence_index])
+    # Delete higher list indices first so sibling paths remain stable.
+    for path in sorted(parents, key=lambda value: tuple(str(item) for item in value), reverse=True):
+        current: Any = result
+        for part in path[:-1]:
+            current = current[part]
+        final = path[-1]
+        if isinstance(current, list) and isinstance(final, int):
+            if 0 <= final < len(current):
+                del current[final]
+        elif isinstance(current, dict) and final in current:
+            del current[final]
+        else:
+            raise EvidenceReviewError("evidence owner path is not removable")
+    return result
+
+
 __all__ = [
     "EvidenceCandidate",
     "EvidenceReview",

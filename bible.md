@@ -864,3 +864,7 @@
 ## 2026-09-24 P2 contingent persisted-result revalidation correction
 
 - The resumed supplement coordinate had a durably persisted repair result that was rejected by the pre-normalization validator. Added an explicit no-provider revalidation path for returned coordinates so an in-scope deterministic validator correction can reclassify that result while preserving the raw attempt and prior failure history. Added regression coverage; full offline validation passes and the supplement will resume from its preserved coordinate after the required push/CI gate.
+
+## 2026-09-24 P2 contingent evidence-item fail-closed correction
+
+- The evidence reviewer grounded one Markdown-omitted quotation semantically but did not return an exact immutable-source quotation. The strict resolver remains unchanged; the temporary review boundary now records that outcome and rejects only the affected residue record, preserving unrelated valid evidence for strict validation. Added regression coverage; no parser, fuzzy matching, or replacement relationship was introduced.

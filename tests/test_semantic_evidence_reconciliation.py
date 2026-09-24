@@ -10,6 +10,7 @@ from mneme.experiments.evidence_review import (
     EvidenceReviewError,
     apply_replacements,
     collect_unresolved_evidence,
+    drop_candidate_items,
     resolve_review,
     reviewer_request,
     validate_reviewer_result,
@@ -82,6 +83,29 @@ def test_markdown_omission_review_replacement_resolves_canonical_span() -> None:
     assert residue.core_concepts[0]["source_spans"] == (
         {"source_slot": "s0", "start": 2, "end": len(source)},
     )
+
+
+def test_unresolved_review_item_can_be_rejected_without_dropping_other_residue() -> None:
+    source = "* **rain jacket** kept my shoulders dry."
+    payload = {
+        "core_concepts": [
+            _concept("rain jacket kept my shoulders dry.")["core_concepts"][0],
+            {
+                "key": "shoulders",
+                "label": "shoulders",
+                "kind": "concept",
+                "evidence": [{"source": "s0", "evidence": "shoulders"}],
+                "confidence": 0.9,
+            },
+        ]
+    }
+    candidates = collect_unresolved_evidence(
+        payload, _source_records(source)
+    )
+    assert len(candidates) == 1
+    rejected = drop_candidate_items(payload, candidates)
+    residue = validate_residue(rejected, {"s0": source})
+    assert [item["label"] for item in residue.core_concepts] == ["shoulders"]
 
 
 @pytest.mark.parametrize(
