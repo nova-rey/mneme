@@ -948,3 +948,7 @@
 ## 2026-09-24 P2 identity generation durability correction
 
 - Host-backed identity adoption now persists a naming attempt before dispatch, records returned results and host/provider provenance before validation, records invalid or uncertain outcomes, and links accepted attempts to the immutable identity event and generation record. Added schema 9 with explicit v8-to-v9 migration, CLI migration targets, malformed-result and transport-failure regressions, and acceptance linkage checks. No provider call was made.
+
+## 2026-09-24 P2.1 published foundation evidence bundle
+
+- Published the five named P2.1 stop-audit receipts for prerequisites, learner traces, own-output provenance, atomic publication, and semantic review. Each is provider-free and points to the current test and replay evidence; the work queue now indexes all five artifacts. No provider call was made.

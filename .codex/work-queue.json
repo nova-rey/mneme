@@ -918,7 +918,12 @@
         ".codex/work-queue.json"
       ],
       "evidence_refs": [
-        "P2.1 stop-audit receipt: commits 26ec958, 25207aa, c759cf2, 28007bd; pytest=236; Ruff pass; strict mypy pass; wheel/fresh CLI smoke pass; no provider calls; atomic publication/learner and route/controller evidence persisted in tests"
+        "P2.1 stop-audit receipt: commits 26ec958, 25207aa, c759cf2, 28007bd; pytest=236; Ruff pass; strict mypy pass; wheel/fresh CLI smoke pass; no provider calls; atomic publication/learner and route/controller evidence persisted in tests",
+        "docs/receipts/MNEME_P2.1_Prerequisites_Receipt.md",
+        "docs/receipts/MNEME_P2.1_Learner_Traces_Receipt.md",
+        "docs/receipts/MNEME_P2.1_Own_Output_Receipt.md",
+        "docs/receipts/MNEME_P2.1_Publication_Receipt.md",
+        "docs/receipts/MNEME_P2.1_Semantic_Review_Receipt.md"
       ],
       "id": "P2.1",
       "notes": "Approved Phase Two plan; implementation authorized by active goal.",
@@ -930,7 +935,8 @@
         "p21-prerequisites",
         "p21-learner",
         "p21-provenance",
-        "p21-publication"
+        "p21-publication",
+        "p21-semantic-review"
       ],
       "resource_requirements": [
         {
@@ -948,7 +954,7 @@
       "session_ids": [],
       "status": "DONE",
       "title": "Replayable learner and trustworthy inputs",
-      "updated_at": "2026-09-20T16:38:08.309956Z",
+      "updated_at": "2026-09-24T22:45:00Z",
       "validation": {
         "required": [
           "p21-prerequisites",
@@ -963,8 +969,8 @@
             "status": "PASS"
           },
           "p21-prerequisites": {
-            "receipt": "pytest=236; ruff=pass; mypy_strict=pass; wheel=pass; fresh_cli_smoke=pass; provider_calls=0",
-            "recorded_at": "2026-09-20T16:38:02.070719Z",
+            "receipt": "docs/receipts/MNEME_P2.1_Prerequisites_Receipt.md; 393 pytest, Ruff, strict mypy, wheel/fresh-install CLI smoke; no provider calls",
+            "recorded_at": "2026-09-24T22:45:00Z",
             "status": "PASS"
           },
           "p21-provenance": {
@@ -973,8 +979,23 @@
             "status": "PASS"
           },
           "p21-publication": {
-            "receipt": "atomic learner bindings/observations/values/snapshot; unknown no-credit; permission gate; idempotent retry",
-            "recorded_at": "2026-09-20T16:38:02.233239Z",
+            "receipt": "docs/receipts/MNEME_P2.1_Publication_Receipt.md; atomic publication, idempotency, permissions, no-credit, and opportunity replay tests",
+            "recorded_at": "2026-09-24T22:45:00Z",
+            "status": "PASS"
+          },
+          "p21-learner-traces": {
+            "receipt": "docs/receipts/MNEME_P2.1_Learner_Traces_Receipt.md; pure learner, replay, exposure, dependence, and route tests",
+            "recorded_at": "2026-09-24T22:45:00Z",
+            "status": "PASS"
+          },
+          "p21-own-output": {
+            "receipt": "docs/receipts/MNEME_P2.1_Own_Output_Receipt.md; source-purpose masks, exact evidence, echo/ancestry, and fail-closed unknown tests",
+            "recorded_at": "2026-09-24T22:45:00Z",
+            "status": "PASS"
+          },
+          "p21-semantic-review": {
+            "receipt": "docs/receipts/MNEME_P2.1_Semantic_Review_Receipt.md; production-shaped monitor, source-role, polarity, and provenance tests",
+            "recorded_at": "2026-09-24T22:45:00Z",
             "status": "PASS"
           }
         }
@@ -1167,7 +1188,7 @@
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_Polarity_V8_Pass_Receipt.json",
         "docs/receipts/MNEME_P2.3_Assessor_Polarity_Contract_Regression_Receipt.md",
         "docs/receipts/MNEME_P2.3_Assessor_Polarity_Contract_Regression_Receipt.json",
-        "docs/receipts/MNEME_P2.3_Pilot_Production_Path_Receipt.md/.json; production residue→assessor→provenance→publication adapter, durable coordinate resume, and role-binding correction; CI 35547126266",
+        "docs/receipts/MNEME_P2.3_Pilot_Production_Path_Receipt.md/.json; production residue\u2192assessor\u2192provenance\u2192publication adapter, durable coordinate resume, and role-binding correction; CI 35547126266",
         "docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260920_Bundle.json",
         "docs/receipts/MNEME_P2.3_Edge_Less_Extraction_Correction_Receipt.md/.json",
         "docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260921.md/.json",

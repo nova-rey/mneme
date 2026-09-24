@@ -76,7 +76,13 @@ The documents are preserved in their supplied form and are intentionally not mer
 * [Approved Phase Two self-conditioned developmental runtime plan](<Approved Plans/MNEME_Phase_Two_Self_Conditioned_Developmental_Runtime_Plan.md>)
   defines the bounded replayable learner, learned contextual restraint, source/dependence
   accounting, production-equivalent assessor qualification, two-sibling pilot, and
-  the three stop-audit-publish gates. The P2.2 offline [six-scenarios](receipts/MNEME_P2.2_Six_Scenarios_Receipt.md),
+  the three stop-audit-publish gates. The [P2.1 prerequisites](receipts/MNEME_P2.1_Prerequisites_Receipt.md),
+  [learner traces](receipts/MNEME_P2.1_Learner_Traces_Receipt.md),
+  [own-output provenance](receipts/MNEME_P2.1_Own_Output_Receipt.md),
+  [publication](receipts/MNEME_P2.1_Publication_Receipt.md), and
+  [semantic review](receipts/MNEME_P2.1_Semantic_Review_Receipt.md) are now
+  published as the provider-free P2.1 stop-audit bundle. The P2.2 offline
+  [six-scenarios](receipts/MNEME_P2.2_Six_Scenarios_Receipt.md),
   [feedback/rebuild](receipts/MNEME_P2.2_Feedback_Rebuild_Receipt.md),
   [identity](receipts/MNEME_P2.2_Identity_Receipt.md),
   [fork/revocation](receipts/MNEME_P2.2_Fork_Revocation_Receipt.md), and
