@@ -19,6 +19,7 @@ from typing import Any
 
 from ..contracts import GenerationRequest, GenerationResult
 from ..host import Host
+from ..memory.interpretation import MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION
 from ..memory.publication import StalePublication
 from ..state.contracts import StoragePermissions
 from ..state.snapshots import create_checkpoint
@@ -640,7 +641,10 @@ class ContingentStudy:
             failure_reason: str | None = None
             for extraction_path in extraction_files:
                 extraction = self.pilot.artifacts._read_json(extraction_path)
-                if extraction.get("valid") is True:
+                if (
+                    extraction.get("valid") is True
+                    and extraction.get("interpretation_origin", "original") == "original"
+                ):
                     valid_extraction = True
                 elif isinstance(extraction.get("validation_error"), str):
                     failure_reason = str(extraction["validation_error"])
@@ -767,7 +771,8 @@ class ContingentStudy:
                     },
                     episode_id=development.operation.episode_id,
                     extractor_host=self.extractor_host,
-                    max_output_tokens=1536,
+                    max_output_tokens=768,
+                    extractor_version=MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION,
                 )
                 if extraction.residue is None:
                     extraction = self.runtime.extract(
@@ -782,9 +787,10 @@ class ContingentStudy:
                         },
                         episode_id=development.operation.episode_id,
                         extractor_host=self.extractor_host,
-                        max_output_tokens=1536,
+                        max_output_tokens=768,
                         repair=True,
                         operation_id=extraction.operation_id,
+                        extractor_version=MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION,
                     )
                 if extraction.residue is None and self.evidence_reviewer_host is not None:
                     extraction = self.runtime.review_extraction(

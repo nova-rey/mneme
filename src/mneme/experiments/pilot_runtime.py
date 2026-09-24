@@ -399,6 +399,7 @@ class PilotRuntime:
         operation_id: str | None = None,
         recovery_of: str | None = None,
         recovery_version: str | None = None,
+        extractor_version: str | None = None,
     ) -> ExtractionOutcome:
         """Run one extraction attempt; validation happens after durable return."""
 
@@ -407,7 +408,7 @@ class PilotRuntime:
             subject.store,
             subject.instance_id,
             extractor_host,
-            extractor_version=recovery_version or EXTRACTOR_VERSION,
+            extractor_version=extractor_version or recovery_version or EXTRACTOR_VERSION,
         )
         prepared = service.prepare(
             episode_id,
@@ -542,6 +543,9 @@ class PilotRuntime:
             {
                 "coordinate": dict(coordinate),
                 "episode_id": episode_id,
+                "extractor_version": service.extractor_version,
+                "interpretation_origin": "retrospective" if recovery_of else "original",
+                "recovery_of": recovery_of,
                 "attempt": attempt,
                 "validated_attempt": validated_attempt,
                 "request": self._interpretation_request(subject.store, operation_id),

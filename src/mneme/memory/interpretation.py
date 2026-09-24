@@ -30,6 +30,7 @@ from .publication import (
     StalePublication,
 )
 from .residue import (
+    MINIMAL_RELATIONSHIP_CONTRACT_VERSION,
     RELATIONSHIP_RECONCILIATION_VERSION,
     RESIDUE_ADMISSION_VERSION,
     SUPPORTED_CONCEPT_KINDS,
@@ -37,6 +38,7 @@ from .residue import (
     Residue,
     ResidueValidationError,
     admit_residue_items,
+    convert_minimal_relationship_payload,
     normalize_relationship_items,
     validate_residue,
 )
@@ -67,6 +69,7 @@ class InterpretationValidationError(InterpretationError):
 # provider-facing extraction contract used for new calls after the pilot
 # quotation failure; historical v1 operations remain readable and immutable.
 EXTRACTOR_VERSION = "residue-v5"
+MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION = MINIMAL_RELATIONSHIP_CONTRACT_VERSION
 
 
 @dataclass(frozen=True)
@@ -299,6 +302,40 @@ class InterpretationService:
     ) -> GenerationRequest:
         eligible = source_bundle["eligible"]
         source_text = {str(source["slot"]): str(source["content"]) for source in eligible}
+        if self.extractor_version == MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION:
+            instruction = (
+                "Extract relationship proposals under contract "
+                f"{MINIMAL_RELATIONSHIP_CONTRACT_VERSION} "
+                "as one raw JSON object with exactly one top-level field: relationships. "
+                "Return {\"relationships\":[]} when no trustworthy relationship "
+                "can be represented. "
+                "Return no Markdown fences, prose, comments, or adjacent documents. "
+                "Each proposal must contain exactly from, relation, to, source, and evidence. "
+                "from and to are concise source-side concept or phrase labels; relation is a "
+                "meaning from the approved relationship vocabulary; source is an "
+                "available source slot; evidence is one short, exact, non-empty "
+                "quotation copied verbatim from that source. Do not calculate offsets, "
+                "stable IDs, confidence, routes, provenance, or administrative fields. "
+                "Do not invent relationship labels. The complete approved relationship "
+                "vocabulary is: "
+                + ", ".join(sorted(SUPPORTED_RELATIONSHIP_KINDS))
+                + ". Return at most six proposals. Fewer is normal and preferable to guessing. "
+                "Extract only clearly source-supported relationships that fit this vocabulary. "
+                "Ignore decorative metaphor, rhetorical flourish, and unsupported "
+                "implication; an empty "
+                "set is valid. Do not literalize figurative language. Keep each record concise. "
+                "Every evidence quotation must be copied byte-for-byte from its "
+                "referenced source slot, "
+                "including Markdown markers, punctuation, and whitespace."
+            )
+            if errors:
+                instruction += " Correct these validation errors: " + _json(errors)
+            return GenerationRequest(
+                messages=({"role": "user", "content": _json({"source_slots": source_text})},),
+                system=instruction,
+                parameters={"temperature": 0, "max_new_tokens": 768},
+                seed=None,
+            )
         concept_kinds = ", ".join(sorted(SUPPORTED_CONCEPT_KINDS))
         relationship_kinds = ", ".join(sorted(SUPPORTED_RELATIONSHIP_KINDS))
         instruction = (
@@ -719,12 +756,22 @@ class InterpretationService:
             payload = payload["residue"]
         if not isinstance(payload, Mapping):
             raise InterpretationValidationError("provider result must be a JSON object")
-        normalized_payload, decisions = normalize_relationship_items(payload)
-        normalized_payload, admission_decisions = admit_residue_items(
-            normalized_payload,
-            sources,
-            require_evidence_quotes=True,
-        )
+        if self.extractor_version == MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION:
+            try:
+                minimal_payload, minimal_decisions = convert_minimal_relationship_payload(
+                    payload, sources
+                )
+            except ResidueValidationError as exc:
+                raise InterpretationValidationError(str(exc)) from exc
+            normalized_payload, decisions = minimal_payload, minimal_decisions
+            admission_decisions: tuple[dict[str, Any], ...] = ()
+        else:
+            normalized_payload, decisions = normalize_relationship_items(payload)
+            normalized_payload, admission_decisions = admit_residue_items(
+                normalized_payload,
+                sources,
+                require_evidence_quotes=True,
+            )
         residue = validate_residue(
             normalized_payload,
             sources,
@@ -765,8 +812,14 @@ class InterpretationService:
         }
         _, normalized, decisions = self._residue_from_attempt(str(row[0]), sources)
         return {
+            "extractor_version": self.extractor_version,
             "version": RELATIONSHIP_RECONCILIATION_VERSION,
             "admission_version": RESIDUE_ADMISSION_VERSION,
+            "minimal_relationship_contract": (
+                MINIMAL_RELATIONSHIP_CONTRACT_VERSION
+                if self.extractor_version == MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION
+                else None
+            ),
             "normalization_decisions": list(decisions),
             "rejected_items": [
                 decision for decision in decisions if decision.get("kind") != "relationship_alias"

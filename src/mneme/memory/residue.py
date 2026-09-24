@@ -24,6 +24,7 @@ MAX_ROUTES = 8
 MAX_AUXILIARY_RECORDS = 8
 MAX_ROUTE_EDGES = 3
 MAX_SPANS_PER_ITEM = 8
+MAX_RELATIONSHIP_PROPOSALS = 6
 MAX_LABEL_LENGTH = 160
 MAX_CONTEXT_LENGTH = 64
 MAX_RESIDUE_BYTES = 24 * 1024
@@ -33,6 +34,7 @@ MAX_RESIDUE_BYTES = 24 * 1024
 # residue items.
 RELATIONSHIP_RECONCILIATION_VERSION = "relationship-normalization-v1"
 RESIDUE_ADMISSION_VERSION = "residue-admission-v1"
+MINIMAL_RELATIONSHIP_CONTRACT_VERSION = "relationships-v1"
 RELATIONSHIP_ALIASES = {"holds": "retains", "protects": "prevents"}
 # This is an admission/uncertainty threshold only.  It is deliberately not
 # carried into graph selection as a weight or accessibility bonus.
@@ -883,6 +885,188 @@ def normalize_relationship_items(
             kept_routes.append(value)
         normalized["route_candidates"] = kept_routes
     return normalized, tuple(decisions)
+
+
+def convert_minimal_relationship_payload(
+    payload: Mapping[str, Any],
+    sources: Mapping[str, str],
+    *,
+    episode_id: str | None = None,
+) -> tuple[dict[str, Any], tuple[dict[str, Any], ...]]:
+    """Convert the small provider-facing relationship contract to residue v1.
+
+    The provider proposes language-level relationships only.  This adapter
+    owns stable keys, the existing admission floor, duplicate/capacity
+    handling, and the canonical residue shape.  The raw proposal remains in
+    the immutable interpretation attempt; returned decisions are an audit
+    record for the derived representation.
+    """
+
+    if not isinstance(payload, Mapping):
+        raise ResidueValidationError("minimal relationship result must be an object")
+    relationships = payload.get("relationships")
+    if not isinstance(relationships, list):
+        raise ResidueValidationError("minimal relationship result requires relationships list")
+    decisions: list[dict[str, Any]] = []
+    candidates: list[dict[str, Any]] = []
+    required = {"from", "relation", "to", "source", "evidence"}
+
+    def reject(index: int, value: Any, reason: str) -> None:
+        decisions.append(
+            {
+                "kind": "minimal_relationship_rejected",
+                "path": f"relationships[{index}]",
+                "reason": reason,
+                "raw_record": copy.deepcopy(value),
+            }
+        )
+
+    for index, value in enumerate(relationships):
+        if not isinstance(value, Mapping):
+            reject(index, value, "proposal must be an object")
+            continue
+        unknown = set(value) - required
+        if unknown or set(value) != required:
+            reject(index, value, "proposal requires exactly from, relation, to, source, evidence")
+            continue
+        if any(not isinstance(value[field], str) or not value[field].strip() for field in required):
+            reject(index, value, "proposal fields must be non-empty strings")
+            continue
+        source_slot = str(value["source"])
+        if source_slot not in sources:
+            reject(index, value, "proposal references an unavailable source slot")
+            continue
+        quotation = str(value["evidence"])
+        occurrences: list[int] = []
+        start = 0
+        while True:
+            found = sources[source_slot].find(quotation, start)
+            if found < 0:
+                break
+            occurrences.append(found)
+            start = found + 1
+        if not occurrences:
+            reject(index, value, "evidence quotation does not occur verbatim in source")
+            continue
+        if len(occurrences) != 1:
+            reject(index, value, "evidence quotation is ambiguous in source")
+            continue
+        try:
+            from_label = normalize_label(str(value["from"]))
+            to_label = normalize_label(str(value["to"]))
+        except ResidueValidationError as exc:
+            reject(index, value, str(exc))
+            continue
+        raw_relation = str(value["relation"]).strip().casefold()
+        relation = RELATIONSHIP_ALIASES.get(raw_relation, raw_relation)
+        if relation not in SUPPORTED_RELATIONSHIP_KINDS:
+            reject(index, value, "relationship kind is outside the approved vocabulary")
+            continue
+        candidates.append(
+            {
+                "index": index,
+                "from": from_label,
+                "relation": relation,
+                "to": to_label,
+                "source": source_slot,
+                "evidence": quotation,
+                "raw_relationship": str(value["relation"]),
+            }
+        )
+
+    def signature(candidate: Mapping[str, Any]) -> str:
+        return canonical_json(
+            {
+                key: candidate[key]
+                for key in ("from", "relation", "to", "source", "evidence")
+            }
+        )
+
+    unique: dict[str, dict[str, Any]] = {}
+    for candidate in candidates:
+        key = signature(candidate)
+        if key in unique:
+            decisions.append(
+                {
+                    "kind": "minimal_relationship_duplicate",
+                    "path": f"relationships[{candidate['index']}]",
+                    "reason": "duplicate canonical proposal",
+                    "raw_record": {key: candidate[key] for key in required},
+                }
+            )
+            continue
+        unique[key] = candidate
+    ordered = sorted(unique.values(), key=signature)
+    admitted = ordered[:MAX_RELATIONSHIP_PROPOSALS]
+    admitted_signatures = {signature(candidate) for candidate in admitted}
+    for candidate in ordered[MAX_RELATIONSHIP_PROPOSALS:]:
+        decisions.append(
+            {
+                "kind": "minimal_relationship_capacity_omission",
+                "path": f"relationships[{candidate['index']}]",
+                "reason": f"valid proposal exceeds capacity {MAX_RELATIONSHIP_PROPOSALS}",
+                "raw_record": {key: candidate[key] for key in required},
+            }
+        )
+
+    concepts: dict[str, dict[str, Any]] = {}
+    edges: list[dict[str, Any]] = []
+    for candidate in admitted:
+        if signature(candidate) not in admitted_signatures:
+            continue
+        source = candidate["source"]
+        evidence = [{"source": source, "evidence": candidate["evidence"]}]
+        concept_keys: dict[str, str] = {}
+        for label in (candidate["from"], candidate["to"]):
+            concept_key = "c-" + hashlib.sha256(label.casefold().encode("utf-8")).hexdigest()[:24]
+            concept_keys[label] = concept_key
+            concepts.setdefault(
+                concept_key,
+                {
+                    "key": concept_key,
+                    "label": label,
+                    "kind": "concept",
+                    "evidence": evidence,
+                    "confidence": DEFAULT_ADMISSION_CONFIDENCE_THRESHOLD,
+                },
+            )
+        edge_material = {
+            "from": concept_keys[candidate["from"]],
+            "relation": candidate["relation"],
+            "to": concept_keys[candidate["to"]],
+            "source": source,
+            "evidence": candidate["evidence"],
+        }
+        edge_key = "e-" + hashlib.sha256(
+            canonical_json(edge_material).encode("utf-8")
+        ).hexdigest()[:24]
+        edges.append(
+            {
+                "key": edge_key,
+                "from": edge_material["from"],
+                "to": edge_material["to"],
+                "relationship": candidate["relation"],
+                "evidence": evidence,
+                "confidence": DEFAULT_ADMISSION_CONFIDENCE_THRESHOLD,
+            }
+        )
+        if candidate["raw_relationship"].strip().casefold() != candidate["relation"]:
+            decisions.append(
+                {
+                    "kind": "minimal_relationship_alias",
+                    "path": f"relationships[{candidate['index']}].relation",
+                    "raw_relationship": candidate["raw_relationship"],
+                    "normalized_relationship": candidate["relation"],
+                }
+            )
+    result: dict[str, Any] = {
+        "core_concepts": list(concepts.values()),
+        "edge_candidates": edges,
+        "route_candidates": [],
+    }
+    if episode_id is not None:
+        result["episode_id"] = episode_id
+    return result, tuple(decisions)
 
 
 def admit_residue_items(

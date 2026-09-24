@@ -8,6 +8,7 @@ from mneme.contracts import GenerationRequest, GenerationResult, TokenUsage
 from mneme.experiments.live_accounting import summarize_lineage_usage
 from mneme.hosts import FakeHost
 from mneme.memory.interpretation import (
+    MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION,
     InterpretationError,
     InterpretationIdempotencyConflict,
     InterpretationNotReady,
@@ -178,6 +179,124 @@ def test_extraction_prompt_declares_strict_residue_record_shape(tmp_path):
         for relationship in SUPPORTED_RELATIONSHIP_KINDS:
             assert relationship in system
         assert request["request"]["parameters"]["max_new_tokens"] == 1024
+
+
+def test_minimal_relationship_prompt_is_small_and_source_bound(tmp_path):
+    store, instance, episode_id = _accepted(tmp_path, FakeHost())
+    with store:
+        host = ResidueHost('{"relationships":[]}')
+        service = InterpretationService(
+            store, instance, host, extractor_version=MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION
+        )
+        prepared = service.prepare(episode_id, operation_id="minimal-prompt")
+        service.execute(prepared)
+        request = json.loads(
+            store.connection.execute(
+                "SELECT request_json FROM interpretation_attempts WHERE operation_id=?",
+                (prepared.operation_id,),
+            ).fetchone()[0]
+        )
+        system = request["request"]["system"]
+        assert "relationships-v1" in system
+        assert '"relationships"' in system
+        assert "at most six proposals" in system
+        assert "Do not calculate offsets" in system
+        assert "stable IDs" in system
+        assert "route" in system
+        assert request["request"]["parameters"]["max_new_tokens"] == 768
+
+
+def test_minimal_relationship_result_converts_and_rejects_items_independently(tmp_path):
+    source = "The routine became a grounding ritual. The kitchen holds you."
+    host = ResidueHost(
+        json.dumps(
+            {
+                "relationships": [
+                    {
+                        "from": "routine",
+                        "relation": "association",
+                        "to": "grounding",
+                        "source": "s0",
+                        "evidence": "The routine became a grounding ritual.",
+                    },
+                    {
+                        "from": "kitchen",
+                        "relation": "invented_relation",
+                        "to": "person",
+                        "source": "s0",
+                        "evidence": "The kitchen holds you.",
+                    },
+                    {
+                        "from": "missing",
+                        "relation": "associated_with",
+                        "to": "nothing",
+                        "source": "s0",
+                        "evidence": "not in source",
+                    },
+                ]
+            }
+        )
+    )
+    store = SQLiteStore(tmp_path / "lineage.sqlite3")
+    instance = store.create_root(permissions=StoragePermissions(True, True, True))
+    continuity = ContinuityService(store, instance, FakeHost())
+    operation = continuity.prepare_episode(
+        GenerationRequest(({"role": "user", "content": source},))
+    )
+    continuity.generate_operation(operation.operation_id)
+    continuity.accept_episode(operation.operation_id)
+    with store:
+        service = InterpretationService(
+            store, instance, host, extractor_version=MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION
+        )
+        prepared = service.prepare(operation.episode_id, operation_id="minimal-items")
+        service.execute(prepared)
+        residue = service.validate(prepared)
+        assert len(residue.edge_candidates) == 1
+        assert residue.edge_candidates[0]["relationship"] == "association"
+        report = service.normalization_report(prepared)
+        assert any(
+            decision["kind"] == "minimal_relationship_rejected"
+            for decision in report["normalization_decisions"]
+        )
+
+
+def test_minimal_relationship_empty_result_is_valid(tmp_path):
+    host = ResidueHost('{"relationships":[]}')
+    store, instance, episode_id = _accepted(tmp_path, host)
+    with store:
+        service = InterpretationService(
+            store, instance, host, extractor_version=MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION
+        )
+        prepared = service.prepare(episode_id, operation_id="minimal-empty")
+        service.execute(prepared)
+        residue = service.validate(prepared)
+        assert residue.core_concepts == ()
+        assert residue.edge_candidates == ()
+
+
+def test_minimal_relationship_capacity_is_six(tmp_path):
+    phrases = [f"item {index} relates to thing {index}." for index in range(7)]
+    source = " ".join(phrases)
+    payload = {
+        "relationships": [
+            {
+                "from": f"item {index}",
+                "relation": "association",
+                "to": f"thing {index}",
+                "source": "s0",
+                "evidence": phrase,
+            }
+            for index, phrase in enumerate(phrases)
+        ]
+    }
+    from mneme.memory.residue import convert_minimal_relationship_payload
+
+    canonical, decisions = convert_minimal_relationship_payload(payload, {"s0": source})
+    assert len(canonical["edge_candidates"]) == 6
+    assert sum(
+        decision["kind"] == "minimal_relationship_capacity_omission" for decision in decisions
+    ) == 1
 
 
 def test_markdown_evidence_regression_requires_exact_source_formatting() -> None:

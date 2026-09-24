@@ -90,6 +90,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   the [Phase Two scientific review packet](receipts/MNEME_Phase_Two_Scientific_Review_Packet_20260925.md), which records the unresolved contingent measurement stop and P2.3 adequacy decision without changing historical evidence. The [contingent interpretation-stop review resolution](receipts/MNEME_P2_Contingent_Interpretation_Stop_Review_Resolution_20260924.md) authorizes preserved continuation at interactive turn 9 while retaining the historical 6/9 counters and the P2.3 `COMPLETED_INADEQUATE` disposition.
   The [reviewed-continuation correction receipt](receipts/MNEME_P2_Contingent_Reviewed_Continuation_Correction_Receipt_20260924.md) records the additive post-correction segment accounting and offline validation.
   The corrected continuation's [exact turns 9–11 transcript](receipts/MNEME_P2_Contingent_PostCorrection_Transcript_20260924.md) and [post-correction stop receipt](receipts/MNEME_P2_Contingent_PostCorrection_Live_Stop_Receipt_20260924.md) preserve the new terminal measurement failures and separate 0/3 quality result.
+  The [minimal relationship extractor correction receipt](receipts/MNEME_P2_Contingent_Minimal_Relationship_Extractor_Correction_Receipt_20260924.md)
+  records the versioned six-proposal relationship contract, deterministic
+  canonical conversion, item-wise admission, and offline validation; no live
+  call was made for this correction.
   [the offline P2.3 assessor/pilot boundary receipt](receipts/MNEME_P2.3_Offline_Assessor_Pilot_Boundary_Receipt.md);
   the fixed qualification failure is recorded in [the qualification failure receipt](receipts/MNEME_P2.3_Assessor_Qualification_Failure_Receipt.md);
   the reviewed prompt-contract remediation and its offline validation are recorded in

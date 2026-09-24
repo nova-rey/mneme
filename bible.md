@@ -976,3 +976,7 @@
 ## 2026-09-24 P2 contingent post-correction live stop
 
 - Resumed the preserved run at interactive turn 9 under `residue-v5` and Interloper policy revision 2. Turns 9–11 produced accepted Gemma responses, but each initial extraction and one repair returned length-terminated unparsable JSON. The corrected post-correction segment therefore stopped at 0/3 trustworthy interpretations after three consecutive failures; the historical 6/9 result and all prior evidence remain unchanged. Twelve new calls returned (23,089 input, 7,452 output, 30,541 total tokens; cost unavailable), no open-loop/evaluation calls began, and the exact turns 9–11 transcript and sanitized stop receipt were published. P2.3 remains `COMPLETED_INADEQUATE`; no Phase Three work began.
+
+## 2026-09-24 P2 contingent minimal relationship extractor correction
+
+- Replaced the rich-language `residue-v5` model-facing burden for prospective contingent extraction with versioned `relationships-v1`: Gemma now returns at most six concise source-grounded relationship proposals or an empty set, while software owns keys, offsets, normalization, capacity, provenance, and route derivation. Added deterministic item-wise conversion and regression coverage; historical dialogue and failed extraction attempts remain unchanged. Offline validation passed with 399 pytest, Ruff, and strict mypy; no provider call was made.
