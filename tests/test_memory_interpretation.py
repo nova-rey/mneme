@@ -155,7 +155,7 @@ def test_extraction_prompt_declares_strict_residue_record_shape(tmp_path):
             ).fetchone()[0]
         )
         system = request["request"]["system"]
-        assert "residue-v2" in system
+        assert "residue-v3" in system
         assert "Return raw JSON only" in system
         assert "no Markdown fences" in system
         assert "Formatting is part of the immutable source" in system
@@ -170,6 +170,7 @@ def test_extraction_prompt_declares_strict_residue_record_shape(tmp_path):
         assert "MNEME derives bounded directed routes from accepted graph edges" in system
         assert "one contiguous substring of the referenced source slot" in system
         assert "omit that assertion instead of paraphrasing" in system
+        assert "leading `* ` and both pairs of `**`" in system
         for kind in SUPPORTED_CONCEPT_KINDS:
             assert kind in system
         for relationship in SUPPORTED_RELATIONSHIP_KINDS:
@@ -202,6 +203,27 @@ def test_markdown_evidence_regression_requires_exact_source_formatting() -> None
     assert residue.core_concepts[0]["source_spans"] == (
         {"source_slot": "s1", "start": 33, "end": 72},
     )
+
+
+def test_markdown_list_evidence_requires_bullet_and_bold_markers() -> None:
+    source = "* **Reduces Evaporation:** water evaporates."
+    base = {
+        "core_concepts": [
+            {
+                "key": "evaporation",
+                "label": "evaporation",
+                "kind": "process",
+                "evidence": [
+                    {"source": "s1", "evidence": "Reduces Evaporation: water evaporates."}
+                ],
+                "confidence": 0.9,
+            }
+        ]
+    }
+    with pytest.raises(ResidueValidationError, match="does not occur verbatim"):
+        validate_residue(base, source_slots={"s1": source})
+    base["core_concepts"][0]["evidence"][0]["evidence"] = source
+    assert validate_residue(base, source_slots={"s1": source}).core_concepts[0]["source_spans"]
 
 
 def _observed_invalid_extractor_outputs() -> list[tuple[str, str, str]]:

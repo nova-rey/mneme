@@ -709,7 +709,7 @@ class PilotStudy:
                             # request contract rather than retrying it.
                             extract_call = f"{extract_call}-recovery-{recovery_of}"
                             recovery_version = (
-                                f"residue-v2-recovery-20260924-{recovery_of}"
+                                f"residue-v3-recovery-20260924-{recovery_of}"
                             )
                     extraction = self.runtime.extract(
                         slot=slot,

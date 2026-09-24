@@ -62,7 +62,7 @@ class InterpretationValidationError(InterpretationError):
 # The residue schema remains v1. This version identifies the stricter
 # provider-facing extraction contract used for new calls after the pilot
 # quotation failure; historical v1 operations remain readable and immutable.
-EXTRACTOR_VERSION = "residue-v2"
+EXTRACTOR_VERSION = "residue-v3"
 
 
 @dataclass(frozen=True)
@@ -286,7 +286,10 @@ class InterpretationService:
             "source contains **consistent, focused effort**, the valid quotation "
             "must include both asterisks exactly as **consistent, focused effort**; "
             "the unmarked text consistent, focused effort is invalid and must be "
-            "omitted. If exact character-for-character copying is uncertain, omit "
+            "omitted. For a Markdown list source such as `* **Reduces Evaporation:** "
+            "water evaporates.`, the quotation must include the leading `* ` and "
+            "both pairs of `**`; never return the rendered words without those "
+            "markers. If exact character-for-character copying is uncertain, omit "
             "the assertion rather than guessing. "
             "The validator accepts exactly these top-level fields: store, "
             "episode_id, core_concepts, salient_phrases, observed_patterns, "

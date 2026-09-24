@@ -740,3 +740,7 @@
 ## 2026-09-24 P2.3 recovery-v2 live stop
 
 - The private continuation `p2-pilot-recovery-20260924h` returned 48 bounded provider results, reached 25 valid extractions and 13 admitted relationships, then stopped at `extraction-s1-e1` after its one permitted repair because Gemma omitted Markdown bullet/bold markers from a source quotation. Strict source validation correctly rejected both attempts; no evaluation call was made. Evidence: `docs/receipts/MNEME_P2.3_Pilot_Recovery_V2_Failure_20260924.md`.
+
+## 2026-09-24 P2.3 extraction-v3 correction
+
+- Added a concrete Markdown-list/bold-marker example to the provider-facing `residue-v3` extractor prompt after the h stop; strict quotation validation and historical residue contracts remain unchanged. The 321-test, Ruff, strict-mypy, and wheel smoke gate passed with zero provider calls. Evidence: `docs/receipts/MNEME_P2.3_Extraction_V3_Markdown_List_Correction_Receipt.md`.
