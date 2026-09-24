@@ -892,3 +892,7 @@
 ## 2026-09-24 P2 contingent live stop at interactive extraction turn 3
 
 - The preserved contingent run stopped after 47 returned calls at interactive extraction turn 3. Gemma's initial residue contained 17 concepts, exceeding the declared bound; its one repair was length-terminated and not JSON. The run is recorded as `STOPPED_INCOMPLETE_MODEL_OUTPUT`; open-loop execution and frozen readouts did not begin, no completion or behavioral claim is made, and historical P2.3 evidence remains unchanged.
+
+## 2026-09-24 P2 contingent capacity-admission correction
+
+- Added `residue-admission-v1`: candidate collections are validated item-wise and bounded by deterministic software after validation. Valid excess candidates are recorded as `not_admitted_capacity` rather than consuming a repair; malformed/dependency-invalid items, duplicates, and optional routes are rejected individually. A returned coordinate may revalidate an earlier persisted extraction attempt after a failed repair without another provider call. The 47-call historical turn-3 stop and raw attempts remain unchanged. Offline validation: 380 pytest, Ruff, strict mypy, wheel build, and diff check; zero provider calls. Evidence: `docs/receipts/MNEME_P2_Contingent_Residue_Capacity_Admission_Correction_Receipt.md` and `.json`.

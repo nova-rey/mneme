@@ -55,14 +55,10 @@ class ResidueHost(FakeHost):
         )
 
 
-def _accepted(
-    tmp_path, host: FakeHost | None = None, *, interpretation_allowed: bool = True
-):
+def _accepted(tmp_path, host: FakeHost | None = None, *, interpretation_allowed: bool = True):
     host = host or FakeHost()
     store = SQLiteStore(tmp_path / "lineage.sqlite3")
-    instance = store.create_root(
-        permissions=StoragePermissions(True, True, interpretation_allowed)
-    )
+    instance = store.create_root(permissions=StoragePermissions(True, True, interpretation_allowed))
     continuity = ContinuityService(store, instance, host)
     operation = continuity.prepare_episode(
         GenerationRequest(({"role": "user", "content": "hello world"},))
@@ -75,9 +71,7 @@ def _accepted(
 
 
 def test_legacy_policy_cannot_interpret_without_explicit_opt_in(tmp_path):
-    store, instance, episode_id = _accepted(
-        tmp_path, FakeHost(), interpretation_allowed=False
-    )
+    store, instance, episode_id = _accepted(tmp_path, FakeHost(), interpretation_allowed=False)
     with store:
         service = InterpretationService(store, instance, FakeHost())
         with pytest.raises(InterpretationError, match="permission"):
@@ -100,7 +94,7 @@ def test_interpretation_persists_result_then_publishes_empty_residue(tmp_path):
         assert attempt[2] == "RESULT_READY"
         request = json.loads(attempt[0])
         assert request["source_bundle"]["eligible"][0]["content"] == "hello world"
-        assert json.loads(attempt[1])['content'] == "{}"
+        assert json.loads(attempt[1])["content"] == "{}"
         residue = service.validate(prepared)
         assert residue.core_concepts == ()
         published = service.publish(prepared, residue)
@@ -133,9 +127,7 @@ def test_source_purpose_filter_keeps_model_output_out_of_live_extraction(tmp_pat
             "external_evidence",
             "model_output",
         ]
-        assert [source["purpose"] for source in bundle["eligible"]] == [
-            "external_evidence"
-        ]
+        assert [source["purpose"] for source in bundle["eligible"]] == ["external_evidence"]
         source_slots = json.loads(request["request"]["messages"][0]["content"])
         assert list(source_slots["source_slots"]) == ["s0"]
         assert "hello world" in source_slots["source_slots"]["s0"]
@@ -201,9 +193,7 @@ def test_markdown_evidence_regression_requires_exact_source_formatting() -> None
     with pytest.raises(ResidueValidationError, match="does not occur verbatim"):
         validate_residue(base, source_slots={"s1": source})
 
-    base["core_concepts"][0]["evidence"][0]["evidence"] = (
-        "**consistent, focused effort paid off**"
-    )
+    base["core_concepts"][0]["evidence"][0]["evidence"] = "**consistent, focused effort paid off**"
     residue = validate_residue(base, source_slots={"s1": source})
     assert residue.core_concepts[0]["source_spans"] == (
         {"source_slot": "s1", "start": 33, "end": 72},
@@ -248,6 +238,7 @@ def _observed_invalid_extractor_outputs() -> list[tuple[str, str, str]]:
                 ]
             }
         )
+
     relationship = json.dumps(
         {
             "core_concepts": [
@@ -288,9 +279,7 @@ def _observed_invalid_extractor_outputs() -> list[tuple[str, str, str]]:
     ]
 
 
-@pytest.mark.parametrize(
-    ("name", "output", "error"), _observed_invalid_extractor_outputs()
-)
+@pytest.mark.parametrize(("name", "output", "error"), _observed_invalid_extractor_outputs())
 def test_observed_invalid_extractor_outputs_remain_fail_closed(
     tmp_path, name: str, output: str, error: str
 ) -> None:
@@ -424,6 +413,51 @@ def test_repair_with_adjacent_disjoint_json_sections_is_normalized(tmp_path):
         service.execute(prepared)
         residue = service.validate(prepared)
         assert [item["key"] for item in residue.core_concepts] == ["a"]
+
+
+def test_selected_persisted_attempt_can_be_revalidated_after_failed_repair(tmp_path):
+    first = json.dumps(
+        {
+            "core_concepts": [
+                {
+                    "key": f"c{i}",
+                    "label": f"hello-{i}",
+                    "kind": "concept",
+                    "evidence": [{"source": "s0", "evidence": "hello world"}],
+                    "confidence": 0.9,
+                }
+                for i in range(17)
+            ]
+        }
+    )
+    second = '{"core_concepts":['
+    host = ResidueHost(first, second)
+    store, instance, episode_id = _accepted(tmp_path, host)
+    with store:
+        service = InterpretationService(store, instance, host)
+        prepared = service.prepare(episode_id, operation_id="interp-capacity-recovery")
+        service.execute(prepared)
+        # Recreate the historical pre-correction state, then persist the one
+        # permitted malformed repair.  Both raw results remain unchanged.
+        store.connection.execute(
+            "UPDATE interpretation_attempts SET status='INVALID',"
+            "validation_errors_json='[\"contains more than 16 items\"]' "
+            "WHERE operation_id=? AND attempt=0",
+            (prepared.operation_id,),
+        )
+        store.connection.execute(
+            "UPDATE interpretation_operations SET status='FAILED' WHERE operation_id=?",
+            (prepared.operation_id,),
+        )
+        service.execute(prepared, repair=True)
+        store.connection.execute(
+            "UPDATE interpretation_attempts SET status='INVALID' "
+            "WHERE operation_id=? AND attempt=1",
+            (prepared.operation_id,),
+        )
+        residue = service.validate_persisted_attempt(prepared, 0)
+        assert len(residue.core_concepts) == 16
+        assert host.calls == 2
 
 
 def test_adjacent_json_sections_with_duplicate_fields_remain_invalid(tmp_path):
@@ -566,14 +600,18 @@ def test_failed_interpretation_recovery_gets_new_operation_without_rewriting_his
             recovery_version="residue-v1-recovery-test",
         )
         assert recovered.operation_id == "extraction-recovery"
-        assert tuple(store.connection.execute(
-            "SELECT status,failure_code FROM interpretation_operations WHERE operation_id=?",
-            (failed.operation_id,),
-        ).fetchone()) == ("FAILED", "validation_failed")
-        assert tuple(store.connection.execute(
-            "SELECT status,failure_code FROM interpretation_operations WHERE operation_id=?",
-            (recovered.operation_id,),
-        ).fetchone()) == ("PREPARED", "RECOVERY_OF:extraction-original")
+        assert tuple(
+            store.connection.execute(
+                "SELECT status,failure_code FROM interpretation_operations WHERE operation_id=?",
+                (failed.operation_id,),
+            ).fetchone()
+        ) == ("FAILED", "validation_failed")
+        assert tuple(
+            store.connection.execute(
+                "SELECT status,failure_code FROM interpretation_operations WHERE operation_id=?",
+                (recovered.operation_id,),
+            ).fetchone()
+        ) == ("PREPARED", "RECOVERY_OF:extraction-original")
         with pytest.raises(InterpretationError, match="only a FAILED"):
             service.prepare(
                 episode_id,
@@ -586,22 +624,53 @@ def test_failed_interpretation_recovery_gets_new_operation_without_rewriting_his
 def _holds_payload() -> dict[str, object]:
     return {
         "core_concepts": [
-            {"key": "bed", "label": "mulched bed", "kind": "object", "confidence": 0.9,
-             "evidence": [{"source": "s0", "evidence": "mulched bed"}]},
-            {"key": "moisture", "label": "moisture", "kind": "resource", "confidence": 0.9,
-             "evidence": [{"source": "s0", "evidence": "held moisture"}]},
-            {"key": "seedlings", "label": "seedlings", "kind": "entity", "confidence": 0.9,
-             "evidence": [{"source": "s0", "evidence": "supported seedlings"}]},
+            {
+                "key": "bed",
+                "label": "mulched bed",
+                "kind": "object",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "mulched bed"}],
+            },
+            {
+                "key": "moisture",
+                "label": "moisture",
+                "kind": "resource",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "held moisture"}],
+            },
+            {
+                "key": "seedlings",
+                "label": "seedlings",
+                "kind": "entity",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "supported seedlings"}],
+            },
         ],
         "edge_candidates": [
-            {"key": "e-holds", "from": "bed", "to": "moisture", "relationship": "holds",
-             "confidence": 0.9, "evidence": [{"source": "s0", "evidence": "held moisture"}]},
-            {"key": "e-supports", "from": "moisture", "to": "seedlings", "relationship": "supports",
-             "confidence": 0.9, "evidence": [{"source": "s0", "evidence": "supported seedlings"}]},
+            {
+                "key": "e-holds",
+                "from": "bed",
+                "to": "moisture",
+                "relationship": "holds",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "held moisture"}],
+            },
+            {
+                "key": "e-supports",
+                "from": "moisture",
+                "to": "seedlings",
+                "relationship": "supports",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "supported seedlings"}],
+            },
         ],
         "route_candidates": [
-            {"key": "r-holds", "edge_keys": ["e-holds", "e-supports"], "confidence": 0.9,
-             "evidence": [{"source": "s0", "evidence": "held moisture"}]}
+            {
+                "key": "r-holds",
+                "edge_keys": ["e-holds", "e-supports"],
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "held moisture"}],
+            }
         ],
     }
 
@@ -611,7 +680,8 @@ def test_unsupported_relationship_is_rejected_itemwise_without_losing_valid_edge
     normalized, decisions = normalize_relationship_items(_holds_payload())
     assert _holds_payload()["edge_candidates"][0]["relationship"] == "holds"
     assert [edge["relationship"] for edge in normalized["edge_candidates"]] == [
-        "retains", "supports"
+        "retains",
+        "supports",
     ]
     assert normalized["route_candidates"][0]["edge_keys"] == ["e-holds", "e-supports"]
     assert decisions[0]["kind"] == "relationship_alias"
@@ -620,16 +690,16 @@ def test_unsupported_relationship_is_rejected_itemwise_without_losing_valid_edge
     residue = validate_residue(
         normalized, source_slots={"s0": source}, require_evidence_quotes=True
     )
-    assert [edge["relationship"] for edge in residue.edge_candidates] == [
-        "retains", "supports"
-    ]
+    assert [edge["relationship"] for edge in residue.edge_candidates] == ["retains", "supports"]
 
 
-def test_unsupported_relationship_normalization_is_deterministic_and_other_errors_fail_closed(
-) -> None:
-    payload = {"core_concepts": [], "edge_candidates": [
-        {"key": "e1", "from": "a", "to": "b", "relationship": "holds"}
-    ]}
+def test_unsupported_relationship_normalization_is_deterministic_and_other_errors_fail_closed() -> (
+    None
+):
+    payload = {
+        "core_concepts": [],
+        "edge_candidates": [{"key": "e1", "from": "a", "to": "b", "relationship": "holds"}],
+    }
     first = normalize_relationship_items(payload)
     second = normalize_relationship_items(payload)
     assert first == second
@@ -643,16 +713,32 @@ def test_unsupported_relationship_normalization_is_deterministic_and_other_error
 def test_keyed_edge_with_undeclared_endpoint_is_rejected_without_losing_valid_concepts() -> None:
     payload = {
         "core_concepts": [
-            {"key": "c1", "label": "slow practice", "kind": "process", "confidence": 0.9,
-             "evidence": [{"source": "s0", "evidence": "slow practice"}]},
+            {
+                "key": "c1",
+                "label": "slow practice",
+                "kind": "process",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "slow practice"}],
+            },
         ],
         "salient_phrases": [
-            {"key": "s1", "label": "focused effort", "kind": "trait", "confidence": 0.9,
-             "evidence": [{"source": "s0", "evidence": "focused effort"}]},
+            {
+                "key": "s1",
+                "label": "focused effort",
+                "kind": "trait",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "focused effort"}],
+            },
         ],
         "edge_candidates": [
-            {"key": "e1", "from": "c1", "to": "c2", "relationship": "causes",
-             "confidence": 0.9, "evidence": [{"source": "s0", "evidence": "slow practice"}]}
+            {
+                "key": "e1",
+                "from": "c1",
+                "to": "c2",
+                "relationship": "causes",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "slow practice"}],
+            }
         ],
     }
     normalized, decisions = normalize_relationship_items(payload)
@@ -671,19 +757,30 @@ def test_keyed_edge_with_undeclared_endpoint_is_rejected_without_losing_valid_co
 def test_keyed_graph_items_missing_confidence_are_rejected_without_defaulting() -> None:
     payload = {
         "core_concepts": [
-            {"key": "c1", "label": "slow practice", "kind": "process",
-             "evidence": [{"source": "s0", "evidence": "slow practice"}]},
+            {
+                "key": "c1",
+                "label": "slow practice",
+                "kind": "process",
+                "evidence": [{"source": "s0", "evidence": "slow practice"}],
+            },
         ],
         "edge_candidates": [
-            {"key": "e1", "from": "c1", "to": "c1", "relationship": "causes",
-             "confidence": 0.9, "evidence": [{"source": "s0", "evidence": "slow practice"}]}
+            {
+                "key": "e1",
+                "from": "c1",
+                "to": "c1",
+                "relationship": "causes",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "slow practice"}],
+            }
         ],
     }
     normalized, decisions = normalize_relationship_items(payload)
     assert normalized["core_concepts"] == []
     assert normalized["edge_candidates"] == []
     assert [decision["kind"] for decision in decisions] == [
-        "invalid_concept_item", "invalid_relationship_item"
+        "invalid_concept_item",
+        "invalid_relationship_item",
     ]
     residue = validate_residue(
         normalized,
@@ -698,62 +795,123 @@ def test_understood_protection_wording_is_normalized_and_unsupported_kind_is_dro
     source = "A thick mulch layer protected the soil from drying out during the warm week."
     payload = {
         "core_concepts": [
-            {"key": "mulch", "label": "mulch layer", "kind": "object", "confidence": 0.9,
-             "evidence": [{"source": "s0", "evidence": "mulch layer"}]},
-            {"key": "soil", "label": "soil", "kind": "object", "confidence": 0.9,
-             "evidence": [{"source": "s0", "evidence": "soil"}]},
-            {"key": "drying", "label": "drying out", "kind": "process", "confidence": 0.9,
-             "evidence": [{"source": "s0", "evidence": "drying out"}]},
-            {"key": "week", "label": "warm week", "kind": "time", "confidence": 0.9,
-             "evidence": [{"source": "s0", "evidence": "warm week"}]},
+            {
+                "key": "mulch",
+                "label": "mulch layer",
+                "kind": "object",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "mulch layer"}],
+            },
+            {
+                "key": "soil",
+                "label": "soil",
+                "kind": "object",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "soil"}],
+            },
+            {
+                "key": "drying",
+                "label": "drying out",
+                "kind": "process",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "drying out"}],
+            },
+            {
+                "key": "week",
+                "label": "warm week",
+                "kind": "time",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "warm week"}],
+            },
         ],
         "edge_candidates": [
-            {"key": "e1", "from": "mulch", "to": "soil", "relationship": "protects",
-             "confidence": 0.9, "evidence": [{"source": "s0", "evidence": "protected the soil"}]},
-            {"key": "e2", "from": "mulch", "to": "drying", "relationship": "prevents",
-             "confidence": 0.9, "evidence": [{"source": "s0", "evidence": (
-                 "protected the soil from drying out"
-             )}]},
+            {
+                "key": "e1",
+                "from": "mulch",
+                "to": "soil",
+                "relationship": "protects",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "protected the soil"}],
+            },
+            {
+                "key": "e2",
+                "from": "mulch",
+                "to": "drying",
+                "relationship": "prevents",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": ("protected the soil from drying out")}],
+            },
         ],
     }
     normalized, decisions = normalize_relationship_items(payload)
     assert [edge["relationship"] for edge in normalized["edge_candidates"]] == [
-        "prevents", "prevents"
+        "prevents",
+        "prevents",
     ]
     assert [concept["key"] for concept in normalized["core_concepts"]] == [
-        "mulch", "soil", "drying"
+        "mulch",
+        "soil",
+        "drying",
     ]
     assert any(decision["kind"] == "relationship_alias" for decision in decisions)
     assert any(decision["key"] == "week" for decision in decisions)
     residue = validate_residue(
         normalized, source_slots={"s0": source}, require_evidence_quotes=True
     )
-    assert [edge["relationship"] for edge in residue.edge_candidates] == [
-        "prevents", "prevents"
-    ]
+    assert [edge["relationship"] for edge in residue.edge_candidates] == ["prevents", "prevents"]
 
 
 def test_interpretation_reports_raw_holds_and_admits_unrelated_valid_edge(tmp_path) -> None:
     payload = {
         "core_concepts": [
-            {"key": "a", "label": "hello", "kind": "concept", "confidence": 0.9,
-             "evidence": [{"source": "s0", "evidence": "hello"}]},
-            {"key": "b", "label": "world", "kind": "concept", "confidence": 0.9,
-             "evidence": [{"source": "s0", "evidence": "world"}]},
+            {
+                "key": "a",
+                "label": "hello",
+                "kind": "concept",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "hello"}],
+            },
+            {
+                "key": "b",
+                "label": "world",
+                "kind": "concept",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "world"}],
+            },
         ],
         "edge_candidates": [
-            {"key": "e-holds", "from": "a", "to": "b", "relationship": "holds",
-             "confidence": 0.9, "evidence": [{"source": "s0", "evidence": "hello"}]},
-            {"key": "e-supports", "from": "a", "to": "b", "relationship": "supports",
-             "confidence": 0.9, "evidence": [{"source": "s0", "evidence": "world"}]},
+            {
+                "key": "e-holds",
+                "from": "a",
+                "to": "b",
+                "relationship": "holds",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "hello"}],
+            },
+            {
+                "key": "e-supports",
+                "from": "a",
+                "to": "b",
+                "relationship": "supports",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "world"}],
+            },
         ],
     }
 
     class SourceResidueHost(ResidueHost):
         def generate(self, request: GenerationRequest) -> GenerationResult:
             return GenerationResult(
-                json.dumps(payload), self.model_id, "builtin", dict(request.parameters),
-                request.seed, TokenUsage(10, 10, 20), 0.0, "stop", {"fixture": True}, {},
+                json.dumps(payload),
+                self.model_id,
+                "builtin",
+                dict(request.parameters),
+                request.seed,
+                TokenUsage(10, 10, 20),
+                0.0,
+                "stop",
+                {"fixture": True},
+                {},
             )
 
     host = SourceResidueHost()
@@ -763,9 +921,7 @@ def test_interpretation_reports_raw_holds_and_admits_unrelated_valid_edge(tmp_pa
         prepared = service.prepare(episode_id, operation_id="interp-holds-item")
         service.execute(prepared)
         residue = service.validate(prepared)
-        assert [edge["relationship"] for edge in residue.edge_candidates] == [
-            "retains", "supports"
-        ]
+        assert [edge["relationship"] for edge in residue.edge_candidates] == ["retains", "supports"]
         report = service.normalization_report(prepared)
         assert report["version"] == RELATIONSHIP_RECONCILIATION_VERSION
         assert report["normalization_decisions"][0]["raw_relationship"] == "holds"

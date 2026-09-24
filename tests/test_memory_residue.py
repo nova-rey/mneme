@@ -12,7 +12,7 @@ from mneme.memory import (
     materialize_graph,
     validate_residue,
 )
-from mneme.memory.residue import normalize_relationship_items
+from mneme.memory.residue import admit_residue_items, normalize_relationship_items
 
 
 def residue_payload() -> dict[str, object]:
@@ -67,6 +67,124 @@ def test_empty_residue_is_valid() -> None:
     assert residue.core_concepts == ()
     assert residue.edge_candidates == ()
     assert residue.route_candidates == ()
+
+
+def _capacity_concept(index: int, *, confidence: float = 0.9) -> dict[str, object]:
+    word = f"concept-{index:02d}"
+    return {
+        "key": f"c{index}",
+        "label": word,
+        "kind": "concept",
+        "evidence": [{"source": "s0", "evidence": word}],
+        "confidence": confidence,
+    }
+
+
+def test_capacity_admits_sixteen_of_seventeen_valid_concepts_without_repair() -> None:
+    payload = {"core_concepts": [_capacity_concept(index) for index in range(17)]}
+    normalized, decisions = admit_residue_items(
+        payload,
+        {"s0": " ".join(f"concept-{index:02d}" for index in range(17))},
+        require_evidence_quotes=True,
+    )
+    assert len(normalized["core_concepts"]) == 16
+    assert sum(decision["kind"] == "not_admitted_capacity" for decision in decisions) == 1
+    residue = validate_residue(
+        normalized,
+        {"s0": " ".join(f"concept-{index:02d}" for index in range(17))},
+        require_evidence_quotes=True,
+    )
+    assert len(residue.core_concepts) == 16
+
+
+def test_capacity_applies_to_relationships_and_routes() -> None:
+    source = "a b"
+    concepts = [
+        {
+            "key": "a",
+            "label": "a",
+            "kind": "concept",
+            "evidence": [{"source": "s0", "evidence": "a"}],
+            "confidence": 0.9,
+        },
+        {
+            "key": "b",
+            "label": "b",
+            "kind": "concept",
+            "evidence": [{"source": "s0", "evidence": "b"}],
+            "confidence": 0.9,
+        },
+    ]
+    edges = [
+        {
+            "key": f"e{i}",
+            "from": "a",
+            "to": "b",
+            "relationship": "supports",
+            "context": [f"ctx-{i}"],
+            "evidence": [{"source": "s0", "evidence": "a"}],
+            "confidence": 0.9,
+        }
+        for i in range(26)
+    ]
+    payload = {"core_concepts": concepts, "edge_candidates": edges}
+    normalized, decisions = admit_residue_items(
+        payload, {"s0": source}, require_evidence_quotes=True
+    )
+    assert len(normalized["edge_candidates"]) == 24
+    assert sum(decision["kind"] == "not_admitted_capacity" for decision in decisions) == 2
+    route_payload = {
+        "core_concepts": concepts,
+        "edge_candidates": [edges[0]],
+        "route_candidates": [
+            {
+                "key": f"r{i}",
+                "edge_keys": ["e0"],
+                "context": [f"route-{i}"],
+                "evidence": [{"source": "s0", "evidence": "a"}],
+                "confidence": 0.9,
+            }
+            for i in range(9)
+        ],
+    }
+    route_normalized, route_decisions = admit_residue_items(
+        route_payload, {"s0": source}, require_evidence_quotes=True
+    )
+    assert len(route_normalized["route_candidates"]) == 8
+    assert sum(decision["kind"] == "not_admitted_capacity" for decision in route_decisions) == 1
+
+
+def test_malformed_candidate_does_not_discard_unrelated_valid_candidate() -> None:
+    payload = {
+        "core_concepts": [
+            _capacity_concept(1),
+            {"key": "bad", "label": "bad", "kind": "not-approved", "confidence": 0.9},
+        ]
+    }
+    normalized, decisions = admit_residue_items(
+        payload, {"s0": "concept-01"}, require_evidence_quotes=True
+    )
+    assert [item["key"] for item in normalized["core_concepts"]] == ["c1"]
+    assert decisions[0]["kind"] == "rejected_item"
+
+
+def test_duplicate_candidates_are_canonicalized_and_selection_ignores_insertion_order() -> None:
+    first = [
+        _capacity_concept(1, confidence=0.8),
+        _capacity_concept(2, confidence=0.9),
+        _capacity_concept(1, confidence=0.8),
+    ]
+    second = list(reversed(first))
+    sources = {"s0": "concept-01 concept-02"}
+    one, decisions_one = admit_residue_items(
+        {"core_concepts": first}, sources, require_evidence_quotes=True
+    )
+    two, decisions_two = admit_residue_items(
+        {"core_concepts": second}, sources, require_evidence_quotes=True
+    )
+    assert one["core_concepts"] == two["core_concepts"]
+    assert any(decision["kind"] == "duplicate_item" for decision in decisions_one)
+    assert any(decision["kind"] == "duplicate_item" for decision in decisions_two)
 
 
 def test_normalization_rejects_discontinuous_optional_route_without_losing_edges() -> None:

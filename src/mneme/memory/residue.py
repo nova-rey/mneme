@@ -32,6 +32,7 @@ MAX_RESIDUE_BYTES = 24 * 1024
 # label and rejecting unrelated unsupported items without discarding valid
 # residue items.
 RELATIONSHIP_RECONCILIATION_VERSION = "relationship-normalization-v1"
+RESIDUE_ADMISSION_VERSION = "residue-admission-v1"
 RELATIONSHIP_ALIASES = {"holds": "retains", "protects": "prevents"}
 # This is an admission/uncertainty threshold only.  It is deliberately not
 # carried into graph selection as a weight or accessibility bonus.
@@ -884,6 +885,240 @@ def normalize_relationship_items(
     return normalized, tuple(decisions)
 
 
+def admit_residue_items(
+    payload: Mapping[str, Any],
+    sources: Mapping[str, str],
+    *,
+    confidence_threshold: float = DEFAULT_ADMISSION_CONFIDENCE_THRESHOLD,
+    require_evidence_quotes: bool = False,
+) -> tuple[dict[str, Any], tuple[dict[str, Any], ...]]:
+    """Validate and deterministically admit bounded candidate collections.
+
+    Provider output remains untouched by this function.  Candidate records are
+    checked independently, dependencies are applied before dependent records,
+    and capacity is enforced only after validation.  The returned decision log
+    makes every rejection or capacity omission auditable.
+    """
+
+    normalized = copy.deepcopy(dict(payload))
+    decisions: list[dict[str, Any]] = []
+    threshold = _require_number(
+        confidence_threshold, "confidence_threshold", minimum=0.0, maximum=1.0
+    )
+
+    def signature(record: Mapping[str, Any]) -> str:
+        return canonical_json(
+            {key: value for key, value in record.items() if key not in {"id", "key"}}
+        )
+
+    def rank(record: Mapping[str, Any]) -> tuple[Any, ...]:
+        confidence = float(record.get("confidence", 0.0))
+        salience = float(record.get("salience", 0.0))
+        return (-confidence, -salience, signature(record))
+
+    def reject(path: str, value: Any, reason: str) -> None:
+        decisions.append(
+            {
+                "kind": "rejected_item",
+                "path": path,
+                "reason": reason,
+                "raw_record": copy.deepcopy(value),
+            }
+        )
+
+    def select(
+        field: str,
+        values: list[dict[str, Any]],
+        maximum: int,
+    ) -> list[dict[str, Any]]:
+        unique: dict[str, dict[str, Any]] = {}
+        for value in values:
+            key = signature(value)
+            if key in unique:
+                decisions.append(
+                    {
+                        "kind": "duplicate_item",
+                        "path": f"residue.{field}",
+                        "reason": "duplicate canonical candidate",
+                        "raw_record": copy.deepcopy(value),
+                    }
+                )
+                continue
+            unique[key] = value
+        ordered = sorted(unique.values(), key=rank)
+        admitted = ordered[:maximum]
+        admitted_signatures = {signature(value) for value in admitted}
+        for value in ordered[maximum:]:
+            decisions.append(
+                {
+                    "kind": "not_admitted_capacity",
+                    "path": f"residue.{field}",
+                    "reason": f"valid candidate exceeds admission capacity {maximum}",
+                    "key": value.get("key", value.get("id")),
+                    "raw_record": copy.deepcopy(value),
+                }
+            )
+        # Keep deterministic ordering in the canonical residue itself.  This
+        # prevents insertion order from affecting graph materialization.
+        return [value for value in ordered if signature(value) in admitted_signatures]
+
+    raw_concepts = normalized.get("core_concepts", [])
+    admitted_concepts: list[dict[str, Any]] = []
+    if isinstance(raw_concepts, list):
+        for index, value in enumerate(raw_concepts):
+            path = f"residue.core_concepts[{index}]"
+            try:
+                record = _record(
+                    value,
+                    path,
+                    sources,
+                    require_label=True,
+                    require_evidence_quotes=require_evidence_quotes,
+                )
+                _key(record, path)
+                kind = record.get("kind", record.get("node_type", "concept"))
+                if not isinstance(kind, str) or kind not in SUPPORTED_CONCEPT_KINDS:
+                    raise _error(path, "unsupported concept kind")
+                _require_graph_admission(record, path, confidence_threshold=threshold)
+                admitted_concepts.append(copy.deepcopy(dict(value)))
+            except (ResidueValidationError, ValueError, TypeError, KeyError) as exc:
+                reject(path, value, str(exc))
+        selected_concepts = select("core_concepts", admitted_concepts, MAX_CONCEPTS)
+        # Preserve fail-closed behavior when a collection has no usable item;
+        # item-wise rejection is intended to salvage unrelated valid records,
+        # not to turn an entirely malformed residue into an empty success.
+        normalized["core_concepts"] = (
+            selected_concepts if selected_concepts else (raw_concepts if raw_concepts else [])
+        )
+    concept_keys = {
+        str(value.get("key", value.get("id")))
+        for value in normalized.get("core_concepts", [])
+        if isinstance(value, Mapping)
+    }
+
+    raw_edges = normalized.get("edge_candidates", [])
+    admitted_edges: list[dict[str, Any]] = []
+    if isinstance(raw_edges, list):
+        for index, value in enumerate(raw_edges):
+            path = f"residue.edge_candidates[{index}]"
+            try:
+                if not isinstance(value, Mapping):
+                    raise _error(path, "must be an object")
+                record = _record(
+                    value,
+                    path,
+                    sources,
+                    require_evidence_quotes=require_evidence_quotes,
+                )
+                _key(record, path)
+                source = record.get("from", record.get("from_concept"))
+                target = record.get("to", record.get("to_concept"))
+                if not isinstance(source, str) or not isinstance(target, str):
+                    raise _error(path, "requires from/to concept keys")
+                if source not in concept_keys or target not in concept_keys:
+                    raise _error(
+                        path, "relationship endpoint does not reference an admitted concept"
+                    )
+                relationship = record.get("relationship", record.get("edge_type", "association"))
+                if not isinstance(relationship, str):
+                    raise _error(path, "relationship kind must be a string")
+                relationship = RELATIONSHIP_ALIASES.get(relationship, relationship)
+                if relationship not in SUPPORTED_RELATIONSHIP_KINDS:
+                    raise _error(path, "unsupported relationship kind")
+                _require_graph_admission(record, path, confidence_threshold=threshold)
+                kept = copy.deepcopy(dict(value))
+                kept["relationship"] = relationship
+                admitted_edges.append(kept)
+            except (ResidueValidationError, ValueError, TypeError, KeyError) as exc:
+                reject(path, value, str(exc))
+        selected_edges = select("edge_candidates", admitted_edges, MAX_RELATIONSHIPS)
+        normalized["edge_candidates"] = (
+            selected_edges if selected_edges else (raw_edges if raw_edges else [])
+        )
+    edge_keys = {
+        str(value.get("key", value.get("id")))
+        for value in normalized.get("edge_candidates", [])
+        if isinstance(value, Mapping)
+    }
+
+    raw_routes = normalized.get("route_candidates", [])
+    admitted_routes: list[dict[str, Any]] = []
+    if isinstance(raw_routes, list):
+        edge_by_key = {
+            str(value.get("key", value.get("id"))): value
+            for value in normalized.get("edge_candidates", [])
+            if isinstance(value, Mapping)
+        }
+        for index, value in enumerate(raw_routes):
+            path = f"residue.route_candidates[{index}]"
+            try:
+                record = _record(
+                    value,
+                    path,
+                    sources,
+                    require_evidence_quotes=require_evidence_quotes,
+                )
+                _key(record, path)
+                refs = (
+                    value.get("edge_keys", value.get("edges"))
+                    if isinstance(value, Mapping)
+                    else None
+                )
+                if not isinstance(refs, list) or not 1 <= len(refs) <= MAX_ROUTE_EDGES:
+                    raise _error(path, "requires one to three edge references")
+                if any(not isinstance(ref, str) or ref not in edge_keys for ref in refs):
+                    raise _error(path, "route references a non-admitted relationship")
+                route_edges = [edge_by_key[ref] for ref in refs]
+                if any(
+                    left.get("to") != right.get("from")
+                    for left, right in zip(route_edges, route_edges[1:])
+                ):
+                    raise _error(path, "route edges are discontinuous or reversed")
+                _require_graph_admission(record, path, confidence_threshold=threshold)
+                admitted_routes.append(copy.deepcopy(dict(value)))
+            except (ResidueValidationError, ValueError, TypeError, KeyError) as exc:
+                reject(path, value, str(exc))
+        selected_routes = select("route_candidates", admitted_routes, MAX_ROUTES)
+        normalized["route_candidates"] = (
+            selected_routes if selected_routes else (raw_routes if raw_routes else [])
+        )
+
+    for field in (
+        "salient_phrases",
+        "observed_patterns",
+        "declared_memories",
+        "earned_candidates",
+        "identity_candidates",
+    ):
+        values = normalized.get(field, [])
+        if not isinstance(values, list):
+            continue
+        valid: list[dict[str, Any]] = []
+        for index, value in enumerate(values):
+            path = f"residue.{field}[{index}]"
+            try:
+                if field == "salient_phrases" and isinstance(value, str):
+                    normalize_label(value)
+                    valid.append({"label": value})
+                else:
+                    valid.append(
+                        dict(
+                            _record(
+                                value,
+                                path,
+                                sources,
+                                require_evidence_quotes=require_evidence_quotes,
+                            )
+                        )
+                    )
+            except (ResidueValidationError, ValueError, TypeError, KeyError) as exc:
+                reject(path, value, str(exc))
+        selected = select(field, valid, MAX_AUXILIARY_RECORDS)
+        normalized[field] = selected if selected else (values if values else [])
+
+    return normalized, tuple(decisions)
+
+
 __all__ = [
     "MAX_AUXILIARY_RECORDS",
     "DEFAULT_ADMISSION_CONFIDENCE_THRESHOLD",
@@ -900,6 +1135,8 @@ __all__ = [
     "canonical_json",
     "normalize_label",
     "normalize_relationship_items",
+    "admit_residue_items",
+    "RESIDUE_ADMISSION_VERSION",
     "RELATIONSHIP_ALIASES",
     "RELATIONSHIP_RECONCILIATION_VERSION",
     "validate_graph_admission",

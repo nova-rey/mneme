@@ -475,15 +475,40 @@ class PilotRuntime:
                 persisted = self._returned_result(call_id)
         residue: Residue | None = None
         validation_error: str | None = None
+        validated_attempt: int | None = None
         try:
             # A returned coordinate can contain a result rejected by an
             # older deterministic validator.  Revalidate that persisted
             # result explicitly after an in-scope validator correction; this
             # never calls the provider or changes the raw attempt evidence.
             residue = service.validate(operation_id, revalidate_invalid=not dispatched)
+            validated_attempt = int(self._interpretation_attempt(subject.store, operation_id))
         except InterpretationValidationError as exc:
             validation_error = str(exc)
+            # A bounded repair may have been spent before a validator
+            # correction made the original result admissible.  Revalidate the
+            # earlier persisted attempt deterministically; never dispatch a
+            # replacement provider call and never discard the failed repair.
+            rows = subject.store.connection.execute(
+                "SELECT attempt FROM interpretation_attempts "
+                "WHERE operation_id=? ORDER BY attempt DESC",
+                (operation_id,),
+            ).fetchall()
+            latest_attempt = int(self._interpretation_attempt(subject.store, operation_id))
+            for row in rows:
+                candidate_attempt = int(row[0])
+                if candidate_attempt == latest_attempt:
+                    continue
+                try:
+                    residue = service.validate_persisted_attempt(operation_id, candidate_attempt)
+                    validated_attempt = candidate_attempt
+                    validation_error = None
+                    break
+                except InterpretationValidationError:
+                    continue
         attempt = int(self._interpretation_attempt(subject.store, operation_id))
+        if validated_attempt is not None:
+            attempt = validated_attempt
         self._publish_call_artifact(
             "extraction",
             operation_id,
@@ -491,13 +516,14 @@ class PilotRuntime:
                 "coordinate": dict(coordinate),
                 "episode_id": episode_id,
                 "attempt": attempt,
+                "validated_attempt": validated_attempt,
                 "request": self._interpretation_request(subject.store, operation_id),
                 "provider_called": provider_called,
                 "result": dict(persisted),
                 "valid": residue is not None,
                 "validation_error": validation_error,
                 "normalization": (
-                    service.normalization_report(operation_id)
+                    service.normalization_report(operation_id, attempt=validated_attempt)
                     if residue is not None
                     else None
                 ),

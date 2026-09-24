@@ -31,10 +31,12 @@ from .publication import (
 )
 from .residue import (
     RELATIONSHIP_RECONCILIATION_VERSION,
+    RESIDUE_ADMISSION_VERSION,
     SUPPORTED_CONCEPT_KINDS,
     SUPPORTED_RELATIONSHIP_KINDS,
     Residue,
     ResidueValidationError,
+    admit_residue_items,
     normalize_relationship_items,
     validate_residue,
 )
@@ -157,6 +159,8 @@ def _decode_json_document(content: str) -> Any:
                 raise original
             merged.update(value)
         return merged
+
+
 class InterpretationService:
     """Prepare, execute, validate, and publish one episode interpretation."""
 
@@ -294,10 +298,7 @@ class InterpretationService:
         errors: list[str] | None = None,
     ) -> GenerationRequest:
         eligible = source_bundle["eligible"]
-        source_text = {
-            str(source["slot"]): str(source["content"])
-            for source in eligible
-        }
+        source_text = {str(source["slot"]): str(source["content"]) for source in eligible}
         concept_kinds = ", ".join(sorted(SUPPORTED_CONCEPT_KINDS))
         relationship_kinds = ", ".join(sorted(SUPPORTED_RELATIONSHIP_KINDS))
         instruction = (
@@ -350,9 +351,9 @@ class InterpretationService:
             "source and evidence; do not return source_spans, start, or end. "
             "Confidence is mandatory on every graph record and must be a number "
             "from 0.0 through 1.0; never omit it. For example, a minimally "
-            "valid graph record is {\"key\":\"c1\",\"label\":\"mulch\","
-            "\"kind\":\"object\",\"confidence\":0.90,\"evidence\":["
-            "{\"source\":\"s0\",\"evidence\":\"Mulch kept the soil damp.\"}]}. "
+            'valid graph record is {"key":"c1","label":"mulch",'
+            '"kind":"object","confidence":0.90,"evidence":['
+            '{"source":"s0","evidence":"Mulch kept the soil damp."}]}. '
             "route_candidates are optional source-backed groupings. MNEME derives "
             "bounded directed routes from accepted graph edges, so do not invent "
             "a route solely to restate an edge. "
@@ -389,9 +390,7 @@ class InterpretationService:
             "schema_version": 1,
             "extractor_version": self.extractor_version,
             "resolver_version": self.resolver_version,
-            "source_digests": [
-                source["content_digest"] for source in source_bundle["eligible"]
-            ],
+            "source_digests": [source["content_digest"] for source in source_bundle["eligible"]],
             "host_fingerprint": self.host.fingerprint().to_dict(),
         }
         if configuration:
@@ -421,9 +420,7 @@ class InterpretationService:
                 )
             if recovery_of is not None:
                 if not supplied_operation_id:
-                    raise InterpretationError(
-                        "recovery requires an explicit new operation_id"
-                    )
+                    raise InterpretationError("recovery requires an explicit new operation_id")
                 if not recovery_of or not recovery_version:
                     raise InterpretationError("recovery marker is incomplete")
                 recovery = db.execute(
@@ -453,9 +450,7 @@ class InterpretationService:
             if old is not None:
                 if str(old[0]) != episode_id or str(old[1]) != digest:
                     raise InterpretationIdempotencyConflict(operation_id)
-                return InterpretationReceipt(
-                    operation_id, episode_id, str(old[2]), int(old[3])
-                )
+                return InterpretationReceipt(operation_id, episode_id, str(old[2]), int(old[3]))
             duplicate = db.execute(
                 "SELECT operation_id,configuration_digest,status,current_attempt "
                 "FROM interpretation_operations WHERE episode_id=? AND instance_id=? "
@@ -480,8 +475,7 @@ class InterpretationService:
                         str(duplicate[0]), episode_id, str(duplicate[2]), int(duplicate[3])
                     )
             current = db.execute(
-                "SELECT current_manifest_id FROM current_state "
-                "WHERE active_instance_id=?",
+                "SELECT current_manifest_id FROM current_state WHERE active_instance_id=?",
                 (self.instance_id,),
             ).fetchone()
             if current is None:
@@ -497,9 +491,7 @@ class InterpretationService:
                     "PREPARED",
                     0,
                     digest,
-                    None
-                    if recovery_of is None
-                    else f"RECOVERY_OF:{recovery_of}",
+                    None if recovery_of is None else f"RECOVERY_OF:{recovery_of}",
                     now,
                     now,
                 ),
@@ -509,8 +501,7 @@ class InterpretationService:
     def _operation(self, db: Any, value: str | InterpretationReceipt) -> Any:
         operation_id = _as_operation_id(value)
         row = db.execute(
-            "SELECT * FROM interpretation_operations "
-            "WHERE operation_id=? AND instance_id=?",
+            "SELECT * FROM interpretation_operations WHERE operation_id=? AND instance_id=?",
             (operation_id, self.instance_id),
         ).fetchone()
         if row is None:
@@ -714,14 +705,21 @@ class InterpretationService:
         if not isinstance(payload, Mapping):
             raise InterpretationValidationError("provider result must be a JSON object")
         normalized_payload, decisions = normalize_relationship_items(payload)
+        normalized_payload, admission_decisions = admit_residue_items(
+            normalized_payload,
+            sources,
+            require_evidence_quotes=True,
+        )
         residue = validate_residue(
             normalized_payload,
             sources,
             require_evidence_quotes=True,
         )
-        return residue, dict(normalized_payload), decisions
+        return residue, dict(normalized_payload), decisions + admission_decisions
 
-    def normalization_report(self, operation: str | InterpretationReceipt) -> dict[str, Any]:
+    def normalization_report(
+        self, operation: str | InterpretationReceipt, *, attempt: int | None = None
+    ) -> dict[str, Any]:
         """Return the deterministic relationship-boundary disposition.
 
         The provider result remains untouched in ``result_json``.  This report
@@ -731,11 +729,18 @@ class InterpretationService:
         """
 
         operation_id = _as_operation_id(operation)
-        row = self.store.connection.execute(
-            "SELECT result_json,request_json FROM interpretation_attempts "
-            "WHERE operation_id=? ORDER BY attempt DESC LIMIT 1",
-            (operation_id,),
-        ).fetchone()
+        if attempt is None:
+            row = self.store.connection.execute(
+                "SELECT result_json,request_json FROM interpretation_attempts "
+                "WHERE operation_id=? ORDER BY attempt DESC LIMIT 1",
+                (operation_id,),
+            ).fetchone()
+        else:
+            row = self.store.connection.execute(
+                "SELECT result_json,request_json FROM interpretation_attempts "
+                "WHERE operation_id=? AND attempt=?",
+                (operation_id, attempt),
+            ).fetchone()
         if row is None or row[0] is None:
             raise InterpretationNotReady("interpretation result is not ready")
         request_record = json.loads(str(row[1]))
@@ -746,11 +751,10 @@ class InterpretationService:
         _, normalized, decisions = self._residue_from_attempt(str(row[0]), sources)
         return {
             "version": RELATIONSHIP_RECONCILIATION_VERSION,
+            "admission_version": RESIDUE_ADMISSION_VERSION,
             "normalization_decisions": list(decisions),
             "rejected_items": [
-                decision
-                for decision in decisions
-                if decision.get("kind") != "relationship_alias"
+                decision for decision in decisions if decision.get("kind") != "relationship_alias"
             ],
             "normalized_residue": normalized,
         }
@@ -760,6 +764,7 @@ class InterpretationService:
         operation: str | InterpretationReceipt,
         *,
         revalidate_invalid: bool = False,
+        attempt: int | None = None,
     ) -> Residue:
         """Validate the already persisted result and mark its attempt VALID.
 
@@ -774,11 +779,18 @@ class InterpretationService:
         valid_residue: Residue | None = None
         with self.store.transaction() as db:
             op = self._operation(db, operation_id)
-            latest = db.execute(
-                "SELECT attempt,result_json,status,request_json FROM interpretation_attempts "
-                "WHERE operation_id=? ORDER BY attempt DESC LIMIT 1",
-                (operation_id,),
-            ).fetchone()
+            if attempt is None:
+                latest = db.execute(
+                    "SELECT attempt,result_json,status,request_json FROM interpretation_attempts "
+                    "WHERE operation_id=? ORDER BY attempt DESC LIMIT 1",
+                    (operation_id,),
+                ).fetchone()
+            else:
+                latest = db.execute(
+                    "SELECT attempt,result_json,status,request_json FROM interpretation_attempts "
+                    "WHERE operation_id=? AND attempt=?",
+                    (operation_id, attempt),
+                ).fetchone()
             if latest is None or latest[1] is None:
                 raise InterpretationNotReady("interpretation result is not ready")
             request_record = json.loads(str(latest[3]))
@@ -795,9 +807,8 @@ class InterpretationService:
             else:
                 try:
                     valid_residue, _, _ = self._residue_from_attempt(str(latest[1]), sources)
-                    if (
-                        valid_residue.episode_id is not None
-                        and valid_residue.episode_id != str(op["episode_id"])
+                    if valid_residue.episode_id is not None and valid_residue.episode_id != str(
+                        op["episode_id"]
                     ):
                         raise ResidueValidationError("residue episode_id does not match operation")
                 except (
@@ -836,6 +847,15 @@ class InterpretationService:
         if valid_residue is None:
             raise InterpretationValidationError("validation did not produce a residue")
         return valid_residue
+
+    def validate_persisted_attempt(
+        self, operation: str | InterpretationReceipt, attempt: int
+    ) -> Residue:
+        """Revalidate a selected historical attempt without another provider call."""
+
+        if isinstance(attempt, bool) or attempt < 0:
+            raise InterpretationError("attempt must be a non-negative integer")
+        return self.validate(operation, revalidate_invalid=True, attempt=attempt)
 
     def record_reviewed_result(
         self,
