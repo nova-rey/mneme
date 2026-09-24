@@ -250,6 +250,12 @@ The documents are preserved in their supplied form and are intentionally not mer
   continuation receipt](receipts/MNEME_P2.3_Live_Continuation_Normalization_Receipt_20260924.md)
   ([JSON](receipts/MNEME_P2.3_Live_Continuation_Normalization_Receipt_20260924.json)).
 
+  The final pilot-adequacy audit records engineering completion but a truthful
+  `COMPLETED_INADEQUATE` disposition: the run did not produce a separated
+  support/consolidation opportunity, so no causal developmental claim or
+  release is made. See [the pilot-adequacy audit receipt](receipts/MNEME_P2.3_Pilot_Adequacy_Audit_Receipt_20260924.md)
+  ([JSON](receipts/MNEME_P2.3_Pilot_Adequacy_Audit_Receipt_20260924.json)).
+
   The resumed pilot then stopped at `extraction-s1-e5` because Gemma omitted
   required confidence fields from otherwise source-grounded graph records; the
   13-call stop is preserved in [the confidence-schema failure receipt](receipts/MNEME_P2.3_Pilot_Recovery_V4_Confidence_Failure_20260924.md)
