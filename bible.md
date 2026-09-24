@@ -956,3 +956,7 @@
 ## 2026-09-24 P2.3 replay and artifact verification correction audit
 
 - Corrected direct Phase Two evaluation receipt verification and preserved learner opportunity across episode revisions. The completed `r` artifact tree now verifies. Staged copies of the historical subject stores were explicitly migrated and deterministically rebuilt from their immutable ledgers, changing replay agreement from false to true at opportunity 24; original private stores and historical receipts remain unchanged. The separated-support adequacy gap remains unresolved. No provider call was made.
+
+## 2026-09-24 Phase Two queue metadata correction
+
+- Updated the Main Work Queue campaign label from the stale Phase Zero value to `mneme-phase-two`. The queue remains truthful: P2.3 and the contingent supplement are WAITING on their explicit review dependencies; no package was marked complete and no provider call was made.
