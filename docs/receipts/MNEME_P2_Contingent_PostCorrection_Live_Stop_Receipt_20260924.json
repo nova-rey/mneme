@@ -1,0 +1,52 @@
+{
+  "status": "STOPPED_POST_CORRECTION_INTERPRETATION_TOLERANCE",
+  "study_id": "contingent-conversation-interloper-20260924",
+  "run_id": "contingent-live-20260924",
+  "resume_coordinate": {"condition": "interactive", "turn": 9},
+  "historical": {
+    "accepted_turns": 9,
+    "trustworthy_interpretations": 6,
+    "terminal_unknown_turns": 3,
+    "success_rate": 0.6666666666666666,
+    "stop_reason": "interpretation_success_rate_below_75_percent"
+  },
+  "post_correction": {
+    "turns": [9, 10, 11],
+    "accepted_developmental_responses": 3,
+    "trustworthy_interpretations": 0,
+    "terminal_unknown_turns": 3,
+    "extraction_failures": 3,
+    "assessment_failures": 0,
+    "success_rate": 0.0,
+    "consecutive_failures": 3,
+    "stop_reason": "three_consecutive_interpretation_failures"
+  },
+  "calls": {
+    "new_returned": 12,
+    "cumulative_returned": 77,
+    "by_role": {
+      "interloper": 3,
+      "development-response": 3,
+      "development-extraction": 6
+    },
+    "tokens": {
+      "input": 23089,
+      "output": 7452,
+      "total": 30541
+    },
+    "cost": null
+  },
+  "contracts": {
+    "extractor": "residue-v5",
+    "interloper_policy": "revision-2"
+  },
+  "evidence": {
+    "transcript": "docs/receipts/MNEME_P2_Contingent_PostCorrection_Transcript_20260924.md",
+    "historical_transcript": "docs/receipts/MNEME_P2_Contingent_Conversation_Transcript_20260924.md",
+    "private_root": "/tmp/mneme-contingent-live-20260924"
+  },
+  "open_loop_started": false,
+  "evaluation_started": false,
+  "p23_disposition": "COMPLETED_INADEQUATE",
+  "phase_three_started": false
+}

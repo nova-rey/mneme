@@ -972,3 +972,7 @@
 ## 2026-09-24 P2 contingent reviewed-continuation accounting correction
 
 - Added the durable reviewed-continuation marker and prospective post-correction measurement segment. A reviewed resume at turn 9 retains cumulative historical counters while evaluating the measurement stop rule over corrected turns separately; no historical turn, failure, learner result, or P2.3 disposition is changed. Offline validation passed: 395 pytest, Ruff, strict mypy, wheel build; no provider call was made.
+
+## 2026-09-24 P2 contingent post-correction live stop
+
+- Resumed the preserved run at interactive turn 9 under `residue-v5` and Interloper policy revision 2. Turns 9–11 produced accepted Gemma responses, but each initial extraction and one repair returned length-terminated unparsable JSON. The corrected post-correction segment therefore stopped at 0/3 trustworthy interpretations after three consecutive failures; the historical 6/9 result and all prior evidence remain unchanged. Twelve new calls returned (23,089 input, 7,452 output, 30,541 total tokens; cost unavailable), no open-loop/evaluation calls began, and the exact turns 9–11 transcript and sanitized stop receipt were published. P2.3 remains `COMPLETED_INADEQUATE`; no Phase Three work began.

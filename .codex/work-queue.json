@@ -58,6 +58,13 @@
       "resolved_at": "2026-09-24T23:05:20Z",
       "status": "RESOLVED"
     },
+    "review:contingent-post-correction-interpretation-stop": {
+      "created_at": "2026-09-24T23:16:43Z",
+      "kind": "other",
+      "receipt": "docs/receipts/MNEME_P2_Contingent_PostCorrection_Live_Stop_Receipt_20260924.md",
+      "reference": "Post-correction residue-v5 continuation stopped at turns 9-11 after three consecutive length-terminated extraction failures; review new instrumentation evidence before any further provider call",
+      "status": "UNRESOLVED"
+    },
     "review:p2.3-budget-after-historical-calls": {
       "created_at": "2026-09-21T01:39:49.011154Z",
       "kind": "other",
@@ -1467,7 +1474,8 @@
       "completion_criterion": "Offline wire/preflight, bounded two-condition study, checkpoints/readouts, readable evidence, validation and CI, with separate implementation/condition/adequacy/findings dispositions.",
       "created_at": "2026-09-24T00:00:00Z",
       "dependencies": [
-        "review:contingent-interpretation-rate-stop"
+        "review:contingent-interpretation-rate-stop",
+        "review:contingent-post-correction-interpretation-stop"
       ],
       "domain": "phase-two-experiment",
       "edit_boundaries": [
@@ -1499,10 +1507,13 @@
         "docs/receipts/MNEME_P2_Contingent_Rich_Language_Extraction_Correction_Receipt_20260924.md",
         "docs/receipts/MNEME_P2_Contingent_Rich_Language_Extraction_Correction_Receipt_20260924.json",
         "docs/receipts/MNEME_P2_Contingent_Interpretation_Stop_Review_Resolution_20260924.md",
-        "docs/receipts/MNEME_P2_Contingent_Reviewed_Continuation_Correction_Receipt_20260924.md"
+        "docs/receipts/MNEME_P2_Contingent_Reviewed_Continuation_Correction_Receipt_20260924.md",
+        "docs/receipts/MNEME_P2_Contingent_PostCorrection_Transcript_20260924.md",
+        "docs/receipts/MNEME_P2_Contingent_PostCorrection_Live_Stop_Receipt_20260924.md",
+        "docs/receipts/MNEME_P2_Contingent_PostCorrection_Live_Stop_Receipt_20260924.json"
       ],
       "id": "P2-SUPPLEMENT-INTERLOPER",
-      "notes": "Owner-supplied P2-SUPPLEMENT-INTERLOPER-01; stopped at interactive extraction t03 after one overbound Gemma residue and one length-terminated repair; old P2.3 remains COMPLETED_INADEQUATE. Capacity-admission correction is offline-validated: valid excess candidates are admitted deterministically within caps, item-level rejection preserves unrelated evidence, and persisted initial attempts can be revalidated after failed repair without provider calls. Historical turn-3 attempts remain unchanged; continuation is ready after push/CI. First post-correction resume made no new provider call and exposed a stale-manifest edge for an earlier empty interpretation after a later accepted episode. The bounded stale-empty skip is now offline-pending validation; relationship-bearing stale publications remain fail-closed. A second no-provider resume audit found the original extraction operation was revisited despite an accepted evidence-review recovery; the runtime now reuses the durable recovery before publication. Offline validation is complete; push/CI precedes continuation. Recovery reuse then exposed an auxiliary-record representation-only defect in the new admission validator; raw quotation form is now preserved before strict validation. Offline validation is complete; push/CI precedes continuation. After capacity correction and three no-provider resume fixes, the preserved run resumed with 7 new fixed-coordinate calls, progressed through interactive t04, and stopped at t05 after initial and one repair extraction were both unparseable JSON. Cumulative returned calls 54; no open-loop/evaluation calls followed. The failure-tolerance correction published exact conversational transcripts, reconstructed accepted history without redispatch, and isolated terminal interpretation failures as measurement_unknown / interpretation_unavailable with no developmental credit or absence inference. The preserved run resumed at t06 and made 11 new fixed-coordinate calls through t08; after 9 accepted interactive turns, 3 lacked trustworthy interpretation, triggering the declared >25% post-eight-turn measurement stop. Cumulative returned calls 65; no open-loop/evaluation calls followed. Offline validation and CI passed for the correction; a post-stop audit also made stop-rule-paused runs require explicit review before resumption. The supplement remains waiting for interpretation-rate review. The preserved transcript showed real contingency with poetic/philosophical mirroring at turns 4-8. Prospective residue-v5 now requests concise high-confidence extraction with explicit metaphor abstention; Interloper policy revision 2 preserves contingency while reducing repeated mirroring. Rich-language fixtures and receipts added; no provider call or historical turn regeneration. Rich-language correction pushed at e3a47e6; full pytest=389, Ruff, strict mypy, wheel/fresh-install smoke, and CI 36067335769 pass. No provider continuation was made because the existing 6/9 interpretation-rate stop remains active and requires review. Scientific review resolution receipt `docs/receipts/MNEME_P2_Contingent_Interpretation_Stop_Review_Resolution_20260924.md` now authorizes preserved continuation at interactive turn 9; the additive reviewed-segment accounting correction is recorded in `docs/receipts/MNEME_P2_Contingent_Reviewed_Continuation_Correction_Receipt_20260924.md`.",
+      "notes": "Owner-supplied P2-SUPPLEMENT-INTERLOPER-01; stopped at interactive extraction t03 after one overbound Gemma residue and one length-terminated repair; old P2.3 remains COMPLETED_INADEQUATE. Capacity-admission correction is offline-validated: valid excess candidates are admitted deterministically within caps, item-level rejection preserves unrelated evidence, and persisted initial attempts can be revalidated after failed repair without provider calls. Historical turn-3 attempts remain unchanged; continuation is ready after push/CI. First post-correction resume made no new provider call and exposed a stale-manifest edge for an earlier empty interpretation after a later accepted episode. The bounded stale-empty skip is now offline-pending validation; relationship-bearing stale publications remain fail-closed. A second no-provider resume audit found the original extraction operation was revisited despite an accepted evidence-review recovery; the runtime now reuses the durable recovery before publication. Offline validation is complete; push/CI precedes continuation. Recovery reuse then exposed an auxiliary-record representation-only defect in the new admission validator; raw quotation form is now preserved before strict validation. Offline validation is complete; push/CI precedes continuation. After capacity correction and three no-provider resume fixes, the preserved run resumed with 7 new fixed-coordinate calls, progressed through interactive t04, and stopped at t05 after initial and one repair extraction were both unparseable JSON. Cumulative returned calls 54; no open-loop/evaluation calls followed. The failure-tolerance correction published exact conversational transcripts, reconstructed accepted history without redispatch, and isolated terminal interpretation failures as measurement_unknown / interpretation_unavailable with no developmental credit or absence inference. The preserved run resumed at t06 and made 11 new fixed-coordinate calls through t08; after 9 accepted interactive turns, 3 lacked trustworthy interpretation, triggering the declared >25% post-eight-turn measurement stop. Cumulative returned calls 65; no open-loop/evaluation calls followed. Offline validation and CI passed for the correction; a post-stop audit also made stop-rule-paused runs require explicit review before resumption. The supplement remains waiting for interpretation-rate review. The preserved transcript showed real contingency with poetic/philosophical mirroring at turns 4-8. Prospective residue-v5 now requests concise high-confidence extraction with explicit metaphor abstention; Interloper policy revision 2 preserves contingency while reducing repeated mirroring. Rich-language fixtures and receipts added; no provider call or historical turn regeneration. Rich-language correction pushed at e3a47e6; full pytest=389, Ruff, strict mypy, wheel/fresh-install smoke, and CI 36067335769 pass. No provider continuation was made because the existing 6/9 interpretation-rate stop remains active and requires review. Scientific review resolution receipt `docs/receipts/MNEME_P2_Contingent_Interpretation_Stop_Review_Resolution_20260924.md` now authorizes preserved continuation at interactive turn 9; the additive reviewed-segment accounting correction is recorded in `docs/receipts/MNEME_P2_Contingent_Reviewed_Continuation_Correction_Receipt_20260924.md`. The corrected continuation then stopped at turns 9-11 after three consecutive length-terminated extraction failures; exact transcript and stop receipt are published and a new review dependency is open.",
       "owner": null,
       "priority": 2,
       "project": "nova-rey/mneme",
@@ -1526,9 +1537,9 @@
       ],
       "scope": "Implement and execute P2-SUPPLEMENT-INTERLOPER-01 as an additive two-condition interactive versus open-loop study; preserve historical P2.3.",
       "session_ids": [],
-      "status": "READY",
+      "status": "WAITING",
       "title": "Contingent conversation interloper study",
-      "updated_at": "2026-09-24T23:05:20Z",
+      "updated_at": "2026-09-24T23:16:43Z",
       "validation": {
         "required": [
           "pytest -q",
@@ -1540,7 +1551,9 @@
         ],
         "results": {}
       },
-      "waiting_on": [],
+      "waiting_on": [
+        "review:contingent-post-correction-interpretation-stop"
+      ],
       "workstream": "phase-two"
     }
   ],
@@ -1556,5 +1569,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-24T23:05:20Z"
+  "updated_at": "2026-09-24T23:16:43Z"
 }
