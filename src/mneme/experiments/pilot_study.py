@@ -655,7 +655,16 @@ class PilotStudy:
         completed_evaluation_ids = {
             str(value) for value in progress.get("completed_evaluations", [])
         }
-        completed_development = int(progress.get("development_completed", 0))
+        persisted_development = int(progress.get("development_completed", 0))
+        # A recovery may revisit an already accepted response after its
+        # extraction failed.  Count schedule coordinates, not accepted
+        # transitions, so that such a revisit cannot inflate the study
+        # completion counter.
+        completed_development = (
+            len(completed_development_ids)
+            if completed_development_ids
+            else persisted_development
+        )
         valid_extractions = int(progress.get("extractions_valid", 0))
         repair_count = max(self._existing_repairs(), int(progress.get("extraction_repairs", 0)))
         assessments = int(progress.get("assessments_completed", 0))
@@ -677,7 +686,8 @@ class PilotStudy:
                         request=request,
                         max_output_tokens=limits["development-response"],
                     )
-                    completed_development += 1
+                    completed_development_ids.add(development_id)
+                    completed_development = len(completed_development_ids)
                     accepted_development_ids.add(development_id)
                     # Persist the accepted response before extraction starts.
                     # If extraction or assessment later fails, restart can
@@ -787,6 +797,7 @@ class PilotStudy:
                         relationships += int(plan.publish(provider.validated))
                     assessments += 1
                     completed_development_ids.add(development_id)
+                    completed_development = len(completed_development_ids)
                     self._record_progress(
                         development_completed=completed_development,
                         extractions_valid=valid_extractions,

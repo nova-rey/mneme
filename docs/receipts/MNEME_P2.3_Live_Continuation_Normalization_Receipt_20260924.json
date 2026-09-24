@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-24",
+  "historical_returned_calls_before_continuation": 187,
+  "continuations": [
+    {
+      "run_id": "p2-pilot-recovery-20260924q",
+      "returned_calls": 59,
+      "roles": {
+        "development-response": 8,
+        "development-extraction": 8,
+        "assessor": 6,
+        "evaluation": 37
+      },
+      "status": "INTERRUPTED_EXTERNAL",
+      "coordinate": "evaluation-s0-p6-r1",
+      "reason": "filesystem capacity prevented writing the next reservation; empty pre-dispatch reservation preserved"
+    },
+    {
+      "run_id": "p2-pilot-recovery-20260924r",
+      "returned_calls": 107,
+      "roles": {
+        "evaluation": 107
+      },
+      "status": "COMPLETE",
+      "resumed_from": "p2-pilot-recovery-20260924q"
+    }
+  ],
+  "new_returned_calls": 166,
+  "cumulative_returned_calls": 353,
+  "nominal_call_ceiling": 299,
+  "operational_contingency_ceiling": 399,
+  "remaining_operational_allowance": 46,
+  "token_usage_continuation_q_r": {
+    "input_tokens": 22460,
+    "output_tokens": 44636,
+    "total_tokens": 67096,
+    "cost": null
+  },
+  "relationship_normalization": {
+    "version": "relationship-normalization-v1",
+    "raw_label": "holds",
+    "canonical_relation": "retains",
+    "meaning": "physical retention or containment of moisture",
+    "source_coordinate": "extraction-s1-e7",
+    "raw_provider_result_rewritten": false
+  },
+  "pilot_result_raw": {
+    "development_completed": 58,
+    "unique_development_coordinates": 48,
+    "extractions_valid": 48,
+    "extraction_repairs": 8,
+    "assessments_completed": 48,
+    "admitted_relationships": 23,
+    "evaluations_completed": 144,
+    "status": "COMPLETE",
+    "raw_engineering_adequate": false,
+    "corrected_engineering_adequate": true
+  },
+  "evaluation_isolation": {
+    "evaluation_receipts_audited": 144,
+    "developmental_state_before_equals_after": 144,
+    "checkpoint_digest_stable_across_q_r": true,
+    "evaluation_writeback": false
+  },
+  "validation": {
+    "focused_tests": "6 passed",
+    "pytest": "362 passed",
+    "ruff": "passed",
+    "mypy_strict_src_mneme": "passed",
+    "wheel_fresh_install_cli_smoke": "passed",
+    "provider_calls_for_correction": 0
+  },
+  "phase_three_started": false
+}

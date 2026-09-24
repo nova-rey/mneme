@@ -243,6 +243,13 @@ The documents are preserved in their supplied form and are intentionally not mer
   similarly establishes `protects` → `prevents`. Raw results remain unchanged. The decision and offline evidence
   are recorded in [the relationship-normalization decision](decisions/MNEME_P2_Extractor_Relationship_Normalization_Addendum.md) and [its receipt](receipts/MNEME_P2.3_Extractor_Relationship_Normalization_Receipt_20260924.md) ([JSON](receipts/MNEME_P2.3_Extractor_Relationship_Normalization_Receipt_20260924.json)).
 
+  The preserved-coordinate continuation then completed the remaining 144
+  frozen evaluations across the q filesystem interruption and r resume. Its
+  sanitized call ledger, `holds` semantic decision, isolation audit, and
+  unique-coordinate resume-counter correction are recorded in [the live
+  continuation receipt](receipts/MNEME_P2.3_Live_Continuation_Normalization_Receipt_20260924.md)
+  ([JSON](receipts/MNEME_P2.3_Live_Continuation_Normalization_Receipt_20260924.json)).
+
   The resumed pilot then stopped at `extraction-s1-e5` because Gemma omitted
   required confidence fields from otherwise source-grounded graph records; the
   13-call stop is preserved in [the confidence-schema failure receipt](receipts/MNEME_P2.3_Pilot_Recovery_V4_Confidence_Failure_20260924.md)

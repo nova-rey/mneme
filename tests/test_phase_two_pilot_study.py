@@ -146,6 +146,55 @@ def test_study_pause_resume_reuses_stable_coordinates(tmp_path: Path) -> None:
     assert runtime.evaluation_ids[-1] == "evaluation-s1-p11-r5"
 
 
+def test_resume_counts_unique_development_coordinates_after_accepted_retry() -> None:
+    pilot = _FakePilot(
+        progress={
+            # The accepted response for e1 was persisted before its first
+            # extraction failed.  A recovery must not count that coordinate
+            # twice when its extraction resumes.
+            "development_completed": 2,
+            "completed_development_ids": ["development-s0-e0"],
+            "accepted_development_ids": [
+                "development-s0-e0",
+                "development-s0-e1",
+            ],
+            "extractions_valid": 1,
+            "extraction_repairs": 0,
+            "assessments_completed": 1,
+            "admitted_relationships": 1,
+            "evaluations_completed": 0,
+            "completed_evaluations": [],
+        }
+    )
+    runtime = _FakeRuntime()
+    study = PilotStudy(pilot, runtime)  # type: ignore[arg-type]
+
+    def assessment(*_args: Any) -> AssessmentPlan:
+        return AssessmentPlan(
+            FakeHost(),
+            GenerationRequest(({"role": "user", "content": "assess"},)),
+            lambda _content: {"valid": True},
+            lambda _validated: 1,
+        )
+
+    def evaluation(*_args: Any) -> EvaluationPlan:
+        return EvaluationPlan(
+            checkpoint="checkpoint.sqlite3",
+            private_snapshot="checkpoint.sqlite3",
+            host=FakeHost(),
+            messages=({"role": "user", "content": "probe"},),
+        )
+
+    completed = study.run(assessment=assessment, evaluation=evaluation)
+
+    assert completed.status == PilotStatus.COMPLETE.value
+    assert completed.development_completed == 48
+    assert completed.extractions_valid == 48
+    assert completed.assessments_completed == 48
+    assert completed.evaluations_completed == 144
+    assert completed.engineering_adequate is True
+
+
 def test_production_assessment_adapter_serializes_complete_monitor_and_resolves_sources() -> None:
     class _Connection:
         def execute(self, _query: str, _args: tuple[str, ...]) -> Any:
