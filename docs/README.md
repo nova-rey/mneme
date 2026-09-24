@@ -88,6 +88,7 @@ The documents are preserved in their supplied form and are intentionally not mer
   [fork/revocation](receipts/MNEME_P2.2_Fork_Revocation_Receipt.md), and
   [recovery](receipts/MNEME_P2.2_Recovery_Receipt.md) receipts are published beside
   the [Phase Two scientific review packet](receipts/MNEME_Phase_Two_Scientific_Review_Packet_20260925.md), which records the unresolved contingent measurement stop and P2.3 adequacy decision without changing historical evidence. The [contingent interpretation-stop review resolution](receipts/MNEME_P2_Contingent_Interpretation_Stop_Review_Resolution_20260924.md) authorizes preserved continuation at interactive turn 9 while retaining the historical 6/9 counters and the P2.3 `COMPLETED_INADEQUATE` disposition.
+  The [reviewed-continuation correction receipt](receipts/MNEME_P2_Contingent_Reviewed_Continuation_Correction_Receipt_20260924.md) records the additive post-correction segment accounting and offline validation.
   [the offline P2.3 assessor/pilot boundary receipt](receipts/MNEME_P2.3_Offline_Assessor_Pilot_Boundary_Receipt.md);
   the fixed qualification failure is recorded in [the qualification failure receipt](receipts/MNEME_P2.3_Assessor_Qualification_Failure_Receipt.md);
   the reviewed prompt-contract remediation and its offline validation are recorded in

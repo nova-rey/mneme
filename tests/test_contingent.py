@@ -127,6 +127,50 @@ def test_measurement_stop_requires_three_consecutive_or_low_rate_failures() -> N
     assert _measurement_stop(low_rate) == "interpretation_success_rate_below_75_percent"
 
 
+def test_reviewed_continuation_evaluates_post_correction_segment_only() -> None:
+    historical = [
+        {"turn": turn, "trustworthy_interpretation": turn not in {3, 5, 8}}
+        for turn in range(9)
+    ]
+    post_correction = [
+        {"turn": 9, "trustworthy_interpretation": True},
+        {"turn": 10, "trustworthy_interpretation": True},
+    ]
+    all_records = historical + post_correction
+    counters = _measurement_counters(
+        all_records,
+        measurement_segment=post_correction,
+    )
+    assert counters["attempted_developmental_turns"] == 11
+    assert counters["successfully_interpreted_turns"] == 8
+    assert counters["stop_reason"] is None
+    assert counters["post_correction"]["attempted_developmental_turns"] == 2
+    assert counters["post_correction"]["successfully_interpreted_turns"] == 2
+    assert counters["post_correction"]["interpretation_success_rate"] == 1.0
+
+
+def test_reviewed_segment_requires_preserved_resume_turn() -> None:
+    from mneme.experiments.contingent import _reviewed_segment_start
+
+    assert (
+        _reviewed_segment_start(
+            {
+                "measurement_review": {
+                    "status": "APPROVED_CONTINUATION",
+                    "resume_turn": 9,
+                }
+            },
+            "interactive",
+        )
+        == 9
+    )
+    assert _reviewed_segment_start({}, "interactive") is None
+    assert _reviewed_segment_start(
+        {"measurement_review": {"status": "APPROVED_CONTINUATION", "resume_turn": 9}},
+        "open-loop",
+    ) is None
+
+
 def test_transcript_snapshot_preserves_exact_conversational_text(tmp_path: Path) -> None:
     gemma = FakeHost(model_id="gemma-test")
     qwen = FakeHost(model_id="qwen-test")

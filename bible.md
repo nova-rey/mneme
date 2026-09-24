@@ -968,3 +968,7 @@
 ## 2026-09-24 P2 contingent interpretation-stop review resolution
 
 - Recorded the scientific-review disposition that clears only the contingent interpretation-stop dependency for preserved continuation at interactive turn 9. Historical turns 0–8, the 6/9 interpretation counters, and all three failed measurements remain immutable; post-correction quality is tracked separately. P2.3 remains `COMPLETED_INADEQUATE`, no historical result was rerun, and no provider call was made for the resolution.
+
+## 2026-09-24 P2 contingent reviewed-continuation accounting correction
+
+- Added the durable reviewed-continuation marker and prospective post-correction measurement segment. A reviewed resume at turn 9 retains cumulative historical counters while evaluating the measurement stop rule over corrected turns separately; no historical turn, failure, learner result, or P2.3 disposition is changed. Offline validation passed: 395 pytest, Ruff, strict mypy, wheel build; no provider call was made.

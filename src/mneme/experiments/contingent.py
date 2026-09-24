@@ -52,7 +52,7 @@ def _measurement_stop(records: Sequence[Mapping[str, Any]]) -> str | None:
     return None
 
 
-def _measurement_counters(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+def _counter_values(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     failures = [not bool(record.get("trustworthy_interpretation")) for record in records]
     consecutive = 0
     for failed in reversed(failures):
@@ -78,8 +78,49 @@ def _measurement_counters(records: Sequence[Mapping[str, Any]]) -> dict[str, Any
         "interpretation_success_rate": (
             (attempted - missing) / attempted if attempted else 1.0
         ),
-        "stop_reason": _measurement_stop(records),
     }
+
+
+def _measurement_counters(
+    records: Sequence[Mapping[str, Any]],
+    *,
+    measurement_segment: Sequence[Mapping[str, Any]] | None = None,
+) -> dict[str, Any]:
+    """Return cumulative counters plus the prospective segment counters.
+
+    A reviewed continuation must not erase the historical stop or pretend that
+    its corrected instrumentation had already applied to turns 0--8. The
+    cumulative fields remain the complete branch record; stop evaluation and
+    the additional segment fields are calculated from the supplied segment.
+    """
+
+    segment = records if measurement_segment is None else measurement_segment
+    counters = _counter_values(records)
+    counters["stop_reason"] = _measurement_stop(segment)
+    if measurement_segment is not None:
+        counters["post_correction"] = {
+            **_counter_values(segment),
+            "stop_reason": _measurement_stop(segment),
+        }
+    return counters
+
+
+def _reviewed_segment_start(
+    progress: Mapping[str, Any], condition: str
+) -> int | None:
+    """Return the reviewed post-correction start turn for the interactive branch."""
+
+    if condition != "interactive":
+        return None
+    review = progress.get("measurement_review")
+    if not isinstance(review, Mapping):
+        return None
+    if review.get("status") != "APPROVED_CONTINUATION":
+        return None
+    value = review.get("resume_turn")
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        raise ContingentStudyError("measurement review has an invalid resume turn")
+    return value
 
 
 def _restored_interpretation(
@@ -638,10 +679,21 @@ class ContingentStudy:
             pairs.append((partner, subject))
         return len(records), pairs, records
 
-    def _record_progress(self, condition: str, records: Sequence[Mapping[str, Any]]) -> None:
+    def _record_progress(
+        self,
+        condition: str,
+        records: Sequence[Mapping[str, Any]],
+        *,
+        segment_start: int | None = None,
+    ) -> None:
+        segment = (
+            [record for record in records if record.get("turn", -1) >= segment_start]
+            if segment_start is not None
+            else None
+        )
         self.pilot.record_study_progress(
             condition=condition,
-            **_measurement_counters(records),
+            **_measurement_counters(records, measurement_segment=segment),
             last_turn=(records[-1].get("turn") if records else None),
         )
 
@@ -649,6 +701,12 @@ class ContingentStudy:
         self, slot: int, condition: str, partner_messages: Sequence[str] | None
     ) -> dict[str, Any]:
         start_turn, pairs, records = self._load_branch_state(condition)
+        progress = self.pilot.study_progress()
+        segment_start = _reviewed_segment_start(progress, condition)
+        if segment_start is not None and start_turn < segment_start:
+            raise ContingentStudyError(
+                "reviewed continuation would rewind before its preserved resume turn"
+            )
         fit_records: list[dict[str, Any]] = []
         fit_path = self.root / "fit-check.json"
         if fit_path.is_file():
@@ -658,7 +716,7 @@ class ContingentStudy:
                     dict(item) for item in fit_value["records"] if isinstance(item, Mapping)
                 ]
         self._publish_transcript(records=records, condition=condition, fit_records=fit_records)
-        self._record_progress(condition, records)
+        self._record_progress(condition, records, segment_start=segment_start)
         adapter = ProductionAssessmentAdapter(self.runtime, self.assessor_host)
         for turn in self.schedule.turns:
             if turn.turn < start_turn:
@@ -756,17 +814,24 @@ class ContingentStudy:
                 }
                 pairs.append((partner, response))
                 records.append(failure_record)
-                self._record_progress(condition, records)
+                self._record_progress(condition, records, segment_start=segment_start)
                 self._publish_transcript(
                     records=records, condition=condition, fit_records=fit_records
                 )
-                stop_reason = _measurement_stop(records)
+                segment_records = (
+                    [record for record in records if record.get("turn", -1) >= segment_start]
+                    if segment_start is not None
+                    else records
+                )
+                stop_reason = _measurement_stop(segment_records)
                 if stop_reason is not None:
                     self.pilot._write_state(
                         PilotStatus.PAUSED,
                         study_progress={
                             **self.pilot.study_progress(),
-                            **_measurement_counters(records),
+                            **_measurement_counters(
+                                records, measurement_segment=segment_records
+                            ),
                             "condition": condition,
                             "stop_reason": stop_reason,
                         },
@@ -817,17 +882,28 @@ class ContingentStudy:
                             "assessment_recorded": True,
                         }
                     )
-                    self._record_progress(condition, records)
+                    self._record_progress(condition, records, segment_start=segment_start)
                     self._publish_transcript(
                         records=records, condition=condition, fit_records=fit_records
                     )
-                    stop_reason = _measurement_stop(records)
+                    segment_records = (
+                        [
+                            record
+                            for record in records
+                            if record.get("turn", -1) >= segment_start
+                        ]
+                        if segment_start is not None
+                        else records
+                    )
+                    stop_reason = _measurement_stop(segment_records)
                     if stop_reason is not None:
                         self.pilot._write_state(
                             PilotStatus.PAUSED,
                             study_progress={
                                 **self.pilot.study_progress(),
-                                **_measurement_counters(records),
+                                **_measurement_counters(
+                                    records, measurement_segment=segment_records
+                                ),
                                 "condition": condition,
                                 "stop_reason": stop_reason,
                             },
@@ -878,7 +954,7 @@ class ContingentStudy:
                     "assessment_recorded": plan.request is not None,
                 }
             )
-            self._record_progress(condition, records)
+            self._record_progress(condition, records, segment_start=segment_start)
             self._publish_transcript(records=records, condition=condition, fit_records=fit_records)
             if turn.turn in {7, 15, 23}:
                 checkpoint = self.root / f"{condition}-checkpoint-{turn.turn + 1}.sqlite3"
@@ -1065,7 +1141,12 @@ class ContingentStudy:
             )
             self.pilot.begin_pilot()
         elif state["status"] == PilotStatus.PAUSED.value:
-            if self.pilot.study_progress().get("stop_reason"):
+            progress = self.pilot.study_progress()
+            review = progress.get("measurement_review")
+            reviewed = isinstance(review, Mapping) and review.get("status") == (
+                "APPROVED_CONTINUATION"
+            )
+            if progress.get("stop_reason") and not reviewed:
                 raise ContingentStudyError(
                     "contingent study is paused for measurement review; "
                     "a stop-rule disposition is required before resuming"
