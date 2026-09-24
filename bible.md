@@ -712,3 +712,7 @@
 ## 2026-09-24 Phase Two operational budget contingency
 
 - Recorded the standing in-scope contingency authority: the larger of +100 calls or +25% of the approved campaign ceiling, with cumulative accounting, no favorable resampling, and an unchanged 204,288 output-token ceiling. For P2.3 this makes a 399-call operational cap after the nominal 299-call ceiling; 42 historical calls leave 357 calls in the contingency envelope. The budget review is resolved, while the extraction-stop review remains substantive. Evidence: `docs/decisions/MNEME_P2_Operational_Budget_Contingency_Addendum.md` and `docs/receipts/MNEME_P2.3_Budget_Contingency_Authorization_Receipt.md`.
+
+## 2026-09-24 P2.3 failed-coordinate recovery correction
+
+- Added an explicit schema-8 recovery path for a failed extraction after the historical pilot exhausted its one repair. The failed operation remains immutable; a new versioned recovery operation records its superseded operation and uses a new fixed coordinate. Accepted developmental responses are never redispatched. Offline provider calls: zero. Evidence: `docs/receipts/MNEME_P2.3_Extraction_Recovery_Correction_Receipt.md` and `.json`.

@@ -10,7 +10,7 @@ def test_schema_six_creates_learning_policy_and_development_records(tmp_path):
     path = tmp_path / "phase-two.sqlite3"
     with SQLiteStore(path) as store:
         store.create_root(permissions=StoragePermissions(learn=True))
-        assert SCHEMA_VERSION == 7
+        assert SCHEMA_VERSION == 8
         assert store.connection.execute(
             "SELECT learning_allowed FROM policies"
         ).fetchone()[0] == 1
@@ -78,7 +78,7 @@ def test_schema_five_migration_adds_phase_two_records_and_keeps_backup(tmp_path)
     SQLiteStore.migrate(path, backup=backup)
     assert backup.is_file()
     with SQLiteStore(path, read_only=True) as migrated:
-        assert migrated.connection.execute("PRAGMA user_version").fetchone()[0] == 7
+        assert migrated.connection.execute("PRAGMA user_version").fetchone()[0] == 8
         assert migrated.connection.execute(
             "SELECT learning_allowed FROM policies"
         ).fetchone()[0] == 0
@@ -88,11 +88,11 @@ def test_schema_five_migration_adds_phase_two_records_and_keeps_backup(tmp_path)
         ).fetchone() is not None
 
 
-def test_schema_seven_contains_review_and_quarantine_records(tmp_path):
+def test_schema_eight_contains_review_quarantine_and_recovery_records(tmp_path):
     path = tmp_path / "phase-two.sqlite3"
     with SQLiteStore(path) as store:
         store.create_root()
-        assert store.connection.execute("PRAGMA user_version").fetchone()[0] == 7
+        assert store.connection.execute("PRAGMA user_version").fetchone()[0] == 8
         tables = {
             row[0]
             for row in store.connection.execute(
@@ -105,3 +105,7 @@ def test_schema_seven_contains_review_and_quarantine_records(tmp_path):
             "identity_review_operations",
             "identity_review_attempts",
         } <= tables
+        operation_sql = store.connection.execute(
+            "SELECT sql FROM sqlite_master WHERE type='table' AND name='interpretation_operations'"
+        ).fetchone()[0]
+        assert "episode_id TEXT NOT NULL UNIQUE" not in operation_sql

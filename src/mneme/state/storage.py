@@ -22,7 +22,7 @@ from .contracts import (
     validate_id,
 )
 
-SCHEMA_VERSION = 7
+SCHEMA_VERSION = 8
 APPLICATION_ID = 0x4D4E454D  # ASCII "MNEM"
 
 _SCHEMA = """
@@ -182,7 +182,7 @@ CREATE TABLE IF NOT EXISTS checkpoints (
 );
 CREATE TABLE IF NOT EXISTS interpretation_operations (
   operation_id TEXT PRIMARY KEY,
-  episode_id TEXT NOT NULL UNIQUE REFERENCES episodes(episode_id),
+  episode_id TEXT NOT NULL REFERENCES episodes(episode_id),
   instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
   base_manifest_id TEXT NOT NULL REFERENCES manifests(manifest_id),
   status TEXT NOT NULL CHECK (status IN ('PREPARED','STARTED','RESULT_READY','ACCEPTED','FAILED','UNCERTAIN','ABANDONED')),
@@ -694,7 +694,7 @@ class SQLiteStore:
         version = int(row[0]) if row else 0
         if version > SCHEMA_VERSION:
             raise SchemaError(f"unsupported newer schema version {version}")
-        if self.read_only and version in {1, 2, 3, 4, 5, 6}:
+        if self.read_only and version in {1, 2, 3, 4, 5, 6, 7}:
             # Historical Phase Zero checkpoints remain inspectable without
             # mutation.  Forking a v1 checkpoint stages and explicitly
             # migrates a private copy before opening it writable.
@@ -725,9 +725,9 @@ class SQLiteStore:
         interrupted or validation fails.
         """
 
-        if target_version not in {2, 3, 4, 5, 6, SCHEMA_VERSION}:
+        if target_version not in {2, 3, 4, 5, 6, 7, SCHEMA_VERSION}:
             raise SchemaError(
-                f"only migration to schema 2, 3, 4, 5, 6 or {SCHEMA_VERSION} is supported"
+                f"only migration to schema 2, 3, 4, 5, 6, 7 or {SCHEMA_VERSION} is supported"
             )
         source = Path(path)
         if not source.is_file():
@@ -747,11 +747,16 @@ class SQLiteStore:
             version = int(version_row[0]) if version_row else 0
             if version == target_version:
                 raise SchemaError("store is already at the requested schema version")
-            if version not in {1, 2, 3, 4, 5, 6} or version > target_version:
+            if version not in {1, 2, 3, 4, 5, 6, 7} or version > target_version:
                 raise SchemaError(f"cannot migrate unsupported schema version {version}")
             info = raw.execute("SELECT schema_version FROM store_info").fetchone()
             if info is None or int(info[0]) != version:
                 raise SchemaError("store_info schema version is missing or inconsistent")
+            # Foreign-key enforcement must be disabled before BEGIN; SQLite
+            # ignores a toggle made while a transaction is active.  The
+            # rebuilt tables retain the same references and are checked again
+            # when the migrated store is reopened.
+            raw.execute("PRAGMA foreign_keys = OFF")
             raw.execute("BEGIN IMMEDIATE")
             def has_column(table: str, column: str) -> bool:
                 return any(
@@ -903,7 +908,7 @@ class SQLiteStore:
                 )
                 raw.execute("PRAGMA user_version = 6")
                 version = 6
-            if version == 6 and target_version >= SCHEMA_VERSION:
+            if version == 6 and target_version >= 7:
                 for statement in _SCHEMA_V7_TABLES.split(";"):
                     statement = statement.strip()
                     if statement:
@@ -913,6 +918,128 @@ class SQLiteStore:
                 )
                 raw.execute("PRAGMA user_version = 7")
                 version = 7
+            if version == 7 and target_version >= SCHEMA_VERSION:
+                # v7 made one interpretation operation unique per episode.
+                # A failed interpretation must remain immutable evidence while
+                # an explicitly corrected extraction gets a new operation ID.
+                # SQLite cannot drop that inline UNIQUE constraint, so rebuild
+                # the small interpretation family in one explicit migration.
+                family = (
+                    "interpretation_operations",
+                    "interpretation_attempts",
+                    "interpretations",
+                    "candidates",
+                    "evidence_spans",
+                    "resolution_decisions",
+                    "semantic_bindings",
+                )
+                for table in family:
+                    raw.execute(f'ALTER TABLE "{table}" RENAME TO "__v7_{table}"')
+                for statement in (
+                    """
+                    CREATE TABLE interpretation_operations (
+                      operation_id TEXT PRIMARY KEY,
+                      episode_id TEXT NOT NULL REFERENCES episodes(episode_id),
+                      instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
+                      base_manifest_id TEXT NOT NULL REFERENCES manifests(manifest_id),
+                      status TEXT NOT NULL CHECK (status IN ('PREPARED','STARTED','RESULT_READY','ACCEPTED','FAILED','UNCERTAIN','ABANDONED')),
+                      current_attempt INTEGER NOT NULL DEFAULT 0 CHECK (current_attempt >= 0),
+                      configuration_digest TEXT NOT NULL,
+                      failure_code TEXT,
+                      created_at TEXT NOT NULL,
+                      updated_at TEXT NOT NULL
+                    );
+                    CREATE TABLE interpretation_attempts (
+                      operation_id TEXT NOT NULL REFERENCES interpretation_operations(operation_id),
+                      attempt INTEGER NOT NULL CHECK (attempt >= 0),
+                      host_ref TEXT REFERENCES host_records(host_ref),
+                      request_json TEXT NOT NULL,
+                      result_json TEXT,
+                      status TEXT NOT NULL CHECK (status IN ('STARTED','RESULT_READY','VALID','INVALID','UNCERTAIN')),
+                      validation_errors_json TEXT,
+                      created_at TEXT NOT NULL,
+                      PRIMARY KEY (operation_id, attempt)
+                    );
+                    CREATE TABLE interpretations (
+                      interpretation_id TEXT PRIMARY KEY,
+                      operation_id TEXT NOT NULL UNIQUE REFERENCES interpretation_operations(operation_id),
+                      episode_id TEXT NOT NULL UNIQUE REFERENCES episodes(episode_id),
+                      schema_version INTEGER NOT NULL,
+                      extractor_version TEXT NOT NULL,
+                      resolver_version TEXT NOT NULL,
+                      accepted_revision INTEGER NOT NULL CHECK (accepted_revision >= 0),
+                      accepted_at TEXT NOT NULL
+                    );
+                    CREATE TABLE candidates (
+                      candidate_id TEXT PRIMARY KEY,
+                      interpretation_id TEXT NOT NULL REFERENCES interpretations(interpretation_id),
+                      local_key TEXT NOT NULL,
+                      label TEXT NOT NULL,
+                      normalized_label TEXT NOT NULL,
+                      kind TEXT NOT NULL,
+                      confidence REAL NOT NULL CHECK (confidence >= 0 AND confidence <= 1),
+                      salience REAL NOT NULL CHECK (salience >= 0 AND salience <= 1),
+                      context_json TEXT NOT NULL,
+                      UNIQUE(interpretation_id, local_key)
+                    );
+                    CREATE TABLE evidence_spans (
+                      candidate_id TEXT NOT NULL REFERENCES candidates(candidate_id),
+                      ordinal INTEGER NOT NULL CHECK (ordinal >= 0),
+                      source_slot TEXT NOT NULL,
+                      start_offset INTEGER NOT NULL CHECK (start_offset >= 0),
+                      end_offset INTEGER NOT NULL CHECK (end_offset > start_offset),
+                      text_digest TEXT NOT NULL,
+                      PRIMARY KEY (candidate_id, ordinal)
+                    );
+                    CREATE TABLE resolution_decisions (
+                      decision_id TEXT PRIMARY KEY,
+                      interpretation_id TEXT NOT NULL REFERENCES interpretations(interpretation_id),
+                      local_key TEXT NOT NULL,
+                      canonical_label TEXT NOT NULL,
+                      normalized_label TEXT NOT NULL,
+                      decision_kind TEXT NOT NULL,
+                      evidence_json TEXT NOT NULL,
+                      created_at TEXT NOT NULL,
+                      UNIQUE(interpretation_id, local_key)
+                    );
+                    CREATE TABLE semantic_bindings (
+                      binding_id TEXT PRIMARY KEY,
+                      instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
+                      interpretation_id TEXT NOT NULL REFERENCES interpretations(interpretation_id),
+                      candidate_id TEXT REFERENCES candidates(candidate_id),
+                      local_key TEXT NOT NULL,
+                      canonical_key TEXT NOT NULL,
+                      canonical_label TEXT NOT NULL,
+                      resolver_version TEXT NOT NULL,
+                      binding_version INTEGER NOT NULL CHECK (binding_version >= 1),
+                      source_json TEXT NOT NULL,
+                      created_at TEXT NOT NULL
+                    );
+                    """.split(";")
+                ):
+                    statement = statement.strip()
+                    if statement:
+                        raw.execute(statement)
+                columns = {
+                    "interpretation_operations": "operation_id,episode_id,instance_id,base_manifest_id,status,current_attempt,configuration_digest,failure_code,created_at,updated_at",
+                    "interpretation_attempts": "operation_id,attempt,host_ref,request_json,result_json,status,validation_errors_json,created_at",
+                    "interpretations": "interpretation_id,operation_id,episode_id,schema_version,extractor_version,resolver_version,accepted_revision,accepted_at",
+                    "candidates": "candidate_id,interpretation_id,local_key,label,normalized_label,kind,confidence,salience,context_json",
+                    "evidence_spans": "candidate_id,ordinal,source_slot,start_offset,end_offset,text_digest",
+                    "resolution_decisions": "decision_id,interpretation_id,local_key,canonical_label,normalized_label,decision_kind,evidence_json,created_at",
+                    "semantic_bindings": "binding_id,instance_id,interpretation_id,candidate_id,local_key,canonical_key,canonical_label,resolver_version,binding_version,source_json,created_at",
+                }
+                for table, fields in columns.items():
+                    raw.execute(
+                        f'INSERT INTO "{table}" ({fields}) SELECT {fields} FROM "__v7_{table}"'
+                    )
+                for table in reversed(family):
+                    raw.execute(f'DROP TABLE "__v7_{table}"')
+                raw.execute(
+                    "UPDATE store_info SET schema_version=8,record_version=record_version+1"
+                )
+                raw.execute("PRAGMA user_version = 8")
+                version = 8
             for table in _IMMUTABLE:
                 exists = raw.execute(
                     "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (table,)

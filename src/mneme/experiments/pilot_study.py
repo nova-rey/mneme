@@ -670,6 +670,21 @@ class PilotStudy:
                     )
                     completed_development += 1
                     extract_call = f"extraction-s{slot}-e{episode.ordinal}"
+                    recovery_of = None
+                    recovery_version = None
+                    recovery_lookup = getattr(
+                        self.runtime, "failed_interpretation_operation", None
+                    )
+                    if callable(recovery_lookup):
+                        recovery_of = recovery_lookup(
+                            slot=slot, episode_id=development.operation.episode_id
+                        )
+                        if recovery_of is not None:
+                            # A failed prior operation is immutable evidence.
+                            # Use a new fixed coordinate and a versioned
+                            # request contract rather than retrying it.
+                            extract_call = f"{extract_call}-recovery"
+                            recovery_version = "residue-v1-recovery-20260924"
                     extraction = self.runtime.extract(
                         slot=slot,
                         call_id=extract_call,
@@ -677,6 +692,8 @@ class PilotStudy:
                         episode_id=development.operation.episode_id,
                         extractor_host=subject.host,
                         max_output_tokens=limits["development-extraction"],
+                        recovery_of=recovery_of,
+                        recovery_version=recovery_version,
                     )
                     if extraction.residue is None:
                         if repair_count >= MAX_EXTRACTION_REPAIRS:

@@ -376,3 +376,38 @@ def test_operation_id_and_episode_configuration_are_idempotent(tmp_path):
             service.prepare(episode_id, operation_id="same", configuration={"x": 2})
         with pytest.raises(InterpretationIdempotencyConflict):
             service.prepare(episode_id, operation_id="other", configuration={"x": 2})
+
+
+def test_failed_interpretation_recovery_gets_new_operation_without_rewriting_history(tmp_path):
+    host = ResidueHost("{}")
+    store, instance, episode_id = _accepted(tmp_path, host)
+    with store:
+        service = InterpretationService(store, instance, host)
+        failed = service.prepare(episode_id, operation_id="extraction-original")
+        store.connection.execute(
+            "UPDATE interpretation_operations SET status='FAILED',failure_code='validation_failed' "
+            "WHERE operation_id=?",
+            (failed.operation_id,),
+        )
+        recovered = service.prepare(
+            episode_id,
+            operation_id="extraction-recovery",
+            recovery_of=failed.operation_id,
+            recovery_version="residue-v1-recovery-test",
+        )
+        assert recovered.operation_id == "extraction-recovery"
+        assert tuple(store.connection.execute(
+            "SELECT status,failure_code FROM interpretation_operations WHERE operation_id=?",
+            (failed.operation_id,),
+        ).fetchone()) == ("FAILED", "validation_failed")
+        assert tuple(store.connection.execute(
+            "SELECT status,failure_code FROM interpretation_operations WHERE operation_id=?",
+            (recovered.operation_id,),
+        ).fetchone()) == ("PREPARED", "RECOVERY_OF:extraction-original")
+        with pytest.raises(InterpretationError, match="only a FAILED"):
+            service.prepare(
+                episode_id,
+                operation_id="bad-recovery",
+                recovery_of=recovered.operation_id,
+                recovery_version="residue-v1-recovery-test",
+            )

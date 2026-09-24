@@ -357,6 +357,23 @@ class PilotRuntime:
         ).fetchone()
         return None if row is None else str(row[0])
 
+    def failed_interpretation_operation(self, *, slot: int, episode_id: str) -> str | None:
+        """Return the latest failed extraction operation for explicit recovery.
+
+        A failed operation is historical evidence and is never reused for a
+        new provider call.  The caller must supply the returned ID as the
+        recovery source when preparing a distinct operation.
+        """
+
+        subject = self._subject(slot)
+        row = subject.store.connection.execute(
+            "SELECT operation_id FROM interpretation_operations "
+            "WHERE episode_id=? AND instance_id=? AND status='FAILED' "
+            "ORDER BY updated_at DESC, operation_id DESC LIMIT 1",
+            (episode_id, subject.instance_id),
+        ).fetchone()
+        return None if row is None else str(row[0])
+
     def extract(
         self,
         *,
@@ -367,12 +384,24 @@ class PilotRuntime:
         extractor_host: Host,
         max_output_tokens: int,
         repair: bool = False,
+        recovery_of: str | None = None,
+        recovery_version: str | None = None,
     ) -> ExtractionOutcome:
         """Run one extraction attempt; validation happens after durable return."""
 
         subject = self._subject(slot)
-        service = InterpretationService(subject.store, subject.instance_id, extractor_host)
-        prepared = service.prepare(episode_id, operation_id=call_id)
+        service = InterpretationService(
+            subject.store,
+            subject.instance_id,
+            extractor_host,
+            extractor_version=recovery_version or "residue-v1",
+        )
+        prepared = service.prepare(
+            episode_id,
+            operation_id=call_id,
+            recovery_of=recovery_of,
+            recovery_version=recovery_version,
+        )
         if prepared.operation_id != call_id and not repair:
             raise PilotRuntimeError(
                 f"episode already has a different interpretation coordinate: {episode_id}"

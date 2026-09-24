@@ -299,6 +299,15 @@ class InterpretationService:
             "and one route. Use only supported kinds from the vocabularies above, "
             "keep labels short, and return only the JSON object."
         )
+        if self.extractor_version != "residue-v1":
+            instruction += (
+                " This is a corrected extraction contract. Prefer the complete "
+                "external source evidence when it supports an assertion; do not "
+                "add model-output concepts merely because they are plausible. "
+                "Honor the at-most-two-concepts and one-edge limits exactly, "
+                "and omit any assertion whose quotation cannot be copied byte "
+                "for byte from its source slot."
+            )
         if errors:
             instruction += " Correct these validation errors: " + _json(errors)
         prompt = _json({"source_slots": source_text})
@@ -335,15 +344,45 @@ class InterpretationService:
         operation_id: str | None = None,
         configuration: Mapping[str, Any] | None = None,
         configuration_digest: str | None = None,
+        recovery_of: str | None = None,
+        recovery_version: str | None = None,
     ) -> InterpretationReceipt:
         """Create an idempotent prepared operation without calling the host."""
 
+        supplied_operation_id = operation_id is not None
         operation_id = operation_id or str(uuid.uuid4())
         with self.store.transaction() as db:
             self._policy_allows_interpretation(db)
             source_bundle = self._source_bundle(db, episode_id)
+            if (recovery_of is None) != (recovery_version is None):
+                raise InterpretationError(
+                    "recovery_of and recovery_version must be supplied together"
+                )
+            if recovery_of is not None:
+                if not supplied_operation_id:
+                    raise InterpretationError(
+                        "recovery requires an explicit new operation_id"
+                    )
+                if not recovery_of or not recovery_version:
+                    raise InterpretationError("recovery marker is incomplete")
+                recovery = db.execute(
+                    "SELECT episode_id,status FROM interpretation_operations "
+                    "WHERE operation_id=? AND instance_id=?",
+                    (recovery_of, self.instance_id),
+                ).fetchone()
+                if recovery is None or str(recovery[0]) != episode_id:
+                    raise InterpretationError("recovery source operation is not this episode")
+                if str(recovery[1]) != "FAILED":
+                    raise InterpretationError(
+                        "only a FAILED interpretation can be explicitly recovered"
+                    )
+            effective_configuration = dict(configuration or {})
+            if recovery_of is not None:
+                effective_configuration.update(
+                    {"recovery_of": recovery_of, "recovery_version": recovery_version}
+                )
             digest = configuration_digest or self._config_digest(
-                source_bundle, configuration=configuration
+                source_bundle, configuration=effective_configuration
             )
             old = db.execute(
                 "SELECT episode_id,configuration_digest,status,current_attempt "
@@ -358,15 +397,27 @@ class InterpretationService:
                 )
             duplicate = db.execute(
                 "SELECT operation_id,configuration_digest,status,current_attempt "
-                "FROM interpretation_operations WHERE episode_id=? AND instance_id=?",
+                "FROM interpretation_operations WHERE episode_id=? AND instance_id=? "
+                "ORDER BY updated_at DESC, operation_id DESC LIMIT 1",
                 (episode_id, self.instance_id),
             ).fetchone()
             if duplicate is not None:
-                if str(duplicate[1]) != digest:
-                    raise InterpretationIdempotencyConflict(episode_id)
-                return InterpretationReceipt(
-                    str(duplicate[0]), episode_id, str(duplicate[2]), int(duplicate[3])
-                )
+                if recovery_of is not None:
+                    if str(duplicate[0]) != recovery_of or str(duplicate[2]) != "FAILED":
+                        raise InterpretationIdempotencyConflict(episode_id)
+                    # A distinct recovery operation is allowed only when it
+                    # points at the latest failed operation and has a new
+                    # configuration digest. The old row remains untouched.
+                    if str(duplicate[1]) == digest:
+                        raise InterpretationIdempotencyConflict(
+                            "recovery configuration must be distinct"
+                        )
+                else:
+                    if str(duplicate[1]) != digest:
+                        raise InterpretationIdempotencyConflict(episode_id)
+                    return InterpretationReceipt(
+                        str(duplicate[0]), episode_id, str(duplicate[2]), int(duplicate[3])
+                    )
             current = db.execute(
                 "SELECT current_manifest_id FROM current_state "
                 "WHERE active_instance_id=?",
@@ -385,7 +436,9 @@ class InterpretationService:
                     "PREPARED",
                     0,
                     digest,
-                    None,
+                    None
+                    if recovery_of is None
+                    else f"RECOVERY_OF:{recovery_of}",
                     now,
                     now,
                 ),
