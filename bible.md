@@ -904,3 +904,7 @@
 ## 2026-09-24 P2 contingent accepted-recovery resume correction
 
 - A second no-provider resume audit found that already accepted evidence-review recoveries were not being selected when the original extraction operation was revisited. The runtime now reuses the durable accepted recovery operation before attempting original publication, preserving idempotency and preventing stale-manifest publication. Offline validation: 380 pytest, Ruff, strict mypy, and package smoke; no provider call for this correction. The preserved 47-call history remains unchanged.
+
+## 2026-09-24 P2 contingent recovery-payload preservation correction
+
+- The recovery reuse audit found that the new admission validator converted valid auxiliary evidence records from quotation form to internal spans before strict model-facing validation, causing an already accepted recovery to fail on resume. Admission now validates auxiliary records without rewriting their raw quotation representation; canonical spans are still derived by the strict validator. Offline validation: 380 pytest, Ruff, strict mypy, and package smoke; no provider call for this correction.

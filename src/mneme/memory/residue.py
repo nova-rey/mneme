@@ -1101,16 +1101,13 @@ def admit_residue_items(
                     normalize_label(value)
                     valid.append({"label": value})
                 else:
-                    valid.append(
-                        dict(
-                            _record(
-                                value,
-                                path,
-                                sources,
-                                require_evidence_quotes=require_evidence_quotes,
-                            )
-                        )
+                    _record(
+                        value,
+                        path,
+                        sources,
+                        require_evidence_quotes=require_evidence_quotes,
                     )
+                    valid.append(copy.deepcopy(dict(value)))
             except (ResidueValidationError, ValueError, TypeError, KeyError) as exc:
                 reject(path, value, str(exc))
         selected = select(field, valid, MAX_AUXILIARY_RECORDS)
