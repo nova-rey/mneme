@@ -494,6 +494,7 @@ class ArtifactStore:
                 "development",
                 "extraction",
                 "assessment",
+                "evidence-review",
                 "receipts",
                 # Additive Phase Two contingent-conversation records remain
                 # outside lineage state but are part of the verified run tree.
@@ -508,6 +509,7 @@ class ArtifactStore:
                 "development",
                 "extraction",
                 "assessment",
+                "evidence-review",
                 "receipts",
                 "contingent",
             ):

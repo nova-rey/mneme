@@ -868,3 +868,7 @@
 ## 2026-09-24 P2 contingent evidence-item fail-closed correction
 
 - The evidence reviewer grounded one Markdown-omitted quotation semantically but did not return an exact immutable-source quotation. The strict resolver remains unchanged; the temporary review boundary now records that outcome and rejects only the affected residue record, preserving unrelated valid evidence for strict validation. Added regression coverage; no parser, fuzzy matching, or replacement relationship was introduced.
+
+## 2026-09-24 P2 contingent evidence-review restart verification correction
+
+- Restart of the preserved supplement coordinate exposed a run-tree allowlist omission for the existing `evidence-review/` receipts. Added that category to the established artifact verifier and regression coverage; no scientific state or provider result changed.

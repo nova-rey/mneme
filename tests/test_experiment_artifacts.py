@@ -61,6 +61,21 @@ def test_verify_run_allows_contingent_supplement_artifacts(tmp_path: Path) -> No
     assert store.verify_run(run.path)
 
 
+def test_verify_run_allows_evidence_review_receipts(tmp_path: Path) -> None:
+    store = ArtifactStore(tmp_path / "lab")
+    run = store.publish_run(
+        experiment={"name": "evidence-review", "contract_revision": 1},
+        preflight={"valid": True},
+        study_plan={"supplement": "P2-SUPPLEMENT-INTERLOPER-01"},
+        bindings={"subjects": [], "checkpoints": {}},
+        run_id="run-review",
+    )
+    PilotRun(store, "run-review").publish_artifact(
+        "evidence-review", "review.json", {"disposition": "rejected", "grounded": True}
+    )
+    assert store.verify_run(run.path)
+
+
 def test_conflicting_run_id_is_rejected(tmp_path: Path) -> None:
     store = ArtifactStore(tmp_path)
     experiment, preflight, plan, bindings = _payload()
