@@ -804,3 +804,7 @@
 ## 2026-09-24 P2.3 extractor enum negative clarification
 
 - Added explicit negative examples for unsupported relationship values `holds` and `precedes` to the residue-v4 extractor prompt after recovery-v6. The vocabulary, validator, provenance, and learner semantics are unchanged. Offline validation passed with 355 pytest, Ruff, strict mypy, wheel build, and fresh-install smoke; no provider call was made. Evidence: `docs/receipts/MNEME_P2.3_Extractor_Enum_Negative_Clarification_V5_Receipt.md` and `.json`.
+
+## 2026-09-24 P2.3 repeated extractor enum blocker
+
+- Versioned recovery `p2-pilot-recovery-20260924m` repeated unsupported relationship `holds` at `extraction-s1-e7` after the residue-v4 prompt added explicit negative examples. Strict validation failed closed; 2 calls were consumed, no assessment/evaluation followed, and automatic same-class resampling stopped. Historical evidence remains unchanged. Evidence: `docs/receipts/MNEME_P2.3_Pilot_Recovery_V7_Extraction_Enum_Repeated_20260924.md` and `.json`.
