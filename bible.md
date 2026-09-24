@@ -964,3 +964,7 @@
 ## 2026-09-25 Phase Two scientific review packet
 
 - Published a review-only packet for the two unresolved Phase Two dependencies. It records the contingent run's 6/9 interpretation success stop and P2.3's missing separated-support opportunity, exact receipt digests, remaining call envelope, and bounded continuation lower bounds. No criteria, historical evidence, learner rule, queue disposition, or provider result was changed; no provider call was made.
+
+## 2026-09-24 P2 contingent interpretation-stop review resolution
+
+- Recorded the scientific-review disposition that clears only the contingent interpretation-stop dependency for preserved continuation at interactive turn 9. Historical turns 0–8, the 6/9 interpretation counters, and all three failed measurements remain immutable; post-correction quality is tracked separately. P2.3 remains `COMPLETED_INADEQUATE`, no historical result was rerun, and no provider call was made for the resolution.
