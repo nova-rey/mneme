@@ -476,13 +476,40 @@ class PilotRuntime:
         residue: Residue | None = None
         validation_error: str | None = None
         validated_attempt: int | None = None
+        recovery_id = f"{operation_id}-evidence-review"
+        recovery_row = subject.store.connection.execute(
+            "SELECT status FROM interpretation_operations WHERE operation_id=?",
+            (recovery_id,),
+        ).fetchone()
+        if (
+            not operation_id.endswith("-evidence-review")
+            and recovery_row is not None
+            and str(recovery_row[0]) in {"RESULT_READY", "ACCEPTED"}
+        ):
+            recovery_service = InterpretationService(
+                subject.store,
+                subject.instance_id,
+                extractor_host,
+                extractor_version="semantic-evidence-reconciliation-v2",
+            )
+            try:
+                residue = recovery_service.validate(recovery_id)
+                operation_id = recovery_id
+                validated_attempt = 0
+                persisted = self._interpretation_payload(subject.store, recovery_id)
+            except InterpretationValidationError:
+                # A recorded recovery that no longer validates must not hide
+                # the original extraction failure; the normal path below will
+                # preserve the failure and fail closed.
+                residue = None
         try:
             # A returned coordinate can contain a result rejected by an
             # older deterministic validator.  Revalidate that persisted
             # result explicitly after an in-scope validator correction; this
             # never calls the provider or changes the raw attempt evidence.
-            residue = service.validate(operation_id, revalidate_invalid=not dispatched)
-            validated_attempt = int(self._interpretation_attempt(subject.store, operation_id))
+            if residue is None:
+                residue = service.validate(operation_id, revalidate_invalid=not dispatched)
+                validated_attempt = int(self._interpretation_attempt(subject.store, operation_id))
         except InterpretationValidationError as exc:
             validation_error = str(exc)
             # A bounded repair may have been spent before a validator

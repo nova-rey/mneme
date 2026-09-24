@@ -1428,7 +1428,7 @@
       "owner": "root-foreman",
       "dependencies": [],
       "waiting_on": [
-        "review:contingent-stale-empty-resume-correction"
+        "review:contingent-accepted-recovery-resume-correction"
       ],
       "edit_boundaries": [
         "src/mneme/experiments",
@@ -1472,7 +1472,7 @@
         "material_attempts": []
       },
       "session_ids": [],
-      "notes": "Owner-supplied P2-SUPPLEMENT-INTERLOPER-01; stopped at interactive extraction t03 after one overbound Gemma residue and one length-terminated repair; old P2.3 remains COMPLETED_INADEQUATE. Capacity-admission correction is offline-validated: valid excess candidates are admitted deterministically within caps, item-level rejection preserves unrelated evidence, and persisted initial attempts can be revalidated after failed repair without provider calls. Historical turn-3 attempts remain unchanged; continuation is ready after push/CI. First post-correction resume made no new provider call and exposed a stale-manifest edge for an earlier empty interpretation after a later accepted episode. The bounded stale-empty skip is now offline-pending validation; relationship-bearing stale publications remain fail-closed.",
+      "notes": "Owner-supplied P2-SUPPLEMENT-INTERLOPER-01; stopped at interactive extraction t03 after one overbound Gemma residue and one length-terminated repair; old P2.3 remains COMPLETED_INADEQUATE. Capacity-admission correction is offline-validated: valid excess candidates are admitted deterministically within caps, item-level rejection preserves unrelated evidence, and persisted initial attempts can be revalidated after failed repair without provider calls. Historical turn-3 attempts remain unchanged; continuation is ready after push/CI. First post-correction resume made no new provider call and exposed a stale-manifest edge for an earlier empty interpretation after a later accepted episode. The bounded stale-empty skip is now offline-pending validation; relationship-bearing stale publications remain fail-closed. A second no-provider resume audit found the original extraction operation was revisited despite an accepted evidence-review recovery; the runtime now reuses the durable recovery before publication. Offline validation is complete; push/CI precedes continuation.",
       "evidence_refs": [
         "docs/decisions/MNEME_P2_Contingent_Interloper_Addendum.md",
         "docs/receipts/MNEME_P2_Contingent_Interloper_Offline_Preflight_Receipt.md",
@@ -1480,9 +1480,10 @@
         "docs/receipts/MNEME_P2_Contingent_Interloper_Live_Stop_Receipt_20260924.json",
         "docs/receipts/MNEME_P2_Contingent_Residue_Capacity_Admission_Correction_Receipt.md",
         "docs/receipts/MNEME_P2_Contingent_Residue_Capacity_Admission_Correction_Receipt.json",
-        "docs/receipts/MNEME_P2_Contingent_Stale_Empty_Resume_Correction_Receipt.md"
+        "docs/receipts/MNEME_P2_Contingent_Stale_Empty_Resume_Correction_Receipt.md",
+        "docs/receipts/MNEME_P2_Contingent_Accepted_Recovery_Resume_Correction_Receipt.md"
       ],
-      "updated_at": "2026-09-25T00:15:00Z"
+      "updated_at": "2026-09-25T00:30:00Z"
     }
   ],
   "project": "nova-rey/mneme",

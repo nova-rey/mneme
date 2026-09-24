@@ -900,3 +900,7 @@
 ## 2026-09-24 P2 contingent stale-empty resume correction
 
 - The first post-correction resume exposed a stale-manifest edge in the preserved run: a later accepted developmental episode had advanced the lineage before an earlier empty interpretation could publish. The supplement now records and skips only that stale empty publication, while relationship-bearing stale publications still fail closed; no writable rewind or provider retry is introduced. The correction is offline-pending its own validation and CI; the first resume attempt made no new provider call.
+
+## 2026-09-24 P2 contingent accepted-recovery resume correction
+
+- A second no-provider resume audit found that already accepted evidence-review recoveries were not being selected when the original extraction operation was revisited. The runtime now reuses the durable accepted recovery operation before attempting original publication, preserving idempotency and preventing stale-manifest publication. Offline validation: 380 pytest, Ruff, strict mypy, and package smoke; no provider call for this correction. The preserved 47-call history remains unchanged.
