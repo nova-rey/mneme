@@ -490,6 +490,11 @@ class PilotRuntime:
                 "result": dict(persisted),
                 "valid": residue is not None,
                 "validation_error": validation_error,
+                "normalization": (
+                    service.normalization_report(operation_id)
+                    if residue is not None
+                    else None
+                ),
             },
         )
         return ExtractionOutcome(

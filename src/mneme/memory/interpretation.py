@@ -30,10 +30,12 @@ from .publication import (
     StalePublication,
 )
 from .residue import (
+    RELATIONSHIP_RECONCILIATION_VERSION,
     SUPPORTED_CONCEPT_KINDS,
     SUPPORTED_RELATIONSHIP_KINDS,
     Residue,
     ResidueValidationError,
+    normalize_relationship_items,
     validate_residue,
 )
 from .resolution import ResolutionDecision
@@ -299,9 +301,12 @@ class InterpretationService:
             "extraction_confidence, intrusion_risk_estimate. Use only the "
             "canonical record fields described below. The complete allowed "
             f"concept kind vocabulary is: {concept_kinds}. The complete allowed "
-            f"relationship kind vocabulary is: {relationship_kinds}. There are "
-            "no other concept or relationship enum values; words such as `holds` "
-            "or `precedes` are invalid unless they appear in the listed vocabulary. "
+            f"relationship kind vocabulary is: {relationship_kinds}. This is the "
+            "canonical vocabulary. Preserve the source-supported meaning of a "
+            "relationship even when its wording is not canonical; MNEME may "
+            "normalize a bounded equivalent label or reject an unsupported item "
+            "deterministically at the acquisition boundary. Do not invent an "
+            "enum value merely to satisfy a preferred spelling. "
             "core_concepts records require key, label, kind, evidence, and "
             "confidence; edge_candidates records require key, from, to, "
             "relationship, evidence, and confidence, with from/to equal to "
@@ -659,7 +664,7 @@ class InterpretationService:
 
     def _residue_from_attempt(
         self, result_json: str, sources: Mapping[str, str]
-    ) -> tuple[Residue, dict[str, Any]]:
+    ) -> tuple[Residue, dict[str, Any], tuple[dict[str, Any], ...]]:
         try:
             payload: Any = json.loads(result_json)
         except json.JSONDecodeError as exc:
@@ -673,7 +678,47 @@ class InterpretationService:
             payload = payload["residue"]
         if not isinstance(payload, Mapping):
             raise InterpretationValidationError("provider result must be a JSON object")
-        return validate_residue(payload, sources, require_evidence_quotes=True), dict(payload)
+        normalized_payload, decisions = normalize_relationship_items(payload)
+        residue = validate_residue(
+            normalized_payload,
+            sources,
+            require_evidence_quotes=True,
+        )
+        return residue, dict(normalized_payload), decisions
+
+    def normalization_report(self, operation: str | InterpretationReceipt) -> dict[str, Any]:
+        """Return the deterministic relationship-boundary disposition.
+
+        The provider result remains untouched in ``result_json``.  This report
+        makes the raw extractor label and the normalized/admitted result
+        separately inspectable without turning a rejected item into a graph
+        assertion.
+        """
+
+        operation_id = _as_operation_id(operation)
+        row = self.store.connection.execute(
+            "SELECT result_json,request_json FROM interpretation_attempts "
+            "WHERE operation_id=? ORDER BY attempt DESC LIMIT 1",
+            (operation_id,),
+        ).fetchone()
+        if row is None or row[0] is None:
+            raise InterpretationNotReady("interpretation result is not ready")
+        request_record = json.loads(str(row[1]))
+        sources = {
+            str(source["slot"]): str(source["content"])
+            for source in request_record["source_bundle"]["eligible"]
+        }
+        _, normalized, decisions = self._residue_from_attempt(str(row[0]), sources)
+        return {
+            "version": RELATIONSHIP_RECONCILIATION_VERSION,
+            "normalization_decisions": list(decisions),
+            "rejected_items": [
+                decision
+                for decision in decisions
+                if decision.get("kind") != "relationship_alias"
+            ],
+            "normalized_residue": normalized,
+        }
 
     def validate(self, operation: str | InterpretationReceipt) -> Residue:
         """Validate the already persisted result and mark its attempt VALID."""
@@ -696,21 +741,12 @@ class InterpretationService:
                 for source in request_record["source_bundle"]["eligible"]
             }
             if str(latest[2]) == "VALID":
-                valid_residue, _ = self._residue_from_attempt(str(latest[1]), sources)
+                valid_residue, _, _ = self._residue_from_attempt(str(latest[1]), sources)
             elif str(latest[2]) in {"INVALID", "UNCERTAIN"}:
                 invalid_error = "interpretation attempt is not valid"
             else:
                 try:
-                    payload: Any = json.loads(str(latest[1]))
-                    if isinstance(payload, Mapping) and isinstance(payload.get("content"), str):
-                        payload = json.loads(str(payload["content"]))
-                    if isinstance(payload, Mapping) and isinstance(payload.get("residue"), Mapping):
-                        payload = payload["residue"]
-                    if not isinstance(payload, Mapping):
-                        raise ResidueValidationError("provider result must be a JSON object")
-                    valid_residue = validate_residue(
-                        payload, sources, require_evidence_quotes=True
-                    )
+                    valid_residue, _, _ = self._residue_from_attempt(str(latest[1]), sources)
                     if (
                         valid_residue.episode_id is not None
                         and valid_residue.episode_id != str(op["episode_id"])
@@ -718,6 +754,7 @@ class InterpretationService:
                         raise ResidueValidationError("residue episode_id does not match operation")
                 except (
                     ResidueValidationError,
+                    InterpretationValidationError,
                     ValueError,
                     KeyError,
                     TypeError,

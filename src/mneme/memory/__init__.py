@@ -34,11 +34,14 @@ from .publication import (
 )
 from .residue import (
     DEFAULT_ADMISSION_CONFIDENCE_THRESHOLD,
+    RELATIONSHIP_ALIASES,
+    RELATIONSHIP_RECONCILIATION_VERSION,
     Residue,
     ResidueValidationError,
     SourceSpan,
     canonical_json,
     normalize_label,
+    normalize_relationship_items,
     validate_graph_admission,
     validate_residue,
 )
@@ -57,6 +60,8 @@ __all__ = [
     "CacheHit",
     "CacheKey",
     "DEFAULT_ADMISSION_CONFIDENCE_THRESHOLD",
+    "RELATIONSHIP_RECONCILIATION_VERSION",
+    "RELATIONSHIP_ALIASES",
     "EXTRACTOR_VERSION",
     "ExplicitAliasResolver",
     "GraphConcept",
@@ -72,6 +77,7 @@ __all__ = [
     "build_cache_key",
     "materialize_graph",
     "normalize_label",
+    "normalize_relationship_items",
     "normalize_lookup_label",
     "InterpretationPublisher",
     "InterpretationError",

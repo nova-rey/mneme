@@ -233,6 +233,14 @@ The documents are preserved in their supplied form and are intentionally not mer
 
   A cumulative reconciliation counts 157 returned calls (140 historical plus 17 new qualification/recovery calls), leaving 242 inside the 399-call operational cap; raw run artifacts remain unchanged. Evidence is recorded in [the live-call reconciliation](receipts/MNEME_P2.3_Live_Call_Reconciliation_After_V7_20260924.md) ([JSON](receipts/MNEME_P2.3_Live_Call_Reconciliation_After_V7_20260924.json)).
 
+  The preserved `s1-e7` source was reviewed as a semantic-contract issue:
+  `holds` means physical retention of moisture, not `supports` or `causes`.
+  The narrow `relationship-normalization-v1` correction adds canonical
+  `retains`, deterministically aliases `holds` to it, and rejects other
+  unsupported keyed relationship items without discarding unrelated valid
+  evidence. Raw results remain unchanged. The decision and offline evidence
+  are recorded in [the relationship-normalization decision](decisions/MNEME_P2_Extractor_Relationship_Normalization_Addendum.md) and [its receipt](receipts/MNEME_P2.3_Extractor_Relationship_Normalization_Receipt_20260924.md) ([JSON](receipts/MNEME_P2.3_Extractor_Relationship_Normalization_Receipt_20260924.json)).
+
   The resumed pilot then stopped at `extraction-s1-e5` because Gemma omitted
   required confidence fields from otherwise source-grounded graph records; the
   13-call stop is preserved in [the confidence-schema failure receipt](receipts/MNEME_P2.3_Pilot_Recovery_V4_Confidence_Failure_20260924.md)

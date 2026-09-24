@@ -16,9 +16,11 @@ from mneme.memory.interpretation import (
     InterpretationValidationError,
 )
 from mneme.memory.residue import (
+    RELATIONSHIP_RECONCILIATION_VERSION,
     SUPPORTED_CONCEPT_KINDS,
     SUPPORTED_RELATIONSHIP_KINDS,
     ResidueValidationError,
+    normalize_relationship_items,
     validate_residue,
 )
 from mneme.state.contracts import StoragePermissions
@@ -161,8 +163,9 @@ def test_extraction_prompt_declares_strict_residue_record_shape(tmp_path):
         assert "Formatting is part of the immutable source" in system
         assert "preserve every Markdown marker" in system
         assert "no introductory or concluding prose" in system
-        assert "no other concept or relationship enum values" in system
-        assert "words such as `holds` or `precedes` are invalid" in system
+        assert "canonical vocabulary" in system
+        assert "normalize a bounded equivalent label" in system
+        assert "retains" in system
         assert "core_concepts records require key, label, kind" in system
         assert "evidence, and confidence" in system
         assert '"confidence":0.90' in system
@@ -276,8 +279,8 @@ def _observed_invalid_extractor_outputs() -> list[tuple[str, str, str]]:
         }
     )
     return [
-        ("fenced JSON", "```json\n{}\n```", "Expecting value"),
-        ("pseudo-JSON", "core_concepts:[{key: 'a'}]", "Expecting value"),
+        ("fenced JSON", "```json\n{}\n```", "provider content is not JSON"),
+        ("pseudo-JSON", "core_concepts:[{key: 'a'}]", "provider content is not JSON"),
         ("unsupported memory_type", concept("memory_type"), "unsupported concept kind"),
         ("unsupported definition", concept("definition"), "unsupported concept kind"),
         ("unsupported TERM", concept("TERM"), "unsupported concept kind"),
@@ -293,15 +296,21 @@ def test_observed_invalid_extractor_outputs_remain_fail_closed(
 ) -> None:
     """Historical malformed/unsupported outputs must not become residue."""
 
-    del name
     host = ResidueHost(output)
     store, instance, episode_id = _accepted(tmp_path, host)
     with store:
         service = InterpretationService(store, instance, host)
         prepared = service.prepare(episode_id)
         service.execute(prepared)
-        with pytest.raises(InterpretationValidationError, match=error):
-            service.validate(prepared)
+        if name == "unsupported processed by":
+            residue = service.validate(prepared)
+            assert residue.edge_candidates == ()
+            assert service.normalization_report(prepared)["rejected_items"][0][
+                "relationship"
+            ] == "processed by"
+        else:
+            with pytest.raises(InterpretationValidationError, match=error):
+                service.validate(prepared)
 
 
 def test_invalid_result_allows_one_explicit_repair_and_no_more(tmp_path):
@@ -468,3 +477,105 @@ def test_failed_interpretation_recovery_gets_new_operation_without_rewriting_his
                 recovery_of=recovered.operation_id,
                 recovery_version="residue-v1-recovery-test",
             )
+
+
+def _holds_payload() -> dict[str, object]:
+    return {
+        "core_concepts": [
+            {"key": "bed", "label": "mulched bed", "kind": "object", "confidence": 0.9,
+             "evidence": [{"source": "s0", "evidence": "mulched bed"}]},
+            {"key": "moisture", "label": "moisture", "kind": "resource", "confidence": 0.9,
+             "evidence": [{"source": "s0", "evidence": "held moisture"}]},
+            {"key": "seedlings", "label": "seedlings", "kind": "entity", "confidence": 0.9,
+             "evidence": [{"source": "s0", "evidence": "supported seedlings"}]},
+        ],
+        "edge_candidates": [
+            {"key": "e-holds", "from": "bed", "to": "moisture", "relationship": "holds",
+             "confidence": 0.9, "evidence": [{"source": "s0", "evidence": "held moisture"}]},
+            {"key": "e-supports", "from": "moisture", "to": "seedlings", "relationship": "supports",
+             "confidence": 0.9, "evidence": [{"source": "s0", "evidence": "supported seedlings"}]},
+        ],
+        "route_candidates": [
+            {"key": "r-holds", "edge_keys": ["e-holds", "e-supports"], "confidence": 0.9,
+             "evidence": [{"source": "s0", "evidence": "held moisture"}]}
+        ],
+    }
+
+
+def test_unsupported_relationship_is_rejected_itemwise_without_losing_valid_edges() -> None:
+    source = "The mulched bed held moisture, and the moisture supported seedlings."
+    normalized, decisions = normalize_relationship_items(_holds_payload())
+    assert _holds_payload()["edge_candidates"][0]["relationship"] == "holds"
+    assert [edge["relationship"] for edge in normalized["edge_candidates"]] == [
+        "retains", "supports"
+    ]
+    assert normalized["route_candidates"][0]["edge_keys"] == ["e-holds", "e-supports"]
+    assert decisions[0]["kind"] == "relationship_alias"
+    assert decisions[0]["raw_relationship"] == "holds"
+    assert decisions[0]["normalized_relationship"] == "retains"
+    residue = validate_residue(
+        normalized, source_slots={"s0": source}, require_evidence_quotes=True
+    )
+    assert [edge["relationship"] for edge in residue.edge_candidates] == [
+        "retains", "supports"
+    ]
+
+
+def test_unsupported_relationship_normalization_is_deterministic_and_other_errors_fail_closed(
+) -> None:
+    payload = {"core_concepts": [], "edge_candidates": [
+        {"key": "e1", "from": "a", "to": "b", "relationship": "holds"}
+    ]}
+    first = normalize_relationship_items(payload)
+    second = normalize_relationship_items(payload)
+    assert first == second
+    malformed = {"core_concepts": [], "edge_candidates": [{"from": "a", "to": "b"}]}
+    normalized, rejected = normalize_relationship_items(malformed)
+    assert normalized == malformed and rejected == ()
+    with pytest.raises(ResidueValidationError):
+        validate_residue(normalized, source_slots={"s0": "source"})
+
+
+def test_interpretation_reports_raw_holds_and_admits_unrelated_valid_edge(tmp_path) -> None:
+    payload = {
+        "core_concepts": [
+            {"key": "a", "label": "hello", "kind": "concept", "confidence": 0.9,
+             "evidence": [{"source": "s0", "evidence": "hello"}]},
+            {"key": "b", "label": "world", "kind": "concept", "confidence": 0.9,
+             "evidence": [{"source": "s0", "evidence": "world"}]},
+        ],
+        "edge_candidates": [
+            {"key": "e-holds", "from": "a", "to": "b", "relationship": "holds",
+             "confidence": 0.9, "evidence": [{"source": "s0", "evidence": "hello"}]},
+            {"key": "e-supports", "from": "a", "to": "b", "relationship": "supports",
+             "confidence": 0.9, "evidence": [{"source": "s0", "evidence": "world"}]},
+        ],
+    }
+
+    class SourceResidueHost(ResidueHost):
+        def generate(self, request: GenerationRequest) -> GenerationResult:
+            return GenerationResult(
+                json.dumps(payload), self.model_id, "builtin", dict(request.parameters),
+                request.seed, TokenUsage(10, 10, 20), 0.0, "stop", {"fixture": True}, {},
+            )
+
+    host = SourceResidueHost()
+    store, instance, episode_id = _accepted(tmp_path, host)
+    with store:
+        service = InterpretationService(store, instance, host)
+        prepared = service.prepare(episode_id, operation_id="interp-holds-item")
+        service.execute(prepared)
+        residue = service.validate(prepared)
+        assert [edge["relationship"] for edge in residue.edge_candidates] == [
+            "retains", "supports"
+        ]
+        report = service.normalization_report(prepared)
+        assert report["version"] == RELATIONSHIP_RECONCILIATION_VERSION
+        assert report["normalization_decisions"][0]["raw_relationship"] == "holds"
+        assert report["rejected_items"] == []
+        row = store.connection.execute(
+            "SELECT result_json FROM interpretation_attempts WHERE operation_id=?",
+            (prepared.operation_id,),
+        ).fetchone()
+        raw = json.loads(row[0])
+        assert json.loads(raw["content"])["edge_candidates"][0]["relationship"] == "holds"

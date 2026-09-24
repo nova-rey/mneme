@@ -1,0 +1,27 @@
+{
+  "receipt": "MNEME_P2.3_Extractor_Relationship_Normalization_Receipt_20260924",
+  "date": "2026-09-24",
+  "historical_coordinate": "extraction-s1-e7",
+  "historical_runs": [
+    "p2-pilot-recovery-20260924l",
+    "p2-pilot-recovery-20260924m"
+  ],
+  "provider_calls": 0,
+  "source_meaning": "physical retention or containment of moisture by the mulched bed",
+  "canonical_relationship": "retains",
+  "deterministic_aliases": {"holds": "retains"},
+  "normalization_version": "relationship-normalization-v1",
+  "raw_result_preserved": true,
+  "unsupported_items_rejected_individually": true,
+  "routes_depending_on_rejected_items_rejected": true,
+  "malformed_or_structurally_invalid_records_fail_closed": true,
+  "historical_evidence_unchanged": true,
+  "offline_tests": {
+    "focused_interpretation": "PASS",
+    "pytest": "PASS",
+    "ruff": "PASS",
+    "mypy": "PASS",
+    "wheel_fresh_install": "PASS"
+  },
+  "next_action": "bounded preserved-coordinate continuation after final validation and push"
+}

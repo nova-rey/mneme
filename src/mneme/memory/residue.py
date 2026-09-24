@@ -27,6 +27,12 @@ MAX_SPANS_PER_ITEM = 8
 MAX_LABEL_LENGTH = 160
 MAX_CONTEXT_LENGTH = 64
 MAX_RESIDUE_BYTES = 24 * 1024
+# This is a narrow acquisition-boundary normalization.  It preserves the
+# extractor's raw result while translating one source-supported equivalent
+# label and rejecting unrelated unsupported items without discarding valid
+# residue items.
+RELATIONSHIP_RECONCILIATION_VERSION = "relationship-normalization-v1"
+RELATIONSHIP_ALIASES = {"holds": "retains"}
 # This is an admission/uncertainty threshold only.  It is deliberately not
 # carried into graph selection as a weight or accessibility bonus.
 DEFAULT_ADMISSION_CONFIDENCE_THRESHOLD = 0.70
@@ -76,6 +82,7 @@ SUPPORTED_RELATIONSHIP_KINDS = frozenset(
         "conversational-pattern",
         "constrains",
         "supports",
+        "retains",
         "depends-on",
         "depends_on",
         "enables",
@@ -682,6 +689,106 @@ def validate_residue(
     return residue
 
 
+def normalize_relationship_items(
+    payload: Mapping[str, Any],
+) -> tuple[dict[str, Any], tuple[dict[str, Any], ...]]:
+    """Normalize one approved alias and reject unrelated edge items.
+
+    This is deliberately narrower than residue validation.  Only a well-shaped
+    edge with a stable key is eligible for alias normalization or item-level
+    rejection.  Other malformed structures continue through
+    :func:`validate_residue` and fail closed.  Route candidates that depend on
+    a rejected edge are rejected as well; no route is invented.
+
+    The returned payload is a fresh copy, so the raw provider result remains
+    durable and auditable alongside the normalized/admitted residue.  The
+    second result contains both alias decisions and rejected-item records.
+    """
+
+    normalized = copy.deepcopy(dict(payload))
+    raw_edges = normalized.get("edge_candidates")
+    if not isinstance(raw_edges, list):
+        return normalized, ()
+    kept_edges: list[Any] = []
+    rejected_keys: set[str] = set()
+    rejected: list[dict[str, Any]] = []
+    for index, value in enumerate(raw_edges):
+        if not isinstance(value, Mapping):
+            kept_edges.append(value)
+            continue
+        relationship = value.get("relationship", value.get("edge_type", "association"))
+        key = value.get("key", value.get("id"))
+        if (
+            isinstance(relationship, str)
+            and isinstance(key, str)
+            and bool(key)
+        ):
+            alias = RELATIONSHIP_ALIASES.get(relationship)
+            if alias is not None:
+                normalized_value = dict(value)
+                normalized_value["relationship"] = alias
+                kept_edges.append(normalized_value)
+                rejected.append(
+                    {
+                        "kind": "relationship_alias",
+                        "path": f"residue.edge_candidates[{index}]",
+                        "key": key,
+                        "raw_relationship": relationship,
+                        "normalized_relationship": alias,
+                        "reason": (
+                            "source-supported retention wording is normalized to the "
+                            "canonical retains relation"
+                        ),
+                        "raw_record": dict(value),
+                    }
+                )
+                continue
+            if relationship in SUPPORTED_RELATIONSHIP_KINDS:
+                kept_edges.append(value)
+                continue
+            rejected_keys.add(key)
+            rejected.append(
+                {
+                    "kind": "unsupported_relationship",
+                    "path": f"residue.edge_candidates[{index}]",
+                    "key": key,
+                    "relationship": relationship,
+                    "reason": "relationship kind is outside the approved vocabulary",
+                    "raw_record": dict(value),
+                }
+            )
+            continue
+        kept_edges.append(value)
+    normalized["edge_candidates"] = kept_edges
+
+    raw_routes = normalized.get("route_candidates")
+    if isinstance(raw_routes, list):
+        kept_routes: list[Any] = []
+        for index, value in enumerate(raw_routes):
+            if not isinstance(value, Mapping):
+                kept_routes.append(value)
+                continue
+            refs = value.get("edge_keys", value.get("edges"))
+            if (
+                isinstance(refs, list)
+                and any(isinstance(ref, str) and ref in rejected_keys for ref in refs)
+            ):
+                rejected.append(
+                    {
+                        "kind": "route_depends_on_rejected_relationship",
+                        "path": f"residue.route_candidates[{index}]",
+                        "key": value.get("key", value.get("id")),
+                        "edge_keys": list(refs),
+                        "reason": "route references an item rejected at the relationship boundary",
+                        "raw_record": dict(value),
+                    }
+                )
+                continue
+            kept_routes.append(value)
+        normalized["route_candidates"] = kept_routes
+    return normalized, tuple(rejected)
+
+
 __all__ = [
     "MAX_AUXILIARY_RECORDS",
     "DEFAULT_ADMISSION_CONFIDENCE_THRESHOLD",
@@ -697,6 +804,9 @@ __all__ = [
     "SourceSpan",
     "canonical_json",
     "normalize_label",
+    "normalize_relationship_items",
+    "RELATIONSHIP_ALIASES",
+    "RELATIONSHIP_RECONCILIATION_VERSION",
     "validate_graph_admission",
     "validate_residue",
 ]

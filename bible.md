@@ -812,3 +812,7 @@
 ## 2026-09-24 P2.3 live-call reconciliation after v7
 
 - Reconciled the post-j campaign ledger without changing raw artifacts: v3 qualification stop 2, v4 qualification pass 3, recovery k 3, recovery l 7, recovery m 2. Cumulative returned calls are 157, leaving 242 inside the 399-call operational cap. No provider call was made; repeated extraction-enum resampling remains stopped. Evidence: `docs/receipts/MNEME_P2.3_Live_Call_Reconciliation_After_V7_20260924.md` and `.json`.
+
+## 2026-09-24 P2.3 relationship normalization correction
+
+- For preserved `extraction-s1-e7`, Gemma's `holds` means physical retention/containment of moisture by the mulched bed; it is not equivalent to `supports` or `causes`, and the prior vocabulary lacked a neutral retention relation. Added canonical `retains` plus deterministic `holds` → `retains` normalization at the extraction boundary (`relationship-normalization-v1`), preserving raw provider JSON and recording normalized/admitted residue separately. Other unsupported keyed relationship items are rejected individually, dependent routes are rejected, and malformed/structurally invalid records remain fail-closed. Focused tests, 358-test pytest, Ruff, and strict mypy pass; no provider call was made. Evidence: `docs/decisions/MNEME_P2_Extractor_Relationship_Normalization_Addendum.md` and `docs/receipts/MNEME_P2.3_Extractor_Relationship_Normalization_Receipt_20260924.md`.
