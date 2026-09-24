@@ -824,3 +824,11 @@
 ## 2026-09-24 P2.3 keyed malformed-edge correction offline gate
 
 - Added regression coverage for the preserved `s1-e8` shape. The endpoint correction passes 359 pytest tests, Ruff, strict mypy, wheel build, and fresh-install smoke; CI is required before live continuation. No provider call was made for this correction, and the five-call continuation n remains historical evidence.
+
+## 2026-09-24 P2.3 keyed admission-field correction
+
+- Continuation `p2-pilot-recovery-20260924o` resumed from `s1-e8`, consumed 15 calls, and stopped at `s1-e13` when Gemma returned graph concepts without required confidence fields. The bounded normalization boundary now rejects keyed graph records missing confidence without inventing defaults; dependent edges are then rejected through the existing endpoint rule, while valid non-graph residue remains inspectable. This preserves strict admission semantics and avoids discarding unrelated valid evidence. No unchanged retry was made; the 15-call continuation remains historical evidence.
+
+## 2026-09-24 P2.3 keyed admission-field correction offline gate
+
+- Added a preserved `s1-e13` regression for missing graph confidence. The correction passes 360 pytest tests, Ruff, strict mypy, wheel build, and fresh-install smoke; CI is required before live continuation. No provider call was made for this correction, and the 15-call continuation o remains historical evidence.

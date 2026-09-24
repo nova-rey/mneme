@@ -23,9 +23,10 @@ normalized residue, alias decision, and any rejected items are exposed through
 the versioned `relationship-normalization-v1` report. An unrelated unsupported
 label such as `processed by`, or a keyed edge with an undeclared endpoint, is
 rejected item-wise; routes depending on it are rejected, while independently
-valid graph evidence remains eligible. Missing stable keys, malformed concept
-collections, unsupported concepts, invalid source quotations, and other
-validation failures still fail closed.
+valid graph evidence remains eligible. Keyed graph records missing required
+admission confidence are rejected item-wise without defaulting a value. Missing
+stable keys, malformed concept collections, unsupported concepts, invalid source
+quotations, and other validation failures still fail closed.
 
 ## Offline evidence
 
@@ -33,6 +34,7 @@ validation failures still fail closed.
 - `processed by` is rejected without discarding an independently valid edge.
 - A keyed edge pointing to an undeclared concept is rejected without
   discarding valid concepts or salient evidence.
+- Missing graph confidence is rejected without inventing a default confidence.
 - Raw provider JSON remains unchanged and separately inspectable.
 - Alias/rejection decisions are deterministic across replay.
 - Historical invalid-output fixtures remain fail-closed except for the newly
@@ -41,7 +43,7 @@ validation failures still fail closed.
 Validation before any live continuation:
 
 - focused interpretation tests: pass;
-- complete pytest suite: pass (359 tests);
+- complete pytest suite: pass (360 tests);
 - Ruff: pass;
 - strict mypy: pass;
 - package/fresh-install smoke: pass (wheel built and installed in a fresh venv).
@@ -49,5 +51,6 @@ Validation before any live continuation:
 The preserved 157 returned calls and all prior receipts remain unchanged. The
 five-call continuation reached `s1-e7`, applied this normalization, and then
 stopped at the next preserved `s1-e8` coordinate on an undeclared endpoint.
-The next live action is a bounded continuation from `s1-e8`, not a restarted
-pilot or favorable resampling campaign.
+The 15-call continuation o then stopped at `s1-e13` on missing graph
+confidence. The next live action is a bounded continuation from `s1-e13`, not
+a restarted pilot or favorable resampling campaign.

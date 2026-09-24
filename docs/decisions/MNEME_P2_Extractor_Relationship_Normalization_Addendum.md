@@ -21,8 +21,9 @@ original label; the normalized residue and the alias decision are recorded
 separately. This does not add a synonym dictionary or ask the model to learn a
 preferred spelling.
 
-An edge with another unsupported relationship label, or a keyed edge whose
-endpoints do not name declared concepts, is rejected at item level.
+An edge with another unsupported relationship label, a keyed edge whose
+endpoints do not name declared concepts, or a keyed graph record missing its
+required admission confidence is rejected at item level.
 Independently valid concepts and edges remain eligible, and any route that
 depends on the rejected edge is rejected as well. Missing stable keys,
 malformed concept collections, unsupported concepts, invalid evidence, and

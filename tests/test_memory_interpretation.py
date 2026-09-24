@@ -564,6 +564,32 @@ def test_keyed_edge_with_undeclared_endpoint_is_rejected_without_losing_valid_co
     assert residue.edge_candidates == ()
 
 
+def test_keyed_graph_items_missing_confidence_are_rejected_without_defaulting() -> None:
+    payload = {
+        "core_concepts": [
+            {"key": "c1", "label": "slow practice", "kind": "process",
+             "evidence": [{"source": "s0", "evidence": "slow practice"}]},
+        ],
+        "edge_candidates": [
+            {"key": "e1", "from": "c1", "to": "c1", "relationship": "causes",
+             "confidence": 0.9, "evidence": [{"source": "s0", "evidence": "slow practice"}]}
+        ],
+    }
+    normalized, decisions = normalize_relationship_items(payload)
+    assert normalized["core_concepts"] == []
+    assert normalized["edge_candidates"] == []
+    assert [decision["kind"] for decision in decisions] == [
+        "invalid_concept_item", "invalid_relationship_item"
+    ]
+    residue = validate_residue(
+        normalized,
+        source_slots={"s0": "Daily slow practice improved accuracy."},
+        require_evidence_quotes=True,
+    )
+    assert residue.core_concepts == ()
+    assert residue.edge_candidates == ()
+
+
 def test_interpretation_reports_raw_holds_and_admits_unrelated_valid_edge(tmp_path) -> None:
     payload = {
         "core_concepts": [

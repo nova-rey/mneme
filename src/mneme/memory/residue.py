@@ -710,24 +710,41 @@ def normalize_relationship_items(
     raw_edges = normalized.get("edge_candidates")
     if not isinstance(raw_edges, list):
         return normalized, ()
+    decisions: list[dict[str, Any]] = []
     raw_concepts = normalized.get("core_concepts")
     concept_keys: set[str] | None = set()
     if isinstance(raw_concepts, list):
-        for concept in raw_concepts:
+        kept_concepts: list[Any] = []
+        for index, concept in enumerate(raw_concepts):
             if not isinstance(concept, Mapping):
+                kept_concepts.append(concept)
                 concept_keys = None
                 break
             key = concept.get("key", concept.get("id"))
             if not isinstance(key, str) or not key:
+                kept_concepts.append(concept)
                 concept_keys = None
                 break
+            if "confidence" not in concept:
+                decisions.append(
+                    {
+                        "kind": "invalid_concept_item",
+                        "path": f"residue.core_concepts[{index}]",
+                        "key": key,
+                        "reason": "graph material requires confidence",
+                        "raw_record": dict(concept),
+                    }
+                )
+                continue
+            kept_concepts.append(concept)
             if concept_keys is not None:
                 concept_keys.add(key)
+        else:
+            normalized["core_concepts"] = kept_concepts
     else:
         concept_keys = None
     kept_edges: list[Any] = []
     rejected_keys: set[str] = set()
-    rejected: list[dict[str, Any]] = []
     for index, value in enumerate(raw_edges):
         if not isinstance(value, Mapping):
             kept_edges.append(value)
@@ -739,12 +756,39 @@ def normalize_relationship_items(
             and isinstance(key, str)
             and bool(key)
         ):
+            source = value.get("from", value.get("from_concept"))
+            target = value.get("to", value.get("to_concept"))
+            supported_or_alias = relationship in SUPPORTED_RELATIONSHIP_KINDS or (
+                relationship in RELATIONSHIP_ALIASES
+            )
+            if supported_or_alias and (
+                "confidence" not in value
+                or concept_keys is None
+                or not isinstance(source, str)
+                or not isinstance(target, str)
+                or source not in concept_keys
+                or target not in concept_keys
+            ):
+                rejected_keys.add(key)
+                decisions.append(
+                    {
+                        "kind": "invalid_relationship_item",
+                        "path": f"residue.edge_candidates[{index}]",
+                        "key": key,
+                        "reason": (
+                            "relationship requires confidence and endpoints "
+                            "that reference declared concepts"
+                        ),
+                        "raw_record": dict(value),
+                    }
+                )
+                continue
             alias = RELATIONSHIP_ALIASES.get(relationship)
             if alias is not None:
                 normalized_value = dict(value)
                 normalized_value["relationship"] = alias
                 kept_edges.append(normalized_value)
-                rejected.append(
+                decisions.append(
                     {
                         "kind": "relationship_alias",
                         "path": f"residue.edge_candidates[{index}]",
@@ -760,30 +804,10 @@ def normalize_relationship_items(
                 )
                 continue
             if relationship in SUPPORTED_RELATIONSHIP_KINDS:
-                source = value.get("from", value.get("from_concept"))
-                target = value.get("to", value.get("to_concept"))
-                if (
-                    concept_keys is None
-                    or not isinstance(source, str)
-                    or not isinstance(target, str)
-                    or source not in concept_keys
-                    or target not in concept_keys
-                ):
-                    rejected_keys.add(key)
-                    rejected.append(
-                        {
-                            "kind": "invalid_relationship_item",
-                            "path": f"residue.edge_candidates[{index}]",
-                            "key": key,
-                            "reason": "relationship endpoint does not reference a declared concept",
-                            "raw_record": dict(value),
-                        }
-                    )
-                    continue
                 kept_edges.append(value)
                 continue
             rejected_keys.add(key)
-            rejected.append(
+            decisions.append(
                 {
                     "kind": "unsupported_relationship",
                     "path": f"residue.edge_candidates[{index}]",
@@ -809,7 +833,7 @@ def normalize_relationship_items(
                 isinstance(refs, list)
                 and any(isinstance(ref, str) and ref in rejected_keys for ref in refs)
             ):
-                rejected.append(
+                decisions.append(
                     {
                         "kind": "route_depends_on_rejected_relationship",
                         "path": f"residue.route_candidates[{index}]",
@@ -822,7 +846,7 @@ def normalize_relationship_items(
                 continue
             kept_routes.append(value)
         normalized["route_candidates"] = kept_routes
-    return normalized, tuple(rejected)
+    return normalized, tuple(decisions)
 
 
 __all__ = [
