@@ -784,3 +784,7 @@
 ## 2026-09-24 P2.3 evidence-review output-budget correction
 
 - Q2 of the post-normalization qualification returned an empty `finish_reason=length` result at the prior 384-token allowance. The strict validator failed closed. Increased only the bounded reviewer output allowance to 768 tokens; semantic contract, exact quotation rules, provenance, and learner boundaries are unchanged. No provider call was made and historical evidence remains unchanged. Evidence: `docs/receipts/MNEME_P2.3_Semantic_Evidence_Review_Output_Budget_Correction_Receipt.md` and `.json`.
+
+## 2026-09-24 P2.3 semantic evidence reviewer qualification v4 pass
+
+- After the bounded 384→768 output allowance correction, the fixed Q1/Q2/Q3 reviewer qualification passed in three Qwen calls: Markdown grounding, grounded paraphrase, and unsupported rejection with canonical no evidence. Usage was 633 input, 859 output, and 1,492 total tokens; cost unavailable. No pilot call was made; historical qualification evidence remains unchanged. Evidence: `docs/receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V4_Pass_20260924.md` and `.json`.

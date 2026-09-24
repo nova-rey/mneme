@@ -219,6 +219,8 @@ The documents are preserved in their supplied form and are intentionally not mer
 
   The Q2 length stop led to a bounded output-budget correction: the reviewer allowance is 768 tokens, with semantic and validation rules unchanged. The offline correction is recorded in [the output-budget receipt](receipts/MNEME_P2.3_Semantic_Evidence_Review_Output_Budget_Correction_Receipt.md) ([JSON](receipts/MNEME_P2.3_Semantic_Evidence_Review_Output_Budget_Correction_Receipt.json)).
 
+  The corrected fixed Q1/Q2/Q3 qualification then passed in three Qwen calls (1,492 tokens); Q3 returned `grounded=false` without evidence and was canonically closed. No pilot call was made. Evidence is recorded in [the v4 pass receipt](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V4_Pass_20260924.md) ([JSON](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V4_Pass_20260924.json)).
+
   The resumed pilot then stopped at `extraction-s1-e5` because Gemma omitted
   required confidence fields from otherwise source-grounded graph records; the
   13-call stop is preserved in [the confidence-schema failure receipt](receipts/MNEME_P2.3_Pilot_Recovery_V4_Confidence_Failure_20260924.md)

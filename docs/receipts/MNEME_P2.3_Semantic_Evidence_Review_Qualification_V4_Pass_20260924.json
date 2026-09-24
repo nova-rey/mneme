@@ -1,0 +1,19 @@
+{
+  "receipt": "MNEME_P2.3_Semantic_Evidence_Review_Qualification_V4_Pass_20260924",
+  "date": "2026-09-24",
+  "contract": "semantic-evidence-reconciliation-v2",
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "provider": "DeepInfra",
+  "new_provider_calls": 3,
+  "pilot_calls": 0,
+  "status": "passed",
+  "cases": [
+    {"id": "Q1-markdown-formatting", "status": "passed", "grounded": true, "input_tokens": 214, "output_tokens": 290, "total_tokens": 504},
+    {"id": "Q2-grounded-paraphrase", "status": "passed", "grounded": true, "input_tokens": 212, "output_tokens": 421, "total_tokens": 633},
+    {"id": "Q3-unsupported", "status": "passed", "grounded": false, "canonical_quote": null, "input_tokens": 207, "output_tokens": 148, "total_tokens": 355}
+  ],
+  "usage": {"input_tokens": 633, "output_tokens": 859, "total_tokens": 1492, "cost": "unknown"},
+  "pilot_resumed": false,
+  "historical_evidence_unchanged": true,
+  "artifact_root": "/tmp/mneme-p23-semantic-evidence-review-qualification-v4-20260924"
+}
