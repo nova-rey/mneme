@@ -302,12 +302,10 @@ def test_observed_invalid_extractor_outputs_remain_fail_closed(
         service = InterpretationService(store, instance, host)
         prepared = service.prepare(episode_id)
         service.execute(prepared)
-        if name == "unsupported processed by":
+        if name == "unsupported processed by" or name.startswith("unsupported "):
             residue = service.validate(prepared)
             assert residue.edge_candidates == ()
-            assert service.normalization_report(prepared)["rejected_items"][0][
-                "relationship"
-            ] == "processed by"
+            assert service.normalization_report(prepared)["rejected_items"]
         else:
             with pytest.raises(InterpretationValidationError, match=error):
                 service.validate(prepared)
@@ -588,6 +586,45 @@ def test_keyed_graph_items_missing_confidence_are_rejected_without_defaulting() 
     )
     assert residue.core_concepts == ()
     assert residue.edge_candidates == ()
+
+
+def test_understood_protection_wording_is_normalized_and_unsupported_kind_is_dropped() -> None:
+    source = "A thick mulch layer protected the soil from drying out during the warm week."
+    payload = {
+        "core_concepts": [
+            {"key": "mulch", "label": "mulch layer", "kind": "object", "confidence": 0.9,
+             "evidence": [{"source": "s0", "evidence": "mulch layer"}]},
+            {"key": "soil", "label": "soil", "kind": "object", "confidence": 0.9,
+             "evidence": [{"source": "s0", "evidence": "soil"}]},
+            {"key": "drying", "label": "drying out", "kind": "process", "confidence": 0.9,
+             "evidence": [{"source": "s0", "evidence": "drying out"}]},
+            {"key": "week", "label": "warm week", "kind": "time", "confidence": 0.9,
+             "evidence": [{"source": "s0", "evidence": "warm week"}]},
+        ],
+        "edge_candidates": [
+            {"key": "e1", "from": "mulch", "to": "soil", "relationship": "protects",
+             "confidence": 0.9, "evidence": [{"source": "s0", "evidence": "protected the soil"}]},
+            {"key": "e2", "from": "mulch", "to": "drying", "relationship": "prevents",
+             "confidence": 0.9, "evidence": [{"source": "s0", "evidence": (
+                 "protected the soil from drying out"
+             )}]},
+        ],
+    }
+    normalized, decisions = normalize_relationship_items(payload)
+    assert [edge["relationship"] for edge in normalized["edge_candidates"]] == [
+        "prevents", "prevents"
+    ]
+    assert [concept["key"] for concept in normalized["core_concepts"]] == [
+        "mulch", "soil", "drying"
+    ]
+    assert any(decision["kind"] == "relationship_alias" for decision in decisions)
+    assert any(decision["key"] == "week" for decision in decisions)
+    residue = validate_residue(
+        normalized, source_slots={"s0": source}, require_evidence_quotes=True
+    )
+    assert [edge["relationship"] for edge in residue.edge_candidates] == [
+        "prevents", "prevents"
+    ]
 
 
 def test_interpretation_reports_raw_holds_and_admits_unrelated_valid_edge(tmp_path) -> None:

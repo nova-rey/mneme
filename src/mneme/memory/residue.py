@@ -32,7 +32,7 @@ MAX_RESIDUE_BYTES = 24 * 1024
 # label and rejecting unrelated unsupported items without discarding valid
 # residue items.
 RELATIONSHIP_RECONCILIATION_VERSION = "relationship-normalization-v1"
-RELATIONSHIP_ALIASES = {"holds": "retains"}
+RELATIONSHIP_ALIASES = {"holds": "retains", "protects": "prevents"}
 # This is an admission/uncertainty threshold only.  It is deliberately not
 # carried into graph selection as a weight or accessibility bonus.
 DEFAULT_ADMISSION_CONFIDENCE_THRESHOLD = 0.70
@@ -83,6 +83,7 @@ SUPPORTED_RELATIONSHIP_KINDS = frozenset(
         "constrains",
         "supports",
         "retains",
+        "prevents",
         "depends-on",
         "depends_on",
         "enables",
@@ -707,8 +708,9 @@ def normalize_relationship_items(
     """
 
     normalized = copy.deepcopy(dict(payload))
-    raw_edges = normalized.get("edge_candidates")
-    if not isinstance(raw_edges, list):
+    edges_present = "edge_candidates" in normalized
+    raw_edges = normalized.get("edge_candidates", [])
+    if edges_present and not isinstance(raw_edges, list):
         return normalized, ()
     decisions: list[dict[str, Any]] = []
     raw_concepts = normalized.get("core_concepts")
@@ -732,6 +734,18 @@ def normalize_relationship_items(
                         "path": f"residue.core_concepts[{index}]",
                         "key": key,
                         "reason": "graph material requires confidence",
+                        "raw_record": dict(concept),
+                    }
+                )
+                continue
+            kind = concept.get("kind", concept.get("node_type", "concept"))
+            if isinstance(kind, str) and kind not in SUPPORTED_CONCEPT_KINDS:
+                decisions.append(
+                    {
+                        "kind": "invalid_concept_item",
+                        "path": f"residue.core_concepts[{index}]",
+                        "key": key,
+                        "reason": "concept kind is outside the approved vocabulary",
                         "raw_record": dict(concept),
                     }
                 )
@@ -819,7 +833,8 @@ def normalize_relationship_items(
             )
             continue
         kept_edges.append(value)
-    normalized["edge_candidates"] = kept_edges
+    if edges_present:
+        normalized["edge_candidates"] = kept_edges
 
     raw_routes = normalized.get("route_candidates")
     if isinstance(raw_routes, list):

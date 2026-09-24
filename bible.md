@@ -832,3 +832,7 @@
 ## 2026-09-24 P2.3 keyed admission-field correction offline gate
 
 - Added a preserved `s1-e13` regression for missing graph confidence. The correction passes 360 pytest tests, Ruff, strict mypy, wheel build, and fresh-install smoke; CI is required before live continuation. No provider call was made for this correction, and the 15-call continuation o remains historical evidence.
+
+## 2026-09-24 P2.3 relation and concept-kind normalization correction
+
+- Preserved continuation `p2-pilot-recovery-20260924p` consumed 10 calls, resumed from `s1-e13`, and stopped at `s1-e16`. Gemma used source-supported `protects`/`prevents` wording and an unsupported `time` concept kind. Added canonical `prevents` with deterministic `protects` → `prevents` normalization and item-level rejection of keyed unsupported concept kinds; no default concept kind or replacement edge is invented. Offline validation passes 361 pytest tests, Ruff, strict mypy, wheel, and fresh-install smoke; no unchanged retry was made.
