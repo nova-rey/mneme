@@ -1152,7 +1152,7 @@
         "docs/receipts/MNEME_P2.3_Assessor_Qualification_Polarity_V8_Pass_Receipt.json",
         "docs/receipts/MNEME_P2.3_Assessor_Polarity_Contract_Regression_Receipt.md",
         "docs/receipts/MNEME_P2.3_Assessor_Polarity_Contract_Regression_Receipt.json",
-        "docs/receipts/MNEME_P2.3_Pilot_Production_Path_Receipt.md/.json; production residue\u2192assessor\u2192provenance\u2192publication adapter, durable coordinate resume, and role-binding correction; CI 35547126266",
+        "docs/receipts/MNEME_P2.3_Pilot_Production_Path_Receipt.md/.json; production residue→assessor→provenance→publication adapter, durable coordinate resume, and role-binding correction; CI 35547126266",
         "docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260920_Bundle.json",
         "docs/receipts/MNEME_P2.3_Edge_Less_Extraction_Correction_Receipt.md/.json",
         "docs/receipts/MNEME_P2.3_Pilot_Live_Extraction_Stop_20260921.md/.json",
@@ -1197,11 +1197,11 @@
       ],
       "scope": "Run the fixed three-call production-equivalent assessor qualification and, only if it passes and separately authorized, the 299-call proposed pilot. Exclude Phase Three.",
       "session_ids": [
-        "p2-continuation-20260924"
+        "p2-validation-20260924"
       ],
-      "status": "RUNNING",
+      "status": "VALIDATING",
       "title": "Assessor qualification and bounded developmental pilot",
-      "updated_at": "2026-09-24T13:33:01.692548Z",
+      "updated_at": "2026-09-24T13:35:09.330415Z",
       "validation": {
         "required": [
           "p23-assessor-contract",
@@ -1252,8 +1252,8 @@
             "status": "PASS"
           },
           "p23-offline-validation": {
-            "receipt": "304 pytest; Ruff; strict mypy src across 48 files; wheel/install CLI smoke; no provider calls; polarity remediation receipt",
-            "recorded_at": "2026-09-20T23:01:34.557091+00:00",
+            "receipt": "9524306: 319 pytest; Ruff; strict mypy; wheel/fresh-install smoke; zero provider calls",
+            "recorded_at": "2026-09-24T13:35:09.330392Z",
             "status": "PASS"
           },
           "p23-pilot-execution": {
@@ -1275,6 +1275,16 @@
             "receipt": "docs/receipts/MNEME_P2_Assessor_Provenance_Resolution_Offline_Receipt.md and .json; 280 pytest; Ruff; strict mypy; wheel/install smoke; no provider calls",
             "recorded_at": "2026-09-20T20:05:09.000000Z",
             "status": "PASS"
+          },
+          "p23-recovery-migration": {
+            "status": "PASS",
+            "receipt": "docs/receipts/MNEME_P2.3_Extraction_Recovery_Correction_Receipt.md",
+            "recorded_at": "2026-09-24T00:00:00Z"
+          },
+          "p23-ci": {
+            "status": "PASS",
+            "receipt": "CI 36006447255 at 9524306c53947b20b182dd6a25c889a532716ae4",
+            "recorded_at": "2026-09-24T00:00:00Z"
           }
         }
       },
@@ -1294,5 +1304,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-24T13:33:01.692650Z"
+  "updated_at": "2026-09-24T13:35:09.330492Z"
 }
