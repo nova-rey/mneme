@@ -10,6 +10,7 @@ from mneme.experiments.artifacts import ArtifactStore
 from mneme.experiments.pilot import PilotRun, host_role_binding
 from mneme.experiments.pilot_runtime import PilotRuntime, RuntimeSubject
 from mneme.hosts import FakeHost
+from mneme.memory.interpretation import MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION
 from mneme.state.contracts import StoragePermissions
 from mneme.state.snapshots import create_checkpoint
 from mneme.state.storage import SQLiteStore
@@ -122,6 +123,29 @@ class EvidenceReviewerHost(FakeHost):
         )
 
 
+class RecoveryExtractionHost(CountingHost):
+    def generate(self, request: GenerationRequest) -> GenerationResult:
+        self.calls += 1
+        if request.system is None:
+            content = "development"
+        elif "relationships-v1" in request.system:
+            content = '{"relationships":[]}'
+        else:
+            content = "not json"
+        return GenerationResult(
+            content,
+            self.model_id,
+            "builtin",
+            dict(request.parameters),
+            request.seed,
+            TokenUsage(10, len(content.split()), 10 + len(content.split())),
+            0.0,
+            "stop",
+            {},
+            {"host": self.fingerprint().to_dict()},
+        )
+
+
 def _pilot(tmp_path: Path, *, calls: int = 2) -> PilotRun:
     artifacts = ArtifactStore(tmp_path / "lab")
     artifacts.publish_run(
@@ -197,6 +221,50 @@ def test_development_coordinate_is_exactly_once_and_persisted_before_acceptance(
     )
     assert receipt["operation"]["status"] == "ACCEPTED"
     assert receipt["result"]["content"]
+
+
+def test_minimal_extractor_recovery_preserves_failed_history(tmp_path: Path) -> None:
+    host = RecoveryExtractionHost()
+    subject = _subject(tmp_path, host)
+    pilot = _pilot(tmp_path, calls=3)
+    runtime = PilotRuntime(pilot, {0: subject})
+    development = runtime.execute_development(
+        slot=0,
+        call_id="development-recovery-e0",
+        coordinate={"subject": 0, "episode": 0},
+        request=GenerationRequest(({"role": "user", "content": "A recovery fixture."},)),
+        max_output_tokens=20,
+    )
+    failed = runtime.extract(
+        slot=0,
+        call_id="extraction-recovery-old",
+        coordinate={"subject": 0, "episode": 0},
+        episode_id=development.operation.episode_id,
+        extractor_host=host,
+        max_output_tokens=20,
+    )
+    assert failed.residue is None
+    recovered = runtime.extract(
+        slot=0,
+        call_id="extraction-recovery-minimal",
+        coordinate={"subject": 0, "episode": 0, "extractor": "relationships-v1"},
+        episode_id=development.operation.episode_id,
+        extractor_host=host,
+        max_output_tokens=20,
+        recovery_of=failed.operation_id,
+        recovery_version=MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION,
+        extractor_version=MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION,
+    )
+    assert recovered.residue is not None
+    assert recovered.residue.edge_candidates == ()
+    old_status = subject.store.connection.execute(
+        "SELECT io.status,ia.result_json FROM interpretation_operations io "
+        "JOIN interpretation_attempts ia ON ia.operation_id=io.operation_id "
+        "WHERE io.operation_id=? ORDER BY ia.attempt DESC LIMIT 1",
+        (failed.operation_id,),
+    ).fetchone()
+    assert old_status[0] == "FAILED"
+    assert json.loads(old_status[1])["content"] == "not json"
 
 
 def test_semantic_evidence_review_reconciles_only_after_exact_failure(tmp_path: Path) -> None:
