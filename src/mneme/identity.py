@@ -82,6 +82,138 @@ class IdentityService:
             raise IdentityError("current self-view binding is missing")
         return SelfView(self.instance_id, int(row[1]), row[2], str(row[0]), str(row[3]))
 
+    def _start_naming_attempt(
+        self,
+        request: GenerationRequest,
+        fingerprint: Mapping[str, Any],
+    ) -> tuple[str, str]:
+        """Charge and persist a naming request before dispatch.
+
+        Identity adoption historically wrote its generation record only after
+        the model result had passed local validation.  That lost malformed
+        results from the durable call ledger.  The mutable attempt record is
+        the naming equivalent of an interpretation attempt: it is created
+        before dispatch and linked to the immutable identity generation record
+        only after the adoption transition commits.
+        """
+
+        attempt_id = str(uuid.uuid4())
+        host_ref = _digest(dict(fingerprint))
+        now = _utc()
+        with self.store.transaction() as db:
+            db.execute(
+                "INSERT OR IGNORE INTO host_records(host_ref,provider,model_id,"
+                "model_revision,runtime,fingerprint_json,canonical_digest) "
+                "VALUES(?,?,?,?,?,?,?)",
+                (
+                    host_ref,
+                    fingerprint["provider"],
+                    fingerprint["model_id"],
+                    fingerprint.get("model_revision"),
+                    fingerprint["runtime"],
+                    json.dumps(dict(fingerprint), sort_keys=True),
+                    host_ref,
+                ),
+            )
+            db.execute(
+                "INSERT INTO identity_generation_attempts "
+                "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                (
+                    attempt_id,
+                    self.instance_id,
+                    host_ref,
+                    json.dumps(request.to_dict(), sort_keys=True),
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                    "STARTED",
+                    "[]",
+                    None,
+                    now,
+                    now,
+                ),
+            )
+        return attempt_id, host_ref
+
+    def _persist_naming_result(
+        self,
+        attempt_id: str,
+        result: GenerationResult,
+        fingerprint: Mapping[str, Any],
+    ) -> None:
+        """Persist the complete provider result before any local validation."""
+
+        usage = result.token_usage
+        result_payload = {
+            "content": result.content,
+            "model_id": result.model_id,
+            "provider": result.provider,
+            "effective_parameters": result.effective_parameters,
+            "seed": result.seed,
+            "finish_reason": result.finish_reason,
+        }
+        provider_evidence = {
+            "provenance": result.provenance,
+            "host_fingerprint": dict(fingerprint),
+            "provider": result.provider,
+            "model_id": result.model_id,
+            "finish_reason": result.finish_reason,
+        }
+        with self.store.transaction() as db:
+            row = db.execute(
+                "SELECT status FROM identity_generation_attempts WHERE attempt_id=? "
+                "AND instance_id=?",
+                (attempt_id, self.instance_id),
+            ).fetchone()
+            if row is None or str(row[0]) != "STARTED":
+                raise IdentityError("naming attempt is not awaiting a provider result")
+            db.execute(
+                "UPDATE identity_generation_attempts SET result_json=?,returned_model=?,"
+                "returned_provider=?,effective_parameters_json=?,usage_json=?,latency_ms=?,"
+                "finish_reason=?,provider_evidence_json=?,status='RESULT_READY',updated_at=? "
+                "WHERE attempt_id=? AND instance_id=?",
+                (
+                    json.dumps(result_payload, sort_keys=True),
+                    result.model_id,
+                    result.provider,
+                    json.dumps(result.effective_parameters, sort_keys=True),
+                    json.dumps(usage.__dict__, sort_keys=True) if usage is not None else None,
+                    result.latency_ms,
+                    result.finish_reason,
+                    json.dumps(provider_evidence, sort_keys=True),
+                    _utc(),
+                    attempt_id,
+                    self.instance_id,
+                ),
+            )
+
+    def _finish_naming_attempt(
+        self,
+        attempt_id: str,
+        *,
+        status: str,
+        errors: tuple[str, ...] = (),
+    ) -> None:
+        if status not in {"INVALID", "UNCERTAIN"}:
+            raise IdentityError("invalid naming attempt disposition")
+        with self.store.transaction() as db:
+            db.execute(
+                "UPDATE identity_generation_attempts SET status=?,validation_errors_json=?,"
+                "updated_at=? WHERE attempt_id=? AND instance_id=?",
+                (
+                    status,
+                    json.dumps(list(errors), sort_keys=True),
+                    _utc(),
+                    attempt_id,
+                    self.instance_id,
+                ),
+            )
+
     def adopt_from_host(
         self,
         host: Host,
@@ -133,19 +265,50 @@ class IdentityService:
             ),
             parameters={"max_new_tokens": 64, "temperature": 0.0},
         )
-        result = host.generate(request)
-        if result.provider != fingerprint["provider"] or result.model_id != fingerprint["model_id"]:
-            raise IdentityError("naming response does not match host fingerprint")
+        attempt_id, _host_ref = self._start_naming_attempt(request, fingerprint)
         try:
+            result = host.generate(request)
+        except Exception as exc:
+            self._finish_naming_attempt(
+                attempt_id,
+                status="UNCERTAIN",
+                errors=(type(exc).__name__,),
+            )
+            raise
+        self._persist_naming_result(attempt_id, result, fingerprint)
+        try:
+            if (
+                result.provider != fingerprint["provider"]
+                or result.model_id != fingerprint["model_id"]
+            ):
+                raise IdentityError("naming response does not match host fingerprint")
             decoded = json.loads(result.content)
         except json.JSONDecodeError as exc:
+            self._finish_naming_attempt(
+                attempt_id, status="INVALID", errors=("invalid_json",)
+            )
             raise IdentityError("naming response is not valid JSON") from exc
+        except IdentityError as exc:
+            self._finish_naming_attempt(
+                attempt_id, status="INVALID", errors=(str(exc),)
+            )
+            raise
         if (
             not isinstance(decoded, dict)
             or set(decoded) != {"name"}
             or not isinstance(decoded.get("name"), str)
         ):
+            self._finish_naming_attempt(
+                attempt_id, status="INVALID", errors=("name_schema_failed",)
+            )
             raise IdentityError("naming response must contain only a string name")
+        try:
+            name = validate_name(str(decoded["name"]))
+        except IdentityError:
+            self._finish_naming_attempt(
+                attempt_id, status="INVALID", errors=("name_validation_failed",)
+            )
+            raise
         provenance = {
             "operation": "identity_adoption",
             "host": fingerprint,
@@ -156,9 +319,9 @@ class IdentityService:
         if source:
             provenance["source"] = dict(source)
         return self._adopt(
-            str(decoded["name"]),
+            name,
             source=provenance,
-            generation=(request, result, fingerprint),
+            generation=(attempt_id, request, result, fingerprint),
         )
 
     def adopt(self, name: str, *, source: Mapping[str, Any] | None = None) -> SelfView:
@@ -171,7 +334,7 @@ class IdentityService:
         name: str,
         *,
         source: Mapping[str, Any] | None,
-        generation: tuple[GenerationRequest, GenerationResult, Mapping[str, Any]] | None,
+        generation: tuple[str, GenerationRequest, GenerationResult, Mapping[str, Any]] | None,
     ) -> SelfView:
         """Commit an identity transition and, when applicable, its host call."""
 
@@ -218,7 +381,7 @@ class IdentityService:
                 ),
             )
             if generation is not None:
-                request, result, fingerprint = generation
+                attempt_id, request, result, fingerprint = generation
                 host_ref = _digest(fingerprint)
                 db.execute(
                     "INSERT OR IGNORE INTO host_records(host_ref,provider,model_id,"
@@ -269,6 +432,14 @@ class IdentityService:
                         now,
                     ),
                 )
+                updated = db.execute(
+                    "UPDATE identity_generation_attempts SET status='ACCEPTED',"
+                    "identity_event_id=?,updated_at=? WHERE attempt_id=? AND instance_id=? "
+                    "AND status='RESULT_READY'",
+                    (event_id, now, attempt_id, self.instance_id),
+                ).rowcount
+                if updated != 1:
+                    raise IdentityError("naming attempt is not ready for adoption")
             db.execute(
                 "INSERT INTO self_views VALUES(?,?,?,?,?,?,?,?)",
                 (

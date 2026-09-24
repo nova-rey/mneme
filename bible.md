@@ -944,3 +944,7 @@
 ## 2026-09-24 P2 learner opportunity and evaluation artifact correction
 
 - Episode-acceptance manifests now carry forward the Phase Two learner snapshot, configuration, coverage, authority, and opportunity fields so separate episode and interpretation revisions share the exact learner clock. Added a two-opportunity publication/replay regression proving the materialized state and immutable ledger replay agree. Artifact verification now accepts and validates direct Phase Two evaluation JSON receipts alongside the existing P0.3 per-check directory format. Focused validation passed; no provider call was made.
+
+## 2026-09-24 P2 identity generation durability correction
+
+- Host-backed identity adoption now persists a naming attempt before dispatch, records returned results and host/provider provenance before validation, records invalid or uncertain outcomes, and links accepted attempts to the immutable identity event and generation record. Added schema 9 with explicit v8-to-v9 migration, CLI migration targets, malformed-result and transport-failure regressions, and acceptance linkage checks. No provider call was made.

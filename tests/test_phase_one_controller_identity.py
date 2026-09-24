@@ -5,7 +5,7 @@ import json
 import pytest
 
 from mneme.chat import ChatSession
-from mneme.contracts import GenerationRequest, GenerationResult
+from mneme.contracts import GenerationRequest, GenerationResult, HostError
 from mneme.controller import ResponseController, TurnIntent
 from mneme.corrections import CorrectionService
 from mneme.experiments.live_accounting import summarize_lineage_usage
@@ -68,6 +68,11 @@ class _NoUsageNamingHost(_NamingHost):
         )
 
 
+class _FailingNamingHost(FakeHost):
+    def generate(self, request: GenerationRequest) -> GenerationResult:
+        raise HostError("simulated naming transport failure")
+
+
 def _store(tmp_path, name: str):
     store = SQLiteStore(tmp_path / f"{name}.sqlite3")
     instance = store.create_root(permissions=StoragePermissions(True, True, True, True, True))
@@ -116,6 +121,19 @@ def test_identity_host_adoption_is_one_call_and_strictly_structured(tmp_path):
         assert json.loads(generation[6])["total_tokens"] is not None
         assert generation[7] == "stop"
         assert json.loads(generation[8])["provider"] == "builtin"
+        attempt = store.connection.execute(
+            "SELECT attempt_id,status,request_json,result_json,host_ref,returned_model,"
+            "returned_provider,finish_reason,usage_json,identity_event_id "
+            "FROM identity_generation_attempts"
+        ).fetchone()
+        assert attempt is not None
+        assert attempt[1] == "ACCEPTED"
+        assert json.loads(attempt[2])["messages"][0]["content"].startswith("Choose one")
+        assert json.loads(attempt[3])["content"] == '{"name":"Nova"}'
+        assert attempt[4] == generation[1]
+        assert attempt[5:8] == ("mneme-fake-v1", "builtin", "stop")
+        assert json.loads(attempt[8])["total_tokens"] is not None
+        assert attempt[9] == generation[0]
 
     invalid_store, invalid_instance = _store(tmp_path, "invalid-host-identity")
     with invalid_store:
@@ -124,6 +142,34 @@ def test_identity_host_adoption_is_one_call_and_strictly_structured(tmp_path):
             IdentityService(invalid_store, invalid_instance).adopt_from_host(host)
         assert host.calls == 1
         assert IdentityService(invalid_store, invalid_instance).current() is None
+        attempt = invalid_store.connection.execute(
+            "SELECT status,result_json,returned_provider,returned_model,host_ref,"
+            "validation_errors_json FROM identity_generation_attempts"
+        ).fetchone()
+        assert attempt is not None
+        assert attempt[0] == "INVALID"
+        assert json.loads(attempt[1])["content"] == '{"name":"Nova", "extra":true}'
+        assert attempt[2] == "builtin"
+        assert attempt[3] == "mneme-fake-v1"
+        assert attempt[4]
+        assert json.loads(attempt[5]) == ["name_schema_failed"]
+
+
+def test_identity_host_failure_is_durably_uncertain(tmp_path):
+    store, instance = _store(tmp_path, "failed-host-identity")
+    with store:
+        with pytest.raises(HostError, match="simulated naming transport failure"):
+            IdentityService(store, instance).adopt_from_host(_FailingNamingHost())
+        attempt = store.connection.execute(
+            "SELECT request_json,result_json,status,validation_errors_json,host_ref "
+            "FROM identity_generation_attempts"
+        ).fetchone()
+        assert attempt is not None
+        assert json.loads(attempt[0])["messages"][0]["content"].startswith("Choose one")
+        assert attempt[1] is None
+        assert attempt[2] == "UNCERTAIN"
+        assert json.loads(attempt[3]) == ["HostError"]
+        assert attempt[4]
 
 
 def test_identity_host_adoption_preserves_unknown_usage(tmp_path):

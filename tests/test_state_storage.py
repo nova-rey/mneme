@@ -147,7 +147,32 @@ def test_schema_migration_is_explicit_backed_up_and_additive(tmp_path):
         ).fetchone()
         is not None
     )
+    assert (
+        migrated.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' "
+            "AND name='identity_generation_attempts'"
+        ).fetchone()
+        is not None
+    )
     migrated.close()
+
+
+def test_schema_v8_to_v9_adds_durable_identity_attempts(tmp_path):
+    path = tmp_path / "v8.sqlite3"
+    with SQLiteStore(path) as store:
+        store.create_root()
+        store.connection.execute("DROP TABLE identity_generation_attempts")
+        store.connection.execute("UPDATE store_info SET schema_version=8")
+        store.connection.execute("PRAGMA user_version=8")
+    backup = tmp_path / "v8.before-v9.sqlite3"
+    SQLiteStore.migrate(path, target_version=9, backup=backup)
+    assert backup.is_file()
+    with SQLiteStore(path, read_only=True) as migrated:
+        assert migrated.connection.execute("PRAGMA user_version").fetchone()[0] == 9
+        assert migrated.connection.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' "
+            "AND name='identity_generation_attempts'"
+        ).fetchone() is not None
 
 
 def test_schema_v2_to_v3_backfills_local_episode_counts(tmp_path):
