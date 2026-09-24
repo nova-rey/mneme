@@ -920,3 +920,7 @@
 ## 2026-09-24 P2 contingent interpretation-tolerance stop
 
 - The pushed failure-tolerance correction resumed the preserved run at interactive turn 6, without regenerating turns 0–5 or the failed turn-5 extraction. Eleven new fixed-coordinate calls returned; turns 6 and 8 also ended with unavailable extraction while turn 7 interpreted successfully. After nine accepted interactive turns, 3/9 lacked trustworthy interpretation, so the declared post-eight-turn 25% measurement rule paused the run. Terminally unavailable turns contributed no associations, learner credit, absence inference, or consolidation. Cumulative returned calls are 65 (97,032 input / 25,503 output / 122,535 total tokens; cost unavailable). No open-loop or evaluation calls followed. Evidence: `docs/receipts/MNEME_P2_Contingent_Live_Stop_After_Interpretation_Tolerance_Receipt_20260924.md` and `.json`, plus the updated transcript.
+
+## 2026-09-24 P2 contingent measurement-stop resume guard
+
+- A post-stop audit found that a generic PAUSED resume path could have continued a run whose measurement-adequacy rule had already fired. The contingent runtime now requires an explicit measurement-review disposition before a stop-rule-paused run can resume; crash-paused runs without a stop reason retain ordinary restart behavior. Nine focused contingent tests, 384 total pytest tests, Ruff, strict mypy, wheel build, and fresh-install smoke pass. No provider call was made for this guard.

@@ -1019,6 +1019,11 @@ class ContingentStudy:
             )
             self.pilot.begin_pilot()
         elif state["status"] == PilotStatus.PAUSED.value:
+            if self.pilot.study_progress().get("stop_reason"):
+                raise ContingentStudyError(
+                    "contingent study is paused for measurement review; "
+                    "a stop-rule disposition is required before resuming"
+                )
             self.pilot.resume()
         open_loop = self._generate_open_loop_messages()
         interactive = self._run_branch(0, "interactive", None)

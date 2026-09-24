@@ -10,6 +10,7 @@ from mneme.experiments.contingent import (
     _measurement_counters,
     _measurement_stop,
 )
+from mneme.experiments.pilot import PilotStatus
 from mneme.hosts import FakeHost
 
 
@@ -126,3 +127,22 @@ def test_transcript_snapshot_preserves_exact_conversational_text(tmp_path: Path)
     assert "exact Gemma response" in transcript
     assert "measurement_unknown / interpretation_unavailable" in transcript
     assert "provider content is not JSON" in transcript
+
+
+def test_measurement_stop_is_not_automatically_resumed(tmp_path: Path) -> None:
+    gemma = FakeHost(model_id="gemma-test")
+    qwen = FakeHost(model_id="qwen-test")
+    study = ContingentStudy.create(tmp_path / "lab", gemma, qwen, qwen, gemma)
+    study.pilot.begin_qualification()
+    study.pilot._write_state(PilotStatus.QUALIFIED, qualification={"status": "PASS"})
+    study.pilot.begin_pilot()
+    study.pilot._write_state(
+        PilotStatus.PAUSED,
+        study_progress={"stop_reason": "interpretation_success_rate_below_75_percent"},
+    )
+    try:
+        study.execute()
+    except Exception as exc:
+        assert "measurement review" in str(exc)
+    else:
+        raise AssertionError("a measurement stop must require review before resumption")
