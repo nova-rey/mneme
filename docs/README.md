@@ -213,6 +213,8 @@ The documents are preserved in their supplied form and are intentionally not mer
   qualification. Evidence is recorded in [the v2 qualification pass receipt](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V2_Pass_20260924.md)
   ([JSON](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V2_Pass_20260924.json)).
 
+  The narrow empty-evidence normalization correction accepts omitted, null, empty-string, empty-object, and empty-list placeholders only for false/unknown reviewer judgments; positive grounding remains exact and unique. It is recorded in [the empty-normalization receipt](receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_Empty_Normalization_Receipt.md) ([JSON](receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_Empty_Normalization_Receipt.json)).
+
   The resumed pilot then stopped at `extraction-s1-e5` because Gemma omitted
   required confidence fields from otherwise source-grounded graph records; the
   13-call stop is preserved in [the confidence-schema failure receipt](receipts/MNEME_P2.3_Pilot_Recovery_V4_Confidence_Failure_20260924.md)

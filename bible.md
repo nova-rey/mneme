@@ -772,3 +772,7 @@
 ## 2026-09-24 P2.3 confidence-schema extraction stop and v4 correction
 
 - The resumed pilot `p2-pilot-recovery-20260924j` returned 13 calls and stopped at `extraction-s1-e5`: Gemma omitted required confidence fields from otherwise source-grounded graph records, so strict validation rejected the structural result and no reviewer or evaluation call followed. The failed coordinate and 13-call evidence are preserved. Extractor contract `residue-v4` now includes an explicit complete confidence-bearing graph example and mandatory 0.0–1.0 confidence wording; validator, learner, and evidence-review semantics are unchanged. Offline validation passed with 335 pytest, Ruff, strict mypy, wheel smoke, and zero provider calls. Evidence: `docs/receipts/MNEME_P2.3_Pilot_Recovery_V4_Confidence_Failure_20260924.md`, `.json`, and `docs/receipts/MNEME_P2.3_Extractor_V4_Confidence_Prompt_Correction_Receipt.md`, `.json`.
+
+## 2026-09-24 P2.3 evidence-review empty-placeholder normalization
+
+- Corrected only the reviewer result boundary exposed by Q3: false/unknown judgments now accept omitted, null, empty-string, empty-object, or empty-list evidence and canonicalize to no quotation; any non-empty evidence remains rejected, while grounded=true remains strict exact unique quotation. Added historical-Q3 and shape regressions, preserved all prior receipts unchanged, and made zero provider calls. Evidence: `docs/receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_Empty_Normalization_Receipt.md` and `.json`.

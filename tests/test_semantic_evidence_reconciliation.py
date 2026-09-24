@@ -6,6 +6,7 @@ import pytest
 
 from mneme.contracts import GenerationRequest, GenerationResult, TokenUsage
 from mneme.experiments.evidence_review import (
+    EvidenceReview,
     EvidenceReviewError,
     apply_replacements,
     collect_unresolved_evidence,
@@ -118,11 +119,32 @@ def test_false_and_unknown_review_never_create_residue() -> None:
 
 
 @pytest.mark.parametrize("grounded", ["false", '"unknown"'])
-def test_empty_placeholder_is_canonicalized_to_no_replacement(grounded: str) -> None:
-    review = validate_reviewer_result(
-        '{"grounded": ' + grounded + ', "evidence": ""}'
-    )
+@pytest.mark.parametrize("evidence", [None, "", {}, []])
+def test_empty_placeholder_is_canonicalized_to_no_replacement(
+    grounded: str, evidence: object
+) -> None:
+    payload: dict[str, object] = {"grounded": json.loads(grounded), "evidence": evidence}
+    review = validate_reviewer_result(json.dumps(payload))
     assert review.quote is None
+
+
+def test_historical_q3_empty_string_is_accepted_as_no_evidence() -> None:
+    review = validate_reviewer_result('{"grounded": false, "evidence": ""}')
+    assert review == EvidenceReview(False, None)
+
+
+@pytest.mark.parametrize("grounded", [True, False, "unknown"])
+@pytest.mark.parametrize("evidence", [{"placeholder": True}, ["not empty"], 0, 1])
+def test_nonempty_evidence_is_never_normalized_away(
+    grounded: bool | str, evidence: object
+) -> None:
+    content = json.dumps({"grounded": grounded, "evidence": evidence})
+    if grounded is True:
+        with pytest.raises(EvidenceReviewError, match="requires evidence"):
+            validate_reviewer_result(content)
+    else:
+        with pytest.raises(EvidenceReviewError, match="must not include evidence"):
+            validate_reviewer_result(content)
 
 
 class _InvalidResidueHost(FakeHost):
