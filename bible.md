@@ -860,3 +860,7 @@
 ## 2026-09-24 P2 contingent optional-route correction
 
 - The resumed coordinate returned valid graph edges plus an optional route candidate whose edges were discontinuous. The strict route validator correctly rejected that route, but the acquisition normalization boundary had not dropped this optional malformed item before validation. Added item-level rejection for discontinuous/reversed optional routes while retaining valid source-backed edges; no route is fabricated and no learner semantics change. The historical live result remains preserved and the same coordinate will resume after CI.
+
+## 2026-09-24 P2 contingent persisted-result revalidation correction
+
+- The resumed supplement coordinate had a durably persisted repair result that was rejected by the pre-normalization validator. Added an explicit no-provider revalidation path for returned coordinates so an in-scope deterministic validator correction can reclassify that result while preserving the raw attempt and prior failure history. Added regression coverage; full offline validation passes and the supplement will resume from its preserved coordinate after the required push/CI gate.

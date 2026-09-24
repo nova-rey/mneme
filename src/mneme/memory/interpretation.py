@@ -720,8 +720,19 @@ class InterpretationService:
             "normalized_residue": normalized,
         }
 
-    def validate(self, operation: str | InterpretationReceipt) -> Residue:
-        """Validate the already persisted result and mark its attempt VALID."""
+    def validate(
+        self,
+        operation: str | InterpretationReceipt,
+        *,
+        revalidate_invalid: bool = False,
+    ) -> Residue:
+        """Validate the already persisted result and mark its attempt VALID.
+
+        ``revalidate_invalid`` is an explicit recovery path for a persisted
+        result that was rejected by an older deterministic validator.  It
+        never dispatches a provider call and leaves the raw result and prior
+        attempt history intact; callers use it only after a validator fix.
+        """
 
         operation_id = _as_operation_id(operation)
         invalid_error: str | None = None
@@ -742,7 +753,9 @@ class InterpretationService:
             }
             if str(latest[2]) == "VALID":
                 valid_residue, _, _ = self._residue_from_attempt(str(latest[1]), sources)
-            elif str(latest[2]) in {"INVALID", "UNCERTAIN"}:
+            elif str(latest[2]) == "UNCERTAIN":
+                invalid_error = "interpretation attempt is not valid"
+            elif str(latest[2]) == "INVALID" and not revalidate_invalid:
                 invalid_error = "interpretation attempt is not valid"
             else:
                 try:
@@ -777,6 +790,11 @@ class InterpretationService:
                     "UPDATE interpretation_attempts SET status='VALID',validation_errors_json='[]' "
                     "WHERE operation_id=? AND attempt=?",
                     (operation_id, int(latest[0])),
+                )
+                db.execute(
+                    "UPDATE interpretation_operations SET status='RESULT_READY',"
+                    "failure_code=NULL,updated_at=? WHERE operation_id=?",
+                    (_utc(), operation_id),
                 )
         if invalid_error is not None:
             raise InterpretationValidationError(invalid_error)

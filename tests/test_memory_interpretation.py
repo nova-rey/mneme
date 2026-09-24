@@ -331,6 +331,76 @@ def test_invalid_result_allows_one_explicit_repair_and_no_more(tmp_path):
             service.execute(prepared, repair=True)
 
 
+def test_explicit_revalidation_reclassifies_persisted_result_without_provider_call(tmp_path):
+    payload = json.dumps(
+        {
+            "core_concepts": [
+                {
+                    "key": "a",
+                    "label": "hello",
+                    "kind": "concept",
+                    "evidence": [{"source": "s0", "evidence": "hello"}],
+                    "confidence": 0.9,
+                },
+                {
+                    "key": "b",
+                    "label": "world",
+                    "kind": "concept",
+                    "evidence": [{"source": "s0", "evidence": "world"}],
+                    "confidence": 0.9,
+                },
+            ],
+            "edge_candidates": [
+                {
+                    "key": "e1",
+                    "from": "a",
+                    "to": "b",
+                    "relationship": "related",
+                    "evidence": [{"source": "s0", "evidence": "hello world"}],
+                    "confidence": 0.9,
+                }
+            ],
+            "route_candidates": [
+                {
+                    "key": "r1",
+                    "edge_keys": ["e1", "e1"],
+                    "evidence": [{"source": "s0", "evidence": "hello world"}],
+                    "confidence": 0.9,
+                }
+            ],
+        }
+    )
+    host = ResidueHost(payload)
+    store, instance, episode_id = _accepted(tmp_path, host)
+    with store:
+        service = InterpretationService(store, instance, host)
+        prepared = service.prepare(episode_id, operation_id="interp-revalidate")
+        service.execute(prepared)
+        # Simulate the persisted terminal rejection made by the old validator.
+        store.connection.execute(
+            "UPDATE interpretation_attempts SET status='INVALID',"
+            "validation_errors_json='[\"route edges are discontinuous or reversed\"]' "
+            "WHERE operation_id=?",
+            (prepared.operation_id,),
+        )
+        store.connection.execute(
+            "UPDATE interpretation_operations SET status='FAILED',failure_code='validation_failed' "
+            "WHERE operation_id=?",
+            (prepared.operation_id,),
+        )
+        with pytest.raises(InterpretationValidationError, match="not valid"):
+            service.validate(prepared)
+        residue = service.validate(prepared, revalidate_invalid=True)
+        assert len(residue.edge_candidates) == 1
+        assert residue.route_candidates == ()
+        assert host.calls == 1
+        status = store.connection.execute(
+            "SELECT status FROM interpretation_operations WHERE operation_id=?",
+            (prepared.operation_id,),
+        ).fetchone()[0]
+        assert status == "RESULT_READY"
+
+
 def test_invalid_evidence_allows_one_explicit_repair_and_resolves_offsets(tmp_path):
     invalid = json.dumps(
         {

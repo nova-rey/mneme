@@ -474,7 +474,11 @@ class PilotRuntime:
         residue: Residue | None = None
         validation_error: str | None = None
         try:
-            residue = service.validate(operation_id)
+            # A returned coordinate can contain a result rejected by an
+            # older deterministic validator.  Revalidate that persisted
+            # result explicitly after an in-scope validator correction; this
+            # never calls the provider or changes the raw attempt evidence.
+            residue = service.validate(operation_id, revalidate_invalid=not dispatched)
         except InterpretationValidationError as exc:
             validation_error = str(exc)
         attempt = int(self._interpretation_attempt(subject.store, operation_id))
