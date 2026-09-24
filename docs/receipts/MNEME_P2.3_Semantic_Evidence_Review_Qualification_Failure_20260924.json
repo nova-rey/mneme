@@ -1,0 +1,22 @@
+{
+  "receipt": "mneme-p2.3-semantic-evidence-review-qualification-failure-20260924",
+  "date": "2026-09-24",
+  "status": "FAIL",
+  "contract": "semantic-evidence-reconciliation-v1",
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "provider": "DeepInfra",
+  "calls": 3,
+  "q4_dispatched": false,
+  "pilot_calls": 0,
+  "usage": {"input_tokens": 531, "output_tokens": 673, "total_tokens": 1204},
+  "cost": "unknown",
+  "cases": [
+    {"case": "Q1-markdown-formatting", "status": "PASS", "grounded": true, "exact_unique_quote": true},
+    {"case": "Q2-grounded-paraphrase", "status": "PASS", "grounded": true, "exact_unique_quote": true},
+    {"case": "Q3-unsupported", "status": "FAIL_CLOSED", "grounded": false, "failure": "extra empty evidence field"}
+  ],
+  "credential_provider_functional": true,
+  "historical_evidence_unchanged": true,
+  "pilot_resumed": false,
+  "failure_class": "reviewer_output_contract"
+}

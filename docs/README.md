@@ -196,6 +196,12 @@ The documents are preserved in their supplied form and are intentionally not mer
   validation work. Offline evidence is recorded in [the reconciliation receipt](receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_Offline_Receipt.md)
   ([JSON](receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_Offline_Receipt.json));
   it used zero provider calls and leaves the 120 historical calls unchanged.
+  The first fixed four-case reviewer qualification stopped after three returned
+  calls: Q1 and Q2 passed, while Q3 made the required semantic rejection but
+  included an empty `evidence` field and therefore failed the strict contract.
+  The pilot was not resumed; the exact failure is preserved in [the reviewer
+  qualification receipt](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_Failure_20260924.md)
+  ([JSON](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_Failure_20260924.json)).
 
   Future design context: [Developmental Self-Context](architecture/future/MNEME_Developmental_Self_Context_Architecture.md).
   This reference does not change the phase's implementation scope, frozen
