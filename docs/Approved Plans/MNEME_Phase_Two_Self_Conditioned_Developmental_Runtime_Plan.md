@@ -96,8 +96,9 @@ because its quotation cannot be matched exactly may use the temporary
 **experimental semantic evidence reconciliation** role. That bounded reviewer
 receives the immutable source, extracted proposition, proposed quotation, and
 source role; it may return `grounded=true` with one exact quotation copied from
-the source, `grounded=false`, or `grounded=unknown`. Software then requires a
-unique exact match and computes the canonical span. The reviewer does not
+the source, `grounded=false`, or `grounded=unknown`; the latter two may omit
+`evidence` or use an empty placeholder. Software then requires a unique exact
+match for positive grounding and computes the canonical span. The reviewer does not
 assign provenance, learner credit, offsets, or developmental consequences.
 Malformed, false, unknown, missing, or ambiguous quotations fail closed. This
 role is research scaffolding, is separately accounted for, and is a candidate

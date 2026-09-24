@@ -760,3 +760,7 @@
 ## 2026-09-24 P2.3 semantic evidence reviewer qualification stop
 
 - The fixed reviewer qualification reached DeepInfra successfully for three returned calls (531 input, 673 output, 1,204 total tokens; cost unavailable). Q1 Markdown-formatting omission and Q2 source-grounded paraphrase returned exact unique quotations and passed. Q3 correctly rejected an unsupported extraction semantically but included an empty `evidence` field with `grounded:false`; strict validation rejected the malformed shape and marked the qualification failed closed. No fourth case, pilot call, retry, or resampling occurred. Historical 120 campaign calls and all prior receipts remain unchanged. Evidence: `docs/receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_Failure_20260924.md` and `.json`.
+
+## 2026-09-24 P2.3 semantic evidence reconciliation v2 correction
+
+- Corrected only the reviewer serialization boundary exposed by the preserved Q3 failure: false/unknown may omit `evidence` or use an empty placeholder, and deterministic software canonicalizes that to no quotation. Nonempty evidence, positive grounding without a quote, malformed/unknown fields, nonexistent quotes, and duplicate quotes remain fail-closed. The recovery contract is now `semantic-evidence-reconciliation-v2`; no provider call occurred. Offline validation passed with 335 pytest, Ruff, strict mypy, wheel smoke, and CI pending this commit. Historical receipts remain unchanged. Evidence: `docs/receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_V2_Correction_Receipt.md` and `.json`.

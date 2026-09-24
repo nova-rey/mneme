@@ -117,6 +117,14 @@ def test_false_and_unknown_review_never_create_residue() -> None:
             resolve_review(candidate, review)
 
 
+@pytest.mark.parametrize("grounded", ["false", '"unknown"'])
+def test_empty_placeholder_is_canonicalized_to_no_replacement(grounded: str) -> None:
+    review = validate_reviewer_result(
+        '{"grounded": ' + grounded + ', "evidence": ""}'
+    )
+    assert review.quote is None
+
+
 class _InvalidResidueHost(FakeHost):
     def generate(self, request: GenerationRequest) -> GenerationResult:
         content = json.dumps(_concept("not in source"))
@@ -154,7 +162,7 @@ def test_reviewed_result_preserves_failed_extractor_attempt(tmp_path) -> None:
         operation.episode_id,
         operation_id="extract-1-review",
         recovery_of="extract-1",
-        recovery_version="semantic-evidence-reconciliation-v1",
+        recovery_version="semantic-evidence-reconciliation-v2",
     )
     service.record_reviewed_result(recovery, _concept("hello"))
     residue = service.validate(recovery)

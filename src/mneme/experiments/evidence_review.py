@@ -167,9 +167,10 @@ def reviewer_request(candidate: EvidenceCandidate) -> GenerationRequest:
         system=(
             "You are a temporary semantic evidence reviewer. Decide only whether the "
             "immutable source expresses/supports the extracted proposition as claimed. "
-            "Return raw JSON with exactly grounded and, only when grounded is true, "
+            "Return raw JSON with exactly grounded and, when grounded is true, "
             "evidence. grounded must be true, false, or unknown. If true, evidence "
-            "must be one exact verbatim quotation copied from source. Do not calculate "
+            "must be one exact verbatim quotation copied from source. If grounded is "
+            "false or unknown, omit evidence or set it to the empty string. Do not calculate "
             "offsets, infer provenance, change the proposition, assign credit, or add "
             "any other fields."
         ),
@@ -191,11 +192,11 @@ def validate_reviewer_result(content: str) -> EvidenceReview:
             raise EvidenceReviewError("grounded reviewer result requires evidence")
         return EvidenceReview(True, quote)
     if grounded is False:
-        if "evidence" in value:
+        if "evidence" in value and value["evidence"] not in (None, ""):
             raise EvidenceReviewError("false reviewer result must not include evidence")
         return EvidenceReview(False, None)
     if grounded == "unknown":
-        if "evidence" in value:
+        if "evidence" in value and value["evidence"] not in (None, ""):
             raise EvidenceReviewError("unknown reviewer result must not include evidence")
         return EvidenceReview(None, None)
     raise EvidenceReviewError("grounded must be true, false, or unknown")

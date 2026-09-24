@@ -659,14 +659,14 @@ class PilotRuntime:
             subject.store,
             subject.instance_id,
             reviewer_host,
-            extractor_version="semantic-evidence-reconciliation-v1",
+            extractor_version="semantic-evidence-reconciliation-v2",
         )
         recovery_id = f"{extraction.operation_id}-evidence-review"
         prepared = service.prepare(
             extraction.episode_id,
             operation_id=recovery_id,
             recovery_of=extraction.operation_id,
-            recovery_version="semantic-evidence-reconciliation-v1",
+            recovery_version="semantic-evidence-reconciliation-v2",
         )
         service.record_reviewed_result(prepared, corrected)
         try:

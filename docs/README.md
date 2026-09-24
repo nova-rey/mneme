@@ -202,6 +202,11 @@ The documents are preserved in their supplied form and are intentionally not mer
   The pilot was not resumed; the exact failure is preserved in [the reviewer
   qualification receipt](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_Failure_20260924.md)
   ([JSON](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_Failure_20260924.json)).
+  The follow-up v2 contract correction treats an empty `evidence` placeholder
+  on a false/unknown judgment as no quotation while retaining strict rejection
+  of nonempty or ambiguous evidence; its offline gate is recorded in [the v2
+  correction receipt](receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_V2_Correction_Receipt.md)
+  ([JSON](receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_V2_Correction_Receipt.json)).
 
   Future design context: [Developmental Self-Context](architecture/future/MNEME_Developmental_Self_Context_Architecture.md).
   This reference does not change the phase's implementation scope, frozen
