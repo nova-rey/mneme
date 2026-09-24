@@ -716,3 +716,7 @@
 ## 2026-09-24 P2.3 failed-coordinate recovery correction
 
 - Added an explicit schema-8 recovery path for a failed extraction after the historical pilot exhausted its one repair. The failed operation remains immutable; a new versioned recovery operation records its superseded operation and uses a new fixed coordinate. Accepted developmental responses are never redispatched. Offline provider calls: zero. Evidence: `docs/receipts/MNEME_P2.3_Extraction_Recovery_Correction_Receipt.md` and `.json`.
+
+## 2026-09-24 P2.3 recovery-coordinate correction
+
+- The first recovery attempt consumed one Gemma extraction call and returned invalid residue; its repair was rejected before dispatch because the recovery operation identity was not retained. The repair path now reuses that operation ID while reserving a distinct deterministic laboratory coordinate, and subsequent recovery IDs derive from the superseded operation. The returned result and failed row remain preserved; 319 pytest, Ruff, strict mypy, and package smoke pass with zero calls for this correction. Evidence: `docs/receipts/MNEME_P2.3_Recovery_Coordinate_Correction_Receipt.md` and `.json`.

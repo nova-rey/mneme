@@ -384,6 +384,7 @@ class PilotRuntime:
         extractor_host: Host,
         max_output_tokens: int,
         repair: bool = False,
+        operation_id: str | None = None,
         recovery_of: str | None = None,
         recovery_version: str | None = None,
     ) -> ExtractionOutcome:
@@ -398,7 +399,7 @@ class PilotRuntime:
         )
         prepared = service.prepare(
             episode_id,
-            operation_id=call_id,
+            operation_id=operation_id or call_id,
             recovery_of=recovery_of,
             recovery_version=recovery_version,
         )

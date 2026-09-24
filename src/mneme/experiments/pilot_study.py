@@ -683,8 +683,10 @@ class PilotStudy:
                             # A failed prior operation is immutable evidence.
                             # Use a new fixed coordinate and a versioned
                             # request contract rather than retrying it.
-                            extract_call = f"{extract_call}-recovery"
-                            recovery_version = "residue-v1-recovery-20260924"
+                            extract_call = f"{extract_call}-recovery-{recovery_of}"
+                            recovery_version = (
+                                f"residue-v1-recovery-20260924-{recovery_of}"
+                            )
                     extraction = self.runtime.extract(
                         slot=slot,
                         call_id=extract_call,
@@ -709,6 +711,9 @@ class PilotStudy:
                             extractor_host=subject.host,
                             max_output_tokens=limits["development-extraction"],
                             repair=True,
+                            operation_id=extraction.operation_id,
+                            recovery_of=recovery_of,
+                            recovery_version=recovery_version,
                         )
                     if extraction.residue is None:
                         raise PilotStudyError(
