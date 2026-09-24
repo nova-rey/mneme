@@ -494,6 +494,7 @@ class ArtifactStore:
                 "development",
                 "extraction",
                 "assessment",
+                "contingent-assessment",
                 "evidence-review",
                 "receipts",
                 # Additive Phase Two contingent-conversation records remain
@@ -509,6 +510,7 @@ class ArtifactStore:
                 "development",
                 "extraction",
                 "assessment",
+                "contingent-assessment",
                 "evidence-review",
                 "receipts",
                 "contingent",

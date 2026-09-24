@@ -876,3 +876,7 @@
 ## 2026-09-24 P2 contingent adjacent-JSON repair normalization correction
 
 - The preserved turn-1 extraction repair returned two complete adjacent top-level JSON objects with disjoint residue fields. Added a narrow acquisition normalization that merges only complete disjoint object documents and rejects prose, malformed fragments, duplicate fields, and non-object values; strict residue and evidence validation remain authoritative. No provider call was made for this correction.
+
+## 2026-09-24 P2 contingent assessment-receipt restart verification correction
+
+- Resume verification exposed the explicit `contingent-assessment/` receipt category emitted by the supplement adapter but absent from the generic run-tree allowlist. Added the existing category and regression coverage; no provider result or scientific state changed.
