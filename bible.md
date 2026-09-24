@@ -792,3 +792,7 @@
 ## 2026-09-24 P2.3 preserved-coordinate assessor quote stop
 
 - Continuation `p2-pilot-recovery-20260924k` reused accepted developmental state and a valid residue-v4 extraction at `extraction-s1-e5`, then stopped at `assessment-s1-e5`: Gemma supplied a semantically supported model-output quote missing one immutable Markdown asterisk. Strict assessor source validation failed closed; 3 calls were consumed, no evaluation call followed, and historical evidence remains unchanged. Evidence: `docs/receipts/MNEME_P2.3_Pilot_Recovery_V5_Assessor_Quote_Failure_20260924.md` and `.json`.
+
+## 2026-09-24 P2.3 assessor nested-Markdown prompt correction
+
+- Added one concrete nested-Markdown exact-quotation example to the production `p2-assessor-v6` prompt after recovery-v5 omitted one immutable asterisk. Strict validation, provenance, learner behavior, and acceptance criteria are unchanged. Offline validation passed with 355 pytest, Ruff, strict mypy, wheel build, and fresh-install smoke; no provider call was made. Evidence: `docs/receipts/MNEME_P2.3_Assessor_Quote_Format_Prompt_Correction_V10_Receipt.md` and `.json`.

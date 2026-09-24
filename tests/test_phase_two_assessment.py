@@ -128,6 +128,8 @@ def test_assessor_prompt_exposes_complete_enum_and_json_contract() -> None:
     assert "Return raw JSON only" in prompt
     assert "Do not use Markdown fences" in prompt
     assert "formatting is part of the immutable source" in prompt
+    assert '`* **"text"**`' in prompt
+    assert '`* "text"` is not exact' in prompt
     assert '"schema_version": "p2-assessor-v6"' in prompt
     assert '"assessments": [' in prompt
     for value in ("present", "absent", "unknown"):
