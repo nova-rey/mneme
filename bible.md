@@ -808,3 +808,7 @@
 ## 2026-09-24 P2.3 repeated extractor enum blocker
 
 - Versioned recovery `p2-pilot-recovery-20260924m` repeated unsupported relationship `holds` at `extraction-s1-e7` after the residue-v4 prompt added explicit negative examples. Strict validation failed closed; 2 calls were consumed, no assessment/evaluation followed, and automatic same-class resampling stopped. Historical evidence remains unchanged. Evidence: `docs/receipts/MNEME_P2.3_Pilot_Recovery_V7_Extraction_Enum_Repeated_20260924.md` and `.json`.
+
+## 2026-09-24 P2.3 live-call reconciliation after v7
+
+- Reconciled the post-j campaign ledger without changing raw artifacts: v3 qualification stop 2, v4 qualification pass 3, recovery k 3, recovery l 7, recovery m 2. Cumulative returned calls are 157, leaving 242 inside the 399-call operational cap. No provider call was made; repeated extraction-enum resampling remains stopped. Evidence: `docs/receipts/MNEME_P2.3_Live_Call_Reconciliation_After_V7_20260924.md` and `.json`.

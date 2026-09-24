@@ -231,6 +231,8 @@ The documents are preserved in their supplied form and are intentionally not mer
 
   The versioned recovery then repeated the same unsupported `holds` output after that correction; strict validation failed closed and no assessment/evaluation call followed. Further same-class resampling is stopped pending review. Evidence is recorded in [the v7 repeated-enum receipt](receipts/MNEME_P2.3_Pilot_Recovery_V7_Extraction_Enum_Repeated_20260924.md) ([JSON](receipts/MNEME_P2.3_Pilot_Recovery_V7_Extraction_Enum_Repeated_20260924.json)).
 
+  A cumulative reconciliation counts 157 returned calls (140 historical plus 17 new qualification/recovery calls), leaving 242 inside the 399-call operational cap; raw run artifacts remain unchanged. Evidence is recorded in [the live-call reconciliation](receipts/MNEME_P2.3_Live_Call_Reconciliation_After_V7_20260924.md) ([JSON](receipts/MNEME_P2.3_Live_Call_Reconciliation_After_V7_20260924.json)).
+
   The resumed pilot then stopped at `extraction-s1-e5` because Gemma omitted
   required confidence fields from otherwise source-grounded graph records; the
   13-call stop is preserved in [the confidence-schema failure receipt](receipts/MNEME_P2.3_Pilot_Recovery_V4_Confidence_Failure_20260924.md)
