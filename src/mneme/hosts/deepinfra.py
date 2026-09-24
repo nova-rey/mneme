@@ -149,6 +149,20 @@ class DeepInfraQwenAssessorHost(DeepInfraChatHost):
     context_length: int | None = 262144
 
 
+@dataclass
+class DeepInfraEvidenceReviewHost(DeepInfraChatHost):
+    """Temporary inexpensive semantic evidence-review binding for P2.3."""
+
+    model_id: str = "Qwen/Qwen2.5-7B-Instruct"
+    model_family: str = "Qwen2.5 7B Instruct"
+    upstream_model_id: str | None = "Qwen/Qwen2.5-7B-Instruct"
+    canonical_revision: str | None = None
+    tokenizer_id: str | None = None
+    tokenizer_revision: str | None = None
+    quantization: str | None = "unknown/provider-managed"
+    context_length: int | None = 32768
+
+
 def _parameters(parameters: dict[str, Any]) -> dict[str, Any]:
     result = dict(parameters)
     if "max_new_tokens" in result:

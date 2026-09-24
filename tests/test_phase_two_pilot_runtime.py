@@ -68,6 +68,60 @@ class ResidueHost(CountingHost):
         )
 
 
+class MarkdownExtractionHost(CountingHost):
+    def generate(self, request: GenerationRequest) -> GenerationResult:
+        self.calls += 1
+        if request.system and "Extract residue" in request.system:
+            content = json.dumps(
+                {
+                    "core_concepts": [
+                        {
+                            "key": "jacket",
+                            "label": "rain jacket",
+                            "kind": "object",
+                            "evidence": [
+                                {"source": "s1", "evidence": "rain jacket kept me dry"}
+                            ],
+                            "confidence": 0.9,
+                        }
+                    ]
+                }
+            )
+        else:
+            content = "The * **rain jacket** kept me dry."
+        return GenerationResult(
+            content,
+            self.model_id,
+            "builtin",
+            dict(request.parameters),
+            request.seed,
+            TokenUsage(10, len(content.split()), 10 + len(content.split())),
+            0.0,
+            "stop",
+            {},
+            {"host": self.fingerprint().to_dict()},
+        )
+
+
+class EvidenceReviewerHost(FakeHost):
+    calls: int = 0
+
+    def generate(self, request: GenerationRequest) -> GenerationResult:
+        self.calls += 1
+        return GenerationResult(
+            '{"grounded": true, "evidence": "* **rain jacket** kept me dry."}',
+            self.model_id,
+            "builtin",
+            dict(request.parameters),
+            request.seed,
+            TokenUsage(20, 10, 30),
+            0.0,
+            "stop",
+            {},
+            {"host": self.fingerprint().to_dict()},
+        )
+
+
 def _pilot(tmp_path: Path, *, calls: int = 2) -> PilotRun:
     artifacts = ArtifactStore(tmp_path / "lab")
     artifacts.publish_run(
@@ -143,6 +197,77 @@ def test_development_coordinate_is_exactly_once_and_persisted_before_acceptance(
     )
     assert receipt["operation"]["status"] == "ACCEPTED"
     assert receipt["result"]["content"]
+
+
+def test_semantic_evidence_review_reconciles_only_after_exact_failure(tmp_path: Path) -> None:
+    developing = MarkdownExtractionHost()
+    reviewer = EvidenceReviewerHost(model_id="evidence-reviewer")
+    artifacts = ArtifactStore(tmp_path / "review-lab")
+    artifacts.publish_run(
+        experiment={"name": "p2-review", "contract_revision": 1},
+        preflight={"valid": True},
+        study_plan={"budgets": {"max_model_calls": 6}},
+        bindings={"subjects": []},
+        run_id="review-run",
+    )
+    pilot = PilotRun(artifacts, "review-run")
+    pilot.prepare(
+        planned_calls=6,
+        max_output_tokens=1000,
+        qualification_calls=3,
+        pilot_calls=3,
+        role_bindings={
+            "developing": host_role_binding("developing", developing),
+            "assessor": host_role_binding("assessor", FakeHost(model_id="assessor")),
+            "evidence-reviewer": host_role_binding("evidence-reviewer", reviewer),
+        },
+    )
+    pilot.begin_qualification()
+    for ordinal in range(3):
+        call_id = f"q-review-{ordinal}"
+        pilot.reserve_call(
+            call_id=call_id,
+            role="assessor-qualification",
+            coordinate={"case": ordinal},
+            max_output_tokens=10,
+        )
+        pilot.dispatch_call(call_id)
+        pilot.return_call(call_id, result={"valid": True}, output_tokens=1)
+    pilot.complete_qualification(passed=True)
+    pilot.begin_pilot()
+    store = SQLiteStore(tmp_path / "review-subject.sqlite3")
+    instance = store.create_root(
+        permissions=StoragePermissions(store=True, export=True, interpret=True, learn=True)
+    )
+    runtime = PilotRuntime(pilot, {0: RuntimeSubject(0, store, instance, developing)})
+    development = runtime.execute_development(
+        slot=0,
+        call_id="development-s0-e0",
+        coordinate={"subject": 0, "episode": 0},
+        request=GenerationRequest(({"role": "user", "content": "jacket"},)),
+        max_output_tokens=40,
+    )
+    extraction = runtime.extract(
+        slot=0,
+        call_id="extraction-s0-e0",
+        coordinate={"subject": 0, "episode": 0, "attempt": 0},
+        episode_id=development.operation.episode_id,
+        extractor_host=developing,
+        max_output_tokens=100,
+    )
+    assert extraction.residue is None
+    reconciled = runtime.review_extraction(
+        slot=0,
+        extraction=extraction,
+        reviewer_host=reviewer,
+    )
+    assert reconciled.residue is not None
+    assert reviewer.calls == 1
+    assert len(list((pilot.run_path / "evidence-review").glob("*.json"))) == 2
+    reservations = pilot.reservations_report()["calls"]
+    assert [item["role"] for item in reservations if "evidence-review" in item["call_id"]] == [
+        "evidence-reviewer"
+    ]
 
 
 def test_development_call_roles_use_prepared_developing_binding(tmp_path: Path) -> None:

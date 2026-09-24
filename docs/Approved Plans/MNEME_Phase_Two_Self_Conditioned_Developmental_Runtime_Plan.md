@@ -90,6 +90,20 @@ Evaluation invokes the same pure readout kernel over a frozen snapshot and write
 
 The extractor remains responsible for concepts, relationships, source quotations, and approved enum values. Software resolves quotations, Unicode spans, source bindings, aliases, arithmetic, caps, and accounting.
 
+The exact source-bound quotation check is the normal fast path. During the
+Phase Two pilot only, an otherwise plausible extraction that fails solely
+because its quotation cannot be matched exactly may use the temporary
+**experimental semantic evidence reconciliation** role. That bounded reviewer
+receives the immutable source, extracted proposition, proposed quotation, and
+source role; it may return `grounded=true` with one exact quotation copied from
+the source, `grounded=false`, or `grounded=unknown`. Software then requires a
+unique exact match and computes the canonical span. The reviewer does not
+assign provenance, learner credit, offsets, or developmental consequences.
+Malformed, false, unknown, missing, or ambiguous quotations fail closed. This
+role is research scaffolding, is separately accounted for, and is a candidate
+for removal or replacement when the acquisition mechanism changes; it is not a
+developing MNEME component.
+
 The semantic assessor answers:
 
 > Does this source express the proposed relationship with these participants, direction, polarity, and context?

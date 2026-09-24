@@ -1,0 +1,28 @@
+{
+  "receipt": "mneme-p2.3-semantic-evidence-reconciliation-offline-v1",
+  "date": "2026-09-24",
+  "status": "OFFLINE_PASS",
+  "provider_calls": 0,
+  "historical_returned_calls_preserved": 120,
+  "exact_path": "immutable source-bound quotation validation remains authoritative and first",
+  "fallback": {
+    "name": "experimental semantic evidence reconciliation",
+    "model": "Qwen/Qwen2.5-7B-Instruct",
+    "provider": "DeepInfra",
+    "developing_component": false,
+    "accepted_output": ["grounded=true with one exact unique quotation"],
+    "rejected_output": ["false", "unknown", "malformed", "missing quotation", "ambiguous quotation"],
+    "software_responsibilities": ["exact source matching", "uniqueness", "Unicode span calculation", "validation"],
+    "reviewer_responsibilities": ["language-level grounding judgment", "copy exact source quotation"]
+  },
+  "tests": {
+    "focused": 17,
+    "pytest": 333,
+    "ruff": "PASS",
+    "mypy_strict": "PASS",
+    "wheel_fresh_install_smoke": "PASS"
+  },
+  "historical_evidence_unchanged": true,
+  "qualification_calls_pending": 4,
+  "scope": "P2.3 acquisition-stage scaffolding only"
+}

@@ -35,6 +35,15 @@ from ..state.service import ContinuityError, ContinuityService, OperationReceipt
 from ..state.storage import SQLiteStore
 from .artifacts import file_digest
 from .evaluation import EvaluationError, FrozenEvaluationView
+from .evidence_review import (
+    EvidenceReview,
+    EvidenceReviewError,
+    apply_replacements,
+    collect_unresolved_evidence,
+    resolve_review,
+    reviewer_request,
+    validate_reviewer_result,
+)
 from .pilot import CallStatus, PilotError, PilotRun
 
 
@@ -556,6 +565,134 @@ class PilotRuntime:
         subject = self._subject(slot)
         return InterpretationPublisher(subject.store, subject.instance_id).publish(
             operation_id, residue, **publication
+        )
+
+    def review_extraction(
+        self,
+        *,
+        slot: int,
+        extraction: ExtractionOutcome,
+        reviewer_host: Host,
+        max_output_tokens: int = 384,
+    ) -> ExtractionOutcome:
+        """Reconcile only unresolved quotations through temporary review scaffolding."""
+
+        if extraction.residue is not None:
+            return extraction
+        if extraction.validation_error is None or not any(
+            marker in extraction.validation_error
+            for marker in (
+                "evidence quotation does not occur verbatim",
+                "evidence quotation is ambiguous",
+            )
+        ):
+            return extraction
+        subject = self._subject(slot)
+        persisted = self._interpretation_payload(subject.store, extraction.operation_id)
+        payload: Any = persisted
+        if isinstance(payload.get("content"), str):
+            try:
+                payload = json.loads(str(payload["content"]))
+            except json.JSONDecodeError as exc:
+                raise PilotRuntimeError("extraction payload is not JSON") from exc
+        if isinstance(payload, Mapping) and isinstance(payload.get("residue"), Mapping):
+            payload = payload["residue"]
+        if not isinstance(payload, Mapping):
+            raise PilotRuntimeError("extraction payload is not an object")
+        request_record = json.loads(
+            str(
+                subject.store.connection.execute(
+                    "SELECT request_json FROM interpretation_attempts "
+                    "WHERE operation_id=? ORDER BY attempt DESC LIMIT 1",
+                    (extraction.operation_id,),
+                ).fetchone()[0]
+            )
+        )
+        bundle = request_record.get("source_bundle")
+        if not isinstance(bundle, Mapping) or not isinstance(bundle.get("sources"), list):
+            raise PilotRuntimeError("extraction source bundle is unavailable")
+        candidates = collect_unresolved_evidence(payload, bundle["sources"])
+        if not candidates:
+            return extraction
+        if len(candidates) > 4:
+            raise PilotRuntimeError("bounded evidence review has too many unresolved items")
+        replacements: dict[tuple[str | int, ...], str] = {}
+        review_records: list[dict[str, Any]] = []
+        for index, candidate in enumerate(candidates):
+            call_id = f"{extraction.call_id}-evidence-review-{index}"
+            outcome = self.provider_call(
+                call_id=call_id,
+                role="evidence-reviewer",
+                coordinate={
+                    "kind": "semantic-evidence-reconciliation",
+                    "extraction_call": extraction.call_id,
+                    "evidence_index": index,
+                },
+                host=reviewer_host,
+                request=reviewer_request(candidate),
+                max_output_tokens=max_output_tokens,
+                validator=validate_reviewer_result,
+                artifact_category="evidence-review",
+            )
+            review = outcome.validated
+            if not isinstance(review, EvidenceReview):
+                raise PilotRuntimeError("evidence reviewer returned an invalid decision")
+            try:
+                quote = resolve_review(candidate, review)
+            except EvidenceReviewError as exc:
+                raise PilotRuntimeError(str(exc)) from exc
+            for path in candidate.paths:
+                replacements[path] = quote
+            review_records.append(
+                {
+                    "call_id": call_id,
+                    "source_slot": candidate.source_slot,
+                    "source_role": candidate.source_role,
+                    "proposition": dict(candidate.proposition),
+                    "proposed_evidence": candidate.proposed_quote,
+                    "grounded": review.grounded,
+                    "replacement_evidence": quote,
+                }
+            )
+        corrected = apply_replacements(payload, replacements)
+        service = InterpretationService(
+            subject.store,
+            subject.instance_id,
+            reviewer_host,
+            extractor_version="semantic-evidence-reconciliation-v1",
+        )
+        recovery_id = f"{extraction.operation_id}-evidence-review"
+        prepared = service.prepare(
+            extraction.episode_id,
+            operation_id=recovery_id,
+            recovery_of=extraction.operation_id,
+            recovery_version="semantic-evidence-reconciliation-v1",
+        )
+        service.record_reviewed_result(prepared, corrected)
+        try:
+            residue = service.validate(prepared)
+        except InterpretationValidationError as exc:
+            raise PilotRuntimeError(f"reviewed evidence did not validate: {exc}") from exc
+        self._publish_call_artifact(
+            "evidence-review",
+            recovery_id,
+            {
+                "original_extraction_operation": extraction.operation_id,
+                "reconciled_operation": recovery_id,
+                "validation_error": extraction.validation_error,
+                "reviews": review_records,
+                "reconciled_payload": corrected,
+                "residue_digest": residue.content_digest,
+            },
+        )
+        return ExtractionOutcome(
+            extraction.call_id,
+            recovery_id,
+            extraction.episode_id,
+            0,
+            False,
+            residue,
+            None,
         )
 
     def provider_call(

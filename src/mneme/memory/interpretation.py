@@ -741,6 +741,67 @@ class InterpretationService:
             raise InterpretationValidationError("validation did not produce a residue")
         return valid_residue
 
+    def record_reviewed_result(
+        self,
+        operation: str | InterpretationReceipt,
+        payload: Mapping[str, Any],
+    ) -> InterpretationReceipt:
+        """Persist a separately reviewed result without rewriting extraction evidence.
+
+        This is temporary Phase Two acquisition scaffolding.  The original
+        invalid extractor attempt remains immutable; a new recovery operation
+        may record the reviewer-grounded payload as its own result-ready
+        attempt.  The normal ``validate`` and publication revalidation paths
+        still decide whether the payload is publishable.
+        """
+
+        operation_id = _as_operation_id(operation)
+        with self.store.transaction() as db:
+            op = self._operation(db, operation_id)
+            latest = db.execute(
+                "SELECT attempt,status,request_json,host_ref FROM interpretation_attempts "
+                "WHERE operation_id=? ORDER BY attempt DESC LIMIT 1",
+                (operation_id,),
+            ).fetchone()
+            if str(op["status"]) != "PREPARED" or latest is not None:
+                raise InterpretationNotReady("reviewed result operation is not prepared")
+            if not isinstance(payload, Mapping):
+                raise InterpretationError("reviewed payload must be an object")
+            now = _utc()
+            host_ref = self._host_ref()
+            self._record_host(db, host_ref)
+            db.execute(
+                "INSERT INTO interpretation_attempts VALUES(?,?,?,?,?,?,?,?)",
+                (
+                    operation_id,
+                    0,
+                    host_ref,
+                    self._request_json_for_episode(db, str(op["episode_id"])),
+                    _json(payload),
+                    "RESULT_READY",
+                    "[]",
+                    now,
+                ),
+            )
+            db.execute(
+                "UPDATE interpretation_operations SET current_attempt=0,status='RESULT_READY',"
+                "failure_code='evidence_reconciled',updated_at=? WHERE operation_id=?",
+                (now, operation_id),
+            )
+        return InterpretationReceipt(operation_id, str(op["episode_id"]), "RESULT_READY", 0)
+
+    @staticmethod
+    def _request_json_for_episode(db: Any, episode_id: str) -> str:
+        row = db.execute(
+            "SELECT request_json FROM interpretation_attempts ia "
+            "JOIN interpretation_operations io ON io.operation_id=ia.operation_id "
+            "WHERE io.episode_id=? ORDER BY io.updated_at DESC, ia.attempt DESC LIMIT 1",
+            (episode_id,),
+        ).fetchone()
+        if row is None:
+            raise InterpretationError("source-bound extraction request is missing")
+        return str(row[0])
+
     def publish(
         self,
         operation: str | InterpretationReceipt,

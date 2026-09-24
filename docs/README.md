@@ -188,6 +188,15 @@ The documents are preserved in their supplied form and are intentionally not mer
 
   The bounded partial pilot probe is recorded in [the partial pilot receipt](receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.md) ([JSON](receipts/MNEME_P2.3_Pilot_Partial_Probe_Receipt.json)); it is not a P2.3 acceptance result.
 
+  The bounded temporary **experimental semantic evidence reconciliation**
+  correction preserves exact quotation validation as the fast path and sends
+  only otherwise plausible missing or ambiguous quotations to a separately
+  accounted, non-developing reviewer. The reviewer may supply one exact unique
+  source quotation; deterministic software performs all matching, offset, and
+  validation work. Offline evidence is recorded in [the reconciliation receipt](receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_Offline_Receipt.md)
+  ([JSON](receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_Offline_Receipt.json));
+  it used zero provider calls and leaves the 120 historical calls unchanged.
+
   Future design context: [Developmental Self-Context](architecture/future/MNEME_Developmental_Self_Context_Architecture.md).
   This reference does not change the phase's implementation scope, frozen
   experimental contracts, acceptance requirements, or authorized call budget.

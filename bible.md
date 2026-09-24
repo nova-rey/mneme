@@ -752,3 +752,7 @@
 ## 2026-09-24 P2.3 queue blocker update
 
 - P2.3 is recorded as `WAITING` on `review:p2.3-extractor-host-suitability-after-v3`. The queue preserves the v2/v3 offline correction receipts and h/i live-stop evidence; the standing 399-call operational cap was not the blocker, and no unchanged resampling is authorized.
+
+## 2026-09-24 P2.3 semantic evidence reconciliation correction
+
+- Added bounded temporary experimental semantic evidence reconciliation after the preserved h/i extraction stops. Exact immutable-source quotation validation remains the first path. Only otherwise plausible missing or ambiguous quotations may be sent to a separately accounted non-developing reviewer, which may return one exact unique source quotation; deterministic software performs matching, Unicode offsets, and validation. False, unknown, malformed, nonexistent, and duplicate quotations fail closed. The original failed operation remains immutable and a versioned recovery operation passes through the existing validation/publication boundary. Offline validation passed with 333 pytest, Ruff, strict mypy, and zero provider calls; the fixed four-case reviewer qualification is pending. Historical 120 returned calls and receipts are unchanged.

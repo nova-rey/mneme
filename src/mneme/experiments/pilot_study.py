@@ -615,6 +615,7 @@ class PilotStudy:
         evaluation: EvaluationFactory | None = None,
         stop_after_episodes: int | None = None,
         max_output_tokens: Mapping[str, int] | None = None,
+        evidence_reviewer: Host | None = None,
     ) -> PilotStudyReport:
         """Execute or resume the schedule, stopping at the first terminal defect.
 
@@ -721,9 +722,7 @@ class PilotStudy:
                         recovery_of=recovery_of,
                         recovery_version=recovery_version,
                     )
-                    if extraction.residue is None:
-                        if repair_count >= MAX_EXTRACTION_REPAIRS:
-                            raise PilotStudyError("finite extraction repair pool is exhausted")
+                    if extraction.residue is None and repair_count < MAX_EXTRACTION_REPAIRS:
                         repair_count += 1
                         self._record_progress(
                             development_completed=completed_development,
@@ -749,6 +748,12 @@ class PilotStudy:
                             operation_id=extraction.operation_id,
                             recovery_of=recovery_of,
                             recovery_version=recovery_version,
+                        )
+                    if extraction.residue is None and evidence_reviewer is not None:
+                        extraction = self.runtime.review_extraction(
+                            slot=slot,
+                            extraction=extraction,
+                            reviewer_host=evidence_reviewer,
                         )
                     if extraction.residue is None:
                         raise PilotStudyError(
