@@ -626,6 +626,31 @@ class PilotRuntime:
             return extraction
         if len(candidates) > 4:
             raise PilotRuntimeError("bounded evidence review has too many unresolved items")
+        recovery_id = f"{extraction.operation_id}-evidence-review"
+        existing_recovery = subject.store.connection.execute(
+            "SELECT status FROM interpretation_operations WHERE operation_id=?",
+            (recovery_id,),
+        ).fetchone()
+        if existing_recovery is not None and str(existing_recovery[0]) in {
+            "RESULT_READY",
+            "ACCEPTED",
+        }:
+            service = InterpretationService(
+                subject.store,
+                subject.instance_id,
+                reviewer_host,
+                extractor_version="semantic-evidence-reconciliation-v2",
+            )
+            residue = service.validate(recovery_id)
+            return ExtractionOutcome(
+                extraction.call_id,
+                recovery_id,
+                extraction.episode_id,
+                0,
+                False,
+                residue,
+                None,
+            )
         replacements: dict[tuple[str | int, ...], str] = {}
         rejected_candidates: list[Any] = []
         review_records: list[dict[str, Any]] = []
@@ -689,7 +714,6 @@ class PilotRuntime:
             reviewer_host,
             extractor_version="semantic-evidence-reconciliation-v2",
         )
-        recovery_id = f"{extraction.operation_id}-evidence-review"
         prepared = service.prepare(
             extraction.episode_id,
             operation_id=recovery_id,

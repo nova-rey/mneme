@@ -262,6 +262,12 @@ def test_semantic_evidence_review_reconciles_only_after_exact_failure(tmp_path: 
         reviewer_host=reviewer,
     )
     assert reconciled.residue is not None
+    resumed = runtime.review_extraction(
+        slot=0,
+        extraction=extraction,
+        reviewer_host=reviewer,
+    )
+    assert resumed.residue is not None
     assert reviewer.calls == 1
     assert len(list((pilot.run_path / "evidence-review").glob("*.json"))) == 2
     reservations = pilot.reservations_report()["calls"]

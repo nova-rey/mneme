@@ -880,3 +880,7 @@
 ## 2026-09-24 P2 contingent assessment-receipt restart verification correction
 
 - Resume verification exposed the explicit `contingent-assessment/` receipt category emitted by the supplement adapter but absent from the generic run-tree allowlist. Added the existing category and regression coverage; no provider result or scientific state changed.
+
+## 2026-09-24 P2 contingent evidence-review idempotency correction
+
+- Resuming a branch re-entered an already result-ready or accepted evidence-review recovery operation. The runtime now reuses and validates that durable recovery instead of attempting a second publication or reviewer call; regression coverage confirms repeated review is provider-idempotent.
