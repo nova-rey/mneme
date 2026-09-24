@@ -436,6 +436,23 @@ class ContingentStudy:
                 max_output_tokens=1536,
             )
             if extraction.residue is None:
+                extraction = self.runtime.extract(
+                    slot=slot,
+                    call_id=f"extraction-{condition}-t{turn.turn:02d}-repair",
+                    coordinate={
+                        "study": STUDY_ID,
+                        "condition": condition,
+                        "turn": turn.turn,
+                        "role": "extraction",
+                        "attempt": 1,
+                    },
+                    episode_id=development.operation.episode_id,
+                    extractor_host=self.extractor_host,
+                    max_output_tokens=1536,
+                    repair=True,
+                    operation_id=extraction.operation_id,
+                )
+            if extraction.residue is None:
                 if self.evidence_reviewer_host is None:
                     raise ContingentStudyError(
                         f"extraction failed at {condition} turn {turn.turn}: "

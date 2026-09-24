@@ -852,3 +852,7 @@
 ## 2026-09-24 P2 contingent run-tree verification correction
 
 - The first prepared supplement run exposed an artifact-verifier omission: the new `contingent/` receipt directory was not in the existing P0.3 run-tree allowlist, so a valid prepared run failed restart verification before any provider call. Added the additive directory to the verifier and regression coverage; no scientific or lineage behavior changed and no provider call was made for the correction.
+
+## 2026-09-24 P2 contingent extraction repair correction
+
+- The first live supplement attempt reached the prepared open-loop partner schedule and stopped at interactive turn 0 because Gemma's extraction result was not JSON. No assessment or evaluation call followed. Added the existing one-repair extraction lifecycle before the already authorized evidence-review fallback; this preserves the strict validator and finite-repair rule. The saved partner message, subject episode, and invalid extraction remain unchanged and will be resumed by coordinate.
