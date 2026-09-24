@@ -744,3 +744,7 @@
 ## 2026-09-24 P2.3 extraction-v3 correction
 
 - Added a concrete Markdown-list/bold-marker example to the provider-facing `residue-v3` extractor prompt after the h stop; strict quotation validation and historical residue contracts remain unchanged. The 321-test, Ruff, strict-mypy, and wheel smoke gate passed with zero provider calls. Evidence: `docs/receipts/MNEME_P2.3_Extraction_V3_Markdown_List_Correction_Receipt.md`.
+
+## 2026-09-24 P2.3 recovery-v3 stop
+
+- The i continuation used one residue-v3 recovery extraction after reusing the accepted h response. Gemma again omitted immutable Markdown list/bold markers despite the concrete v3 instruction; strict validation rejected it and the exhausted eight-call repair pool prevented a repair. No assessment or evaluation call followed. Cumulative campaign usage is 120 returned calls. Evidence: `docs/receipts/MNEME_P2.3_Pilot_Recovery_V3_Failure_20260924.md`.

@@ -180,6 +180,8 @@ The documents are preserved in their supplied form and are intentionally not mer
 
   The residue-v3 Markdown-list correction is recorded in [the extraction-v3 correction receipt](receipts/MNEME_P2.3_Extraction_V3_Markdown_List_Correction_Receipt.md) ([JSON](receipts/MNEME_P2.3_Extraction_V3_Markdown_List_Correction_Receipt.json)); historical extraction results remain unchanged.
 
+  The corrected v3 recovery stop is recorded in [the recovery-v3 failure receipt](receipts/MNEME_P2.3_Pilot_Recovery_V3_Failure_20260924.md) ([JSON](receipts/MNEME_P2.3_Pilot_Recovery_V3_Failure_20260924.json)); no assessment or evaluation call followed the strict extraction failure.
+
   The pilot extraction stop and its six returned calls are recorded in [the extraction-stop receipt](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md) ([JSON](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json)); the finite-repair rule halted the pilot before evaluation.
 
   The pilot extraction stop and its six returned calls are recorded in [the extraction-stop receipt](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md) ([JSON](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json)); the finite-repair rule halted the pilot before evaluation.

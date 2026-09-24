@@ -1,0 +1,33 @@
+{
+  "kind": "phase-two-p23-pilot-recovery-v3-failure",
+  "date": "2026-09-24",
+  "run": "p2-pilot-recovery-20260924i",
+  "status": "BLOCKED_HOST_CONTRACT_SUITABILITY",
+  "continuation_of": "p2-pilot-recovery-20260924h",
+  "provider_calls": {
+    "total": 2,
+    "development_response": 1,
+    "development_extraction": 1,
+    "assessment": 0,
+    "evaluation": 0
+  },
+  "failure": {
+    "coordinate": "extraction-s1-e1-recovery-extraction-s1-e1",
+    "contract": "residue-v3",
+    "validation": "evidence quotation does not occur verbatim in source",
+    "returned_rendered_quote": "Reduces Evaporation: The layer of mulch acts as a barrier, shading the soil, and significantly slowing down the rate at which water evaporates due to the heat of the sun and warm air.",
+    "required_source_quote": "* **Reduces Evaporation:** The layer of mulch acts as a barrier, shading the soil and significantly slowing down the rate at which water evaporates due to the heat of the sun and warm air."
+  },
+  "usage": {
+    "input_tokens": 1018,
+    "output_tokens": 572,
+    "total_tokens": 1590,
+    "estimated_cost_usd": 0.0000628
+  },
+  "repair_pool_exhausted": true,
+  "credential_provider_functional": true,
+  "historical_evidence_unchanged": true,
+  "assessment_calls": 0,
+  "evaluation_calls": 0,
+  "recommendation": "stop for architectural or host-suitability review; do not perform unchanged prompt resampling"
+}
