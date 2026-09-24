@@ -207,6 +207,11 @@ The documents are preserved in their supplied form and are intentionally not mer
   of nonempty or ambiguous evidence; its offline gate is recorded in [the v2
   correction receipt](receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_V2_Correction_Receipt.md)
   ([JSON](receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_V2_Correction_Receipt.json)).
+  The fixed v2 four-case reviewer qualification then passed: formatting and
+  grounded-paraphrase cases produced exact quotations, while unsupported and
+  negated cases closed without evidence. No pilot call was made during
+  qualification. Evidence is recorded in [the v2 qualification pass receipt](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V2_Pass_20260924.md)
+  ([JSON](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V2_Pass_20260924.json)).
 
   Future design context: [Developmental Self-Context](architecture/future/MNEME_Developmental_Self_Context_Architecture.md).
   This reference does not change the phase's implementation scope, frozen

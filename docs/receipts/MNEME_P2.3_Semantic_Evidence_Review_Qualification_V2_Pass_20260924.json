@@ -1,0 +1,25 @@
+{
+  "receipt": "mneme-p2.3-semantic-evidence-review-qualification-v2-pass-20260924",
+  "date": "2026-09-24",
+  "status": "PASS",
+  "contract": "semantic-evidence-reconciliation-v2",
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "provider": "DeepInfra",
+  "calls": 4,
+  "usage": {"input_tokens": 776, "output_tokens": 718, "total_tokens": 1494},
+  "cost": "unknown",
+  "cases": [
+    {"case": "Q1-markdown-formatting", "status": "PASS", "grounded": true, "exact_unique_quote": true},
+    {"case": "Q2-grounded-paraphrase", "status": "PASS", "grounded": true, "exact_unique_quote": true},
+    {"case": "Q3-unsupported", "status": "PASS_CLOSED", "grounded": false, "quote": null},
+    {"case": "Q4-negation", "status": "PASS_CLOSED", "grounded": false, "quote": null}
+  ],
+  "uncertain_calls": 0,
+  "failed_calls": 0,
+  "pilot_calls": 0,
+  "historical_evidence_unchanged": true,
+  "cumulative_campaign_calls": 127,
+  "operational_cap": 399,
+  "lineage_writes": 0,
+  "developmental_state_changed": false
+}

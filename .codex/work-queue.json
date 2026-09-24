@@ -1085,8 +1085,7 @@
       "dependencies": [
         "package:P2.2",
         "review:p2.3-budget-after-historical-calls",
-        "review:p2.3-extraction-stop-20260921",
-        "review:p2.3-extractor-host-suitability-after-v3"
+        "review:p2.3-extraction-stop-20260921"
       ],
       "domain": "developmental-pilot",
       "edit_boundaries": [
@@ -1192,10 +1191,12 @@
         "docs/receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_Failure_20260924.md",
         "docs/receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_Failure_20260924.json",
         "docs/receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_V2_Correction_Receipt.md",
-        "docs/receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_V2_Correction_Receipt.json"
+        "docs/receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_V2_Correction_Receipt.json",
+        "docs/receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V2_Pass_20260924.md",
+        "docs/receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V2_Pass_20260924.json"
       ],
       "id": "P2.3",
-      "notes": "P2.2 accepted. Historical qualification/pilot receipts remain unchanged. Offline edge-less extraction correction passed at commit 2885332 and CI 35548448495. The fresh corrected pilot run p2-pilot-live-20260921b consumed 6 calls and stopped at episode 1 after its one permitted extraction repair failed strict source-bound quotation validation; no evaluation calls or resampling occurred. The additive v9 coverage/polarity correction is pushed at 41bd31f with 318 pytest, Ruff, strict mypy, wheel/fresh-install smoke, and CI 35549781907. The fixed v9 Q1/Q2/Q3 qualification passed in 3 DeepInfra Qwen calls (4,585 tokens; cost unknown), with persisted semantic/provenance evidence and zero pilot calls. Reconciled unique campaign usage is 42 calls (34,591 input / 11,988 output / 46,579 total tokens; cost unknown), leaving 257 under the unchanged 299 ceiling. The 288-call pilot-only no-repair schedule, and the 291-call full no-repair schedule including qualification, cannot fit. P2.3 remains WAITING on budget review and the extraction-stop review; no pilot call was dispatched after v9. Standing +100-call / +25% contingency recorded; budget review resolved, extraction-stop review remains unresolved. Bounded failed-coordinate recovery correction is offline-validated pending live verification; historical extraction stop remains preserved. One bounded recovery call returned invalid residue; repair coordinate retention was corrected offline before the next dispatch. Continuation exposed and corrected a v7->v8 foreign-key rewrite; no repair, assessor, or evaluation call followed the one recovery extraction. Continuation reached 20 returned assessor calls and stopped on strict Markdown-preserving quote validation; production prompt v9 correction is offline-pending live verification. v9 continuation then exposed a production monitor correspondence-scope defect; all required source slots are now declared and provenance rules are unchanged. The h continuation consumed 48 returned calls and stopped at extraction-s1-e1 after its one repair because Gemma omitted immutable Markdown list/bold markers; residue-v3 prompt correction was offline-validated and pushed at ce438b5 with CI 36013532060. The i continuation then consumed 2 returned calls and stopped at the same extraction after v3 still omitted those markers; no assessor or evaluation call followed. Cumulative usage is 120 returned calls, with no credential or transport failure. The first temporary reviewer qualification consumed 3 returned DeepInfra calls and stopped at Q3 on a semantically correct but serialization-malformed false result; historical evidence is preserved. The v2 empty-placeholder correction is offline-validated with 335 pytest, Ruff, strict mypy, and wheel smoke. P2.3 remains WAITING for one fixed post-correction reviewer qualification; no pilot call is authorized before it passes.",
+      "notes": "P2.2 accepted. Historical qualification/pilot receipts remain unchanged. Offline edge-less extraction correction passed at commit 2885332 and CI 35548448495. The fresh corrected pilot run p2-pilot-live-20260921b consumed 6 calls and stopped at episode 1 after its one permitted extraction repair failed strict source-bound quotation validation; no evaluation calls or resampling occurred. The additive v9 coverage/polarity correction is pushed at 41bd31f with 318 pytest, Ruff, strict mypy, wheel/fresh-install smoke, and CI 35549781907. The fixed v9 Q1/Q2/Q3 qualification passed in 3 DeepInfra Qwen calls (4,585 tokens; cost unknown), with persisted semantic/provenance evidence and zero pilot calls. Reconciled unique campaign usage is 42 calls (34,591 input / 11,988 output / 46,579 total tokens; cost unknown), leaving 257 under the unchanged 299 ceiling. The 288-call pilot-only no-repair schedule, and the 291-call full no-repair schedule including qualification, cannot fit. Standing +100-call / +25% contingency recorded; budget review resolved. Bounded failed-coordinate recovery correction is offline-validated pending live verification; historical extraction stop remains preserved. One bounded recovery call returned invalid residue; repair coordinate retention was corrected offline before the next dispatch. Continuation exposed and corrected a v7->v8 foreign-key rewrite; no repair, assessor, or evaluation call followed the one recovery extraction. Continuation reached 20 returned assessor calls and stopped on strict Markdown-preserving quote validation; production prompt v9 correction is offline-pending live verification. v9 continuation then exposed a production monitor correspondence-scope defect; all required source slots are now declared and provenance rules are unchanged. The h continuation consumed 48 returned calls and stopped at extraction-s1-e1 after its one repair because Gemma omitted immutable Markdown list/bold markers; residue-v3 prompt correction was offline-validated and pushed at ce438b5 with CI 36013532060. The i continuation then consumed 2 returned calls and stopped at the same extraction after v3 still omitted those markers; no assessor or evaluation call followed. Cumulative historical usage is 120 returned calls, with no credential or transport failure. The first temporary reviewer qualification consumed 3 calls and stopped on a malformed false response; historical evidence is preserved. The v2 correction passed offline and the fixed four-case reviewer qualification passed in 4 DeepInfra calls (1,494 tokens; cost unknown). Cumulative calls are 127; P2.3 is ready to resume the preserved pilot coordinate under the standing cap.",
       "owner": "root-foreman",
       "priority": 1,
       "project": "nova-rey/mneme",
@@ -1222,9 +1223,9 @@
       "session_ids": [
         "p2-validation-20260924"
       ],
-      "status": "WAITING",
+      "status": "RUNNING",
       "title": "Assessor qualification and bounded developmental pilot",
-      "updated_at": "2026-09-24T15:45:00Z",
+      "updated_at": "2026-09-24T16:00:00Z",
       "validation": {
         "required": [
           "p23-assessor-contract",
@@ -1343,6 +1344,11 @@
             "receipt": "docs/receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_V2_Correction_Receipt.md/.json; empty false/unknown placeholder canonicalization; 335 pytest, Ruff, strict mypy, wheel smoke; zero provider calls",
             "recorded_at": "2026-09-24T15:45:00Z",
             "status": "PASS"
+          },
+          "p23-semantic-evidence-review-qualification-v2": {
+            "receipt": "docs/receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V2_Pass_20260924.md/.json; 4 DeepInfra returns, all fixed cases pass, 1,494 total tokens, no pilot calls",
+            "recorded_at": "2026-09-24T16:00:00Z",
+            "status": "PASS"
           }
         }
       },
@@ -1362,5 +1368,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-24T15:45:00Z"
+  "updated_at": "2026-09-24T16:00:00Z"
 }

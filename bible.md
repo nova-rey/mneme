@@ -764,3 +764,7 @@
 ## 2026-09-24 P2.3 semantic evidence reconciliation v2 correction
 
 - Corrected only the reviewer serialization boundary exposed by the preserved Q3 failure: false/unknown may omit `evidence` or use an empty placeholder, and deterministic software canonicalizes that to no quotation. Nonempty evidence, positive grounding without a quote, malformed/unknown fields, nonexistent quotes, and duplicate quotes remain fail-closed. The recovery contract is now `semantic-evidence-reconciliation-v2`; no provider call occurred. Offline validation passed with 335 pytest, Ruff, strict mypy, wheel smoke, and CI pending this commit. Historical receipts remain unchanged. Evidence: `docs/receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_V2_Correction_Receipt.md` and `.json`.
+
+## 2026-09-24 P2.3 semantic evidence reviewer qualification v2 pass
+
+- The fixed v2 reviewer qualification passed four bounded DeepInfra calls: Q1 Markdown omission and Q2 source-grounded paraphrase returned exact unique quotations; Q3 unsupported extraction and Q4 explicit negation closed without evidence. Usage was 776 input, 718 output, and 1,494 total tokens; cost unavailable. No pilot call or lineage write occurred. Cumulative Phase Two provider calls are 127, below the 399 operational cap. Historical failed qualification and campaign receipts remain unchanged. Evidence: `docs/receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V2_Pass_20260924.md` and `.json`.
