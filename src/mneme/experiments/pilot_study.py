@@ -648,6 +648,9 @@ class PilotStudy:
         completed_development_ids = {
             str(value) for value in progress.get("completed_development_ids", [])
         }
+        accepted_development_ids = {
+            str(value) for value in progress.get("accepted_development_ids", [])
+        }
         completed_evaluation_ids = {
             str(value) for value in progress.get("completed_evaluations", [])
         }
@@ -674,6 +677,22 @@ class PilotStudy:
                         max_output_tokens=limits["development-response"],
                     )
                     completed_development += 1
+                    accepted_development_ids.add(development_id)
+                    # Persist the accepted response before extraction starts.
+                    # If extraction or assessment later fails, restart can
+                    # reuse the accepted episode without redispatching it and
+                    # the durable progress ledger matches the report.
+                    self._record_progress(
+                        development_completed=completed_development,
+                        extractions_valid=valid_extractions,
+                        extraction_repairs=repair_count,
+                        assessments_completed=assessments,
+                        admitted_relationships=relationships,
+                        evaluations_completed=evaluations,
+                        accepted_development_ids=sorted(accepted_development_ids),
+                        completed_development_ids=sorted(completed_development_ids),
+                        completed_evaluations=sorted(completed_evaluation_ids),
+                    )
                     extract_call = f"extraction-s{slot}-e{episode.ordinal}"
                     recovery_of = None
                     recovery_version = None
@@ -690,7 +709,7 @@ class PilotStudy:
                             # request contract rather than retrying it.
                             extract_call = f"{extract_call}-recovery-{recovery_of}"
                             recovery_version = (
-                                f"residue-v1-recovery-20260924-{recovery_of}"
+                                f"residue-v2-recovery-20260924-{recovery_of}"
                             )
                     extraction = self.runtime.extract(
                         slot=slot,
@@ -706,6 +725,17 @@ class PilotStudy:
                         if repair_count >= MAX_EXTRACTION_REPAIRS:
                             raise PilotStudyError("finite extraction repair pool is exhausted")
                         repair_count += 1
+                        self._record_progress(
+                            development_completed=completed_development,
+                            extractions_valid=valid_extractions,
+                            extraction_repairs=repair_count,
+                            assessments_completed=assessments,
+                            admitted_relationships=relationships,
+                            evaluations_completed=evaluations,
+                            accepted_development_ids=sorted(accepted_development_ids),
+                            completed_development_ids=sorted(completed_development_ids),
+                            completed_evaluations=sorted(completed_evaluation_ids),
+                        )
                         extraction = self.runtime.extract(
                             slot=slot,
                             call_id=f"{extract_call}-repair",
@@ -760,6 +790,7 @@ class PilotStudy:
                         admitted_relationships=relationships,
                         evaluations_completed=evaluations,
                         completed_development_ids=sorted(completed_development_ids),
+                        accepted_development_ids=sorted(accepted_development_ids),
                     )
                     processed += 1
                     if stop_after_episodes is not None and processed >= stop_after_episodes:
@@ -805,6 +836,7 @@ class PilotStudy:
                             admitted_relationships=relationships,
                             evaluations_completed=evaluations,
                             completed_development_ids=sorted(completed_development_ids),
+                            accepted_development_ids=sorted(accepted_development_ids),
                             completed_evaluations=sorted(completed_evaluation_ids),
                         )
             final = self.pilot.finish(

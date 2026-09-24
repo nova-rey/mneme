@@ -195,6 +195,18 @@ class PilotRun:
                 "updated_at": _utc(),
             }
         )
+        if status in {
+            PilotStatus.QUALIFYING,
+            PilotStatus.QUALIFIED,
+            PilotStatus.RUNNING,
+            PilotStatus.PAUSED,
+            PilotStatus.COMPLETE,
+            PilotStatus.FAILED,
+            PilotStatus.UNCERTAIN,
+        }:
+            pilot = dict(value.get("pilot", {}))
+            pilot["status"] = status.value
+            value["pilot"] = pilot
         value["state_sha256"] = content_digest(
             {key: item for key, item in value.items() if key != "state_sha256"}
         )
@@ -210,6 +222,7 @@ class PilotRun:
         finally:
             if os.path.exists(temporary):
                 os.unlink(temporary)
+        self.artifacts.update_run_status(self.run_id, status.value)
         return value
 
     @staticmethod

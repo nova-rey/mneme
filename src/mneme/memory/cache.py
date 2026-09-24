@@ -44,7 +44,7 @@ def build_cache_key(
     context_dependencies: Sequence[Mapping[str, Any]] = (),
     source_selection_version: str = "1",
     permission_revision: str = "1",
-    extractor_schema: str = "residue-v1",
+    extractor_schema: str = "residue-v2",
     template: str = "",
     configuration: Mapping[str, Any] | None = None,
     host_fingerprint: Mapping[str, Any],

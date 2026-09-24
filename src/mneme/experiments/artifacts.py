@@ -15,6 +15,7 @@ import tempfile
 from collections.abc import Iterator, Mapping
 from contextlib import contextmanager
 from dataclasses import dataclass
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -56,6 +57,10 @@ def file_digest(path: Path) -> str:
     except OSError as exc:
         raise ArtifactError(f"cannot hash artifact {path}: {exc}") from exc
     return digest.hexdigest()
+
+
+def _utc() -> str:
+    return datetime.now(UTC).isoformat(timespec="microseconds")
 
 
 def _component(value: str, label: str) -> str:
@@ -329,6 +334,39 @@ class ArtifactStore:
             _write_json(path, output)
             self._sync_file(path)
             return output
+
+    def update_run_status(
+        self, run_id: str, status: str, *, detail: Mapping[str, Any] | None = None
+    ) -> dict[str, Any]:
+        """Publish the current execution lifecycle in the run manifest.
+
+        The P0.3 publication remains immutable in identity and contract
+        contents, while this small status field records the mutable P2.3
+        execution lifecycle.  The manifest intent digest is refreshed
+        atomically with the status update so ``verify_run`` remains meaningful.
+        """
+
+        if not isinstance(status, str) or not status:
+            raise ArtifactError("run status must be a non-empty string")
+        path = self.locate_run(run_id)
+        manifest_path = path / "run-manifest.json"
+        with self._writer():
+            manifest = self._read_json(manifest_path)
+            manifest["status"] = status
+            manifest["status_detail"] = dict(detail or {})
+            manifest["status_updated_at"] = _utc()
+            manifest.pop("publication_intent_sha256", None)
+            manifest["publication_intent_sha256"] = content_digest(manifest)
+            temporary = manifest_path.with_name(f".{manifest_path.name}.status")
+            try:
+                _write_json(temporary, manifest)
+                self._sync_file(temporary)
+                os.replace(temporary, manifest_path)
+                self._sync_file(manifest_path)
+            finally:
+                if temporary.exists():
+                    temporary.unlink()
+        return manifest
 
     def inspect_run(self, run_id: str, verify: bool = False) -> dict[str, Any]:
         path = self.locate_run(run_id)

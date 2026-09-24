@@ -23,6 +23,7 @@ from typing import Any
 from ..contracts import GenerationRequest, GenerationResult
 from ..host import Host
 from ..memory.interpretation import (
+    EXTRACTOR_VERSION,
     InterpretationError,
     InterpretationService,
     InterpretationUncertain,
@@ -395,7 +396,7 @@ class PilotRuntime:
             subject.store,
             subject.instance_id,
             extractor_host,
-            extractor_version=recovery_version or "residue-v1",
+            extractor_version=recovery_version or EXTRACTOR_VERSION,
         )
         prepared = service.prepare(
             episode_id,

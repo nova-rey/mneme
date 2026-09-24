@@ -74,6 +74,8 @@ def test_qualification_requires_three_terminal_calls_and_blocks_pilot_on_failure
         pilot.return_call(call_id, result={"valid": False})
     failed = pilot.complete_qualification(passed=False, details={"reason": "invalid monitor"})
     assert failed["status"] == PilotStatus.FAILED.value
+    assert failed["pilot"]["status"] == PilotStatus.FAILED.value
+    assert store.inspect_run("run-1")["manifest"]["status"] == PilotStatus.FAILED.value
     with pytest.raises(PilotError, match="qualification passes"):
         pilot.begin_pilot()
 

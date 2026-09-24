@@ -16,6 +16,7 @@ from .graph import (
     materialize_graph,
 )
 from .interpretation import (
+    EXTRACTOR_VERSION,
     InterpretationError,
     InterpretationIdempotencyConflict,
     InterpretationNotReady,
@@ -56,6 +57,7 @@ __all__ = [
     "CacheHit",
     "CacheKey",
     "DEFAULT_ADMISSION_CONFIDENCE_THRESHOLD",
+    "EXTRACTOR_VERSION",
     "ExplicitAliasResolver",
     "GraphConcept",
     "GraphEdge",

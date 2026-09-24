@@ -59,6 +59,12 @@ class InterpretationValidationError(InterpretationError):
     """The persisted provider result is not a valid residue."""
 
 
+# The residue schema remains v1. This version identifies the stricter
+# provider-facing extraction contract used for new calls after the pilot
+# quotation failure; historical v1 operations remain readable and immutable.
+EXTRACTOR_VERSION = "residue-v2"
+
+
 @dataclass(frozen=True)
 class InterpretationReceipt:
     """Small durable-operation receipt returned by lifecycle methods."""
@@ -125,7 +131,7 @@ class InterpretationService:
         instance_id: str,
         host: Host,
         *,
-        extractor_version: str = "residue-v1",
+        extractor_version: str = EXTRACTOR_VERSION,
         resolver_version: str = "explicit-v1",
         source_purposes: tuple[str, ...] | None = None,
     ) -> None:
@@ -258,7 +264,8 @@ class InterpretationService:
         concept_kinds = ", ".join(sorted(SUPPORTED_CONCEPT_KINDS))
         relationship_kinds = ", ".join(sorted(SUPPORTED_RELATIONSHIP_KINDS))
         instruction = (
-            "Extract residue v1 as one JSON object. Use only the supplied source "
+            f"Extract residue v1 under extractor contract {self.extractor_version} "
+            "as one JSON object. Use only the supplied source "
             "slots. For every supported assertion, provide evidence as an array "
             "of objects with exactly {source, evidence}, where source is the "
             "source slot and evidence is a short, exact, non-empty quotation "
@@ -275,7 +282,12 @@ class InterpretationService:
             "sources and to repair attempts. Formatting is part of the immutable "
             "source: preserve every Markdown marker, asterisk, underscore, backtick, "
             "punctuation mark, and whitespace character inside a quotation; do not "
-            "quote rendered text after stripping formatting. "
+            "quote rendered text after stripping formatting. For example, when the "
+            "source contains **consistent, focused effort**, the valid quotation "
+            "must include both asterisks exactly as **consistent, focused effort**; "
+            "the unmarked text consistent, focused effort is invalid and must be "
+            "omitted. If exact character-for-character copying is uncertain, omit "
+            "the assertion rather than guessing. "
             "The validator accepts exactly these top-level fields: store, "
             "episode_id, core_concepts, salient_phrases, observed_patterns, "
             "edge_candidates, route_candidates, declared_memories, "
@@ -794,6 +806,7 @@ class InterpretationService:
 
 
 __all__ = [
+    "EXTRACTOR_VERSION",
     "InterpretationError",
     "InterpretationIdempotencyConflict",
     "InterpretationNotReady",

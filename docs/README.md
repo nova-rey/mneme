@@ -174,6 +174,8 @@ The documents are preserved in their supplied form and are intentionally not mer
   The later assessor quotation-format contract correction is recorded in [the assessor quote prompt receipt](receipts/MNEME_P2.3_Assessor_Quote_Prompt_Correction_Receipt.md) ([JSON](receipts/MNEME_P2.3_Assessor_Quote_Prompt_Correction_Receipt.json)); historical v8 evidence remains unchanged.
   The production monitor correspondence-scope correction is recorded in [the assessor correspondence receipt](receipts/MNEME_P2.3_Assessor_Correspondence_Scope_Correction_Receipt.md) ([JSON](receipts/MNEME_P2.3_Assessor_Correspondence_Scope_Correction_Receipt.json)); deterministic provenance is unchanged.
 
+  The extraction-contract and restart-state correction is recorded in [the extraction v2/lifecycle receipt](receipts/MNEME_P2.3_Extraction_V2_Lifecycle_Correction_Receipt.md) ([JSON](receipts/MNEME_P2.3_Extraction_V2_Lifecycle_Correction_Receipt.json)); historical extraction results remain unchanged and the next recovery uses a new deterministic operation coordinate.
+
   The pilot extraction stop and its six returned calls are recorded in [the extraction-stop receipt](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md) ([JSON](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json)); the finite-repair rule halted the pilot before evaluation.
 
   The pilot extraction stop and its six returned calls are recorded in [the extraction-stop receipt](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md) ([JSON](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json)); the finite-repair rule halted the pilot before evaluation.

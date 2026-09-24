@@ -732,3 +732,7 @@
 ## 2026-09-24 P2.3 assessor correspondence-scope correction
 
 - The v9 continuation preserved exact quotation formatting but Qwen's valid current-input correspondence `s0` was rejected because the production monitor declared only model-output correspondence slots. Production monitors now declare all required source slots; deterministic roles and ancestry still resolve provenance. Offline 319-test/Ruff/strict-mypy/package-smoke validation passed with zero calls. Evidence: `docs/receipts/MNEME_P2.3_Assessor_Correspondence_Scope_Correction_Receipt.md` and `.json`.
+
+## 2026-09-24 P2.3 extraction v2 and lifecycle correction
+
+- The latest preserved pilot stop at `extraction-s0-e8` was a strict non-verbatim Markdown quotation failure in both the initial extraction and its one repair. New extraction calls now use the versioned `residue-v2` prompt with an exact formatting example, while strict validation and all historical v1 evidence remain unchanged. Pilot status is synchronized into the run manifest, accepted-development coordinates and repair counts are persisted before later stages, and contradicted learner updates use an explicit no-positive-credit reason. Offline 320-test, Ruff, strict mypy, and learner/publication/pilot regressions passed with zero provider calls. Evidence: `docs/receipts/MNEME_P2.3_Extraction_V2_Lifecycle_Correction_Receipt.md` and `.json`.

@@ -82,6 +82,23 @@ def test_contradicted_observation_is_retained_without_positive_credit_or_absence
     assert after.relevant_opportunities == 5
     assert after.inactivity_ticks == 0
     assert result.updates[0].credited == 0
+    assert result.updates[0].reason == "contradicted_no_positive_credit"
+
+    compatibility = DevelopmentalLearner().apply(
+        state,
+        [
+            Observation(
+                "edge-a",
+                relation_support="contradicted",
+                expression_status="negated",
+                occurrence_key="negated-compat",
+            )
+        ],
+        opportunity=5,
+    )
+    assert compatibility.reasons[("edge-a", "general")] == (
+        "contradicted_no_positive_credit"
+    )
 
 
 def test_conflicting_supported_and_contradicted_duplicate_fails_closed() -> None:

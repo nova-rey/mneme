@@ -605,6 +605,7 @@ class EdgeUpdate:
     credited: int
     retention: str | None
     observed_status: str
+    reason: str = "unchanged"
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -615,6 +616,7 @@ class EdgeUpdate:
             "credited": self.credited,
             "retention": self.retention,
             "observed_status": self.observed_status,
+            "reason": self.reason,
         }
 
 
@@ -1084,7 +1086,16 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
             )
             _replace_edge(edges, after)
             updates.append(
-                EdgeUpdate(target, context, before, after, 0, "modeled_advance", "modeled_advance")
+                EdgeUpdate(
+                    target,
+                    context,
+                    before,
+                    after,
+                    0,
+                    "modeled_advance",
+                    "modeled_advance",
+                    "modeled_advance",
+                )
             )
         reasons.append("modeled_advance")
     elif transition.disposition in {
@@ -1287,6 +1298,20 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
                 )
                 retention = None
             _replace_edge(edges, after)
+            if status is ObservationStatus.ABSENT:
+                update_reason = "observed_nonrecurrence"
+            elif status is ObservationStatus.UNKNOWN:
+                update_reason = "measurement_unknown"
+            elif any(
+                _as_relation_support(cast(RelationSupport | str, item.relation_support))
+                is RelationSupport.CONTRADICTED
+                for item in by_target[key]
+            ):
+                update_reason = "contradicted_no_positive_credit"
+            elif credited > 0:
+                update_reason = "credited"
+            else:
+                update_reason = "support_seen_credit_capped"
             updates.append(
                 EdgeUpdate(
                     key[0],
@@ -1296,6 +1321,7 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
                     credited,
                     retention,
                     status.value,
+                    update_reason,
                 )
             )
 
@@ -1389,13 +1415,7 @@ class DevelopmentalLearner:
         )
         deltas = {(item.target_key, item.context): item.credited for item in result.updates}
         reasons = {
-            (item.target_key, item.context): (
-                "credited"
-                if item.credited
-                else "support_seen_credit_capped"
-                if item.observed_status == ObservationStatus.PRESENT.value
-                else "measurement_unknown"
-            )
+            (item.target_key, item.context): item.reason
             for item in result.updates
         }
         return LearnerResult(

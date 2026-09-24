@@ -396,6 +396,10 @@ def test_contradicted_observation_is_durable_and_replays_without_credit(tmp_path
             "SELECT accessibility,support FROM learner_values"
         ).fetchone()
         assert tuple(value) == (0, 0)
+        reason = store.connection.execute(
+            "SELECT reason FROM learner_updates"
+        ).fetchone()[0]
+        assert reason == "contradicted_no_positive_credit"
         replay = verify_replay(store)
         assert replay["matches_materialized"] is True
         replay_observation = json.loads(

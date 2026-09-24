@@ -519,7 +519,7 @@ class InterpretationPublisher:
         residue: Residue,
         *,
         expected_manifest_id: str | None = None,
-        extractor_version: str = "residue-v1",
+        extractor_version: str = "residue-v2",
         resolver_version: str = "explicit-v1",
         resolution_decisions: Mapping[str, ResolutionDecision] | None = None,
         observations: tuple[Observation, ...] | list[Observation] = (),

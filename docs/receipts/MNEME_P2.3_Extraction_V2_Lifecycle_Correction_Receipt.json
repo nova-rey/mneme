@@ -1,0 +1,29 @@
+{
+  "kind": "phase-two-p23-extraction-v2-lifecycle-correction",
+  "date": "2026-09-24",
+  "status": "OFFLINE_PASS_LIVE_RECOVERY_PENDING",
+  "historical_run": "p2-pilot-recovery-20260924g",
+  "historical_failure": {
+    "coordinate": "extraction-s0-e8",
+    "attempts": 2,
+    "validation_error": "evidence quotation does not occur verbatim in source",
+    "returned_quote": "consistent, focused effort paid off.",
+    "source_text": "**consistent, focused effort paid off**."
+  },
+  "corrections": [
+    "new extraction calls default to residue-v2",
+    "exact Markdown quotation example added to provider prompt",
+    "run-manifest, pilot status, accepted-development, and repair progress are synchronized",
+    "contradicted learner updates use contradicted_no_positive_credit",
+    "approved Q3 wording uses present/contradicted/negated"
+  ],
+  "validation": {
+    "pytest": "320 passed",
+    "ruff": "passed",
+    "mypy_strict": "passed",
+    "wheel_fresh_install_smoke": "passed",
+    "provider_calls": 0
+  },
+  "historical_evidence_unchanged": true,
+  "next_action": "copy g stores to a new private root and run one bounded residue-v2 recovery coordinate with at most one repair"
+}

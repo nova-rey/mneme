@@ -400,7 +400,7 @@ Qualification occurs after the executable pipeline passes offline validation and
 |---|---|
 | Q1: “Pulling the lever released the latch.” Candidate causes latch release; model output repeats it | Supported relation with quotations; current-input echo attribution; covered absence for an unrelated monitor |
 | Q2: Rain-jacket source plus supplied memory “Turning the handle raises the shade” and dependent model output | Rain-jacket direction unsupported; shade relation present and `exposure_linked`; recorded memory ancestry preserved |
-| Q3: “Turning the dial did not stop the ticking; the sound continued,” with model-output slot unavailable | Candidate unsupported with negating quote; monitor requiring unavailable source coverage is `unknown`, never absent |
+| Q3: “Turning the dial did not stop the ticking; the sound continued,” with model-output slot unavailable | Candidate is `present` / `contradicted` / `negated` with a negating quote; monitor requiring unavailable source coverage is `unknown`, never absent |
 
 Qualification requires all monitor rows, complete/declared coverage, required evidence where text exists, and valid dependence references. A missing row, false coverage, malformed response, wrong classification, or attribution conflict stops qualification. There are no retries, repairs, prompt changes, or replacement calls. Qualification creates no pilot state and is not an independent pilot observation.
 

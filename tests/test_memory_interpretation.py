@@ -15,7 +15,12 @@ from mneme.memory.interpretation import (
     InterpretationUncertain,
     InterpretationValidationError,
 )
-from mneme.memory.residue import SUPPORTED_CONCEPT_KINDS, SUPPORTED_RELATIONSHIP_KINDS
+from mneme.memory.residue import (
+    SUPPORTED_CONCEPT_KINDS,
+    SUPPORTED_RELATIONSHIP_KINDS,
+    ResidueValidationError,
+    validate_residue,
+)
 from mneme.state.contracts import StoragePermissions
 from mneme.state.service import ContinuityService
 from mneme.state.storage import SQLiteStore
@@ -150,6 +155,7 @@ def test_extraction_prompt_declares_strict_residue_record_shape(tmp_path):
             ).fetchone()[0]
         )
         system = request["request"]["system"]
+        assert "residue-v2" in system
         assert "Return raw JSON only" in system
         assert "no Markdown fences" in system
         assert "Formatting is part of the immutable source" in system
@@ -169,6 +175,33 @@ def test_extraction_prompt_declares_strict_residue_record_shape(tmp_path):
         for relationship in SUPPORTED_RELATIONSHIP_KINDS:
             assert relationship in system
         assert request["request"]["parameters"]["max_new_tokens"] == 1536
+
+
+def test_markdown_evidence_regression_requires_exact_source_formatting() -> None:
+    """The historical stripped-markup quote remains rejected by strict validation."""
+
+    source = "That's excellent! It sounds like **consistent, focused effort paid off**."
+    base = {
+        "core_concepts": [
+            {
+                "key": "effort",
+                "label": "focused effort",
+                "kind": "concept",
+                "evidence": [{"source": "s1", "evidence": "consistent, focused effort paid off."}],
+                "confidence": 0.9,
+            }
+        ]
+    }
+    with pytest.raises(ResidueValidationError, match="does not occur verbatim"):
+        validate_residue(base, source_slots={"s1": source})
+
+    base["core_concepts"][0]["evidence"][0]["evidence"] = (
+        "**consistent, focused effort paid off**"
+    )
+    residue = validate_residue(base, source_slots={"s1": source})
+    assert residue.core_concepts[0]["source_spans"] == (
+        {"source_slot": "s1", "start": 33, "end": 72},
+    )
 
 
 def _observed_invalid_extractor_outputs() -> list[tuple[str, str, str]]:

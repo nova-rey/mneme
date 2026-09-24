@@ -132,6 +132,7 @@ def test_study_pause_resume_reuses_stable_coordinates(tmp_path: Path) -> None:
     assert paused.status == PilotStatus.PAUSED.value
     assert paused.development_completed == 1
     assert runtime.development_ids == ["development-s0-e0"]
+    assert pilot.progress["accepted_development_ids"] == ["development-s0-e0"]
 
     completed = study.run(assessment=assessment, evaluation=evaluation)
     assert completed.status == PilotStatus.COMPLETE.value
