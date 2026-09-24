@@ -924,3 +924,7 @@
 ## 2026-09-24 P2 contingent measurement-stop resume guard
 
 - A post-stop audit found that a generic PAUSED resume path could have continued a run whose measurement-adequacy rule had already fired. The contingent runtime now requires an explicit measurement-review disposition before a stop-rule-paused run can resume; crash-paused runs without a stop reason retain ordinary restart behavior. Nine focused contingent tests, 384 total pytest tests, Ruff, strict mypy, wheel build, and fresh-install smoke pass. No provider call was made for this guard.
+
+## 2026-09-24 P2 contingent transcript snapshot isolation
+
+- Condition-specific transcript filenames were added after audit found that a later open-loop branch could overwrite the interactive transcript snapshot. Interactive and open-loop snapshots now remain independently inspectable at each turn boundary. Focused tests, Ruff, and strict mypy pass; no provider call was made.

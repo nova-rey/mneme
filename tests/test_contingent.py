@@ -122,7 +122,9 @@ def test_transcript_snapshot_preserves_exact_conversational_text(tmp_path: Path)
             }
         ],
     )
-    transcript = (study.root / "conversation-transcript.md").read_text(encoding="utf-8")
+    transcript = (study.root / "conversation-transcript-interactive.md").read_text(
+        encoding="utf-8"
+    )
     assert "exact partner — text" in transcript
     assert "exact Gemma response" in transcript
     assert "measurement_unknown / interpretation_unavailable" in transcript

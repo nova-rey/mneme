@@ -35,8 +35,9 @@ terminal extraction/assessment failure, continuation, and completion publishes a
 sanitized human-readable transcript snapshot. A failed downstream measurement
 does not erase the conversational evidence. The current snapshot is preserved
 in `docs/receipts/MNEME_P2_Contingent_Conversation_Transcript_20260924.md`;
-the live run also publishes `contingent/conversation-transcript.md` at each
-turn boundary.
+the live run also publishes condition-specific
+`contingent/conversation-transcript-<condition>.md` snapshots at each turn
+boundary.
 
 An accepted developmental response whose bounded interpretation remains
 unavailable is recorded as `measurement_unknown /

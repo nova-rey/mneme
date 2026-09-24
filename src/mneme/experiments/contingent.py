@@ -502,9 +502,12 @@ class ContingentStudy:
             "records": [dict(record) for record in records],
             "fit_check": [dict(item) for item in (fit_records or ())],
         }
-        self.pilot.publish_artifact("contingent", "conversation-transcript.json", payload)
-        path = self.root / "conversation-transcript.md"
-        temporary = Path(tempfile.mkstemp(prefix=".conversation-transcript.", dir=self.root)[1])
+        transcript_name = f"conversation-transcript-{condition}"
+        self.pilot.publish_artifact("contingent", f"{transcript_name}.json", payload)
+        path = self.root / f"{transcript_name}.md"
+        temporary = Path(
+            tempfile.mkstemp(prefix=f".{transcript_name}.", dir=self.root)[1]
+        )
         try:
             temporary.write_text("\n".join(lines) + "\n", encoding="utf-8")
             with temporary.open("rb") as handle:
