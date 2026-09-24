@@ -397,7 +397,12 @@ class ProductionAssessmentAdapter:
                     relation,
                     required,
                     required,
-                    tuple(source.slot for source in sources if source.role == "model_output"),
+                    # Correspondence is a semantic antecedent question.  The
+                    # model may correctly identify the current external
+                    # source as the antecedent of its output, so every
+                    # required source slot must be declared here.  Runtime
+                    # roles still decide provenance deterministically.
+                    required,
                 ),
             ),
             memory_exposure=self.memory_exposure.get(slot, ()),

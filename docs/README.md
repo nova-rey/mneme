@@ -172,6 +172,7 @@ The documents are preserved in their supplied form and are intentionally not mer
   Its follow-up repair-coordinate correction is recorded in [the recovery-coordinate receipt](receipts/MNEME_P2.3_Recovery_Coordinate_Correction_Receipt.md) ([JSON](receipts/MNEME_P2.3_Recovery_Coordinate_Correction_Receipt.json)); the one returned recovery result remains private and unchanged.
   The SQLite foreign-key migration defect exposed by the first continuation is recorded in [the migration-fix receipt](receipts/MNEME_P2.3_Recovery_Migration_Fix_Receipt.md) ([JSON](receipts/MNEME_P2.3_Recovery_Migration_Fix_Receipt.json)).
   The later assessor quotation-format contract correction is recorded in [the assessor quote prompt receipt](receipts/MNEME_P2.3_Assessor_Quote_Prompt_Correction_Receipt.md) ([JSON](receipts/MNEME_P2.3_Assessor_Quote_Prompt_Correction_Receipt.json)); historical v8 evidence remains unchanged.
+  The production monitor correspondence-scope correction is recorded in [the assessor correspondence receipt](receipts/MNEME_P2.3_Assessor_Correspondence_Scope_Correction_Receipt.md) ([JSON](receipts/MNEME_P2.3_Assessor_Correspondence_Scope_Correction_Receipt.json)); deterministic provenance is unchanged.
 
   The pilot extraction stop and its six returned calls are recorded in [the extraction-stop receipt](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md) ([JSON](receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.json)); the finite-repair rule halted the pilot before evaluation.
 

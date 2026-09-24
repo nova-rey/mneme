@@ -183,6 +183,7 @@ def test_production_assessment_adapter_serializes_complete_monitor_and_resolves_
     monitor = payload["monitors"][0]
     assert monitor["relation"] == {"from": "A", "to": "B", "relation": "supports"}
     assert monitor["required_source_slots"] == ["s0", "s1"]
+    assert monitor["correspondence_source_slots"] == ["s0", "s1"]
     result = {
         "schema_version": "p2-assessor-v6",
         "assessments": [

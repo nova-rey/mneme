@@ -728,3 +728,7 @@
 ## 2026-09-24 P2.3 assessor quotation prompt correction
 
 - The fixed continuation reached 20 returned calls before Qwen's semantically correct relationship judgment was rejected because Markdown markers were omitted from its evidence quotation. The production assessor prompt is versioned from v8 to v9 with explicit formatting-preservation instructions; strict source validation is unchanged, 319 tests/Ruff/strict mypy/package smoke pass, and no corrective provider call was made. Historical v8 evidence remains unchanged. Evidence: `docs/receipts/MNEME_P2.3_Assessor_Quote_Prompt_Correction_Receipt.md` and `.json`.
+
+## 2026-09-24 P2.3 assessor correspondence-scope correction
+
+- The v9 continuation preserved exact quotation formatting but Qwen's valid current-input correspondence `s0` was rejected because the production monitor declared only model-output correspondence slots. Production monitors now declare all required source slots; deterministic roles and ancestry still resolve provenance. Offline 319-test/Ruff/strict-mypy/package-smoke validation passed with zero calls. Evidence: `docs/receipts/MNEME_P2.3_Assessor_Correspondence_Scope_Correction_Receipt.md` and `.json`.
