@@ -1,0 +1,39 @@
+{
+  "kind": "phase-two-p23-pilot-recovery-v2-failure",
+  "date": "2026-09-24",
+  "run": "p2-pilot-recovery-20260924h",
+  "status": "FAILED_AT_EXTRACTION_REPAIR_BOUNDARY",
+  "historical_run_preserved": "p2-pilot-recovery-20260924g",
+  "provider_calls": {
+    "total": 48,
+    "development_response": 18,
+    "development_extraction": 23,
+    "assessor": 7,
+    "evaluation": 0
+  },
+  "progress": {
+    "development_completed": 27,
+    "extractions_valid": 25,
+    "extraction_repairs": 8,
+    "assessments_completed": 25,
+    "admitted_relationships": 13,
+    "evaluations_completed": 0
+  },
+  "failure": {
+    "coordinate": "extraction-s1-e1",
+    "attempts": 2,
+    "validation": "evidence quotation does not occur verbatim in source",
+    "returned_rendered_quote": "Reduces Evaporation: The layer of mulch acts as a barrier, shading the soil and significantly slowing down the rate at which water evaporates due to the heat of the sun and warm air.",
+    "required_source_quote": "* **Reduces Evaporation:** The layer of mulch acts as a barrier, shading the soil and significantly slowing down the rate at which water evaporates due to the heat of the sun and warm air."
+  },
+  "usage": {
+    "input_tokens": 35348,
+    "output_tokens": 9751,
+    "total_tokens": 45099,
+    "estimated_cost_usd": 0.0009181
+  },
+  "credential_provider_functional": true,
+  "historical_evidence_unchanged": true,
+  "evaluation_calls": 0,
+  "next_action": "offline prompt correction before any unchanged resampling"
+}

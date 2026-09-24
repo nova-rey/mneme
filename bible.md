@@ -736,3 +736,7 @@
 ## 2026-09-24 P2.3 extraction v2 and lifecycle correction
 
 - The latest preserved pilot stop at `extraction-s0-e8` was a strict non-verbatim Markdown quotation failure in both the initial extraction and its one repair. New extraction calls now use the versioned `residue-v2` prompt with an exact formatting example, while strict validation and all historical v1 evidence remain unchanged. Pilot status is synchronized into the run manifest, accepted-development coordinates and repair counts are persisted before later stages, and contradicted learner updates use an explicit no-positive-credit reason. Offline 320-test, Ruff, strict mypy, and learner/publication/pilot regressions passed with zero provider calls. Evidence: `docs/receipts/MNEME_P2.3_Extraction_V2_Lifecycle_Correction_Receipt.md` and `.json`.
+
+## 2026-09-24 P2.3 recovery-v2 live stop
+
+- The private continuation `p2-pilot-recovery-20260924h` returned 48 bounded provider results, reached 25 valid extractions and 13 admitted relationships, then stopped at `extraction-s1-e1` after its one permitted repair because Gemma omitted Markdown bullet/bold markers from a source quotation. Strict source validation correctly rejected both attempts; no evaluation call was made. Evidence: `docs/receipts/MNEME_P2.3_Pilot_Recovery_V2_Failure_20260924.md`.
