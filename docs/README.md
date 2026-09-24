@@ -221,6 +221,8 @@ The documents are preserved in their supplied form and are intentionally not mer
 
   The corrected fixed Q1/Q2/Q3 qualification then passed in three Qwen calls (1,492 tokens); Q3 returned `grounded=false` without evidence and was canonically closed. No pilot call was made. Evidence is recorded in [the v4 pass receipt](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V4_Pass_20260924.md) ([JSON](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V4_Pass_20260924.json)).
 
+  The preserved-coordinate pilot continuation then stopped at `assessment-s1-e5`: the assessor supplied a semantically supported model-output quote but omitted one immutable Markdown asterisk. Strict source validation rejected it; no evaluation call followed. Evidence is recorded in [the v5 assessor-quote failure receipt](receipts/MNEME_P2.3_Pilot_Recovery_V5_Assessor_Quote_Failure_20260924.md) ([JSON](receipts/MNEME_P2.3_Pilot_Recovery_V5_Assessor_Quote_Failure_20260924.json)).
+
   The resumed pilot then stopped at `extraction-s1-e5` because Gemma omitted
   required confidence fields from otherwise source-grounded graph records; the
   13-call stop is preserved in [the confidence-schema failure receipt](receipts/MNEME_P2.3_Pilot_Recovery_V4_Confidence_Failure_20260924.md)

@@ -788,3 +788,7 @@
 ## 2026-09-24 P2.3 semantic evidence reviewer qualification v4 pass
 
 - After the bounded 384→768 output allowance correction, the fixed Q1/Q2/Q3 reviewer qualification passed in three Qwen calls: Markdown grounding, grounded paraphrase, and unsupported rejection with canonical no evidence. Usage was 633 input, 859 output, and 1,492 total tokens; cost unavailable. No pilot call was made; historical qualification evidence remains unchanged. Evidence: `docs/receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V4_Pass_20260924.md` and `.json`.
+
+## 2026-09-24 P2.3 preserved-coordinate assessor quote stop
+
+- Continuation `p2-pilot-recovery-20260924k` reused accepted developmental state and a valid residue-v4 extraction at `extraction-s1-e5`, then stopped at `assessment-s1-e5`: Gemma supplied a semantically supported model-output quote missing one immutable Markdown asterisk. Strict assessor source validation failed closed; 3 calls were consumed, no evaluation call followed, and historical evidence remains unchanged. Evidence: `docs/receipts/MNEME_P2.3_Pilot_Recovery_V5_Assessor_Quote_Failure_20260924.md` and `.json`.
