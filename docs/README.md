@@ -213,6 +213,15 @@ The documents are preserved in their supplied form and are intentionally not mer
   qualification. Evidence is recorded in [the v2 qualification pass receipt](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V2_Pass_20260924.md)
   ([JSON](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V2_Pass_20260924.json)).
 
+  The resumed pilot then stopped at `extraction-s1-e5` because Gemma omitted
+  required confidence fields from otherwise source-grounded graph records; the
+  13-call stop is preserved in [the confidence-schema failure receipt](receipts/MNEME_P2.3_Pilot_Recovery_V4_Confidence_Failure_20260924.md)
+  ([JSON](receipts/MNEME_P2.3_Pilot_Recovery_V4_Confidence_Failure_20260924.json)).
+  The offline `residue-v4` prompt correction adds a complete confidence-bearing
+  graph example without changing validation or learner semantics; evidence is
+  recorded in [the extractor v4 correction receipt](receipts/MNEME_P2.3_Extractor_V4_Confidence_Prompt_Correction_Receipt.md)
+  ([JSON](receipts/MNEME_P2.3_Extractor_V4_Confidence_Prompt_Correction_Receipt.json)).
+
   Future design context: [Developmental Self-Context](architecture/future/MNEME_Developmental_Self_Context_Architecture.md).
   This reference does not change the phase's implementation scope, frozen
   experimental contracts, acceptance requirements, or authorized call budget.

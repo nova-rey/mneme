@@ -62,7 +62,7 @@ class InterpretationValidationError(InterpretationError):
 # The residue schema remains v1. This version identifies the stricter
 # provider-facing extraction contract used for new calls after the pilot
 # quotation failure; historical v1 operations remain readable and immutable.
-EXTRACTOR_VERSION = "residue-v3"
+EXTRACTOR_VERSION = "residue-v4"
 
 
 @dataclass(frozen=True)
@@ -307,6 +307,11 @@ class InterpretationService:
             "concept keys; route_candidates records require key, edge_keys, "
             "evidence, and confidence. Every evidence object must contain only "
             "source and evidence; do not return source_spans, start, or end. "
+            "Confidence is mandatory on every graph record and must be a number "
+            "from 0.0 through 1.0; never omit it. For example, a minimally "
+            "valid graph record is {\"key\":\"c1\",\"label\":\"mulch\","
+            "\"kind\":\"object\",\"confidence\":0.90,\"evidence\":["
+            "{\"source\":\"s0\",\"evidence\":\"Mulch kept the soil damp.\"}]}. "
             "route_candidates are optional source-backed groupings. MNEME derives "
             "bounded directed routes from accepted graph edges, so do not invent "
             "a route solely to restate an edge. "

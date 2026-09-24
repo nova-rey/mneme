@@ -155,7 +155,7 @@ def test_extraction_prompt_declares_strict_residue_record_shape(tmp_path):
             ).fetchone()[0]
         )
         system = request["request"]["system"]
-        assert "residue-v3" in system
+        assert "residue-v4" in system
         assert "Return raw JSON only" in system
         assert "no Markdown fences" in system
         assert "Formatting is part of the immutable source" in system
@@ -164,6 +164,7 @@ def test_extraction_prompt_declares_strict_residue_record_shape(tmp_path):
         assert "no other concept or relationship enum values" in system
         assert "core_concepts records require key, label, kind" in system
         assert "evidence, and confidence" in system
+        assert '"confidence":0.90' in system
         assert "Do not calculate or provide numeric offsets" in system
         assert "Every evidence object must contain only source and evidence" in system
         assert "route_candidates are optional source-backed groupings" in system
