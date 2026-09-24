@@ -227,6 +227,8 @@ The documents are preserved in their supplied form and are intentionally not mer
 
   The next continuation passed the assessor boundary but stopped at `extraction-s1-e7` when Gemma invented unsupported relationship kind `holds`; strict residue validation rejected it after the repair pool was exhausted. Evidence is recorded in [the v6 extraction enum failure receipt](receipts/MNEME_P2.3_Pilot_Recovery_V6_Extraction_Enum_Failure_20260924.md) ([JSON](receipts/MNEME_P2.3_Pilot_Recovery_V6_Extraction_Enum_Failure_20260924.json)).
 
+  The offline residue-v4 prompt correction adds explicit negative examples for unsupported relationship values while leaving the vocabulary and validator unchanged. Evidence is recorded in [the extractor enum clarification receipt](receipts/MNEME_P2.3_Extractor_Enum_Negative_Clarification_V5_Receipt.md) ([JSON](receipts/MNEME_P2.3_Extractor_Enum_Negative_Clarification_V5_Receipt.json)).
+
   The resumed pilot then stopped at `extraction-s1-e5` because Gemma omitted
   required confidence fields from otherwise source-grounded graph records; the
   13-call stop is preserved in [the confidence-schema failure receipt](receipts/MNEME_P2.3_Pilot_Recovery_V4_Confidence_Failure_20260924.md)

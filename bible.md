@@ -800,3 +800,7 @@
 ## 2026-09-24 P2.3 preserved-coordinate extraction enum stop
 
 - Continuation `p2-pilot-recovery-20260924l` passed the corrected assessor quote boundary, then stopped at `extraction-s1-e7`: Gemma emitted unsupported relationship kind `holds` despite the explicit vocabulary. Strict residue validation failed closed after the repair pool was exhausted; 7 calls were consumed, no evaluation call followed, and historical evidence remains unchanged. Evidence: `docs/receipts/MNEME_P2.3_Pilot_Recovery_V6_Extraction_Enum_Failure_20260924.md` and `.json`.
+
+## 2026-09-24 P2.3 extractor enum negative clarification
+
+- Added explicit negative examples for unsupported relationship values `holds` and `precedes` to the residue-v4 extractor prompt after recovery-v6. The vocabulary, validator, provenance, and learner semantics are unchanged. Offline validation passed with 355 pytest, Ruff, strict mypy, wheel build, and fresh-install smoke; no provider call was made. Evidence: `docs/receipts/MNEME_P2.3_Extractor_Enum_Negative_Clarification_V5_Receipt.md` and `.json`.

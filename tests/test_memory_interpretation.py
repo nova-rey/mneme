@@ -162,6 +162,7 @@ def test_extraction_prompt_declares_strict_residue_record_shape(tmp_path):
         assert "preserve every Markdown marker" in system
         assert "no introductory or concluding prose" in system
         assert "no other concept or relationship enum values" in system
+        assert "words such as `holds` or `precedes` are invalid" in system
         assert "core_concepts records require key, label, kind" in system
         assert "evidence, and confidence" in system
         assert '"confidence":0.90' in system
