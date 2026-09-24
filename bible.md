@@ -780,3 +780,7 @@
 ## 2026-09-24 P2.3 semantic evidence reviewer qualification v3 stop
 
 - The bounded post-normalization qualification reached DeepInfra for Q1 and Q2. Q1 passed with an exact formatted quotation. Q2 returned an empty response with `finish_reason=length`, so strict JSON validation failed closed; Q3 was not dispatched and the pilot remained untouched. Two calls used 426 input, 674 output, and 1,100 total tokens; cost was unavailable. The provider and credential were functional. Evidence: `docs/receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V3_Failure_20260924.md` and `.json`.
+
+## 2026-09-24 P2.3 evidence-review output-budget correction
+
+- Q2 of the post-normalization qualification returned an empty `finish_reason=length` result at the prior 384-token allowance. The strict validator failed closed. Increased only the bounded reviewer output allowance to 768 tokens; semantic contract, exact quotation rules, provenance, and learner boundaries are unchanged. No provider call was made and historical evidence remains unchanged. Evidence: `docs/receipts/MNEME_P2.3_Semantic_Evidence_Review_Output_Budget_Correction_Receipt.md` and `.json`.

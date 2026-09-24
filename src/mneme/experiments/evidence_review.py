@@ -175,7 +175,7 @@ def reviewer_request(candidate: EvidenceCandidate) -> GenerationRequest:
             "offsets, infer provenance, change the proposition, assign credit, or add "
             "any other fields."
         ),
-        parameters={"temperature": 0, "max_new_tokens": 384},
+        parameters={"temperature": 0, "max_new_tokens": 768},
     )
 
 

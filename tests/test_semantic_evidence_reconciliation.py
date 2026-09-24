@@ -50,6 +50,14 @@ def test_exact_quote_fast_path_has_no_review_candidate() -> None:
     ) == ()
 
 
+def test_reviewer_request_has_bounded_json_output_allowance() -> None:
+    candidate = collect_unresolved_evidence(
+        _concept("rendered"), _source_records("source text")
+    )[0]
+    request = reviewer_request(candidate)
+    assert request.parameters["max_new_tokens"] == 768
+
+
 def test_markdown_omission_review_replacement_resolves_canonical_span() -> None:
     source = "🙂 * **rain jacket** kept my shoulders dry, even in curly ‘rain’."
     payload = _concept("rain jacket kept my shoulders dry, even in curly ‘rain’.")

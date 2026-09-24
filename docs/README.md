@@ -217,6 +217,8 @@ The documents are preserved in their supplied form and are intentionally not mer
 
   The fixed qualification then stopped at Q2 after Q1 passed: Qwen returned an empty length-terminated response, which strict JSON validation rejected. Q3 and the pilot were not dispatched; both request/result records are preserved in [the v3 failure receipt](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V3_Failure_20260924.md) ([JSON](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V3_Failure_20260924.json)).
 
+  The Q2 length stop led to a bounded output-budget correction: the reviewer allowance is 768 tokens, with semantic and validation rules unchanged. The offline correction is recorded in [the output-budget receipt](receipts/MNEME_P2.3_Semantic_Evidence_Review_Output_Budget_Correction_Receipt.md) ([JSON](receipts/MNEME_P2.3_Semantic_Evidence_Review_Output_Budget_Correction_Receipt.json)).
+
   The resumed pilot then stopped at `extraction-s1-e5` because Gemma omitted
   required confidence fields from otherwise source-grounded graph records; the
   13-call stop is preserved in [the confidence-schema failure receipt](receipts/MNEME_P2.3_Pilot_Recovery_V4_Confidence_Failure_20260924.md)
