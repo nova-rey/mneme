@@ -960,3 +960,7 @@
 ## 2026-09-24 Phase Two queue metadata correction
 
 - Updated the Main Work Queue campaign label from the stale Phase Zero value to `mneme-phase-two`. The queue remains truthful: P2.3 and the contingent supplement are WAITING on their explicit review dependencies; no package was marked complete and no provider call was made.
+
+## 2026-09-25 Phase Two scientific review packet
+
+- Published a review-only packet for the two unresolved Phase Two dependencies. It records the contingent run's 6/9 interpretation success stop and P2.3's missing separated-support opportunity, exact receipt digests, remaining call envelope, and bounded continuation lower bounds. No criteria, historical evidence, learner rule, queue disposition, or provider result was changed; no provider call was made.
