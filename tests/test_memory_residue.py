@@ -69,6 +69,108 @@ def test_empty_residue_is_valid() -> None:
     assert residue.route_candidates == ()
 
 
+def test_rich_language_can_yield_empty_residue_without_literalizing_metaphor() -> None:
+    source = "The kitchen holds you; the rest is decorative language."
+    residue = validate_residue({}, {"s0": source}, require_evidence_quotes=True)
+    assert residue.core_concepts == ()
+    assert residue.edge_candidates == ()
+
+
+def test_mixed_literal_and_figurative_material_keeps_only_supported_edge() -> None:
+    source = "The routine became a grounding ritual. The kitchen holds you."
+    payload = {
+        "core_concepts": [
+            {
+                "key": "routine",
+                "label": "routine",
+                "kind": "behavior",
+                "confidence": 0.92,
+                "evidence": [{"source": "s0", "evidence": "The routine"}],
+            },
+            {
+                "key": "ritual",
+                "label": "grounding ritual",
+                "kind": "pattern",
+                "confidence": 0.91,
+                "evidence": [{"source": "s0", "evidence": "grounding ritual"}],
+            },
+            {
+                "key": "kitchen",
+                "label": "kitchen",
+                "kind": "object",
+                "confidence": 0.88,
+                "evidence": [{"source": "s0", "evidence": "The kitchen"}],
+            },
+            {
+                "key": "person",
+                "label": "you",
+                "kind": "person",
+                "confidence": 0.88,
+                "evidence": [{"source": "s0", "evidence": "you"}],
+            },
+        ],
+        "edge_candidates": [
+            {
+                "key": "e1",
+                "from": "routine",
+                "to": "ritual",
+                "relationship": "association",
+                "confidence": 0.92,
+                "evidence": [{"source": "s0", "evidence": "became a grounding ritual"}],
+            },
+            {
+                "key": "e2",
+                "from": "kitchen",
+                "to": "person",
+                "relationship": "literalizes",
+                "confidence": 0.91,
+                "evidence": [{"source": "s0", "evidence": "The kitchen holds you"}],
+            },
+        ],
+    }
+    normalized, decisions = normalize_relationship_items(payload)
+    residue = validate_residue(normalized, {"s0": source}, require_evidence_quotes=True)
+    assert [edge["key"] for edge in residue.edge_candidates] == ["e1"]
+    assert any(
+        decision["kind"] == "unsupported_relationship" and decision["key"] == "e2"
+        for decision in decisions
+    )
+
+
+def test_abstract_but_supported_association_is_admissible() -> None:
+    source = "The routine became a grounding ritual."
+    payload = {
+        "core_concepts": [
+            {
+                "key": "routine",
+                "label": "routine",
+                "kind": "behavior",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "The routine"}],
+            },
+            {
+                "key": "ritual",
+                "label": "grounding ritual",
+                "kind": "pattern",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "grounding ritual"}],
+            },
+        ],
+        "edge_candidates": [
+            {
+                "key": "e1",
+                "from": "routine",
+                "to": "ritual",
+                "relationship": "association",
+                "confidence": 0.9,
+                "evidence": [{"source": "s0", "evidence": "became a grounding ritual"}],
+            }
+        ],
+    }
+    residue = validate_residue(payload, {"s0": source}, require_evidence_quotes=True)
+    assert residue.edge_candidates[0]["relationship"] == "association"
+
+
 def _capacity_concept(index: int, *, confidence: float = 0.9) -> dict[str, object]:
     word = f"concept-{index:02d}"
     return {

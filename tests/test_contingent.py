@@ -37,6 +37,9 @@ def test_bounded_context_contains_only_complete_recent_pairs() -> None:
 def test_interloper_prompt_forbids_fabricated_open_loop_answers() -> None:
     assert "Do not invent an answer" in INTERLOPER_SYSTEM_PROMPT
     assert "Write only your next participant message" in INTERLOPER_SYSTEM_PROMPT
+    assert "maintaining your own conversational" in INTERLOPER_SYSTEM_PROMPT
+    assert "Do not repeatedly mirror, praise, or intensify" in INTERLOPER_SYSTEM_PROMPT
+    assert "return to" in INTERLOPER_SYSTEM_PROMPT
 
 
 def test_create_binds_partner_and_assessor_as_separate_roles(tmp_path: Path) -> None:

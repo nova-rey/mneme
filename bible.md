@@ -932,3 +932,7 @@
 ## 2026-09-24 P2 contingent restart-assessment reconstruction correction
 
 - Restart reconstruction now checks persisted assessment validity in addition to extraction validity. A failed assessment reconstructs as `measurement_unknown / interpretation_unavailable` with no learner credit or absence inference; valid extraction without an assessor call remains complete. Added focused regression coverage and published the correction receipt. No provider call was made. The preserved run remains paused at the declared interpretation-rate stop and awaits review.
+
+## 2026-09-24 P2 contingent rich-language extraction correction
+
+- The preserved transcript shows genuine interloper contingency alongside increasing poetic and philosophical mirroring in turns 4–8. Advanced the prospective extractor contract to `residue-v5`: it now requests concise, high-confidence, source-grounded candidates, explicitly permits abstention on unrepresentable metaphor, and preserves exact provenance and item-wise admission. Interloper policy revision 2 preserves contingent response while asking for an independent conversational agenda and less mirroring. Added rich-language regression fixtures and receipts; no historical turn was regenerated and no provider call was made.

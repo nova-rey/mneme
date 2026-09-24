@@ -149,7 +149,7 @@ def test_extraction_prompt_declares_strict_residue_record_shape(tmp_path):
             ).fetchone()[0]
         )
         system = request["request"]["system"]
-        assert "residue-v4" in system
+        assert "residue-v5" in system
         assert "Return raw JSON only" in system
         assert "no Markdown fences" in system
         assert "Formatting is part of the immutable source" in system
@@ -168,11 +168,16 @@ def test_extraction_prompt_declares_strict_residue_record_shape(tmp_path):
         assert "one contiguous substring of the referenced source slot" in system
         assert "omit that assertion instead of paraphrasing" in system
         assert "leading `* ` and both pairs of `**`" in system
+        assert "Extract only high-confidence developmental relationships" in system
+        assert "Returning fewer candidates" in system
+        assert "decorative metaphor" in system
+        assert "the kitchen holds you" in system
+        assert "Validate and emit each trustworthy item independently" in system
         for kind in SUPPORTED_CONCEPT_KINDS:
             assert kind in system
         for relationship in SUPPORTED_RELATIONSHIP_KINDS:
             assert relationship in system
-        assert request["request"]["parameters"]["max_new_tokens"] == 1536
+        assert request["request"]["parameters"]["max_new_tokens"] == 1024
 
 
 def test_markdown_evidence_regression_requires_exact_source_formatting() -> None:

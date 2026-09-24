@@ -278,6 +278,15 @@ The documents are preserved in their supplied form and are intentionally not mer
   recorded in [the extractor v4 correction receipt](receipts/MNEME_P2.3_Extractor_V4_Confidence_Prompt_Correction_Receipt.md)
   ([JSON](receipts/MNEME_P2.3_Extractor_V4_Confidence_Prompt_Correction_Receipt.json)).
 
+  The preserved interactive transcript also established that rich poetic
+  language was increasing while extraction became less reliable. The
+  prospective `residue-v5` correction asks for concise, high-confidence,
+  source-grounded candidates and permits abstention on unrepresentable
+  metaphor; exact provenance and item-wise admission remain unchanged. The
+  Interloper policy now maintains an independent conversational agenda without
+  becoming scripted. See the [rich-language extraction decision](decisions/MNEME_P2_Contingent_Rich_Language_Extraction_Addendum.md) and [correction receipt](receipts/MNEME_P2_Contingent_Rich_Language_Extraction_Correction_Receipt_20260924.md)
+  ([JSON](receipts/MNEME_P2_Contingent_Rich_Language_Extraction_Correction_Receipt_20260924.json)).
+
   Future design context: [Developmental Self-Context](architecture/future/MNEME_Developmental_Self_Context_Architecture.md).
   This reference does not change the phase's implementation scope, frozen
   experimental contracts, acceptance requirements, or authorized call budget.

@@ -66,7 +66,7 @@ class InterpretationValidationError(InterpretationError):
 # The residue schema remains v1. This version identifies the stricter
 # provider-facing extraction contract used for new calls after the pilot
 # quotation failure; historical v1 operations remain readable and immutable.
-EXTRACTOR_VERSION = "residue-v4"
+EXTRACTOR_VERSION = "residue-v5"
 
 
 @dataclass(frozen=True)
@@ -329,6 +329,21 @@ class InterpretationService:
             "both pairs of `**`; never return the rendered words without those "
             "markers. If exact character-for-character copying is uncertain, omit "
             "the assertion rather than guessing. "
+            "The source may contain metaphor, figurative language, emotional "
+            "framing, analogy, rhetorical restatement, abstract ideas, and "
+            "uncertain or implicit relationships. Extract only high-confidence "
+            "developmental relationships that fit the declared schema; you are "
+            "not required to represent every idea. Ignore decorative metaphor, "
+            "rhetorical flourish, and unsupported implication when they cannot be "
+            "represented cleanly. Do not literalize a figurative phrase such as "
+            "'the kitchen holds you' into a physical relationship. Admit an "
+            "abstract association only when the existing ontology represents its "
+            "meaning without pretending metaphor is literal fact. Returning fewer "
+            "candidates, or an empty residue when none is trustworthy, is better "
+            "than inventing structure. Return concise candidate records only; do "
+            "not explain or summarize every source sentence. Validate and emit "
+            "each trustworthy item independently so an ambiguous item does not "
+            "prevent unrelated concrete material from being returned. "
             "The validator accepts exactly these top-level fields: store, "
             "episode_id, core_concepts, salient_phrases, observed_patterns, "
             "edge_candidates, route_candidates, declared_memories, "
@@ -376,7 +391,7 @@ class InterpretationService:
         return GenerationRequest(
             messages=({"role": "user", "content": prompt},),
             system=instruction,
-            parameters={"temperature": 0, "max_new_tokens": 1536},
+            parameters={"temperature": 0, "max_new_tokens": 1024},
             seed=None,
         )
 

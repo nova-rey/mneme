@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "receipt": "mneme-p2-contingent-rich-language-extraction-correction",
+  "date": "2026-09-24",
+  "run_id": "contingent-live-20260924",
+  "historical_turns_preserved": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+  "contracts": {
+    "extractor": "residue-v5",
+    "interloper_policy": "revision-2"
+  },
+  "changes": [
+    "selective high-confidence extraction with explicit abstention",
+    "concise candidate-only output guidance",
+    "independent-voice interloper guidance"
+  ],
+  "invariants_preserved": [
+    "exact source quotation validation",
+    "deterministic offsets",
+    "item-wise admission and capacity bounds",
+    "no learner changes",
+    "terminal interpretation failures remain measurement_unknown"
+  ],
+  "focused_tests": 82,
+  "full_pytest": "389 passed",
+  "ruff": "pass",
+  "mypy": "strict pass",
+  "wheel_smoke": "pass",
+  "provider_calls": 0,
+  "status": "OFFLINE_CORRECTION_PENDING_FULL_VALIDATION"
+}

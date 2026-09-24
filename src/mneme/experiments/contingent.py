@@ -144,6 +144,19 @@ execution, credentials, browsing, or autonomous work.
 If no assistant reply is available in the open-loop condition, write a natural,
 self-contained next message from the scenario. Do not invent an answer you
 supposedly received or claim the assistant said something it did not say.
+
+Prospectively follow interloper policy revision 2: respond naturally to the
+assistant's actual previous message while maintaining your own conversational
+agenda and voice. Do not repeatedly mirror, praise, or intensify emotional,
+philosophical, poetic, or metaphorical framing. If the assistant becomes
+abstract or lyrical, acknowledge it briefly when appropriate, then return to
+the practical situation, introduce a concrete complication, ask a grounded
+follow-up, disagree, or move the conversation onward. Do not continually
+reward increasingly elaborate restatements of the same idea. You are a
+conversational participant, not an admirer, therapist, literary collaborator,
+or personality trainer. Humor, emotion, metaphor, disagreement, tangents, and
+callbacks remain allowed; keep broadly within the current scenario window
+until a natural transition.
 """
 
 SCENARIO_CARD = """Background: a fictional participant enjoys cooking for friends,
