@@ -1428,7 +1428,7 @@
       "owner": "root-foreman",
       "dependencies": [],
       "waiting_on": [
-        "review:contingent-unparseable-extraction-interactive-t05"
+        "review:contingent-transcript-and-failure-tolerance"
       ],
       "edit_boundaries": [
         "src/mneme/experiments",
@@ -1472,7 +1472,7 @@
         "material_attempts": []
       },
       "session_ids": [],
-      "notes": "Owner-supplied P2-SUPPLEMENT-INTERLOPER-01; stopped at interactive extraction t03 after one overbound Gemma residue and one length-terminated repair; old P2.3 remains COMPLETED_INADEQUATE. Capacity-admission correction is offline-validated: valid excess candidates are admitted deterministically within caps, item-level rejection preserves unrelated evidence, and persisted initial attempts can be revalidated after failed repair without provider calls. Historical turn-3 attempts remain unchanged; continuation is ready after push/CI. First post-correction resume made no new provider call and exposed a stale-manifest edge for an earlier empty interpretation after a later accepted episode. The bounded stale-empty skip is now offline-pending validation; relationship-bearing stale publications remain fail-closed. A second no-provider resume audit found the original extraction operation was revisited despite an accepted evidence-review recovery; the runtime now reuses the durable recovery before publication. Offline validation is complete; push/CI precedes continuation. Recovery reuse then exposed an auxiliary-record representation-only defect in the new admission validator; raw quotation form is now preserved before strict validation. Offline validation is complete; push/CI precedes continuation. After capacity correction and three no-provider resume fixes, the preserved run resumed with 7 new fixed-coordinate calls, progressed through interactive t04, and stopped at t05 after initial and one repair extraction were both unparseable JSON. Cumulative returned calls 54; no open-loop/evaluation calls followed.",
+      "notes": "Owner-supplied P2-SUPPLEMENT-INTERLOPER-01; stopped at interactive extraction t03 after one overbound Gemma residue and one length-terminated repair; old P2.3 remains COMPLETED_INADEQUATE. Capacity-admission correction is offline-validated: valid excess candidates are admitted deterministically within caps, item-level rejection preserves unrelated evidence, and persisted initial attempts can be revalidated after failed repair without provider calls. Historical turn-3 attempts remain unchanged; continuation is ready after push/CI. First post-correction resume made no new provider call and exposed a stale-manifest edge for an earlier empty interpretation after a later accepted episode. The bounded stale-empty skip is now offline-pending validation; relationship-bearing stale publications remain fail-closed. A second no-provider resume audit found the original extraction operation was revisited despite an accepted evidence-review recovery; the runtime now reuses the durable recovery before publication. Offline validation is complete; push/CI precedes continuation. Recovery reuse then exposed an auxiliary-record representation-only defect in the new admission validator; raw quotation form is now preserved before strict validation. Offline validation is complete; push/CI precedes continuation. After capacity correction and three no-provider resume fixes, the preserved run resumed with 7 new fixed-coordinate calls, progressed through interactive t04, and stopped at t05 after initial and one repair extraction were both unparseable JSON. Cumulative returned calls 54; no open-loop/evaluation calls followed. The failure-tolerance correction now preserves every accepted conversation turn in a sanitized transcript, records terminal interpretation failure as measurement_unknown / interpretation_unavailable with no developmental credit or absence inference, reconstructs accepted history on restart, and applies the three-consecutive or post-eight-turn 25% measurement stop rules. Offline tests pass; continuation remains waiting for the serialized push/CI boundary.",
       "evidence_refs": [
         "docs/decisions/MNEME_P2_Contingent_Interloper_Addendum.md",
         "docs/receipts/MNEME_P2_Contingent_Interloper_Offline_Preflight_Receipt.md",
@@ -1484,6 +1484,7 @@
         "docs/receipts/MNEME_P2_Contingent_Accepted_Recovery_Resume_Correction_Receipt.md",
         "docs/receipts/MNEME_P2_Contingent_Live_Stop_After_Capacity_Correction_Receipt_20260924.md",
         "docs/receipts/MNEME_P2_Contingent_Live_Stop_After_Capacity_Correction_Receipt_20260924.json"
+        ,"docs/receipts/MNEME_P2_Contingent_Conversation_Transcript_20260924.md"
       ],
       "updated_at": "2026-09-25T01:15:00Z"
     }

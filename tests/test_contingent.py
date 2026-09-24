@@ -7,6 +7,8 @@ from mneme.experiments.contingent import (
     ContingentSchedule,
     ContingentStudy,
     _bounded_pairs,
+    _measurement_counters,
+    _measurement_stop,
 )
 from mneme.hosts import FakeHost
 
@@ -59,3 +61,68 @@ def test_subject_requests_carry_environment_origin_without_admin_ids(tmp_path: P
     material = request.generation_material()
     assert "contingent-run-1" not in str(material)
     assert "interactive" not in str(material)
+
+
+def test_terminal_interpretation_failure_is_missing_measurement_only() -> None:
+    records = [
+        {
+            "trustworthy_interpretation": False,
+            "downstream_status": "measurement_unknown / interpretation_unavailable",
+            "failure_kind": "extraction",
+        }
+    ]
+    counters = _measurement_counters(records)
+    assert counters["attempted_developmental_turns"] == 1
+    assert counters["terminal_unknown_turns"] == 1
+    assert counters["extraction_failures"] == 1
+    assert counters["successfully_interpreted_turns"] == 0
+    assert counters["interpretation_success_rate"] == 0.0
+    assert _measurement_stop(records) is None
+
+
+def test_measurement_stop_requires_three_consecutive_or_low_rate_failures() -> None:
+    assert _measurement_stop(
+        [{"trustworthy_interpretation": False}] * 3
+    ) == "three_consecutive_interpretation_failures"
+    mixed = [{"trustworthy_interpretation": True}] * 5 + [
+        {"trustworthy_interpretation": False},
+        {"trustworthy_interpretation": True},
+        {"trustworthy_interpretation": False},
+    ]
+    assert _measurement_stop(mixed) is None
+    low_rate = [{"trustworthy_interpretation": True}] * 6 + [
+        {"trustworthy_interpretation": False},
+        {"trustworthy_interpretation": True},
+        {"trustworthy_interpretation": False},
+        {"trustworthy_interpretation": True},
+        {"trustworthy_interpretation": False},
+    ]
+    assert _measurement_stop(low_rate) == "interpretation_success_rate_below_75_percent"
+
+
+def test_transcript_snapshot_preserves_exact_conversational_text(tmp_path: Path) -> None:
+    gemma = FakeHost(model_id="gemma-test")
+    qwen = FakeHost(model_id="qwen-test")
+    study = ContingentStudy.create(tmp_path / "lab", gemma, qwen, qwen, gemma)
+    study._publish_transcript(
+        condition="interactive",
+        fit_records=[
+            {"turn": 0, "preceding_reply": "fit reply", "message": "fit message"}
+        ],
+        records=[
+            {
+                "turn": 5,
+                "chapter": "A",
+                "partner": "exact partner — text",
+                "subject": "exact Gemma response",
+                "development_accepted": True,
+                "downstream_status": "measurement_unknown / interpretation_unavailable",
+                "failure_reason": "provider content is not JSON",
+            }
+        ],
+    )
+    transcript = (study.root / "conversation-transcript.md").read_text(encoding="utf-8")
+    assert "exact partner — text" in transcript
+    assert "exact Gemma response" in transcript
+    assert "measurement_unknown / interpretation_unavailable" in transcript
+    assert "provider content is not JSON" in transcript

@@ -8,7 +8,9 @@ extraction, assessment, publication, checkpoint, and frozen-readout paths.
 
 from __future__ import annotations
 
+import os
 import shutil
+import tempfile
 import uuid
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
@@ -24,12 +26,60 @@ from ..state.storage import SQLiteStore
 from .artifacts import ArtifactStore, content_digest
 from .comparison import ComparisonProbe, FrozenComparator
 from .pilot import CallStatus, PilotRun, PilotStatus, host_role_binding
-from .pilot_runtime import PilotRuntime, RuntimeSubject
+from .pilot_runtime import PilotRuntime, PilotRuntimeError, RuntimeSubject
 from .pilot_study import DevelopmentFixture, ProductionAssessmentAdapter
 
 
 class ContingentStudyError(RuntimeError):
     """The supplemental study cannot safely advance."""
+
+
+def _measurement_stop(records: Sequence[Mapping[str, Any]]) -> str | None:
+    """Return the prospective measurement stop reason, if one is reached."""
+
+    failures = [not bool(record.get("trustworthy_interpretation")) for record in records]
+    consecutive = 0
+    for failed in reversed(failures):
+        if not failed:
+            break
+        consecutive += 1
+    if consecutive >= 3:
+        return "three_consecutive_interpretation_failures"
+    attempted = len(records)
+    missing = sum(failures)
+    if attempted >= 8 and missing * 4 > attempted:
+        return "interpretation_success_rate_below_75_percent"
+    return None
+
+
+def _measurement_counters(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    failures = [not bool(record.get("trustworthy_interpretation")) for record in records]
+    consecutive = 0
+    for failed in reversed(failures):
+        if not failed:
+            break
+        consecutive += 1
+    attempted = len(records)
+    missing = sum(failures)
+    return {
+        "attempted_developmental_turns": attempted,
+        "successfully_interpreted_turns": attempted - missing,
+        "terminal_unknown_turns": sum(
+            record.get("downstream_status") == "measurement_unknown / interpretation_unavailable"
+            for record in records
+        ),
+        "extraction_failures": sum(
+            record.get("failure_kind") == "extraction" for record in records
+        ),
+        "assessment_failures": sum(
+            record.get("failure_kind") == "assessment" for record in records
+        ),
+        "consecutive_failures": consecutive,
+        "interpretation_success_rate": (
+            (attempted - missing) / attempted if attempted else 1.0
+        ),
+        "stop_reason": _measurement_stop(records),
+    }
 
 
 INTERLOPER_SYSTEM_PROMPT = """You are the simulated participant on the user side of a
@@ -384,13 +434,189 @@ class ContingentStudy:
         self.pilot.publish_artifact("contingent", "open-loop-messages.json", {"messages": messages})
         return messages
 
+    def _publish_transcript(
+        self,
+        *,
+        records: Sequence[Mapping[str, Any]],
+        condition: str,
+        fit_records: Sequence[Mapping[str, Any]] | None = None,
+    ) -> None:
+        """Publish a readable, sanitized conversation snapshot at each boundary."""
+
+        lines = [
+            "# Contingent conversation transcript",
+            "",
+            f"Study: `{STUDY_ID}`  ",
+            f"Run: `{self.pilot.run_id}`  ",
+            f"Condition: `{condition}`",
+            "",
+            "This transcript preserves conversational text from the provider results. "
+            "Credentials, hidden prompts, and provider headers are excluded.",
+            "",
+        ]
+        if fit_records:
+            lines.extend(["## Interloper fit-check", ""])
+            for item in fit_records:
+                lines.extend(
+                    [
+                        f"### Fit-check {item.get('turn')}",
+                        "",
+                        "**Preceding assistant reply**",
+                        "",
+                        str(item.get("preceding_reply", "")),
+                        "",
+                        "**Interloper message**",
+                        "",
+                        str(item.get("message", "")),
+                        "",
+                    ]
+                )
+        for record in records:
+            lines.extend(
+                [
+                    f"## Turn {record.get('turn')} — chapter {record.get('chapter', '')}",
+                    "",
+                    "**Interloper message**",
+                    "",
+                    str(record.get("partner", "")),
+                    "",
+                    "**Gemma response**",
+                    "",
+                    str(record.get("subject", "")),
+                    "",
+                    (
+                        "Developmental response accepted: "
+                        f"`{record.get('development_accepted', False)}`  "
+                    ),
+                    f"Downstream interpretation: `{record.get('downstream_status', 'unknown')}`",
+                    "",
+                ]
+            )
+            reason = record.get("failure_reason")
+            if reason:
+                lines.extend([f"Reason: {reason}", ""])
+        payload = {
+            "study_id": STUDY_ID,
+            "run_id": self.pilot.run_id,
+            "condition": condition,
+            "records": [dict(record) for record in records],
+            "fit_check": [dict(item) for item in (fit_records or ())],
+        }
+        self.pilot.publish_artifact("contingent", "conversation-transcript.json", payload)
+        path = self.root / "conversation-transcript.md"
+        temporary = Path(tempfile.mkstemp(prefix=".conversation-transcript.", dir=self.root)[1])
+        try:
+            temporary.write_text("\n".join(lines) + "\n", encoding="utf-8")
+            with temporary.open("rb") as handle:
+                os.fsync(handle.fileno())
+            os.replace(temporary, path)
+            with path.open("rb") as handle:
+                os.fsync(handle.fileno())
+        finally:
+            if temporary.exists():
+                temporary.unlink()
+
+    def _load_branch_state(
+        self, condition: str
+    ) -> tuple[int, list[tuple[str, str]], list[dict[str, Any]]]:
+        """Reconstruct accepted conversation turns without redispatching them."""
+
+        pairs: list[tuple[str, str]] = []
+        records: list[dict[str, Any]] = []
+        for turn in self.schedule.turns:
+            partner_path = self.pilot._reservation_path(f"interloper-{condition}-t{turn.turn:02d}")
+            development_path = self.pilot._reservation_path(
+                f"development-{condition}-t{turn.turn:02d}"
+            )
+            if not partner_path.is_file() or not development_path.is_file():
+                break
+            partner_value = self.pilot.artifacts._read_json(partner_path)
+            development_value = self.pilot.artifacts._read_json(development_path)
+            if partner_value.get("status") != CallStatus.RETURNED.value:
+                break
+            if development_value.get("status") != CallStatus.RETURNED.value:
+                break
+            partner_result = partner_value.get("result")
+            development_result = development_value.get("result")
+            if not isinstance(partner_result, Mapping) or not isinstance(
+                partner_result.get("content"), str
+            ):
+                break
+            if not isinstance(development_result, Mapping) or not isinstance(
+                development_result.get("content"), str
+            ):
+                break
+            partner = str(partner_result["content"])
+            subject = str(development_result["content"])
+            extraction_files = sorted(
+                self.root.parent.glob(f"extraction/extraction-{condition}-t{turn.turn:02d}*.json")
+            )
+            valid_extraction = False
+            failure_reason: str | None = None
+            for extraction_path in extraction_files:
+                extraction = self.pilot.artifacts._read_json(extraction_path)
+                if extraction.get("valid") is True:
+                    valid_extraction = True
+                elif isinstance(extraction.get("validation_error"), str):
+                    failure_reason = str(extraction["validation_error"])
+            assessment_path = self.root.parent / "contingent-assessment" / (
+                f"assessment-{condition}-t{turn.turn:02d}.json"
+            )
+            if valid_extraction:
+                status = "complete"
+                trustworthy = True
+                failure_kind = None
+            else:
+                status = "measurement_unknown / interpretation_unavailable"
+                trustworthy = False
+                failure_kind = "extraction"
+            records.append(
+                {
+                    "turn": turn.turn,
+                    "chapter": turn.chapter,
+                    "partner": partner,
+                    "subject": subject,
+                    "operation_id": (
+                        development_result.get("operation", {}).get("operation_id")
+                        if isinstance(development_result.get("operation"), Mapping)
+                        else f"development-{condition}-t{turn.turn:02d}"
+                    ),
+                    "development_accepted": True,
+                    "downstream_status": status,
+                    "trustworthy_interpretation": trustworthy,
+                    "failure_kind": failure_kind,
+                    "failure_reason": failure_reason,
+                    "assessment_recorded": assessment_path.is_file(),
+                }
+            )
+            pairs.append((partner, subject))
+        return len(records), pairs, records
+
+    def _record_progress(self, condition: str, records: Sequence[Mapping[str, Any]]) -> None:
+        self.pilot.record_study_progress(
+            condition=condition,
+            **_measurement_counters(records),
+            last_turn=(records[-1].get("turn") if records else None),
+        )
+
     def _run_branch(
         self, slot: int, condition: str, partner_messages: Sequence[str] | None
     ) -> dict[str, Any]:
-        pairs: list[tuple[str, str]] = []
-        records: list[dict[str, Any]] = []
+        start_turn, pairs, records = self._load_branch_state(condition)
+        fit_records: list[dict[str, Any]] = []
+        fit_path = self.root / "fit-check.json"
+        if fit_path.is_file():
+            fit_value = self.pilot.artifacts._read_json(fit_path)
+            if isinstance(fit_value.get("records"), list):
+                fit_records = [
+                    dict(item) for item in fit_value["records"] if isinstance(item, Mapping)
+                ]
+        self._publish_transcript(records=records, condition=condition, fit_records=fit_records)
+        self._record_progress(condition, records)
         adapter = ProductionAssessmentAdapter(self.runtime, self.assessor_host)
         for turn in self.schedule.turns:
+            if turn.turn < start_turn:
+                continue
             if condition == "interactive":
                 if turn.turn == 0:
                     request = GenerationRequest(
@@ -423,53 +649,86 @@ class ContingentStudy:
                 request=subject_request,
                 max_output_tokens=384,
             )
-            extraction = self.runtime.extract(
-                slot=slot,
-                call_id=f"extraction-{condition}-t{turn.turn:02d}",
-                coordinate={
-                    "study": STUDY_ID,
-                    "condition": condition,
-                    "turn": turn.turn,
-                    "role": "extraction",
-                },
-                episode_id=development.operation.episode_id,
-                extractor_host=self.extractor_host,
-                max_output_tokens=1536,
-            )
-            if extraction.residue is None:
+            extraction = None
+            extraction_error: str | None = None
+            try:
                 extraction = self.runtime.extract(
                     slot=slot,
-                    call_id=f"extraction-{condition}-t{turn.turn:02d}-repair",
+                    call_id=f"extraction-{condition}-t{turn.turn:02d}",
                     coordinate={
                         "study": STUDY_ID,
                         "condition": condition,
                         "turn": turn.turn,
                         "role": "extraction",
-                        "attempt": 1,
                     },
                     episode_id=development.operation.episode_id,
                     extractor_host=self.extractor_host,
                     max_output_tokens=1536,
-                    repair=True,
-                    operation_id=extraction.operation_id,
                 )
-            if extraction.residue is None:
-                if self.evidence_reviewer_host is None:
-                    raise ContingentStudyError(
-                        f"extraction failed at {condition} turn {turn.turn}: "
-                        f"{extraction.validation_error}"
+                if extraction.residue is None:
+                    extraction = self.runtime.extract(
+                        slot=slot,
+                        call_id=f"extraction-{condition}-t{turn.turn:02d}-repair",
+                        coordinate={
+                            "study": STUDY_ID,
+                            "condition": condition,
+                            "turn": turn.turn,
+                            "role": "extraction",
+                            "attempt": 1,
+                        },
+                        episode_id=development.operation.episode_id,
+                        extractor_host=self.extractor_host,
+                        max_output_tokens=1536,
+                        repair=True,
+                        operation_id=extraction.operation_id,
                     )
-                extraction = self.runtime.review_extraction(
-                    slot=slot,
-                    extraction=extraction,
-                    reviewer_host=self.evidence_reviewer_host,
-                    max_output_tokens=1536,
+                if extraction.residue is None and self.evidence_reviewer_host is not None:
+                    extraction = self.runtime.review_extraction(
+                        slot=slot,
+                        extraction=extraction,
+                        reviewer_host=self.evidence_reviewer_host,
+                        max_output_tokens=1536,
+                    )
+                if extraction.residue is None:
+                    extraction_error = extraction.validation_error or "interpretation unavailable"
+            except PilotRuntimeError as exc:
+                extraction_error = str(exc)
+            if extraction is None or extraction.residue is None:
+                response = str(development.result.get("content", ""))
+                failure_record = {
+                    "turn": turn.turn,
+                    "chapter": turn.chapter,
+                    "partner": partner,
+                    "subject": response,
+                    "operation_id": development.operation.operation_id,
+                    "development_accepted": True,
+                    "downstream_status": "measurement_unknown / interpretation_unavailable",
+                    "trustworthy_interpretation": False,
+                    "failure_kind": "extraction",
+                    "failure_reason": extraction_error,
+                    "assessment_recorded": False,
+                }
+                pairs.append((partner, response))
+                records.append(failure_record)
+                self._record_progress(condition, records)
+                self._publish_transcript(
+                    records=records, condition=condition, fit_records=fit_records
                 )
-            if extraction.residue is None:
-                raise ContingentStudyError(
-                    f"extraction failed at {condition} turn {turn.turn}: "
-                    f"{extraction.validation_error}"
-                )
+                stop_reason = _measurement_stop(records)
+                if stop_reason is not None:
+                    self.pilot._write_state(
+                        PilotStatus.PAUSED,
+                        study_progress={
+                            **self.pilot.study_progress(),
+                            **_measurement_counters(records),
+                            "condition": condition,
+                            "stop_reason": stop_reason,
+                        },
+                    )
+                    raise ContingentStudyError(
+                        f"measurement adequacy stop at {condition} turn {turn.turn}: {stop_reason}"
+                    )
+                continue
             plan = adapter(
                 slot,
                 DevelopmentFixture(
@@ -495,10 +754,43 @@ class ContingentStudy:
                     artifact_category="contingent-assessment",
                 )
                 if outcome.validation_error is not None:
-                    raise ContingentStudyError(
-                        f"assessment failed at {condition} turn {turn.turn}: "
-                        f"{outcome.validation_error}"
+                    response = str(development.result.get("content", ""))
+                    pairs.append((partner, response))
+                    records.append(
+                        {
+                            "turn": turn.turn,
+                            "chapter": turn.chapter,
+                            "partner": partner,
+                            "subject": response,
+                            "operation_id": development.operation.operation_id,
+                            "development_accepted": True,
+                            "downstream_status": "measurement_unknown / interpretation_unavailable",
+                            "trustworthy_interpretation": False,
+                            "failure_kind": "assessment",
+                            "failure_reason": outcome.validation_error,
+                            "assessment_recorded": True,
+                        }
                     )
+                    self._record_progress(condition, records)
+                    self._publish_transcript(
+                        records=records, condition=condition, fit_records=fit_records
+                    )
+                    stop_reason = _measurement_stop(records)
+                    if stop_reason is not None:
+                        self.pilot._write_state(
+                            PilotStatus.PAUSED,
+                            study_progress={
+                                **self.pilot.study_progress(),
+                                **_measurement_counters(records),
+                                "condition": condition,
+                                "stop_reason": stop_reason,
+                            },
+                        )
+                        raise ContingentStudyError(
+                            "measurement adequacy stop at "
+                            f"{condition} turn {turn.turn}: {stop_reason}"
+                        )
+                    continue
                 try:
                     plan.publish(outcome.validated)
                 except StalePublication:
@@ -532,8 +824,16 @@ class ContingentStudy:
                     "partner": partner,
                     "subject": response,
                     "operation_id": development.operation.operation_id,
+                    "development_accepted": True,
+                    "downstream_status": "complete",
+                    "trustworthy_interpretation": True,
+                    "failure_kind": None,
+                    "failure_reason": None,
+                    "assessment_recorded": plan.request is not None,
                 }
             )
+            self._record_progress(condition, records)
+            self._publish_transcript(records=records, condition=condition, fit_records=fit_records)
             if turn.turn in {7, 15, 23}:
                 checkpoint = self.root / f"{condition}-checkpoint-{turn.turn + 1}.sqlite3"
                 create_checkpoint(
@@ -718,6 +1018,8 @@ class ContingentStudy:
                 PilotStatus.QUALIFIED, qualification={"status": "PASS", "kind": "interloper-fit"}
             )
             self.pilot.begin_pilot()
+        elif state["status"] == PilotStatus.PAUSED.value:
+            self.pilot.resume()
         open_loop = self._generate_open_loop_messages()
         interactive = self._run_branch(0, "interactive", None)
         open_result = self._run_branch(1, "open-loop", open_loop)

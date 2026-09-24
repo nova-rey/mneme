@@ -30,6 +30,22 @@ testimony or persistent self-state.
    routes, readout examples, call ledger, and separate implementation,
    condition, adequacy, and behavioral dispositions.
 
+Every fit-check, participant message, accepted Gemma response, interruption,
+terminal extraction/assessment failure, continuation, and completion publishes a
+sanitized human-readable transcript snapshot. A failed downstream measurement
+does not erase the conversational evidence. The current snapshot is preserved
+in `docs/receipts/MNEME_P2_Contingent_Conversation_Transcript_20260924.md`;
+the live run also publishes `contingent/conversation-transcript.md` at each
+turn boundary.
+
+An accepted developmental response whose bounded interpretation remains
+unavailable is recorded as `measurement_unknown /
+interpretation_unavailable`: it contributes no associations, learner credit,
+absence evidence, or consolidation. The conversation may continue while
+measurement remains adequate. The supplement stops measurement after three
+consecutive missing interpretations, or after eight or more accepted turns when
+more than 25% lack trustworthy interpretation.
+
 The historical P2.3 run remains unchanged and remains
 `COMPLETED_INADEQUATE`. This supplement is one exploratory pair, not a powered
 causal study and not Phase Three.
