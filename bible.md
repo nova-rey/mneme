@@ -896,3 +896,7 @@
 ## 2026-09-24 P2 contingent capacity-admission correction
 
 - Added `residue-admission-v1`: candidate collections are validated item-wise and bounded by deterministic software after validation. Valid excess candidates are recorded as `not_admitted_capacity` rather than consuming a repair; malformed/dependency-invalid items, duplicates, and optional routes are rejected individually. A returned coordinate may revalidate an earlier persisted extraction attempt after a failed repair without another provider call. The 47-call historical turn-3 stop and raw attempts remain unchanged. Offline validation: 380 pytest, Ruff, strict mypy, wheel build, and diff check; zero provider calls. Evidence: `docs/receipts/MNEME_P2_Contingent_Residue_Capacity_Admission_Correction_Receipt.md` and `.json`.
+
+## 2026-09-24 P2 contingent stale-empty resume correction
+
+- The first post-correction resume exposed a stale-manifest edge in the preserved run: a later accepted developmental episode had advanced the lineage before an earlier empty interpretation could publish. The supplement now records and skips only that stale empty publication, while relationship-bearing stale publications still fail closed; no writable rewind or provider retry is introduced. The correction is offline-pending its own validation and CI; the first resume attempt made no new provider call.

@@ -17,6 +17,7 @@ from typing import Any
 
 from ..contracts import GenerationRequest, GenerationResult
 from ..host import Host
+from ..memory.publication import StalePublication
 from ..state.contracts import StoragePermissions
 from ..state.snapshots import create_checkpoint
 from ..state.storage import SQLiteStore
@@ -498,7 +499,30 @@ class ContingentStudy:
                         f"assessment failed at {condition} turn {turn.turn}: "
                         f"{outcome.validation_error}"
                     )
-                plan.publish(outcome.validated)
+                try:
+                    plan.publish(outcome.validated)
+                except StalePublication:
+                    # A prior interrupted resume can leave a later accepted
+                    # episode ahead of an earlier empty interpretation.  Do
+                    # not rewind or republish against a stale manifest.  An
+                    # empty residue carries no graph material, so preserving
+                    # an auditable skip is safe; a relationship-bearing
+                    # residue remains fail-closed.
+                    if extraction.residue.edge_candidates:
+                        raise
+                    self.pilot.publish_artifact(
+                        "contingent",
+                        f"{condition}-turn-{turn.turn}-stale-empty-interpretation.json",
+                        {
+                            "status": "SKIPPED_STALE_EMPTY_INTERPRETATION",
+                            "condition": condition,
+                            "turn": turn.turn,
+                            "operation_id": extraction.operation_id,
+                            "reason": (
+                                "later accepted state made the empty publication manifest stale"
+                            ),
+                        },
+                    )
             response = str(development.result.get("content", ""))
             pairs.append((partner, response))
             records.append(
