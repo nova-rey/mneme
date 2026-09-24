@@ -952,3 +952,7 @@
 ## 2026-09-24 P2.1 published foundation evidence bundle
 
 - Published the five named P2.1 stop-audit receipts for prerequisites, learner traces, own-output provenance, atomic publication, and semantic review. Each is provider-free and points to the current test and replay evidence; the work queue now indexes all five artifacts. No provider call was made.
+
+## 2026-09-24 P2.3 replay and artifact verification correction audit
+
+- Corrected direct Phase Two evaluation receipt verification and preserved learner opportunity across episode revisions. The completed `r` artifact tree now verifies. Staged copies of the historical subject stores were explicitly migrated and deterministically rebuilt from their immutable ledgers, changing replay agreement from false to true at opportunity 24; original private stores and historical receipts remain unchanged. The separated-support adequacy gap remains unresolved. No provider call was made.
