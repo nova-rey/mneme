@@ -908,3 +908,7 @@
 ## 2026-09-24 P2 contingent recovery-payload preservation correction
 
 - The recovery reuse audit found that the new admission validator converted valid auxiliary evidence records from quotation form to internal spans before strict model-facing validation, causing an already accepted recovery to fail on resume. Admission now validates auxiliary records without rewriting their raw quotation representation; canonical spans are still derived by the strict validator. Offline validation: 380 pytest, Ruff, strict mypy, and package smoke; no provider call for this correction.
+
+## 2026-09-24 P2 contingent live stop after capacity correction
+
+- The preserved run reused the turn-3 extraction under `residue-admission-v1`, progressed through interactive turn 4, and consumed seven new fixed-coordinate calls before stopping at interactive extraction turn 5. Gemma's initial result and one permitted repair were both persisted and rejected as unparseable JSON. Cumulative returned calls are 54 (79,130 input / 18,116 output / 97,246 total tokens; cost unavailable). No open-loop or evaluation calls followed, no unchanged resampling occurred, and the capacity correction remains evidenced without claiming study completion. Evidence: `docs/receipts/MNEME_P2_Contingent_Live_Stop_After_Capacity_Correction_Receipt_20260924.md` and `.json`.
