@@ -1424,10 +1424,12 @@
       "base_sha": "1390208",
       "priority": 2,
       "required": true,
-      "status": "RUNNING",
+      "status": "WAITING",
       "owner": "root-foreman",
       "dependencies": [],
-      "waiting_on": [],
+      "waiting_on": [
+        "review:contingent-extraction-finite-repair-at-interactive-t03"
+      ],
       "edit_boundaries": [
         "src/mneme/experiments",
         "tests",
@@ -1470,10 +1472,12 @@
         "material_attempts": []
       },
       "session_ids": [],
-      "notes": "Owner-supplied P2-SUPPLEMENT-INTERLOPER-01; old P2.3 remains COMPLETED_INADEQUATE.",
+      "notes": "Owner-supplied P2-SUPPLEMENT-INTERLOPER-01; stopped at interactive extraction t03 after one overbound Gemma residue and one length-terminated repair; old P2.3 remains COMPLETED_INADEQUATE.",
       "evidence_refs": [
         "docs/decisions/MNEME_P2_Contingent_Interloper_Addendum.md",
-        "docs/receipts/MNEME_P2_Contingent_Interloper_Offline_Preflight_Receipt.md"
+        "docs/receipts/MNEME_P2_Contingent_Interloper_Offline_Preflight_Receipt.md",
+        "docs/receipts/MNEME_P2_Contingent_Interloper_Live_Stop_Receipt_20260924.md",
+        "docs/receipts/MNEME_P2_Contingent_Interloper_Live_Stop_Receipt_20260924.json"
       ]
     }
   ],

@@ -219,6 +219,13 @@ The documents are preserved in their supplied form and are intentionally not mer
   readouts, and offline wire/preflight receipt. The historical P2.3 pilot remains
   preserved as `COMPLETED_INADEQUATE`.
 
+  The first bounded live supplement run is preserved as
+  `STOPPED_INCOMPLETE_MODEL_OUTPUT` at interactive extraction turn 3 after a
+  17-concept overbound result and one length-terminated repair. See the [live
+  stop receipt](receipts/MNEME_P2_Contingent_Interloper_Live_Stop_Receipt_20260924.md)
+  ([JSON](receipts/MNEME_P2_Contingent_Interloper_Live_Stop_Receipt_20260924.json));
+  this is not a credential/provider blocker and does not claim study completion.
+
   The narrow empty-evidence normalization correction accepts omitted, null, empty-string, empty-object, and empty-list placeholders only for false/unknown reviewer judgments; positive grounding remains exact and unique. It is recorded in [the empty-normalization receipt](receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_Empty_Normalization_Receipt.md) ([JSON](receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_Empty_Normalization_Receipt.json)).
 
   The fixed qualification then stopped at Q2 after Q1 passed: Qwen returned an empty length-terminated response, which strict JSON validation rejected. Q3 and the pilot were not dispatched; both request/result records are preserved in [the v3 failure receipt](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V3_Failure_20260924.md) ([JSON](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V3_Failure_20260924.json)).

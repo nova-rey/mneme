@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "study_id": "contingent-conversation-interloper-20260924",
+  "run_id": "contingent-live-20260924",
+  "status": "STOPPED_INCOMPLETE_MODEL_OUTPUT",
+  "implementation_head": "2f8617e2ce31ebb1aeb91d3ee8d3208cbee00c0d",
+  "stop_coordinate": {
+    "condition": "interactive",
+    "turn": 3,
+    "operation": "extraction-interactive-t03"
+  },
+  "failure": {
+    "initial": {
+      "finish_reason": "stop",
+      "output_tokens": 1270,
+      "validator_error": "residue.core_concepts: contains more than 16 items",
+      "concept_count": 17
+    },
+    "repair": {
+      "finish_reason": "length",
+      "output_tokens": 1536,
+      "validator_error": "provider content is not JSON",
+      "disposition": "rejected"
+    }
+  },
+  "calls": {
+    "total_returned": 47,
+    "by_role": {
+      "interloper": 32,
+      "development-response": 4,
+      "development-extraction": 7,
+      "evidence-reviewer": 2,
+      "assessor": 2
+    },
+    "token_usage": {
+      "input_tokens": 64993,
+      "output_tokens": 13570,
+      "total_tokens": 78563
+    }
+  },
+  "hosts": {
+    "developing": "google/gemma-4-E4B-it",
+    "interloper": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+    "assessor": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+    "evidence_reviewer": "Qwen/Qwen2.5-7B-Instruct"
+  },
+  "progress": {
+    "interactive_developmental_episodes": 4,
+    "open_loop_started": false,
+    "frozen_readouts_started": false,
+    "assessment_after_stop": false
+  },
+  "historical_evidence_preserved": true,
+  "credentials_included": false,
+  "completion_claim": false
+}

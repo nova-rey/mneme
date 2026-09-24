@@ -888,3 +888,7 @@
 ## 2026-09-24 P2 contingent review-bridge JSON normalization correction
 
 - The evidence-review bridge had one remaining plain-JSON parse of a persisted extractor result, bypassing the bounded disjoint-object normalization used by interpretation validation. Routed that bridge through the same helper; offline focused tests, Ruff, and strict mypy pass, with no provider call made.
+
+## 2026-09-24 P2 contingent live stop at interactive extraction turn 3
+
+- The preserved contingent run stopped after 47 returned calls at interactive extraction turn 3. Gemma's initial residue contained 17 concepts, exceeding the declared bound; its one repair was length-terminated and not JSON. The run is recorded as `STOPPED_INCOMPLETE_MODEL_OUTPUT`; open-loop execution and frozen readouts did not begin, no completion or behavioral claim is made, and historical P2.3 evidence remains unchanged.
