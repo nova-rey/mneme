@@ -720,3 +720,7 @@
 ## 2026-09-24 P2.3 recovery-coordinate correction
 
 - The first recovery attempt consumed one Gemma extraction call and returned invalid residue; its repair was rejected before dispatch because the recovery operation identity was not retained. The repair path now reuses that operation ID while reserving a distinct deterministic laboratory coordinate, and subsequent recovery IDs derive from the superseded operation. The returned result and failed row remain preserved; 319 pytest, Ruff, strict mypy, and package smoke pass with zero calls for this correction. Evidence: `docs/receipts/MNEME_P2.3_Recovery_Coordinate_Correction_Receipt.md` and `.json`.
+
+## 2026-09-24 P2.3 recovery migration correction
+
+- The first continuation's one recovery extraction call reached publication but exposed a v7→v8 SQLite migration foreign-key rewrite to temporary `__v7_*` names. Legacy ALTER semantics are now enabled during the explicit table rebuild; focused migration checks and the complete 319-test, Ruff, strict mypy, and package-smoke suite pass with zero calls for this correction. The failed continuation evidence remains unchanged. Evidence: `docs/receipts/MNEME_P2.3_Recovery_Migration_Fix_Receipt.md` and `.json`.

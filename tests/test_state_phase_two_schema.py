@@ -86,6 +86,10 @@ def test_schema_five_migration_adds_phase_two_records_and_keeps_backup(tmp_path)
             "SELECT name FROM sqlite_master WHERE type='table' "
             "AND name='learner_snapshots'"
         ).fetchone() is not None
+        assert not migrated.connection.execute(
+            "SELECT 1 FROM sqlite_master WHERE sql LIKE '%__v7_%'"
+        ).fetchone()
+        assert migrated.connection.execute("PRAGMA foreign_key_check").fetchall() == []
 
 
 def test_schema_eight_contains_review_quarantine_and_recovery_records(tmp_path):

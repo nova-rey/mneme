@@ -924,6 +924,11 @@ class SQLiteStore:
                 # an explicitly corrected extraction gets a new operation ID.
                 # SQLite cannot drop that inline UNIQUE constraint, so rebuild
                 # the small interpretation family in one explicit migration.
+                # Keep foreign-key declarations in unrelated tables pointing
+                # at the stable family names while the old tables are
+                # temporarily renamed.  Without legacy ALTER semantics,
+                # SQLite rewrites those declarations to the temporary names.
+                raw.execute("PRAGMA legacy_alter_table = ON")
                 family = (
                     "interpretation_operations",
                     "interpretation_attempts",
@@ -1040,6 +1045,7 @@ class SQLiteStore:
                 )
                 raw.execute("PRAGMA user_version = 8")
                 version = 8
+                raw.execute("PRAGMA legacy_alter_table = OFF")
             for table in _IMMUTABLE:
                 exists = raw.execute(
                     "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (table,)
