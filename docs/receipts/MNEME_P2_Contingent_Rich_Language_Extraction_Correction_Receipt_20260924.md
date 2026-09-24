@@ -31,12 +31,14 @@ edge, and an abstract but source-supported association. Existing malformed,
 capacity, provenance, and historical provider-output fixtures remain active.
 
 Focused tests: 82 passed. Full pytest: 389 passed; Ruff passed; strict mypy
-passed; wheel build and fresh-install import smoke passed. CI is required
-before any live continuation.
+passed; wheel build and fresh-install import smoke passed. CI run
+`36067335769` passed for commit `e3a47e6f62b0115a6468969ef8adb6641660ee7b`.
 
 ## Live boundary
 
 No provider call was made for this correction. The preserved conversation is
 not restarted; turns 0–8 remain immutable. Continuation remains subject to the
 existing interpretation-quality stop rule and transcript publication at every
-boundary.
+boundary. The current run remains paused because its historical 6/9 trustworthy
+interpretation rate already crossed that stop rule; this correction does not
+erase or reinterpret those failures.

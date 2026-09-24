@@ -936,3 +936,7 @@
 ## 2026-09-24 P2 contingent rich-language extraction correction
 
 - The preserved transcript shows genuine interloper contingency alongside increasing poetic and philosophical mirroring in turns 4–8. Advanced the prospective extractor contract to `residue-v5`: it now requests concise, high-confidence, source-grounded candidates, explicitly permits abstention on unrepresentable metaphor, and preserves exact provenance and item-wise admission. Interloper policy revision 2 preserves contingent response while asking for an independent conversational agenda and less mirroring. Added rich-language regression fixtures and receipts; no historical turn was regenerated and no provider call was made.
+
+## 2026-09-24 P2 contingent rich-language correction validation
+
+- The pushed rich-language correction at `e3a47e6` passed full pytest (389), Ruff, strict mypy, wheel/fresh-install smoke, and CI `36067335769`. The preserved contingent run remains paused because its prior 6/9 trustworthy interpretation rate crossed the existing measurement-quality stop; historical failures remain unchanged and no continuation provider call was made.
