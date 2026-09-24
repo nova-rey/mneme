@@ -530,7 +530,9 @@ class ContinuityService:
                 "manifest_id,instance_id,revision,parent_manifest_id,inherited_base_manifest_id,"
                 "policy_id,self_ref_id,format_version,controller_version,integrity_digest,"
                 "accepted_history_digest,graph_snapshot_id,graph_revision,accepted_episode_count,"
-                "self_view_id,self_view_version) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                "self_view_id,self_view_version,learner_snapshot_id,"
+                "learner_configuration_digest,binding_version,opportunity,coverage_json,"
+                "authority_revision) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 (
                     manifest_id,
                     self.instance_id,
@@ -548,6 +550,12 @@ class ContinuityService:
                     int(base_manifest["accepted_episode_count"]) + 1,
                     base_manifest["self_view_id"],
                     base_manifest["self_view_version"],
+                    base_manifest["learner_snapshot_id"],
+                    base_manifest["learner_configuration_digest"],
+                    base_manifest["binding_version"],
+                    base_manifest["opportunity"],
+                    base_manifest["coverage_json"],
+                    base_manifest["authority_revision"],
                 ),
             )
             db.execute(

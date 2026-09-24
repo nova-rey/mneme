@@ -940,3 +940,7 @@
 ## 2026-09-24 P2 contingent rich-language correction validation
 
 - The pushed rich-language correction at `e3a47e6` passed full pytest (389), Ruff, strict mypy, wheel/fresh-install smoke, and CI `36067335769`. The preserved contingent run remains paused because its prior 6/9 trustworthy interpretation rate crossed the existing measurement-quality stop; historical failures remain unchanged and no continuation provider call was made.
+
+## 2026-09-24 P2 learner opportunity and evaluation artifact correction
+
+- Episode-acceptance manifests now carry forward the Phase Two learner snapshot, configuration, coverage, authority, and opportunity fields so separate episode and interpretation revisions share the exact learner clock. Added a two-opportunity publication/replay regression proving the materialized state and immutable ledger replay agree. Artifact verification now accepts and validates direct Phase Two evaluation JSON receipts alongside the existing P0.3 per-check directory format. Focused validation passed; no provider call was made.

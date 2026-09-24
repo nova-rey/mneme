@@ -91,6 +91,27 @@ def test_verify_run_allows_contingent_assessment_receipts(tmp_path: Path) -> Non
     assert store.verify_run(run.path)
 
 
+def test_verify_run_allows_direct_phase_two_evaluation_json(tmp_path: Path) -> None:
+    """PilotRuntime evaluation receipts are direct files, not P0.3 check dirs."""
+
+    store = ArtifactStore(tmp_path / "lab")
+    run = store.publish_run(
+        experiment={"name": "direct-evaluation", "contract_revision": 1},
+        preflight={"valid": True},
+        study_plan={"supplement": "p2.3"},
+        bindings={"subjects": []},
+        run_id="run-direct-evaluation",
+    )
+    evaluation = run.path / "evaluation"
+    evaluation.mkdir()
+    receipt = evaluation / "evaluation-s0-p0-r0.json"
+    receipt.write_text('{"status":"RESULT","output":"ok"}\n', encoding="utf-8")
+    assert store.verify_run(run.path)
+
+    receipt.write_text("not json\n", encoding="utf-8")
+    assert store.verify_run(run.path) is False
+
+
 def test_conflicting_run_id_is_rejected(tmp_path: Path) -> None:
     store = ArtifactStore(tmp_path)
     experiment, preflight, plan, bindings = _payload()

@@ -448,7 +448,20 @@ class ArtifactStore:
                 if not evaluation.is_dir() or evaluation.is_symlink():
                     return False
                 for check_dir in evaluation.iterdir():
-                    if not check_dir.is_dir() or check_dir.is_symlink():
+                    # P0.3 uses one directory per check so STARTED/RESULT/
+                    # UNCERTAIN records can be committed independently.  The
+                    # Phase Two runtime publishes its already-accounted
+                    # evaluation receipt as a direct JSON artifact instead.
+                    # Accept that representation while still rejecting
+                    # arbitrary files and malformed JSON.
+                    if check_dir.is_symlink():
+                        return False
+                    if check_dir.is_file():
+                        if check_dir.suffix != ".json":
+                            return False
+                        self._read_json(check_dir)
+                        continue
+                    if not check_dir.is_dir():
                         return False
                     names = {item.name for item in check_dir.iterdir()}
                     if not names <= {"started.json", "result.json", "uncertain.json"}:

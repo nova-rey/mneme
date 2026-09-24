@@ -139,6 +139,46 @@ def test_learning_publication_is_atomic_and_records_stable_bindings(tmp_path):
             )
 
 
+def test_episode_acceptance_preserves_learner_opportunity_for_replay(tmp_path):
+    """Episode and interpretation revisions share one exact learner clock."""
+
+    store, instance, first_episode, residue = _episode_and_residue(tmp_path, learn=True)
+    publisher = InterpretationPublisher(store, instance)
+    first_operation = publisher.prepare(first_episode, operation_id="interpretation-1")
+    publisher.publish(
+        first_operation,
+        residue,
+        development_operation_id="development-1",
+        observations=(Observation(target_key="edge-ab"),),
+    )
+
+    continuity = ContinuityService(store, instance, FakeHost())
+    second = continuity.prepare_episode(
+        GenerationRequest(({"role": "user", "content": "A causes B"},)),
+        operation_id="generation-2",
+    )
+    continuity.generate_operation(second.operation_id)
+    continuity.accept_episode(second.operation_id)
+    second_operation = publisher.prepare(second.episode_id, operation_id="interpretation-2")
+    publisher.publish(
+        second_operation,
+        residue,
+        development_operation_id="development-2",
+        observations=(Observation(target_key="edge-ab"),),
+    )
+
+    opportunities = [
+        int(row[0])
+        for row in store.connection.execute(
+            "SELECT opportunity FROM development_operations ORDER BY opportunity,operation_id"
+        )
+    ]
+    assert opportunities == [1, 2]
+    replay = verify_replay(store)
+    assert replay["state"]["global_opportunity"] == 2
+    assert replay["matches_materialized"] is True
+
+
 def test_learning_values_reuse_stable_edge_binding_across_local_keys(tmp_path):
     store, instance, episode_id, first_residue = _episode_and_residue(tmp_path, learn=True)
     with store:
