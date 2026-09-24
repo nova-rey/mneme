@@ -25,6 +25,67 @@ def _json(value: Any) -> str:
     return json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False, default=str)
 
 
+def contingent_create(lab: Path, run_id: str) -> dict[str, Any]:
+    """Prepare the additive contingent-conversation study."""
+
+    from ..cli import _host
+    from ..hosts import DeepInfraEvidenceReviewHost
+    from .contingent import STUDY_ID, ContingentStudy
+
+    developing = _host("gemma-deepinfra")
+    partner = _host("qwen-assessor-deepinfra")
+    reviewer = DeepInfraEvidenceReviewHost(token=None)
+    study = ContingentStudy.create(
+        lab,
+        developing,
+        partner,
+        partner,
+        developing,
+        reviewer,
+        run_id=run_id,
+    )
+    return {
+        "status": "PREPARED",
+        "study_id": STUDY_ID,
+        "run_id": run_id,
+        "path": str(study.pilot.run_path),
+    }
+
+
+def contingent_execute(lab: Path, run_id: str) -> dict[str, Any]:
+    """Execute or resume the additive contingent-conversation study."""
+
+    from ..cli import _host
+    from ..hosts import DeepInfraEvidenceReviewHost
+    from ..state.storage import SQLiteStore
+    from .contingent import ContingentStudy
+    from .pilot import PilotRun
+    from .pilot_runtime import RuntimeSubject
+
+    developing = _host("gemma-deepinfra")
+    partner = _host("qwen-assessor-deepinfra")
+    reviewer = DeepInfraEvidenceReviewHost(token=None)
+    artifacts = ArtifactStore(lab)
+    pilot = PilotRun(artifacts, run_id)
+    subjects: dict[int, RuntimeSubject] = {}
+    for slot, condition in ((0, "interactive"), (1, "open-loop")):
+        store = SQLiteStore(lab / "subjects" / f"{condition}.sqlite3")
+        subjects[slot] = RuntimeSubject(
+            slot, store, str(store.current()["active_instance_id"]), developing
+        )
+    study = ContingentStudy(
+        lab,
+        pilot,
+        subjects,
+        developing,
+        partner,
+        partner,
+        developing,
+        reviewer,
+    )
+    return study.execute()
+
+
 def _read_spec(path: Path) -> ExperimentSpec:
     return load_spec(path)
 
@@ -417,6 +478,10 @@ def dispatch(args: Any) -> int:
                 args.probe_ordinal,
                 args.repetition,
             )
+        elif args.experiment_action == "contingent_create":
+            result = contingent_create(args.lab, args.run_id)
+        elif args.experiment_action == "contingent_execute":
+            result = contingent_execute(args.lab, args.run_id)
         else:
             raise ArtifactError(f"unknown experiment action: {args.experiment_action}")
     except (ArtifactError, ContractError, PreflightError, OSError) as exc:
@@ -491,6 +556,16 @@ def add_parser(sub: Any) -> None:
     compare.add_argument("--subject-slot", default="0")
     compare.add_argument("--artifact-dir", type=Path)
     compare.add_argument("--json", action="store_true", help="emit machine-readable JSON")
+    contingent = esub.add_parser("contingent")
+    csub = contingent.add_subparsers(dest="contingent_action", required=True)
+    create_contingent = csub.add_parser("create")
+    create_contingent.add_argument("--lab", type=Path, required=True)
+    create_contingent.add_argument("--run-id", required=True)
+    create_contingent.add_argument("--json", action="store_true")
+    execute_contingent = csub.add_parser("execute")
+    execute_contingent.add_argument("--lab", type=Path, required=True)
+    execute_contingent.add_argument("--run-id", required=True)
+    execute_contingent.add_argument("--json", action="store_true")
 
 
 def normalize_args(args: Any) -> Any:
@@ -499,6 +574,8 @@ def normalize_args(args: Any) -> Any:
         args.experiment_action = f"run_{args.run_action}"
     elif action == "baseline":
         args.experiment_action = f"baseline_{args.baseline_action}"
+    elif action == "contingent":
+        args.experiment_action = f"contingent_{args.contingent_action}"
     elif isinstance(action, str):
         args.experiment_action = action.replace("-", "_")
     return args

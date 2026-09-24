@@ -18,6 +18,12 @@ from .comparison import (
     summarize_comparison,
     write_comparison_artifacts,
 )
+from .contingent import (
+    INTERLOPER_SYSTEM_PROMPT,
+    ContingentSchedule,
+    ContingentStudy,
+    ContingentStudyError,
+)
 from .contracts import (
     EXPERIMENT_SCHEMA_VERSION,
     ContractError,
@@ -98,6 +104,10 @@ __all__ = [
     "run_matched_comparison",
     "summarize_comparison",
     "write_comparison_artifacts",
+    "INTERLOPER_SYSTEM_PROMPT",
+    "ContingentSchedule",
+    "ContingentStudy",
+    "ContingentStudyError",
     "InspectionError",
     "inspect_checkpoint",
     "inspect_run",

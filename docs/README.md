@@ -213,6 +213,12 @@ The documents are preserved in their supplied form and are intentionally not mer
   qualification. Evidence is recorded in [the v2 qualification pass receipt](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V2_Pass_20260924.md)
   ([JSON](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V2_Pass_20260924.json)).
 
+* [Contingent conversation / interloper supplement](experiments/contingent-conversation/README.md)
+  records the additive interactive-versus-open-loop Phase Two study contract,
+  its separate Qwen partner/assessor role bindings, bounded context, checkpoints,
+  readouts, and offline wire/preflight receipt. The historical P2.3 pilot remains
+  preserved as `COMPLETED_INADEQUATE`.
+
   The narrow empty-evidence normalization correction accepts omitted, null, empty-string, empty-object, and empty-list placeholders only for false/unknown reviewer judgments; positive grounding remains exact and unique. It is recorded in [the empty-normalization receipt](receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_Empty_Normalization_Receipt.md) ([JSON](receipts/MNEME_P2.3_Semantic_Evidence_Reconciliation_Empty_Normalization_Receipt.json)).
 
   The fixed qualification then stopped at Q2 after Q1 passed: Qwen returned an empty length-terminated response, which strict JSON validation rejected. Q3 and the pilot were not dispatched; both request/result records are preserved in [the v3 failure receipt](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V3_Failure_20260924.md) ([JSON](receipts/MNEME_P2.3_Semantic_Evidence_Review_Qualification_V3_Failure_20260924.json)).

@@ -1413,6 +1413,68 @@
         "review:p2.3-pilot-adequacy-after-normalization"
       ],
       "workstream": "phase-two"
+    },
+    {
+      "id": "P2-SUPPLEMENT-INTERLOPER",
+      "title": "Contingent conversation interloper study",
+      "campaign": "mneme-phase-two",
+      "project": "nova-rey/mneme",
+      "domain": "phase-two-experiment",
+      "scope": "Implement and execute P2-SUPPLEMENT-INTERLOPER-01 as an additive two-condition interactive versus open-loop study; preserve historical P2.3.",
+      "base_sha": "1390208",
+      "priority": 2,
+      "required": true,
+      "status": "RUNNING",
+      "owner": "root-foreman",
+      "dependencies": [],
+      "waiting_on": [],
+      "edit_boundaries": [
+        "src/mneme/experiments",
+        "tests",
+        "docs/experiments/contingent-conversation",
+        "docs/decisions",
+        "docs/receipts",
+        ".codex/work-queue.json",
+        "bible.md"
+      ],
+      "requirement_ids": [
+        "continuity-preflight",
+        "interloper-adapter",
+        "interactive-condition",
+        "open-loop-control",
+        "readouts",
+        "artifacts",
+        "tests",
+        "ci"
+      ],
+      "resource_requirements": [
+        {
+          "name": "model-agent",
+          "units": 1,
+          "exclusive": false
+        }
+      ],
+      "completion_criterion": "Offline wire/preflight, bounded two-condition study, checkpoints/readouts, readable evidence, validation and CI, with separate implementation/condition/adequacy/findings dispositions.",
+      "validation": {
+        "required": [
+          "pytest -q",
+          "ruff check .",
+          "mypy src/mneme",
+          "package smoke",
+          "offline continuity and role-isolation preflight",
+          "bounded study receipts"
+        ]
+      },
+      "attempt_state": {
+        "tier": 1,
+        "material_attempts": []
+      },
+      "session_ids": [],
+      "notes": "Owner-supplied P2-SUPPLEMENT-INTERLOPER-01; old P2.3 remains COMPLETED_INADEQUATE.",
+      "evidence_refs": [
+        "docs/decisions/MNEME_P2_Contingent_Interloper_Addendum.md",
+        "docs/receipts/MNEME_P2_Contingent_Interloper_Offline_Preflight_Receipt.md"
+      ]
     }
   ],
   "project": "nova-rey/mneme",
