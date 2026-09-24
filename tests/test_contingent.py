@@ -9,6 +9,7 @@ from mneme.experiments.contingent import (
     _bounded_pairs,
     _measurement_counters,
     _measurement_stop,
+    _restored_interpretation,
 )
 from mneme.experiments.pilot import PilotStatus
 from mneme.hosts import FakeHost
@@ -79,6 +80,28 @@ def test_terminal_interpretation_failure_is_missing_measurement_only() -> None:
     assert counters["successfully_interpreted_turns"] == 0
     assert counters["interpretation_success_rate"] == 0.0
     assert _measurement_stop(records) is None
+
+
+def test_restart_does_not_promote_failed_assessment_to_trustworthy() -> None:
+    status, trustworthy, failure_kind, reason = _restored_interpretation(
+        valid_extraction=True,
+        assessment={"valid": False, "validation_error": "missing monitor row"},
+    )
+    assert status == "measurement_unknown / interpretation_unavailable"
+    assert trustworthy is False
+    assert failure_kind == "assessment"
+    assert reason == "missing monitor row"
+
+
+def test_restart_accepts_valid_extraction_without_assessment_call() -> None:
+    status, trustworthy, failure_kind, reason = _restored_interpretation(
+        valid_extraction=True,
+        assessment=None,
+    )
+    assert status == "complete"
+    assert trustworthy is True
+    assert failure_kind is None
+    assert reason is None
 
 
 def test_measurement_stop_requires_three_consecutive_or_low_rate_failures() -> None:

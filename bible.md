@@ -928,3 +928,7 @@
 ## 2026-09-24 P2 contingent transcript snapshot isolation
 
 - Condition-specific transcript filenames were added after audit found that a later open-loop branch could overwrite the interactive transcript snapshot. Interactive and open-loop snapshots now remain independently inspectable at each turn boundary. Focused tests, Ruff, and strict mypy pass; no provider call was made.
+
+## 2026-09-24 P2 contingent restart-assessment reconstruction correction
+
+- Restart reconstruction now checks persisted assessment validity in addition to extraction validity. A failed assessment reconstructs as `measurement_unknown / interpretation_unavailable` with no learner credit or absence inference; valid extraction without an assessor call remains complete. Added focused regression coverage and published the correction receipt. No provider call was made. The preserved run remains paused at the declared interpretation-rate stop and awaits review.

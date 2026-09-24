@@ -82,6 +82,34 @@ def _measurement_counters(records: Sequence[Mapping[str, Any]]) -> dict[str, Any
     }
 
 
+def _restored_interpretation(
+    *, valid_extraction: bool, assessment: Mapping[str, Any] | None
+) -> tuple[str, bool, str | None, str | None]:
+    """Reconstruct interpretation status without trusting extraction alone."""
+
+    if not valid_extraction:
+        return (
+            "measurement_unknown / interpretation_unavailable",
+            False,
+            "extraction",
+            None,
+        )
+    if assessment is None or assessment.get("valid") is True:
+        return ("complete", True, None, None)
+    raw_error = assessment.get("validation_error")
+    reason = (
+        str(raw_error)
+        if isinstance(raw_error, str) and raw_error
+        else "assessment validation failed"
+    )
+    return (
+        "measurement_unknown / interpretation_unavailable",
+        False,
+        "assessment",
+        reason,
+    )
+
+
 INTERLOPER_SYSTEM_PROMPT = """You are the simulated participant on the user side of a
 research conversation.
 The other speaker is an experimental conversational assistant. Your job is to
@@ -565,14 +593,16 @@ class ContingentStudy:
             assessment_path = self.root.parent / "contingent-assessment" / (
                 f"assessment-{condition}-t{turn.turn:02d}.json"
             )
-            if valid_extraction:
-                status = "complete"
-                trustworthy = True
-                failure_kind = None
-            else:
-                status = "measurement_unknown / interpretation_unavailable"
-                trustworthy = False
-                failure_kind = "extraction"
+            assessment_recorded = assessment_path.is_file()
+            assessment_payload = (
+                self.pilot.artifacts._read_json(assessment_path)
+                if assessment_recorded
+                else None
+            )
+            status, trustworthy, failure_kind, failure_reason = _restored_interpretation(
+                valid_extraction=valid_extraction,
+                assessment=assessment_payload,
+            )
             records.append(
                 {
                     "turn": turn.turn,
@@ -589,7 +619,7 @@ class ContingentStudy:
                     "trustworthy_interpretation": trustworthy,
                     "failure_kind": failure_kind,
                     "failure_reason": failure_reason,
-                    "assessment_recorded": assessment_path.is_file(),
+                    "assessment_recorded": assessment_recorded,
                 }
             )
             pairs.append((partner, subject))

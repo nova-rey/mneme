@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "receipt": "mneme-p2-contingent-restart-assessment-reconstruction-correction",
+  "date": "2026-09-24",
+  "repository": "nova-rey/mneme",
+  "run_id": "contingent-live-20260924",
+  "code_change": {
+    "module": "src/mneme/experiments/contingent.py",
+    "rule": "valid extraction plus persisted invalid assessment reconstructs as measurement_unknown / interpretation_unavailable"
+  },
+  "tests": {
+    "focused_contingent": 11,
+    "pytest": "386 passed",
+    "ruff": "pass",
+    "mypy": "strict pass",
+    "wheel_smoke": "pass",
+    "provider_calls": 0
+  },
+  "preserved_live_state": {
+    "accepted_interactive_turns": 9,
+    "trustworthy_interpretations": 6,
+    "terminal_unknown_interpretations": 3,
+    "interpretation_success_rate": 0.6666666667,
+    "stop_reason": "interpretation_success_rate_below_75_percent",
+    "calls": 65
+  },
+  "transcript": "docs/receipts/MNEME_P2_Contingent_Conversation_Transcript_20260924.md",
+  "status": "WAITING_REVIEW"
+}
