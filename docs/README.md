@@ -225,6 +225,8 @@ The documents are preserved in their supplied form and are intentionally not mer
 
   The bounded v10 assessor prompt correction adds a concrete nested-Markdown quotation example; strict validation and all semantic/provenance rules remain unchanged. Offline evidence is recorded in [the v10 correction receipt](receipts/MNEME_P2.3_Assessor_Quote_Format_Prompt_Correction_V10_Receipt.md) ([JSON](receipts/MNEME_P2.3_Assessor_Quote_Format_Prompt_Correction_V10_Receipt.json)).
 
+  The next continuation passed the assessor boundary but stopped at `extraction-s1-e7` when Gemma invented unsupported relationship kind `holds`; strict residue validation rejected it after the repair pool was exhausted. Evidence is recorded in [the v6 extraction enum failure receipt](receipts/MNEME_P2.3_Pilot_Recovery_V6_Extraction_Enum_Failure_20260924.md) ([JSON](receipts/MNEME_P2.3_Pilot_Recovery_V6_Extraction_Enum_Failure_20260924.json)).
+
   The resumed pilot then stopped at `extraction-s1-e5` because Gemma omitted
   required confidence fields from otherwise source-grounded graph records; the
   13-call stop is preserved in [the confidence-schema failure receipt](receipts/MNEME_P2.3_Pilot_Recovery_V4_Confidence_Failure_20260924.md)
