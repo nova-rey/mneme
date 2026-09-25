@@ -1113,3 +1113,5 @@ no provider calls were made in this commit.
 - 2026-09-25: P2.3 local readout output-bound correction. The reasoning-off same-coordinate rerun returned ordinary final text, but four of eight responses still reached the shared 96-token limit. The failed results remain immutable evidence; the frozen v2 M/C schedule raises only the matched local allowance to 256 tokens before the next run.
 
 - 2026-09-25: P2.3 local readout v2 audit. The shared 256-token reasoning-off schedule produced seven usable responses; M0 still terminated at the output bound. The raw result is preserved and the final fixed v3 schedule raises only the matched local allowance to 384 tokens.
+
+- 2026-09-25: P2.3 local matched readout v3 completed. Eight local MSI Gemma calls ran under the frozen M/C schedule with reasoning off and a matched 384-token allowance. All returned non-empty text; MNEME selected the credited garden→paint-project route for the first two treatment probes only, while controls and unrelated probes selected none. Raw requests/results are published; no learner or developmental writes occurred.
