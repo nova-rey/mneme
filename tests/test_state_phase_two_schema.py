@@ -10,7 +10,7 @@ def test_schema_six_creates_learning_policy_and_development_records(tmp_path):
     path = tmp_path / "phase-two.sqlite3"
     with SQLiteStore(path) as store:
         store.create_root(permissions=StoragePermissions(learn=True))
-        assert SCHEMA_VERSION == 9
+        assert SCHEMA_VERSION == 10
         assert store.connection.execute(
             "SELECT learning_allowed FROM policies"
         ).fetchone()[0] == 1
@@ -33,6 +33,7 @@ def test_schema_six_creates_learning_policy_and_development_records(tmp_path):
         }
         assert {
             "development_operations",
+            "modeled_advance_operations",
             "semantic_bindings",
             "development_observations",
             "learner_updates",
@@ -59,6 +60,7 @@ def test_schema_five_migration_adds_phase_two_records_and_keeps_backup(tmp_path)
         "development_observations",
         "semantic_bindings",
         "development_operations",
+        "modeled_advance_operations",
     ):
         raw.execute(f"DROP TABLE {table}")
     raw.execute("ALTER TABLE policies DROP COLUMN learning_allowed")
@@ -79,7 +81,7 @@ def test_schema_five_migration_adds_phase_two_records_and_keeps_backup(tmp_path)
     SQLiteStore.migrate(path, backup=backup)
     assert backup.is_file()
     with SQLiteStore(path, read_only=True) as migrated:
-        assert migrated.connection.execute("PRAGMA user_version").fetchone()[0] == 9
+        assert migrated.connection.execute("PRAGMA user_version").fetchone()[0] == 10
         assert migrated.connection.execute(
             "SELECT learning_allowed FROM policies"
         ).fetchone()[0] == 0
@@ -97,7 +99,7 @@ def test_schema_eight_contains_review_quarantine_and_recovery_records(tmp_path):
     path = tmp_path / "phase-two.sqlite3"
     with SQLiteStore(path) as store:
         store.create_root()
-        assert store.connection.execute("PRAGMA user_version").fetchone()[0] == 9
+        assert store.connection.execute("PRAGMA user_version").fetchone()[0] == 10
         tables = {
             row[0]
             for row in store.connection.execute(
@@ -114,3 +116,27 @@ def test_schema_eight_contains_review_quarantine_and_recovery_records(tmp_path):
             "SELECT sql FROM sqlite_master WHERE type='table' AND name='interpretation_operations'"
         ).fetchone()[0]
         assert "episode_id TEXT NOT NULL UNIQUE" not in operation_sql
+
+
+def test_schema_nine_migrates_modeled_advance_ledger_with_backup(tmp_path):
+    path = tmp_path / "schema-nine.sqlite3"
+    backup = tmp_path / "schema-nine.before-v10.sqlite3"
+    with SQLiteStore(path) as store:
+        store.create_root()
+    raw = sqlite3.connect(path)
+    raw.execute("DROP TABLE modeled_advance_operations")
+    raw.execute("UPDATE store_info SET schema_version=9")
+    raw.execute("PRAGMA user_version=9")
+    raw.commit()
+    raw.close()
+
+    SQLiteStore.migrate(path, backup=backup, target_version=10)
+    assert backup.is_file()
+    with SQLiteStore(path, read_only=True) as migrated:
+        assert migrated.connection.execute("PRAGMA user_version").fetchone()[0] == 10
+        sql = migrated.connection.execute(
+            "SELECT sql FROM sqlite_master WHERE type='table' "
+            "AND name='modeled_advance_operations'"
+        ).fetchone()[0]
+        assert "operation_id TEXT PRIMARY KEY" in sql
+        assert migrated.connection.execute("PRAGMA foreign_key_check").fetchall() == []

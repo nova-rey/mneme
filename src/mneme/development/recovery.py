@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import uuid
+from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any, Literal, cast
 
@@ -272,6 +273,30 @@ def _consequences(store: SQLiteStore, operation_id: str) -> tuple[ConsequenceAss
     return tuple(result)
 
 
+def _modeled_targets(store: SQLiteStore, operation_id: str) -> tuple[tuple[str, str], ...]:
+    row = store.connection.execute(
+        "SELECT target_json FROM modeled_advance_operations WHERE operation_id=?",
+        (operation_id,),
+    ).fetchone()
+    if row is None:
+        raise ReplayError(f"modeled advance operation is missing: {operation_id}")
+    try:
+        payload = json.loads(str(row[0]))
+    except json.JSONDecodeError as exc:
+        raise ReplayError(f"modeled advance targets are invalid: {operation_id}") from exc
+    if not isinstance(payload, list):
+        raise ReplayError(f"modeled advance targets are not a list: {operation_id}")
+    targets: list[tuple[str, str]] = []
+    for item in payload:
+        if not isinstance(item, list) or len(item) != 2:
+            raise ReplayError(f"modeled advance target is invalid: {operation_id}")
+        target, context = str(item[0]), str(item[1])
+        if not target or not context:
+            raise ReplayError(f"modeled advance target is empty: {operation_id}")
+        targets.append((target, context))
+    return tuple(targets)
+
+
 def replay_learner(
     store: SQLiteStore, *, include_quarantined: bool = False
 ) -> ReplayReport:
@@ -285,17 +310,39 @@ def replay_learner(
     lineage_ids = _lineage_history(store, instance_id)
     placeholders = ",".join("?" for _ in lineage_ids)
     operations = store.connection.execute(
-        "SELECT operation_id,opportunity,terminal_disposition FROM development_operations "
+        "SELECT operation_id,opportunity,terminal_disposition,'development' AS kind "
+        "FROM development_operations "
         f"WHERE instance_id IN ({placeholders}) AND stage='ACCEPTED' "
+        "UNION ALL "
+        "SELECT operation_id,opportunity,'accepted' AS terminal_disposition,'modeled' AS kind "
+        "FROM modeled_advance_operations "
+        f"WHERE instance_id IN ({placeholders}) "
         "ORDER BY opportunity,operation_id",
-        lineage_ids,
+        (*lineage_ids, *lineage_ids),
     )
     count = 0
     for row in operations:
         operation_id = str(row[0])
-        observations = _observations(store, operation_id)
-        edge_keys = {item.target_key for item in observations}
-        consequences = _consequences(store, operation_id)
+        kind = str(row[3])
+        if kind == "modeled":
+            steps_row = store.connection.execute(
+                "SELECT steps FROM modeled_advance_operations WHERE operation_id=?",
+                (operation_id,),
+            ).fetchone()
+            if steps_row is None:
+                raise ReplayError(f"modeled advance operation is missing: {operation_id}")
+            try:
+                steps = int(steps_row[0])
+            except (TypeError, ValueError) as exc:
+                raise ReplayError(f"modeled advance steps are invalid: {operation_id}") from exc
+            observations: tuple[Observation, ...] = ()
+            edge_keys: set[str] = set()
+            consequences: tuple[ConsequenceAssessment, ...] = ()
+        else:
+            steps = 0
+            observations = _observations(store, operation_id)
+            edge_keys = {item.target_key for item in observations}
+            consequences = _consequences(store, operation_id)
         route_keys = {item.route_key for item in consequences}
         if not include_quarantined and _operation_quarantined(
             store, instance_id, operation_id, edge_keys, route_keys
@@ -310,6 +357,10 @@ def replay_learner(
                     observations=observations,
                     terminal_disposition=str(row[2] or "accepted"),
                     consequences=consequences,
+                    modeled_advance_ticks=steps,
+                    advance_targets=(
+                        _modeled_targets(store, operation_id) if kind == "modeled" else ()
+                    ),
                 ),
             )
         except Exception as exc:  # convert corrupt durable rows to one boundary error
@@ -346,7 +397,12 @@ def verify_replay(store: SQLiteStore) -> dict[str, Any]:
     }
 
 
-def rebuild_learner(store: SQLiteStore, *, reason: str) -> dict[str, Any]:
+def rebuild_learner(
+    store: SQLiteStore,
+    *,
+    reason: str,
+    modeled_advance: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
     """Publish a quarantine-aware learner materialization from the ledger.
 
     The accepted operation/observation ledger remains immutable.  A rebuild
@@ -361,7 +417,6 @@ def rebuild_learner(store: SQLiteStore, *, reason: str) -> dict[str, Any]:
         raise ReplayError("rebuild reason is required")
     if bool(getattr(store, "read_only", False)):
         raise ReplayError("learner rebuild requires a writable working store")
-    report = replay_learner(store)
     current = store.current()
     instance_id = str(current["active_instance_id"])
     with store.transaction() as db:
@@ -377,9 +432,52 @@ def rebuild_learner(store: SQLiteStore, *, reason: str) -> dict[str, Any]:
         ).fetchone()
         if base is None:
             raise ReplayError("current manifest is missing")
+        if modeled_advance is not None:
+            operation_id = str(modeled_advance.get("operation_id", ""))
+            advance_instance = str(modeled_advance.get("instance_id", ""))
+            context = str(modeled_advance.get("context", ""))
+            steps = int(modeled_advance.get("steps", 0))
+            targets = modeled_advance.get("targets", ())
+            if (
+                not operation_id
+                or advance_instance != instance_id
+                or str(modeled_advance.get("base_manifest_id", ""))
+                != str(base["manifest_id"])
+                or not context
+                or steps <= 0
+                or not isinstance(targets, (tuple, list))
+            ):
+                raise ReplayError("invalid modeled advance operation")
+            target_rows = [[str(item[0]), str(item[1])] for item in targets]
+            db.execute(
+                "INSERT INTO modeled_advance_operations VALUES(?,?,?,?,?,?,?,?)",
+                (
+                    operation_id,
+                    instance_id,
+                    str(base["manifest_id"]),
+                    context,
+                    steps,
+                    json.dumps(target_rows, ensure_ascii=False, separators=(",", ":")),
+                    int(base["opportunity"] or 0) + 1,
+                    _utc(),
+                ),
+            )
+        # Include a newly inserted modeled operation in the same transaction as
+        # its materialized manifest.  A crash before commit therefore leaves
+        # neither half of the accepted transition visible.
+        report = replay_learner(store)
+        materialized_opportunity = (
+            report.state.global_opportunity
+            if modeled_advance is not None
+            else int(base["opportunity"] or 0)
+        )
         now = _utc()
         revision = int(current["current_revision"]) + 1
-        event_id = f"learner-rebuild:{uuid.uuid4()}"
+        event_id = (
+            f"modeled-advance:{modeled_advance['operation_id']}"
+            if modeled_advance is not None
+            else f"learner-rebuild:{uuid.uuid4()}"
+        )
         manifest_id = str(uuid.uuid4())
         authority_revision = int(base["authority_revision"] or 0)
         active = _active_quarantine(store, instance_id)
@@ -434,7 +532,7 @@ def rebuild_learner(store: SQLiteStore, *, reason: str) -> dict[str, Any]:
                 snapshot_id,
                 snapshot_digest,
                 base["binding_version"],
-                base["opportunity"],
+                materialized_opportunity,
                 base["coverage_json"],
                 authority_revision,
             ),
@@ -445,7 +543,7 @@ def rebuild_learner(store: SQLiteStore, *, reason: str) -> dict[str, Any]:
                 snapshot_id,
                 instance_id,
                 manifest_id,
-                int(base["opportunity"] or 0),
+                materialized_opportunity,
                 "learner-v1",
                 json.dumps(
                     snapshot_content,
@@ -464,7 +562,7 @@ def rebuild_learner(store: SQLiteStore, *, reason: str) -> dict[str, Any]:
                 revision,
                 current["current_revision"],
                 event_id,
-                "learner_rebuilt",
+                "modeled_advance" if modeled_advance is not None else "learner_rebuilt",
                 None,
                 manifest_id,
                 now,
@@ -491,7 +589,7 @@ def rebuild_learner(store: SQLiteStore, *, reason: str) -> dict[str, Any]:
         new_edges = {(item.target_key, item.context): item for item in report.state.edge_states}
         if owner is not None:
             operation_id = str(owner[0])
-            opportunity = max(1, int(base["opportunity"] or 0))
+            opportunity = max(1, materialized_opportunity)
             for key in sorted(old_keys | set(new_edges)):
                 edge = new_edges.get(key, EdgeState(key[0], key[1]))
                 update_id = str(uuid.uuid4())
@@ -534,6 +632,7 @@ def rebuild_learner(store: SQLiteStore, *, reason: str) -> dict[str, Any]:
         "snapshot_id": snapshot_id,
         "reason": reason,
         "state_digest": report.digest,
+        "state_opportunity": report.state.global_opportunity,
         "skipped_operation_ids": list(report.skipped_operation_ids),
     }
 

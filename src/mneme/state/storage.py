@@ -22,7 +22,7 @@ from .contracts import (
     validate_id,
 )
 
-SCHEMA_VERSION = 9
+SCHEMA_VERSION = 10
 APPLICATION_ID = 0x4D4E454D  # ASCII "MNEM"
 
 _SCHEMA = """
@@ -399,6 +399,16 @@ CREATE TABLE IF NOT EXISTS development_operations (
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS modeled_advance_operations (
+  operation_id TEXT PRIMARY KEY,
+  instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
+  base_manifest_id TEXT NOT NULL REFERENCES manifests(manifest_id),
+  context TEXT NOT NULL,
+  steps INTEGER NOT NULL CHECK (steps > 0),
+  target_json TEXT NOT NULL,
+  opportunity INTEGER NOT NULL CHECK (opportunity >= 1),
+  created_at TEXT NOT NULL
+);
 CREATE TABLE IF NOT EXISTS semantic_bindings (
   binding_id TEXT PRIMARY KEY,
   instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
@@ -586,6 +596,7 @@ _IMMUTABLE = (
     "turn_traces",
     "semantic_bindings",
     "development_observations",
+    "modeled_advance_operations",
     "learner_updates",
     "learner_values",
     "learner_snapshots",
@@ -713,7 +724,7 @@ class SQLiteStore:
         version = int(row[0]) if row else 0
         if version > SCHEMA_VERSION:
             raise SchemaError(f"unsupported newer schema version {version}")
-        if self.read_only and version in {1, 2, 3, 4, 5, 6, 7, 8}:
+        if self.read_only and version in {1, 2, 3, 4, 5, 6, 7, 8, 9}:
             # Historical Phase Zero checkpoints remain inspectable without
             # mutation.  Forking a v1 checkpoint stages and explicitly
             # migrates a private copy before opening it writable.
@@ -744,9 +755,9 @@ class SQLiteStore:
         interrupted or validation fails.
         """
 
-        if target_version not in {2, 3, 4, 5, 6, 7, 8, SCHEMA_VERSION}:
+        if target_version not in {2, 3, 4, 5, 6, 7, 8, 9, SCHEMA_VERSION}:
             raise SchemaError(
-                f"only migration to schema 2, 3, 4, 5, 6, 7, 8 or {SCHEMA_VERSION} is supported"
+                f"only migration to schema 2, 3, 4, 5, 6, 7, 8, 9 or {SCHEMA_VERSION} is supported"
             )
         source = Path(path)
         if not source.is_file():
@@ -766,7 +777,7 @@ class SQLiteStore:
             version = int(version_row[0]) if version_row else 0
             if version == target_version:
                 raise SchemaError("store is already at the requested schema version")
-            if version not in {1, 2, 3, 4, 5, 6, 7, 8} or version > target_version:
+            if version not in {1, 2, 3, 4, 5, 6, 7, 8, 9} or version > target_version:
                 raise SchemaError(f"cannot migrate unsupported schema version {version}")
             info = raw.execute("SELECT schema_version FROM store_info").fetchone()
             if info is None or int(info[0]) != version:
@@ -1065,7 +1076,7 @@ class SQLiteStore:
                 raw.execute("PRAGMA user_version = 8")
                 version = 8
                 raw.execute("PRAGMA legacy_alter_table = OFF")
-            if version == 8 and target_version >= SCHEMA_VERSION:
+            if version == 8 and target_version >= 9:
                 raw.execute(
                     "CREATE TABLE IF NOT EXISTS identity_generation_attempts ("
                     "attempt_id TEXT PRIMARY KEY,"
@@ -1092,6 +1103,34 @@ class SQLiteStore:
                 )
                 raw.execute("PRAGMA user_version = 9")
                 version = 9
+            if version == 9 and target_version >= 10:
+                raw.execute(
+                    "CREATE TABLE IF NOT EXISTS modeled_advance_operations ("
+                    "operation_id TEXT PRIMARY KEY,"
+                    "instance_id TEXT NOT NULL REFERENCES lineages(instance_id),"
+                    "base_manifest_id TEXT NOT NULL REFERENCES manifests(manifest_id),"
+                    "context TEXT NOT NULL,"
+                    "steps INTEGER NOT NULL CHECK (steps > 0),"
+                    "target_json TEXT NOT NULL,"
+                    "opportunity INTEGER NOT NULL CHECK (opportunity >= 1),"
+                    "created_at TEXT NOT NULL"
+                    ")"
+                )
+                raw.execute(
+                    "CREATE TRIGGER IF NOT EXISTS modeled_advance_operations_immutable_update "
+                    "BEFORE UPDATE ON modeled_advance_operations BEGIN "
+                    "SELECT RAISE(ABORT, 'immutable record'); END;"
+                )
+                raw.execute(
+                    "CREATE TRIGGER IF NOT EXISTS modeled_advance_operations_immutable_delete "
+                    "BEFORE DELETE ON modeled_advance_operations BEGIN "
+                    "SELECT RAISE(ABORT, 'immutable record'); END;"
+                )
+                raw.execute(
+                    "UPDATE store_info SET schema_version=10,record_version=record_version+1"
+                )
+                raw.execute("PRAGMA user_version = 10")
+                version = 10
             for table in _IMMUTABLE:
                 exists = raw.execute(
                     "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (table,)

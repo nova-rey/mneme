@@ -1000,3 +1000,7 @@
 ## 2026-09-25 P2 offline audit checkpoint CI
 
 - GitHub CI run `36080847932` passed for `088b22876137b0d6e914f7febae844345829b6e0`. The queue and readiness receipt now carry the verified remote result; no provider call was made.
+
+## 2026-09-25 P2 modeled temporal advance correction
+
+- Closed the approved `learner advance` CLI placeholder with a durable modeled-advance ledger at schema 10. Each explicit advance records its idempotency key, base manifest, context, steps, and pinned target set, then atomically publishes the replayed learner snapshot, manifest, and revision. Retries are exact-once; read-only stores, missing permission/targets, stale materialization, and interrupted publication fail closed. Added v9-to-v10 migration, rollback, replay, CLI, and counter-reporting tests. Full pytest (419), Ruff, strict mypy, wheel/fresh-install smoke, and queue validation passed; no provider calls were made. P2.3 adequacy and the contingent live authorization boundary remain unchanged.

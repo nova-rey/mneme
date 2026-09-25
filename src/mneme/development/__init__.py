@@ -5,6 +5,7 @@ integration are layered around these functions so replay can compare the
 same accepted observations without invoking a model.
 """
 
+from .advance import ModeledAdvanceError, ModeledAdvanceRecord, ModeledAdvanceService
 from .assessment import (
     ASSESSOR_PROMPT_VERSION,
     ASSESSOR_SCHEMA_VERSION,
@@ -67,6 +68,9 @@ from .learner import (
 
 __all__ = [
     "AuthorityError",
+    "ModeledAdvanceError",
+    "ModeledAdvanceRecord",
+    "ModeledAdvanceService",
     "FeedbackRecord",
     "FeedbackService",
     "ASSESSOR_PROMPT_VERSION",

@@ -10,7 +10,13 @@ from typing import Any
 from . import __version__
 from .chat import ChatSession
 from .demo import DemoError, run_phase_one_gate
-from .development import FeedbackService, IdentityReviewService, QuarantineService
+from .development import (
+    FeedbackService,
+    IdentityReviewService,
+    ModeledAdvanceError,
+    ModeledAdvanceService,
+    QuarantineService,
+)
 from .development.recovery import rebuild_learner, replay_learner, verify_replay
 from .experiments.cli import add_parser as add_experiment_parser
 from .experiments.cli import dispatch as dispatch_experiment
@@ -121,7 +127,7 @@ def main(argv: list[str] | None = None) -> int:
     recover = ssub.add_parser("recover")
     recover.add_argument("id")
     migrate = ssub.add_parser("migrate")
-    migrate.add_argument("--to", type=int, choices=(3, 4, 5, 6, 7, 8, 9), required=True)
+    migrate.add_argument("--to", type=int, choices=(3, 4, 5, 6, 7, 8, 9, 10), required=True)
     migrate.add_argument("--backup", type=Path, required=True)
     inspect_cmd = sub.add_parser("inspect")
     inspect_sub = inspect_cmd.add_subparsers(dest="inspect_action", required=True)
@@ -187,6 +193,7 @@ def main(argv: list[str] | None = None) -> int:
     ladvance = lsub.add_parser("advance")
     ladvance.add_argument("--context", required=True)
     ladvance.add_argument("--steps", required=True, type=int)
+    ladvance.add_argument("--operation-id")
     feedback = sub.add_parser("feedback")
     fsub = feedback.add_subparsers(dest="feedback_action", required=True)
     fpropose = fsub.add_parser("propose")
@@ -332,12 +339,24 @@ def main(argv: list[str] | None = None) -> int:
                     print(json.dumps(result, indent=2, sort_keys=True))
                     return 0 if result["matches_materialized"] else 1
                 if args.learner_action == "rebuild":
-                    result = rebuild_learner(store, reason=args.reason)
-                    print(json.dumps(result, indent=2, sort_keys=True))
+                    rebuild_result = rebuild_learner(store, reason=args.reason)
+                    print(json.dumps(rebuild_result, indent=2, sort_keys=True))
                     return 0
-                raise SystemExit(
-                    "learner advance requires the Phase Two authority service"
-                )
+                if args.learner_action == "advance":
+                    current = store.current()
+                    try:
+                        advance_result = ModeledAdvanceService(
+                            store, str(current["active_instance_id"])
+                        ).advance(
+                            args.context,
+                            args.steps,
+                            operation_id=args.operation_id,
+                        )
+                    except ModeledAdvanceError as exc:
+                        raise SystemExit(str(exc)) from exc
+                    print(json.dumps(advance_result.to_dict(), indent=2, sort_keys=True))
+                    return 0
+                raise SystemExit("unknown learner action")
         if args.command == "feedback":
             with SQLiteStore(args.store) as store:
                 current = store.current()
