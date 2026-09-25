@@ -111,9 +111,9 @@ def _trace(store: SQLiteStore, operation_id: str) -> list[dict[str, Any]]:
         "u.before_json,u.after_json,v.last_consolidation_opportunity "
         "FROM development_observations o "
         "LEFT JOIN learner_updates u ON u.operation_id=o.operation_id "
-        "AND u.edge_key=o.target_key AND u.context=o.context "
+        "AND u.edge_key=o.edge_key AND u.context=o.context "
         "LEFT JOIN learner_values v ON v.update_id=u.update_id "
-        "WHERE o.operation_id=? ORDER BY o.target_key,o.context",
+        "WHERE o.operation_id=? ORDER BY o.edge_key,o.context",
         (operation_id,),
     ).fetchall()
     result: list[dict[str, Any]] = []
