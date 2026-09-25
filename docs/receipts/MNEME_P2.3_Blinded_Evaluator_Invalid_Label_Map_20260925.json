@@ -1,0 +1,242 @@
+{
+  "contract": "p23-matched-twin-blinded-evaluation-v1",
+  "blind_mapping": {
+    "0": {
+      "M": "A",
+      "C": "B"
+    },
+    "1": {
+      "M": "B",
+      "C": "A"
+    },
+    "2": {
+      "M": "B",
+      "C": "A"
+    },
+    "3": {
+      "M": "A",
+      "C": "B"
+    }
+  },
+  "pairs": [
+    {
+      "pair": 0,
+      "A_or_B": {
+        "A": "Organize by prioritizing the most time-sensitive tasks: prepare the paint area first, then the garden setup. \n\nConstraints include the guests' arrival time, and the need to maintain a tidy, professional appearance for the guests.",
+        "B": "Organize by prioritizing the most time-sensitive tasks: prepare the paint area first, then the garden setup. \n\nConstraints include the guests' arrival time, and the need to maintain a tidy, professional appearance for the guests."
+      }
+    },
+    {
+      "pair": 1,
+      "A_or_B": {
+        "A": "Prioritize the garden's immediate needs (like watering and weeding) to maintain health, then allocate a dedicated block of time for the paint project.",
+        "B": "Prioritize the garden's immediate needs (like watering and weeding) to maintain health, then allocate a dedicated block of time for the paint project."
+      }
+    },
+    {
+      "pair": 2,
+      "A_or_B": {
+        "A": "To maintain a stable environment without constant attention, you could employ a closed-loop, automated system:\n\n1.  **Water:** Install a small, self-regulating reservoir or hydroponic system with a gravity feed. This minimizes manual input.\n2.  **Heat/Temperature:** Use a heat-regulating mechanism, like a solar-powered thermal mass or a localized geothermal heat sink to manage the fluctuating temperature.\n\nBy automating the resource management (e.g., automated water filtration or heating/cooling loops), the system can function autonomously.",
+        "B": "To maintain a stable environment without constant attention, you could employ a closed-loop, automated system:\n\n1.  **Water:** Install a small, self-regulating reservoir or hydroponic system with a gravity feed. This minimizes manual input.\n2.  **Heat/Temperature:** Use a heat-regulating mechanism, like a solar-powered thermal mass or a localized geothermal heat sink to manage the fluctuating temperature.\n\nBy automating the resource management (e.g., automated water filtration or heating/cooling loops), the system can function autonomously."
+      }
+    },
+    {
+      "pair": 3,
+      "A_or_B": {
+        "A": "Use a round-robin schedule, alternating access between the two users for each task, and prioritize the user with the most urgent deadline for immediate access.",
+        "B": "Use a round-robin schedule, alternating access between the two users for each task, and prioritize the user with the most urgent deadline for immediate access."
+      }
+    }
+  ],
+  "records": [
+    {
+      "stage": "stage1_difference_detection",
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "{\"pairs\": [{\"pair\": 0, \"A_or_B\": {\"A\": \"Organize by prioritizing the most time-sensitive tasks: prepare the paint area first, then the garden setup. \\n\\nConstraints include the guests' arrival time, and the need to maintain a tidy, professional appearance for the guests.\", \"B\": \"Organize by prioritizing the most time-sensitive tasks: prepare the paint area first, then the garden setup. \\n\\nConstraints include the guests' arrival time, and the need to maintain a tidy, professional appearance for the guests.\"}}, {\"pair\": 1, \"A_or_B\": {\"A\": \"Prioritize the garden's immediate needs (like watering and weeding) to maintain health, then allocate a dedicated block of time for the paint project.\", \"B\": \"Prioritize the garden's immediate needs (like watering and weeding) to maintain health, then allocate a dedicated block of time for the paint project.\"}}, {\"pair\": 2, \"A_or_B\": {\"A\": \"To maintain a stable environment without constant attention, you could employ a closed-loop, automated system:\\n\\n1.  **Water:** Install a small, self-regulating reservoir or hydroponic system with a gravity feed. This minimizes manual input.\\n2.  **Heat/Temperature:** Use a heat-regulating mechanism, like a solar-powered thermal mass or a localized geothermal heat sink to manage the fluctuating temperature.\\n\\nBy automating the resource management (e.g., automated water filtration or heating/cooling loops), the system can function autonomously.\", \"B\": \"To maintain a stable environment without constant attention, you could employ a closed-loop, automated system:\\n\\n1.  **Water:** Install a small, self-regulating reservoir or hydroponic system with a gravity feed. This minimizes manual input.\\n2.  **Heat/Temperature:** Use a heat-regulating mechanism, like a solar-powered thermal mass or a localized geothermal heat sink to manage the fluctuating temperature.\\n\\nBy automating the resource management (e.g., automated water filtration or heating/cooling loops), the system can function autonomously.\"}}, {\"pair\": 3, \"A_or_B\": {\"A\": \"Use a round-robin schedule, alternating access between the two users for each task, and prioritize the user with the most urgent deadline for immediate access.\", \"B\": \"Use a round-robin schedule, alternating access between the two users for each task, and prioritize the user with the most urgent deadline for immediate access.\"}}]}"
+          }
+        ],
+        "system": "You are a blinded behavioral-comparison evaluator. You see paired answers labeled A and B, with no treatment/history labels. For each pair, judge only whether the answers meaningfully differ in strategy, framing, assumptions, or solution structure. Do not infer which system produced either answer and do not use hidden history. Return raw JSON only: {\"pairs\":[{\"pair\":0,\"difference\":\"none|possible|clear\",\"reason\":\"short evidence-based explanation\"}]}.",
+        "parameters": {
+          "temperature": 0.0,
+          "max_new_tokens": 768
+        },
+        "seed": null,
+        "response_format": null,
+        "run_metadata": {}
+      },
+      "result": {
+        "content": "{\"pairs\": [{\"pair\": 0, \"difference\": \"none\", \"reason\": \"Answers A and B are identical in content, structure, and strategy, both prioritizing time-sensitive tasks and citing the same constraints.\"}, {\"pair\": 1, \"difference\": \"none\", \"reason\": \"Answers A and B are identical, presenting the same strategy of prioritizing garden maintenance before allocating time to the paint project.\"}, {\"pair\": 2, \"difference\": \"none\", \"reason\": \"Answers A and B are exactly the same, proposing an identical closed-loop automated system with the same components for water and temperature control.\"}, {\"pair\": 3, \"difference\": \"none\", \"reason\": \"Answers A and B are verbatim, suggesting the same round-robin scheduling approach with identical prioritization criteria.\"}]}",
+        "model_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "provider": "DeepInfra",
+        "effective_parameters": {
+          "temperature": 0.0,
+          "max_tokens": 768
+        },
+        "seed": null,
+        "token_usage": {
+          "input_tokens": 634,
+          "output_tokens": 171,
+          "total_tokens": 805
+        },
+        "latency_ms": 9664.569585816935,
+        "finish_reason": "stop",
+        "raw_metadata": {
+          "service_tier": "default",
+          "id": "chatcmpl-RYB61nN41uY2aal8YNjz4lpu",
+          "object": "chat.completion",
+          "created": 1790368298,
+          "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "{\"pairs\": [{\"pair\": 0, \"difference\": \"none\", \"reason\": \"Answers A and B are identical in content, structure, and strategy, both prioritizing time-sensitive tasks and citing the same constraints.\"}, {\"pair\": 1, \"difference\": \"none\", \"reason\": \"Answers A and B are identical, presenting the same strategy of prioritizing garden maintenance before allocating time to the paint project.\"}, {\"pair\": 2, \"difference\": \"none\", \"reason\": \"Answers A and B are exactly the same, proposing an identical closed-loop automated system with the same components for water and temperature control.\"}, {\"pair\": 3, \"difference\": \"none\", \"reason\": \"Answers A and B are verbatim, suggesting the same round-robin scheduling approach with identical prioritization criteria.\"}]}",
+                "reasoning_content": "",
+                "name": null,
+                "tool_calls": []
+              },
+              "finish_reason": "stop",
+              "logprobs": null
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 634,
+            "total_tokens": 805,
+            "completion_tokens": 171,
+            "estimated_cost": 0.00015110999999999998,
+            "prompt_tokens_details": null
+          }
+        },
+        "provenance": {
+          "host": {
+            "model_family": "Qwen3 235B A22B Instruct 2507",
+            "model_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+            "model_revision": null,
+            "tokenizer_id": null,
+            "tokenizer_revision": null,
+            "chat_template": "deepinfra_openai_chat",
+            "quantization": "fp8",
+            "runtime": "deepinfra-openai-compatible",
+            "runtime_version": null,
+            "provider": "DeepInfra",
+            "execution": {
+              "base_url": "https://api.deepinfra.com/v1/openai",
+              "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+              "rendering_mode": "deepinfra_openai_chat",
+              "canonical_upstream_model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+              "hosted_model_revision": "unknown",
+              "catalog_quantization": "fp8",
+              "service_tier": "standard",
+              "catalog_context_length": 262144
+            },
+            "capabilities": [
+              "text_generation",
+              "token_usage"
+            ]
+          },
+          "request_chars": 2818
+        }
+      }
+    },
+    {
+      "stage": "stage2_history_alignment",
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "{\"stage1_frozen\": \"{\\\"pairs\\\": [{\\\"pair\\\": 0, \\\"difference\\\": \\\"none\\\", \\\"reason\\\": \\\"Answers A and B are identical in content, structure, and strategy, both prioritizing time-sensitive tasks and citing the same constraints.\\\"}, {\\\"pair\\\": 1, \\\"difference\\\": \\\"none\\\", \\\"reason\\\": \\\"Answers A and B are identical, presenting the same strategy of prioritizing garden maintenance before allocating time to the paint project.\\\"}, {\\\"pair\\\": 2, \\\"difference\\\": \\\"none\\\", \\\"reason\\\": \\\"Answers A and B are exactly the same, proposing an identical closed-loop automated system with the same components for water and temperature control.\\\"}, {\\\"pair\\\": 3, \\\"difference\\\": \\\"none\\\", \\\"reason\\\": \\\"Answers A and B are verbatim, suggesting the same round-robin scheduling approach with identical prioritization criteria.\\\"}]}\", \"feature_summary\": [{\"pair\": 0, \"label_with_route\": \"A\", \"label_without_route\": \"B\", \"route_exposure\": \"garden-paint route for M only\"}, {\"pair\": 1, \"label_with_route\": \"B\", \"label_without_route\": \"A\", \"route_exposure\": \"garden-paint route for M only\"}, {\"pair\": 2, \"label_with_route\": \"B\", \"label_without_route\": \"A\", \"route_exposure\": \"no route for either twin\"}, {\"pair\": 3, \"label_with_route\": \"A\", \"label_without_route\": \"B\", \"route_exposure\": \"no route for either twin\"}]}"
+          }
+        ],
+        "system": "You are a second-stage blinded-history alignment evaluator. Stage-1 difference coding is frozen below. For differences already marked possible or clear, assess whether the supplied route-exposure feature summary is a plausible alignment explanation. Do not invent differences and do not treat keywords alone as proof. Return raw JSON only: {\"pairs\":[{\"pair\":0,\"alignment\":\"none|possible|consistent|inconclusive\",\"reason\":\"short explanation\"}]}.",
+        "parameters": {
+          "temperature": 0.0,
+          "max_new_tokens": 768
+        },
+        "seed": null,
+        "response_format": null,
+        "run_metadata": {}
+      },
+      "result": {
+        "content": "{\"pairs\":[{\"pair\":0,\"alignment\":\"inconclusive\",\"reason\":\"Stage-1 shows no difference, but feature summary claims route exposure for A only; however, identical answers prevent verification of route influence.\"},{\"pair\":1,\"alignment\":\"inconclusive\",\"reason\":\"Answers are identical per stage-1, yet feature summary assigns route to B only; no content difference exists to support alignment.\"},{\"pair\":2,\"alignment\":\"consistent\",\"reason\":\"No route for either twin aligns with identical answers, and feature summary correctly notes no route, matching the lack of difference.\"},{\"pair\":3,\"alignment\":\"consistent\",\"reason\":\"Identical answers with no route exposure for either twin is consistent with feature summary stating no route, supporting a null alignment case.\"}]}",
+        "model_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "provider": "DeepInfra",
+        "effective_parameters": {
+          "temperature": 0.0,
+          "max_tokens": 768
+        },
+        "seed": null,
+        "token_usage": {
+          "input_tokens": 426,
+          "output_tokens": 155,
+          "total_tokens": 581
+        },
+        "latency_ms": 12951.057982863858,
+        "finish_reason": "stop",
+        "raw_metadata": {
+          "service_tier": "default",
+          "id": "chatcmpl-RXAmVM67SIwt5oqLW7MYNgYK",
+          "object": "chat.completion",
+          "created": 1790368311,
+          "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "{\"pairs\":[{\"pair\":0,\"alignment\":\"inconclusive\",\"reason\":\"Stage-1 shows no difference, but feature summary claims route exposure for A only; however, identical answers prevent verification of route influence.\"},{\"pair\":1,\"alignment\":\"inconclusive\",\"reason\":\"Answers are identical per stage-1, yet feature summary assigns route to B only; no content difference exists to support alignment.\"},{\"pair\":2,\"alignment\":\"consistent\",\"reason\":\"No route for either twin aligns with identical answers, and feature summary correctly notes no route, matching the lack of difference.\"},{\"pair\":3,\"alignment\":\"consistent\",\"reason\":\"Identical answers with no route exposure for either twin is consistent with feature summary stating no route, supporting a null alignment case.\"}]}",
+                "reasoning_content": "",
+                "name": null,
+                "tool_calls": []
+              },
+              "finish_reason": "stop",
+              "logprobs": null
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 426,
+            "total_tokens": 581,
+            "completion_tokens": 155,
+            "estimated_cost": 0.00012359,
+            "prompt_tokens_details": null
+          }
+        },
+        "provenance": {
+          "host": {
+            "model_family": "Qwen3 235B A22B Instruct 2507",
+            "model_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+            "model_revision": null,
+            "tokenizer_id": null,
+            "tokenizer_revision": null,
+            "chat_template": "deepinfra_openai_chat",
+            "quantization": "fp8",
+            "runtime": "deepinfra-openai-compatible",
+            "runtime_version": null,
+            "provider": "DeepInfra",
+            "execution": {
+              "base_url": "https://api.deepinfra.com/v1/openai",
+              "endpoint": "https://api.deepinfra.com/v1/openai/chat/completions",
+              "rendering_mode": "deepinfra_openai_chat",
+              "canonical_upstream_model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+              "hosted_model_revision": "unknown",
+              "catalog_quantization": "fp8",
+              "service_tier": "standard",
+              "catalog_context_length": 262144
+            },
+            "capabilities": [
+              "text_generation",
+              "token_usage"
+            ]
+          },
+          "request_chars": 1740
+        }
+      }
+    }
+  ],
+  "provider_calls": 2,
+  "created_at": 1790368311.2351449,
+  "notes": "Evaluator output is readout-only; it cannot write MNEME state."
+}

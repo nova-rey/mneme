@@ -1115,3 +1115,5 @@ no provider calls were made in this commit.
 - 2026-09-25: P2.3 local readout v2 audit. The shared 256-token reasoning-off schedule produced seven usable responses; M0 still terminated at the output bound. The raw result is preserved and the final fixed v3 schedule raises only the matched local allowance to 384 tokens.
 
 - 2026-09-25: P2.3 local matched readout v3 completed. Eight local MSI Gemma calls ran under the frozen M/C schedule with reasoning off and a matched 384-token allowance. All returned non-empty text; MNEME selected the credited garden→paint-project route for the first two treatment probes only, while controls and unrelated probes selected none. Raw requests/results are published; no learner or developmental writes occurred.
+
+- 2026-09-25: P2.3 blinded-evaluator harness correction. The first two evaluator calls were invalid because both blind labels were populated with control responses; their raw requests/results remain preserved and were not used. The mapping is corrected offline before rerunning the same fixed local responses.
