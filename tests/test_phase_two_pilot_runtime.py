@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 from mneme.contracts import GenerationRequest, GenerationResult, TokenUsage
+from mneme.development import QuarantineService
 from mneme.experiments.artifacts import ArtifactStore
 from mneme.experiments.pilot import PilotRun, host_role_binding
 from mneme.experiments.pilot_runtime import PilotRuntime, RuntimeSubject
@@ -463,6 +464,68 @@ def test_evaluation_requires_the_bound_private_snapshot(tmp_path: Path) -> None:
         assert "private snapshot" in str(exc)
     else:
         raise AssertionError("different checkpoint path was accepted")
+    assert host.calls == 0
+
+
+def test_evaluation_rejects_independent_valid_subject_checkpoint_before_dispatch(
+    tmp_path: Path,
+) -> None:
+    host = CountingHost()
+    subject = _subject(tmp_path / "subject", host)
+    other_store = SQLiteStore(tmp_path / "other" / "subject.sqlite3")
+    other_store.create_root(
+        permissions=StoragePermissions(store=True, export=True, interpret=True, learn=True)
+    )
+    independent = tmp_path / "other" / "checkpoint.sqlite3"
+    create_checkpoint(other_store, independent, "independent-checkpoint")
+    pilot = _pilot(tmp_path / "pilot", calls=1)
+    runtime = PilotRuntime(pilot, {0: subject})
+
+    try:
+        runtime.evaluate(
+            slot=0,
+            call_id="evaluation-independent-checkpoint",
+            coordinate={"subject": 0, "probe": 0, "repetition": 0},
+            checkpoint=independent,
+            private_snapshot=independent,
+            host=host,
+            messages=({"role": "user", "content": "held out"},),
+            max_output_tokens=20,
+        )
+    except Exception as exc:
+        assert "not bound to the subject" in str(exc)
+    else:
+        raise AssertionError("independent valid checkpoint was accepted")
+    assert host.calls == 0
+    other_store.close()
+
+
+def test_evaluation_rejects_authority_drift_before_dispatch(tmp_path: Path) -> None:
+    host = CountingHost()
+    subject = _subject(tmp_path, host)
+    checkpoint = tmp_path / "checkpoint.sqlite3"
+    create_checkpoint(subject.store, checkpoint, "checkpoint-before-authority-change")
+    QuarantineService(subject.store, subject.instance_id).add(
+        "route", "route-under-review", "offline authority drift fixture"
+    )
+    pilot = _pilot(tmp_path / "pilot", calls=1)
+    runtime = PilotRuntime(pilot, {0: subject})
+
+    try:
+        runtime.evaluate(
+            slot=0,
+            call_id="evaluation-authority-drift",
+            coordinate={"subject": 0, "probe": 0, "repetition": 0},
+            checkpoint=checkpoint,
+            private_snapshot=checkpoint,
+            host=host,
+            messages=({"role": "user", "content": "held out"},),
+            max_output_tokens=20,
+        )
+    except Exception as exc:
+        assert "authority has drifted" in str(exc)
+    else:
+        raise AssertionError("authority-drifted checkpoint was accepted")
     assert host.calls == 0
 
 

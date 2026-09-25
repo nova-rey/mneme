@@ -992,3 +992,7 @@
 ## 2026-09-25 P2 Interloper executive-state validation
 
 - The executive-state correction passed the complete provider-free gate: 403 pytest tests, Ruff, strict mypy, wheel/fresh-install import smoke, and queue validation. GitHub CI run `36079256665` passed for `a48937a`; no provider call was made and the next live run remains authorization-gated.
+
+## 2026-09-25 P2 offline audit and Interloper readiness checkpoint
+
+- Preserved the Interloper executive-state correction and Lentil Incident regression while publishing the shared Phase Two offline audit corrections for learner admission, artifact authentication, evaluation binding, multi-edge assessment, and restart idempotency. Full pytest (414), Ruff, strict mypy, wheel/fresh-install smoke, and queue validation passed with no provider calls. The contingent package is now waiting on explicit authorization for the next live experiment; historical conversations and failed evidence remain unchanged.

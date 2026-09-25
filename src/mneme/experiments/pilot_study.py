@@ -26,7 +26,7 @@ from ..development.assessment import (
     assessor_generation_request,
     validate_and_resolve_assessor_result,
 )
-from ..development.learner import DevelopmentalLearner, Observation
+from ..development.learner import ConsequenceAssessment, DevelopmentalLearner, Observation
 from ..host import Host
 from ..memory.publication import PublicationError
 from .evaluation import EvaluationError
@@ -270,6 +270,7 @@ class AssessmentPlan:
     role: str = "assessor"
     semantic_request: AssessorRequest | None = None
     excluded_reason: str | None = None
+    consequences: tuple[ConsequenceAssessment, ...] = ()
 
 
 class ProductionAssessmentAdapter:
@@ -288,11 +289,16 @@ class ProductionAssessmentAdapter:
         *,
         memory_exposure: Mapping[int, tuple[Mapping[str, Any], ...]] | None = None,
         replay_ancestry: Mapping[int, tuple[Mapping[str, Any], ...]] | None = None,
+        contextual_consequences: Mapping[
+            tuple[int, int], tuple[ConsequenceAssessment, ...]
+        ]
+        | None = None,
     ) -> None:
         self.runtime = runtime
         self.assessor_host = assessor_host
         self.memory_exposure = dict(memory_exposure or {})
         self.replay_ancestry = dict(replay_ancestry or {})
+        self.contextual_consequences = dict(contextual_consequences or {})
 
     @staticmethod
     def _sources(
@@ -380,21 +386,37 @@ class ProductionAssessmentAdapter:
                 publish_excluded,
                 excluded_reason=reason,
             )
-        edge = edges[0]
-        relation = {
-            "from": str(edge["from"]),
-            "to": str(edge["to"]),
-            "relation": str(edge["relationship"]),
-        }
+        relations = [
+            {
+                "from": str(edge["from"]),
+                "to": str(edge["to"]),
+                "relation": str(edge["relationship"]),
+            }
+            for edge in edges
+        ]
+
+        def edge_context(edge: Mapping[str, Any]) -> str:
+            value = edge.get("context")
+            if isinstance(value, str) and value:
+                return value
+            if isinstance(value, (tuple, list)) and value:
+                return str(value[0])
+            return "general"
+
+        # The assessor contract has one top-level candidate for compatibility
+        # with qualification, while every bounded residue edge is represented
+        # by its own complete monitor below.  Sorting the residue above makes
+        # monitor IDs and provider payloads independent of insertion order.
+        relation = relations[0]
         sources, current_input, replay = self._sources(self.runtime, slot, extraction.episode_id)
         required = tuple(source.slot for source in sources)
         request = AssessorRequest(
             candidate=relation,
             sources=sources,
-            monitors=(
+            monitors=tuple(
                 AssessorMonitor(
-                    "candidate",
-                    relation,
+                    "candidate" if len(edges) == 1 else f"candidate:{edge['key']}",
+                    edge_relation,
                     required,
                     required,
                     # Correspondence is a semantic antecedent question.  The
@@ -403,7 +425,9 @@ class ProductionAssessmentAdapter:
                     # required source slot must be declared here.  Runtime
                     # roles still decide provenance deterministically.
                     required,
-                ),
+                    context=edge_context(edge),
+                )
+                for edge, edge_relation in zip(edges, relations)
             ),
             memory_exposure=self.memory_exposure.get(slot, ()),
             replay_ancestry=tuple((*replay, *self.replay_ancestry.get(slot, ()))),
@@ -411,6 +435,7 @@ class ProductionAssessmentAdapter:
             source_purpose_mask=("external_evidence", "model_output"),
         )
         call_id = f"assessment-s{slot}-e{episode.ordinal}"
+        consequences = self.contextual_consequences.get((slot, episode.ordinal), ())
 
         def validate(content: str) -> tuple[ResolvedAssessment, ...]:
             decoded = json.loads(content)
@@ -425,8 +450,17 @@ class ProductionAssessmentAdapter:
                 raise PilotStudyError("assessor adapter received an invalid resolved result")
             resolved = tuple(value)
             source_by_slot = {source.slot: source for source in request.sources}
+            edge_by_monitor = {
+                "candidate" if len(edges) == 1 else f"candidate:{edge['key']}": edge
+                for edge in edges
+            }
             observations: list[Observation] = []
             for item in resolved:
+                edge = edge_by_monitor.get(item.monitor_id)
+                if edge is None:
+                    raise PilotStudyError(
+                        f"assessor result contains an unknown edge monitor: {item.monitor_id}"
+                    )
                 evidence_slot = item.evidence.source_slot if item.evidence else None
                 evidence_source = source_by_slot.get(evidence_slot) if evidence_slot else None
                 source_role = (
@@ -435,12 +469,24 @@ class ProductionAssessmentAdapter:
                     else "external"
                 )
                 groups = item.provenance.provenance_group_keys
+                dependence = item.provenance.dependence
+                # Induced credit is valid only when the corresponding
+                # memory/replay payload is recorded as an actual source
+                # ancestry.  Runtime provenance is authoritative; an
+                # assessor label cannot turn a resemblance into exposure.
+                actual_exposure = dependence in {"exposure_linked", "replay_linked"} and bool(
+                    item.provenance.ancestry
+                )
                 observations.append(
                     Observation(
                         target_key=str(edge["key"]),
-                        context=request.monitors[0].context,
+                        context=next(
+                            monitor.context
+                            for monitor in request.monitors
+                            if monitor.monitor_id == item.monitor_id
+                        ),
                         source_role=source_role,
-                        dependence=item.provenance.dependence,
+                        dependence=dependence,
                         status=item.status,
                         relation_support=item.relation_support,
                         expression_status=item.expression_status,
@@ -450,7 +496,7 @@ class ProductionAssessmentAdapter:
                         occurrence_key=f"{call_id}:{item.monitor_id}",
                         covered=bool(item.coverage.get("complete")),
                         relevant=True,
-                        actual_exposure=False,
+                        actual_exposure=actual_exposure,
                         eligible=item.provenance.credit_eligible,
                         observation_id=f"{call_id}:{item.monitor_id}",
                     )
@@ -460,6 +506,7 @@ class ProductionAssessmentAdapter:
                 operation_id=extraction.operation_id,
                 residue=residue,
                 observations=tuple(observations),
+                consequences=consequences,
                 learner=DevelopmentalLearner(),
                 development_operation_id=development.operation.operation_id,
                 assessor_version=request.assessor_version,
@@ -470,6 +517,8 @@ class ProductionAssessmentAdapter:
                 {
                     "request": request.to_dict(),
                     "resolved": [item.to_dict() for item in resolved],
+                    "observations": [item.to_dict() for item in observations],
+                    "consequences": [item.to_dict() for item in consequences],
                     "publication": {
                         "operation_id": receipt.operation_id,
                         "lineage_revision": receipt.lineage_revision,
@@ -488,6 +537,7 @@ class ProductionAssessmentAdapter:
             validate,
             publish,
             semantic_request=request,
+            consequences=consequences,
         )
 
 
@@ -661,8 +711,8 @@ class PilotStudy:
         # transitions, so that such a revisit cannot inflate the study
         # completion counter.
         completed_development = (
-            len(completed_development_ids)
-            if completed_development_ids
+            len(accepted_development_ids)
+            if accepted_development_ids
             else persisted_development
         )
         valid_extractions = int(progress.get("extractions_valid", 0))
@@ -686,9 +736,8 @@ class PilotStudy:
                         request=request,
                         max_output_tokens=limits["development-response"],
                     )
-                    completed_development_ids.add(development_id)
-                    completed_development = len(completed_development_ids)
                     accepted_development_ids.add(development_id)
+                    completed_development = len(accepted_development_ids)
                     # Persist the accepted response before extraction starts.
                     # If extraction or assessment later fails, restart can
                     # reuse the accepted episode without redispatching it and

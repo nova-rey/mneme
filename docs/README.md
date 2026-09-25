@@ -102,6 +102,9 @@ The documents are preserved in their supplied form and are intentionally not mer
   records the prospective contract revision, private motivations, two-pair
   context bound, observable attractor detector, and offline Lentil Incident
   regression. A new live run remains explicitly unauthorized.
+  The [Phase Two offline audit and Interloper readiness receipt](receipts/MNEME_P2_Offline_Audit_Remediation_Receipt_20260925.md)
+  records the provider-free integrity corrections and the explicit
+  authorization boundary for the next live contingent run.
   [the offline P2.3 assessor/pilot boundary receipt](receipts/MNEME_P2.3_Offline_Assessor_Pilot_Boundary_Receipt.md);
   the fixed qualification failure is recorded in [the qualification failure receipt](receipts/MNEME_P2.3_Assessor_Qualification_Failure_Receipt.md);
   the reviewed prompt-contract remediation and its offline validation are recorded in

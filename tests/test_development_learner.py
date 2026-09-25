@@ -149,6 +149,60 @@ def test_induced_credit_requires_actual_exposure_but_retains_audit_contribution(
     assert result.state.edge("edge-a").accessibility == 0
 
 
+def test_ineligible_observation_retains_audit_row_without_credit() -> None:
+    result = apply_transition(
+        LearnerState.empty(),
+        TransitionInput(
+            "ineligible-1",
+            observations=(
+                Observation(
+                    "edge-a",
+                    eligible=False,
+                    observation_id="ineligible-observation",
+                ),
+            ),
+        ),
+    )
+    contribution = result.contributions[0]
+    assert contribution.proposed == 80_000
+    assert contribution.awarded == 0
+    assert contribution.reason == "ineligible_observation"
+    assert result.state.edge("edge-a").accessibility == 0
+
+
+@pytest.mark.parametrize(
+    ("source_role", "dependence"),
+    (
+        ("external", "exposure_linked"),
+        ("external", "replay_linked"),
+        ("external", "no_identified_link"),
+        ("model_output", "external_supported"),
+    ),
+)
+def test_impossible_source_dependence_combination_cannot_earn_credit(
+    source_role: str, dependence: str
+) -> None:
+    result = apply_transition(
+        LearnerState.empty(),
+        TransitionInput(
+            f"invalid-{source_role}-{dependence}",
+            observations=(
+                Observation(
+                    "edge-a",
+                    source_role=source_role,
+                    dependence=dependence,
+                    observation_id="invalid-provenance",
+                ),
+            ),
+        ),
+    )
+    contribution = result.contributions[0]
+    assert contribution.proposed > 0
+    assert contribution.awarded == 0
+    assert contribution.reason == "invalid_source_dependence"
+    assert result.state.edge("edge-a").accessibility == 0
+
+
 def test_presence_cap_is_not_absence_and_unknown_does_not_change_state() -> None:
     learner = DevelopmentalLearner()
     state = {("edge-a", "general"): EdgeState(accessibility=FIXED_SCALE)}

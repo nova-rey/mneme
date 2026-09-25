@@ -63,8 +63,16 @@
       "kind": "other",
       "receipt": "docs/receipts/MNEME_P2_Contingent_Minimal_Relationship_Live_Continuation_Receipt_20260924.md",
       "reference": "Scientific review cleared the residue-v5 stop; relationships-v1 offline correction passed and the preserved interactive branch resumed through turn 23 with historical evidence unchanged.",
-      "status": "RESOLVED",
-      "resolved_at": "2026-09-24T23:49:11Z"
+      "resolved_at": "2026-09-24T23:49:11Z",
+      "status": "RESOLVED"
+    },
+    "review:p2-contingent-live-authorization": {
+      "created_at": "2026-09-25T01:08:52.466977Z",
+      "kind": "authority",
+      "receipt": null,
+      "reference": "Explicit user authorization is required before the next live contingent-conversation experiment; offline correction is ready.",
+      "resolved_at": null,
+      "status": "UNRESOLVED"
     },
     "review:p2.3-budget-after-historical-calls": {
       "created_at": "2026-09-21T01:39:49.011154Z",
@@ -977,6 +985,16 @@
             "recorded_at": "2026-09-20T16:38:02.113193Z",
             "status": "PASS"
           },
+          "p21-learner-traces": {
+            "receipt": "docs/receipts/MNEME_P2.1_Learner_Traces_Receipt.md; pure learner, replay, exposure, dependence, and route tests",
+            "recorded_at": "2026-09-24T22:45:00Z",
+            "status": "PASS"
+          },
+          "p21-own-output": {
+            "receipt": "docs/receipts/MNEME_P2.1_Own_Output_Receipt.md; source-purpose masks, exact evidence, echo/ancestry, and fail-closed unknown tests",
+            "recorded_at": "2026-09-24T22:45:00Z",
+            "status": "PASS"
+          },
           "p21-prerequisites": {
             "receipt": "docs/receipts/MNEME_P2.1_Prerequisites_Receipt.md; 393 pytest, Ruff, strict mypy, wheel/fresh-install CLI smoke; no provider calls",
             "recorded_at": "2026-09-24T22:45:00Z",
@@ -989,16 +1007,6 @@
           },
           "p21-publication": {
             "receipt": "docs/receipts/MNEME_P2.1_Publication_Receipt.md; atomic publication, idempotency, permissions, no-credit, and opportunity replay tests",
-            "recorded_at": "2026-09-24T22:45:00Z",
-            "status": "PASS"
-          },
-          "p21-learner-traces": {
-            "receipt": "docs/receipts/MNEME_P2.1_Learner_Traces_Receipt.md; pure learner, replay, exposure, dependence, and route tests",
-            "recorded_at": "2026-09-24T22:45:00Z",
-            "status": "PASS"
-          },
-          "p21-own-output": {
-            "receipt": "docs/receipts/MNEME_P2.1_Own_Output_Receipt.md; source-purpose masks, exact evidence, echo/ancestry, and fail-closed unknown tests",
             "recorded_at": "2026-09-24T22:45:00Z",
             "status": "PASS"
           },
@@ -1387,11 +1395,6 @@
             "recorded_at": "2026-09-24T23:20:00Z",
             "status": "COMPLETED_INADEQUATE"
           },
-          "p23-replay-artifact-correction": {
-            "receipt": "docs/receipts/MNEME_P2.3_Replay_Artifact_Verification_Correction_Receipt_20260924.md; completed r artifact tree verifies; staged schema-9 copies rebuild to exact replay; no provider calls",
-            "recorded_at": "2026-09-24T22:55:00Z",
-            "status": "PASS"
-          },
           "p23-pilot-execution": {
             "receipt": "docs/receipts/MNEME_P2.3_Pilot_Extraction_Stop_Receipt.md",
             "recorded_at": "2026-09-20T23:29:00+00:00",
@@ -1431,6 +1434,11 @@
             "receipt": "docs/receipts/MNEME_P2.3_Pilot_Recovery_V3_Failure_20260924.md/.json; i run 2 returned calls, strict extraction failure, no assessment/evaluation calls",
             "recorded_at": "2026-09-24T14:35:00Z",
             "status": "FAIL"
+          },
+          "p23-replay-artifact-correction": {
+            "receipt": "docs/receipts/MNEME_P2.3_Replay_Artifact_Verification_Correction_Receipt_20260924.md; completed r artifact tree verifies; staged schema-9 copies rebuild to exact replay; no provider calls",
+            "recorded_at": "2026-09-24T22:55:00Z",
+            "status": "PASS"
           },
           "p23-resume-counter-correction": {
             "receipt": "unique-coordinate development progress correction; focused regression; pytest=362; Ruff; strict mypy; wheel/fresh-install smoke",
@@ -1476,7 +1484,8 @@
       "created_at": "2026-09-24T00:00:00Z",
       "dependencies": [
         "review:contingent-interpretation-rate-stop",
-        "review:contingent-post-correction-interpretation-stop"
+        "review:contingent-post-correction-interpretation-stop",
+        "review:p2-contingent-live-authorization"
       ],
       "domain": "phase-two-experiment",
       "edit_boundaries": [
@@ -1515,7 +1524,8 @@
         "docs/receipts/MNEME_P2_Contingent_Minimal_Relationship_Extractor_Correction_Receipt_20260924.md",
         "docs/receipts/MNEME_P2_Contingent_Minimal_Relationship_Live_Continuation_Receipt_20260924.md",
         "docs/receipts/MNEME_P2_Contingent_Interactive_Continuation_Transcript_20260924.md",
-        "docs/receipts/MNEME_P2_Contingent_Interloper_Executive_State_Correction_Receipt_20260924.md"
+    "docs/receipts/MNEME_P2_Contingent_Interloper_Executive_State_Correction_Receipt_20260924.md",
+    "docs/receipts/MNEME_P2_Offline_Audit_Remediation_Receipt_20260925.md"
       ],
       "id": "P2-SUPPLEMENT-INTERLOPER",
       "notes": "Owner-supplied P2-SUPPLEMENT-INTERLOPER-01; stopped at interactive extraction t03 after one overbound Gemma residue and one length-terminated repair; old P2.3 remains COMPLETED_INADEQUATE. Capacity-admission correction is offline-validated: valid excess candidates are admitted deterministically within caps, item-level rejection preserves unrelated evidence, and persisted initial attempts can be revalidated after failed repair without provider calls. Historical turn-3 attempts remain unchanged; continuation is ready after push/CI. First post-correction resume made no new provider call and exposed a stale-manifest edge for an earlier empty interpretation after a later accepted episode. The bounded stale-empty skip is now offline-pending validation; relationship-bearing stale publications remain fail-closed. A second no-provider resume audit found the original extraction operation was revisited despite an accepted evidence-review recovery; the runtime now reuses the durable recovery before publication. Offline validation is complete; push/CI precedes continuation. Recovery reuse then exposed an auxiliary-record representation-only defect in the new admission validator; raw quotation form is now preserved before strict validation. Offline validation is complete; push/CI precedes continuation. After capacity correction and three no-provider resume fixes, the preserved run resumed with 7 new fixed-coordinate calls, progressed through interactive t04, and stopped at t05 after initial and one repair extraction were both unparseable JSON. Cumulative returned calls 54; no open-loop/evaluation calls followed. The failure-tolerance correction published exact conversational transcripts, reconstructed accepted history without redispatch, and isolated terminal interpretation failures as measurement_unknown / interpretation_unavailable with no developmental credit or absence inference. The preserved run resumed at t06 and made 11 new fixed-coordinate calls through t08; after 9 accepted interactive turns, 3 lacked trustworthy interpretation, triggering the declared >25% post-eight-turn measurement stop. Cumulative returned calls 65; no open-loop/evaluation calls followed. Offline validation and CI passed for the correction; a post-stop audit also made stop-rule-paused runs require explicit review before resumption. The supplement remains waiting for interpretation-rate review. The preserved transcript showed real contingency with poetic/philosophical mirroring at turns 4-8. Prospective residue-v5 now requests concise high-confidence extraction with explicit metaphor abstention; Interloper policy revision 2 preserves contingency while reducing repeated mirroring. Rich-language fixtures and receipts added; no provider call or historical turn regeneration. Rich-language correction pushed at e3a47e6; full pytest=389, Ruff, strict mypy, wheel/fresh-install smoke, and CI 36067335769 pass. No provider continuation was made because the existing 6/9 interpretation-rate stop remains active and requires review. Scientific review resolution receipt `docs/receipts/MNEME_P2_Contingent_Interpretation_Stop_Review_Resolution_20260924.md` now authorizes preserved continuation at interactive turn 9; the additive reviewed-segment accounting correction is recorded in `docs/receipts/MNEME_P2_Contingent_Reviewed_Continuation_Correction_Receipt_20260924.md`. The corrected continuation then stopped at turns 9-11 after three consecutive length-terminated extraction failures; exact transcript and stop receipt are published and a new review dependency is open. Scientific review cleared the post-correction stop. relationships-v1 was pushed at 5e14378 after 399 pytest, Ruff, strict mypy, wheel smoke, and CI 36073971468; six failed episodes were retrospectively reprocessed with distinct operations, and the preserved interactive branch resumed at turn 12 through turn 23. New continuation receipt and exact transcript are published. Open-loop/readout execution remains unfinished; package is not DONE. Prospective Interloper executive-state correction is now implemented offline under contract revision 2 / policy revision 3: fresh private environment and motivation state, two-pair context bound, observable attractor risk, and symmetry-breaking guidance. FakeHost Lentil Incident regression passes; no provider call or historical regeneration. New live run requires explicit authorization.",
@@ -1542,9 +1552,9 @@
       ],
       "scope": "Implement and execute P2-SUPPLEMENT-INTERLOPER-01 as an additive two-condition interactive versus open-loop study; preserve historical P2.3.",
       "session_ids": [],
-      "status": "READY",
+      "status": "WAITING",
       "title": "Contingent conversation interloper study",
-      "updated_at": "2026-09-25T00:06:00Z",
+      "updated_at": "2026-09-25T01:08:52.466998Z",
       "validation": {
         "required": [
           "pytest -q",
@@ -1555,17 +1565,19 @@
           "bounded study receipts"
         ],
         "results": {
-          "pytest": "403 passed offline; focused Interloper tests 16 passed",
-          "ruff": "passed",
+          "ci": "36079256665 passed for a48937a",
+          "interactive_continuation": "turns 12-23 complete",
+          "live_calls": 42,
           "mypy": "passed",
           "package_smoke": "wheel build and fresh-install import passed",
+          "pytest": "414 passed offline; focused Interloper tests 16 passed",
           "queue_validation": "valid",
-          "ci": "36079256665 passed for a48937a",
-          "live_calls": 42,
-          "interactive_continuation": "turns 12-23 complete"
+          "ruff": "passed"
         }
       },
-      "waiting_on": [],
+      "waiting_on": [
+        "review:p2-contingent-live-authorization"
+      ],
       "workstream": "phase-two"
     }
   ],
@@ -1581,5 +1593,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-24T23:49:11Z"
+  "updated_at": "2026-09-25T01:08:52.467062Z"
 }

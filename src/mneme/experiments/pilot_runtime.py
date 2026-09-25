@@ -32,6 +32,7 @@ from ..memory.interpretation import (
 )
 from ..memory.publication import InterpretationPublisher, PublicationReceipt
 from ..memory.residue import Residue
+from ..state.policy import PolicyError, PolicyService, host_ref
 from ..state.service import ContinuityError, ContinuityService, OperationReceipt
 from ..state.storage import SQLiteStore
 from .artifacts import file_digest
@@ -892,6 +893,7 @@ class PilotRuntime:
             raise EvaluationError("bound evaluation snapshot is missing")
         if checkpoint_path.resolve() != private_path.resolve():
             raise EvaluationError("evaluation checkpoint is not the subject's private snapshot")
+        self._validate_evaluation_binding(slot, subject, private_path)
         before = (
             str(subject.store.current()["active_instance_id"]),
             int(subject.store.current()["current_revision"]),
@@ -959,6 +961,98 @@ class PilotRuntime:
             },
         )
         return ProviderOutcome(call_id, payload, provider_called)
+
+    def _validate_evaluation_binding(
+        self, slot: int, subject: RuntimeSubject, checkpoint: Path
+    ) -> None:
+        """Reject a valid checkpoint that is not this subject's frozen boundary.
+
+        The caller-provided path is not sufficient evidence of subject
+        identity: another lineage can contain a valid, readable checkpoint.
+        Validate the checkpoint's immutable source descriptor and the current
+        authority before reserving an evaluation call.  If the prepared run
+        publishes a private snapshot binding, that exact artifact is also
+        required.
+        """
+
+        bindings = self.pilot.bindings
+        subjects = bindings.get("subjects")
+        if isinstance(subjects, list) and subjects:
+            selected = [
+                item for item in subjects
+                if isinstance(item, Mapping) and item.get("slot") == slot
+            ]
+            if len(selected) != 1:
+                raise EvaluationError(f"subject slot is not uniquely bound: {slot}")
+            start = selected[0].get("start")
+            checkpoint_bindings = bindings.get("checkpoints")
+            if isinstance(checkpoint_bindings, Mapping) and isinstance(start, str):
+                binding = checkpoint_bindings.get(start)
+                if isinstance(binding, Mapping):
+                    snapshot_name = binding.get("snapshot_path")
+                    if isinstance(snapshot_name, str):
+                        expected = self.pilot.run_path / "snapshots" / snapshot_name
+                        if not expected.is_file() or expected.is_symlink():
+                            raise EvaluationError("bound evaluation snapshot is missing")
+                        if checkpoint.resolve() != expected.resolve():
+                            raise EvaluationError(
+                                "evaluation checkpoint is not the subject's private snapshot"
+                            )
+
+        try:
+            policy = PolicyService(subject.store, subject.instance_id).current()
+        except PolicyError as exc:
+            raise EvaluationError(str(exc)) from exc
+        if not policy.authority_available:
+            raise EvaluationError("evaluation permission authority is unavailable")
+
+        try:
+            with FrozenEvaluationView(checkpoint) as view:
+                manifest = view.manifest()
+                current = subject.store.current()
+                checkpoint_authority = int(manifest.get("authority_revision") or 0)
+                current_authority = 0
+                current_manifest = subject.store.connection.execute(
+                    "SELECT authority_revision FROM manifests WHERE manifest_id=?",
+                    (current["current_manifest_id"],),
+                ).fetchone()
+                if current_manifest is not None:
+                    current_authority = max(
+                        current_authority, int(current_manifest[0] or 0)
+                    )
+                if current_authority > checkpoint_authority:
+                    raise EvaluationError("evaluation checkpoint authority has drifted")
+                if manifest.get("source_instance_id") != subject.instance_id:
+                    raise EvaluationError("evaluation checkpoint is not bound to the subject")
+                if int(manifest.get("source_revision", -1)) != int(
+                    current["current_revision"]
+                ) or manifest.get("manifest_id") != current["current_manifest_id"]:
+                    raise EvaluationError(
+                        "evaluation checkpoint is not the subject's current boundary"
+                    )
+                checkpoint_policy = view.permissions()
+                if not checkpoint_policy.authority_available:
+                    raise EvaluationError("checkpoint permission authority is unavailable")
+                if (
+                    checkpoint_policy.revocation_revision > 0
+                    and not checkpoint_policy.recall_allowed
+                ):
+                    raise EvaluationError("checkpoint recall permission is revoked")
+                if (
+                    checkpoint_policy.bound_host_ref is not None
+                    and not checkpoint_policy.provider_reuse_allowed
+                ):
+                    raise EvaluationError("checkpoint provider-reuse permission is revoked")
+                if (
+                    checkpoint_policy.bound_host_ref is not None
+                    and host_ref(subject.host.fingerprint().to_dict())
+                    != checkpoint_policy.bound_host_ref
+                ):
+                    raise EvaluationError("checkpoint selected host binding does not match")
+        except EvaluationError:
+            raise
+        except (OSError, ValueError, PolicyError) as exc:
+            raise EvaluationError(f"evaluation checkpoint binding is invalid: {exc}") from exc
 
 
 __all__ = [

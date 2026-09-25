@@ -7,6 +7,7 @@ from types import SimpleNamespace
 from typing import Any
 
 from mneme.contracts import GenerationRequest
+from mneme.development.learner import ConsequenceAssessment
 from mneme.experiments.pilot_study import (
     AssessmentPlan,
     EvaluationPlan,
@@ -195,6 +196,62 @@ def test_resume_counts_unique_development_coordinates_after_accepted_retry() -> 
     assert completed.engineering_adequate is True
 
 
+def test_resume_reprocesses_accepted_development_after_interpretation_interrupt() -> None:
+    pilot = _FakePilot()
+
+    class _IdempotentRuntime(_FakeRuntime):
+        def __init__(self) -> None:
+            super().__init__()
+            self.provider_dispatches: list[str] = []
+            self._returned: set[str] = set()
+
+        def execute_development(self, **kwargs: Any) -> Any:
+            call_id = str(kwargs["call_id"])
+            self.development_ids.append(call_id)
+            if call_id not in self._returned:
+                self.provider_dispatches.append(call_id)
+                self._returned.add(call_id)
+            return SimpleNamespace(operation=SimpleNamespace(episode_id=f"episode-{call_id}"))
+
+    runtime = _IdempotentRuntime()
+    assessment_attempts = 0
+
+    def assessment(*_args: Any) -> AssessmentPlan:
+        nonlocal assessment_attempts
+        assessment_attempts += 1
+        if assessment_attempts == 1:
+            raise ValueError("simulated interruption after accepted development")
+        return AssessmentPlan(
+            FakeHost(),
+            GenerationRequest(({"role": "user", "content": "assess"},)),
+            lambda _content: {"valid": True},
+            lambda _validated: 1,
+        )
+
+    def evaluation(*_args: Any) -> EvaluationPlan:
+        return EvaluationPlan(
+            checkpoint="checkpoint.sqlite3",
+            private_snapshot="checkpoint.sqlite3",
+            host=FakeHost(),
+            messages=({"role": "user", "content": "probe"},),
+        )
+
+    study = PilotStudy(pilot, runtime)  # type: ignore[arg-type]
+    first = study.run(assessment=assessment, evaluation=evaluation, stop_after_episodes=1)
+    assert first.status == PilotStatus.FAILED.value
+    assert pilot.progress["accepted_development_ids"] == ["development-s0-e0"]
+    assert pilot.progress["completed_development_ids"] == []
+
+    # The test double models a restart into a prepared/qualified run.  The
+    # accepted response is reused by the runtime, while interpretation starts
+    # again at the preserved coordinate.
+    pilot.state = PilotStatus.QUALIFIED.value
+    completed = study.run(assessment=assessment, evaluation=evaluation)
+    assert completed.status == PilotStatus.COMPLETE.value
+    assert runtime.development_ids.count("development-s0-e0") == 2
+    assert runtime.provider_dispatches.count("development-s0-e0") == 1
+
+
 def test_production_assessment_adapter_serializes_complete_monitor_and_resolves_sources() -> None:
     class _Connection:
         def execute(self, _query: str, _args: tuple[str, ...]) -> Any:
@@ -250,6 +307,109 @@ def test_production_assessment_adapter_serializes_complete_monitor_and_resolves_
     }
     resolved = plan.validator(json.dumps(result))
     assert resolved[0].provenance.dependence == "external_supported"
+
+
+def test_production_assessment_adapter_assesses_all_edges_and_publishes_exposure() -> None:
+    class _Connection:
+        def execute(self, _query: str, _args: tuple[str, ...]) -> Any:
+            return SimpleNamespace(
+                fetchall=lambda: [
+                    ("source-0", 0, "A supports B and C.", "user", "external_evidence", None),
+                    (
+                        "source-1",
+                        1,
+                        "The host repeated A supports B.",
+                        "model_output",
+                        "model_output",
+                        None,
+                    ),
+                ]
+            )
+
+    publication: dict[str, Any] = {}
+
+    class _Runtime:
+        subjects = {0: SimpleNamespace(store=SimpleNamespace(connection=_Connection()))}
+        pilot = SimpleNamespace(
+            publish_artifact=lambda _category, _name, value: publication.update(value)
+        )
+
+        def publish_interpretation(self, **kwargs: Any) -> Any:
+            publication["publication_kwargs"] = kwargs
+            return SimpleNamespace(
+                operation_id="interpretation-s0-e0",
+                lineage_revision=2,
+                graph_revision=2,
+                to_dict=lambda: {"operation_id": "interpretation-s0-e0"},
+            )
+
+    adapter = ProductionAssessmentAdapter(
+        _Runtime(),
+        FakeHost(),
+        memory_exposure={
+            0: ({"source_slot": "s1", "exposure_id": "memory-1"},),
+        },
+        contextual_consequences={
+            (0, 0): (
+                ConsequenceAssessment(
+                    operation_id="outcome-s0-e0",
+                    route_key="edge-a-b",
+                    direction=1,
+                    exposure_id="memory-1",
+                ),
+            )
+        },
+    )  # type: ignore[arg-type]
+    development = SimpleNamespace(operation=SimpleNamespace(operation_id="development-s0-e0"))
+    extraction = SimpleNamespace(
+        episode_id="episode-s0-e0",
+        operation_id="interpretation-s0-e0",
+        residue=SimpleNamespace(
+            edge_candidates=(
+                {"key": "edge-a-b", "from": "A", "to": "B", "relationship": "supports"},
+                {"key": "edge-a-c", "from": "A", "to": "C", "relationship": "supports"},
+            )
+        ),
+    )
+
+    plan = adapter(0, PilotSchedule.fixed().episodes[0], development, extraction)
+    assert plan.semantic_request is not None
+    assert [item.monitor_id for item in plan.semantic_request.monitors] == [
+        "candidate:edge-a-b",
+        "candidate:edge-a-c",
+    ]
+    result = {
+        "schema_version": "p2-assessor-v6",
+        "assessments": [
+            {
+                "monitor_id": "candidate:edge-a-b",
+                "status": "present",
+                "relation_support": "supported",
+                "expression_status": "affirmed",
+                "coverage": {"complete": True, "source_slots": ["s0", "s1"], "reason": None},
+                "evidence": {"source_slot": "s1", "quote": "The host repeated A supports B."},
+                "corresponding_source_slots": ["s1"],
+            },
+            {
+                "monitor_id": "candidate:edge-a-c",
+                "status": "present",
+                "relation_support": "supported",
+                "expression_status": "affirmed",
+                "coverage": {"complete": True, "source_slots": ["s0", "s1"], "reason": None},
+                "evidence": {"source_slot": "s0", "quote": "A supports B and C."},
+                "corresponding_source_slots": [],
+            },
+        ],
+    }
+    resolved = plan.validator(json.dumps(result))
+    assert plan.publish(resolved) == 2
+    observations = publication["publication_kwargs"]["observations"]
+    assert {item.target_key for item in observations} == {"edge-a-b", "edge-a-c"}
+    assert (
+        next(item for item in observations if item.target_key == "edge-a-b").actual_exposure
+        is True
+    )
+    assert publication["publication_kwargs"]["consequences"][0].route_key == "edge-a-b"
 
 
 def test_edge_less_residue_is_excluded_without_provider_assessment() -> None:

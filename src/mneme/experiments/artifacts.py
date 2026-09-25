@@ -490,6 +490,41 @@ class ArtifactStore:
                         ):
                             return False
 
+            # Phase Two's pilot ledger is mutable execution state, but every
+            # published record remains self-authenticating.  Verify these
+            # hashes here as well as in PilotRun so callers that inspect a
+            # run through ArtifactStore cannot accept a tampered ledger.
+            pilot = path / "pilot"
+            if pilot.exists():
+                if not pilot.is_dir() or pilot.is_symlink():
+                    return False
+                state = pilot / "state.json"
+                if state.exists():
+                    if (
+                        not state.is_file()
+                        or state.is_symlink()
+                        or not self._verify_pilot_state(
+                            self._read_json(state),
+                            manifest.get("run_id"),
+                            manifest.get("contract_sha256"),
+                        )
+                    ):
+                        return False
+                reservations = pilot / "reservations"
+                if reservations.exists():
+                    if not reservations.is_dir() or reservations.is_symlink():
+                        return False
+                    for reservation_path in reservations.iterdir():
+                        if (
+                            reservation_path.is_symlink()
+                            or not reservation_path.is_file()
+                            or reservation_path.suffix != ".json"
+                            or not self._verify_pilot_reservation(
+                                self._read_json(reservation_path), manifest.get("run_id")
+                            )
+                        ):
+                            return False
+
             allowed = {
                 "experiment.json",
                 "preflight.json",
@@ -583,6 +618,29 @@ class ArtifactStore:
             == content_digest({key: item for key, item in value.items() if key != "receipt_sha256"})
             and (run_id is None or value.get("run_id") == run_id)
             and (check_id is None or value.get("check_id") == check_id)
+        )
+
+    @staticmethod
+    def _verify_pilot_state(
+        value: Mapping[str, Any], run_id: Any = None, contract_sha256: Any = None
+    ) -> bool:
+        return (
+            value.get("schema_version") == 1
+            and value.get("run_id") == run_id
+            and value.get("contract_sha256") == contract_sha256
+            and isinstance(value.get("state_sha256"), str)
+            and value.get("state_sha256")
+            == content_digest({key: item for key, item in value.items() if key != "state_sha256"})
+        )
+
+    @staticmethod
+    def _verify_pilot_reservation(value: Mapping[str, Any], run_id: Any = None) -> bool:
+        return (
+            value.get("schema_version") == 1
+            and value.get("run_id") == run_id
+            and isinstance(value.get("receipt_sha256"), str)
+            and value.get("receipt_sha256")
+            == content_digest({key: item for key, item in value.items() if key != "receipt_sha256"})
         )
 
     @staticmethod

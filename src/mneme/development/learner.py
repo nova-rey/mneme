@@ -739,6 +739,28 @@ def _actual_exposure_allows_credit(observation: Observation) -> bool:
     return not _is_induced(dependence) or observation.actual_exposure
 
 
+def _source_dependence_allows_credit(observation: Observation) -> bool:
+    """Require a dependence category that can arise from the source role.
+
+    Provenance resolution is authoritative, but persisted observations are
+    also replayed through this pure boundary.  Keep malformed or stale rows
+    auditable while preventing an impossible external/model combination from
+    acquiring credit merely because its dependence factor is non-zero.
+    """
+
+    role = _as_role(observation.source_role)
+    dependence = _as_dependence(observation.dependence)
+    if dependence in {
+        Dependence.UNKNOWN,
+        Dependence.CONFLICT,
+        Dependence.DUPLICATE,
+    }:
+        return False
+    if role is SourceRole.EXTERNAL:
+        return dependence is Dependence.EXTERNAL_SUPPORTED
+    return dependence is not Dependence.EXTERNAL_SUPPORTED
+
+
 def _dedupe_observations(observations: Sequence[Observation]) -> tuple[Observation, ...]:
     result: dict[tuple[str, str, str, str], Observation] = {}
     for item in observations:
@@ -1191,7 +1213,13 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
                 max(0, per_operation_remaining),
                 max(0, ROLLING_CAP - rolling_used),
             )
-            if not _actual_exposure_allows_credit(item):
+            if not item.eligible:
+                allowed = 0
+                reason = "ineligible_observation"
+            elif not _source_dependence_allows_credit(item):
+                allowed = 0
+                reason = "invalid_source_dependence"
+            elif not _actual_exposure_allows_credit(item):
                 allowed = 0
                 reason = "not_actually_exposed"
             elif _is_induced(dependence):

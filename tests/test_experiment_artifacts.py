@@ -197,6 +197,54 @@ def test_payload_and_manifest_tampering_fail_verification(tmp_path: Path) -> Non
     assert store.verify_run(run.path) is False
 
 
+def test_pilot_state_tampering_fails_verification(tmp_path: Path) -> None:
+    store = ArtifactStore(tmp_path)
+    experiment, preflight, plan, bindings = _payload()
+    run = store.publish_run(
+        experiment=experiment,
+        preflight=preflight,
+        study_plan=plan,
+        bindings=bindings,
+        run_id="run-001",
+    )
+    pilot = PilotRun(store, "run-001")
+    pilot.prepare(planned_calls=3, max_output_tokens=10)
+    assert store.verify_run(run.path)
+
+    state_path = run.path / "pilot" / "state.json"
+    state = json.loads(state_path.read_text())
+    state["status"] = "COMPLETE"
+    state_path.write_text(json.dumps(state) + "\n")
+    assert store.verify_run(run.path) is False
+
+
+def test_pilot_reservation_tampering_fails_verification(tmp_path: Path) -> None:
+    store = ArtifactStore(tmp_path)
+    experiment, preflight, plan, bindings = _payload()
+    run = store.publish_run(
+        experiment=experiment,
+        preflight=preflight,
+        study_plan=plan,
+        bindings=bindings,
+        run_id="run-001",
+    )
+    pilot = PilotRun(store, "run-001")
+    pilot.prepare(planned_calls=3, max_output_tokens=10)
+    pilot.begin_qualification()
+    pilot.reserve_call(
+        call_id="q-1",
+        role="assessor-qualification",
+        coordinate={"case": "Q1"},
+        max_output_tokens=10,
+    )
+    assert store.verify_run(run.path)
+
+    reservation_path = run.path / "pilot" / "reservations" / "q-1.json"
+    reservation = json.loads(reservation_path.read_text())
+    reservation["role"] = "tampered"
+    reservation_path.write_text(json.dumps(reservation) + "\n")
+    assert store.verify_run(run.path) is False
+
 def test_publication_intent_binds_payload_digests(tmp_path: Path) -> None:
     store = ArtifactStore(tmp_path)
     experiment, preflight, plan, bindings = _payload()
