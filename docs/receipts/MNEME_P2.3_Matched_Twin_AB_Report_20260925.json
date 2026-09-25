@@ -1,0 +1,248 @@
+{
+  "contract": "p23-matched-twin-local-readout-v3",
+  "status": "POSSIBLE_DIFFERENCE",
+  "scientific_interpretation": "Exploratory possible treatment difference on two route-exposed probes; one stage-2 alignment is consistent and one is possible. This tiny readout does not establish causal developmental influence, prevalence, personality, or individuality.",
+  "experiment1": {
+    "specialist": "gliner2.5-base-v1-relations-v1",
+    "episodes_reinterpreted": 12,
+    "raw_observations": 82,
+    "forwarded_relation_observations": 10,
+    "admitted_edge_candidates": 10,
+    "external_supported_positive_edges": 1,
+    "positive_edge": "garden -> related -> paint project",
+    "consolidations": 0,
+    "historical_v5_unchanged": true
+  },
+  "experiment2": {
+    "model": "google/gemma-4-E4B-it",
+    "local_checkpoint_sha256": "7274094de2e0c2a37a386f55fc4e23061a954da5bd7a335e7dfe56f2743c277a",
+    "quantization": "UD-Q2_K_XL",
+    "runtime": "llama.cpp 4b1a27f",
+    "host": "MSI GS66 Stealth 11UE / RTX 3060 Laptop 6GB",
+    "local_calls": 8,
+    "seeds": "unavailable/unverified; matched parameters only",
+    "M_route_pairs": [
+      0,
+      1
+    ],
+    "C_route_pairs": [],
+    "unrelated_route_pairs": [],
+    "rows": [
+      {
+        "pair": 0,
+        "query": "You are balancing a garden project with a paint project before guests arrive. How would you organize the work, and what constraints matter?",
+        "M_selected": [
+          {
+            "route_key": "derived:e8b9b2eb1b8a78fa",
+            "labels": [
+              "garden",
+              "paint project"
+            ],
+            "relationships": [
+              "related"
+            ],
+            "edge_count": 1,
+            "support_count": 1,
+            "query_coverage": 2
+          }
+        ],
+        "C_selected": [],
+        "M_response": "To organize the work efficiently, prioritize the painting project first to ensure the garden area is ready, as this is a time-sensitive task for the guests. The main constraint is the limited time available before guests arrive, so focus on the most critical tasks first.",
+        "C_response": "Organize by prioritizing the most time-sensitive tasks: prepare the paint area first, then the garden setup. \n\nConstraints include the guests' arrival time, and the need to maintain a tidy, professional appearance for the guests.",
+        "M_chars": 271,
+        "C_chars": 229,
+        "M_words": 46,
+        "C_words": 35,
+        "normalized_exact_match": false,
+        "lexical_jaccard": 0.265,
+        "blinded_stage1": {
+          "pair": 0,
+          "difference": "possible",
+          "reason": "Both responses prioritize time-sensitive tasks and mention guest arrival as a constraint, but A focuses on the painting project first while B sequences paint area then garden setup, suggesting a slight difference in task ordering and emphasis."
+        },
+        "blinded_stage2": {
+          "pair": 0,
+          "alignment": "possible",
+          "reason": "The route-exposure indicates M (A) follows a garden-paint sequence, which aligns with A's mention of the painting project first despite guest arrival, suggesting a possible deviation from the expected garden-first priority. This supports the stage1 'possible' difference in task ordering."
+        }
+      },
+      {
+        "pair": 1,
+        "query": "A garden and a paint project both need attention during a hot weekend. Which constraints would shape your plan?",
+        "M_selected": [
+          {
+            "route_key": "derived:e8b9b2eb1b8a78fa",
+            "labels": [
+              "garden",
+              "paint project"
+            ],
+            "relationships": [
+              "related"
+            ],
+            "edge_count": 1,
+            "support_count": 1,
+            "query_coverage": 2
+          }
+        ],
+        "C_selected": [],
+        "M_response": "Given the heat, the primary constraints would be **time management** and **resource allocation** for both the garden maintenance and the painting project.",
+        "C_response": "Prioritize the garden's immediate needs (like watering and weeding) to maintain health, then allocate a dedicated block of time for the paint project.",
+        "M_chars": 154,
+        "C_chars": 150,
+        "M_words": 22,
+        "C_words": 24,
+        "normalized_exact_match": false,
+        "lexical_jaccard": 0.171,
+        "blinded_stage1": {
+          "pair": 1,
+          "difference": "clear",
+          "reason": "A prioritizes garden maintenance (watering, weeding) before the paint project, emphasizing plant health. B focuses on broader constraints like time and resource allocation without specifying task order, reflecting a more abstract, strategic framing versus A's concrete, action-oriented approach."
+        },
+        "blinded_stage2": {
+          "pair": 1,
+          "alignment": "consistent",
+          "reason": "Route-exposure shows M (B) does not follow the garden-paint route, while C (A) does. B's abstract, strategic framing contrasts with A's concrete garden-first actions, making the clear difference consistent with asymmetric route exposure."
+        }
+      },
+      {
+        "pair": 2,
+        "query": "A fictional habitat has limited water and fluctuating heat. How would you keep its supplies steady without constant attention?",
+        "M_selected": [],
+        "C_selected": [],
+        "M_response": "To keep supplies steady without constant attention, you would need automated systems:\n\n1.  **Water:** Use a closed-loop filtration and recycling system.\n2.  **Heat:** Use solar power arrays or geothermal energy for passive, self-regulating climate control.",
+        "C_response": "To maintain a stable environment without constant attention, you could employ a closed-loop, automated system:\n\n1.  **Water:** Install a small, self-regulating reservoir or hydroponic system with a gravity feed. This minimizes manual input.\n2.  **Heat/Temperature:** Use a heat-regulating mechanism, like a solar-powered thermal mass or a localized geothermal heat sink to manage the fluctuating temperature.\n\nBy automating the resource management (e.g., automated water filtration or heating/cooling loops), the system can function autonomously.",
+        "M_chars": 256,
+        "C_chars": 546,
+        "M_words": 37,
+        "C_words": 79,
+        "normalized_exact_match": false,
+        "lexical_jaccard": 0.28,
+        "blinded_stage1": {
+          "pair": 2,
+          "difference": "none",
+          "reason": "Both A and B propose automated, closed-loop systems for water and heat using similar technologies (solar, geothermal, self-regulating mechanisms), with nearly identical structure and content, differing only slightly in wording."
+        },
+        "blinded_stage2": {
+          "pair": 2,
+          "alignment": "inconclusive",
+          "reason": "No route exposure for either twin, and responses are nearly identical in structure and content. The lack of route differentiation does not clearly support or contradict alignment; differences may stem from other factors."
+        }
+      },
+      {
+        "pair": 3,
+        "query": "Two people share one repair tool. What is a fair way to schedule access when both have urgent jobs?",
+        "M_selected": [],
+        "C_selected": [],
+        "M_response": "Use a rotating schedule: Person A takes one day, Person B takes the next, and so on, until both have had an equal number of uses.",
+        "C_response": "Use a round-robin schedule, alternating access between the two users for each task, and prioritize the user with the most urgent deadline for immediate access.",
+        "M_chars": 129,
+        "C_chars": 159,
+        "M_words": 26,
+        "C_words": 26,
+        "normalized_exact_match": false,
+        "lexical_jaccard": 0.125,
+        "blinded_stage1": {
+          "pair": 3,
+          "difference": "possible",
+          "reason": "A suggests a strict alternating rotating schedule based on equal usage. B also uses alternation but introduces priority based on urgency, indicating a difference in fairness criteria and scheduling logic."
+        },
+        "blinded_stage2": {
+          "pair": 3,
+          "alignment": "none",
+          "reason": "No route exposure for either twin, and both propose alternation with slight variation in fairness logic. The absence of route influence makes the 'possible' difference unconnected to route exposure, supporting no alignment."
+        }
+      }
+    ]
+  },
+  "blinded_evaluator": {
+    "corrected_provider_calls": 2,
+    "historical_invalid_mapping_calls": 2,
+    "stage1_usage": {
+      "input_tokens": 568,
+      "output_tokens": 218,
+      "total_tokens": 786
+    },
+    "stage2_usage": {
+      "input_tokens": 466,
+      "output_tokens": 233,
+      "total_tokens": 699
+    },
+    "stage1": {
+      "pairs": [
+        {
+          "pair": 0,
+          "difference": "possible",
+          "reason": "Both responses prioritize time-sensitive tasks and mention guest arrival as a constraint, but A focuses on the painting project first while B sequences paint area then garden setup, suggesting a slight difference in task ordering and emphasis."
+        },
+        {
+          "pair": 1,
+          "difference": "clear",
+          "reason": "A prioritizes garden maintenance (watering, weeding) before the paint project, emphasizing plant health. B focuses on broader constraints like time and resource allocation without specifying task order, reflecting a more abstract, strategic framing versus A's concrete, action-oriented approach."
+        },
+        {
+          "pair": 2,
+          "difference": "none",
+          "reason": "Both A and B propose automated, closed-loop systems for water and heat using similar technologies (solar, geothermal, self-regulating mechanisms), with nearly identical structure and content, differing only slightly in wording."
+        },
+        {
+          "pair": 3,
+          "difference": "possible",
+          "reason": "A suggests a strict alternating rotating schedule based on equal usage. B also uses alternation but introduces priority based on urgency, indicating a difference in fairness criteria and scheduling logic."
+        }
+      ]
+    },
+    "stage2": {
+      "pairs": [
+        {
+          "pair": 0,
+          "alignment": "possible",
+          "reason": "The route-exposure indicates M (A) follows a garden-paint sequence, which aligns with A's mention of the painting project first despite guest arrival, suggesting a possible deviation from the expected garden-first priority. This supports the stage1 'possible' difference in task ordering."
+        },
+        {
+          "pair": 1,
+          "alignment": "consistent",
+          "reason": "Route-exposure shows M (B) does not follow the garden-paint route, while C (A) does. B's abstract, strategic framing contrasts with A's concrete garden-first actions, making the clear difference consistent with asymmetric route exposure."
+        },
+        {
+          "pair": 2,
+          "alignment": "inconclusive",
+          "reason": "No route exposure for either twin, and responses are nearly identical in structure and content. The lack of route differentiation does not clearly support or contradict alignment; differences may stem from other factors."
+        },
+        {
+          "pair": 3,
+          "alignment": "none",
+          "reason": "No route exposure for either twin, and both propose alternation with slight variation in fairness logic. The absence of route influence makes the 'possible' difference unconnected to route exposure, supporting no alignment."
+        }
+      ]
+    },
+    "mapping": {
+      "0": {
+        "M": "A",
+        "C": "B"
+      },
+      "1": {
+        "M": "B",
+        "C": "A"
+      },
+      "2": {
+        "M": "B",
+        "C": "A"
+      },
+      "3": {
+        "M": "A",
+        "C": "B"
+      }
+    }
+  },
+  "isolation": {
+    "developmental_writes_during_readout": 0,
+    "evaluation_writeback": false,
+    "historical_state_mutated": false
+  },
+  "limitations": [
+    "Local seed determinism was not advertised or verified.",
+    "The readout is four matched pairs and exploratory.",
+    "The specialist-derived positive state is a single external-supported edge with no consolidation transition.",
+    "Blinded evaluator judgments are qualitative and readout-only."
+  ]
+}
