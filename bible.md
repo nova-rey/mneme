@@ -1093,3 +1093,5 @@ no provider calls were made in this commit.
 ## 2026-09-25 P2.3 Interloper chronology follow-up
 
 - Offline request audit found the first blank-recovery correction preserved role labels but still rendered each Qwen/Gemma pair in reverse chronological order. The renderer now emits prior Interloper assistant output followed by the corresponding Gemma user response, with the current response present exactly once; open-loop prompts use the same final-user boundary. Full pytest=429, Ruff, strict mypy, and wheel smoke pass. No provider call was made during this follow-up correction.
+
+- 2026-09-25: Phase Two P2.3 supplemental run v5 completed after the explicit Interloper perspective and empty-output correction. The new twelve-turn DeepInfra trajectory had no blank participant outputs, all twelve developmental episodes were accepted and interpreted through relationships-v1, and no separated-support consolidation transition occurred. The result is `NOT_DEMONSTRATED`; historical P2.3 `COMPLETED_INADEQUATE`, prior transcripts, and failed calls remain unchanged. Receipt: `docs/receipts/MNEME_P2.3_Separated_Support_Supplement_v5_Receipt_20260925.md`.
