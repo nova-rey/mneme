@@ -25,6 +25,7 @@ from .artifacts import ArtifactStore, content_digest
 from .contingent import (
     ContingentSchedule,
     ContingentStudy,
+    ContingentStudyError,
     ContingentTurn,
 )
 from .pilot import PilotRun, PilotStatus, host_role_binding
@@ -345,11 +346,37 @@ class P23SupplementStudy(ContingentStudy):
         pairs: list[tuple[str, str]] = []
         records: list[dict[str, Any]] = []
         traces: list[dict[str, Any]] = []
+        environment_failures = 0
         for turn in self.schedule.turns:
             request = self._interloper_request(
                 "supplement", turn.turn, pairs, initial_prompt=turn.prompt
             )
-            partner = self._partner_call("supplement", turn.turn, request)
+            try:
+                partner = self._partner_call("supplement", turn.turn, request)
+            except ContingentStudyError as exc:
+                if "blank interloper generation" not in str(exc):
+                    raise
+                # The blank provider result is already durably retained and
+                # must not be retried or admitted to history.  Treat this
+                # isolated environmental coordinate as missing evidence and
+                # continue with the next predeclared circumstance.
+                environment_failures += 1
+                records.append(
+                    {
+                        "turn": turn.turn,
+                        "chapter": turn.chapter,
+                        "partner": "",
+                        "subject": "",
+                        "operation_id": None,
+                        "development_accepted": False,
+                        "downstream_status": "environment_turn_missing",
+                        "trustworthy_interpretation": False,
+                        "failure_reason": str(exc),
+                        "extraction_repairs": 0,
+                    }
+                )
+                self._publish_supplement_transcript(records)
+                continue
             if not partner.strip():
                 raise SupplementError(f"blank interloper generation at turn {turn.turn}")
             development = self.runtime.execute_development(
@@ -457,6 +484,7 @@ class P23SupplementStudy(ContingentStudy):
             "trustworthy_interpretations": sum(
                 bool(item["trustworthy_interpretation"]) for item in records
             ),
+            "environment_failures": environment_failures,
             "records": records,
             "learner_traces": traces,
             "consolidation_traces": consolidation,

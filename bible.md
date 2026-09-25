@@ -1044,6 +1044,10 @@
 ## 2026-09-25 P2.3 supplement trace-reader follow-up
 
 - Resume inspection found two remaining `target_key` references in the same trace query's join and ordering clauses. No provider call was made on that resume attempt. Both references now use the canonical `edge_key`; the existing three returned turn-0 calls remain preserved for idempotent reuse.
+
+## 2026-09-25 P2.3 supplement isolated blank-turn handling
+
+- The resumed fixed trajectory reused turn 0 and completed turns 1–2 before Qwen returned an empty turn-3 participant message. The result was persisted and rejected before history admission. The supplement now records an isolated missing environment coordinate with no developmental evidence and continues to the next frozen circumstance without retrying or inserting a blank message; non-blank transport failures remain terminal.
 2026-09-25: Phase Two contingent role-perspective correction. The historical
 252-call executive-state run remains immutable and its interactive condition is
 instrumentation-invalid for contingent developmental claims because Gemma and
