@@ -1056,6 +1056,10 @@
 ## 2026-09-25 P2.3 supplement systematic-environment stop
 
 - The v2 trajectory completed with three accepted Gemma turns, empty relationships-v1 residues, and nine consecutive blank Qwen participant results. The opportunity structure was not assessable, so the raw runner report is superseded by an audit disposition of `INVALID` rather than a scientific negative. Future runs stop after three consecutive missing participant turns; no further provider calls were made.
+
+## 2026-09-25 P2.3 supplement final audit
+
+- Published the superseding audit for `p23-adequacy-balcony-v2-20260925`: 18 returned calls, 23,633 input / 1,221 output / 24,854 total tokens, three accepted developmental turns, three empty relationships-v1 residues, nine consecutive blank Qwen turns, zero admitted relationships, and zero learner/consolidation traces. The run is `INVALID` because the opportunity structure was not assessable; it is not a negative consolidation result. Raw run artifacts and the historical P2.3 disposition remain unchanged.
 2026-09-25: Phase Two contingent role-perspective correction. The historical
 252-call executive-state run remains immutable and its interactive condition is
 instrumentation-invalid for contingent developmental claims because Gemma and

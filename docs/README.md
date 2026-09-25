@@ -326,6 +326,11 @@ The documents are preserved in their supplied form and are intentionally not mer
   Interloper fit-checks are not scientific coordinates. The fixed trajectory
   itself remains the only prospective adequacy test.
 
+  The v2 trajectory is invalid for scientific adequacy: after three accepted
+  Gemma turns and empty relationship residues, Qwen returned nine consecutive
+  blank participant turns. The opportunity structure was therefore not
+  assessable. See [the final audit](receipts/MNEME_P2.3_Separated_Support_Supplement_Final_Audit_20250925.md).
+
   The fixed dispatch then stopped before development when DeepInfra returned
   HTTP 429 on the first Interloper fit-check. The run is recorded as `INVALID`
   provider-transport evidence with no retry or scientific interpretation in
