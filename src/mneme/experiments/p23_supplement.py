@@ -33,7 +33,7 @@ from .pilot_runtime import RuntimeSubject
 from .pilot_study import DevelopmentFixture, ProductionAssessmentAdapter
 
 SUPPLEMENT_ID = "p2.3-separated-support-adequacy-20260925"
-SUPPLEMENT_CONTRACT_REVISION = 1
+SUPPLEMENT_CONTRACT_REVISION = 2
 SUPPLEMENT_TURNS = 12
 SUPPLEMENT_PLANNED_CALLS = 75
 SUPPLEMENT_MAX_OUTPUT_TOKENS = 50_000
@@ -351,7 +351,11 @@ class P23SupplementStudy(ContingentStudy):
         systematic_environment_failure = False
         for turn in self.schedule.turns:
             request = self._interloper_request(
-                "supplement", turn.turn, pairs, initial_prompt=turn.prompt
+                "supplement",
+                turn.turn,
+                pairs,
+                initial_prompt=turn.prompt,
+                current_prompt=turn.prompt,
             )
             try:
                 partner = self._partner_call("supplement", turn.turn, request)

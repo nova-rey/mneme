@@ -695,6 +695,7 @@ class ContingentStudy:
         pairs: Sequence[tuple[str, str]],
         *,
         initial_prompt: str | None = None,
+        current_prompt: str | None = None,
     ) -> GenerationRequest:
         """Build a short-context participant request with fresh private state."""
 
@@ -702,6 +703,12 @@ class ContingentStudy:
         if not messages and initial_prompt is not None:
             messages.append({"role": "user", "content": initial_prompt})
         state = _interloper_executive_state(self.schedule, turn, pairs)
+        circumstance = (
+            "\nCURRENT PRIVATE CIRCUMSTANCE (controller information; do not quote):\n"
+            + current_prompt
+            if current_prompt
+            else ""
+        )
         return GenerationRequest(
             tuple(messages),
             system=(
@@ -710,6 +717,7 @@ class ContingentStudy:
                 + SCENARIO_CARD
                 + "\n"
                 + state.prompt_text()
+                + circumstance
             ),
             parameters={"temperature": 0.8, "top_p": 0.9, "max_new_tokens": 256},
             run_metadata={

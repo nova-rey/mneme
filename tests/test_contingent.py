@@ -46,6 +46,11 @@ def test_p23_supplement_freezes_one_lineage_schedule_and_role_audit(tmp_path: Pa
         "qwen_assistant_is_interloper": True,
         "qwen_user_is_gemma": True,
     }
+    request = study._interloper_request(
+        "supplement", 1, [("participant", "Gemma response")], current_prompt="private circumstance"
+    )
+    assert "CURRENT PRIVATE CIRCUMSTANCE" in (request.system or "")
+    assert "private circumstance" in (request.system or "")
 
 
 def test_schedule_has_distinct_chapters_and_24_turns() -> None:

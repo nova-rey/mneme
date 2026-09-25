@@ -316,7 +316,7 @@ The documents are preserved in their supplied form and are intentionally not mer
   ([JSON](receipts/MNEME_P2.3_Pilot_Adequacy_Audit_Receipt_20260924.json)).
 
   The one-shot prospective separated-support adequacy supplement is frozen
-  under contract revision 1 with a 12-turn balcony/container-plant trajectory,
+  under contract revision 2 with a 12-turn balcony/container-plant trajectory,
   one lineage, and a 75-call envelope. Its role-perspective preflight and
   fixture are recorded in [the supplement preflight receipt](receipts/MNEME_P2.3_Separated_Support_Supplement_Preflight_20260925.md).
   It is new evidence and does not alter the historical `COMPLETED_INADEQUATE`
@@ -330,6 +330,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   Gemma turns and empty relationship residues, Qwen returned nine consecutive
   blank participant turns. The opportunity structure was therefore not
   assessable. See [the final audit](receipts/MNEME_P2.3_Separated_Support_Supplement_Final_Audit_20250925.md).
+
+  Revision 2 additionally serializes each current practical circumstance into
+  Qwen-only private controller state; the invalid revision-1/2 run remains
+  historical evidence and is not rewritten.
 
   The fixed dispatch then stopped before development when DeepInfra returned
   HTTP 429 on the first Interloper fit-check. The run is recorded as `INVALID`

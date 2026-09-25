@@ -1060,6 +1060,10 @@
 ## 2026-09-25 P2.3 supplement final audit
 
 - Published the superseding audit for `p23-adequacy-balcony-v2-20260925`: 18 returned calls, 23,633 input / 1,221 output / 24,854 total tokens, three accepted developmental turns, three empty relationships-v1 residues, nine consecutive blank Qwen turns, zero admitted relationships, and zero learner/consolidation traces. The run is `INVALID` because the opportunity structure was not assessable; it is not a negative consolidation result. Raw run artifacts and the historical P2.3 disposition remain unchanged.
+
+## 2026-09-25 P2.3 supplement current-circumstance correction
+
+- Audit found that the v2 supplement passed only the initial circumstance to Qwen; later predeclared circumstances were not serialized into its private controller state. The supplement contract is now revision 2 and includes each current circumstance in Qwen-only state, preserving the Gemma-visible history, target-free practical motivations, learner, and provenance rules. The v2 invalid run remains immutable.
 2026-09-25: Phase Two contingent role-perspective correction. The historical
 252-call executive-state run remains immutable and its interactive condition is
 instrumentation-invalid for contingent developmental claims because Gemma and

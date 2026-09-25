@@ -1,7 +1,7 @@
 # P2.3 separated-support adequacy supplement preflight
 
 Status: **OFFLINE PREPARED — FIXED BEFORE LIVE DISPATCH**  
-Scientific identity: `p2.3-separated-support-adequacy / contract revision 1`  
+Scientific identity: `p2.3-separated-support-adequacy / contract revision 2`  
 Historical P2.3 disposition: `COMPLETED_INADEQUATE` (preserved)
 
 This is one prospective, one-lineage adequacy demonstration. It does not
@@ -59,6 +59,11 @@ relationships-v1 extraction calls, up to twelve fixed one-repair extraction
 calls, and twelve production assessor calls. No evaluation calls or
 alternative trajectories are authorized. A returned call is retained whether
 it passes or fails.
+
+Contract revision 2 also serializes the current predeclared circumstance into
+Qwen's private controller state on every turn. This prevents a later request
+from repeating stale history after an isolated missing participant result;
+Gemma never sees this controller field.
 
 ## Terminal interpretation
 
