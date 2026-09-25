@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "experiment": "p2.3-separated-support-adequacy-20260925",
+  "run_id": "p23-adequacy-balcony-v3-20260925",
+  "contract_revision": 2,
+  "terminal_result": "INVALID",
+  "historical_p2_3_preserved": true,
+  "schedule": {"predeclared_turns": 12, "completed_turn_records": 10, "chapter": "B"},
+  "calls": {
+    "returned": 22,
+    "by_role": {
+      "interloper": {"count": 10, "input_tokens": 17237, "output_tokens": 256, "total_tokens": 17493},
+      "development_response": {"count": 6, "input_tokens": 4228, "output_tokens": 2221, "total_tokens": 6449},
+      "development_extraction": {"count": 6, "input_tokens": 5103, "output_tokens": 30, "total_tokens": 5133}
+    },
+    "total_input_tokens": 26568,
+    "total_output_tokens": 2507,
+    "total_tokens": 29075,
+    "provider_cost": "unknown",
+    "assessor_calls": 0,
+    "evaluation_calls": 0,
+    "learner_calls": 0
+  },
+  "development": {
+    "accepted_episodes": 6,
+    "valid_extractions": 6,
+    "admitted_concepts": 0,
+    "admitted_relationships": 0,
+    "consolidation_transitions": 0,
+    "blank_interloper_turns": [3, 7, 8, 9],
+    "stop_reason": "three consecutive blank Interloper turns at turns 7-9 made the predeclared opportunity structure unassessable"
+  },
+  "role_preflight": "MNEME_P2.3_Separated_Support_Supplement_v3_Role_Preflight_20260925.json",
+  "transcript": "../experiments/contingent-conversation/P2.3_Separated_Support_Supplement_v3_Transcript_20260925.md",
+  "raw_artifacts": "private run artifact; historical raw results unchanged",
+  "phase_two_status": "incomplete",
+  "phase_three_started": false
+}

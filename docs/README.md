@@ -376,3 +376,13 @@ status and receipt are recorded in `.codex/work-queue.json` and `bible.md`.
 
 This repository does not contain the older `MNEME_Earned_Association_Field_Spec.md`; the
 current specification identifies it as historical context.
+
+  The revision-2 one-shot supplemental adequacy run is preserved as `INVALID`:
+  Qwen returned three consecutive blank participant turns after six accepted
+  Gemma episodes and six valid empty relationships-v1 residues, so the
+  predeclared opportunity structure was not assessable. It returned 22 calls
+  (26,568 input / 2,507 output / 29,075 total tokens), made no assessor or
+  learner calls, and did not alter the historical P2.3 disposition. The exact
+  readable transcript and role audit are [published here](experiments/contingent-conversation/P2.3_Separated_Support_Supplement_v3_Transcript_20260925.md)
+  and in [the final audit receipt](receipts/MNEME_P2.3_Separated_Support_Supplement_v3_Final_Audit_20260925.md)
+  ([role-preflight JSON](receipts/MNEME_P2.3_Separated_Support_Supplement_v3_Role_Preflight_20260925.json); [machine-readable audit](receipts/MNEME_P2.3_Separated_Support_Supplement_v3_Final_Audit_20260925.json)).

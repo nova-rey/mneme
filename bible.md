@@ -1077,3 +1077,9 @@ no provider calls were made in this commit.
 ## 2026-09-25 P2 contingent role-perspective v3 live stop
 
 - Pushed the explicit Gemma/Qwen role-perspective correction at `b2aa81e1425e479139daf9047b6c71b136e64d1f`; CI `36141067033` passed. A fresh revision-3 run then returned six Qwen calls (6,033 input, 355 output, 6,388 total tokens) before stopping at open-loop turn 1 on an empty provider response. The exact request/result and readable transcript are published in the role-v3 live-stop receipts. The blank was rejected before history admission; no Gemma, extraction, assessment, or evaluation calls followed. The run is a preserved model-output failure; historical 252-call evidence remains unchanged.
+
+## 2026-09-25 P2.3 separated-support supplement v3 final audit
+
+- The revision-2 one-shot adequacy schedule `p23-adequacy-balcony-v3-20260925` was executed once from the corrected role-perspective/current-circumstance harness. It returned 22 provider calls (26,568 input / 2,507 output / 29,075 total tokens; cost unavailable): 10 Interloper, 6 Gemma development, and 6 relationships-v1 extraction calls.
+- Six developmental episodes were accepted and all six extractions were valid empty residues. Qwen then produced three consecutive blank participant turns at turns 7–9; the fixed stop rule fired before the remaining schedule, making the separated-support opportunity structure unassessable. No assessor, learner, or consolidation call occurred. The scientific disposition is `INVALID`, not a negative consolidation result.
+- The exact transcript and sanitized role-preflight evidence are published; raw run artifacts and all historical P2.3 evidence remain unchanged. P2.3 remains WAITING and Phase Two is not complete. No Phase Three work began.
