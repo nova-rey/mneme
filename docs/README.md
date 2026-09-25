@@ -322,6 +322,11 @@ The documents are preserved in their supplied form and are intentionally not mer
   It is new evidence and does not alter the historical `COMPLETED_INADEQUATE`
   disposition.
 
+  The fixed dispatch then stopped before development when DeepInfra returned
+  HTTP 429 on the first Interloper fit-check. The run is recorded as `INVALID`
+  provider-transport evidence with no retry or scientific interpretation in
+  [the terminal receipt](receipts/MNEME_P2.3_Separated_Support_Supplement_Invalid_20250925.md).
+
   The resumed pilot then stopped at `extraction-s1-e5` because Gemma omitted
   required confidence fields from otherwise source-grounded graph records; the
   13-call stop is preserved in [the confidence-schema failure receipt](receipts/MNEME_P2.3_Pilot_Recovery_V4_Confidence_Failure_20260924.md)

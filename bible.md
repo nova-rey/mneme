@@ -1028,6 +1028,10 @@
 ## 2026-09-25 P2.3 supplement artifact-boundary correction
 
 - Offline preflight found that the new transcript directory was outside the verified ArtifactStore category allow-list. The supplement now publishes its transcript under the existing `contingent/` category; no provider call was made and the schedule/role audit remain unchanged.
+
+## 2026-09-25 P2.3 separated-support supplement invalid dispatch
+
+- The fixed one-shot supplement was dispatched after offline validation and CI, but DeepInfra returned HTTP 429 on its first Interloper fit-check. The call is durably preserved as `UNCERTAIN`; no Gemma developmental, extraction, assessment, learner, or consolidation call was made, and no retry/resampling occurred. The run is `INVALID` provider-transport evidence; historical P2.3 remains `COMPLETED_INADEQUATE` and no Phase Three work began.
 2026-09-25: Phase Two contingent role-perspective correction. The historical
 252-call executive-state run remains immutable and its interactive condition is
 instrumentation-invalid for contingent developmental claims because Gemma and
