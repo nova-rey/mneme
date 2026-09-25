@@ -988,3 +988,7 @@
 ## 2026-09-24 P2 contingent Interloper executive-state correction
 
 - Added prospective Interloper contract revision 2 / policy revision 3 with fresh private environment state, independent practical concerns, two-pair context bound, deterministic observable attractor signals, and explicit permission to interrupt reflective symmetry. The preserved Lentil Incident attractor is covered by a provider-free FakeHost escape regression; historical conversation and receipts remain unchanged. Full validation and CI are required before any new live run, which remains subject to explicit authorization; no provider call was made.
+
+## 2026-09-25 P2 Interloper executive-state validation
+
+- The executive-state correction passed the complete provider-free gate: 403 pytest tests, Ruff, strict mypy, wheel/fresh-install import smoke, and queue validation. GitHub CI run `36079256665` passed for `a48937a`; no provider call was made and the next live run remains authorization-gated.

@@ -46,7 +46,7 @@ Validation passed provider-free:
 - strict mypy: passed;
 - wheel build and fresh-install import smoke: passed;
 - work-queue schema validation: passed;
-- CI: pending push;
+- CI: **36079256665 passed** for implementation commit `a48937a`;
 - historical transcripts and failed run artifacts: unchanged;
 - provider calls for this correction: **none**.
 
