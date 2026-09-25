@@ -178,6 +178,7 @@ class InterpretationService:
         extractor_version: str = EXTRACTOR_VERSION,
         resolver_version: str = "explicit-v1",
         source_purposes: tuple[str, ...] | None = None,
+        allow_extractor_host_mismatch: bool = False,
     ) -> None:
         self.store = store
         self.instance_id = instance_id
@@ -187,6 +188,7 @@ class InterpretationService:
         if source_purposes is not None and not set(source_purposes) <= self._ALLOWED_PURPOSES:
             raise InterpretationError("source_purposes contains an unsupported purpose")
         self.source_purposes = source_purposes
+        self.allow_extractor_host_mismatch = allow_extractor_host_mismatch
 
     def _policy_allows_interpretation(self, db: Any) -> None:
         """Require the explicit Phase One interpretation opt-in.
@@ -597,11 +599,16 @@ class InterpretationService:
                 attempt = 0
                 errors = None
             source_bundle = self._source_bundle(db, str(op["episode_id"]))
-            self._policy_allows_selected_host()
-            self._policy_allows_provider_reuse()
+            if not self.allow_extractor_host_mismatch:
+                self._policy_allows_selected_host()
+                self._policy_allows_provider_reuse()
             expected_host = self._episode_host_ref(db, str(op["episode_id"]))
             host_ref = self._host_ref()
-            if expected_host is not None and expected_host != host_ref:
+            if (
+                not self.allow_extractor_host_mismatch
+                and expected_host is not None
+                and expected_host != host_ref
+            ):
                 raise InterpretationError("host fingerprint drifted from accepted episode")
             self._record_host(db, host_ref)
             request = self._request(source_bundle, errors=errors)

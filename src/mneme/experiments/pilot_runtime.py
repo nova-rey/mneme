@@ -24,6 +24,7 @@ from ..contracts import GenerationRequest, GenerationResult
 from ..host import Host
 from ..memory.interpretation import (
     EXTRACTOR_VERSION,
+    MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION,
     InterpretationError,
     InterpretationService,
     InterpretationUncertain,
@@ -169,11 +170,15 @@ class PilotRuntime:
             # accounting roles.  Both developmental call roles must resolve
             # to that one scientific host binding; assessor/evaluation roles
             # remain independently bound.
-            binding_role = (
-                "developing"
-                if role in {"development-response", "development-extraction"}
-                else role
-            )
+            binding_role = "developing" if role == "development-response" else role
+            if role in {"assessor-qualification", "evaluation-assessor"}:
+                binding_role = "assessor"
+            if role == "development-extraction":
+                configured_roles = envelope.get("role_bindings")
+                if not isinstance(configured_roles, Mapping) or "development-extraction" not in configured_roles:
+                    # Preserve legacy single-host prepared runs. Mixed-role
+                    # runs publish an explicit specialist binding.
+                    binding_role = "developing"
             configured = self.pilot.require_role_host(binding_role, host)
             expected = configured.get("fingerprint")
             if isinstance(expected, Mapping):
@@ -410,6 +415,15 @@ class PilotRuntime:
             subject.instance_id,
             extractor_host,
             extractor_version=extractor_version or recovery_version or EXTRACTOR_VERSION,
+            allow_extractor_host_mismatch=(
+                (extractor_version or recovery_version or EXTRACTOR_VERSION).startswith(
+                    "gliner2.5"
+                )
+                or (
+                    extractor_version == MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION
+                    and extractor_host.fingerprint().model_id.startswith("fastino/gliner")
+                )
+            ),
         )
         prepared = service.prepare(
             episode_id,

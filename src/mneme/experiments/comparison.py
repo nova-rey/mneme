@@ -162,11 +162,47 @@ class FrozenComparator:
         return [item[2] for item in scored[:2]]
 
     @staticmethod
-    def _graph_notes(view: FrozenEvaluationView, query: str) -> list[dict[str, Any]]:
+    def _graph_notes(
+        view: FrozenEvaluationView, query: str, *, eligible_only: bool = False
+    ) -> list[dict[str, Any]]:
         manifest = view.manifest()
         snapshot = manifest.get("graph_snapshot_id")
         if not isinstance(snapshot, str):
             return []
+        learner_edges: dict[str, tuple[int, int]] = {}
+        learner_routes: dict[str, int] = {}
+        if eligible_only:
+            learner_snapshot = manifest.get("learner_snapshot_id")
+            if not isinstance(learner_snapshot, str):
+                return []
+            row = view._reader.store.connection.execute(
+                "SELECT configuration_json FROM learner_snapshots WHERE snapshot_id=?",
+                (learner_snapshot,),
+            ).fetchone()
+            if row is None:
+                return []
+            try:
+                payload = json.loads(str(row[0]))
+                state = payload.get("state", {})
+                raw_edges = state.get("edges", {})
+                raw_routes = state.get("routes", {})
+                if isinstance(raw_edges, Mapping):
+                    for key, value in raw_edges.items():
+                        if not isinstance(value, Mapping):
+                            continue
+                        learner_edges[str(key)] = (
+                            int(value.get("accessibility", 0)),
+                            int(value.get("support", 0)),
+                        )
+                if isinstance(raw_routes, Mapping):
+                    for value in raw_routes.values():
+                        if not isinstance(value, Mapping):
+                            continue
+                        route_key = value.get("route_key")
+                        if isinstance(route_key, str):
+                            learner_routes[route_key] = int(value.get("consequence", 0))
+            except (TypeError, ValueError, AttributeError):
+                return []
         query_words = _tokens(query)
         concepts = {
             str(row[0]): str(row[1])
@@ -187,6 +223,17 @@ class FrozenComparator:
             "SELECT route_key,edge_keys_json FROM graph_routes WHERE snapshot_id=?", (snapshot,)
         ):
             route_key, edge_keys = str(row[0]), tuple(json.loads(str(row[1])))
+            if eligible_only:
+                route_consequence = learner_routes.get(route_key, 0)
+                edge_values: list[tuple[int, int]] = []
+                for edge_key in edge_keys:
+                    edge_values.append(learner_edges.get(str(edge_key) + ":general", (0, 0)))
+                if not edge_values:
+                    continue
+                base = sum((accessibility * 6) // 10 + (support * 4) // 10
+                            for accessibility, support in edge_values) // len(edge_values)
+                if route_consequence <= -250_000 or base + route_consequence <= 0:
+                    continue
             labels: list[str] = []
             relationships: list[str] = []
             for edge_key in edge_keys:
@@ -219,6 +266,7 @@ class FrozenComparator:
         treatment: str,
         seed: int | None,
         parameters: Mapping[str, Any] | None = None,
+        eligible_only: bool = False,
     ) -> ComparisonResult:
         if treatment not in self.treatments:
             raise ComparisonError(f"unknown comparison treatment: {treatment}")
@@ -254,7 +302,10 @@ class FrozenComparator:
                     for item in self._lexical_notes(query, self._history(view))
                 ]
             else:
-                notes = [{"kind": "route", **item} for item in self._graph_notes(view, query)]
+                notes = [
+                    {"kind": "route", **item}
+                    for item in self._graph_notes(view, query, eligible_only=eligible_only)
+                ]
             system = None
             if notes:
                 payload = json.dumps(

@@ -1,5 +1,6 @@
 import hashlib
 import json
+import sqlite3
 from pathlib import Path
 
 import pytest
@@ -62,6 +63,53 @@ def test_administrative_subject_slot_does_not_enter_generation_material(tmp_path
         seed=7,
     )
     assert first.output == second.output
+
+
+def test_graph_readout_can_require_learner_eligible_edges() -> None:
+    connection = sqlite3.connect(":memory:")
+    connection.executescript(
+        """
+        CREATE TABLE graph_concepts(snapshot_id TEXT, concept_key TEXT, label TEXT);
+        CREATE TABLE graph_edges(
+            snapshot_id TEXT, edge_key TEXT, source_key TEXT, target_key TEXT,
+            relationship TEXT
+        );
+        CREATE TABLE graph_routes(snapshot_id TEXT, route_key TEXT, edge_keys_json TEXT);
+        CREATE TABLE learner_snapshots(snapshot_id TEXT, configuration_json TEXT);
+        """
+    )
+    connection.execute(
+        "INSERT INTO graph_concepts VALUES ('snap','c-a','plants'),('snap','c-b','water')"
+    )
+    connection.execute(
+        "INSERT INTO graph_edges VALUES ('snap','edge:unlearned','c-a','c-b','needs')"
+    )
+    connection.execute(
+        "INSERT INTO graph_routes VALUES ('snap','route:unlearned','[\"edge:unlearned\"]')"
+    )
+    connection.execute(
+        "INSERT INTO learner_snapshots VALUES ('learner', ?)",
+        (json.dumps({"state": {"edges": {}, "routes": {}}}),),
+    )
+    connection.commit()
+
+    class Store:
+        def __init__(self, db: sqlite3.Connection) -> None:
+            self.connection = db
+
+    class Reader:
+        def __init__(self, db: sqlite3.Connection) -> None:
+            self.store = Store(db)
+
+    class View:
+        _reader = Reader(connection)
+
+        @staticmethod
+        def manifest() -> dict[str, str]:
+            return {"graph_snapshot_id": "snap", "learner_snapshot_id": "learner"}
+
+    assert FrozenComparator._graph_notes(View(), "plants", eligible_only=False)
+    assert FrozenComparator._graph_notes(View(), "plants", eligible_only=True) == []
 
 
 def test_comparison_artifact_is_sanitized_and_idempotent(tmp_path: Path) -> None:
