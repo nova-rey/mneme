@@ -347,6 +347,8 @@ class P23SupplementStudy(ContingentStudy):
         records: list[dict[str, Any]] = []
         traces: list[dict[str, Any]] = []
         environment_failures = 0
+        consecutive_environment_failures = 0
+        systematic_environment_failure = False
         for turn in self.schedule.turns:
             request = self._interloper_request(
                 "supplement", turn.turn, pairs, initial_prompt=turn.prompt
@@ -361,6 +363,7 @@ class P23SupplementStudy(ContingentStudy):
                 # isolated environmental coordinate as missing evidence and
                 # continue with the next predeclared circumstance.
                 environment_failures += 1
+                consecutive_environment_failures += 1
                 records.append(
                     {
                         "turn": turn.turn,
@@ -376,9 +379,13 @@ class P23SupplementStudy(ContingentStudy):
                     }
                 )
                 self._publish_supplement_transcript(records)
+                if consecutive_environment_failures >= 3:
+                    systematic_environment_failure = True
+                    break
                 continue
             if not partner.strip():
                 environment_failures += 1
+                consecutive_environment_failures += 1
                 records.append(
                     {
                         "turn": turn.turn,
@@ -394,7 +401,11 @@ class P23SupplementStudy(ContingentStudy):
                     }
                 )
                 self._publish_supplement_transcript(records)
+                if consecutive_environment_failures >= 3:
+                    systematic_environment_failure = True
+                    break
                 continue
+            consecutive_environment_failures = 0
             development = self.runtime.execute_development(
                 slot=0,
                 call_id=f"development-supplement-t{turn.turn:02d}",
@@ -490,7 +501,13 @@ class P23SupplementStudy(ContingentStudy):
         consolidation = [
             item for item in traces if item.get("last_consolidation_opportunity") is not None
         ]
-        result = "DEMONSTRATED" if consolidation else "NOT_DEMONSTRATED"
+        result = (
+            "INVALID"
+            if systematic_environment_failure
+            else "DEMONSTRATED"
+            if consolidation
+            else "NOT_DEMONSTRATED"
+        )
         summary = {
             "experiment": SUPPLEMENT_ID,
             "contract_revision": SUPPLEMENT_CONTRACT_REVISION,
@@ -501,6 +518,8 @@ class P23SupplementStudy(ContingentStudy):
                 bool(item["trustworthy_interpretation"]) for item in records
             ),
             "environment_failures": environment_failures,
+            "consecutive_environment_failures": consecutive_environment_failures,
+            "systematic_environment_failure": systematic_environment_failure,
             "records": records,
             "learner_traces": traces,
             "consolidation_traces": consolidation,

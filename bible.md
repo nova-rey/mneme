@@ -1052,6 +1052,10 @@
 ## 2026-09-25 P2.3 supplement blank-result idempotency correction
 
 - A no-provider resume of the blank turn returned the persisted empty result directly and reached a separate nonblank guard. That guard now records the same `environment_turn_missing` disposition; the blank remains excluded from history and no provider call was made.
+
+## 2026-09-25 P2.3 supplement systematic-environment stop
+
+- The v2 trajectory completed with three accepted Gemma turns, empty relationships-v1 residues, and nine consecutive blank Qwen participant results. The opportunity structure was not assessable, so the raw runner report is superseded by an audit disposition of `INVALID` rather than a scientific negative. Future runs stop after three consecutive missing participant turns; no further provider calls were made.
 2026-09-25: Phase Two contingent role-perspective correction. The historical
 252-call executive-state run remains immutable and its interactive condition is
 instrumentation-invalid for contingent developmental claims because Gemma and
