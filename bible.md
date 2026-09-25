@@ -984,3 +984,7 @@
 ## 2026-09-24 P2 contingent minimal relationship live continuation
 
 - Applied `relationships-v1` to six preserved failed episodes as retrospective recovery, preserving the historical operations and awarding no learner credit; all six returned valid empty residues. Resumed the preserved interactive conversation at turn 12 and completed turns 12–23 through chapters B and C without regenerating turns 0–11. The bounded continuation consumed 42 new calls (50,297 input, 1,797 output, 52,094 total tokens; cost unavailable); prospective turns 12–23 interpreted 12/12, while the reviewed segment remains 12/15 with the three historical turn 9–11 failures preserved. The exact transcript and sanitized receipt were published; open-loop/readout work remains unstarted.
+
+## 2026-09-24 P2 contingent Interloper executive-state correction
+
+- Added prospective Interloper contract revision 2 / policy revision 3 with fresh private environment state, independent practical concerns, two-pair context bound, deterministic observable attractor signals, and explicit permission to interrupt reflective symmetry. The preserved Lentil Incident attractor is covered by a provider-free FakeHost escape regression; historical conversation and receipts remain unchanged. Full validation and CI are required before any new live run, which remains subject to explicit authorization; no provider call was made.

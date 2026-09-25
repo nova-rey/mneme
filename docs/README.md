@@ -98,6 +98,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   records six retrospective recovery operations and interactive turns 12–23;
   the [continuation transcript](receipts/MNEME_P2_Contingent_Interactive_Continuation_Transcript_20260924.md)
   preserves the exact readable conversation.
+  The [Interloper executive-state correction receipt](receipts/MNEME_P2_Contingent_Interloper_Executive_State_Correction_Receipt_20260924.md)
+  records the prospective contract revision, private motivations, two-pair
+  context bound, observable attractor detector, and offline Lentil Incident
+  regression. A new live run remains explicitly unauthorized.
   [the offline P2.3 assessor/pilot boundary receipt](receipts/MNEME_P2.3_Offline_Assessor_Pilot_Boundary_Receipt.md);
   the fixed qualification failure is recorded in [the qualification failure receipt](receipts/MNEME_P2.3_Assessor_Qualification_Failure_Receipt.md);
   the reviewed prompt-contract remediation and its offline validation are recorded in

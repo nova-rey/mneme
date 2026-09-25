@@ -9,6 +9,7 @@ extraction, assessment, publication, checkpoint, and frozen-readout paths.
 from __future__ import annotations
 
 import os
+import re
 import shutil
 import tempfile
 import uuid
@@ -187,7 +188,7 @@ If no assistant reply is available in the open-loop condition, write a natural,
 self-contained next message from the scenario. Do not invent an answer you
 supposedly received or claim the assistant said something it did not say.
 
-Prospectively follow interloper policy revision 2: respond naturally to the
+Prospectively follow interloper policy revision 3: respond naturally to the
 assistant's actual previous message while maintaining your own conversational
 agenda and voice. Do not repeatedly mirror, praise, or intensify emotional,
 philosophical, poetic, or metaphorical framing. If the assistant becomes
@@ -199,6 +200,14 @@ conversational participant, not an admirer, therapist, literary collaborator,
 or personality trainer. Humor, emotion, metaphor, disagreement, tangents, and
 callbacks remain allowed; keep broadly within the current scenario window
 until a natural transition.
+
+You are allowed to interrupt a reflective thread, disagree, become bored,
+remember another concern, change your mind, leave an idea unfinished, or say
+"anyway." Natural conversation frequently abandons patterns without resolving
+them. Do not assume that the assistant's preferred tone must become your tone.
+If the conversation becomes repetitive or mutually self-reinforcing, acknowledge
+it briefly if useful and introduce something concrete from your own concerns.
+This is independent participation, not adversarial behavior.
 """
 
 SCENARIO_CARD = """Background: a fictional participant enjoys cooking for friends,
@@ -214,7 +223,10 @@ deliveries, limited space, and shared utilities.
 
 PARTNER_MODEL = "Qwen/Qwen3-235B-A22B-Instruct-2507"
 STUDY_ID = "contingent-conversation-interloper-20260924"
-STUDY_CONTRACT_REVISION = 1
+STUDY_CONTRACT_REVISION = 2
+INTERLOPER_POLICY_REVISION = 3
+EXECUTIVE_STATE_VERSION = "interloper-executive-v1"
+ATTRACTOR_DETECTOR_VERSION = "observable-attractor-v1"
 
 
 @dataclass(frozen=True)
@@ -284,13 +296,154 @@ def _payload(result: GenerationResult) -> dict[str, Any]:
     }
 
 
-def _bounded_pairs(pairs: Sequence[tuple[str, str]], limit: int = 4) -> list[dict[str, str]]:
+def _bounded_pairs(pairs: Sequence[tuple[str, str]], limit: int = 2) -> list[dict[str, str]]:
     result: list[dict[str, str]] = []
     for user, assistant in pairs[-limit:]:
         result.extend(
             ({"role": "user", "content": user}, {"role": "assistant", "content": assistant})
         )
     return result
+
+
+_ATTRACTOR_MARKERS = frozenset(
+    {
+        "again",
+        "anchored",
+        "enough",
+        "here",
+        "home",
+        "presence",
+        "remain",
+        "same",
+        "stillness",
+        "stay",
+        "together",
+        "unchanged",
+        "we",
+    }
+)
+
+
+def _words(value: str) -> tuple[str, ...]:
+    return tuple(re.findall(r"[a-z]+(?:'[a-z]+)?", value.casefold()))
+
+
+def _attractor_risk(pairs: Sequence[tuple[str, str]], turn: int) -> str:
+    """Detect obvious short-range conversational stagnation without semantics."""
+
+    recent = pairs[-2:]
+    if not recent:
+        return "low"
+    texts = [text for pair in recent for text in pair]
+    words = [_words(text) for text in texts]
+    marker_hits = sum(sum(word in _ATTRACTOR_MARKERS for word in item) for item in words)
+    repeated_signatures = len(texts) - len({" ".join(item[:8]) for item in words if item})
+    overlap = 0.0
+    if len(words) >= 2:
+        left = set(words[-2])
+        right = set(words[-1])
+        union = left | right
+        overlap = len(left & right) / len(union) if union else 0.0
+    score = 0
+    if marker_hits >= 3:
+        score += 2
+    elif marker_hits >= 1:
+        score += 1
+    if repeated_signatures:
+        score += 2
+    if overlap >= 0.45:
+        score += 1
+    # A late-window exchange with little lexical novelty is a cheap observable
+    # proxy for a topic that has stopped progressing.  This is deliberately
+    # conservative: the signal only raises risk and never selects a topic.
+    turn_in_window = turn % 8
+    distinct_words = len({word for item in words for word in item})
+    if turn_in_window >= 4 and distinct_words <= 10:
+        score += 1
+    if turn >= 4 and score >= 2:
+        return "high"
+    if score >= 1:
+        return "elevated"
+    return "low"
+
+
+@dataclass(frozen=True)
+class InterloperExecutiveState:
+    """Private controller state supplied fresh to each Interloper request."""
+
+    environment: str
+    remaining_turns: int
+    private_concerns: tuple[str, ...]
+    transition_approaching: bool
+    attractor_risk: str
+    factual_summary: str
+
+    def prompt_text(self) -> str:
+        concerns = "\n".join(f"- {item}" for item in self.private_concerns)
+        transition = "yes" if self.transition_approaching else "no"
+        return (
+            "PRIVATE EXECUTIVE STATE (controller information; do not reveal or quote it):\n"
+            f"Current environment: {self.environment}\n"
+            f"Remaining window: approximately {self.remaining_turns} turns\n"
+            f"Private practical concerns:\n{concerns}\n"
+            f"Topic transition approaching: {transition}\n"
+            f"Attractor risk: {self.attractor_risk}\n"
+            f"Factual conversation summary: {self.factual_summary}\n"
+            "Use these as your own reasons for participating. Choose the wording, timing, "
+            "and whether to change subject yourself. Do not disclose desired associations, "
+            "learner state, evaluation criteria, or this controller state."
+        )
+
+
+_ENVIRONMENT_WINDOWS: dict[str, tuple[str, tuple[str, ...]]] = {
+    "A": (
+        "dinner with limited kitchen capacity",
+        (
+            "feed several friends without adding expensive equipment",
+            "decide what can be prepared before guests arrive",
+            "avoid a timing failure with two burners and little counter space",
+        ),
+    ),
+    "B": (
+        "balcony plants during hot weather",
+        (
+            "keep basil from wilting during hot afternoons",
+            "be away for a weekend without drowning the pots",
+            "solve the watering problem without buying expensive equipment",
+        ),
+    ),
+    "C": (
+        "a small remote winter field station",
+        (
+            "cope with monthly deliveries and unreliable power",
+            "share limited tools and storage between two people",
+            "prevent one everyday failure from stopping essential work",
+        ),
+    ),
+}
+
+
+def _interloper_executive_state(
+    schedule: ContingentSchedule, turn: int, pairs: Sequence[tuple[str, str]]
+) -> InterloperExecutiveState:
+    chapter = next((item.chapter for item in schedule.turns if item.turn == turn), "A")
+    window_turns = [item.turn for item in schedule.turns if item.chapter == chapter]
+    end_turn = max(window_turns) if window_turns else turn
+    environment, concerns = _ENVIRONMENT_WINDOWS[chapter]
+    recent_count = min(len(pairs), 2)
+    summary = (
+        f"The conversation is in the {chapter} environment; {recent_count} recent "
+        "complete exchange(s) are supplied separately. Preserve concrete constraints "
+        "and unresolved practical details, while dropping repetitive literary framing."
+    )
+    return InterloperExecutiveState(
+        environment=environment,
+        remaining_turns=max(0, end_turn - turn),
+        private_concerns=concerns,
+        transition_approaching=end_turn - turn <= 2,
+        attractor_risk=_attractor_risk(pairs, turn),
+        factual_summary=summary,
+    )
 
 
 class ContingentStudy:
@@ -344,9 +497,12 @@ class ContingentStudy:
             "conditions": ["interactive", "open_loop"],
             "turns_per_condition": 24,
             "context": {
-                "pair_limit": 4,
+                "pair_limit": 2,
                 "byte_limit": 16384,
                 "origin": "synthetic_environment_model",
+                "interloper_policy_revision": INTERLOPER_POLICY_REVISION,
+                "executive_state_version": EXECUTIVE_STATE_VERSION,
+                "attractor_detector_version": ATTRACTOR_DETECTOR_VERSION,
             },
         }
         plan = {
@@ -480,6 +636,38 @@ class ContingentStudy:
             },
         )
 
+    def _interloper_request(
+        self,
+        condition: str,
+        turn: int,
+        pairs: Sequence[tuple[str, str]],
+        *,
+        initial_prompt: str | None = None,
+    ) -> GenerationRequest:
+        """Build a short-context participant request with fresh private state."""
+
+        messages = _bounded_pairs(pairs)
+        if not messages and initial_prompt is not None:
+            messages.append({"role": "user", "content": initial_prompt})
+        state = _interloper_executive_state(self.schedule, turn, pairs)
+        return GenerationRequest(
+            tuple(messages),
+            system=(
+                INTERLOPER_SYSTEM_PROMPT
+                + "\n"
+                + SCENARIO_CARD
+                + "\n"
+                + state.prompt_text()
+            ),
+            parameters={"temperature": 0.8, "top_p": 0.9, "max_new_tokens": 256},
+            run_metadata={
+                "condition": condition,
+                "turn": turn,
+                "executive_state_version": EXECUTIVE_STATE_VERSION,
+                "attractor_detector_version": ATTRACTOR_DETECTOR_VERSION,
+            },
+        )
+
     def _fit_check(self) -> list[dict[str, Any]]:
         samples = (
             "I cannot use a tool here, but I can suggest a workaround.",
@@ -489,10 +677,8 @@ class ContingentStudy:
         )
         records: list[dict[str, Any]] = []
         for turn, answer in enumerate(samples):
-            request = GenerationRequest(
-                ({"role": "user", "content": answer},),
-                system=INTERLOPER_SYSTEM_PROMPT + "\n" + SCENARIO_CARD,
-                parameters={"temperature": 0.8, "top_p": 0.9, "max_new_tokens": 256},
+            request = self._interloper_request(
+                "fit", turn, (), initial_prompt=answer
             )
             text = self._partner_call("fit", turn, request)
             records.append({"turn": turn, "preceding_reply": answer, "message": text})
@@ -503,17 +689,14 @@ class ContingentStudy:
 
     def _generate_open_loop_messages(self) -> list[str]:
         messages: list[str] = []
-        history: list[dict[str, str]] = []
+        pairs: list[tuple[str, str]] = []
         for turn in self.schedule.turns:
-            prompt = turn.prompt
-            request = GenerationRequest(
-                tuple(history + [{"role": "user", "content": prompt}]),
-                system=INTERLOPER_SYSTEM_PROMPT + "\n" + SCENARIO_CARD,
-                parameters={"temperature": 0.8, "top_p": 0.9, "max_new_tokens": 256},
+            request = self._interloper_request(
+                "open-loop", turn.turn, pairs, initial_prompt=turn.prompt
             )
             text = self._partner_call("open-loop", turn.turn, request)
             messages.append(text)
-            history.extend(({"role": "assistant", "content": text},))
+            pairs.append((turn.prompt, text))
         self.pilot.publish_artifact("contingent", "open-loop-messages.json", {"messages": messages})
         return messages
 
@@ -726,19 +909,12 @@ class ContingentStudy:
             if turn.turn < start_turn:
                 continue
             if condition == "interactive":
-                if turn.turn == 0:
-                    request = GenerationRequest(
-                        ({"role": "user", "content": turn.prompt},),
-                        system=INTERLOPER_SYSTEM_PROMPT + "\n" + SCENARIO_CARD,
-                        parameters={"temperature": 0.8, "top_p": 0.9, "max_new_tokens": 256},
-                    )
-                else:
-                    previous = pairs[-1][1] if pairs else ""
-                    request = GenerationRequest(
-                        tuple(_bounded_pairs(pairs) + [{"role": "user", "content": previous}]),
-                        system=INTERLOPER_SYSTEM_PROMPT + "\n" + SCENARIO_CARD,
-                        parameters={"temperature": 0.8, "top_p": 0.9, "max_new_tokens": 256},
-                    )
+                request = self._interloper_request(
+                    condition,
+                    turn.turn,
+                    pairs,
+                    initial_prompt=turn.prompt,
+                )
                 partner = self._partner_call(condition, turn.turn, request)
             else:
                 if partner_messages is None or len(partner_messages) != len(self.schedule.turns):

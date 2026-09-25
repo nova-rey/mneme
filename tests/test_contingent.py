@@ -6,7 +6,9 @@ from mneme.experiments.contingent import (
     INTERLOPER_SYSTEM_PROMPT,
     ContingentSchedule,
     ContingentStudy,
+    _attractor_risk,
     _bounded_pairs,
+    _interloper_executive_state,
     _measurement_counters,
     _measurement_stop,
     _restored_interpretation,
@@ -28,10 +30,59 @@ def test_schedule_has_distinct_chapters_and_24_turns() -> None:
 def test_bounded_context_contains_only_complete_recent_pairs() -> None:
     pairs = [(f"u{i}", f"a{i}") for i in range(6)]
     messages = _bounded_pairs(pairs)
-    assert len(messages) == 8
-    assert messages[0] == {"role": "user", "content": "u2"}
+    assert len(messages) == 4
+    assert messages[0] == {"role": "user", "content": "u4"}
     assert messages[-1] == {"role": "assistant", "content": "a5"}
     assert all(message["role"] in {"user", "assistant"} for message in messages)
+
+
+def test_lentil_incident_attractor_gets_private_escape_state(tmp_path: Path) -> None:
+    pairs = [
+        ("I am here.", "We stay."),
+        ("Enough.", "We remain."),
+    ]
+    schedule = ContingentSchedule.fixed()
+    state = _interloper_executive_state(schedule, 8, pairs)
+    assert _attractor_risk(pairs, 8) in {"elevated", "high"}
+    assert state.environment == "balcony plants during hot weather"
+    assert state.transition_approaching is False
+    assert "basil" in " ".join(state.private_concerns)
+    assert "expensive equipment" in state.prompt_text()
+
+    gemma = FakeHost(model_id="gemma-test")
+    qwen = FakeHost(model_id="qwen-test")
+    study = ContingentStudy.create(tmp_path / "lab", gemma, qwen, qwen, gemma)
+    request = study._interloper_request("interactive", 8, pairs)
+    assert len(request.messages) == 4
+    assert request.messages[-1]["content"] == "We remain."
+    assert "PRIVATE EXECUTIVE STATE" in (request.system or "")
+    assert "balcony plants during hot weather" in (request.system or "")
+    assert "basil" in (request.system or "")
+    assert "desired associations" in (request.system or "")
+    result = qwen.generate(request)
+    assert result.content
+
+
+def test_attractor_detector_marks_late_low_novelty_window() -> None:
+    pairs = [
+        ("we stay here", "we remain here"),
+        ("still here", "we stay"),
+    ]
+    assert _attractor_risk(pairs, 12) in {"elevated", "high"}
+
+
+def test_interloper_request_discards_older_stylistic_context(tmp_path: Path) -> None:
+    gemma = FakeHost(model_id="gemma-test")
+    qwen = FakeHost(model_id="qwen-test")
+    study = ContingentStudy.create(tmp_path / "lab", gemma, qwen, qwen, gemma)
+    pairs = [(f"old{i}", f"old-answer{i}") for i in range(5)]
+    request = study._interloper_request(
+        "interactive",
+        8,
+        pairs,
+    )
+    contents = [str(message["content"]) for message in request.messages]
+    assert contents == ["old3", "old-answer3", "old4", "old-answer4"]
 
 
 def test_interloper_prompt_forbids_fabricated_open_loop_answers() -> None:
