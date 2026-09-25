@@ -393,7 +393,16 @@ class ResponseController:
         )
 
     def _learner_key_map(self, pin: PinnedState) -> dict[str, str]:
-        """Map interpretation-local edge keys to canonical semantic keys."""
+        """Map materialized edge keys to canonical semantic keys.
+
+        Most edges retain their interpretation-local key in
+        ``semantic_bindings``.  The graph publisher also has to make
+        collision-safe keys when the same local key is materialized more than
+        once (for example ``edge`` and ``edge~<digest>``).  Those variant keys
+        carry the original local key in their immutable graph-edge context;
+        map them through the same canonical binding so learned selection does
+        not silently discard otherwise eligible routes.
+        """
 
         try:
             rows = self.store.connection.execute(
@@ -408,6 +417,36 @@ class ResponseController:
         result: dict[str, str] = {}
         for row in rows:
             result[str(row[0])] = str(row[1])
+
+        # Collision-safe graph keys are an implementation detail of
+        # materialization, not new learner targets.  Resolve them through the
+        # original local key recorded in graph-edge context.  Keep this
+        # bounded to the pinned snapshot so historical or future snapshots
+        # cannot affect a prepared turn.
+        if pin.graph_snapshot_id is not None:
+            try:
+                edge_rows = self.store.connection.execute(
+                    "SELECT edge_key,context_json FROM graph_edges "
+                    "WHERE snapshot_id=? ORDER BY edge_key",
+                    (pin.graph_snapshot_id,),
+                )
+            except sqlite3.OperationalError as exc:
+                if "no such table" in str(exc):
+                    return result
+                raise
+            for edge_key, context_json in edge_rows:
+                try:
+                    context = json.loads(str(context_json))
+                except (TypeError, ValueError):
+                    continue
+                if not isinstance(context, Mapping):
+                    continue
+                local_key = context.get("local_key")
+                if not isinstance(local_key, str):
+                    continue
+                canonical = result.get(local_key)
+                if canonical is not None:
+                    result.setdefault(str(edge_key), canonical)
         return result
 
     def _select(

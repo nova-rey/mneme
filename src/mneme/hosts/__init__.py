@@ -6,6 +6,7 @@ from .deepinfra import (
 )
 from .fake import FakeHost
 from .gemma import GemmaHost
+from .local_llama import LocalLlamaHost
 
 __all__ = [
     "DeepInfraChatHost",
@@ -14,4 +15,5 @@ __all__ = [
     "DeepInfraQwenAssessorHost",
     "FakeHost",
     "GemmaHost",
+    "LocalLlamaHost",
 ]

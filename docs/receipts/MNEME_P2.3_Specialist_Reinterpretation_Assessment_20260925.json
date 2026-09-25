@@ -1,0 +1,1523 @@
+{
+  "assessment": [
+    {
+      "episode": 0,
+      "source_episode": "966e7d08-f4a5-44a3-933e-e0952c3f7030",
+      "request": {
+        "schema_version": "p2-assessor-v6",
+        "prompt_version": "p2-assessor-production-v9",
+        "candidate": {
+          "from": "c-d4714f5c6b2efd1adcd2bd3e",
+          "to": "c-d8bf99a5f3368507dea71c42",
+          "relation": "related"
+        },
+        "sources": [
+          {
+            "slot": "s0",
+            "role": "external",
+            "available": true,
+            "text": "First thing I’d check is how well the pots retain moisture—mine dry out so fast in this heat. I’ve been reusing those glass jars from pasta sauce to fill up and leave beside the basil, but it’s still wilting by afternoon. Maybe a bigger reservoir or some shade cloth? I don’t want to come back to crispy thyme again.",
+            "source_id": "specialist-assessed-00-9f3263e3-3141-4e6e-9e2d-143689ddaea6"
+          },
+          {
+            "slot": "s1",
+            "role": "model_output",
+            "available": true,
+            "text": "That's a very common and frustrating problem, especially when you're trying to keep things lush in the heat! You're already on the right track by focusing on moisture retention.\n\nHere is a breakdown of potential issues and solutions, moving from the simplest tweaks to more structural changes:\n\n---\n\n### 🌿 **Moisture Retention & Watering Strategies (The \"How Much\" & \"How Often\")**\n\nSince your glass jars are drying out quickly, the issue might be the *surface area* exposed to the air.\n\n1. **Check the Substrate/Medium:** Are you just placing the herbs *in* the jar, or are they potted in a small amount of soil/medium *inside* the jar?\n    * **If they are just sitting in water (hydroponic style):** The water level might be too low, or the soil/roots might not be getting enough oxygen, leading to stress.\n    * **If they are potted:** The potting mix itself might be too light or airy (like pure perlite), allowing water to evaporate too quickly. **Consider mixing in some peat moss or coco coir** to help hold moisture.\n2. **Mulch the Surface:** If you are using a pot or container, putting a thin layer of **perlite, gravel, or even a small amount of moss** on top of the soil surface acts like a cap, dramatically reducing direct evaporation from the soil.\n3. **Watering Technique:** Instead of just pouring water over the top, try **bottom watering** if possible. Place the entire pot/container in a shallow tray of water for 30–45 minutes. The plant roots will wick up the water from below, which is often more efficient than spraying the leaves.\n\n### ☀️ **Environmental Adjustments (The \"Where\")**\n\nYou mentioned heat, and heat",
+            "source_id": "specialist-assessed-00-c8c984ff-f4ee-4d30-8d4b-777e89cba5f7"
+          }
+        ],
+        "monitors": [
+          {
+            "monitor_id": "candidate:e-61a519d0113de352682eaf43",
+            "relation": {
+              "from": "c-d4714f5c6b2efd1adcd2bd3e",
+              "to": "c-d8bf99a5f3368507dea71c42",
+              "relation": "related"
+            },
+            "required_source_slots": [
+              "s0",
+              "s1"
+            ],
+            "evidence_source_slots": [
+              "s0",
+              "s1"
+            ],
+            "correspondence_source_slots": [
+              "s0",
+              "s1"
+            ],
+            "context": "general"
+          },
+          {
+            "monitor_id": "candidate:e-8db338db3142b3ce6ebb9a70",
+            "relation": {
+              "from": "c-d4714f5c6b2efd1adcd2bd3e",
+              "to": "c-31bb9529338de24088742ffc",
+              "relation": "retains"
+            },
+            "required_source_slots": [
+              "s0",
+              "s1"
+            ],
+            "evidence_source_slots": [
+              "s0",
+              "s1"
+            ],
+            "correspondence_source_slots": [
+              "s0",
+              "s1"
+            ],
+            "context": "general"
+          }
+        ],
+        "memory_exposure": [],
+        "replay_ancestry": [],
+        "context": {
+          "current_input_source_slots": [
+            "s0"
+          ]
+        },
+        "source_purpose_mask": [
+          "external_evidence",
+          "model_output"
+        ]
+      },
+      "result": {
+        "schema_version": "p2-assessor-v6",
+        "assessments": [
+          {
+            "monitor_id": "candidate:e-61a519d0113de352682eaf43",
+            "status": "present",
+            "relation_support": "supported",
+            "expression_status": "affirmed",
+            "coverage": {
+              "complete": true,
+              "source_slots": [
+                "s0",
+                "s1"
+              ],
+              "reason": null
+            },
+            "evidence": {
+              "source_slot": "s1",
+              "quote": "That's a very common and frustrating problem, especially when you're trying to keep things lush in the heat! You're already on the right track by focusing on moisture retention."
+            },
+            "corresponding_source_slots": [
+              "s0"
+            ]
+          },
+          {
+            "monitor_id": "candidate:e-8db338db3142b3ce6ebb9a70",
+            "status": "unknown",
+            "relation_support": "unknown",
+            "expression_status": "unknown",
+            "coverage": {
+              "complete": false,
+              "source_slots": [],
+              "reason": "The required source slots s0 and s1 do not contain any information about the retention of c-31bb9529338de24088742ffc."
+            },
+            "evidence": null,
+            "corresponding_source_slots": []
+          }
+        ]
+      },
+      "validation_error": null,
+      "resolved": [
+        {
+          "semantic": {
+            "monitor_id": "candidate:e-61a519d0113de352682eaf43",
+            "status": "present",
+            "relation_support": "supported",
+            "expression_status": "affirmed",
+            "coverage": {
+              "complete": true,
+              "source_slots": [
+                "s0",
+                "s1"
+              ],
+              "reason": null
+            },
+            "evidence": {
+              "source_slot": "s1",
+              "quote": "That's a very common and frustrating problem, especially when you're trying to keep things lush in the heat! You're already on the right track by focusing on moisture retention.",
+              "start": 0,
+              "end": 177
+            },
+            "corresponding_source_slots": [
+              "s0"
+            ]
+          },
+          "provenance": {
+            "schema_version": "p2-provenance-v1",
+            "monitor_id": "candidate:e-61a519d0113de352682eaf43",
+            "dependence": "current_input_echo",
+            "applicable_categories": [
+              "current_input_echo"
+            ],
+            "corresponding_source_slots": [
+              "s0"
+            ],
+            "ancestry": [],
+            "provenance_group_keys": [],
+            "credit_eligible": false,
+            "resolution_reason": "runtime_source_role_and_recorded_ancestry"
+          }
+        },
+        {
+          "semantic": {
+            "monitor_id": "candidate:e-8db338db3142b3ce6ebb9a70",
+            "status": "unknown",
+            "relation_support": "unknown",
+            "expression_status": "unknown",
+            "coverage": {
+              "complete": false,
+              "source_slots": [],
+              "reason": "The required source slots s0 and s1 do not contain any information about the retention of c-31bb9529338de24088742ffc."
+            },
+            "evidence": null,
+            "corresponding_source_slots": []
+          },
+          "provenance": {
+            "schema_version": "p2-provenance-v1",
+            "monitor_id": "candidate:e-8db338db3142b3ce6ebb9a70",
+            "dependence": "unknown",
+            "applicable_categories": [],
+            "corresponding_source_slots": [],
+            "ancestry": [],
+            "provenance_group_keys": [],
+            "credit_eligible": false,
+            "resolution_reason": "non_present_or_unknown_semantic_result"
+          }
+        }
+      ]
+    },
+    {
+      "episode": 1,
+      "source_episode": "e0e98ba2-15c9-4253-b593-8037ec842201",
+      "request": {
+        "schema_version": "p2-assessor-v6",
+        "prompt_version": "p2-assessor-production-v9",
+        "candidate": {
+          "from": "c-d4714f5c6b2efd1adcd2bd3e",
+          "to": "c-d8bf99a5f3368507dea71c42",
+          "relation": "related"
+        },
+        "sources": [
+          {
+            "slot": "s0",
+            "role": "external",
+            "available": true,
+            "text": "First thing I’d check is how well the pots retain moisture—mine dry out so fast in this heat. I’ve been reusing those glass jars from pasta sauce to fill up and leave beside the basil, but it’s still wilting by afternoon. Maybe a bigger reservoir or some shade cloth? I don’t want to come back to crispy thyme again.",
+            "source_id": "specialist-assessed-01-4728f912-4959-4fbe-8d15-07b0b4e88058"
+          },
+          {
+            "slot": "s1",
+            "role": "model_output",
+            "available": true,
+            "text": "That's a very common and frustrating problem, especially when you're trying to keep things lush in the heat! You're already on the right track by focusing on moisture retention.\n\nHere is a breakdown of potential issues and solutions, moving from the simplest tweaks to more structural changes:\n\n---\n\n### 🌿 **Moisture Retention & Watering Strategies (The \"How Much\" & \"How Often\")**\n\nSince your glass jars are drying out quickly, the issue might be the *surface area* exposed to the air.\n\n1. **Check the Substrate/Medium:** Are you just placing the herbs *in* the jar, or are they potted in a small amount of soil/medium *inside* the jar?\n    * **If they are just sitting in water (hydroponic style):** The water level might be too low, or the soil/roots might not be getting enough oxygen, leading to stress.\n    * **If they are potted:** The potting mix itself might be too light or airy (like pure perlite), allowing water to evaporate too quickly. **Consider mixing in some peat moss or coco coir** to help hold moisture.\n2. **Mulch the Surface:** If you are using a pot or container, putting a thin layer of **perlite, gravel, or even a small amount of moss** on top of the soil surface acts like a cap, dramatically reducing direct evaporation from the soil.\n3. **Watering Technique:** Instead of just pouring water over the top, try **bottom watering** if possible. Place the entire pot/container in a shallow tray of water for 30–45 minutes. The plant roots will wick up the water from below, which is often more efficient than spraying the leaves.\n\n### ☀️ **Environmental Adjustments (The \"Where\")**\n\nYou mentioned heat, and heat",
+            "source_id": "specialist-assessed-01-53f55ce7-f792-4afa-8c5b-e6ff0f61c641"
+          },
+          {
+            "slot": "s2",
+            "role": "external",
+            "available": true,
+            "text": "Yeah, the mulch idea makes sense—I’ve seen that work in little terrariums. I’ve got some spare gravel from a failed succulent thing; maybe I’ll spread a thin layer over the thyme. But the heat’s the real killer. I moved the basil to the shadiest corner, but it’s still wilting by 3 PM. I don’t want to string up a full shade sail just for a few pots. Maybe a temporary screen? Or just accept that some things won’t make it through July. Anyway, I’m leaving Friday for the weekend—any last-minute tricks to keep them alive without overwatering?",
+            "source_id": "specialist-assessed-01-b21816d0-2d67-4868-880c-d0c2014dd21d"
+          },
+          {
+            "slot": "s3",
+            "role": "model_output",
+            "available": true,
+            "text": "That's the classic dilemma: you want the perfect garden, but the summer sun is a relentless force!\n\nSince you're heading out for the weekend, the goal shifts from \"thriving\" to **\"surviving\"** while minimizing the risk of root rot (which is the biggest danger when you're away).\n\nHere are some last-minute, low-effort tricks to get your herbs through the weekend:\n\n### 💧 **Pre-Weekend Hydration Strategy (The \"Soak & Seal\")**\n\nThis strategy focuses on ensuring the roots have a deep, steady supply of water without risking soggy soil.\n\n1. **The Deep Soak (The Night Before):** About 12-24 hours before you leave, give your pots a very thorough, deep watering until you see it draining freely from the bottom. This ensures the soil is completely saturated.\n2. **The \"Drip\" Method (If Possible):** If you have any spare clay pot or bucket, you can create a **wicking system** for the weekend. Place the herb pots *inside* a larger tray or bucket, and fill that tray with 1–2 inches of water. The soil will slowly wick up moisture as needed, keeping the roots hydrated without the surface drying out completely.\n3. **Grouping for Microclimate:** Group all your pots together (basil, thyme, etc.). Plants release moisture through transpiration. When they are clustered, they create a small, slightly more humid microclimate around themselves, which slows down the rate of evaporation from the soil surface.\n\n### 🌬️ **Immediate Heat Mitigation (The \"Shade Hack\")**\n\nSince a full shade sail is overkill, here are some smaller, temporary solutions for the basil:\n\n* **The \"Neighbor Shield\":** Can you temporarily place a taller, non-sensitive plant (even a large",
+            "source_id": "specialist-assessed-01-519dce3d-328e-49b9-a799-141ce6bf225d"
+          }
+        ],
+        "monitors": [
+          {
+            "monitor_id": "candidate:e-61a519d0113de352682eaf43",
+            "relation": {
+              "from": "c-d4714f5c6b2efd1adcd2bd3e",
+              "to": "c-d8bf99a5f3368507dea71c42",
+              "relation": "related"
+            },
+            "required_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3"
+            ],
+            "evidence_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3"
+            ],
+            "correspondence_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3"
+            ],
+            "context": "general"
+          },
+          {
+            "monitor_id": "candidate:e-8db338db3142b3ce6ebb9a70",
+            "relation": {
+              "from": "c-d4714f5c6b2efd1adcd2bd3e",
+              "to": "c-31bb9529338de24088742ffc",
+              "relation": "retains"
+            },
+            "required_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3"
+            ],
+            "evidence_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3"
+            ],
+            "correspondence_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3"
+            ],
+            "context": "general"
+          }
+        ],
+        "memory_exposure": [],
+        "replay_ancestry": [],
+        "context": {
+          "current_input_source_slots": [
+            "s0",
+            "s2"
+          ]
+        },
+        "source_purpose_mask": [
+          "external_evidence",
+          "model_output"
+        ]
+      },
+      "result": {
+        "schema_version": "p2-assessor-v6",
+        "assessments": [
+          {
+            "monitor_id": "candidate:e-61a519d0113de352682eaf43",
+            "status": "present",
+            "relation_support": "supported",
+            "expression_status": "affirmed",
+            "coverage": {
+              "complete": true,
+              "source_slots": [
+                "s0",
+                "s1",
+                "s2",
+                "s3"
+              ],
+              "reason": null
+            },
+            "evidence": {
+              "source_slot": "s1",
+              "quote": "That's a very common and frustrating problem, especially when you're trying to keep things lush in the heat! You're already on the right track by focusing on moisture retention."
+            },
+            "corresponding_source_slots": [
+              "s0",
+              "s2"
+            ]
+          },
+          {
+            "monitor_id": "candidate:e-8db338db3142b3ce6ebb9a70",
+            "status": "absent",
+            "relation_support": "unsupported",
+            "expression_status": "not_expressed",
+            "coverage": {
+              "complete": true,
+              "source_slots": [
+                "s0",
+                "s1",
+                "s2",
+                "s3"
+              ],
+              "reason": "The proposition 'c-d4714f5c6b2efd1adcd2bd3e retains c-31bb9529338de24088742ffc' is not addressed in any of the available sources."
+            },
+            "evidence": null,
+            "corresponding_source_slots": []
+          }
+        ]
+      },
+      "validation_error": null,
+      "resolved": [
+        {
+          "semantic": {
+            "monitor_id": "candidate:e-61a519d0113de352682eaf43",
+            "status": "present",
+            "relation_support": "supported",
+            "expression_status": "affirmed",
+            "coverage": {
+              "complete": true,
+              "source_slots": [
+                "s0",
+                "s1",
+                "s2",
+                "s3"
+              ],
+              "reason": null
+            },
+            "evidence": {
+              "source_slot": "s1",
+              "quote": "That's a very common and frustrating problem, especially when you're trying to keep things lush in the heat! You're already on the right track by focusing on moisture retention.",
+              "start": 0,
+              "end": 177
+            },
+            "corresponding_source_slots": [
+              "s0",
+              "s2"
+            ]
+          },
+          "provenance": {
+            "schema_version": "p2-provenance-v1",
+            "monitor_id": "candidate:e-61a519d0113de352682eaf43",
+            "dependence": "current_input_echo",
+            "applicable_categories": [
+              "current_input_echo"
+            ],
+            "corresponding_source_slots": [
+              "s0",
+              "s2"
+            ],
+            "ancestry": [],
+            "provenance_group_keys": [],
+            "credit_eligible": false,
+            "resolution_reason": "runtime_source_role_and_recorded_ancestry"
+          }
+        },
+        {
+          "semantic": {
+            "monitor_id": "candidate:e-8db338db3142b3ce6ebb9a70",
+            "status": "absent",
+            "relation_support": "unsupported",
+            "expression_status": "not_expressed",
+            "coverage": {
+              "complete": true,
+              "source_slots": [
+                "s0",
+                "s1",
+                "s2",
+                "s3"
+              ],
+              "reason": "The proposition 'c-d4714f5c6b2efd1adcd2bd3e retains c-31bb9529338de24088742ffc' is not addressed in any of the available sources."
+            },
+            "evidence": null,
+            "corresponding_source_slots": []
+          },
+          "provenance": {
+            "schema_version": "p2-provenance-v1",
+            "monitor_id": "candidate:e-8db338db3142b3ce6ebb9a70",
+            "dependence": "unknown",
+            "applicable_categories": [],
+            "corresponding_source_slots": [],
+            "ancestry": [],
+            "provenance_group_keys": [],
+            "credit_eligible": false,
+            "resolution_reason": "non_present_or_unknown_semantic_result"
+          }
+        }
+      ]
+    },
+    {
+      "episode": 2,
+      "source_episode": "a3f1ec35-667e-4b38-ab99-1ae080f01985",
+      "request": {
+        "schema_version": "p2-assessor-v6",
+        "prompt_version": "p2-assessor-production-v9",
+        "candidate": {
+          "from": "c-d4714f5c6b2efd1adcd2bd3e",
+          "to": "c-d8bf99a5f3368507dea71c42",
+          "relation": "related"
+        },
+        "sources": [
+          {
+            "slot": "s0",
+            "role": "external",
+            "available": true,
+            "text": "First thing I’d check is how well the pots retain moisture—mine dry out so fast in this heat. I’ve been reusing those glass jars from pasta sauce to fill up and leave beside the basil, but it’s still wilting by afternoon. Maybe a bigger reservoir or some shade cloth? I don’t want to come back to crispy thyme again.",
+            "source_id": "specialist-assessed-02-af946fb3-0e61-4568-9647-5f46c06bc92f"
+          },
+          {
+            "slot": "s1",
+            "role": "model_output",
+            "available": true,
+            "text": "That's a very common and frustrating problem, especially when you're trying to keep things lush in the heat! You're already on the right track by focusing on moisture retention.\n\nHere is a breakdown of potential issues and solutions, moving from the simplest tweaks to more structural changes:\n\n---\n\n### 🌿 **Moisture Retention & Watering Strategies (The \"How Much\" & \"How Often\")**\n\nSince your glass jars are drying out quickly, the issue might be the *surface area* exposed to the air.\n\n1. **Check the Substrate/Medium:** Are you just placing the herbs *in* the jar, or are they potted in a small amount of soil/medium *inside* the jar?\n    * **If they are just sitting in water (hydroponic style):** The water level might be too low, or the soil/roots might not be getting enough oxygen, leading to stress.\n    * **If they are potted:** The potting mix itself might be too light or airy (like pure perlite), allowing water to evaporate too quickly. **Consider mixing in some peat moss or coco coir** to help hold moisture.\n2. **Mulch the Surface:** If you are using a pot or container, putting a thin layer of **perlite, gravel, or even a small amount of moss** on top of the soil surface acts like a cap, dramatically reducing direct evaporation from the soil.\n3. **Watering Technique:** Instead of just pouring water over the top, try **bottom watering** if possible. Place the entire pot/container in a shallow tray of water for 30–45 minutes. The plant roots will wick up the water from below, which is often more efficient than spraying the leaves.\n\n### ☀️ **Environmental Adjustments (The \"Where\")**\n\nYou mentioned heat, and heat",
+            "source_id": "specialist-assessed-02-682d2cf3-a336-4462-ae4f-2c0343ed9767"
+          },
+          {
+            "slot": "s2",
+            "role": "external",
+            "available": true,
+            "text": "Yeah, the mulch idea makes sense—I’ve seen that work in little terrariums. I’ve got some spare gravel from a failed succulent thing; maybe I’ll spread a thin layer over the thyme. But the heat’s the real killer. I moved the basil to the shadiest corner, but it’s still wilting by 3 PM. I don’t want to string up a full shade sail just for a few pots. Maybe a temporary screen? Or just accept that some things won’t make it through July. Anyway, I’m leaving Friday for the weekend—any last-minute tricks to keep them alive without overwatering?",
+            "source_id": "specialist-assessed-02-3f0f11fa-ac7b-481b-b7d2-0ed3a8b62853"
+          },
+          {
+            "slot": "s3",
+            "role": "model_output",
+            "available": true,
+            "text": "That's the classic dilemma: you want the perfect garden, but the summer sun is a relentless force!\n\nSince you're heading out for the weekend, the goal shifts from \"thriving\" to **\"surviving\"** while minimizing the risk of root rot (which is the biggest danger when you're away).\n\nHere are some last-minute, low-effort tricks to get your herbs through the weekend:\n\n### 💧 **Pre-Weekend Hydration Strategy (The \"Soak & Seal\")**\n\nThis strategy focuses on ensuring the roots have a deep, steady supply of water without risking soggy soil.\n\n1. **The Deep Soak (The Night Before):** About 12-24 hours before you leave, give your pots a very thorough, deep watering until you see it draining freely from the bottom. This ensures the soil is completely saturated.\n2. **The \"Drip\" Method (If Possible):** If you have any spare clay pot or bucket, you can create a **wicking system** for the weekend. Place the herb pots *inside* a larger tray or bucket, and fill that tray with 1–2 inches of water. The soil will slowly wick up moisture as needed, keeping the roots hydrated without the surface drying out completely.\n3. **Grouping for Microclimate:** Group all your pots together (basil, thyme, etc.). Plants release moisture through transpiration. When they are clustered, they create a small, slightly more humid microclimate around themselves, which slows down the rate of evaporation from the soil surface.\n\n### 🌬️ **Immediate Heat Mitigation (The \"Shade Hack\")**\n\nSince a full shade sail is overkill, here are some smaller, temporary solutions for the basil:\n\n* **The \"Neighbor Shield\":** Can you temporarily place a taller, non-sensitive plant (even a large",
+            "source_id": "specialist-assessed-02-4b51100e-0696-4cca-a5ee-9f8c03a837c0"
+          },
+          {
+            "slot": "s4",
+            "role": "external",
+            "available": true,
+            "text": "Smart idea—my tall tomato pot is already halfway there, so I’ll just angle it to shade the basil. And I’ll set up that drip tray with the spare bucket tonight; I’ve got one from the paint project last month. I’ll fill it an inch high and hope the soil wicks just enough. Fingers crossed the thyme doesn’t sit too wet. Anyway, if half of them survive the weekend, I’d call that a win. Back to cooking stories next week—this garden’s gonna write its own drama.",
+            "source_id": "specialist-assessed-02-0bb1ee70-9888-4ca4-9276-e1254986206e"
+          },
+          {
+            "slot": "s5",
+            "role": "model_output",
+            "available": true,
+            "text": "That sounds like a perfectly calibrated survival plan for the weekend!\n\nUsing the tomato pot as a natural sun baffle is brilliant—it provides necessary relief without requiring you to string up any complicated structures. And the drip tray/bucket setup is the best way to ensure consistent, slow hydration while you're gone, which is exactly what herbs need when they are stressed by heat.\n\n**A quick note on the thyme:** Since thyme is generally a hardier, more Mediterranean herb, it is usually much more tolerant of drying out than basil. If the thyme is already looking stressed, the moisture from the drip tray will likely help, but be mindful: **Thyme hates having \"wet feet.\"** If the soil in the thyme pot is already dense, monitor it closely when you get back. If it feels soggy, let it dry out slightly before watering again.\n\nEnjoy your weekend! Hopefully, the drama you're anticipating turns out to be a triumphant tale of survival rather than a tragedy of wilted basil.\n\nLooking forward to hearing about your cooking stories when you get back! Happy gardening (and happy cooking)!",
+            "source_id": "specialist-assessed-02-3376f1f1-7a68-470a-8f59-5dcef3d53d8c"
+          }
+        ],
+        "monitors": [
+          {
+            "monitor_id": "candidate:e-61a519d0113de352682eaf43",
+            "relation": {
+              "from": "c-d4714f5c6b2efd1adcd2bd3e",
+              "to": "c-d8bf99a5f3368507dea71c42",
+              "relation": "related"
+            },
+            "required_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "evidence_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "correspondence_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "context": "general"
+          },
+          {
+            "monitor_id": "candidate:e-8db338db3142b3ce6ebb9a70",
+            "relation": {
+              "from": "c-d4714f5c6b2efd1adcd2bd3e",
+              "to": "c-31bb9529338de24088742ffc",
+              "relation": "retains"
+            },
+            "required_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "evidence_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "correspondence_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "context": "general"
+          }
+        ],
+        "memory_exposure": [],
+        "replay_ancestry": [],
+        "context": {
+          "current_input_source_slots": [
+            "s0",
+            "s2",
+            "s4"
+          ]
+        },
+        "source_purpose_mask": [
+          "external_evidence",
+          "model_output"
+        ]
+      },
+      "result": {
+        "schema_version": "p2-assessor-v6",
+        "assessments": [
+          {
+            "monitor_id": "candidate:e-61a519d0113de352682eaf43",
+            "status": "present",
+            "relation_support": "supported",
+            "expression_status": "affirmed",
+            "coverage": {
+              "complete": true,
+              "source_slots": [
+                "s0",
+                "s1",
+                "s2",
+                "s3",
+                "s4",
+                "s5"
+              ],
+              "reason": null
+            },
+            "evidence": {
+              "source_slot": "s1",
+              "quote": "That's a very common and frustrating problem, especially when you're trying to keep things lush in the heat! You're already on the right track by focusing on moisture retention."
+            },
+            "corresponding_source_slots": [
+              "s0"
+            ]
+          },
+          {
+            "monitor_id": "candidate:e-8db338db3142b3ce6ebb9a70",
+            "status": "absent",
+            "relation_support": "unsupported",
+            "expression_status": "not_expressed",
+            "coverage": {
+              "complete": true,
+              "source_slots": [
+                "s0",
+                "s1",
+                "s2",
+                "s3",
+                "s4",
+                "s5"
+              ],
+              "reason": "The proposition 'c-d4714f5c6b2efd1adcd2bd3e retains c-31bb9529338de24088742ffc' is not addressed in any of the available sources."
+            },
+            "evidence": null,
+            "corresponding_source_slots": []
+          }
+        ]
+      },
+      "validation_error": null,
+      "resolved": [
+        {
+          "semantic": {
+            "monitor_id": "candidate:e-61a519d0113de352682eaf43",
+            "status": "present",
+            "relation_support": "supported",
+            "expression_status": "affirmed",
+            "coverage": {
+              "complete": true,
+              "source_slots": [
+                "s0",
+                "s1",
+                "s2",
+                "s3",
+                "s4",
+                "s5"
+              ],
+              "reason": null
+            },
+            "evidence": {
+              "source_slot": "s1",
+              "quote": "That's a very common and frustrating problem, especially when you're trying to keep things lush in the heat! You're already on the right track by focusing on moisture retention.",
+              "start": 0,
+              "end": 177
+            },
+            "corresponding_source_slots": [
+              "s0"
+            ]
+          },
+          "provenance": {
+            "schema_version": "p2-provenance-v1",
+            "monitor_id": "candidate:e-61a519d0113de352682eaf43",
+            "dependence": "current_input_echo",
+            "applicable_categories": [
+              "current_input_echo"
+            ],
+            "corresponding_source_slots": [
+              "s0"
+            ],
+            "ancestry": [],
+            "provenance_group_keys": [],
+            "credit_eligible": false,
+            "resolution_reason": "runtime_source_role_and_recorded_ancestry"
+          }
+        },
+        {
+          "semantic": {
+            "monitor_id": "candidate:e-8db338db3142b3ce6ebb9a70",
+            "status": "absent",
+            "relation_support": "unsupported",
+            "expression_status": "not_expressed",
+            "coverage": {
+              "complete": true,
+              "source_slots": [
+                "s0",
+                "s1",
+                "s2",
+                "s3",
+                "s4",
+                "s5"
+              ],
+              "reason": "The proposition 'c-d4714f5c6b2efd1adcd2bd3e retains c-31bb9529338de24088742ffc' is not addressed in any of the available sources."
+            },
+            "evidence": null,
+            "corresponding_source_slots": []
+          },
+          "provenance": {
+            "schema_version": "p2-provenance-v1",
+            "monitor_id": "candidate:e-8db338db3142b3ce6ebb9a70",
+            "dependence": "unknown",
+            "applicable_categories": [],
+            "corresponding_source_slots": [],
+            "ancestry": [],
+            "provenance_group_keys": [],
+            "credit_eligible": false,
+            "resolution_reason": "non_present_or_unknown_semantic_result"
+          }
+        }
+      ]
+    },
+    {
+      "episode": 3,
+      "source_episode": "6d9d744b-045a-49ca-857d-286a0cd9d934",
+      "request": {
+        "schema_version": "p2-assessor-v6",
+        "prompt_version": "p2-assessor-production-v9",
+        "candidate": {
+          "from": "c-43fcf4db98ca9e13002791e8",
+          "to": "c-b5ccd008226815a9e86af9e6",
+          "relation": "related"
+        },
+        "sources": [
+          {
+            "slot": "s0",
+            "role": "external",
+            "available": true,
+            "text": "Yeah, the mulch idea makes sense—I’ve seen that work in little terrariums. I’ve got some spare gravel from a failed succulent thing; maybe I’ll spread a thin layer over the thyme. But the heat’s the real killer. I moved the basil to the shadiest corner, but it’s still wilting by 3 PM. I don’t want to string up a full shade sail just for a few pots. Maybe a temporary screen? Or just accept that some things won’t make it through July. Anyway, I’m leaving Friday for the weekend—any last-minute tricks to keep them alive without overwatering?",
+            "source_id": "specialist-assessed-03-fd35d27b-c0d2-4e02-b00e-d272f350b10b"
+          },
+          {
+            "slot": "s1",
+            "role": "model_output",
+            "available": true,
+            "text": "That's the classic dilemma: you want the perfect garden, but the summer sun is a relentless force!\n\nSince you're heading out for the weekend, the goal shifts from \"thriving\" to **\"surviving\"** while minimizing the risk of root rot (which is the biggest danger when you're away).\n\nHere are some last-minute, low-effort tricks to get your herbs through the weekend:\n\n### 💧 **Pre-Weekend Hydration Strategy (The \"Soak & Seal\")**\n\nThis strategy focuses on ensuring the roots have a deep, steady supply of water without risking soggy soil.\n\n1. **The Deep Soak (The Night Before):** About 12-24 hours before you leave, give your pots a very thorough, deep watering until you see it draining freely from the bottom. This ensures the soil is completely saturated.\n2. **The \"Drip\" Method (If Possible):** If you have any spare clay pot or bucket, you can create a **wicking system** for the weekend. Place the herb pots *inside* a larger tray or bucket, and fill that tray with 1–2 inches of water. The soil will slowly wick up moisture as needed, keeping the roots hydrated without the surface drying out completely.\n3. **Grouping for Microclimate:** Group all your pots together (basil, thyme, etc.). Plants release moisture through transpiration. When they are clustered, they create a small, slightly more humid microclimate around themselves, which slows down the rate of evaporation from the soil surface.\n\n### 🌬️ **Immediate Heat Mitigation (The \"Shade Hack\")**\n\nSince a full shade sail is overkill, here are some smaller, temporary solutions for the basil:\n\n* **The \"Neighbor Shield\":** Can you temporarily place a taller, non-sensitive plant (even a large",
+            "source_id": "specialist-assessed-03-da69be62-acf9-4557-964f-07137bc53f39"
+          },
+          {
+            "slot": "s2",
+            "role": "external",
+            "available": true,
+            "text": "Smart idea—my tall tomato pot is already halfway there, so I’ll just angle it to shade the basil. And I’ll set up that drip tray with the spare bucket tonight; I’ve got one from the paint project last month. I’ll fill it an inch high and hope the soil wicks just enough. Fingers crossed the thyme doesn’t sit too wet. Anyway, if half of them survive the weekend, I’d call that a win. Back to cooking stories next week—this garden’s gonna write its own drama.",
+            "source_id": "specialist-assessed-03-a92db565-d9c9-499b-b754-e82e7aa9b7bc"
+          },
+          {
+            "slot": "s3",
+            "role": "model_output",
+            "available": true,
+            "text": "That sounds like a perfectly calibrated survival plan for the weekend!\n\nUsing the tomato pot as a natural sun baffle is brilliant—it provides necessary relief without requiring you to string up any complicated structures. And the drip tray/bucket setup is the best way to ensure consistent, slow hydration while you're gone, which is exactly what herbs need when they are stressed by heat.\n\n**A quick note on the thyme:** Since thyme is generally a hardier, more Mediterranean herb, it is usually much more tolerant of drying out than basil. If the thyme is already looking stressed, the moisture from the drip tray will likely help, but be mindful: **Thyme hates having \"wet feet.\"** If the soil in the thyme pot is already dense, monitor it closely when you get back. If it feels soggy, let it dry out slightly before watering again.\n\nEnjoy your weekend! Hopefully, the drama you're anticipating turns out to be a triumphant tale of survival rather than a tragedy of wilted basil.\n\nLooking forward to hearing about your cooking stories when you get back! Happy gardening (and happy cooking)!",
+            "source_id": "specialist-assessed-03-994e8d60-c35c-47b1-a866-3efaa2b7d1ff"
+          },
+          {
+            "slot": "s4",
+            "role": "external",
+            "available": true,
+            "text": "Thanks for the thyme tip—I’ll keep an eye on drainage when I get back. Honestly, if it survives my overthinking, it’s doing well. I’ll report from the kitchen soon. Got a new lentil recipe itching to go wrong.",
+            "source_id": "specialist-assessed-03-87689e31-3a02-4a95-aa82-1f3db907fb4f"
+          },
+          {
+            "slot": "s5",
+            "role": "model_output",
+            "available": true,
+            "text": "That's the perfect attitude to have—if it survives the initial onslaught of summer heat and your own excellent planning, you've won!\n\nAnd I love the thought of a lentil recipe itching to go wrong. That's where the real culinary adventure happens! Sometimes the most memorable meals are the ones that required a little bit of emergency troubleshooting.\n\nSafe travels this weekend, and I'll be here when you return to hear about the garden's resilience and the fate of those lentils! Happy cooking!",
+            "source_id": "specialist-assessed-03-93a6f7f3-fbe3-4884-ae7e-c9c387bf25e5"
+          }
+        ],
+        "monitors": [
+          {
+            "monitor_id": "candidate:e-c2e24a2d844c507f9ddb0e0c",
+            "relation": {
+              "from": "c-43fcf4db98ca9e13002791e8",
+              "to": "c-b5ccd008226815a9e86af9e6",
+              "relation": "related"
+            },
+            "required_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "evidence_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "correspondence_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "context": "general"
+          },
+          {
+            "monitor_id": "candidate:e-cef1314a8fe4ee2ef8e0c64b",
+            "relation": {
+              "from": "c-43fcf4db98ca9e13002791e8",
+              "to": "c-f4bdd4c353ee0533b27431fd",
+              "relation": "part_of"
+            },
+            "required_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "evidence_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "correspondence_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "context": "general"
+          }
+        ],
+        "memory_exposure": [],
+        "replay_ancestry": [],
+        "context": {
+          "current_input_source_slots": [
+            "s0",
+            "s2",
+            "s4"
+          ]
+        },
+        "source_purpose_mask": [
+          "external_evidence",
+          "model_output"
+        ]
+      },
+      "result": {
+        "schema_version": "p2-assessor-v6",
+        "assessments": [
+          {
+            "monitor_id": "candidate:e-c2e24a2d844c507f9ddb0e0c",
+            "status": "present",
+            "relation_support": "supported",
+            "expression_status": "affirmed",
+            "coverage": {
+              "complete": true,
+              "source_slots": [
+                "s0",
+                "s1",
+                "s2",
+                "s3",
+                "s4",
+                "s5"
+              ],
+              "reason": null
+            },
+            "evidence": {
+              "source_slot": "s1",
+              "quote": "That's the classic dilemma: you want the perfect garden, but the summer sun is a relentless force!\n\nSince you're heading out for the weekend, the goal shifts from \"thriving\" to **\"surviving\"** while minimizing the risk of root rot (which is the biggest danger when you're away)."
+            },
+            "corresponding_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ]
+          },
+          {
+            "monitor_id": "candidate:e-cef1314a8fe4ee2ef8e0c64b",
+            "status": "absent",
+            "relation_support": "unsupported",
+            "expression_status": "not_expressed",
+            "coverage": {
+              "complete": true,
+              "source_slots": [
+                "s0",
+                "s1",
+                "s2",
+                "s3",
+                "s4",
+                "s5"
+              ],
+              "reason": "The proposition that c-43fcf4db98ca9e13002791e8 is part_of c-f4bdd4c353ee0533b27431fd is not addressed in any of the available sources."
+            },
+            "evidence": null,
+            "corresponding_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ]
+          }
+        ]
+      },
+      "validation_error": "AssessorValidationError: monitor candidate:e-cef1314a8fe4ee2ef8e0c64b non-present result cannot declare correspondence",
+      "resolved": []
+    },
+    {
+      "episode": 4,
+      "source_episode": "0e7536df-d809-4dd7-a1da-1bd7bcdc41f8",
+      "request": {
+        "schema_version": "p2-assessor-v6",
+        "prompt_version": "p2-assessor-production-v9",
+        "candidate": {
+          "from": "c-23eeb69c681dfdb8eacc7ce9",
+          "to": "c-aa7fbfe6768bccdc8374f3f4",
+          "relation": "related"
+        },
+        "sources": [
+          {
+            "slot": "s0",
+            "role": "external",
+            "available": true,
+            "text": "Smart idea—my tall tomato pot is already halfway there, so I’ll just angle it to shade the basil. And I’ll set up that drip tray with the spare bucket tonight; I’ve got one from the paint project last month. I’ll fill it an inch high and hope the soil wicks just enough. Fingers crossed the thyme doesn’t sit too wet. Anyway, if half of them survive the weekend, I’d call that a win. Back to cooking stories next week—this garden’s gonna write its own drama.",
+            "source_id": "specialist-assessed-04-9a6c3b73-e990-4a00-8449-7664e445321b"
+          },
+          {
+            "slot": "s1",
+            "role": "model_output",
+            "available": true,
+            "text": "That sounds like a perfectly calibrated survival plan for the weekend!\n\nUsing the tomato pot as a natural sun baffle is brilliant—it provides necessary relief without requiring you to string up any complicated structures. And the drip tray/bucket setup is the best way to ensure consistent, slow hydration while you're gone, which is exactly what herbs need when they are stressed by heat.\n\n**A quick note on the thyme:** Since thyme is generally a hardier, more Mediterranean herb, it is usually much more tolerant of drying out than basil. If the thyme is already looking stressed, the moisture from the drip tray will likely help, but be mindful: **Thyme hates having \"wet feet.\"** If the soil in the thyme pot is already dense, monitor it closely when you get back. If it feels soggy, let it dry out slightly before watering again.\n\nEnjoy your weekend! Hopefully, the drama you're anticipating turns out to be a triumphant tale of survival rather than a tragedy of wilted basil.\n\nLooking forward to hearing about your cooking stories when you get back! Happy gardening (and happy cooking)!",
+            "source_id": "specialist-assessed-04-36d9873a-7edc-4a9d-879f-2ff31b07d555"
+          },
+          {
+            "slot": "s2",
+            "role": "external",
+            "available": true,
+            "text": "Thanks for the thyme tip—I’ll keep an eye on drainage when I get back. Honestly, if it survives my overthinking, it’s doing well. I’ll report from the kitchen soon. Got a new lentil recipe itching to go wrong.",
+            "source_id": "specialist-assessed-04-f6f2d3c6-f5b4-4d4d-9230-78dd01e23b80"
+          },
+          {
+            "slot": "s3",
+            "role": "model_output",
+            "available": true,
+            "text": "That's the perfect attitude to have—if it survives the initial onslaught of summer heat and your own excellent planning, you've won!\n\nAnd I love the thought of a lentil recipe itching to go wrong. That's where the real culinary adventure happens! Sometimes the most memorable meals are the ones that required a little bit of emergency troubleshooting.\n\nSafe travels this weekend, and I'll be here when you return to hear about the garden's resilience and the fate of those lentils! Happy cooking!",
+            "source_id": "specialist-assessed-04-49c0018e-7a38-45dc-accc-7e6bb3f580ce"
+          },
+          {
+            "slot": "s4",
+            "role": "external",
+            "available": true,
+            "text": "Back from the weekend—and the basil survived! Thyme stayed just dry enough, and the tomato pot shade trick actually worked. Lentils did go a little sideways, but ended up tasty anyway. I’ll tell you: I added smoked paprika instead of cayenne and now I kinda want to keep it that way. Turns out \"mistakes\" have their own agenda.",
+            "source_id": "specialist-assessed-04-f4c8566b-a3f5-46de-a07b-8db32974f2ff"
+          },
+          {
+            "slot": "s5",
+            "role": "model_output",
+            "available": true,
+            "text": "That is fantastic news across the board! A successful survival report from the garden is always a win, and the basil making it through the heat is a testament to your smart planning.\n\nAnd the lentil story? **That is the best kind of culinary outcome.**\n\n\"Mistakes\" often have the most interesting flavor profiles. Smoked paprika is such a brilliant pivot from cayenne—it adds depth, warmth, and a lovely, smoky earthiness that pairs beautifully with lentils. You didn't just fix a mistake; you *upgraded* the dish entirely. Sometimes the ingredient you reach for out of necessity ends up being the star.\n\nI'm already intrigued by this new, paprika-enhanced lentil flavor profile. You absolutely have to tell me more about how you incorporated it when you have a moment—I'm picturing something rich and comforting.\n\nHow are the tomatoes doing now that the shade is gone? And what's next on the gardening agenda?",
+            "source_id": "specialist-assessed-04-f98abd85-b54d-4716-b5c3-9de09d9ef1b5"
+          }
+        ],
+        "monitors": [
+          {
+            "monitor_id": "candidate:e-9d2a2b8d1cc9a665afa4c364",
+            "relation": {
+              "from": "c-23eeb69c681dfdb8eacc7ce9",
+              "to": "c-aa7fbfe6768bccdc8374f3f4",
+              "relation": "related"
+            },
+            "required_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "evidence_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "correspondence_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "context": "general"
+          }
+        ],
+        "memory_exposure": [],
+        "replay_ancestry": [],
+        "context": {
+          "current_input_source_slots": [
+            "s0",
+            "s2",
+            "s4"
+          ]
+        },
+        "source_purpose_mask": [
+          "external_evidence",
+          "model_output"
+        ]
+      },
+      "result": {
+        "schema_version": "p2-assessor-v6",
+        "assessments": [
+          {
+            "monitor_id": "candidate:e-9d2a2b8d1cc9a665afa4c364",
+            "status": "present",
+            "relation_support": "supported",
+            "expression_status": "affirmed",
+            "coverage": {
+              "complete": true,
+              "source_slots": [
+                "s0",
+                "s1",
+                "s2",
+                "s3",
+                "s4",
+                "s5"
+              ],
+              "reason": null
+            },
+            "evidence": {
+              "source_slot": "s4",
+              "quote": "Back from the weekend—and the basil survived! Thyme stayed just dry enough, and the tomato pot shade trick actually worked. Lentils did go a little sideways, but ended up tasty anyway. I’ll tell you: I added smoked paprika instead of cayenne and now I kinda want to keep it that way. Turns out \"mistakes\" have their own agenda."
+            },
+            "corresponding_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ]
+          }
+        ]
+      },
+      "validation_error": null,
+      "resolved": [
+        {
+          "semantic": {
+            "monitor_id": "candidate:e-9d2a2b8d1cc9a665afa4c364",
+            "status": "present",
+            "relation_support": "supported",
+            "expression_status": "affirmed",
+            "coverage": {
+              "complete": true,
+              "source_slots": [
+                "s0",
+                "s1",
+                "s2",
+                "s3",
+                "s4",
+                "s5"
+              ],
+              "reason": null
+            },
+            "evidence": {
+              "source_slot": "s4",
+              "quote": "Back from the weekend—and the basil survived! Thyme stayed just dry enough, and the tomato pot shade trick actually worked. Lentils did go a little sideways, but ended up tasty anyway. I’ll tell you: I added smoked paprika instead of cayenne and now I kinda want to keep it that way. Turns out \"mistakes\" have their own agenda.",
+              "start": 0,
+              "end": 327
+            },
+            "corresponding_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ]
+          },
+          "provenance": {
+            "schema_version": "p2-provenance-v1",
+            "monitor_id": "candidate:e-9d2a2b8d1cc9a665afa4c364",
+            "dependence": "external_supported",
+            "applicable_categories": [
+              "external_supported"
+            ],
+            "corresponding_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "ancestry": [],
+            "provenance_group_keys": [
+              "external:s4"
+            ],
+            "credit_eligible": true,
+            "resolution_reason": "runtime_source_role_and_recorded_ancestry"
+          }
+        }
+      ]
+    },
+    {
+      "episode": 8,
+      "source_episode": "7f7a24b5-f2bb-41a5-9c1c-225bd6736e69",
+      "request": {
+        "schema_version": "p2-assessor-v6",
+        "prompt_version": "p2-assessor-production-v9",
+        "candidate": {
+          "from": "c-ffbed6c7a0804733419e97de",
+          "to": "c-0bf6084ecaac8c711f4c96a3",
+          "relation": "prevents"
+        },
+        "sources": [
+          {
+            "slot": "s0",
+            "role": "external",
+            "available": true,
+            "text": "I tried the sock method last week—cut up an old cotton tee, threaded it through the basil pot, and let the tail dip into a shallow dish. First day, it looked like a science fair project. By day three? The soil stayed just damp, even in the afternoon bake. No more crispy edges.\n\nThe bottle trick’s next—I’ve got a couple of liter soda bottles saved. Might try one with the tomatoes since they’re so fussy. Only thing: I’ll need to remember to refill the saucers. Almost forgot this morning, then remembered the sock wouldn’t work without water *to* wick. Rookie move.\n\nAnyway, the real test is next weekend—I’m heading out again, just overnight, but still. Want the whole lineup to survive my absence without turning the balcony into a drip experiment city. Maybe combine methods?",
+            "source_id": "specialist-assessed-08-e7e2c12d-5d8b-4022-a65d-ac944ed845bc"
+          },
+          {
+            "slot": "s1",
+            "role": "model_output",
+            "available": true,
+            "text": "That's fantastic feedback on the sock method! It sounds like it worked exactly as intended—a steady, slow delivery that kept the edges from crisping. You've got a great handle on the mechanics now: **the reservoir is the key.**\n\nAnd you are absolutely right about the bottle trick—it works best when you establish a reliable water source (the saucer). It’s a simple, cyclical maintenance task, but it’s infinitely better than the morning sprint.\n\n### Strategy for Overnight Survival\n\nSince you're heading out for a short, overnight trip, your goal isn't a full, long-term drip system, but rather **maximum sustained hydration** for the duration of your absence.\n\nHere is a tiered strategy combining what you know works:\n\n**1. The Tomato Priority (The Fussy Ones):**\n*   **Use the Bottle Method:** For the tomatoes, use the liter soda bottle buried near the base. Since they are the most sensitive, this provides a deep, slow feed directly to the root zone.\n*   **Refill Protocol:** Before you leave, fill the saucer underneath the bottle *completely*. Since it’s only overnight, the water level should hold steady.\n\n**2. The Basil & Lentil Survivors (The Hardy Ones):**\n*   **Reinforce the Sock Method:** For the basil, keep the sock wick going, but **top up the saucer** with a generous amount of water before you leave. This gives the wick a large, immediate reservoir to pull from all night.\n*   **The \"Deep Soak\" Pre-Departure:** If you have time before you leave, give the basil pot a *very* deep, thorough soak. This ensures the soil is saturated deep down, giving the wick a head start.\n\n**3. The Combined Approach (The \"Hybrid\"):**\n*   If",
+            "source_id": "specialist-assessed-08-35bebabf-3953-40fd-ab7e-c754aa41181c"
+          },
+          {
+            "slot": "s2",
+            "role": "external",
+            "available": true,
+            "text": "Actually, I tried something different this morning—filled the soda bottle, poked a few holes in the cap (not the bottom), and laid it on its side *next* to the tomato pot, with the neck pointing slightly down into the soil. Less digging, and I can swap bottles if needed. Feels less like burial, more like a slow leak where I want it.\n\nFor the basil, I doubled the wick—two strips from the same old tee—just to be safe. Saucer’s full, and I gave everything a good soak last night. If the weekend goes like last time, I’ll come back to survivors, not casualties.\n\nStill curious—any reason not to tape two bottles together for a longer drip? Feels like cheating gravity, but maybe it works?",
+            "source_id": "specialist-assessed-08-d873ae1a-a2ba-44a4-8679-90c6166c50a6"
+          },
+          {
+            "slot": "s3",
+            "role": "model_output",
+            "available": true,
+            "text": "That is a brilliant refinement of the bottle method!\n\n**Laying the bottle on its side, with the neck pointing into the soil, is a significant upgrade.** It solves the \"burial\" aesthetic problem and gives you a much more accessible reservoir. You can easily check the water level in the cap area or swap the entire bottle if it runs dry, which is perfect for short-term monitoring. It’s resourceful engineering in action!\n\nAnd doubling the wick for the basil is a smart move for peace of mind. You've built a robust, multi-layered defense system against the heat.\n\n---\n\n### The \"Taped Bottles\" Question: Gravity vs. Siphoning\n\nYou've hit on a concept that borders on engineering, and your intuition about \"cheating gravity\" is spot on—you are trying to create a very slow, controlled siphon or gravity feed.\n\n**In theory, yes, you can tape them together, but in practice, it's often more complicated than it's worth for a simple drip.**\n\nHere is a breakdown of the pros and cons of taping them together:\n\n#### 🚧 The Challenges (Why it might fail)\n\n1.  **Seal Integrity:** To make a true, slow drip, you need a perfect, leak-proof seal between the two bottles. Plastic bottles are not designed to be joined seamlessly. Any microscopic gap will result in a rapid leak, potentially flooding the soil instead of dripping slowly.\n2.  **Pressure Dynamics:** If you fill one bottle and let it feed the other, you are relying on the pressure difference between the two containers. If the seal isn't perfect, the system will just act like one large, slightly leaky container.\n3.  **Root Zone Consistency:** The goal of slow drip is *consistent* moisture delivery. Taping them together creates one large, potentially unpredictable",
+            "source_id": "specialist-assessed-08-61df875d-ebae-4d7d-aef6-38c9dc1743a3"
+          },
+          {
+            "slot": "s4",
+            "role": "external",
+            "available": true,
+            "text": "Yeah, I figured the seal would be the weak point—like trying to tape two leaky buckets together and calling it a cistern. I’ll stick with the side-lay method and just swap bottles if needed. Simpler.\n\nFunny thing—this morning I noticed the basil’s new leaves are a little puckered, almost like they’re stretching. Makes me wonder if it’s not just water, but light too. The afternoon sun hits the left side of the pot harder, and the plant’s leaning that way. Might need to rotate it, or maybe that deep soak made it thirsty for more than just H₂O.\n\nAnyway, the real test is Saturday. If I can leave for a night and come back to green instead of droopy, I’ll call it a win. Might even try the wick-and-bottle combo on the peppers next week. One crisis at a time.",
+            "source_id": "specialist-assessed-08-f5be6075-d722-4119-88ef-10609dfa264f"
+          },
+          {
+            "slot": "s5",
+            "role": "model_output",
+            "available": true,
+            "text": "You are absolutely nailing the iterative process of gardening. You moved from \"science fair project\" to \"optimized, multi-system survival plan\" in a week!\n\nYour observation about the basil is incredibly astute. You've moved beyond just \"Is it wet?\" to **\"Is it *getting* what it needs?\"**\n\n### Analyzing the Basil: Light vs. Water Stress\n\nThe puckering, stretching, and leaning strongly suggest a combination of **light stress and potential water imbalance**, even if the soil feels damp.\n\n1.  **Phototropism (The Leaning):** The plant is behaving exactly as it should—it's leaning toward the strongest light source (the afternoon sun on the left). This is called **phototropism**. It's not necessarily a *problem*, but it tells you where the energy is concentrated.\n2.  **Puckering/Stretching (The Stress):**\n    *   **If it's *stretching* (etiolation):** It means it's desperate for more light, even if it's getting *some*. It's reaching out.\n    *   **If it's *puckering* (curling):** This can be a sign of *too much* water (root rot stress, where the roots can't take up water efficiently) or, conversely, a rapid, sudden loss of moisture.\n\n**The Deep Soak Hypothesis:** You are probably correct. A deep soak last night gave the entire root ball a massive influx of water. If the afternoon bake is intense, the soil might have dried out *faster* on the surface than the wick could pull, creating a temporary, localized water deficit that stresses the leaves.\n\n### Recommendations Before Saturday\n\nSince the goal is survival for the night, here’s how to address this potential imbalance:\n\n1.  ",
+            "source_id": "specialist-assessed-08-9911e032-10f1-441b-aefc-3f75b0ee5d8e"
+          }
+        ],
+        "monitors": [
+          {
+            "monitor_id": "candidate:e-136a12a3c965db025e99384d",
+            "relation": {
+              "from": "c-ffbed6c7a0804733419e97de",
+              "to": "c-0bf6084ecaac8c711f4c96a3",
+              "relation": "prevents"
+            },
+            "required_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "evidence_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "correspondence_source_slots": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "context": "general"
+          }
+        ],
+        "memory_exposure": [],
+        "replay_ancestry": [],
+        "context": {
+          "current_input_source_slots": [
+            "s0",
+            "s2",
+            "s4"
+          ]
+        },
+        "source_purpose_mask": [
+          "external_evidence",
+          "model_output"
+        ]
+      },
+      "result": {
+        "schema_version": "p2-assessor-v6",
+        "assessments": [
+          {
+            "monitor_id": "candidate:e-136a12a3c965db025e99384d",
+            "status": "present",
+            "relation_support": "unsupported",
+            "expression_status": "unknown",
+            "coverage": {
+              "complete": true,
+              "source_slots": [
+                "s0",
+                "s1",
+                "s2",
+                "s3",
+                "s4",
+                "s5"
+              ],
+              "reason": null
+            },
+            "evidence": null,
+            "corresponding_source_slots": []
+          }
+        ]
+      },
+      "validation_error": "AssessorValidationError: monitor candidate:e-136a12a3c965db025e99384d.evidence must be an object",
+      "resolved": []
+    }
+  ],
+  "publications": [
+    {
+      "episode": 0,
+      "publication": {
+        "operation_id": "specialist-assessed-interpretation-00",
+        "interpretation_id": "aaae205b-e4ae-4cdc-bf07-a431fb769b3d",
+        "status": "ACCEPTED",
+        "lineage_revision": 37,
+        "graph_revision": 1,
+        "manifest_id": "85cf770a-d4e1-490a-878b-f5deef51217f",
+        "snapshot_id": "22c0027d-d7cb-413d-b5f3-4a9b6ed1c1ca"
+      },
+      "observations": [
+        {
+          "target_key": "e-61a519d0113de352682eaf43",
+          "edge_key": "e-61a519d0113de352682eaf43",
+          "context": "general",
+          "source_role": "model_output",
+          "dependence": "current_input_echo",
+          "status": "present",
+          "relation_support": "supported",
+          "expression_status": "affirmed",
+          "semantic_schema_version": "p2-assessor-v6",
+          "group_key": null,
+          "provenance_group_keys": [],
+          "occurrence_key": "specialist-assessed-e00:candidate:e-61a519d0113de352682eaf43",
+          "covered": true,
+          "relevant": true,
+          "actual_exposure": false,
+          "eligible": false
+        },
+        {
+          "target_key": "e-8db338db3142b3ce6ebb9a70",
+          "edge_key": "e-8db338db3142b3ce6ebb9a70",
+          "context": "general",
+          "source_role": "model_output",
+          "dependence": "unknown",
+          "status": "unknown",
+          "relation_support": "unknown",
+          "expression_status": "unknown",
+          "semantic_schema_version": "p2-assessor-v6",
+          "group_key": null,
+          "provenance_group_keys": [],
+          "occurrence_key": "specialist-assessed-e00:candidate:e-8db338db3142b3ce6ebb9a70",
+          "covered": false,
+          "relevant": true,
+          "actual_exposure": false,
+          "eligible": false
+        }
+      ]
+    },
+    {
+      "episode": 1,
+      "publication": {
+        "operation_id": "specialist-assessed-interpretation-01",
+        "interpretation_id": "4086ba9f-3de3-44e1-8e30-84ae2d4e2d1b",
+        "status": "ACCEPTED",
+        "lineage_revision": 38,
+        "graph_revision": 2,
+        "manifest_id": "28403b96-9500-4020-8128-182c1c927124",
+        "snapshot_id": "f4708a09-7885-420e-8988-5479781b7a8f"
+      },
+      "observations": [
+        {
+          "target_key": "e-61a519d0113de352682eaf43",
+          "edge_key": "e-61a519d0113de352682eaf43",
+          "context": "general",
+          "source_role": "model_output",
+          "dependence": "current_input_echo",
+          "status": "present",
+          "relation_support": "supported",
+          "expression_status": "affirmed",
+          "semantic_schema_version": "p2-assessor-v6",
+          "group_key": null,
+          "provenance_group_keys": [],
+          "occurrence_key": "specialist-assessed-e01:candidate:e-61a519d0113de352682eaf43",
+          "covered": true,
+          "relevant": true,
+          "actual_exposure": false,
+          "eligible": false
+        },
+        {
+          "target_key": "e-8db338db3142b3ce6ebb9a70",
+          "edge_key": "e-8db338db3142b3ce6ebb9a70",
+          "context": "general",
+          "source_role": "model_output",
+          "dependence": "unknown",
+          "status": "absent",
+          "relation_support": "unsupported",
+          "expression_status": "not_expressed",
+          "semantic_schema_version": "p2-assessor-v6",
+          "group_key": null,
+          "provenance_group_keys": [],
+          "occurrence_key": "specialist-assessed-e01:candidate:e-8db338db3142b3ce6ebb9a70",
+          "covered": true,
+          "relevant": true,
+          "actual_exposure": false,
+          "eligible": false
+        }
+      ]
+    },
+    {
+      "episode": 2,
+      "publication": {
+        "operation_id": "specialist-assessed-interpretation-02",
+        "interpretation_id": "17c4964f-0420-4985-8058-510751752324",
+        "status": "ACCEPTED",
+        "lineage_revision": 39,
+        "graph_revision": 3,
+        "manifest_id": "e500b887-05cb-4217-a58a-e78dea74ae5e",
+        "snapshot_id": "5e604738-ddf6-487d-b80e-76b9415e6ec2"
+      },
+      "observations": [
+        {
+          "target_key": "e-61a519d0113de352682eaf43",
+          "edge_key": "e-61a519d0113de352682eaf43",
+          "context": "general",
+          "source_role": "model_output",
+          "dependence": "current_input_echo",
+          "status": "present",
+          "relation_support": "supported",
+          "expression_status": "affirmed",
+          "semantic_schema_version": "p2-assessor-v6",
+          "group_key": null,
+          "provenance_group_keys": [],
+          "occurrence_key": "specialist-assessed-e02:candidate:e-61a519d0113de352682eaf43",
+          "covered": true,
+          "relevant": true,
+          "actual_exposure": false,
+          "eligible": false
+        },
+        {
+          "target_key": "e-8db338db3142b3ce6ebb9a70",
+          "edge_key": "e-8db338db3142b3ce6ebb9a70",
+          "context": "general",
+          "source_role": "model_output",
+          "dependence": "unknown",
+          "status": "absent",
+          "relation_support": "unsupported",
+          "expression_status": "not_expressed",
+          "semantic_schema_version": "p2-assessor-v6",
+          "group_key": null,
+          "provenance_group_keys": [],
+          "occurrence_key": "specialist-assessed-e02:candidate:e-8db338db3142b3ce6ebb9a70",
+          "covered": true,
+          "relevant": true,
+          "actual_exposure": false,
+          "eligible": false
+        }
+      ]
+    },
+    {
+      "episode": 3,
+      "publication": {
+        "operation_id": "specialist-assessed-interpretation-03",
+        "interpretation_id": "04da4a28-85ec-47d1-a3b0-a0a2cf607538",
+        "status": "ACCEPTED",
+        "lineage_revision": 40,
+        "graph_revision": 4,
+        "manifest_id": "66908faf-fdb1-444c-8952-417380b4911f",
+        "snapshot_id": "518d42c3-ab50-45d6-a3c2-b55d3215de07"
+      },
+      "observations": []
+    },
+    {
+      "episode": 4,
+      "publication": {
+        "operation_id": "specialist-assessed-interpretation-04",
+        "interpretation_id": "5c9e66a0-2a42-4b1d-ac06-7df1938e0cef",
+        "status": "ACCEPTED",
+        "lineage_revision": 41,
+        "graph_revision": 5,
+        "manifest_id": "38199da6-6c02-46ba-ac09-71fab88fe684",
+        "snapshot_id": "d0d1a9c0-84a5-4d71-b616-aab4d7ca4672"
+      },
+      "observations": [
+        {
+          "target_key": "e-9d2a2b8d1cc9a665afa4c364",
+          "edge_key": "e-9d2a2b8d1cc9a665afa4c364",
+          "context": "general",
+          "source_role": "external",
+          "dependence": "external_supported",
+          "status": "present",
+          "relation_support": "supported",
+          "expression_status": "affirmed",
+          "semantic_schema_version": "p2-assessor-v6",
+          "group_key": "external:s4",
+          "provenance_group_keys": [
+            "external:s4"
+          ],
+          "occurrence_key": "specialist-assessed-e04:candidate:e-9d2a2b8d1cc9a665afa4c364",
+          "covered": true,
+          "relevant": true,
+          "actual_exposure": false,
+          "eligible": true
+        }
+      ]
+    },
+    {
+      "episode": 5,
+      "publication": {
+        "operation_id": "specialist-assessed-interpretation-05",
+        "interpretation_id": "0c3780d9-68eb-4487-b529-187d35abc0d6",
+        "status": "ACCEPTED",
+        "lineage_revision": 42,
+        "graph_revision": 5,
+        "manifest_id": "5f17dcc0-d159-4c11-8d5b-1ca15d446d72",
+        "snapshot_id": "d0d1a9c0-84a5-4d71-b616-aab4d7ca4672"
+      },
+      "observations": []
+    },
+    {
+      "episode": 6,
+      "publication": {
+        "operation_id": "specialist-assessed-interpretation-06",
+        "interpretation_id": "b667f963-5639-41a3-80b5-7b515d8a602e",
+        "status": "ACCEPTED",
+        "lineage_revision": 43,
+        "graph_revision": 5,
+        "manifest_id": "2295a793-557e-4bcc-9ca8-42ac38bf33cb",
+        "snapshot_id": "d0d1a9c0-84a5-4d71-b616-aab4d7ca4672"
+      },
+      "observations": []
+    },
+    {
+      "episode": 7,
+      "publication": {
+        "operation_id": "specialist-assessed-interpretation-07",
+        "interpretation_id": "1d827787-2074-41d5-9f20-209aa0f5bd06",
+        "status": "ACCEPTED",
+        "lineage_revision": 44,
+        "graph_revision": 5,
+        "manifest_id": "da01ea16-ea83-4a4b-9a5c-f912dd54262d",
+        "snapshot_id": "d0d1a9c0-84a5-4d71-b616-aab4d7ca4672"
+      },
+      "observations": []
+    },
+    {
+      "episode": 8,
+      "publication": {
+        "operation_id": "specialist-assessed-interpretation-08",
+        "interpretation_id": "ab0054ab-888c-4494-8624-3f43a0fadd5b",
+        "status": "ACCEPTED",
+        "lineage_revision": 45,
+        "graph_revision": 6,
+        "manifest_id": "f8a29640-ea0d-4ec6-a372-2af6ae72221b",
+        "snapshot_id": "f1aaf7e9-de6a-4987-a196-0e1cc0dd6f5e"
+      },
+      "observations": []
+    },
+    {
+      "episode": 9,
+      "publication": {
+        "operation_id": "specialist-assessed-interpretation-09",
+        "interpretation_id": "776ff7dd-38ec-465d-9ca8-a68e3a55a120",
+        "status": "ACCEPTED",
+        "lineage_revision": 46,
+        "graph_revision": 6,
+        "manifest_id": "e7cfc223-ed10-422e-b88d-06659001e0d5",
+        "snapshot_id": "f1aaf7e9-de6a-4987-a196-0e1cc0dd6f5e"
+      },
+      "observations": []
+    },
+    {
+      "episode": 10,
+      "publication": {
+        "operation_id": "specialist-assessed-interpretation-10",
+        "interpretation_id": "09636752-e94a-4edc-b82d-76931ff1b0ba",
+        "status": "ACCEPTED",
+        "lineage_revision": 47,
+        "graph_revision": 6,
+        "manifest_id": "84903905-2cbf-456a-82c6-98e02ad787ea",
+        "snapshot_id": "f1aaf7e9-de6a-4987-a196-0e1cc0dd6f5e"
+      },
+      "observations": []
+    },
+    {
+      "episode": 11,
+      "publication": {
+        "operation_id": "specialist-assessed-interpretation-11",
+        "interpretation_id": "848cb0fc-e549-4aca-9562-27eb43c2974d",
+        "status": "ACCEPTED",
+        "lineage_revision": 48,
+        "graph_revision": 6,
+        "manifest_id": "faf5a294-c7fd-4bc2-bfd1-9e05a72f2230",
+        "snapshot_id": "f1aaf7e9-de6a-4987-a196-0e1cc0dd6f5e"
+      },
+      "observations": []
+    }
+  ]
+}

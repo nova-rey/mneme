@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import uuid
 
 import pytest
 
@@ -164,3 +165,49 @@ def test_learned_selection_loads_persisted_route_restraint(tmp_path):
         assert json.loads(route_payload)["state"]["routes"][f"{route_key}:general"][
             "consequence"
         ] == -250_000
+
+
+def test_collision_safe_graph_edge_keys_reuse_local_learner_binding(tmp_path):
+    store, instance = _graph_store(tmp_path, learning=True)
+    with store:
+        snapshot = store.connection.execute(
+            "SELECT graph_snapshot_id FROM manifests WHERE manifest_id=?",
+            (store.current()["current_manifest_id"],),
+        ).fetchone()[0]
+        interpretation_id = store.connection.execute(
+            "SELECT interpretation_id FROM interpretations LIMIT 1"
+        ).fetchone()[0]
+        canonical = "edge:stable"
+        store.connection.execute(
+            "INSERT INTO semantic_bindings VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+            (
+                str(uuid.uuid4()),
+                instance,
+                interpretation_id,
+                None,
+                "e1",
+                canonical,
+                "causal",
+                "test",
+                1,
+                json.dumps({"local_key": "e1"}),
+                "2026-01-01T00:00:00Z",
+            ),
+        )
+        store.connection.execute(
+            "INSERT INTO graph_edges VALUES(?,?,?,?,?,?,?,?)",
+            (
+                snapshot,
+                "e1~collision",
+                "alpha",
+                "bridge",
+                "causal",
+                "asserted",
+                json.dumps({"local_key": "e1"}),
+                json.dumps({}),
+            ),
+        )
+        pin = ResponseController(store, instance, FakeHost())._pin()
+        mapping = ResponseController(store, instance, FakeHost())._learner_key_map(pin)
+        assert mapping["e1"] == canonical
+        assert mapping["e1~collision"] == canonical
