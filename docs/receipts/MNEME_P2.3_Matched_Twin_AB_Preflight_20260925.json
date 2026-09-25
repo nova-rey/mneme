@@ -1,0 +1,289 @@
+{
+  "status": "BLOCKED_READOUT_ROUTE_BOUND",
+  "reason": "The only positive learner edge is outside the deterministic max_routes=8 route set because repeated interpretation materialization contributes collision variants. Normal readout selected no route for all frozen probes, so a matched A/B would not differ in MNEME exposure.",
+  "derived_store": "/tmp/mneme-p23-specialist-assessed-20260925/subjects.sqlite3",
+  "instance_id": "220e331d-1117-554c-9de1-5ff406bfc0d4",
+  "manifest_id": "faf5a294-c7fd-4bc2-bfd1-9e05a72f2230",
+  "graph_snapshot_id": "f1aaf7e9-de6a-4987-a196-0e1cc0dd6f5e",
+  "graph_revision": 6,
+  "route_bound": 8,
+  "graph_edge_count": 10,
+  "concepts": {
+    "c-0bf6084ecaac8c711f4c96a3": "crispy edges",
+    "c-23eeb69c681dfdb8eacc7ce9": "garden",
+    "c-31bb9529338de24088742ffc": "moisture",
+    "c-43fcf4db98ca9e13002791e8": "mulch",
+    "c-aa7fbfe6768bccdc8374f3f4": "paint project",
+    "c-b5ccd008226815a9e86af9e6": "succulent",
+    "c-d4714f5c6b2efd1adcd2bd3e": "pots",
+    "c-d8bf99a5f3368507dea71c42": "pasta sauce",
+    "c-f4bdd4c353ee0533b27431fd": "terrariums",
+    "c-ffbed6c7a0804733419e97de": "sock method"
+  },
+  "edge_keys": [
+    "e-136a12a3c965db025e99384d",
+    "e-61a519d0113de352682eaf43",
+    "e-61a519d0113de352682eaf43~3fc8259bad284812",
+    "e-61a519d0113de352682eaf43~3fc8259bad284812~2",
+    "e-8db338db3142b3ce6ebb9a70",
+    "e-8db338db3142b3ce6ebb9a70~26fdae47cf91bdd7",
+    "e-8db338db3142b3ce6ebb9a70~26fdae47cf91bdd7~2",
+    "e-9d2a2b8d1cc9a665afa4c364",
+    "e-c2e24a2d844c507f9ddb0e0c",
+    "e-cef1314a8fe4ee2ef8e0c64b"
+  ],
+  "local_to_canonical": {
+    "e-8db338db3142b3ce6ebb9a70": "edge:acba4c4eb05d1357d0ee7ea2b3779b7db7bab4fe04ee2d263f933ab8aa2f7f0e",
+    "e-61a519d0113de352682eaf43": "edge:19cd442662ee140f4cd38bcecdf6acab8890261c4a8b01ec23d419772edd46ab",
+    "e-c2e24a2d844c507f9ddb0e0c": "edge:b4d01437fa07e6f19454bcdf132b47b3117070a0cbeb2a4c7c116b0b09958584",
+    "e-cef1314a8fe4ee2ef8e0c64b": "edge:515a1e1bb3d388a6c9de5cc34c952ca1b81a52e8ed7d93bbfb76881e13e00730",
+    "e-9d2a2b8d1cc9a665afa4c364": "edge:3ac80051ebcb60ac19ab37ff3304505bbec4e8810357cb8054c39f7b3a2f6827",
+    "e-136a12a3c965db025e99384d": "edge:e563c87f6deebe4cad83b58ddc57e8d760001c4a313db13175273bca8214fd87"
+  },
+  "positive_learner_edges": [
+    {
+      "edge_key": "edge:3ac80051ebcb60ac19ab37ff3304505bbec4e8810357cb8054c39f7b3a2f6827",
+      "accessibility": 80000,
+      "support": 20000
+    },
+    {
+      "edge_key": "edge:3ac80051ebcb60ac19ab37ff3304505bbec4e8810357cb8054c39f7b3a2f6827",
+      "accessibility": 80000,
+      "support": 20000
+    }
+  ],
+  "probe_audit": [
+    {
+      "pair": 0,
+      "treatment": "M",
+      "query": "You are balancing a garden project with a paint project before guests arrive. How would you organize the work, and what constraints matter?",
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "You are balancing a garden project with a paint project before guests arrive. How would you organize the work, and what constraints matter?"
+          }
+        ],
+        "system": "Answer the user clearly and briefly. Do not mention hidden memory or this experiment.",
+        "parameters": {
+          "temperature": 0,
+          "max_new_tokens": 96
+        },
+        "seed": null,
+        "response_format": null,
+        "run_metadata": {
+          "replayed_message_ordinals": []
+        }
+      },
+      "considered": [],
+      "selected": [],
+      "applied": []
+    },
+    {
+      "pair": 0,
+      "treatment": "C",
+      "query": "You are balancing a garden project with a paint project before guests arrive. How would you organize the work, and what constraints matter?",
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "You are balancing a garden project with a paint project before guests arrive. How would you organize the work, and what constraints matter?"
+          }
+        ],
+        "system": "Answer the user clearly and briefly. Do not mention hidden memory or this experiment.",
+        "parameters": {
+          "temperature": 0,
+          "max_new_tokens": 96
+        },
+        "seed": null,
+        "response_format": null,
+        "run_metadata": {
+          "replayed_message_ordinals": []
+        }
+      },
+      "considered": [],
+      "selected": [],
+      "applied": []
+    },
+    {
+      "pair": 1,
+      "treatment": "M",
+      "query": "A garden and a paint project both need attention during a hot weekend. Which constraints would shape your plan?",
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "A garden and a paint project both need attention during a hot weekend. Which constraints would shape your plan?"
+          }
+        ],
+        "system": "Answer the user clearly and briefly. Do not mention hidden memory or this experiment.",
+        "parameters": {
+          "temperature": 0,
+          "max_new_tokens": 96
+        },
+        "seed": null,
+        "response_format": null,
+        "run_metadata": {
+          "replayed_message_ordinals": []
+        }
+      },
+      "considered": [],
+      "selected": [],
+      "applied": []
+    },
+    {
+      "pair": 1,
+      "treatment": "C",
+      "query": "A garden and a paint project both need attention during a hot weekend. Which constraints would shape your plan?",
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "A garden and a paint project both need attention during a hot weekend. Which constraints would shape your plan?"
+          }
+        ],
+        "system": "Answer the user clearly and briefly. Do not mention hidden memory or this experiment.",
+        "parameters": {
+          "temperature": 0,
+          "max_new_tokens": 96
+        },
+        "seed": null,
+        "response_format": null,
+        "run_metadata": {
+          "replayed_message_ordinals": []
+        }
+      },
+      "considered": [],
+      "selected": [],
+      "applied": []
+    },
+    {
+      "pair": 2,
+      "treatment": "M",
+      "query": "A fictional habitat has limited water and fluctuating heat. How would you keep its supplies steady without constant attention?",
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "A fictional habitat has limited water and fluctuating heat. How would you keep its supplies steady without constant attention?"
+          }
+        ],
+        "system": "Answer the user clearly and briefly. Do not mention hidden memory or this experiment.",
+        "parameters": {
+          "temperature": 0,
+          "max_new_tokens": 96
+        },
+        "seed": null,
+        "response_format": null,
+        "run_metadata": {
+          "replayed_message_ordinals": []
+        }
+      },
+      "considered": [],
+      "selected": [],
+      "applied": []
+    },
+    {
+      "pair": 2,
+      "treatment": "C",
+      "query": "A fictional habitat has limited water and fluctuating heat. How would you keep its supplies steady without constant attention?",
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "A fictional habitat has limited water and fluctuating heat. How would you keep its supplies steady without constant attention?"
+          }
+        ],
+        "system": "Answer the user clearly and briefly. Do not mention hidden memory or this experiment.",
+        "parameters": {
+          "temperature": 0,
+          "max_new_tokens": 96
+        },
+        "seed": null,
+        "response_format": null,
+        "run_metadata": {
+          "replayed_message_ordinals": []
+        }
+      },
+      "considered": [],
+      "selected": [],
+      "applied": []
+    },
+    {
+      "pair": 3,
+      "treatment": "M",
+      "query": "Two people share one repair tool. What is a fair way to schedule access when both have urgent jobs?",
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "Two people share one repair tool. What is a fair way to schedule access when both have urgent jobs?"
+          }
+        ],
+        "system": "Answer the user clearly and briefly. Do not mention hidden memory or this experiment.",
+        "parameters": {
+          "temperature": 0,
+          "max_new_tokens": 96
+        },
+        "seed": null,
+        "response_format": null,
+        "run_metadata": {
+          "replayed_message_ordinals": []
+        }
+      },
+      "considered": [],
+      "selected": [],
+      "applied": []
+    },
+    {
+      "pair": 3,
+      "treatment": "C",
+      "query": "Two people share one repair tool. What is a fair way to schedule access when both have urgent jobs?",
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "Two people share one repair tool. What is a fair way to schedule access when both have urgent jobs?"
+          }
+        ],
+        "system": "Answer the user clearly and briefly. Do not mention hidden memory or this experiment.",
+        "parameters": {
+          "temperature": 0,
+          "max_new_tokens": 96
+        },
+        "seed": null,
+        "response_format": null,
+        "run_metadata": {
+          "replayed_message_ordinals": []
+        }
+      },
+      "considered": [],
+      "selected": [],
+      "applied": []
+    }
+  ],
+  "local_host": {
+    "model_family": "Gemma 4",
+    "model_id": "google/gemma-4-E4B-it",
+    "model_revision": "sha256:7274094de2e0c2a37a386f55fc4e23061a954da5bd7a335e7dfe56f2743c277a",
+    "tokenizer_id": "google/gemma-4-E4B-it",
+    "tokenizer_revision": "sha256:7274094de2e0c2a37a386f55fc4e23061a954da5bd7a335e7dfe56f2743c277a",
+    "chat_template": "gemma-chat-template",
+    "quantization": "UD-Q2_K_XL",
+    "runtime": "llama.cpp",
+    "runtime_version": "0.5.0-dev-4b1a27f",
+    "provider": "local-msi",
+    "execution": {
+      "model_path": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+      "executable": "/home/rey/src/llama.cpp/build-cuda/bin/llama-cli",
+      "gpu_layers": "all",
+      "context_size": 4096
+    },
+    "capabilities": [
+      "local_weights",
+      "text_generation"
+    ]
+  },
+  "provider_calls_this_step": 0,
+  "historical_state_unchanged": true
+}
