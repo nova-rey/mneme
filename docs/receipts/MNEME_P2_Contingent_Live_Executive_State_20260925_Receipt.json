@@ -1,0 +1,144 @@
+{
+  "artifact_version": "p2-contingent-live-evidence-v1",
+  "study_id": "contingent-conversation-interloper-20260924",
+  "run_id": "contingent-live-20260925",
+  "status": "COMPLETE",
+  "contract_revision": 2,
+  "interloper_executive_state_version": "interloper-executive-v1",
+  "interloper_policy_revision": 3,
+  "extractor_version": "relationships-v1",
+  "conditions": [
+    "interactive",
+    "open_loop"
+  ],
+  "turns_per_condition": 24,
+  "context": {
+    "attractor_detector_version": "observable-attractor-v1",
+    "byte_limit": 16384,
+    "executive_state_version": "interloper-executive-v1",
+    "interloper_policy_revision": 3,
+    "origin": "synthetic_environment_model",
+    "pair_limit": 2
+  },
+  "private_artifact_root_note": "Authoritative raw artifacts remain in the private lab store; this repository bundle contains sanitized metadata and exact synthetic conversation transcripts.",
+  "manifest_sha256": "91497583a7bc8333b4ad3d0b830f4525f037c9a554e839f280da8e639942503d",
+  "study_plan_sha256": "cbdf8548d9e35f3f2d18daa6edb351107395f6748ad84a923756dd55f2a1789d",
+  "transcripts": {
+    "interactive": {
+      "path": "docs/receipts/MNEME_P2_Contingent_Live_Executive_State_20260925_Interactive_Transcript.md",
+      "sha256": "541dfe63b8b101f82127b7218a7c1422568593d2532d70d00ff46d88ad750347"
+    },
+    "open-loop": {
+      "path": "docs/receipts/MNEME_P2_Contingent_Live_Executive_State_20260925_Open_Loop_Transcript.md",
+      "sha256": "46f2296ac5ef5d37e55100e2a1a910fdfcad3911a2631e3ce7100d892ca9365c"
+    }
+  },
+  "call_ledger": {
+    "actual_returned_calls": 252,
+    "status_counts": {
+      "RETURNED": 252
+    },
+    "role_stats": {
+      "development-extraction": {
+        "calls": 48,
+        "input_tokens": 39636,
+        "output_tokens": 240,
+        "total_tokens": 39876
+      },
+      "development-response": {
+        "calls": 48,
+        "input_tokens": 34971,
+        "output_tokens": 13233,
+        "total_tokens": 48204
+      },
+      "evaluation": {
+        "calls": 104,
+        "input_tokens": 3172,
+        "output_tokens": 39813,
+        "total_tokens": 42985
+      },
+      "interloper": {
+        "calls": 52,
+        "input_tokens": 67647,
+        "output_tokens": 3180,
+        "total_tokens": 70827
+      }
+    },
+    "input_tokens": 145426,
+    "output_tokens": 56466,
+    "total_tokens": 201892,
+    "cost_usd": "unknown/provider pricing not recorded",
+    "configured_nominal_calls": 276,
+    "configured_hard_limit_calls": 300
+  },
+  "qualification": {
+    "fit_check": "PASS",
+    "fit_check_artifacts": 4
+  },
+  "conditions_summary": {
+    "interactive": {
+      "developmental_turns": 24,
+      "accepted_responses": 24,
+      "trustworthy_interpretations": 24,
+      "interpretation_failures": 0,
+      "valid_extractions": 24,
+      "empty_admitted_residues": 24,
+      "admitted_edge_candidates": 0,
+      "chapters": {
+        "A": 8,
+        "B": 8,
+        "C": 8
+      }
+    },
+    "open_loop": {
+      "developmental_turns": 24,
+      "accepted_responses": 24,
+      "trustworthy_interpretations": 24,
+      "interpretation_failures": 0,
+      "valid_extractions": 24,
+      "empty_admitted_residues": 24,
+      "admitted_edge_candidates": 0,
+      "chapters": {
+        "A": 8,
+        "B": 8,
+        "C": 8
+      }
+    }
+  },
+  "readouts": {
+    "interactive": {
+      "probes": 48,
+      "state_unchanged": true,
+      "checkpoint_unchanged": true,
+      "state_digest_pairs": 3
+    },
+    "open-loop": {
+      "probes": 48,
+      "state_unchanged": true,
+      "checkpoint_unchanged": true,
+      "state_digest_pairs": 3
+    },
+    "empty-ancestor": {
+      "probes": 8,
+      "state_unchanged": true,
+      "checkpoint_unchanged": true,
+      "state_digest_pairs": 1
+    }
+  },
+  "developmental_state": {
+    "interactive_checkpoint_24_episodes": 24,
+    "open_loop_checkpoint_24_episodes": 24,
+    "interactive_graph_edges": 0,
+    "open_loop_graph_edges": 0,
+    "interactive_learner_updates": 0,
+    "open_loop_learner_updates": 0,
+    "reason": "All 48 relationships-v1 residues were valid empty sets; no association was admitted."
+  },
+  "scientific_disposition": {
+    "interactive": "Contingent early replies were observed, but the partner stayed in the cooking thread through A/B and emitted blank messages in C; corrected executive state did not demonstrate the intended A-to-B-to-C progression.",
+    "open_loop": "Control messages supplied independent practical gardening and field-station material in B/C; this is a control contrast, not evidence of developmental learning.",
+    "developmental_effect": "No developmental differentiation or consolidation claim is supported; no graph edge or learner update was admitted.",
+    "historical_preservation": "Original P2.3 COMPLETED_INADEQUATE, historical contingent conversation, Lentil Incident, failed measurements, receipts, and call accounting are unchanged."
+  },
+  "credential_and_secrets": "Provider results were returned; no credential material is included in this bundle."
+}

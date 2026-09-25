@@ -102,10 +102,20 @@ The documents are preserved in their supplied form and are intentionally not mer
   The [Interloper executive-state correction receipt](receipts/MNEME_P2_Contingent_Interloper_Executive_State_Correction_Receipt_20260924.md)
   records the prospective contract revision, private motivations, two-pair
   context bound, observable attractor detector, and offline Lentil Incident
-  regression. A new live run remains explicitly unauthorized.
+  regression. That receipt records the pre-run authorization boundary; the
+  subsequent authorized execution is recorded below.
   The [Phase Two offline audit and Interloper readiness receipt](receipts/MNEME_P2_Offline_Audit_Remediation_Receipt_20260925.md)
   records the provider-free integrity corrections and the explicit
   authorization boundary for the next live contingent run.
+  The authorized prospective run is recorded in the [executive-state live
+  receipt](receipts/MNEME_P2_Contingent_Live_Executive_State_20260925_Receipt.md)
+  ([JSON](receipts/MNEME_P2_Contingent_Live_Executive_State_20260925_Receipt.json)).
+  Its [interactive transcript](receipts/MNEME_P2_Contingent_Live_Executive_State_20260925_Interactive_Transcript.md)
+  and [open-loop transcript](receipts/MNEME_P2_Contingent_Live_Executive_State_20260925_Open_Loop_Transcript.md)
+  preserve all conversational text. The run completed 252 returned calls with
+  evaluation isolation intact; it did not demonstrate the intended interactive
+  A-to-B-to-C progression and admitted no developmental relationships. Historical
+  P2.3 `COMPLETED_INADEQUATE` evidence remains unchanged.
   [the offline P2.3 assessor/pilot boundary receipt](receipts/MNEME_P2.3_Offline_Assessor_Pilot_Boundary_Receipt.md);
   the fixed qualification failure is recorded in [the qualification failure receipt](receipts/MNEME_P2.3_Assessor_Qualification_Failure_Receipt.md);
   the reviewed prompt-contract remediation and its offline validation are recorded in
