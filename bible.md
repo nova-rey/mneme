@@ -1016,3 +1016,7 @@
 ## 2026-09-25 Phase Two completion audit
 
 - Audited current main `9c7aab016ccb16974fdfca54a27ec452a68f6de6` after the contingent supplement execution. P2.1 and P2.2 remain accepted with current offline/replay evidence. P2.3 qualification and engineering artifacts remain valid, but the historical q/r pilot retains learner opportunity `1` for every record because it predates commit `26cbfb5`, which fixed opportunity carry-forward across episode revisions. The separated-support/consolidation criterion therefore remains unproven; current replay/materialization checks do not retroactively repair the live run. Published this blocker without new provider calls, historical reclassification, a Phase Two release tag, or Phase Three work. A reviewed versioned supplemental schedule using the corrected implementation is required before P2.3 can pass.
+
+## 2026-09-25 Phase Two completion-audit index update
+
+- Added the gate-by-gate completion audit to `docs/README.md` so the current P2.1/P2.2 pass evidence and P2.3 opportunity-persistence/separated-support blocker are discoverable. No provider call, historical rewrite, release tag, or Phase Three work occurred.
