@@ -336,8 +336,8 @@ def _interloper_history(
     for interloper, subject in pairs[-limit:]:
         result.extend(
             (
-                {"role": "user", "content": subject},
                 {"role": "assistant", "content": interloper},
+                {"role": "user", "content": subject},
             )
         )
     return result
@@ -723,7 +723,9 @@ class ContingentStudy:
         """Build a short-context participant request with fresh private state."""
 
         messages = _interloper_history(pairs)
-        if latest_user_message is not None:
+        if latest_user_message is not None and (
+            not messages or messages[-1].get("content") != latest_user_message
+        ):
             messages.append({"role": "user", "content": latest_user_message})
         elif not messages and initial_prompt is not None:
             messages.append({"role": "user", "content": initial_prompt})

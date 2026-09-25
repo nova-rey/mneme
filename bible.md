@@ -1089,3 +1089,7 @@ no provider calls were made in this commit.
 - Historical v2/v3 blank Qwen records were successful DeepInfra returns with empty decoded content, `finish_reason=stop`, and one output token. The persisted requests ended with a prior Qwen assistant message because the latest Gemma response was not appended as the Qwen user message. Historical raw provider choices were unavailable because the previous payload adapter dropped `raw_metadata`.
 - Contract revision 3 now appends the latest Gemma response exactly once, persists sanitized raw response metadata prospectively, decodes missing/null content as an empty result, and permits one same-coordinate recovery only. A second unusable Interloper result hard-stops before Gemma/development, extraction, assessment, learner, or opportunity work.
 - Focused tests cover role serialization, blank/whitespace/missing content, recovery, hard stop, no downstream writes, raw metadata retention, and exact-once coordinate behavior. Historical runs remain unchanged.
+
+## 2026-09-25 P2.3 Interloper chronology follow-up
+
+- Offline request audit found the first blank-recovery correction preserved role labels but still rendered each Qwen/Gemma pair in reverse chronological order. The renderer now emits prior Interloper assistant output followed by the corresponding Gemma user response, with the current response present exactly once; open-loop prompts use the same final-user boundary. Full pytest=429, Ruff, strict mypy, and wheel smoke pass. No provider call was made during this follow-up correction.

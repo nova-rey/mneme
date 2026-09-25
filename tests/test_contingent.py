@@ -86,10 +86,10 @@ def test_perspective_specific_history_renderers_reverse_roles() -> None:
         {"role": "assistant", "content": "Gemma ends layered with smoked"},
     ]
     assert _interloper_history(pairs) == [
-        {"role": "user", "content": "Gemma answers hello"},
         {"role": "assistant", "content": "Qwen says hello"},
-        {"role": "user", "content": "Gemma ends layered with smoked"},
+        {"role": "user", "content": "Gemma answers hello"},
         {"role": "assistant", "content": "Qwen asks about dinner"},
+        {"role": "user", "content": "Gemma ends layered with smoked"},
     ]
 
 
@@ -144,10 +144,10 @@ def test_serialized_requests_use_the_generating_model_perspective(tmp_path: Path
         {"role": "user", "content": "new Qwen message"},
     ]
     assert qwen_request.to_dict()["messages"] == [
-        {"role": "user", "content": "Gemma answers"},
         {"role": "assistant", "content": "Qwen asks"},
-        {"role": "user", "content": "layered with smoked"},
+        {"role": "user", "content": "Gemma answers"},
         {"role": "assistant", "content": "Qwen follows up"},
+        {"role": "user", "content": "layered with smoked"},
         {"role": "user", "content": "Newest Gemma response"},
     ]
     assert qwen_request.to_dict()["messages"][-1] == {
@@ -315,7 +315,7 @@ def test_interloper_request_discards_older_stylistic_context(tmp_path: Path) -> 
         pairs,
     )
     contents = [str(message["content"]) for message in request.messages]
-    assert contents == ["old-answer3", "old3", "old-answer4", "old4"]
+    assert contents == ["old3", "old-answer3", "old4", "old-answer4"]
 
 
 def test_interloper_prompt_forbids_fabricated_open_loop_answers() -> None:

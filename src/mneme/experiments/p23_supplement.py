@@ -272,8 +272,8 @@ class P23SupplementStudy(ContingentStudy):
                 "assertions": {
                     "gemma_user_is_interloper": gemma_request.messages[-1]["role"] == "user",
                     "gemma_assistant_is_gemma": gemma_request.messages[-2]["role"] == "assistant",
-                    "qwen_user_is_gemma": qwen_request.messages[-2]["role"] == "user",
-                    "qwen_assistant_is_interloper": qwen_request.messages[-1]["role"]
+                    "qwen_user_is_gemma": qwen_request.messages[-1]["role"] == "user",
+                    "qwen_assistant_is_interloper": qwen_request.messages[-2]["role"]
                     == "assistant",
                 },
             },
