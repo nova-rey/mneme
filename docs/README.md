@@ -322,6 +322,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   It is new evidence and does not alter the historical `COMPLETED_INADEQUATE`
   disposition.
 
+  The supplement reuses the already accepted assessor qualification; generic
+  Interloper fit-checks are not scientific coordinates. The fixed trajectory
+  itself remains the only prospective adequacy test.
+
   The fixed dispatch then stopped before development when DeepInfra returned
   HTTP 429 on the first Interloper fit-check. The run is recorded as `INVALID`
   provider-transport evidence with no retry or scientific interpretation in

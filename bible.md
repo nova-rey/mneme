@@ -1032,6 +1032,10 @@
 ## 2026-09-25 P2.3 separated-support supplement invalid dispatch
 
 - The fixed one-shot supplement was dispatched after offline validation and CI, but DeepInfra returned HTTP 429 on its first Interloper fit-check. The call is durably preserved as `UNCERTAIN`; no Gemma developmental, extraction, assessment, learner, or consolidation call was made, and no retry/resampling occurred. The run is `INVALID` provider-transport evidence; historical P2.3 remains `COMPLETED_INADEQUATE` and no Phase Three work began.
+
+## 2026-09-25 P2.3 supplement qualification-boundary correction
+
+- The invalid dispatch exposed a redundant generic Interloper fit-check before the frozen adequacy trajectory. The supplement now reuses the already accepted assessor qualification and relies on the exact serialized Gemma/Qwen role audit, spending no live fit-check calls. The scientific 12-turn schedule, learner, provenance, and acceptance criteria are unchanged; the prior HTTP-429 run remains immutable evidence.
 2026-09-25: Phase Two contingent role-perspective correction. The historical
 252-call executive-state run remains immutable and its interactive condition is
 instrumentation-invalid for contingent developmental claims because Gemma and

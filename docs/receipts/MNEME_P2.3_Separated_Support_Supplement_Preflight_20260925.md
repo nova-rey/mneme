@@ -52,11 +52,13 @@ the exact sanitized request arrays. The assertions are fixed:
 ## Call envelope
 
 The prepared laboratory envelope is 75 calls and 50,000 reserved output
-tokens: three bounded Interloper fit checks, twelve Interloper calls, twelve
-Gemma developmental responses, twelve relationships-v1 extraction calls, up
-to twelve fixed one-repair extraction calls, and twelve production assessor
-calls. No evaluation calls or alternative trajectories are authorized. A
-returned call is retained whether it passes or fails.
+tokens. The accepted Phase Two assessor qualification is reused; no generic
+fit-check call is a scientific coordinate. The frozen trajectory contains
+twelve Interloper calls, twelve Gemma developmental responses, twelve
+relationships-v1 extraction calls, up to twelve fixed one-repair extraction
+calls, and twelve production assessor calls. No evaluation calls or
+alternative trajectories are authorized. A returned call is retained whether
+it passes or fails.
 
 ## Terminal interpretation
 

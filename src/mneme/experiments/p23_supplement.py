@@ -322,10 +322,13 @@ class P23SupplementStudy(ContingentStudy):
         state = self.pilot.status()
         if state["status"] == PilotStatus.PREPARED.value:
             self.pilot.begin_qualification()
-            fit = self._fit_check()
             self.pilot._write_state(
                 PilotStatus.QUALIFIED,
-                qualification={"status": "PASS", "kind": "interloper-fit", "records": fit},
+                qualification={
+                    "status": "PASS",
+                    "kind": "reused-approved-assessor-qualification",
+                    "live_fit_checks": 0,
+                },
             )
             self.pilot.begin_pilot()
         elif state["status"] == PilotStatus.PAUSED.value:
