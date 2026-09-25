@@ -1020,6 +1020,10 @@
 ## 2026-09-25 Phase Two completion-audit index update
 
 - Added the gate-by-gate completion audit to `docs/README.md` so the current P2.1/P2.2 pass evidence and P2.3 opportunity-persistence/separated-support blocker are discoverable. No provider call, historical rewrite, release tag, or Phase Three work occurred.
+
+## 2026-09-25 P2.3 separated-support adequacy supplement preflight
+
+- Froze the one-shot `p2.3-separated-support-adequacy / contract revision 1` schedule: one 12-turn balcony/container-plant trajectory, one lineage, relationships-v1, existing learner/provenance/consolidation rules, and a 75-call / 50,000 reserved-output-token envelope. Exact Gemma/Qwen role-perspective serialization is audited before dispatch and published in the preflight receipt. Historical P2.3 remains `COMPLETED_INADEQUATE`; no provider call has been made for this supplement and no Phase Three work began.
 2026-09-25: Phase Two contingent role-perspective correction. The historical
 252-call executive-state run remains immutable and its interactive condition is
 instrumentation-invalid for contingent developmental claims because Gemma and

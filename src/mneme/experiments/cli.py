@@ -86,6 +86,47 @@ def contingent_execute(lab: Path, run_id: str) -> dict[str, Any]:
     return study.execute()
 
 
+def p23_supplement_create(lab: Path, run_id: str) -> dict[str, Any]:
+    """Freeze the one-shot separated-support adequacy supplement."""
+
+    from ..cli import _host
+    from .p23_supplement import SUPPLEMENT_ID, P23SupplementStudy
+
+    developing = _host("gemma-deepinfra")
+    interloper = _host("qwen-assessor-deepinfra")
+    study = P23SupplementStudy.create(
+        lab, developing, interloper, interloper, developing, run_id=run_id
+    )
+    return {
+        "status": "PREPARED",
+        "supplement_id": SUPPLEMENT_ID,
+        "run_id": run_id,
+        "path": str(study.pilot.run_path),
+    }
+
+
+def p23_supplement_execute(lab: Path, run_id: str) -> dict[str, Any]:
+    """Execute or resume the fixed one-shot adequacy supplement."""
+
+    from ..cli import _host
+    from ..state.storage import SQLiteStore
+    from .artifacts import ArtifactStore
+    from .p23_supplement import P23SupplementStudy
+    from .pilot import PilotRun
+    from .pilot_runtime import RuntimeSubject
+
+    developing = _host("gemma-deepinfra")
+    interloper = _host("qwen-assessor-deepinfra")
+    artifacts = ArtifactStore(lab)
+    pilot = PilotRun(artifacts, run_id)
+    store = SQLiteStore(lab / "subjects" / "p23-supplement.sqlite3")
+    subject = RuntimeSubject(0, store, str(store.current()["active_instance_id"]), developing)
+    study = P23SupplementStudy(
+        lab, pilot, {0: subject}, developing, interloper, interloper, developing
+    )
+    return study.execute()
+
+
 def _read_spec(path: Path) -> ExperimentSpec:
     return load_spec(path)
 
@@ -482,6 +523,10 @@ def dispatch(args: Any) -> int:
             result = contingent_create(args.lab, args.run_id)
         elif args.experiment_action == "contingent_execute":
             result = contingent_execute(args.lab, args.run_id)
+        elif args.experiment_action == "p23_supplement_create":
+            result = p23_supplement_create(args.lab, args.run_id)
+        elif args.experiment_action == "p23_supplement_execute":
+            result = p23_supplement_execute(args.lab, args.run_id)
         else:
             raise ArtifactError(f"unknown experiment action: {args.experiment_action}")
     except (ArtifactError, ContractError, PreflightError, OSError) as exc:
@@ -566,6 +611,16 @@ def add_parser(sub: Any) -> None:
     execute_contingent.add_argument("--lab", type=Path, required=True)
     execute_contingent.add_argument("--run-id", required=True)
     execute_contingent.add_argument("--json", action="store_true")
+    supplement = esub.add_parser("p23-supplement")
+    ssub = supplement.add_subparsers(dest="supplement_action", required=True)
+    create_supplement = ssub.add_parser("create")
+    create_supplement.add_argument("--lab", type=Path, required=True)
+    create_supplement.add_argument("--run-id", required=True)
+    create_supplement.add_argument("--json", action="store_true")
+    execute_supplement = ssub.add_parser("execute")
+    execute_supplement.add_argument("--lab", type=Path, required=True)
+    execute_supplement.add_argument("--run-id", required=True)
+    execute_supplement.add_argument("--json", action="store_true")
 
 
 def normalize_args(args: Any) -> Any:
@@ -576,6 +631,8 @@ def normalize_args(args: Any) -> Any:
         args.experiment_action = f"baseline_{args.baseline_action}"
     elif action == "contingent":
         args.experiment_action = f"contingent_{args.contingent_action}"
+    elif action == "p23-supplement":
+        args.experiment_action = f"p23_supplement_{args.supplement_action}"
     elif isinstance(action, str):
         args.experiment_action = action.replace("-", "_")
     return args

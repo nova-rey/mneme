@@ -19,8 +19,33 @@ from mneme.experiments.contingent import (
     _restored_interpretation,
     _subject_history,
 )
+from mneme.experiments.p23_supplement import (
+    SUPPLEMENT_ID,
+    P23SupplementStudy,
+    SupplementSchedule,
+)
 from mneme.experiments.pilot import PilotStatus
 from mneme.hosts import FakeHost
+
+
+def test_p23_supplement_freezes_one_lineage_schedule_and_role_audit(tmp_path: Path) -> None:
+    gemma = FakeHost(model_id="gemma-test")
+    qwen = FakeHost(model_id="qwen-test")
+    study = P23SupplementStudy.create(
+        tmp_path / "lab", gemma, qwen, qwen, gemma, run_id="p23-supplement-test"
+    )
+    experiment = study.pilot.artifacts._read_json(study.pilot.run_path / "experiment.json")
+    assert experiment["name"] == SUPPLEMENT_ID
+    assert len(SupplementSchedule.fixed().turns) == 12
+    audit = study.pilot.artifacts._read_json(
+        study.pilot.run_path / "receipts" / "role-serialization-preflight.json"
+    )
+    assert audit["assertions"] == {
+        "gemma_assistant_is_gemma": True,
+        "gemma_user_is_interloper": True,
+        "qwen_assistant_is_interloper": True,
+        "qwen_user_is_gemma": True,
+    }
 
 
 def test_schedule_has_distinct_chapters_and_24_turns() -> None:

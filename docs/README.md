@@ -315,6 +315,13 @@ The documents are preserved in their supplied form and are intentionally not mer
   release is made. See [the pilot-adequacy audit receipt](receipts/MNEME_P2.3_Pilot_Adequacy_Audit_Receipt_20260924.md)
   ([JSON](receipts/MNEME_P2.3_Pilot_Adequacy_Audit_Receipt_20260924.json)).
 
+  The one-shot prospective separated-support adequacy supplement is frozen
+  under contract revision 1 with a 12-turn balcony/container-plant trajectory,
+  one lineage, and a 75-call envelope. Its role-perspective preflight and
+  fixture are recorded in [the supplement preflight receipt](receipts/MNEME_P2.3_Separated_Support_Supplement_Preflight_20260925.md).
+  It is new evidence and does not alter the historical `COMPLETED_INADEQUATE`
+  disposition.
+
   The resumed pilot then stopped at `extraction-s1-e5` because Gemma omitted
   required confidence fields from otherwise source-grounded graph records; the
   13-call stop is preserved in [the confidence-schema failure receipt](receipts/MNEME_P2.3_Pilot_Recovery_V4_Confidence_Failure_20260924.md)
