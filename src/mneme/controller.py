@@ -224,7 +224,7 @@ class ResponseController:
         }
         from .memory.graph import GraphConcept, GraphEdge, GraphRoute, discover_routes
 
-        graph_edges = tuple(
+        raw_graph_edges = tuple(
             GraphEdge(
                 str(row[0]),
                 str(row[1]),
@@ -240,6 +240,42 @@ class ResponseController:
                 (snapshot,),
             )
         )
+        # A repeated interpretation can materialize collision-safe variants of
+        # one semantic edge.  They retain separate ledger provenance, but
+        # counting every variant against the bounded route set can crowd out
+        # unrelated associations.  Collapse only within this read-only route
+        # view, keyed by the already authoritative learner binding, and merge
+        # evidence deterministically.  The raw graph rows remain untouched.
+        key_map = self._learner_key_map(pin)
+        grouped: dict[str, list[GraphEdge]] = {}
+        for raw_edge in raw_graph_edges:
+            grouped.setdefault(key_map.get(raw_edge.key, raw_edge.key), []).append(raw_edge)
+        graph_edges_list: list[GraphEdge] = []
+        for group_key in sorted(grouped):
+            members = sorted(grouped[group_key], key=lambda item: item.key)
+            representative = members[0]
+            evidence: list[Mapping[str, Any]] = []
+            seen_evidence: set[str] = set()
+            for member in members:
+                for item in member.evidence:
+                    marker = json.dumps(dict(item), sort_keys=True, ensure_ascii=False)
+                    if marker not in seen_evidence:
+                        seen_evidence.add(marker)
+                        evidence.append(item)
+            annotations = dict(representative.annotations or {})
+            if len(members) > 1:
+                annotations["merged_edge_keys"] = [item.key for item in members]
+            graph_edges_list.append(
+                GraphEdge(
+                    representative.key,
+                    representative.source,
+                    representative.target,
+                    representative.relationship,
+                    tuple(evidence),
+                    annotations,
+                )
+            )
+        graph_edges = tuple(graph_edges_list)
         graph_concepts = tuple(
             GraphConcept(str(key), str(label), "unknown") for key, label in concepts.items()
         )

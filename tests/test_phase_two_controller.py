@@ -211,3 +211,66 @@ def test_collision_safe_graph_edge_keys_reuse_local_learner_binding(tmp_path):
         mapping = ResponseController(store, instance, FakeHost())._learner_key_map(pin)
         assert mapping["e1"] == canonical
         assert mapping["e1~collision"] == canonical
+
+
+def test_route_bound_deduplicates_collision_variants_before_discovery(tmp_path):
+    store, instance = _graph_store(tmp_path, learning=True)
+    with store:
+        snapshot = store.connection.execute(
+            "SELECT graph_snapshot_id FROM manifests WHERE manifest_id=?",
+            (store.current()["current_manifest_id"],),
+        ).fetchone()[0]
+        interpretation_id = store.connection.execute(
+            "SELECT interpretation_id FROM interpretations LIMIT 1"
+        ).fetchone()[0]
+        store.connection.execute(
+            "INSERT INTO graph_concepts VALUES(?,?,?,?,?,?,?,?)",
+            (snapshot, "d", "delta", "unknown", "concept", 1.0, 0.0, None),
+        )
+        store.connection.execute(
+            "INSERT INTO graph_edges VALUES(?,?,?,?,?,?,?,?)",
+            (
+                snapshot,
+                "e3",
+                "b",
+                "d",
+                "causal",
+                "asserted",
+                json.dumps({}),
+                json.dumps([{"source_slot": "s0"}]),
+            ),
+        )
+        store.connection.execute(
+            "INSERT INTO semantic_bindings VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+            (
+                str(uuid.uuid4()),
+                instance,
+                interpretation_id,
+                None,
+                "e1",
+                "edge:stable",
+                "causal",
+                "test",
+                1,
+                json.dumps({"local_key": "e1"}),
+                "2026-01-01T00:00:00Z",
+            ),
+        )
+        for index in range(8):
+            store.connection.execute(
+                "INSERT INTO graph_edges VALUES(?,?,?,?,?,?,?,?)",
+                (
+                    snapshot,
+                    f"e1~variant-{index}",
+                    "a",
+                    "b",
+                    "causal",
+                    "asserted",
+                    json.dumps({"local_key": "e1"}),
+                    json.dumps([{"source_slot": "s0", "variant": index}]),
+                ),
+            )
+        prepared = ResponseController(store, instance, FakeHost()).prepare(
+            TurnIntent("alpha delta", memory="graph")
+        )
+        assert any("delta" in route.labels for route in prepared.considered)
