@@ -50,6 +50,7 @@ coefficients, historical evidence, or scientific acceptance criteria.
 - Strict mypy (`mypy src/mneme`): passed.
 - Wheel build and fresh-install package smoke: passed.
 - Queue JSON validation: passed.
+- GitHub CI: **36080847932 passed** for `088b22876137b0d6e914f7febae844345829b6e0`.
 - Provider calls for this checkpoint: **none**.
 - Historical conversations were not regenerated.
 

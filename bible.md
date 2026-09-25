@@ -996,3 +996,7 @@
 ## 2026-09-25 P2 offline audit and Interloper readiness checkpoint
 
 - Preserved the Interloper executive-state correction and Lentil Incident regression while publishing the shared Phase Two offline audit corrections for learner admission, artifact authentication, evaluation binding, multi-edge assessment, and restart idempotency. Full pytest (414), Ruff, strict mypy, wheel/fresh-install smoke, and queue validation passed with no provider calls. The contingent package is now waiting on explicit authorization for the next live experiment; historical conversations and failed evidence remain unchanged.
+
+## 2026-09-25 P2 offline audit checkpoint CI
+
+- GitHub CI run `36080847932` passed for `088b22876137b0d6e914f7febae844345829b6e0`. The queue and readiness receipt now carry the verified remote result; no provider call was made.
