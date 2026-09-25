@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 from pathlib import Path
 
 from mneme.experiments.contingent import (
@@ -9,9 +10,11 @@ from mneme.experiments.contingent import (
     _attractor_risk,
     _bounded_pairs,
     _interloper_executive_state,
+    _interloper_history,
     _measurement_counters,
     _measurement_stop,
     _restored_interpretation,
+    _subject_history,
 )
 from mneme.experiments.pilot import PilotStatus
 from mneme.hosts import FakeHost
@@ -36,6 +39,25 @@ def test_bounded_context_contains_only_complete_recent_pairs() -> None:
     assert all(message["role"] in {"user", "assistant"} for message in messages)
 
 
+def test_perspective_specific_history_renderers_reverse_roles() -> None:
+    pairs = [
+        ("Qwen says hello", "Gemma answers hello"),
+        ("Qwen asks about dinner", "Gemma ends layered with smoked"),
+    ]
+    assert _subject_history(pairs) == [
+        {"role": "user", "content": "Qwen says hello"},
+        {"role": "assistant", "content": "Gemma answers hello"},
+        {"role": "user", "content": "Qwen asks about dinner"},
+        {"role": "assistant", "content": "Gemma ends layered with smoked"},
+    ]
+    assert _interloper_history(pairs) == [
+        {"role": "user", "content": "Gemma answers hello"},
+        {"role": "assistant", "content": "Qwen says hello"},
+        {"role": "user", "content": "Gemma ends layered with smoked"},
+        {"role": "assistant", "content": "Qwen asks about dinner"},
+    ]
+
+
 def test_lentil_incident_attractor_gets_private_escape_state(tmp_path: Path) -> None:
     pairs = [
         ("I am here.", "We stay."),
@@ -54,13 +76,65 @@ def test_lentil_incident_attractor_gets_private_escape_state(tmp_path: Path) -> 
     study = ContingentStudy.create(tmp_path / "lab", gemma, qwen, qwen, gemma)
     request = study._interloper_request("interactive", 8, pairs)
     assert len(request.messages) == 4
-    assert request.messages[-1]["content"] == "We remain."
+    assert request.messages[-1]["content"] == "Enough."
     assert "PRIVATE EXECUTIVE STATE" in (request.system or "")
     assert "balcony plants during hot weather" in (request.system or "")
     assert "basil" in (request.system or "")
     assert "desired associations" in (request.system or "")
+    assert "experimental conversational assistant" not in (request.system or "")
+    assert "We are studying conversations" not in (request.system or "")
     result = qwen.generate(request)
     assert result.content
+
+
+def test_serialized_requests_use_the_generating_model_perspective(tmp_path: Path) -> None:
+    gemma = FakeHost(model_id="gemma-test")
+    qwen = FakeHost(model_id="qwen-test")
+    study = ContingentStudy.create(tmp_path / "lab", gemma, qwen, qwen, gemma)
+    pairs = [("Qwen asks", "Gemma answers"), ("Qwen follows up", "layered with smoked")]
+    gemma_request = study._subject_request(pairs, "new Qwen message", "interactive", 2)
+    qwen_request = study._interloper_request("interactive", 2, pairs)
+    assert gemma_request.to_dict()["messages"] == [
+        {"role": "user", "content": "Qwen asks"},
+        {"role": "assistant", "content": "Gemma answers"},
+        {"role": "user", "content": "Qwen follows up"},
+        {"role": "assistant", "content": "layered with smoked"},
+        {"role": "user", "content": "new Qwen message"},
+    ]
+    assert qwen_request.to_dict()["messages"] == [
+        {"role": "user", "content": "Gemma answers"},
+        {"role": "assistant", "content": "Qwen asks"},
+        {"role": "user", "content": "layered with smoked"},
+        {"role": "assistant", "content": "Qwen follows up"},
+    ]
+    assert qwen_request.to_dict()["messages"][-2] == {
+        "role": "user",
+        "content": "layered with smoked",
+    }
+    assert gemma_request.system is None
+    assert "experimental conversational assistant" not in str(gemma_request.to_dict())
+
+
+def test_blank_interloper_result_is_persisted_then_rejected(tmp_path: Path) -> None:
+    class BlankHost(FakeHost):
+        def generate(self, request):  # type: ignore[no-untyped-def]
+            return replace(super().generate(request), content="")
+
+    gemma = FakeHost(model_id="gemma-test")
+    blank = BlankHost(model_id="qwen-test")
+    study = ContingentStudy.create(tmp_path / "lab", gemma, blank, blank, gemma)
+    study.pilot.begin_qualification()
+    study.pilot._write_state(PilotStatus.QUALIFIED, qualification={"status": "PASS"})
+    study.pilot.begin_pilot()
+    request = study._interloper_request("interactive", 0, (), initial_prompt="start")
+    try:
+        study._partner_call("interactive", 0, request)
+    except Exception as exc:
+        assert "blank interloper generation" in str(exc)
+    else:
+        raise AssertionError("blank interloper output must be rejected")
+    assert (study.pilot._reservation_path("interloper-interactive-t00")).is_file()
+    assert (study.root / "interloper-interactive-t00-invalid.json").is_file()
 
 
 def test_attractor_detector_marks_late_low_novelty_window() -> None:
@@ -82,7 +156,7 @@ def test_interloper_request_discards_older_stylistic_context(tmp_path: Path) -> 
         pairs,
     )
     contents = [str(message["content"]) for message in request.messages]
-    assert contents == ["old3", "old-answer3", "old4", "old-answer4"]
+    assert contents == ["old-answer3", "old3", "old-answer4", "old4"]
 
 
 def test_interloper_prompt_forbids_fabricated_open_loop_answers() -> None:

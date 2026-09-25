@@ -1020,3 +1020,12 @@
 ## 2026-09-25 Phase Two completion-audit index update
 
 - Added the gate-by-gate completion audit to `docs/README.md` so the current P2.1/P2.2 pass evidence and P2.3 opportunity-persistence/separated-support blocker are discoverable. No provider call, historical rewrite, release tag, or Phase Three work occurred.
+2026-09-25: Phase Two contingent role-perspective correction. The historical
+252-call executive-state run remains immutable and its interactive condition is
+instrumentation-invalid for contingent developmental claims because Gemma and
+Qwen shared a role-perspective renderer. Contract revision 3 now serializes
+Gemma history as participant=user/subject=assistant and Qwen history as
+Gemma=user/participant=assistant, records the renderer version, removes
+research framing from the participant prompt, and rejects blank participant
+outputs before they enter the conversation. The correction is offline-tested;
+no provider calls were made in this commit.
