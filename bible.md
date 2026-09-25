@@ -1029,3 +1029,7 @@ Gemma=user/participant=assistant, records the renderer version, removes
 research framing from the participant prompt, and rejects blank participant
 outputs before they enter the conversation. The correction is offline-tested;
 no provider calls were made in this commit.
+
+## 2026-09-25 P2 contingent role-perspective v3 live stop
+
+- Pushed the explicit Gemma/Qwen role-perspective correction at `b2aa81e1425e479139daf9047b6c71b136e64d1f`; CI `36141067033` passed. A fresh revision-3 run then returned six Qwen calls (6,033 input, 355 output, 6,388 total tokens) before stopping at open-loop turn 1 on an empty provider response. The exact request/result and readable transcript are published in the role-v3 live-stop receipts. The blank was rejected before history admission; no Gemma, extraction, assessment, or evaluation calls followed. The run is a preserved model-output failure; historical 252-call evidence remains unchanged.

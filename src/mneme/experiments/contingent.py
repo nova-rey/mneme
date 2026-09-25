@@ -747,13 +747,47 @@ class ContingentStudy:
             request = self._interloper_request(
                 "open-loop", turn.turn, pairs, initial_prompt=turn.prompt
             )
-            text = self._partner_call("open-loop", turn.turn, request)
+            try:
+                text = self._partner_call("open-loop", turn.turn, request)
+            except ContingentStudyError:
+                self._publish_transcript(
+                    condition="open-loop",
+                    records=[
+                        {
+                            "turn": item.turn,
+                            "chapter": item.chapter,
+                            "partner": message,
+                            "subject": "",
+                            "development_accepted": False,
+                            "downstream_status": "not_started",
+                            "failure_reason": (
+                                "open-loop preparation stopped before subject execution"
+                            ),
+                        }
+                        for item, message in zip(self.schedule.turns, messages)
+                    ],
+                )
+                raise
             messages.append(text)
             # Open-loop prompts stand in for the other speaker. Store the pair
             # in the same ``(interloper, subject)`` shape used by the live
             # branch so the explicit interloper renderer produces
             # ``user=prompt, assistant=prior participant``.
             pairs.append((text, turn.prompt))
+            self._publish_transcript(
+                condition="open-loop",
+                records=[
+                    {
+                        "turn": item.turn,
+                        "chapter": item.chapter,
+                        "partner": message,
+                        "subject": "",
+                        "development_accepted": False,
+                        "downstream_status": "not_started",
+                    }
+                    for item, message in zip(self.schedule.turns, messages)
+                ],
+            )
         self.pilot.publish_artifact("contingent", "open-loop-messages.json", {"messages": messages})
         return messages
 

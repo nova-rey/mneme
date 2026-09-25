@@ -3,10 +3,13 @@ from __future__ import annotations
 from dataclasses import replace
 from pathlib import Path
 
+import pytest
+
 from mneme.experiments.contingent import (
     INTERLOPER_SYSTEM_PROMPT,
     ContingentSchedule,
     ContingentStudy,
+    ContingentStudyError,
     _attractor_risk,
     _bounded_pairs,
     _interloper_executive_state,
@@ -135,6 +138,32 @@ def test_blank_interloper_result_is_persisted_then_rejected(tmp_path: Path) -> N
         raise AssertionError("blank interloper output must be rejected")
     assert (study.pilot._reservation_path("interloper-interactive-t00")).is_file()
     assert (study.root / "interloper-interactive-t00-invalid.json").is_file()
+
+
+def test_open_loop_stop_publishes_partial_transcript(tmp_path: Path, monkeypatch) -> None:
+    gemma = FakeHost(model_id="gemma-test")
+    qwen = FakeHost(model_id="qwen-test")
+    study = ContingentStudy.create(tmp_path / "lab", gemma, qwen, qwen, gemma)
+    study.schedule = ContingentSchedule(
+        (
+            ContingentSchedule.fixed().turns[0],
+            ContingentSchedule.fixed().turns[1],
+        )
+    )
+    results = iter(("first participant message",))
+
+    def partner_call(*_args, **_kwargs):  # type: ignore[no-untyped-def]
+        try:
+            return next(results)
+        except StopIteration as exc:
+            raise ContingentStudyError("simulated blank-turn stop") from exc
+
+    monkeypatch.setattr(study, "_partner_call", partner_call)
+    with pytest.raises(ContingentStudyError, match="blank-turn stop"):
+        study._generate_open_loop_messages()
+    transcript = (study.root / "conversation-transcript-open-loop.md").read_text()
+    assert "first participant message" in transcript
+    assert "Turn 0" in transcript
 
 
 def test_attractor_detector_marks_late_low_novelty_window() -> None:

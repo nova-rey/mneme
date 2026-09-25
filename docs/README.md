@@ -113,6 +113,11 @@ The documents are preserved in their supplied form and are intentionally not mer
   The [role-perspective correction receipt](receipts/MNEME_P2_Contingent_Role_Perspective_Correction_20260925.md)
   records the prospective revision-3 request renderers, blank-participant
   rejection, and the preserved disposition of the historical 252-call run.
+  The [revision-3 live-stop evidence](receipts/MNEME_P2_Contingent_Role_V3_Live_Stop_20260925.md)
+  records the six returned Qwen calls, exact sanitized request-role evidence,
+  and the blank open-loop turn that stopped the fresh run; its [readable
+  transcript](receipts/MNEME_P2_Contingent_Role_V3_Live_Stop_20260925_Transcript.md)
+  preserves the returned conversational text.
   The authorized prospective run is recorded in the [executive-state live
   receipt](receipts/MNEME_P2_Contingent_Live_Executive_State_20260925_Receipt.md)
   ([JSON](receipts/MNEME_P2_Contingent_Live_Executive_State_20260925_Receipt.json)).
