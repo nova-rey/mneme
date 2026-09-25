@@ -10,6 +10,7 @@ def test_local_host_fingerprint_declares_local_weights() -> None:
     assert fingerprint["provider"] == "local-msi"
     assert "local_weights" in fingerprint["capabilities"]
     assert fingerprint["quantization"] == "UD-Q2_K_XL"
+    assert fingerprint["execution"]["reasoning"] == "off"
 
 
 def test_prompt_rendering_keeps_message_order_and_system_boundary() -> None:

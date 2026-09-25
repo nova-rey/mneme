@@ -36,6 +36,7 @@ class LocalLlamaHost:
     context_size: int = 4096
     timeout_seconds: float = 600.0
     provider: str = "local-msi"
+    reasoning: str = "off"
 
     def capabilities(self) -> HostCapabilities:
         return HostCapabilities(
@@ -59,6 +60,7 @@ class LocalLlamaHost:
                 "executable": self.executable,
                 "gpu_layers": self.gpu_layers,
                 "context_size": self.context_size,
+                "reasoning": self.reasoning,
             },
             capabilities=self.capabilities().supported,
         )
@@ -81,6 +83,8 @@ class LocalLlamaHost:
             str(self.context_size),
             "-ngl",
             self.gpu_layers,
+            "--reasoning",
+            self.reasoning,
             "-p",
             prompt,
         ]

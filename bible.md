@@ -1107,3 +1107,5 @@ no provider calls were made in this commit.
 - 2026-09-25: P2.3 queue reconciliation. The work queue now links the MSI setup, specialist benchmark/reinterpretation, and matched-twin route-bound preflight receipts. P2.3 remains `WAITING` on its existing review dependency; no historical run was reclassified and no Phase Three work began.
 
 - 2026-09-25: P2.3 matched-readout route-view correction. The controller now deduplicates collision variants through the pinned canonical learner binding before the unchanged `max_routes=8` search bound, merging evidence without mutating graph rows or learner state. The corrected M/C probe audit selects the credited garden→paint-project route only for MNEME treatment; no model calls were made by the correction.
+
+- 2026-09-25: P2.3 local matched-readout runtime correction. The first eight MSI llama.cpp calls used the frozen M/C coordinates but exhausted the 96-token allowance in visible reasoning with no usable final response. The sanitized request/results are preserved; no MNEME writes occurred. LocalLlamaHost now pins `--reasoning off` and records it in the host fingerprint for the bounded same-coordinate rerun.
