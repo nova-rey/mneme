@@ -378,7 +378,23 @@ class P23SupplementStudy(ContingentStudy):
                 self._publish_supplement_transcript(records)
                 continue
             if not partner.strip():
-                raise SupplementError(f"blank interloper generation at turn {turn.turn}")
+                environment_failures += 1
+                records.append(
+                    {
+                        "turn": turn.turn,
+                        "chapter": turn.chapter,
+                        "partner": "",
+                        "subject": "",
+                        "operation_id": None,
+                        "development_accepted": False,
+                        "downstream_status": "environment_turn_missing",
+                        "trustworthy_interpretation": False,
+                        "failure_reason": "persisted blank interloper result",
+                        "extraction_repairs": 0,
+                    }
+                )
+                self._publish_supplement_transcript(records)
+                continue
             development = self.runtime.execute_development(
                 slot=0,
                 call_id=f"development-supplement-t{turn.turn:02d}",

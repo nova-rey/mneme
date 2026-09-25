@@ -1048,6 +1048,10 @@
 ## 2026-09-25 P2.3 supplement isolated blank-turn handling
 
 - The resumed fixed trajectory reused turn 0 and completed turns 1–2 before Qwen returned an empty turn-3 participant message. The result was persisted and rejected before history admission. The supplement now records an isolated missing environment coordinate with no developmental evidence and continues to the next frozen circumstance without retrying or inserting a blank message; non-blank transport failures remain terminal.
+
+## 2026-09-25 P2.3 supplement blank-result idempotency correction
+
+- A no-provider resume of the blank turn returned the persisted empty result directly and reached a separate nonblank guard. That guard now records the same `environment_turn_missing` disposition; the blank remains excluded from history and no provider call was made.
 2026-09-25: Phase Two contingent role-perspective correction. The historical
 252-call executive-state run remains immutable and its interactive condition is
 instrumentation-invalid for contingent developmental claims because Gemma and
