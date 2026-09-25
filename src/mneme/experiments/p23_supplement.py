@@ -153,7 +153,10 @@ class P23SupplementStudy(ContingentStudy):
     ) -> None:
         super().__init__(*args, schedule=schedule or SupplementSchedule.fixed(), **kwargs)
         self.schedule = schedule or SupplementSchedule.fixed()
-        self.supplement_root = self.pilot.run_path / "p23-supplement"
+        # Keep supplemental receipts inside the verified Phase Two contingent
+        # artifact category; ArtifactStore intentionally rejects new top-level
+        # run directories.
+        self.supplement_root = self.pilot.run_path / "contingent"
         self.supplement_root.mkdir(parents=True, exist_ok=True)
 
     @classmethod

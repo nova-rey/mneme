@@ -1024,6 +1024,10 @@
 ## 2026-09-25 P2.3 separated-support adequacy supplement preflight
 
 - Froze the one-shot `p2.3-separated-support-adequacy / contract revision 1` schedule: one 12-turn balcony/container-plant trajectory, one lineage, relationships-v1, existing learner/provenance/consolidation rules, and a 75-call / 50,000 reserved-output-token envelope. Exact Gemma/Qwen role-perspective serialization is audited before dispatch and published in the preflight receipt. Historical P2.3 remains `COMPLETED_INADEQUATE`; no provider call has been made for this supplement and no Phase Three work began.
+
+## 2026-09-25 P2.3 supplement artifact-boundary correction
+
+- Offline preflight found that the new transcript directory was outside the verified ArtifactStore category allow-list. The supplement now publishes its transcript under the existing `contingent/` category; no provider call was made and the schedule/role audit remain unchanged.
 2026-09-25: Phase Two contingent role-perspective correction. The historical
 252-call executive-state run remains immutable and its interactive condition is
 instrumentation-invalid for contingent developmental claims because Gemma and
