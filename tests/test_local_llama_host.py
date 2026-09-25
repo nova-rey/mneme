@@ -30,3 +30,8 @@ def test_cli_banner_and_footer_are_removed_without_rewriting_content() -> None:
     prompt = "say hello"
     stdout = f"banner\n> {prompt}\nHello, world!\n[ Prompt: 1.0 t/s | Generation: 2.0 t/s ]\n"
     assert _extract_output(stdout, prompt) == "Hello, world!"
+
+
+def test_truncated_prompt_echo_is_removed_before_response() -> None:
+    stdout = "banner\n> System instructions: ... (truncated)\nA complete answer.\n"
+    assert _extract_output(stdout, "unused prompt") == "A complete answer."

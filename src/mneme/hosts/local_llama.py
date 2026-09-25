@@ -145,6 +145,11 @@ def _extract_output(stdout: str, prompt: str) -> str:
     marker = f"> {prompt}"
     if marker in text:
         text = text.split(marker, 1)[1]
+    # llama.cpp may abbreviate a long echoed prompt as ``... (truncated)``
+    # even with ``--no-display-prompt``.  The participant response follows
+    # that marker; discard only the deterministic echo prefix.
+    if "(truncated)" in text:
+        text = text.rsplit("(truncated)", 1)[1]
     text = re.split(r"\n\s*\[ Prompt:", text, maxsplit=1)[0]
     return text.replace("\r", "").strip()
 
