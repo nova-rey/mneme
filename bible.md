@@ -1036,6 +1036,10 @@
 ## 2026-09-25 P2.3 supplement qualification-boundary correction
 
 - The invalid dispatch exposed a redundant generic Interloper fit-check before the frozen adequacy trajectory. The supplement now reuses the already accepted assessor qualification and relies on the exact serialized Gemma/Qwen role audit, spending no live fit-check calls. The scientific 12-turn schedule, learner, provenance, and acceptance criteria are unchanged; the prior HTTP-429 run remains immutable evidence.
+
+## 2026-09-25 P2.3 supplement trace-reader correction
+
+- The second fixed run dispatched three returned calls and accepted turn 0 before its audit trace reader used the wrong SQLite column name (`target_key` instead of the canonical `edge_key`). The raw run remains intact; the bounded correction changes only trace inspection, and resume will reuse the returned turn-0 coordinates without redispatch.
 2026-09-25: Phase Two contingent role-perspective correction. The historical
 252-call executive-state run remains immutable and its interactive condition is
 instrumentation-invalid for contingent developmental claims because Gemma and

@@ -106,7 +106,7 @@ class SupplementSchedule(ContingentSchedule):
 
 def _trace(store: SQLiteStore, operation_id: str) -> list[dict[str, Any]]:
     rows = store.connection.execute(
-        "SELECT o.target_key,o.context,o.source_role,o.dependence,o.covered,"
+        "SELECT o.edge_key,o.context,o.source_role,o.dependence,o.covered,"
         "o.actual_exposure,o.evidence_json,u.opportunity,u.delta,u.reason,"
         "u.before_json,u.after_json,v.last_consolidation_opportunity "
         "FROM development_observations o "
