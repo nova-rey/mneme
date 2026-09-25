@@ -1480,7 +1480,13 @@
       },
       "base_sha": "1390208",
       "campaign": "mneme-phase-two",
-      "candidate": null,
+      "candidate": {
+        "artifact": "docs/receipts/MNEME_P2_Contingent_Live_Executive_State_20260925_Receipt.md",
+        "base_sha": "05d785b",
+        "returned_at": "2026-09-25T13:05:27.841814Z",
+        "returned_by": "root-foreman",
+        "sha": "0f66cc8d54d638f86503d5709f467cd950ab7ec3"
+      },
       "completion_criterion": "Offline wire/preflight, bounded two-condition study, checkpoints/readouts, readable evidence, validation and CI, with separate implementation/condition/adequacy/findings dispositions.",
       "created_at": "2026-09-24T00:00:00Z",
       "dependencies": [
@@ -1559,7 +1565,7 @@
       "session_ids": [],
       "status": "DONE",
       "title": "Contingent conversation interloper study",
-      "updated_at": "2026-09-25T13:00:50.226542Z",
+      "updated_at": "2026-09-25T13:05:27.841814Z",
       "validation": {
         "required": [
           "pytest -q",
@@ -1570,14 +1576,14 @@
           "bounded study receipts"
         ],
         "results": {
-          "ci": "36080847932 passed for 088b22876137b0d6e914f7febae844345829b6e0",
+          "ci": "36138673262 passed for 0f66cc8d54d638f86503d5709f467cd950ab7ec3",
           "interactive_continuation": "turns 12-23 complete",
           "live_calls": "252 returned; 145426 input / 56466 output / 201892 total tokens; cost unavailable",
-          "mypy": "passed",
+          "mypy": "passed offline and in CI",
           "package_smoke": "wheel build and fresh-install import passed",
-          "pytest": "414 passed offline; focused Interloper tests 16 passed",
+          "pytest": "419 passed offline and in CI",
           "queue_validation": "valid",
-          "ruff": "passed",
+          "ruff": "passed offline and in CI",
           "contingent_live_run": "PASS execution: run contingent-live-20260925 COMPLETE; 252/252 returned; no failed or uncertain calls",
           "contingent_transcripts": "PASS exact interactive and open-loop transcripts published",
           "contingent_extraction": "PASS 48/48 relationships-v1 residues valid; 48 empty admitted residues; no learner credit",
@@ -1601,5 +1607,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-25T13:00:50.226542Z"
+  "updated_at": "2026-09-25T13:05:27.841814Z"
 }
