@@ -107,6 +107,30 @@ def test_request_system_field_is_rendered_once(monkeypatch):
     ]
 
 
+@pytest.mark.parametrize("message", [{}, {"content": None}])
+def test_missing_or_null_provider_content_decodes_as_empty_result(monkeypatch, message):
+    class Response:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return None
+
+        def read(self):
+            return json.dumps(
+                {
+                    "choices": [{"message": message, "finish_reason": "stop"}],
+                    "usage": {"prompt_tokens": 2, "completion_tokens": 1, "total_tokens": 3},
+                }
+            ).encode()
+
+    monkeypatch.setattr("urllib.request.urlopen", lambda *args, **kwargs: Response())
+    result = DeepInfraGemmaHost(token="secret-token").generate(request())
+    assert result.content == ""
+    assert result.finish_reason == "stop"
+    assert result.raw_metadata["choices"][0]["message"] == message
+
+
 def test_request_system_field_deduplicates_legacy_message(monkeypatch):
     captured = {}
 

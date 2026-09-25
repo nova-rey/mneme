@@ -202,6 +202,12 @@ def _parse_response(raw: Any) -> tuple[str, dict[str, Any]]:
         choice = raw["choices"][0]
         message = choice["message"]
         content = message.get("content")
+        if content is None:
+            # A successful provider response with no assistant content is an
+            # unusable conversational result, not a transport failure. Keep
+            # it as an empty decoded message so the caller can persist it and
+            # apply its bounded same-coordinate recovery policy.
+            content = ""
         if not isinstance(content, str):
             raise TypeError("assistant message content is not text")
         return content, raw

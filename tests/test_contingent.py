@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pytest
 
+from mneme.contracts import GenerationResult
 from mneme.experiments.contingent import (
     INTERLOPER_SYSTEM_PROMPT,
     ContingentSchedule,
@@ -16,6 +17,7 @@ from mneme.experiments.contingent import (
     _interloper_history,
     _measurement_counters,
     _measurement_stop,
+    _payload,
     _restored_interpretation,
     _subject_history,
 )
@@ -107,9 +109,14 @@ def test_lentil_incident_attractor_gets_private_escape_state(tmp_path: Path) -> 
     gemma = FakeHost(model_id="gemma-test")
     qwen = FakeHost(model_id="qwen-test")
     study = ContingentStudy.create(tmp_path / "lab", gemma, qwen, qwen, gemma)
-    request = study._interloper_request("interactive", 8, pairs)
-    assert len(request.messages) == 4
-    assert request.messages[-1]["content"] == "Enough."
+    request = study._interloper_request(
+        "interactive", 8, pairs, latest_user_message="Gemma current reply"
+    )
+    assert len(request.messages) == 5
+    assert request.messages[-1] == {
+        "role": "user",
+        "content": "Gemma current reply",
+    }
     assert "PRIVATE EXECUTIVE STATE" in (request.system or "")
     assert "balcony plants during hot weather" in (request.system or "")
     assert "basil" in (request.system or "")
@@ -126,7 +133,9 @@ def test_serialized_requests_use_the_generating_model_perspective(tmp_path: Path
     study = ContingentStudy.create(tmp_path / "lab", gemma, qwen, qwen, gemma)
     pairs = [("Qwen asks", "Gemma answers"), ("Qwen follows up", "layered with smoked")]
     gemma_request = study._subject_request(pairs, "new Qwen message", "interactive", 2)
-    qwen_request = study._interloper_request("interactive", 2, pairs)
+    qwen_request = study._interloper_request(
+        "interactive", 2, pairs, latest_user_message="Newest Gemma response"
+    )
     assert gemma_request.to_dict()["messages"] == [
         {"role": "user", "content": "Qwen asks"},
         {"role": "assistant", "content": "Gemma answers"},
@@ -139,10 +148,11 @@ def test_serialized_requests_use_the_generating_model_perspective(tmp_path: Path
         {"role": "assistant", "content": "Qwen asks"},
         {"role": "user", "content": "layered with smoked"},
         {"role": "assistant", "content": "Qwen follows up"},
+        {"role": "user", "content": "Newest Gemma response"},
     ]
-    assert qwen_request.to_dict()["messages"][-2] == {
+    assert qwen_request.to_dict()["messages"][-1] == {
         "role": "user",
-        "content": "layered with smoked",
+        "content": "Newest Gemma response",
     }
     assert gemma_request.system is None
     assert "experimental conversational assistant" not in str(gemma_request.to_dict())
@@ -168,6 +178,96 @@ def test_blank_interloper_result_is_persisted_then_rejected(tmp_path: Path) -> N
         raise AssertionError("blank interloper output must be rejected")
     assert (study.pilot._reservation_path("interloper-interactive-t00")).is_file()
     assert (study.root / "interloper-interactive-t00-invalid.json").is_file()
+
+
+class _SequenceInterloperHost(FakeHost):
+    def __init__(self, outputs: list[str]) -> None:
+        super().__init__(model_id="qwen-sequence")
+        self.outputs = outputs
+
+    def generate(self, request):  # type: ignore[no-untyped-def]
+        result = super().generate(request)
+        content = self.outputs.pop(0) if self.outputs else ""
+        return GenerationResult(
+            content,
+            result.model_id,
+            result.provider,
+            result.effective_parameters,
+            result.seed,
+            result.token_usage,
+            result.latency_ms,
+            result.finish_reason,
+            result.raw_metadata,
+            result.provenance,
+        )
+
+
+def test_supplement_empty_interloper_hard_stops_before_gemma(tmp_path: Path) -> None:
+    gemma = FakeHost(model_id="gemma-test")
+    qwen = _SequenceInterloperHost(["", ""])
+    study = P23SupplementStudy.create(
+        tmp_path / "lab", gemma, qwen, qwen, gemma, run_id="p23-empty-stop"
+    )
+    study.schedule = SupplementSchedule((SupplementSchedule.fixed().turns[0],))
+
+    report = study.execute()
+
+    assert report["terminal_result"] == "INVALID"
+    assert report["interloper_recovery_attempts"] == 1
+    assert report["hard_stop_reason"]
+    assert report["records"][0]["downstream_status"] == "invalid_environment_empty_interloper"
+    assert len(report["reservations"]["calls"]) == 2
+    assert all(call["role"] == "interloper" for call in report["reservations"]["calls"])
+    assert not list(study.subjects[0].store.connection.execute("SELECT 1 FROM episodes"))
+    assert not (study.root / "interloper-supplement-t01.json").exists()
+
+
+def test_supplement_empty_interloper_one_recovery_reuses_coordinate(tmp_path: Path) -> None:
+    gemma = FakeHost(model_id="gemma-test")
+    qwen = _SequenceInterloperHost(["   \n", "A practical participant message."])
+    study = P23SupplementStudy.create(
+        tmp_path / "lab", gemma, qwen, qwen, gemma, run_id="p23-empty-recovery"
+    )
+    study.schedule = SupplementSchedule((SupplementSchedule.fixed().turns[0],))
+
+    report = study.execute()
+
+    assert report["terminal_result"] == "NOT_DEMONSTRATED"
+    assert report["records"][0]["interloper_recovery_attempts"] == 1
+    assert report["records"][0]["partner"] == "A practical participant message."
+    calls = report["reservations"]["calls"]
+    call_ids = {call["call_id"] for call in calls}
+    assert call_ids == {
+        "interloper-supplement-t00",
+        "interloper-supplement-t00-recovery-1",
+        "development-supplement-t00",
+        "extraction-supplement-t00",
+    }
+    initial = next(call for call in calls if call["call_id"] == "interloper-supplement-t00")
+    recovery = next(
+        call for call in calls if call["call_id"] == "interloper-supplement-t00-recovery-1"
+    )
+    assert recovery["coordinate"]["turn"] == initial["coordinate"]["turn"] == 0
+    assert not any(record["partner"] == "" for record in report["records"])
+
+
+def test_payload_preserves_provider_metadata_for_blank_forensics() -> None:
+    result = GenerationResult(
+        "",
+        "qwen-test",
+        "DeepInfra",
+        {"max_tokens": 256},
+        None,
+        None,
+        0.0,
+        "stop",
+        {"choices": [{"message": {"content": "", "reasoning_content": "hidden"}}]},
+        {"host": {"model_id": "qwen-test"}},
+    )
+    payload = _payload(result)
+    assert payload["content"] == ""
+    assert payload["finish_reason"] == "stop"
+    assert payload["raw_metadata"]["choices"][0]["message"]["reasoning_content"] == "hidden"
 
 
 def test_open_loop_stop_publishes_partial_transcript(tmp_path: Path, monkeypatch) -> None:

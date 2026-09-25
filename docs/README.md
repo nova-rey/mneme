@@ -386,3 +386,6 @@ current specification identifies it as historical context.
   readable transcript and role audit are [published here](experiments/contingent-conversation/P2.3_Separated_Support_Supplement_v3_Transcript_20260925.md)
   and in [the final audit receipt](receipts/MNEME_P2.3_Separated_Support_Supplement_v3_Final_Audit_20260925.md)
   ([role-preflight JSON](receipts/MNEME_P2.3_Separated_Support_Supplement_v3_Role_Preflight_20260925.json); [machine-readable audit](receipts/MNEME_P2.3_Separated_Support_Supplement_v3_Final_Audit_20260925.json)).
+
+
+  The v2/v3 blank-Interloper forensic audit and bounded recovery correction are recorded in [the forensic receipt](receipts/MNEME_P2.3_Interloper_Blank_Forensic_And_Recovery_Correction_20260925.md) ([JSON](receipts/MNEME_P2.3_Interloper_Blank_Forensic_And_Recovery_Correction_20260925.json)). Historical raw provider fields that were not persisted are explicitly marked unavailable; revision 3 fixes the Qwen request suffix and preserves raw response metadata prospectively.

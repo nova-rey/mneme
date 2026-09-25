@@ -299,6 +299,10 @@ def _payload(result: GenerationResult) -> dict[str, Any]:
             "total_tokens": usage.total_tokens,
         },
         "provenance": dict(result.provenance),
+        # Preserve the provider response metadata for post-stop forensic
+        # inspection.  This is response data, not credentials or request
+        # headers; the transport never places the authorization token here.
+        "raw_metadata": dict(result.raw_metadata),
     }
 
 
@@ -622,19 +626,36 @@ class ContingentStudy:
             evidence_reviewer_host,
         )
 
-    def _partner_call(self, condition: str, turn: int, request: GenerationRequest) -> str:
-        call_id = f"interloper-{condition}-t{turn:02d}"
+    def _partner_call(
+        self,
+        condition: str,
+        turn: int,
+        request: GenerationRequest,
+        *,
+        attempt: int = 0,
+    ) -> str:
+        base_call_id = f"interloper-{condition}-t{turn:02d}"
+        call_id = base_call_id if attempt == 0 else f"{base_call_id}-recovery-{attempt}"
         reservation = self.pilot.reserve_call(
             call_id=call_id,
             role="interloper",
-            coordinate={"study": STUDY_ID, "condition": condition, "turn": turn, "role": "partner"},
+            coordinate={
+                "study": STUDY_ID,
+                "condition": condition,
+                "turn": turn,
+                "role": "partner",
+                "attempt": attempt,
+            },
             max_output_tokens=256,
         )
         if reservation.get("status") == CallStatus.RETURNED.value:
             result = reservation.get("result")
             if not isinstance(result, Mapping) or not isinstance(result.get("content"), str):
                 raise ContingentStudyError(f"invalid saved partner result: {call_id}")
-            return str(result["content"])
+            content = str(result["content"])
+            if not content.strip():
+                raise ContingentStudyError(f"blank interloper generation: {call_id}")
+            return content
         if reservation.get("status") != CallStatus.RESERVED.value:
             raise ContingentStudyError(f"partner call is not dispatchable: {call_id}")
         self.pilot.dispatch_call(
@@ -667,6 +688,7 @@ class ContingentStudy:
                     "status": "REJECTED_BLANK_INTERLOPER",
                     "call_id": call_id,
                     "reason": "provider returned an empty participant message",
+                    "attempt": attempt,
                 },
             )
             raise ContingentStudyError(f"blank interloper generation: {call_id}")
@@ -696,11 +718,14 @@ class ContingentStudy:
         *,
         initial_prompt: str | None = None,
         current_prompt: str | None = None,
+        latest_user_message: str | None = None,
     ) -> GenerationRequest:
         """Build a short-context participant request with fresh private state."""
 
         messages = _interloper_history(pairs)
-        if not messages and initial_prompt is not None:
+        if latest_user_message is not None:
+            messages.append({"role": "user", "content": latest_user_message})
+        elif not messages and initial_prompt is not None:
             messages.append({"role": "user", "content": initial_prompt})
         state = _interloper_executive_state(self.schedule, turn, pairs)
         circumstance = (
@@ -753,7 +778,11 @@ class ContingentStudy:
         pairs: list[tuple[str, str]] = []
         for turn in self.schedule.turns:
             request = self._interloper_request(
-                "open-loop", turn.turn, pairs, initial_prompt=turn.prompt
+                "open-loop",
+                turn.turn,
+                pairs,
+                initial_prompt=turn.prompt,
+                latest_user_message=turn.prompt,
             )
             try:
                 text = self._partner_call("open-loop", turn.turn, request)
@@ -1013,6 +1042,7 @@ class ContingentStudy:
                     turn.turn,
                     pairs,
                     initial_prompt=turn.prompt,
+                    latest_user_message=pairs[-1][1] if pairs else None,
                 )
                 partner = self._partner_call(condition, turn.turn, request)
             else:

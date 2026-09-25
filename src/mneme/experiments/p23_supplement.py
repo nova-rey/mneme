@@ -16,6 +16,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from ..contracts import GenerationRequest
 from ..host import Host
 from ..memory.interpretation import MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION
 from ..state.contracts import StoragePermissions
@@ -33,7 +34,7 @@ from .pilot_runtime import RuntimeSubject
 from .pilot_study import DevelopmentFixture, ProductionAssessmentAdapter
 
 SUPPLEMENT_ID = "p2.3-separated-support-adequacy-20260925"
-SUPPLEMENT_CONTRACT_REVISION = 2
+SUPPLEMENT_CONTRACT_REVISION = 3
 SUPPLEMENT_TURNS = 12
 SUPPLEMENT_PLANNED_CALLS = 75
 SUPPLEMENT_MAX_OUTPUT_TOKENS = 50_000
@@ -311,6 +312,16 @@ class P23SupplementStudy(ContingentStudy):
                     "",
                 ]
             )
+            if record.get("interloper_recovery_attempts"):
+                lines.extend(
+                    [
+                        "Interloper recovery attempts: "
+                        f"`{record.get('interloper_recovery_attempts')}`",
+                        "Initial Interloper failure: "
+                        f"`{record.get('interloper_initial_failure', 'unavailable')}`",
+                        "",
+                    ]
+                )
             if record.get("failure_reason"):
                 lines.extend([f"Reason: {record['failure_reason']}", ""])
         self.pilot.publish_artifact(
@@ -347,69 +358,75 @@ class P23SupplementStudy(ContingentStudy):
         records: list[dict[str, Any]] = []
         traces: list[dict[str, Any]] = []
         environment_failures = 0
-        consecutive_environment_failures = 0
-        systematic_environment_failure = False
+        recovery_attempts = 0
+        hard_stop_reason: str | None = None
         for turn in self.schedule.turns:
+            recovered_interloper = False
+            interloper_failure: str | None = None
             request = self._interloper_request(
                 "supplement",
                 turn.turn,
                 pairs,
                 initial_prompt=turn.prompt,
                 current_prompt=turn.prompt,
+                latest_user_message=pairs[-1][1] if pairs else None,
             )
             try:
                 partner = self._partner_call("supplement", turn.turn, request)
             except ContingentStudyError as exc:
                 if "blank interloper generation" not in str(exc):
                     raise
-                # The blank provider result is already durably retained and
-                # must not be retried or admitted to history.  Treat this
-                # isolated environmental coordinate as missing evidence and
-                # continue with the next predeclared circumstance.
                 environment_failures += 1
-                consecutive_environment_failures += 1
-                records.append(
-                    {
-                        "turn": turn.turn,
-                        "chapter": turn.chapter,
-                        "partner": "",
-                        "subject": "",
-                        "operation_id": None,
-                        "development_accepted": False,
-                        "downstream_status": "environment_turn_missing",
-                        "trustworthy_interpretation": False,
-                        "failure_reason": str(exc),
-                        "extraction_repairs": 0,
-                    }
+                recovery_attempts += 1
+                recovered_interloper = True
+                interloper_failure = str(exc)
+                recovery_request = GenerationRequest(
+                    request.messages,
+                    system=(request.system or "")
+                    + "\n\nRECOVERY: Your previous generation did not contain a "
+                    "participant message. Produce one non-empty ordinary conversational "
+                    "message for the same participant state. Do not advance the scenario "
+                    "or invent an intervening reply.",
+                    parameters=dict(request.parameters),
+                    seed=request.seed,
+                    response_format=request.response_format,
+                    run_metadata=dict(request.run_metadata)
+                    | {
+                        "recovery_attempt": 1,
+                        "recovery_of": f"interloper-supplement-t{turn.turn:02d}",
+                    },
                 )
-                self._publish_supplement_transcript(records)
-                if consecutive_environment_failures >= 3:
-                    systematic_environment_failure = True
+                try:
+                    partner = self._partner_call(
+                        "supplement", turn.turn, recovery_request, attempt=1
+                    )
+                except ContingentStudyError as recovery_exc:
+                    hard_stop_reason = (
+                        f"empty Interloper output persisted at turn {turn.turn}; "
+                        f"one same-coordinate recovery was also unusable: {recovery_exc}"
+                    )
+                    records.append(
+                        {
+                            "turn": turn.turn,
+                            "chapter": turn.chapter,
+                            "partner": "",
+                            "subject": "",
+                            "operation_id": None,
+                            "development_accepted": False,
+                            "downstream_status": "invalid_environment_empty_interloper",
+                            "trustworthy_interpretation": False,
+                            "failure_reason": hard_stop_reason,
+                            "extraction_repairs": 0,
+                            "interloper_recovery_attempts": 1,
+                        }
+                    )
+                    self._publish_supplement_transcript(records)
                     break
-                continue
+            if hard_stop_reason is not None:
+                break
             if not partner.strip():
-                environment_failures += 1
-                consecutive_environment_failures += 1
-                records.append(
-                    {
-                        "turn": turn.turn,
-                        "chapter": turn.chapter,
-                        "partner": "",
-                        "subject": "",
-                        "operation_id": None,
-                        "development_accepted": False,
-                        "downstream_status": "environment_turn_missing",
-                        "trustworthy_interpretation": False,
-                        "failure_reason": "persisted blank interloper result",
-                        "extraction_repairs": 0,
-                    }
-                )
-                self._publish_supplement_transcript(records)
-                if consecutive_environment_failures >= 3:
-                    systematic_environment_failure = True
-                    break
-                continue
-            consecutive_environment_failures = 0
+                hard_stop_reason = f"empty Interloper output at turn {turn.turn}"
+                break
             development = self.runtime.execute_development(
                 slot=0,
                 call_id=f"development-supplement-t{turn.turn:02d}",
@@ -497,6 +514,8 @@ class P23SupplementStudy(ContingentStudy):
                     "trustworthy_interpretation": status == "complete",
                     "failure_reason": failure,
                     "extraction_repairs": repairs,
+                    "interloper_recovery_attempts": 1 if recovered_interloper else 0,
+                    "interloper_initial_failure": interloper_failure,
                 }
             )
             pairs.append((partner, response))
@@ -507,7 +526,7 @@ class P23SupplementStudy(ContingentStudy):
         ]
         result = (
             "INVALID"
-            if systematic_environment_failure
+            if hard_stop_reason is not None
             else "DEMONSTRATED"
             if consolidation
             else "NOT_DEMONSTRATED"
@@ -522,8 +541,9 @@ class P23SupplementStudy(ContingentStudy):
                 bool(item["trustworthy_interpretation"]) for item in records
             ),
             "environment_failures": environment_failures,
-            "consecutive_environment_failures": consecutive_environment_failures,
-            "systematic_environment_failure": systematic_environment_failure,
+            "interloper_recovery_attempts": recovery_attempts,
+            "hard_stop_reason": hard_stop_reason,
+            "systematic_environment_failure": hard_stop_reason is not None,
             "records": records,
             "learner_traces": traces,
             "consolidation_traces": consolidation,
