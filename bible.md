@@ -1111,3 +1111,5 @@ no provider calls were made in this commit.
 - 2026-09-25: P2.3 local matched-readout runtime correction. The first eight MSI llama.cpp calls used the frozen M/C coordinates but exhausted the 96-token allowance in visible reasoning with no usable final response. The sanitized request/results are preserved; no MNEME writes occurred. LocalLlamaHost now pins `--reasoning off` and records it in the host fingerprint for the bounded same-coordinate rerun.
 
 - 2026-09-25: P2.3 local readout output-bound correction. The reasoning-off same-coordinate rerun returned ordinary final text, but four of eight responses still reached the shared 96-token limit. The failed results remain immutable evidence; the frozen v2 M/C schedule raises only the matched local allowance to 256 tokens before the next run.
+
+- 2026-09-25: P2.3 local readout v2 audit. The shared 256-token reasoning-off schedule produced seven usable responses; M0 still terminated at the output bound. The raw result is preserved and the final fixed v3 schedule raises only the matched local allowance to 384 tokens.
