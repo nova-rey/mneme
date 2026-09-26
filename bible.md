@@ -1285,3 +1285,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 shared-Interloper A/B experiment runner
 
 - Added `tools/run_p23_shared_interloper_ab.py`, a versioned three-thread runner using one shared Qwen environment, matched local Gemma seeds, separate M/C permissions, a pre-treatment sanity gate, a mandatory nonzero-treatment gate, and frozen final readouts. The runner publishes all request/result and transcript evidence under its new run and does not alter historical Phase Two artifacts.
+
+## 2026-09-26 shared-Interloper launcher correction
+
+- Corrected direct execution of the new runner so its repository-local host adapters resolve when launched as a script. No experiment coordinate or scientific contract changed.

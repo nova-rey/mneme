@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 import uuid
 from collections.abc import Mapping
 from pathlib import Path
@@ -34,6 +35,9 @@ from mneme.memory.interpretation import MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION
 from mneme.state.contracts import StoragePermissions
 from mneme.state.snapshots import create_checkpoint
 from mneme.state.storage import SQLiteStore
+
+# The repository's tools directory is intentionally not a Python package.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from tools.run_p23_cross_thread import RemoteGlinerHost, RemoteLlamaHost
 
 ROOT = Path(os.environ.get("MNEME_SHARED_AB_LAB", "/tmp/mneme-p23-shared-ab-20260926"))
