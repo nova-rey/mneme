@@ -45,6 +45,7 @@ Historical evidence is unchanged, including the original P2.3 `COMPLETED_INADEQU
 * Final preflight: `docs/receipts/MNEME_P2.3_Final_Episodic_Preflight_20260926.md` and `.json`.
 * Final valid result and complete readable transcript: `docs/receipts/MNEME_P2.3_Final_Episodic_Run7_Recovery_Result_20260926.md` and `.json`.
 * Durable sanitized request/result evidence: `docs/receipts/MNEME_P2.3_Final_Episodic_Run7_Recovery_Evidence/`.
+* Artifact inventory verification: `docs/receipts/MNEME_P2.3_Final_Episodic_Artifact_Verification_20260926.md` and `.json` (281 declared files, zero missing or mismatched).
 * Invalid final-schedule attempts: the Run 3, Run 4, Run 5, Run 6, and Run 7 invalid receipts in `docs/receipts/`.
 * Earlier Phase Two extraction, specialist-instrument, matched-twin, and episodic/provenance receipts remain linked from `docs/README.md`.
 

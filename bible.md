@@ -1269,3 +1269,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 authority-review wait state
 
 - Reconciled P2.3 from `VALIDATING` to `WAITING` on `review:p2.3-final-phase-two-disposition` after the final fixed episodic schedule completed as `NOT_DEMONSTRATED`. The approved plan requires one separated-support/consolidation opportunity for pilot adequacy and forbids automatic release/tagging when central coverage is inadequate. The final disposition is ready for owner review; no additional Phase Two campaign, release tag, or Phase Three work was started.
+
+## 2026-09-26 P2.3 final episodic artifact verification
+
+- Independently verified the durable final recovery evidence bundle at commit `d756ea3`: 281 manifest-declared artifacts were present with matching SHA-256 values, all required contract/preflight/study-plan/binding digests matched, and the artifact-index digest matched the run manifest. Published the machine/human artifact verification receipts. This strengthens evidence integrity only; the scientific result remains `NOT_DEMONSTRATED` and the P2.3 adequacy review remains unresolved.
