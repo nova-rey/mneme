@@ -1252,3 +1252,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 final episodic run 6 invalid remote decode
 
 - Preserved `p23-final-episodic-run-6` as `INVALID` after the external branch completed and local Gemma development at model turn 12 raised a strict UTF-8 decode error before result persistence. No scientific result was assigned. The bounded correction decodes remote subprocess text with replacement semantics; model, learner, provenance, and acceptance rules remain unchanged.
+
+## 2026-09-26 P2.3 final episodic run 7 invalid provider rate limit
+
+- Preserved `p23-final-episodic-run-7` as `INVALID` after the external branch completed and DeepInfra returned HTTP 429 at model-branch participant turn 27. No downstream work was dispatched and no scientific result was assigned. Recovery is limited to that failed coordinate in a copied continuation workspace; completed turns remain unchanged.
