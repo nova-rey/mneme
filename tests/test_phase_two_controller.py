@@ -160,6 +160,84 @@ def test_learned_route_reachability_constructs_treatment_payload(tmp_path):
     assert "Memory data:" in (prepared.request.system or "")
 
 
+def test_field_policy_builds_bounded_payload_and_trace(tmp_path):
+    store, instance = _graph_store(tmp_path, learning=True)
+    source = "alpha guides bridge and bridge guides omega"
+    host = FakeHost()
+    continuity = ContinuityService(store, instance, host)
+    operation = continuity.prepare_episode(
+        GenerationRequest(({"role": "user", "content": source},)),
+        operation_id="field-preflight-generation",
+    )
+    continuity.generate_operation(operation.operation_id)
+    continuity.accept_episode(operation.operation_id)
+    residue = validate_residue(
+        {
+            "core_concepts": [
+                {
+                    "key": "a",
+                    "label": "alpha",
+                    "source_spans": [{"source_slot": "s0", "start": 0, "end": 5}],
+                    "confidence": 0.9,
+                },
+                {
+                    "key": "b",
+                    "label": "bridge",
+                    "source_spans": [{"source_slot": "s0", "start": 13, "end": 19}],
+                    "confidence": 0.9,
+                },
+                {
+                    "key": "c",
+                    "label": "omega",
+                    "source_spans": [{"source_slot": "s0", "start": 38, "end": 43}],
+                    "confidence": 0.9,
+                },
+            ],
+            "edge_candidates": [
+                {
+                    "key": "e1",
+                    "from": "a",
+                    "to": "b",
+                    "relationship": "causal",
+                    "source_spans": [{"source_slot": "s0", "start": 0, "end": 19}],
+                    "confidence": 0.9,
+                },
+                {
+                    "key": "e2",
+                    "from": "b",
+                    "to": "c",
+                    "relationship": "causal",
+                    "source_spans": [{"source_slot": "s0", "start": 13, "end": 43}],
+                    "confidence": 0.9,
+                },
+            ],
+        },
+        {"s0": source},
+    )
+    publisher = InterpretationPublisher(store, instance)
+    publisher.publish(
+        publisher.prepare(operation.episode_id, operation_id="field-preflight-interpretation"),
+        residue,
+        observations=(Observation(target_key="e1", occurrence_key="field-preflight"),),
+        development_operation_id="field-preflight-development",
+        opportunity=1,
+    )
+    with store:
+        prepared = ResponseController(store, instance, host).prepare(
+            TurnIntent("alpha method omega", memory="graph", selection_policy="field-v0")
+        )
+        assert prepared.field_result is not None
+        assert prepared.field_result.total_pressure > 0
+        assert prepared.request.system
+        assert "Potentially accessible framings:" in prepared.request.system
+        result = ResponseController(store, instance, host).execute(prepared)
+        query = store.connection.execute(
+            "SELECT query_json FROM turn_traces WHERE operation_id=?",
+            (result.operation.operation_id,),
+        ).fetchone()[0]
+        assert json.loads(query)["field"]["version"] == "f0-graph-pressure-v1"
+
+
 def test_controller_discovers_bounded_path_without_route_candidate(tmp_path):
     store, instance = _graph_store(tmp_path)
     with store:

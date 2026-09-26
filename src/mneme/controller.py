@@ -14,9 +14,12 @@ from typing import Any
 from .contracts import GenerationRequest, GenerationResult
 from .development import (
     EdgeState,
+    FieldConfig,
+    FieldResult,
     LearnerState,
     RouteSpec,
     RouteState,
+    compute_field,
     select_routes,
 )
 from .development.learner import CreditWindow
@@ -103,6 +106,7 @@ class PreparedTurn:
     operation_id: str
     applied: tuple[RouteCandidate, ...] = ()
     selection_policy: str = "fixed-v2"
+    field_result: FieldResult | None = None
 
 
 @dataclass(frozen=True)
@@ -395,12 +399,115 @@ class ResponseController:
                 )
         return tuple(found)
 
+    def _field_graph(self, pin: PinnedState) -> tuple[tuple[Any, ...], tuple[Any, ...]]:
+        """Load the pinned graph view used by the separate F0 backend."""
+
+        if pin.graph_snapshot_id is None:
+            return (), ()
+        from .memory.graph import GraphConcept, GraphEdge
+
+        snapshot = pin.graph_snapshot_id
+        concepts = {
+            str(row[0]): str(row[1])
+            for row in self.store.connection.execute(
+                "SELECT concept_key,label FROM graph_concepts WHERE snapshot_id=?", (snapshot,)
+            )
+        }
+        raw_edges = tuple(
+            GraphEdge(
+                str(row[0]),
+                str(row[1]),
+                str(row[2]),
+                str(row[3]),
+                tuple(json.loads(str(row[6]))),
+                json.loads(str(row[5])),
+            )
+            for row in self.store.connection.execute(
+                "SELECT edge_key,source_key,target_key,relationship,polarity,"
+                "context_json,evidence_json "
+                "FROM graph_edges WHERE snapshot_id=? ORDER BY edge_key",
+                (snapshot,),
+            )
+        )
+        # Keep collision variants as one semantic edge for pressure purposes,
+        # while retaining the representative's immutable evidence.
+        key_map = self._learner_key_map(pin)
+        grouped: dict[str, list[Any]] = {}
+        for edge in raw_edges:
+            grouped.setdefault(key_map.get(edge.key, edge.key), []).append(edge)
+        edges: list[Any] = []
+        for group_key in sorted(grouped):
+            members = sorted(grouped[group_key], key=lambda item: item.key)
+            representative = members[0]
+            evidence: list[Mapping[str, Any]] = []
+            seen: set[str] = set()
+            for member in members:
+                for item in member.evidence:
+                    marker = json.dumps(dict(item), sort_keys=True, ensure_ascii=False)
+                    if marker not in seen:
+                        seen.add(marker)
+                        evidence.append(item)
+            annotations = dict(representative.annotations or {})
+            if len(members) > 1:
+                annotations["merged_edge_keys"] = [item.key for item in members]
+            edges.append(
+                GraphEdge(
+                    key_map.get(representative.key, representative.key),
+                    representative.source,
+                    representative.target,
+                    representative.relationship,
+                    tuple(evidence),
+                    annotations,
+                )
+            )
+        graph_concepts = tuple(
+            GraphConcept(key, label, "unknown") for key, label in sorted(concepts.items())
+        )
+        return graph_concepts, tuple(edges)
+
+    def _compute_field(self, intent: TurnIntent, pin: PinnedState) -> FieldResult:
+        concepts, edges = self._field_graph(pin)
+        ineligible: set[str] = set()
+        quarantined: set[str] = set()
+        for edge in edges:
+            candidate = RouteCandidate(
+                route_key=edge.key,
+                labels=(
+                    next((item.label for item in concepts if item.key == edge.source), edge.source),
+                    next((item.label for item in concepts if item.key == edge.target), edge.target),
+                ),
+                relationships=(edge.relationship,),
+                edge_count=1,
+                support_count=len(edge.evidence),
+                query_coverage=1,
+                edge_keys=(edge.key,),
+            )
+            gated = self._gate(candidate, intent)
+            if gated.suppressed_reason:
+                ineligible.add(edge.key)
+                if gated.suppressed_reason == "quarantined":
+                    quarantined.add(edge.key)
+        return compute_field(
+            intent.current_input,
+            concepts,
+            edges,
+            self._learner_state(pin),
+            config=FieldConfig(),
+            quarantined_edges=quarantined,
+            ineligible_edges=ineligible - quarantined,
+            field_enabled=(
+                intent.memory != "off"
+                and pin.recall_allowed
+                and pin.provider_reuse_allowed
+            ),
+        )
+
     def _selection_policy(self, intent: TurnIntent, pin: PinnedState) -> str:
         policy = intent.selection_policy
         if policy is None:
             return "learned-v1" if pin.learning_allowed else "fixed-v2"
-        if policy not in {"fixed-v2", "learned-v1"}:
-            raise ControllerError("selection_policy must be fixed-v2 or learned-v1")
+        if policy not in {"fixed-v2", "learned-v1", "field-v0"}:
+            raise ControllerError("selection_policy must be fixed-v2, learned-v1, or field-v0")
         if policy == "learned-v1" and not pin.learning_allowed:
             raise ControllerError("learned-v1 requires learning permission")
         return policy
@@ -656,23 +763,30 @@ class ResponseController:
             raise ControllerError("unsupported mode")
         pin = self._pin()
         policy = self._selection_policy(intent, pin)
-        considered = self._find_routes(intent, pin)
+        field_result = self._compute_field(intent, pin) if policy == "field-v0" else None
+        considered = () if policy == "field-v0" else self._find_routes(intent, pin)
         gated = tuple(self._gate(route, intent) for route in considered)
         suppressed = tuple(route for route in gated if route.suppressed_reason)
         selected = self._select(gated, pin, policy)
         messages = _messages(intent)
         memory: dict[str, Any] = {"routes": [route.to_dict() for route in selected]}
+        if field_result is not None and field_result.payload:
+            memory = {"field": field_result.payload}
         if intent.memory != "off" and intent.mode != "evaluate":
             view = IdentityService(self.store, self.instance_id).current()
             if view is not None:
                 memory["self"] = {"name": view.name, "version": view.version}
         memory_json = json.dumps(memory, sort_keys=True, separators=(",", ":"))
         if len(memory_json.encode("utf-8")) > 1536:
-            memory_json = '{"routes":[]}'
+            memory_json = (
+                json.dumps({"field": field_result.payload}, separators=(",", ":"))
+                if field_result is not None and field_result.payload
+                else '{"routes":[]}'
+            )
         applied = selected if memory_json != '{"routes":[]}' else ()
         if intent.memory == "off" or intent.mode == "evaluate":
             system = intent.system
-        elif applied or "self" in memory:
+        elif applied or "self" in memory or "field" in memory:
             controller_system = _TEMPLATE.format(memory=memory_json)
             system = (
                 f"{intent.system}\n\n{controller_system}"
@@ -702,6 +816,7 @@ class ResponseController:
             intent.operation_id or str(uuid.uuid4()),
             applied,
             policy,
+            field_result,
         )
 
     def execute(self, prepared: PreparedTurn) -> TurnResult:
@@ -738,6 +853,11 @@ class ResponseController:
                                 "input": prepared.intent.current_input,
                                 "tags": prepared.intent.context_tags,
                                 "selection_policy": prepared.selection_policy,
+                                "field": (
+                                    prepared.field_result.to_dict()
+                                    if prepared.field_result is not None
+                                    else None
+                                ),
                             },
                             sort_keys=True,
                         ),

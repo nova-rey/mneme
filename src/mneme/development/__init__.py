@@ -47,6 +47,14 @@ from .episodes import (
     persist_conversation_arc_progress,
     persist_conversation_episode,
 )
+from .field import (
+    FIELD_VERSION,
+    ActiveConcept,
+    FieldConfig,
+    FieldResult,
+    PressureContribution,
+    compute_field,
+)
 from .learner import (
     FIXED_SCALE,
     ConsequenceAssessment,
@@ -107,6 +115,12 @@ __all__ = [
     "model_reentry_refractory",
     "persist_conversation_arc_progress",
     "persist_conversation_episode",
+    "FIELD_VERSION",
+    "ActiveConcept",
+    "FieldConfig",
+    "FieldResult",
+    "PressureContribution",
+    "compute_field",
     "FIXED_SCALE",
     "ConsequenceAssessment",
     "ConsequenceResult",

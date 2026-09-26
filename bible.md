@@ -1420,3 +1420,14 @@ amendment under `docs/research/` for librarian and future-reference use. It
 is additive research context only: it does not alter the approved Phase Two
 plan, historical evidence, learner rules, queue state, or Phase Three
 authorization.
+
+## 2026-09-26 F0 graph-pressure backend implementation
+
+Added the inspectable deterministic `f0-graph-pressure-v1` backend as a
+separate `selection_policy="field-v0"` path. Existing discrete route-note `R`,
+no-influence `C`, and historical r6/r7 evidence remain unchanged. The offline
+implementation is bounded to depth 2, 0.6 hop attenuation, a 0.02 pressure
+floor, fixed-point total budget 1.0, four contributors, and a 900-character
+host payload; optional stochastic exploration remains disabled. Full pytest
+passed (506 tests), with Ruff and strict mypy passing for the changed modules.
+The implementation receipt is `docs/receipts/MNEME_P2_F0_Implementation_20260926.md`.
