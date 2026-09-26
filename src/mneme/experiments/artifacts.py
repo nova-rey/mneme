@@ -26,6 +26,23 @@ class ArtifactError(RuntimeError):
 
 _SAFE_COMPONENT = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 
+# Phase Two publishes its JSON receipts through ``PilotRun.publish_artifact``.
+# Keep the index limited to those direct receipt locations so P0.3's
+# STARTED/RESULT/UNCERTAIN evaluation records and pilot ledger retain their
+# existing self-authenticating formats.
+_DIRECT_JSON_ARTIFACT_CATEGORIES = (
+    "qualification",
+    "development",
+    "extraction",
+    "assessment",
+    "contingent-assessment",
+    "evidence-review",
+    "receipts",
+    "contingent",
+    "evaluation",
+)
+_ARTIFACT_MANIFEST_NAME = "artifact-manifest.json"
+
 
 def canonical_json(value: Any) -> bytes:
     """Return the canonical bytes used for manifests and intent comparisons."""
@@ -204,6 +221,19 @@ class ArtifactStore:
                     retry_manifest = dict(manifest)
                     retry_manifest.pop("publication_intent_sha256", None)
                     retry_manifest["payloads"] = existing["payloads"]
+                    expected_intent = content_digest(retry_manifest)
+                if existing.get("artifact_index_sha256") is not None:
+                    retry_manifest = dict(manifest)
+                    retry_manifest.pop("publication_intent_sha256", None)
+                    retry_manifest["artifact_index_sha256"] = existing[
+                        "artifact_index_sha256"
+                    ]
+                    if (
+                        inputs is None
+                        and snapshots is None
+                        and isinstance(existing.get("payloads"), Mapping)
+                    ):
+                        retry_manifest["payloads"] = existing["payloads"]
                     expected_intent = content_digest(retry_manifest)
                 if existing.get("publication_intent_sha256") != expected_intent:
                     raise ArtifactError(f"run ID already exists with conflicting intent: {run_id}")
@@ -387,6 +417,109 @@ class ArtifactStore:
             output["verified"] = self.verify_run(path)
         return output
 
+    def publish_json_artifact(
+        self,
+        run_path: Path,
+        category: str,
+        name: str,
+        value: Mapping[str, Any],
+    ) -> Path:
+        """Publish a Phase Two JSON receipt and bind its bytes to the run.
+
+        Older runs have no artifact manifest and remain readable/verifiable
+        under their original rules.  The first receipt published through this
+        method creates an index for the run; subsequent direct JSON additions
+        and any content tampering then fail ``verify_run`` closed.
+        """
+
+        category = _component(category, "artifact category")
+        name = _component(name, "artifact name")
+        if not isinstance(value, Mapping):
+            raise ArtifactError("artifact value must be an object")
+        payload = dict(value)
+        path = run_path / category / name
+        if path.parent.parent != run_path and path.parent != run_path / category:
+            # The component checks above should make this unreachable; retain
+            # an explicit containment guard for callers outside PilotRun.
+            raise ArtifactError("artifact path escapes its run")
+        with self._writer():
+            manifest_path = run_path / "run-manifest.json"
+            manifest = self._read_json(manifest_path)
+            index_path = run_path / _ARTIFACT_MANIFEST_NAME
+            if index_path.exists():
+                index = self._read_json(index_path)
+                artifacts = index.get("artifacts")
+                if index.get("schema_version") != 1 or not isinstance(artifacts, Mapping):
+                    raise ArtifactError("artifact manifest is malformed")
+                artifact_digests = {str(key): str(item) for key, item in artifacts.items()}
+                legacy_baseline = bool(index.get("legacy_baseline", False))
+            else:
+                artifact_digests = self._direct_json_artifact_digests(run_path)
+                legacy_baseline = bool(artifact_digests)
+
+            path.parent.mkdir(parents=True, exist_ok=True)
+            _write_json(path, payload)
+            relative = str(path.relative_to(run_path))
+            artifact_digests[relative] = file_digest(path)
+            index = {
+                "schema_version": 1,
+                "legacy_baseline": legacy_baseline,
+                "artifacts": dict(sorted(artifact_digests.items())),
+            }
+            _write_json(index_path, index)
+            self._sync_file(path)
+            self._sync_file(index_path)
+
+            manifest["artifact_index_sha256"] = content_digest(index)
+            manifest.pop("publication_intent_sha256", None)
+            manifest["publication_intent_sha256"] = content_digest(manifest)
+            temporary = manifest_path.with_name(f".{manifest_path.name}.artifact")
+            try:
+                _write_json(temporary, manifest)
+                self._sync_file(temporary)
+                os.replace(temporary, manifest_path)
+                self._sync_file(manifest_path)
+            finally:
+                if temporary.exists():
+                    temporary.unlink()
+        return path
+
+    @staticmethod
+    def _direct_json_artifact_digests(run_path: Path) -> dict[str, str]:
+        result: dict[str, str] = {}
+        for category in _DIRECT_JSON_ARTIFACT_CATEGORIES:
+            directory = run_path / category
+            if not directory.is_dir() or directory.is_symlink():
+                continue
+            for candidate in directory.rglob("*.json"):
+                if candidate.is_file() and not candidate.is_symlink():
+                    # Evaluation check directories have their own receipt
+                    # hashes and are deliberately excluded from this index.
+                    if category == "evaluation" and candidate.parent != directory:
+                        continue
+                    result[str(candidate.relative_to(run_path))] = file_digest(candidate)
+        summary = run_path / "summary.json"
+        if summary.is_file() and not summary.is_symlink():
+            result["summary.json"] = file_digest(summary)
+        return result
+
+    def _verify_artifact_manifest(self, path: Path, manifest: Mapping[str, Any]) -> bool:
+        index_path = path / _ARTIFACT_MANIFEST_NAME
+        declared = manifest.get("artifact_index_sha256")
+        if not index_path.exists():
+            return declared is None
+        if not isinstance(declared, str) or not index_path.is_file() or index_path.is_symlink():
+            return False
+        index = self._read_json(index_path)
+        if content_digest(index) != declared or index.get("schema_version") != 1:
+            return False
+        artifacts = index.get("artifacts")
+        if not isinstance(artifacts, Mapping):
+            return False
+        actual = self._direct_json_artifact_digests(path)
+        expected = {str(key): str(item) for key, item in artifacts.items()}
+        return expected == actual
+
     def verify_run(self, path: Path) -> bool:
         """Verify the complete published run tree and receipt integrity hashes."""
         try:
@@ -421,6 +554,8 @@ class ArtifactStore:
                 if content_digest(self._read_json(artifact_path)) != digest:
                     return False
             if self._read_json(path / "experiment.json") != manifest.get("experiment"):
+                return False
+            if not self._verify_artifact_manifest(path, manifest):
                 return False
 
             payloads = manifest.get("payloads")
@@ -531,6 +666,7 @@ class ArtifactStore:
                 "study-plan.json",
                 "bindings.json",
                 "run-manifest.json",
+                _ARTIFACT_MANIFEST_NAME,
                 "inputs",
                 "snapshots",
                 "evaluation",

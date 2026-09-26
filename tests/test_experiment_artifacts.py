@@ -112,6 +112,60 @@ def test_verify_run_allows_direct_phase_two_evaluation_json(tmp_path: Path) -> N
     assert store.verify_run(run.path) is False
 
 
+@pytest.mark.parametrize(
+    "category",
+    [
+        "qualification",
+        "development",
+        "extraction",
+        "assessment",
+        "contingent-assessment",
+        "evidence-review",
+        "receipts",
+        "contingent",
+        "evaluation",
+    ],
+)
+def test_published_phase_two_json_tampering_fails_verification(
+    tmp_path: Path, category: str
+) -> None:
+    store = ArtifactStore(tmp_path / category)
+    run = store.publish_run(
+        experiment={"name": "integrity", "contract_revision": 1},
+        preflight={"valid": True},
+        study_plan={"supplement": "p2.3"},
+        bindings={"subjects": []},
+        run_id="run-integrity",
+    )
+    pilot = PilotRun(store, "run-integrity")
+    path = pilot.publish_artifact(category, "receipt.json", {"status": "accepted"})
+    assert store.verify_run(run.path)
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload["status"] = "tampered-but-valid-json"
+    path.write_text(json.dumps(payload) + "\n", encoding="utf-8")
+    assert store.verify_run(run.path) is False
+
+
+def test_artifact_manifest_tampering_fails_verification(tmp_path: Path) -> None:
+    store = ArtifactStore(tmp_path)
+    run = store.publish_run(
+        experiment={"name": "integrity-index", "contract_revision": 1},
+        preflight={"valid": True},
+        study_plan={"supplement": "p2.3"},
+        bindings={"subjects": []},
+        run_id="run-index",
+    )
+    PilotRun(store, "run-index").publish_artifact(
+        "receipts", "receipt.json", {"status": "accepted"}
+    )
+    index = json.loads((run.path / "artifact-manifest.json").read_text(encoding="utf-8"))
+    index["artifacts"]["receipts/receipt.json"] = "0" * 64
+    (run.path / "artifact-manifest.json").write_text(
+        json.dumps(index) + "\n", encoding="utf-8"
+    )
+    assert store.verify_run(run.path) is False
+
+
 def test_conflicting_run_id_is_rejected(tmp_path: Path) -> None:
     store = ArtifactStore(tmp_path)
     experiment, preflight, plan, bindings = _payload()

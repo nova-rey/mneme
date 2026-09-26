@@ -627,15 +627,13 @@ class PilotRun:
         name = _component(name, "artifact name")
         if not isinstance(value, Mapping):
             raise PilotError("artifact value must be an object")
-        path = self.run_path / category / name
         payload = _safe_value(dict(value))
         if not isinstance(payload, dict):
             raise PilotError("artifact value could not be serialized")
-        with self.artifacts._writer():
-            path.parent.mkdir(parents=True, exist_ok=True)
-            _write_json(path, payload)
-            self.artifacts._sync_file(path)
-        return path
+        try:
+            return self.artifacts.publish_json_artifact(self.run_path, category, name, payload)
+        except ArtifactError as exc:
+            raise PilotError(str(exc)) from exc
 
 
 __all__ = [
