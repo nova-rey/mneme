@@ -1220,3 +1220,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 budget-audit candidate reconciliation
 
 - Advanced the P2.3 candidate pointer to `8d00a2f`, which includes the factual 456/455 budget-accounting audit. The parent package remains WAITING on scientific adequacy and authority review; no provider calls or historical evidence changes occurred.
+
+## 2026-09-26 P2.3 final episodic recurrence preflight
+
+- Froze the authorized final Schema 11 mechanism schedule in `docs/receipts/MNEME_P2.3_Final_Episodic_Preflight_20260926.md` and its JSON companion. The schedule uses matched external/model branches, five spaced target opportunities, the fixed learner gap and rolling-cap arithmetic, local Gemma/GLiNER/Qwen role bindings, and hard null-output stops. Historical Phase Two evidence remains unchanged; no provider calls occurred during preflight.
