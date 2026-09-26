@@ -1212,3 +1212,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 run-bound audit candidate reconciliation
 
 - Advanced the P2.3 candidate pointer to `3c8eb16`, which publishes the read-only run-bound q→r engineering-audit receipt and machine-readable evidence. The candidate remains WAITING on the existing adequacy/accounting review; no historical artifacts or provider results were changed and no provider calls occurred.
+
+## 2026-09-26 P2.3 budget and accounting current audit
+
+- Published the current factual accounting reconciliation: 456 attempted/returned provider calls and 455 persisted results, including one return lost before local persistence. The arithmetic is exact; the 57-call overage above the recorded 399-call operational cap remains an authority-review consequence. No provider calls occurred and P2.3 remains WAITING.
