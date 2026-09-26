@@ -14,6 +14,12 @@ dependencies = []
 [project.optional-dependencies]
 dev = ["pytest>=8.0", "ruff>=0.6", "mypy>=1.10"]
 gemma = ["huggingface-hub>=0.24"]
+local-nli = [
+  "torch>=2.2",
+  "transformers>=4.40",
+  "safetensors>=0.4",
+  "sentencepiece>=0.2",
+]
 
 [project.scripts]
 mneme = "mneme.cli:main"

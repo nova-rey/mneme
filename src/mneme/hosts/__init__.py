@@ -7,6 +7,7 @@ from .deepinfra import (
 from .fake import FakeHost
 from .gemma import GemmaHost
 from .local_llama import LocalLlamaHost
+from .local_nli import LOCAL_NLI_ASSESSOR_VERSION, LocalNliAssessorHost
 
 __all__ = [
     "DeepInfraChatHost",
@@ -16,4 +17,6 @@ __all__ = [
     "FakeHost",
     "GemmaHost",
     "LocalLlamaHost",
+    "LOCAL_NLI_ASSESSOR_VERSION",
+    "LocalNliAssessorHost",
 ]
