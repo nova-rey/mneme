@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Any
 
 from ..contracts import GenerationRequest
+from ..development.episodes import declared_conversation_arcs, persist_conversation_arc_progress
 from ..host import Host
 from ..memory.interpretation import MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION
 from ..state.contracts import StoragePermissions
@@ -353,7 +354,15 @@ class P23SupplementStudy(ContingentStudy):
             raise SupplementError(f"supplement is not executable: {state['status']}")
 
         subject = self.subjects[0]
-        adapter = ProductionAssessmentAdapter(self.runtime, self.assessor_host)
+        arc_by_turn = declared_conversation_arcs(
+            tuple((item.turn, item.chapter) for item in self.schedule.turns),
+            conversation_id="supplement",
+        )
+        adapter = ProductionAssessmentAdapter(
+            self.runtime,
+            self.assessor_host,
+            conversation_episodes={(0, turn): arc for turn, arc in arc_by_turn.items()},
+        )
         pairs: list[tuple[str, str]] = []
         records: list[dict[str, Any]] = []
         traces: list[dict[str, Any]] = []
@@ -433,6 +442,17 @@ class P23SupplementStudy(ContingentStudy):
                 coordinate={"study": SUPPLEMENT_ID, "turn": turn.turn, "role": "development"},
                 request=self._subject_request(pairs, partner, "supplement", turn.turn),
                 max_output_tokens=384,
+            )
+            arc = arc_by_turn[turn.turn]
+            persist_conversation_arc_progress(
+                subject.store,
+                instance_id=subject.instance_id,
+                conversation_id="supplement",
+                ordinal=int(arc.episode_id.rsplit(":", 1)[-1]),
+                episode=arc,
+                turn_index=turn.turn,
+                accepted_episode_id=development.operation.episode_id,
+                close=turn.turn == arc.end_ordinal,
             )
             extraction = self.runtime.extract(
                 slot=0,

@@ -2,7 +2,9 @@ from mneme.contracts import GenerationRequest
 from mneme.development import (
     ConversationTurn,
     EpisodeTracker,
+    declared_conversation_arcs,
     model_reentry_refractory,
+    persist_conversation_arc_progress,
     persist_conversation_episode,
 )
 from mneme.hosts import FakeHost
@@ -150,3 +152,66 @@ def test_arc_persistence_is_atomic_and_inspectable(tmp_path) -> None:
         assert row[2] == '["external"]'
         assert row[3] == '["basil-survived"]'
     store.close()
+
+
+def test_declared_conversation_arcs_group_windows_and_record_pivots() -> None:
+    arcs = declared_conversation_arcs(
+        ((0, "basil"), (1, "basil"), (2, "travel"), (3, "travel"), (4, "basil")),
+        conversation_id="thread-a",
+    )
+    assert arcs[0].episode_id == arcs[1].episode_id
+    assert arcs[0].start_ordinal == 0
+    assert arcs[0].end_ordinal == 1
+    assert arcs[2].closure_reason == "topic_pivot"
+    assert arcs[4].prior_related_episode_ids == (arcs[0].episode_id,)
+    assert arcs[4].reentry_initiator == "external"
+    assert arcs[4].rounds_since_prior == 2
+
+
+def test_arc_progress_is_idempotent_across_turn_retries(tmp_path) -> None:
+    with SQLiteStore(tmp_path / "progress.sqlite3") as store:
+        instance = store.create_root(permissions=StoragePermissions(store=True))
+        service = ContinuityService(store, instance, FakeHost())
+        accepted_ids: list[str] = []
+        for ordinal in range(2):
+            operation = service.prepare_episode(
+                GenerationRequest(({"role": "user", "content": f"basil {ordinal}"},)),
+                operation_id=f"progress-{ordinal}",
+            )
+            service.generate_operation(operation.operation_id)
+            accepted_ids.append(service.accept_episode(operation.operation_id).episode_id)
+        arcs = declared_conversation_arcs(
+            ((0, "basil"), (1, "basil")), conversation_id="thread-b"
+        )
+        arc = arcs[0]
+        for turn, accepted_id in enumerate(accepted_ids):
+            persist_conversation_arc_progress(
+                store,
+                instance_id=instance,
+                conversation_id="thread-b",
+                ordinal=0,
+                episode=arc,
+                turn_index=turn,
+                accepted_episode_id=accepted_id,
+                close=turn == 1,
+            )
+            # A retry after an uncertain caller outcome must be a no-op.
+            persist_conversation_arc_progress(
+                store,
+                instance_id=instance,
+                conversation_id="thread-b",
+                ordinal=0,
+                episode=arc,
+                turn_index=turn,
+                accepted_episode_id=accepted_id,
+                close=turn == 1,
+            )
+        assert store.connection.execute(
+            "SELECT COUNT(*) FROM conversation_arcs WHERE arc_id=?", (arc.episode_id,)
+        ).fetchone()[0] == 1
+        assert store.connection.execute(
+            "SELECT COUNT(*) FROM conversation_arc_members WHERE arc_id=?", (arc.episode_id,)
+        ).fetchone()[0] == 2
+        assert store.connection.execute(
+            "SELECT COUNT(*) FROM conversation_arc_events WHERE arc_id=?", (arc.episode_id,)
+        ).fetchone()[0] == 2

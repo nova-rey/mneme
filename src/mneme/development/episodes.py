@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any
@@ -377,11 +378,227 @@ def persist_conversation_episode(
         raise
 
 
+def declared_conversation_arcs(
+    turns: Sequence[tuple[int, str]],
+    *,
+    conversation_id: str,
+    source_role: str = "external",
+) -> dict[int, ConversationEpisode]:
+    """Declare deterministic topic-window arcs for a bounded runner.
+
+    ``turns`` contains immutable ordinal/topic pairs supplied by the
+    experiment contract.  The function only groups adjacent equal topics; it
+    does not infer open-ended discourse semantics.  Returned values are shared
+    by the runner and adapter so the same arc identity is used for persistence
+    and learner observations.
+    """
+
+    if not conversation_id:
+        raise EpisodeError("conversation_id must be non-empty")
+    if source_role not in {"external", "model", "mneme", "unknown"}:
+        raise EpisodeError("unsupported arc source role")
+    if not turns:
+        raise EpisodeError("at least one turn is required")
+    ordered = tuple(turns)
+    if any(ordinal < 0 or not topic for ordinal, topic in ordered):
+        raise EpisodeError("arc turn ordinals/topics must be valid")
+    if (
+        tuple(sorted(ordered)) != ordered
+        or len({ordinal for ordinal, _ in ordered}) != len(ordered)
+    ):
+        raise EpisodeError("arc turns must be ordered and unique")
+
+    groups: list[list[tuple[int, str]]] = []
+    for item in ordered:
+        if not groups or groups[-1][-1][1] != item[1]:
+            groups.append([item])
+        else:
+            groups[-1].append(item)
+    result: dict[int, ConversationEpisode] = {}
+    completed: list[ConversationEpisode] = []
+    for ordinal, group in enumerate(groups):
+        topic = group[0][1]
+        related = tuple(
+            previous.episode_id
+            for previous in completed
+            if topic in previous.topic_keys
+        )
+        previous = next(
+            (candidate for candidate in reversed(completed) if candidate.episode_id in related),
+            None,
+        )
+        episode = ConversationEpisode(
+            episode_id=f"conversation:{conversation_id}:{ordinal}",
+            start_ordinal=group[0][0],
+            end_ordinal=group[-1][0],
+            turn_ids=tuple(f"{conversation_id}:turn:{turn}" for turn, _ in group),
+            topic_keys=(topic,),
+            initiation_role=source_role,
+            turn_source_roles=tuple(source_role for _ in group),
+            prior_related_episode_ids=related,
+            closure_reason=("topic_pivot" if ordinal < len(groups) - 1 else "end_of_conversation"),
+            reentry_initiator=source_role if related else None,
+            rounds_since_prior=(
+                max(0, group[0][0] - previous.end_ordinal - 1)
+                if previous is not None
+                else None
+            ),
+        )
+        completed.append(episode)
+        for turn, _ in group:
+            result[turn] = episode
+    return result
+
+
+def persist_conversation_arc_progress(
+    store: Any,
+    *,
+    instance_id: str,
+    conversation_id: str,
+    ordinal: int,
+    episode: ConversationEpisode,
+    turn_index: int,
+    accepted_episode_id: str,
+    close: bool = False,
+) -> None:
+    """Idempotently publish one accepted turn into a predeclared arc.
+
+    Conversation runners know bounded topic-window boundaries before all
+    turn-level episode IDs exist.  The arc row is therefore opened on the
+    first accepted turn, members are appended as later turns commit, and the
+    close event is emitted only at the declared final turn.  Arc rows and
+    members remain immutable; retries verify and reuse identical records.
+    """
+
+    if turn_index < episode.start_ordinal or turn_index > episode.end_ordinal:
+        raise EpisodeError("turn index is outside the declared arc")
+    if not accepted_episode_id:
+        raise EpisodeError("accepted episode identity must be non-empty")
+    connection = store.connection
+    payload = json.dumps(
+        episode.to_dict(), ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    )
+    now = datetime.now(UTC).isoformat(timespec="microseconds")
+    try:
+        connection.execute("BEGIN IMMEDIATE")
+        existing = connection.execute(
+            "SELECT instance_id,conversation_id,ordinal,start_turn,end_turn,"
+            "start_episode_id,content_digest FROM conversation_arcs WHERE arc_id=?",
+            (episode.episode_id,),
+        ).fetchone()
+        if existing is None:
+            connection.execute(
+                "INSERT INTO conversation_arcs VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                (
+                    episode.episode_id,
+                    instance_id,
+                    conversation_id,
+                    ordinal,
+                    episode.start_ordinal,
+                    episode.end_ordinal,
+                    accepted_episode_id,
+                    episode.initiation_role,
+                    json.dumps(list(episode.topic_keys), ensure_ascii=False),
+                    json.dumps(list(episode.turn_source_roles), ensure_ascii=False),
+                    json.dumps(list(episode.outcome_keys), ensure_ascii=False),
+                    "conversation-arc-v1",
+                    episode.digest,
+                    now,
+                ),
+            )
+            connection.execute(
+                "INSERT INTO conversation_arc_events VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+                (
+                    f"{episode.episode_id}:open",
+                    episode.episode_id,
+                    instance_id,
+                    conversation_id,
+                    episode.start_ordinal,
+                    "OPEN",
+                    episode.initiation_role,
+                    episode.prior_related_episode_ids[-1]
+                    if episode.prior_related_episode_ids
+                    else None,
+                    None,
+                    episode.end_ordinal + 2 if episode.refractory_active else None,
+                    payload,
+                    now,
+                ),
+            )
+        elif (
+            tuple(existing[:5])
+            != (
+                instance_id,
+                conversation_id,
+                ordinal,
+                episode.start_ordinal,
+                episode.end_ordinal,
+            )
+            or existing[6] != episode.digest
+        ):
+            raise EpisodeError("existing conversation arc does not match declaration")
+
+        member = connection.execute(
+            "SELECT arc_id,episode_id FROM conversation_arc_members "
+            "WHERE instance_id=? AND conversation_id=? AND turn_index=?",
+            (instance_id, conversation_id, turn_index),
+        ).fetchone()
+        if member is None:
+            connection.execute(
+                "INSERT INTO conversation_arc_members VALUES(?,?,?,?,?,?,?,?,?)",
+                (
+                    episode.episode_id,
+                    accepted_episode_id,
+                    instance_id,
+                    conversation_id,
+                    turn_index,
+                    json.dumps(list(episode.topic_keys), ensure_ascii=False),
+                    "known",
+                    "arc_tracker_v1",
+                    now,
+                ),
+            )
+        elif tuple(member) != (episode.episode_id, accepted_episode_id):
+            raise EpisodeError("conversation turn is bound to a different arc member")
+
+        if close:
+            close_event = connection.execute(
+                "SELECT 1 FROM conversation_arc_events WHERE event_id=?",
+                (f"{episode.episode_id}:close",),
+            ).fetchone()
+            if close_event is None:
+                connection.execute(
+                    "INSERT INTO conversation_arc_events VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+                    (
+                        f"{episode.episode_id}:close",
+                        episode.episode_id,
+                        instance_id,
+                        conversation_id,
+                        episode.end_ordinal,
+                        "CLOSE",
+                        None,
+                        None,
+                        episode.closure_reason or "declared_window_end",
+                        episode.end_ordinal + 2
+                        if episode.reentry_initiator == "model"
+                        else None,
+                        payload,
+                        now,
+                    ),
+                )
+        connection.commit()
+    except BaseException:
+        connection.rollback()
+        raise
+
+
 __all__ = [
     "ConversationEpisode",
     "ConversationTurn",
     "EpisodeError",
     "EpisodeTracker",
+    "declared_conversation_arcs",
     "model_reentry_refractory",
     "persist_conversation_episode",
+    "persist_conversation_arc_progress",
 ]

@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Any
 
 from ..contracts import GenerationRequest, GenerationResult
+from ..development.episodes import declared_conversation_arcs, persist_conversation_arc_progress
 from ..host import Host
 from ..memory.interpretation import MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION
 from ..memory.publication import StalePublication
@@ -1034,10 +1035,20 @@ class ContingentStudy:
                 ]
         self._publish_transcript(records=records, condition=condition, fit_records=fit_records)
         self._record_progress(condition, records, segment_start=segment_start)
-        adapter = ProductionAssessmentAdapter(self.runtime, self.assessor_host)
+        arc_by_turn = declared_conversation_arcs(
+            tuple((item.turn, item.chapter) for item in self.schedule.turns),
+            conversation_id=condition,
+        )
+        conversation_episodes = {(slot, turn): arc for turn, arc in arc_by_turn.items()}
+        adapter = ProductionAssessmentAdapter(
+            self.runtime,
+            self.assessor_host,
+            conversation_episodes=conversation_episodes,
+        )
         for turn in self.schedule.turns:
             if turn.turn < start_turn:
                 continue
+            arc = arc_by_turn[turn.turn]
             if condition == "interactive":
                 request = self._interloper_request(
                     condition,
@@ -1063,6 +1074,16 @@ class ContingentStudy:
                 },
                 request=subject_request,
                 max_output_tokens=384,
+            )
+            persist_conversation_arc_progress(
+                self.subjects[slot].store,
+                instance_id=self.subjects[slot].instance_id,
+                conversation_id=condition,
+                ordinal=int(arc.episode_id.rsplit(":", 1)[-1]),
+                episode=arc,
+                turn_index=turn.turn,
+                accepted_episode_id=development.operation.episode_id,
+                close=turn.turn == arc.end_ordinal,
             )
             extraction = None
             extraction_error: str | None = None

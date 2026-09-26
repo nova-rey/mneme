@@ -42,7 +42,9 @@ from .episodes import (
     ConversationTurn,
     EpisodeError,
     EpisodeTracker,
+    declared_conversation_arcs,
     model_reentry_refractory,
+    persist_conversation_arc_progress,
     persist_conversation_episode,
 )
 from .learner import (
@@ -99,9 +101,11 @@ __all__ = [
     "QuarantineService",
     "ConversationEpisode",
     "ConversationTurn",
+    "declared_conversation_arcs",
     "EpisodeError",
     "EpisodeTracker",
     "model_reentry_refractory",
+    "persist_conversation_arc_progress",
     "persist_conversation_episode",
     "FIXED_SCALE",
     "ConsequenceAssessment",

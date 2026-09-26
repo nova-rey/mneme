@@ -326,7 +326,11 @@ class ProductionAssessmentAdapter:
         for index, row in enumerate(rows):
             slot_name = f"s{index}"
             purpose = str(row[4])
-            role = "external" if purpose == "external_evidence" else "model_output"
+            # Feedback is an external outcome/report recorded by the runtime,
+            # not a model-origin observation.  Keep controller, replay, tool,
+            # and model rows out of the external evidence set; their ancestry
+            # remains available to deterministic provenance resolution.
+            role = "external" if purpose in {"external_evidence", "feedback"} else "model_output"
             sources.append(
                 AssessorSource(
                     slot_name,

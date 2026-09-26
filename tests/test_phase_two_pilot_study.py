@@ -309,6 +309,33 @@ def test_production_assessment_adapter_serializes_complete_monitor_and_resolves_
     assert resolved[0].provenance.dependence == "external_supported"
 
 
+def test_production_assessment_adapter_treats_feedback_as_external_evidence() -> None:
+    class _Connection:
+        def execute(self, _query: str, _args: tuple[str, ...]) -> Any:
+            return SimpleNamespace(
+                fetchall=lambda: [
+                    (
+                        "feedback-source",
+                        0,
+                        "The basil survived the absence.",
+                        "user",
+                        "feedback",
+                        None,
+                    ),
+                ]
+            )
+
+    runtime = SimpleNamespace(
+        subjects={0: SimpleNamespace(store=SimpleNamespace(connection=_Connection()))}
+    )
+    sources, current_input, replay = ProductionAssessmentAdapter._sources(
+        runtime, 0, "episode-s0-e0"
+    )
+    assert sources[0].role == "external"
+    assert current_input == ("s0",)
+    assert replay == ()
+
+
 def test_production_assessment_adapter_assesses_all_edges_and_publishes_exposure() -> None:
     class _Connection:
         def execute(self, _query: str, _args: tuple[str, ...]) -> Any:
