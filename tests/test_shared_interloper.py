@@ -117,3 +117,14 @@ def test_treatment_gate_requires_actual_nonzero_mneme_application() -> None:
     )
     assert result["valid"] is True
     assert result["first_applied_coordinate"] == "A:1"
+
+
+def test_control_can_reuse_ordinary_chat_history_without_mneme_permissions() -> None:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from tools.run_p23_shared_interloper_ab import _subject_permissions
+
+    control = _subject_permissions(1)
+    assert control.provider_reuse is True
+    assert control.interpret is False
+    assert control.recall is False
+    assert control.learn is False

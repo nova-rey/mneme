@@ -171,6 +171,22 @@ PROBES = (
 )
 
 
+def _subject_permissions(slot: int) -> StoragePermissions:
+    """Permit ordinary conversational history without granting MNEME state."""
+
+    return StoragePermissions(
+        store=True,
+        export=True,
+        interpret=slot == 0,
+        recall=slot == 0,
+        # Both twins must be allowed to send their own prior assistant turns
+        # as ordinary conversation history.  The control remains MNEME-free
+        # because interpret, recall, and learn stay disabled for slot 1.
+        provider_reuse=True,
+        learn=slot == 0,
+    )
+
+
 def _payload(result: Any) -> dict[str, Any]:
     value = result.to_dict()
     usage = value.get("token_usage")
@@ -423,14 +439,7 @@ def main() -> int:
         path = ROOT / "subjects" / f"{label}.sqlite3"
         path.parent.mkdir(parents=True, exist_ok=True)
         subject_store = SQLiteStore(path)
-        permissions = StoragePermissions(
-            store=True,
-            export=True,
-            interpret=slot == 0,
-            recall=slot == 0,
-            provider_reuse=slot == 0,
-            learn=slot == 0,
-        )
+        permissions = _subject_permissions(slot)
         instance = subject_store.create_root(
             instance_id=str(uuid.uuid5(uuid.NAMESPACE_URL, f"mneme:{EXPERIMENT}:{label}")),
             permissions=permissions,

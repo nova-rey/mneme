@@ -1329,3 +1329,15 @@ used zero DeepInfra calls; historical Qwen/Qwen3-235B assessor rate-limit
 receipts remain unchanged. Evidence is in
 `docs/receipts/MNEME_P2.3_Local_NLI_Assessor_Qualification_20260926.md` and
 `.json`.
+
+## 2026-09-26 shared-Interloper control permission stop
+
+Prospective run `p23-shared-interloper-ab-20260926-r4` stopped as invalid at
+`development-C-A-t1`: the control twin could not serialize its own ordinary
+assistant history because the runner had set `provider_reuse=false`. No
+behavioral result was assigned and the persisted pre-stop artifacts remain
+unchanged. The narrow correction enables `provider_reuse` for both twins while
+keeping control `interpret`, `recall`, and `learn` disabled, so ordinary chat
+history is allowed without MNEME influence. Evidence is in
+`docs/receipts/MNEME_P2.3_Shared_Interloper_Control_Permission_Stop_20260926.md`
+and `.json`.

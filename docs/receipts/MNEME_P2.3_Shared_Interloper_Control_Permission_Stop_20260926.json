@@ -1,0 +1,28 @@
+{
+  "date": "2026-09-26",
+  "status": "INVALID_CONTROL_PROVIDER_REUSE_PERMISSION",
+  "run_id": "p23-shared-interloper-ab-20260926-r4",
+  "experiment": "p2.3-valid-three-thread-shared-interloper-ab",
+  "historical_evidence_unchanged": true,
+  "failure": {
+    "type": "PilotRuntimeError",
+    "coordinate": "development-C-A-t1",
+    "reason": "control subject provider_reuse permission denied while preparing ordinary assistant history; no downstream call was dispatched"
+  },
+  "root_cause": "The new shared runner incorrectly disabled provider_reuse for the control twin. The control must be able to send its own prior assistant turns as ordinary chat history; provider_reuse does not grant interpret, recall, learn, or MNEME exposure.",
+  "persisted_before_stop": {
+    "artifact_manifest_sha256": "5a32ef5d930f46a0d25f5e0e981c3bdd3475580738681fed7a8d722018950f46",
+    "artifact_count": 16,
+    "reservation_count": 11,
+    "reservation_roles": {
+      "development-extraction": 2,
+      "assessor": 2,
+      "assessor-qualification": 3,
+      "development-response": 3,
+      "interloper": 1
+    },
+    "artifact_root": "/tmp/mneme-p23-shared-ab-20260926-r4"
+  },
+  "provider_calls_after_failure": 0,
+  "behavioral_result": "not_assigned"
+}
