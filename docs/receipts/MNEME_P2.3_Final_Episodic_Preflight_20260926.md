@@ -33,8 +33,10 @@ so the fixed learner can perform its existing consolidation transition if all
 five source-grounded observations are admitted. Same-arc repetition cannot earn
 credit.
 
-The harness plans 100 provider reservations as a hard run bound. Local Gemma
-and GLiNER calls are included in the same durable ledger. The prior factual
+The harness plans a 300-reservation hard run bound (the frozen schedule has at
+most 240 role calls: participant, development, extraction, and assessment for
+30 turns across two branches). Local Gemma and GLiNER calls are included in
+the same durable ledger. The prior factual
 ledger (456 attempted/returned, 455 persisted) is preserved. The current user
 authorization treats this small, attributable final mechanism run as approved
 Phase Two completion work; no calls are consumed by this preflight receipt.

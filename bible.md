@@ -1240,3 +1240,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 final episodic run 3 invalid stop
 
 - Preserved `p23-final-episodic-run-3` as `INVALID` after four successful first-coordinate calls were followed by a transcript publication API defect. No later coordinate ran and no scientific result was assigned. The exact partial evidence and sanitized disposition are published in `docs/receipts/MNEME_P2.3_Final_Episodic_Run3_Invalid_20260926.md`; historical runs remain unchanged.
+
+## 2026-09-26 P2.3 final episodic run 4 invalid envelope stop
+
+- Preserved `p23-final-episodic-run-4` as `INVALID` after its erroneous 100-call pilot envelope stopped the external branch at turn 24. No later coordinate was reserved or dispatched. Corrected the frozen preflight to a 300-call hard bound for at most 240 schedule role calls; historical evidence remains unchanged.
