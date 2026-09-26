@@ -32,6 +32,7 @@ from ..host import Host
 from ..memory.publication import PublicationError
 from .evaluation import EvaluationError
 from .pilot import PilotError, PilotRun, PilotStatus
+from .pilot_audit import EngineeringAudit, audit_pilot_run
 from .pilot_runtime import (
     DevelopmentOutcome,
     ExtractionOutcome,
@@ -582,6 +583,7 @@ class PilotStudyReport:
     evaluations_completed: int
     admitted_relationships: int
     failure: str | None = None
+    engineering_audit: EngineeringAudit | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -593,6 +595,9 @@ class PilotStudyReport:
             "evaluations_completed": self.evaluations_completed,
             "admitted_relationships": self.admitted_relationships,
             "engineering_adequate": self.engineering_adequate,
+            "engineering_audit": (
+                None if self.engineering_audit is None else self.engineering_audit.to_dict()
+            ),
             "failure": self.failure,
         }
 
@@ -604,6 +609,8 @@ class PilotStudyReport:
             and self.development_completed == EXPECTED_DEVELOPMENT_CALLS
             and self.assessments_completed == EXPECTED_ASSESSMENT_CALLS
             and self.evaluations_completed == EXPECTED_EVALUATION_CALLS
+            and self.engineering_audit is not None
+            and self.engineering_audit.passed
         )
 
 
@@ -662,6 +669,15 @@ class PilotStudy:
         relationships: int,
         failure: str | None = None,
     ) -> PilotStudyReport:
+        engineering_audit = audit_pilot_run(
+            self.pilot,
+            self.schedule,
+            status=status,
+            development_completed=development,
+            extractions_valid=extractions,
+            assessments_completed=assessments,
+            evaluations_completed=evaluations,
+        )
         report = PilotStudyReport(
             status,
             development,
@@ -671,6 +687,7 @@ class PilotStudy:
             evaluations,
             relationships,
             failure,
+            engineering_audit,
         )
         self.pilot.publish_artifact("receipts", "pilot-study-report.json", report.to_dict())
         return report

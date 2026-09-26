@@ -1172,3 +1172,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 Phase Two evaluation-isolation hardening
 
 - Strengthened `PilotRuntime.evaluate` with a deterministic full writable-lineage logical-state digest before and after every frozen evaluation. Evaluation receipts now retain the checkpoint file digest and checkpoint logical-state digest alongside the existing revision/manifest descriptor and writable-lineage digest pair. Added a regression proving an auxiliary-table mutation at unchanged revision is rejected; no provider calls occurred.
+
+## 2026-09-26 P2.3 engineering evidence audit
+
+- Added a bounded durable engineering audit for `PilotStudyReport`. Engineering adequacy now requires the real `PilotRun` ledger, terminal reservations, host provenance, study-progress coordinates, artifact inventory, and evaluation-isolation receipts to pass; schedule counters alone are explicitly insufficient. Fake/count-only test doubles remain readable but cannot report engineering adequacy. No provider calls occurred.

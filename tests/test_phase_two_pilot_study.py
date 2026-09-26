@@ -8,12 +8,14 @@ from typing import Any
 
 from mneme.contracts import GenerationRequest
 from mneme.development.learner import ConsequenceAssessment
+from mneme.experiments.pilot_audit import EngineeringAudit
 from mneme.experiments.pilot_study import (
     AssessmentPlan,
     EvaluationPlan,
     PilotSchedule,
     PilotStatus,
     PilotStudy,
+    PilotStudyReport,
     ProductionAssessmentAdapter,
 )
 from mneme.hosts import FakeHost
@@ -193,7 +195,29 @@ def test_resume_counts_unique_development_coordinates_after_accepted_retry() -> 
     assert completed.extractions_valid == 48
     assert completed.assessments_completed == 48
     assert completed.evaluations_completed == 144
-    assert completed.engineering_adequate is True
+    # The fake runtime supplies counters only.  A completed count summary is
+    # deliberately insufficient without a durable PilotRun audit.
+    assert completed.engineering_adequate is False
+    assert completed.engineering_audit is not None
+    assert completed.engineering_audit.status == "UNAVAILABLE"
+
+
+def test_engineering_adequacy_requires_durable_audit_even_when_counts_pass() -> None:
+    report = PilotStudyReport(
+        status=PilotStatus.COMPLETE.value,
+        development_completed=48,
+        extractions_valid=48,
+        extraction_repairs=0,
+        assessments_completed=48,
+        evaluations_completed=144,
+        admitted_relationships=12,
+        engineering_audit=EngineeringAudit(
+            "UNAVAILABLE",
+            ({"name": "durable-pilot-run", "passed": False},),
+        ),
+    )
+
+    assert report.engineering_adequate is False
 
 
 def test_resume_reprocesses_accepted_development_after_interpretation_interrupt() -> None:
