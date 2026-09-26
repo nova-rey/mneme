@@ -37,6 +37,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   preserves the completed 103-call credential-loaded run whose field computation
   was valid but whose host payload still exposed raw graph labels. The published
   bundle is retained unchanged; no behavioral interpretation is claimed.
+* [F0 v3 terminal receipt](receipts/MNEME_P2_F0_Background_C_R_F0_V3_Terminal_20260926.md)
+  records the corrected 106-call C/R/F0 comparison: nontrivial development and
+  nonzero F0 pressure passed, C and R matched on all frozen coordinates, and F0
+  differed observably on all six paired readouts under the abstract renderer.
 * `decisions/MNEME_Research_Decision_Episodic_Evidence_Provenance_2026-09-25.md` is the
   supplied research/architecture decision note on conversational episodes and re-entry
   provenance. It is archived as reference context; the current implementation decision
