@@ -1297,3 +1297,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 shared-Interloper rate-limit blocker
 
 - The paced second prospective run stopped at the same first Qwen qualification coordinate with HTTP 429. Published the sanitized blocker receipt at `docs/receipts/MNEME_P2.3_Shared_Interloper_AB_Rate_Limit_20260926.md` and `.json`. Two new provider calls were consumed; no Gemma, extraction, learner, treatment, readout, or evaluation coordinate ran.
+
+## 2026-09-26 shared-Interloper smaller-Qwen selection
+
+- Selected the exact live catalog model `Qwen/Qwen3-30B-A3B` for the Interloper role after the prior 235B rate-limit stops. A non-thinking health probe returned HTTP 200 with usable participant text; the existing 235B assessor role remains unchanged. Model-selection and probe evidence is published in `docs/receipts/MNEME_P2.3_Shared_Interloper_Model_Substitution_20260926.md` and `.json`.

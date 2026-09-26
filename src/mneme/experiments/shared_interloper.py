@@ -102,7 +102,12 @@ def build_shared_interloper_request(
     return GenerationRequest(
         shared_interloper_history(prior_participant, responses),
         system=SHARED_INTERLOPER_SYSTEM_PROMPT + "\n\n" + private_state,
-        parameters={"temperature": 0.7, "top_p": 0.9, "max_new_tokens": 192},
+        parameters={
+            "temperature": 0.7,
+            "top_p": 0.9,
+            "max_new_tokens": 192,
+            "reasoning_effort": "none",
+        },
     )
 
 

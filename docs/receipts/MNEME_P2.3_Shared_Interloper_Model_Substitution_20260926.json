@@ -1,0 +1,36 @@
+{
+  "experiment": "p2.3-valid-three-thread-shared-interloper-ab",
+  "selected_interloper_model": "Qwen/Qwen3-30B-A3B",
+  "selected_model_reason": "same Qwen chat family; 30B total and 3B active MoE, materially smaller than the 235B/22B assessor model; adequate role requirements do not need frontier reasoning",
+  "interloper_parameters": {
+    "reasoning_effort": "none"
+  },
+  "historical_runs_unchanged": true,
+  "probes": [
+    {
+      "model_id": "Qwen/Qwen3-30B-A3B-Instruct-2507",
+      "http_status": 404,
+      "returned": false,
+      "error_code": "model_not_found"
+    },
+    {
+      "model_id": "Qwen/Qwen3-30B-A3B",
+      "http_status": 200,
+      "returned": true,
+      "finish_reason": "length",
+      "usable_content": false,
+      "total_tokens": 48
+    },
+    {
+      "model_id": "Qwen/Qwen3-30B-A3B",
+      "http_status": 200,
+      "returned": true,
+      "finish_reason": "stop",
+      "usable_content": true,
+      "total_tokens": 31,
+      "reasoning_effort": "none",
+      "request_id": "R4zpVyyp1TqjtdMvYrgxPyZS"
+    }
+  ],
+  "assessor_model_unchanged": "Qwen/Qwen3-235B-A22B-Instruct-2507"
+}

@@ -217,7 +217,15 @@ def main() -> int:
     ROOT.mkdir(parents=True, exist_ok=True)
     gemma = RemoteLlamaHost()
     extractor = RemoteGlinerHost()
-    qwen = DeepInfraQwenAssessorHost(token=None)
+    interloper = DeepInfraQwenAssessorHost(
+        token=None,
+        model_id="Qwen/Qwen3-30B-A3B",
+        model_family="Qwen3 30B A3B Instruct-role",
+        upstream_model_id="Qwen/Qwen3-30B-A3B",
+        quantization="provider-managed",
+        context_length=40960,
+    )
+    assessor = DeepInfraQwenAssessorHost(token=None)
     contract = {
         "name": EXPERIMENT,
         "contract_revision": REVISION,
@@ -237,7 +245,8 @@ def main() -> int:
             "hosts": {
                 "gemma": gemma.fingerprint().to_dict(),
                 "extractor": extractor.fingerprint().to_dict(),
-                "interloper": qwen.fingerprint().to_dict(),
+                "interloper": interloper.fingerprint().to_dict(),
+                "assessor": assessor.fingerprint().to_dict(),
             },
         },
         study_plan={
@@ -265,8 +274,8 @@ def main() -> int:
         "developing": host_role_binding("developing", gemma),
         "development-response": host_role_binding("development-response", gemma),
         "development-extraction": host_role_binding("development-extraction", extractor),
-        "interloper": host_role_binding("interloper", qwen),
-        "assessor": host_role_binding("assessor", qwen),
+        "interloper": host_role_binding("interloper", interloper),
+        "assessor": host_role_binding("assessor", assessor),
         "evaluation": host_role_binding("evaluation", gemma),
     }
     pilot.prepare(
@@ -287,7 +296,7 @@ def main() -> int:
     for index in range(3):
         result = _call(
             pilot,
-            qwen,
+            interloper,
             qualification_request,
             call_id=f"qualification-{index}",
             role="assessor-qualification",
@@ -327,7 +336,7 @@ def main() -> int:
         )
 
     runtime = PilotRuntime(pilot, subjects)
-    adapter = ProductionAssessmentAdapter(runtime, qwen)
+    adapter = ProductionAssessmentAdapter(runtime, assessor)
     transcripts: list[dict[str, Any]] = []
     exposures: list[dict[str, Any]] = []
     histories: dict[int, list[tuple[str, str]]] = {0: [], 1: []}
@@ -350,7 +359,7 @@ def main() -> int:
                 )
                 qwen_result = _call(
                     pilot,
-                    qwen,
+                    interloper,
                     qwen_request,
                     call_id=f"shared-qwen-{thread.thread_id}-t{local_turn}",
                     role="interloper",
@@ -420,7 +429,7 @@ def main() -> int:
                                 call_id=f"assessment-M-{thread.thread_id}-t{local_turn}",
                                 role="assessor",
                                 coordinate={"experiment": EXPERIMENT, "thread": thread.thread_id, "turn": local_turn, "twin": "M"},
-                                host=qwen,
+                                host=assessor,
                                 request=plan.request,
                                 max_output_tokens=1536,
                                 validator=plan.validator,
