@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "audit_kind": "p2.3-run-bound-engineering-audit",
+  "audited_chain": [
+    "p2-pilot-recovery-20260924p",
+    "p2-pilot-recovery-20260924q",
+    "p2-pilot-recovery-20260924r"
+  ],
+  "provider_calls_during_audit": 0,
+  "disposition": "ENGINEERING_AUDIT_NOT_PASSED_HISTORICAL_EVIDENCE_INSUFFICIENT",
+  "historical_scientific_disposition_preserved": "COMPLETED_INADEQUATE",
+  "runs": {
+    "p2-pilot-recovery-20260924q": {
+      "status": "RUNNING",
+      "run_verify": false,
+      "inventory": {
+        "development": 8,
+        "extraction": 8,
+        "assessment": 14,
+        "evaluation": 38,
+        "valid_reservations": 59,
+        "interrupted_reservation": "evaluation-s0-p6-r1"
+      },
+      "run_manifest_sha256": "91028c4ed6d0969ce63d56e6aa60b9e26ab679ad888411636b2684129fabfbe8",
+      "pilot_state_sha256": "1adf20955638b07d613b3ed8bfaeb950578c17729f0a2660fa0d2e79189148c9"
+    },
+    "p2-pilot-recovery-20260924r": {
+      "status": "COMPLETE",
+      "run_verify": true,
+      "inventory": {
+        "development": 0,
+        "extraction": 0,
+        "assessment": 0,
+        "evaluation": 109,
+        "returned_reservations": 107,
+        "resumed_coordinate": "evaluation-s0-p6-r1"
+      },
+      "run_manifest_sha256": "bebbe3ee200613c18735007cec6aba4806aef4274fb98359ae879644d1052570",
+      "pilot_state_sha256": "df5bd74b22aa48a99a62fe3dc5c5989900025785753a898a48e6595f2908ebe9"
+    }
+  },
+  "checks": {
+    "durable_pilot_run": true,
+    "call_coordinates": true,
+    "terminal_reservations": true,
+    "unique_reservations": true,
+    "development_coordinates": false,
+    "extraction_coordinates": false,
+    "evaluation_coordinates": false,
+    "host_provenance": true,
+    "study_progress_ledger": false,
+    "assessment_reservations": false,
+    "artifact_inventory": false,
+    "evaluation_isolation_receipts": true,
+    "subject_authority_and_replay": false
+  },
+  "limitations": [
+    "The current audit is run-bound and does not silently merge continuation inventories.",
+    "The historical q/r execution predates prepared subject and replay snapshots.",
+    "The q predecessor contains a documented zero-byte reservation from its filesystem interruption; r contains the matching resumed coordinate.",
+    "No historical artifact or receipt was modified."
+  ],
+  "shared_contract_digest": "650faa6cf317aa459f8031b2385d7dbb0337590b0e783e274e17b94630f5bf5e",
+  "historical_idempotent_reuse": "development-s1-e16"
+}

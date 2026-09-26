@@ -1204,3 +1204,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 candidate-pointer reconciliation
 
 - Reconciled the parent P2.3 queue candidate pointer to `381b906`, which includes the pushed engineering-audit closure and current-state refresh. The parent package remains WAITING on `review:p2.3-pilot-adequacy-after-normalization`; no scientific or accounting blocker was cleared and no provider calls occurred.
+
+## 2026-09-26 P2.3 run-bound engineering audit
+
+- Applied the current durable engineering audit read-only to the preserved q→r continuation artifacts. The strong single-run audit did not pass because developmental, extraction, assessment, and evaluation artifacts are split across continuation runs and the historical execution predates prepared subject/replay snapshots. Published `docs/receipts/MNEME_P2.3_Run_Bound_Engineering_Audit_20260926.md`; historical evidence, `COMPLETED_INADEQUATE` disposition, and queue WAITING state remain unchanged. No provider calls occurred.
