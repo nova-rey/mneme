@@ -109,10 +109,7 @@ def _operation_quarantined(
         item["target_id"] for item in active if item["target_kind"] in {"edge", "concept"}
     ):
         return True
-    if any(
-        item["target_kind"] == "route" and item["target_id"] in route_keys
-        for item in active
-    ):
+    if any(item["target_kind"] == "route" and item["target_id"] in route_keys for item in active):
         return True
     interpretation = store.connection.execute(
         "SELECT i.interpretation_id FROM interpretations i "
@@ -177,7 +174,9 @@ def _observations(store: SQLiteStore, operation_id: str) -> tuple[Observation, .
     rows = store.connection.execute(
         "SELECT d.observation_id,COALESCE(b.canonical_key,d.edge_key),d.context,"
         "d.source_role,d.status,d.dependence,d.dependence_group,d.covered,d.actual_exposure "
-        ",d.evidence_json FROM development_observations d LEFT JOIN semantic_bindings b "
+        ",d.evidence_json,d.arc_id,d.arc_reentry,d.reentry_initiator,"
+        "d.reentry_origin_arc_id,d.refractory_active "
+        "FROM development_observations d LEFT JOIN semantic_bindings b "
         "ON b.binding_id=d.binding_id WHERE d.operation_id=? ORDER BY d.observation_id",
         (operation_id,),
     )
@@ -205,9 +204,7 @@ def _observations(store: SQLiteStore, operation_id: str) -> tuple[Observation, .
                 status=str(row[4]),
                 dependence=str(row[5]),
                 relation_support=(
-                    str(evidence["relation_support"])
-                    if evidence.get("relation_support")
-                    else None
+                    str(evidence["relation_support"]) if evidence.get("relation_support") else None
                 ),
                 expression_status=(
                     str(evidence["expression_status"])
@@ -227,6 +224,29 @@ def _observations(store: SQLiteStore, operation_id: str) -> tuple[Observation, .
                 actual_exposure=bool(row[8]),
                 eligible=bool(evidence.get("eligible", True)),
                 observation_id=str(row[0]),
+                conversation_arc_id=(
+                    str(
+                        evidence.get("conversation_arc_id", evidence.get("conversation_episode_id"))
+                    )
+                    if evidence.get("conversation_arc_id", evidence.get("conversation_episode_id"))
+                    else (str(row[10]) if row[10] is not None else None)
+                ),
+                prior_arc_id=(
+                    str(evidence.get("prior_arc_id", evidence.get("prior_episode_id")))
+                    if evidence.get("prior_arc_id", evidence.get("prior_episode_id"))
+                    else (str(row[13]) if row[13] is not None else None)
+                ),
+                reentry_initiator=(
+                    str(evidence["reentry_initiator"])
+                    if evidence.get("reentry_initiator")
+                    else (str(row[12]) if row[12] is not None else None)
+                ),
+                arc_reentry=bool(
+                    evidence.get("arc_reentry", evidence.get("reentry", bool(row[11])))
+                ),
+                refractory_active=bool(
+                    evidence.get("refractory_active", evidence.get("refractory", bool(row[14])))
+                ),
             )
         )
     return tuple(observations)
@@ -264,9 +284,7 @@ def _consequences(store: SQLiteStore, operation_id: str) -> tuple[ConsequenceAss
                 exposure_id=str(row[5]) if row[5] is not None else None,
                 relevant=bool(row[6]),
                 opportunity=(
-                    int(payload["opportunity"])
-                    if payload.get("opportunity") is not None
-                    else None
+                    int(payload["opportunity"]) if payload.get("opportunity") is not None else None
                 ),
             )
         )
@@ -297,9 +315,7 @@ def _modeled_targets(store: SQLiteStore, operation_id: str) -> tuple[tuple[str, 
     return tuple(targets)
 
 
-def replay_learner(
-    store: SQLiteStore, *, include_quarantined: bool = False
-) -> ReplayReport:
+def replay_learner(store: SQLiteStore, *, include_quarantined: bool = False) -> ReplayReport:
     """Replay accepted developmental observations without writing the store."""
 
     current = store.current()
@@ -441,8 +457,7 @@ def rebuild_learner(
             if (
                 not operation_id
                 or advance_instance != instance_id
-                or str(modeled_advance.get("base_manifest_id", ""))
-                != str(base["manifest_id"])
+                or str(modeled_advance.get("base_manifest_id", "")) != str(base["manifest_id"])
                 or not context
                 or steps <= 0
                 or not isinstance(targets, (tuple, list))
@@ -612,13 +627,22 @@ def rebuild_learner(
                 db.execute(
                     "INSERT INTO learner_values VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     (
-                        str(uuid.uuid4()), instance_id, update_id, key[0], key[1],
-                        edge.accessibility, edge.support, edge.consequence,
+                        str(uuid.uuid4()),
+                        instance_id,
+                        update_id,
+                        key[0],
+                        key[1],
+                        edge.accessibility,
+                        edge.support,
+                        edge.consequence,
                         sum(amount for _group, amount in edge.lifetime_by_group),
                         sum(amount for _group, amount in edge.induced_by_group),
                         sum(item.amount for item in edge.rolling_credits),
-                        edge.last_consolidation_opportunity, edge.inactivity_ticks,
-                        opportunity, _digest(edge.to_dict()), now,
+                        edge.last_consolidation_opportunity,
+                        edge.inactivity_ticks,
+                        opportunity,
+                        _digest(edge.to_dict()),
+                        now,
                     ),
                 )
         db.execute(
@@ -659,17 +683,13 @@ def _state_digest_from_snapshot(value: Any) -> str:
                 lifetime_by_group=tuple(
                     sorted(
                         (str(group), int(amount))
-                        for group, amount in dict(
-                            item.get("lifetime_by_group", {})
-                        ).items()
+                        for group, amount in dict(item.get("lifetime_by_group", {})).items()
                     )
                 ),
                 induced_by_group=tuple(
                     sorted(
                         (str(group), int(amount))
-                        for group, amount in dict(
-                            item.get("induced_by_group", {})
-                        ).items()
+                        for group, amount in dict(item.get("induced_by_group", {})).items()
                     )
                 ),
                 rolling_credits=tuple(
@@ -682,6 +702,7 @@ def _state_digest_from_snapshot(value: Any) -> str:
                     else None
                 ),
                 raw_occurrence_count=int(item.get("raw_occurrence_count", 0)),
+                episode_keys=tuple(str(value) for value in item.get("episode_keys", [])),
             )
         )
     edges = tuple(edge_rows)
@@ -691,10 +712,7 @@ def _state_digest_from_snapshot(value: Any) -> str:
             context=str(item.get("context", key.split(":", 1)[-1])),
             consequence=int(item.get("consequence", 0)),
             by_exposure=tuple(
-                sorted(
-                    (str(k), int(v))
-                    for k, v in dict(item.get("by_exposure", {})).items()
-                )
+                sorted((str(k), int(v)) for k, v in dict(item.get("by_exposure", {})).items())
             ),
             rolling_consequences=tuple(
                 CreditWindow(int(x["opportunity"]), int(x["amount"]))

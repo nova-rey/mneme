@@ -22,7 +22,7 @@ from .contracts import (
     validate_id,
 )
 
-SCHEMA_VERSION = 10
+SCHEMA_VERSION = 11
 APPLICATION_ID = 0x4D4E454D  # ASCII "MNEM"
 
 _SCHEMA = """
@@ -436,6 +436,11 @@ CREATE TABLE IF NOT EXISTS development_observations (
   actual_exposure INTEGER NOT NULL CHECK (actual_exposure IN (0,1)),
   evidence_json TEXT NOT NULL,
   credit_reason TEXT,
+  arc_id TEXT REFERENCES conversation_arcs(arc_id),
+  arc_reentry INTEGER NOT NULL DEFAULT 0 CHECK (arc_reentry IN (0,1)),
+  reentry_initiator TEXT CHECK (reentry_initiator IS NULL OR reentry_initiator IN ('external','model','mneme','unknown')),
+  reentry_origin_arc_id TEXT REFERENCES conversation_arcs(arc_id),
+  refractory_active INTEGER NOT NULL DEFAULT 0 CHECK (refractory_active IN (0,1)),
   created_at TEXT NOT NULL
 );
 CREATE TABLE IF NOT EXISTS learner_updates (
@@ -546,6 +551,49 @@ CREATE TABLE IF NOT EXISTS identity_review_attempts (
   updated_at TEXT NOT NULL,
   PRIMARY KEY(review_id, attempt)
 );
+CREATE TABLE IF NOT EXISTS conversation_arcs (
+  arc_id TEXT PRIMARY KEY,
+  instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
+  conversation_id TEXT NOT NULL,
+  ordinal INTEGER NOT NULL CHECK (ordinal >= 0),
+  start_turn INTEGER NOT NULL CHECK (start_turn >= 0),
+  end_turn INTEGER NOT NULL CHECK (end_turn >= start_turn),
+  start_episode_id TEXT NOT NULL REFERENCES episodes(episode_id),
+  initiation_role TEXT NOT NULL CHECK (initiation_role IN ('external','model','mneme','unknown')),
+  topic_keys_json TEXT NOT NULL,
+  source_roles_json TEXT NOT NULL,
+  outcome_keys_json TEXT NOT NULL,
+  boundary_version TEXT NOT NULL,
+  content_digest TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  UNIQUE(instance_id, conversation_id, ordinal)
+);
+CREATE TABLE IF NOT EXISTS conversation_arc_members (
+  arc_id TEXT NOT NULL REFERENCES conversation_arcs(arc_id),
+  episode_id TEXT NOT NULL UNIQUE REFERENCES episodes(episode_id),
+  instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
+  conversation_id TEXT NOT NULL,
+  turn_index INTEGER NOT NULL CHECK (turn_index >= 0),
+  topic_keys_json TEXT NOT NULL,
+  topic_status TEXT NOT NULL CHECK (topic_status IN ('known','empty','unknown')),
+  assignment_reason TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  PRIMARY KEY(instance_id, conversation_id, turn_index)
+);
+CREATE TABLE IF NOT EXISTS conversation_arc_events (
+  event_id TEXT PRIMARY KEY,
+  arc_id TEXT NOT NULL REFERENCES conversation_arcs(arc_id),
+  instance_id TEXT NOT NULL REFERENCES lineages(instance_id),
+  conversation_id TEXT NOT NULL,
+  turn_index INTEGER NOT NULL CHECK (turn_index >= 0),
+  event_kind TEXT NOT NULL CHECK (event_kind IN ('OPEN','CLOSE','REENTRY')),
+  initiator_role TEXT CHECK (initiator_role IS NULL OR initiator_role IN ('external','model','mneme','unknown')),
+  prior_arc_id TEXT REFERENCES conversation_arcs(arc_id),
+  closure_reason TEXT,
+  refractory_expires_after_turn INTEGER,
+  details_json TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
 """
 
 # Additive portion used by the explicit v1 -> v2 migration.  It is derived
@@ -566,7 +614,12 @@ _SCHEMA_V6_TABLES = _SCHEMA[
         "CREATE TABLE IF NOT EXISTS outcome_assessments"
     )
 ]
-_SCHEMA_V7_TABLES = _SCHEMA[_SCHEMA.index("CREATE TABLE IF NOT EXISTS outcome_assessments") :]
+_SCHEMA_V7_TABLES = _SCHEMA[
+    _SCHEMA.index("CREATE TABLE IF NOT EXISTS outcome_assessments") : _SCHEMA.index(
+        "CREATE TABLE IF NOT EXISTS conversation_arcs"
+    )
+]
+_SCHEMA_V11_TABLES = _SCHEMA[_SCHEMA.index("CREATE TABLE IF NOT EXISTS conversation_arcs") :]
 
 _IMMUTABLE = (
     "lineages",
@@ -602,6 +655,9 @@ _IMMUTABLE = (
     "learner_snapshots",
     "outcome_assessments",
     "quarantine_events",
+    "conversation_arcs",
+    "conversation_arc_members",
+    "conversation_arc_events",
 )
 
 
@@ -724,7 +780,7 @@ class SQLiteStore:
         version = int(row[0]) if row else 0
         if version > SCHEMA_VERSION:
             raise SchemaError(f"unsupported newer schema version {version}")
-        if self.read_only and version in {1, 2, 3, 4, 5, 6, 7, 8, 9}:
+        if self.read_only and version in {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}:
             # Historical Phase Zero checkpoints remain inspectable without
             # mutation.  Forking a v1 checkpoint stages and explicitly
             # migrates a private copy before opening it writable.
@@ -755,9 +811,9 @@ class SQLiteStore:
         interrupted or validation fails.
         """
 
-        if target_version not in {2, 3, 4, 5, 6, 7, 8, 9, SCHEMA_VERSION}:
+        if target_version not in {2, 3, 4, 5, 6, 7, 8, 9, 10, SCHEMA_VERSION}:
             raise SchemaError(
-                f"only migration to schema 2, 3, 4, 5, 6, 7, 8, 9 or {SCHEMA_VERSION} is supported"
+                f"only migration to schema 2, 3, 4, 5, 6, 7, 8, 9, 10 or {SCHEMA_VERSION} is supported"
             )
         source = Path(path)
         if not source.is_file():
@@ -777,7 +833,7 @@ class SQLiteStore:
             version = int(version_row[0]) if version_row else 0
             if version == target_version:
                 raise SchemaError("store is already at the requested schema version")
-            if version not in {1, 2, 3, 4, 5, 6, 7, 8, 9} or version > target_version:
+            if version not in {1, 2, 3, 4, 5, 6, 7, 8, 9, 10} or version > target_version:
                 raise SchemaError(f"cannot migrate unsupported schema version {version}")
             info = raw.execute("SELECT schema_version FROM store_info").fetchone()
             if info is None or int(info[0]) != version:
@@ -1131,6 +1187,27 @@ class SQLiteStore:
                 )
                 raw.execute("PRAGMA user_version = 10")
                 version = 10
+            if version == 10 and target_version >= 11:
+                for column, definition in (
+                    ("arc_id", "TEXT"),
+                    ("arc_reentry", "INTEGER NOT NULL DEFAULT 0"),
+                    ("reentry_initiator", "TEXT"),
+                    ("reentry_origin_arc_id", "TEXT"),
+                    ("refractory_active", "INTEGER NOT NULL DEFAULT 0"),
+                ):
+                    if not has_column("development_observations", column):
+                        raw.execute(
+                            f"ALTER TABLE development_observations ADD COLUMN {column} {definition}"
+                        )
+                for statement in _SCHEMA_V11_TABLES.split(";"):
+                    statement = statement.strip()
+                    if statement:
+                        raw.execute(statement)
+                raw.execute(
+                    "UPDATE store_info SET schema_version=11,record_version=record_version+1"
+                )
+                raw.execute("PRAGMA user_version = 11")
+                version = 11
             for table in _IMMUTABLE:
                 exists = raw.execute(
                     "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (table,)

@@ -37,6 +37,14 @@ from .authority import (
     QuarantineRecord,
     QuarantineService,
 )
+from .episodes import (
+    ConversationEpisode,
+    ConversationTurn,
+    EpisodeError,
+    EpisodeTracker,
+    model_reentry_refractory,
+    persist_conversation_episode,
+)
 from .learner import (
     FIXED_SCALE,
     ConsequenceAssessment,
@@ -89,6 +97,12 @@ __all__ = [
     "IdentityReviewService",
     "QuarantineRecord",
     "QuarantineService",
+    "ConversationEpisode",
+    "ConversationTurn",
+    "EpisodeError",
+    "EpisodeTracker",
+    "model_reentry_refractory",
+    "persist_conversation_episode",
     "FIXED_SCALE",
     "ConsequenceAssessment",
     "ConsequenceResult",

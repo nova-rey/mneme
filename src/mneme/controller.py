@@ -381,6 +381,7 @@ class ResponseController:
                 accessibility=int(payload.get("accessibility", row[3] if len(row) > 3 else 0)),
                 support=int(payload.get("support", 0)),
                 consequence=int(payload.get("consequence", 0)),
+                episode_keys=tuple(str(item) for item in payload.get("episode_keys", [])),
             )
         routes: tuple[RouteState, ...] = ()
         snapshot = self.store.connection.execute(

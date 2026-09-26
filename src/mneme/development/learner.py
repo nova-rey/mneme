@@ -182,15 +182,12 @@ def _validate_observation_semantics(
             ExpressionStatus.UNKNOWN,
         )
     else:
-        valid = (
-            (support, expression)
-            in {
-                (RelationSupport.SUPPORTED, ExpressionStatus.AFFIRMED),
-                (RelationSupport.CONTRADICTED, ExpressionStatus.NEGATED),
-                (RelationSupport.UNSUPPORTED, ExpressionStatus.UNKNOWN),
-                (RelationSupport.UNKNOWN, ExpressionStatus.UNKNOWN),
-            }
-        )
+        valid = (support, expression) in {
+            (RelationSupport.SUPPORTED, ExpressionStatus.AFFIRMED),
+            (RelationSupport.CONTRADICTED, ExpressionStatus.NEGATED),
+            (RelationSupport.UNSUPPORTED, ExpressionStatus.UNKNOWN),
+            (RelationSupport.UNKNOWN, ExpressionStatus.UNKNOWN),
+        }
     if not valid:
         raise LearnerError(
             "observation semantic disposition is inconsistent with its status: "
@@ -234,6 +231,11 @@ class Observation:
     eligible: bool = True
     edge_key: str | None = None
     observation_id: str | None = None
+    conversation_arc_id: str | None = None
+    prior_arc_id: str | None = None
+    reentry_initiator: str | None = None
+    arc_reentry: bool = False
+    refractory_active: bool = False
 
     def __post_init__(self) -> None:
         if not self.target_key and self.edge_key:
@@ -273,6 +275,16 @@ class Observation:
             raise LearnerError("occurrence_key must be non-empty when supplied")
         if self.occurrence_key is None and self.observation_id is not None:
             object.__setattr__(self, "occurrence_key", self.observation_id)
+        if self.conversation_arc_id is not None and not self.conversation_arc_id:
+            raise LearnerError("conversation_arc_id must be non-empty when supplied")
+        if self.prior_arc_id is not None and not self.prior_arc_id:
+            raise LearnerError("prior_arc_id must be non-empty when supplied")
+        if self.reentry_initiator not in {None, "external", "model", "mneme", "unknown"}:
+            raise LearnerError("unsupported arc_reentry initiator")
+        if self.reentry_initiator is None and self.arc_reentry:
+            raise LearnerError("arc_reentry requires an initiator")
+        if self.refractory_active and not self.arc_reentry:
+            raise LearnerError("refractory_active observation must be an arc_reentry")
 
     @property
     def key(self) -> tuple[str, str]:
@@ -300,6 +312,11 @@ class Observation:
             "relevant": self.relevant,
             "actual_exposure": self.actual_exposure,
             "eligible": self.eligible,
+            "conversation_arc_id": self.conversation_arc_id,
+            "prior_arc_id": self.prior_arc_id,
+            "reentry_initiator": self.reentry_initiator,
+            "arc_reentry": self.arc_reentry,
+            "refractory_active": self.refractory_active,
         }
 
 
@@ -407,6 +424,7 @@ class EdgeState:
     rolling_credits: tuple[CreditWindow, ...] = ()
     last_consolidation_opportunity: int | None = None
     raw_occurrence_count: int = 0
+    episode_keys: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
         if not self.target_key or not self.context:
@@ -415,12 +433,15 @@ class EdgeState:
         _validate_fixed(self.support, field="support")
         if not -250_000 <= self.consequence <= 250_000:
             raise LearnerError("edge consequence is outside [-.25, .25]")
-        if min(
-            self.relevant_opportunities,
-            self.inactivity_ticks,
-            self.unsupported_streak,
-            self.raw_occurrence_count,
-        ) < 0:
+        if (
+            min(
+                self.relevant_opportunities,
+                self.inactivity_ticks,
+                self.unsupported_streak,
+                self.raw_occurrence_count,
+            )
+            < 0
+        ):
             raise LearnerError("edge counters cannot be negative")
         for name, values in (
             ("lifetime_by_group", self.lifetime_by_group),
@@ -443,6 +464,10 @@ class EdgeState:
             and self.last_consolidation_opportunity < 0
         ):
             raise LearnerError("last consolidation opportunity cannot be negative")
+        if tuple(sorted(set(self.episode_keys))) != self.episode_keys:
+            raise LearnerError("episode_keys must be sorted and unique")
+        if any(not item for item in self.episode_keys):
+            raise LearnerError("episode_keys must be non-empty")
 
     @property
     def key(self) -> tuple[str, str]:
@@ -466,6 +491,7 @@ class EdgeState:
             ],
             "last_consolidation_opportunity": self.last_consolidation_opportunity,
             "raw_occurrence_count": self.raw_occurrence_count,
+            "episode_keys": list(self.episode_keys),
         }
 
 
@@ -685,9 +711,7 @@ def _window(
     )
 
 
-def _prune_window(
-    values: Iterable[CreditWindow], opportunity: int
-) -> tuple[CreditWindow, ...]:
+def _prune_window(values: Iterable[CreditWindow], opportunity: int) -> tuple[CreditWindow, ...]:
     """Drop entries outside the current eight-opportunity rolling window."""
 
     return tuple(
@@ -791,6 +815,11 @@ def _dedupe_observations(observations: Sequence[Observation]) -> tuple[Observati
                 occurrence_key=occurrence,
                 covered=False,
                 relevant=False,
+                conversation_arc_id=item.conversation_arc_id,
+                prior_arc_id=item.prior_arc_id,
+                reentry_initiator=item.reentry_initiator,
+                arc_reentry=item.arc_reentry,
+                refractory_active=item.refractory_active,
             )
     return tuple(result[key] for key in sorted(result))
 
@@ -834,6 +863,7 @@ def _decay(
             rolling_credits=_window(current.rolling_credits, opportunity, 0),
             last_consolidation_opportunity=current.last_consolidation_opportunity,
             raw_occurrence_count=current.raw_occurrence_count,
+            episode_keys=current.episode_keys,
         )
         opportunity += 1
     return current
@@ -860,9 +890,7 @@ def _apply_consequence_mutable(
     by_exposure = dict(route.by_exposure)
     exposure_used = by_exposure.get(exposure_key, 0)
     opportunity = (
-        assessment.opportunity
-        if assessment.opportunity is not None
-        else current_opportunity
+        assessment.opportunity if assessment.opportunity is not None else current_opportunity
     )
     rolling = _prune_window(route.rolling_consequences, opportunity)
     rolling_used = _window_total(rolling)
@@ -1055,9 +1083,7 @@ def select_routes(
     if len(tier) < 3:
         return tuple(item[0] for item in ordered[:max_routes])
     first = tier[0]
-    remainder = sorted(
-        tier[1:], key=lambda item: item[0].canonical_key or item[0].route_key
-    )
+    remainder = sorted(tier[1:], key=lambda item: item[0].canonical_key or item[0].route_key)
     selected = [first, remainder[((opportunity // 4) - 1) % len(remainder)]]
     return tuple(item[0] for item in selected[:max_routes])
 
@@ -1137,9 +1163,7 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
         target_status: dict[tuple[str, str], ObservationStatus] = {}
         for key, observations in by_target.items():
             statuses = {
-                _as_status(item.status)
-                for item in observations
-                if item.covered and item.relevant
+                _as_status(item.status) for item in observations if item.covered and item.relevant
             }
             if not statuses and any(
                 _as_status(item.status) is ObservationStatus.UNKNOWN and item.relevant
@@ -1151,7 +1175,13 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
             elif len(statuses) > 1:
                 target_status[key] = ObservationStatus.UNKNOWN
 
-        candidates: list[tuple[Observation, int, int, tuple[str, ...], int]] = []
+        # Keep an immutable pre-transition view.  Candidate accounting below
+        # materializes episode keys on the working edge; target opportunity and
+        # audit ``before`` values must compare against the state that existed
+        # before this operation, not that partially updated working edge.
+        base_edges = dict(edges)
+        candidates: list[tuple[Observation, int, int, tuple[str, ...], int, bool, str]] = []
+        seen_episode_keys: set[tuple[tuple[str, str], str]] = set()
         # Source pools are divided among distinct admitted target keys before
         # dependence discounts. Zero-credit observations retain their share.
         for role in (SourceRole.EXTERNAL, SourceRole.MODEL_OUTPUT):
@@ -1162,12 +1192,10 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
                 and item.covered
                 and item.relevant
                 and _as_status(item.status) is ObservationStatus.PRESENT
-                and _as_relation_support(
-                    cast(RelationSupport | str, item.relation_support)
-                ) is RelationSupport.SUPPORTED
-                and _as_expression_status(
-                    cast(ExpressionStatus | str, item.expression_status)
-                ) is ExpressionStatus.AFFIRMED
+                and _as_relation_support(cast(RelationSupport | str, item.relation_support))
+                is RelationSupport.SUPPORTED
+                and _as_expression_status(cast(ExpressionStatus | str, item.expression_status))
+                is ExpressionStatus.AFFIRMED
                 and target_status.get(item.key) is ObservationStatus.PRESENT
             ]
             target_keys = sorted({item.key for item in role_observations})
@@ -1184,7 +1212,17 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
                 proposed = _mul_div(shares[item.key], numerator, denominator)
                 fallback_group = item.group_key or item.occurrence_key or transition.operation_id
                 groups = item.provenance_group_keys or (fallback_group,)
-                candidates.append((item, proposed, numerator, groups, denominator))
+                episode_key = item.conversation_arc_id or f"operation:{transition.operation_id}"
+                edge = edges.get(item.key, EdgeState(item.target_key, item.context))
+                episode_is_new = episode_key not in edge.episode_keys
+                episode_marker = (item.key, episode_key)
+                if episode_marker in seen_episode_keys:
+                    episode_is_new = False
+                else:
+                    seen_episode_keys.add(episode_marker)
+                candidates.append(
+                    (item, proposed, numerator, groups, denominator, episode_is_new, episode_key)
+                )
 
         candidates.sort(
             key=lambda item: (
@@ -1199,7 +1237,15 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
         per_operation_remaining = OPPORTUNITY_CAP
         credited_by_target: dict[tuple[str, str], int] = defaultdict(int)
         consolidation_possible: dict[tuple[str, str], bool] = defaultdict(bool)
-        for item, proposed, _numerator, groups, _denominator in candidates:
+        for (
+            item,
+            proposed,
+            _numerator,
+            groups,
+            _denominator,
+            episode_is_new,
+            episode_key,
+        ) in candidates:
             dependence = _as_dependence(item.dependence)
             edge = edges.get(item.key, EdgeState(item.target_key, item.context))
             lifetime = dict(edge.lifetime_by_group)
@@ -1213,7 +1259,13 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
                 max(0, per_operation_remaining),
                 max(0, ROLLING_CAP - rolling_used),
             )
-            if not item.eligible:
+            if not episode_is_new:
+                allowed = 0
+                reason = "same_conversation_episode"
+            elif item.refractory_active:
+                allowed = 0
+                reason = "model_reentry_refractory"
+            elif not item.eligible:
                 allowed = 0
                 reason = "ineligible_observation"
             elif not _source_dependence_allows_credit(item):
@@ -1273,14 +1325,17 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
                     rolling_credits=edge.rolling_credits,
                     last_consolidation_opportunity=edge.last_consolidation_opportunity,
                     raw_occurrence_count=edge.raw_occurrence_count,
+                    episode_keys=tuple(sorted((*edge.episode_keys, episode_key)))
+                    if episode_is_new and item.conversation_arc_id is not None
+                    else edge.episode_keys,
                 ),
             )
 
         for key in sorted(target_status):
             status = target_status[key]
-            before = edges.get(key, EdgeState(*key))
+            before = base_edges.get(key, EdgeState(*key))
             credited = credited_by_target.get(key, 0)
-            edge = before
+            edge = edges.get(key, before)
             if status is ObservationStatus.UNKNOWN:
                 after = edge
                 retention: str | None = None
@@ -1297,7 +1352,17 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
                 retention = "observed_nonrecurrence"
             else:
                 opportunity = current_opportunity + 1
-                relevant = edge.relevant_opportunities + 1
+                episode_keys = set(edge.episode_keys)
+                prior_episode_keys = set(before.episode_keys)
+                present_episode_keys = {
+                    item.conversation_arc_id
+                    for item in by_target[key]
+                    if item.conversation_arc_id is not None
+                }
+                new_episode_observed = bool(present_episode_keys - prior_episode_keys)
+                if not present_episode_keys:
+                    new_episode_observed = True
+                relevant = edge.relevant_opportunities + (1 if new_episode_observed else 0)
                 support = edge.support
                 last_consolidation = edge.last_consolidation_opportunity
                 if credited > 0 and consolidation_possible.get(key, False):
@@ -1323,6 +1388,7 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
                         for item in by_target[key]
                         if _as_status(item.status) is ObservationStatus.PRESENT
                     ),
+                    episode_keys=tuple(sorted(episode_keys | present_episode_keys)),
                 )
                 retention = None
             _replace_edge(edges, after)
@@ -1336,6 +1402,14 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
                 for item in by_target[key]
             ):
                 update_reason = "contradicted_no_positive_credit"
+            elif any(item.refractory_active for item in by_target[key]):
+                update_reason = "model_reentry_refractory"
+            elif any(
+                item.conversation_arc_id is not None
+                and item.conversation_arc_id in before.episode_keys
+                for item in by_target[key]
+            ):
+                update_reason = "same_conversation_episode"
             elif credited > 0:
                 update_reason = "credited"
             else:
@@ -1354,9 +1428,7 @@ def apply_transition(state: LearnerState, transition: TransitionInput) -> Transi
             )
 
     for assessment in transition.consequences:
-        awarded, reason, _duplicate = _apply_consequence_mutable(
-            routes, assessment, new_global
-        )
+        awarded, reason, _duplicate = _apply_consequence_mutable(routes, assessment, new_global)
         if reason != "awarded":
             reasons.append(reason)
         elif awarded:
@@ -1442,10 +1514,7 @@ class DevelopmentalLearner:
             ),
         )
         deltas = {(item.target_key, item.context): item.credited for item in result.updates}
-        reasons = {
-            (item.target_key, item.context): item.reason
-            for item in result.updates
-        }
+        reasons = {(item.target_key, item.context): item.reason for item in result.updates}
         return LearnerResult(
             {item.key: item for item in result.state.edge_states},
             deltas,
@@ -1454,17 +1523,14 @@ class DevelopmentalLearner:
         )
 
 
-def route_exposure(
-    edge_states: Mapping[str, EdgeState], edge_keys: Sequence[str]
-) -> bool:
+def route_exposure(edge_states: Mapping[str, EdgeState], edge_keys: Sequence[str]) -> bool:
     """Compatibility route eligibility for the original edge-map API."""
 
     if not edge_keys or any(key not in edge_states for key in edge_keys):
         return False
     values = [edge_states[key] for key in edge_keys]
     base = sum(
-        _mul_div(item.accessibility, 6, 10) + _mul_div(item.support, 4, 10)
-        for item in values
+        _mul_div(item.accessibility, 6, 10) + _mul_div(item.support, 4, 10) for item in values
     )
     score = base // len(values) + sum(item.consequence for item in values) // len(values)
     return all(item.consequence > -250_000 for item in values) and score > 0

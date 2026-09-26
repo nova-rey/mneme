@@ -108,6 +108,7 @@ def _edge_state_from_json(value: Mapping[str, Any]) -> EdgeState:
             else None
         ),
         raw_occurrence_count=int(value.get("raw_occurrence_count", 0)),
+        episode_keys=tuple(str(item) for item in value.get("episode_keys", [])),
     )
 
 
@@ -760,8 +761,7 @@ class InterpretationPublisher:
                 ),
             )
             concept_labels = {
-                str(concept["key"]): str(concept["label"])
-                for concept in residue.core_concepts
+                str(concept["key"]): str(concept["label"]) for concept in residue.core_concepts
             }
             if old_snapshot is not None:
                 for row in db.execute(
@@ -846,9 +846,7 @@ class InterpretationPublisher:
             learner_snapshot_id: str | None = None
             learner_configuration_digest: str | None = None
             learner_opportunity: int | None = None
-            binding_rows: list[
-                tuple[str, str, str, str | None, str, str, str, int, str]
-            ] = []
+            binding_rows: list[tuple[str, str, str, str | None, str, str, str, int, str]] = []
             if learner_requested:
                 # Bindings are content identities.  The extractor's local
                 # keys and row UUIDs remain provenance, never learner keys.
@@ -963,8 +961,7 @@ class InterpretationPublisher:
                         canonical_matches = edge_binding_by_canonical.get(local_target, [])
                         if len(canonical_matches) != 1:
                             raise PublicationError(
-                                "observation has no unique accepted edge binding: "
-                                f"{local_target}"
+                                f"observation has no unique accepted edge binding: {local_target}"
                             )
                         binding = canonical_matches[0]
                     canonical_target = str(binding[5])
@@ -1027,8 +1024,7 @@ class InterpretationPublisher:
                         raise PublicationError("consequence transition returned an invalid state")
                     learner_state = consequence_result.state
                 learner_configuration = {
-                    key: value
-                    for key, value in learner_obj.config.__dict__.items()
+                    key: value for key, value in learner_obj.config.__dict__.items()
                 }
                 learner_configuration_digest = _digest(learner_configuration)
                 learner_snapshot_id = str(uuid.uuid4())
@@ -1144,7 +1140,8 @@ class InterpretationPublisher:
                 for index, observation in enumerate(observation_rows):
                     observation_target, canonical_target, binding_id = normalized_targets[index]
                     db.execute(
-                        "INSERT INTO development_observations VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                        "INSERT INTO development_observations "
+                        "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                         (
                             _digest(
                                 {
@@ -1196,6 +1193,11 @@ class InterpretationPublisher:
                                         str(observation.expression_status),
                                     ),
                                     "semantic_schema_version": observation.semantic_schema_version,
+                                    "conversation_arc_id": observation.conversation_arc_id,
+                                    "prior_arc_id": observation.prior_arc_id,
+                                    "reentry_initiator": observation.reentry_initiator,
+                                    "arc_reentry": observation.arc_reentry,
+                                    "refractory_active": observation.refractory_active,
                                 }
                             ),
                             learner_result.reasons.get(
@@ -1203,6 +1205,11 @@ class InterpretationPublisher:
                             )
                             if learner_result is not None
                             else None,
+                            observation.conversation_arc_id,
+                            int(observation.arc_reentry),
+                            observation.reentry_initiator,
+                            observation.prior_arc_id,
+                            int(observation.refractory_active),
                             now,
                         ),
                     )

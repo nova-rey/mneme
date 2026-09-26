@@ -127,7 +127,7 @@ def main(argv: list[str] | None = None) -> int:
     recover = ssub.add_parser("recover")
     recover.add_argument("id")
     migrate = ssub.add_parser("migrate")
-    migrate.add_argument("--to", type=int, choices=(3, 4, 5, 6, 7, 8, 9, 10), required=True)
+    migrate.add_argument("--to", type=int, choices=(3, 4, 5, 6, 7, 8, 9, 10, 11), required=True)
     migrate.add_argument("--backup", type=Path, required=True)
     inspect_cmd = sub.add_parser("inspect")
     inspect_sub = inspect_cmd.add_subparsers(dest="inspect_action", required=True)

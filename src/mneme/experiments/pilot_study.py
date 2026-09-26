@@ -26,6 +26,7 @@ from ..development.assessment import (
     assessor_generation_request,
     validate_and_resolve_assessor_result,
 )
+from ..development.episodes import ConversationEpisode
 from ..development.learner import ConsequenceAssessment, DevelopmentalLearner, Observation
 from ..host import Host
 from ..memory.publication import PublicationError
@@ -293,12 +294,15 @@ class ProductionAssessmentAdapter:
             tuple[int, int], tuple[ConsequenceAssessment, ...]
         ]
         | None = None,
+        conversation_episodes: Mapping[tuple[int, int], ConversationEpisode]
+        | None = None,
     ) -> None:
         self.runtime = runtime
         self.assessor_host = assessor_host
         self.memory_exposure = dict(memory_exposure or {})
         self.replay_ancestry = dict(replay_ancestry or {})
         self.contextual_consequences = dict(contextual_consequences or {})
+        self.conversation_episodes = dict(conversation_episodes or {})
 
     @staticmethod
     def _sources(
@@ -455,6 +459,7 @@ class ProductionAssessmentAdapter:
                 for edge in edges
             }
             observations: list[Observation] = []
+            arc = self.conversation_episodes.get((slot, episode.ordinal))
             for item in resolved:
                 edge = edge_by_monitor.get(item.monitor_id)
                 if edge is None:
@@ -499,6 +504,15 @@ class ProductionAssessmentAdapter:
                         actual_exposure=actual_exposure,
                         eligible=item.provenance.credit_eligible,
                         observation_id=f"{call_id}:{item.monitor_id}",
+                        conversation_arc_id=arc.episode_id if arc else None,
+                        prior_arc_id=(
+                            arc.prior_related_episode_ids[-1]
+                            if arc and arc.prior_related_episode_ids
+                            else None
+                        ),
+                        reentry_initiator=arc.reentry_initiator if arc else None,
+                        arc_reentry=bool(arc and arc.reentry_initiator),
+                        refractory_active=bool(arc and arc.refractory_active),
                     )
                 )
             receipt = self.runtime.publish_interpretation(

@@ -10,7 +10,7 @@ def test_schema_six_creates_learning_policy_and_development_records(tmp_path):
     path = tmp_path / "phase-two.sqlite3"
     with SQLiteStore(path) as store:
         store.create_root(permissions=StoragePermissions(learn=True))
-        assert SCHEMA_VERSION == 10
+        assert SCHEMA_VERSION == 11
         assert store.connection.execute(
             "SELECT learning_allowed FROM policies"
         ).fetchone()[0] == 1
@@ -41,7 +41,24 @@ def test_schema_six_creates_learning_policy_and_development_records(tmp_path):
             "learner_snapshots",
             "development_assessor_attempts",
             "identity_generation_attempts",
+            "conversation_arcs",
+            "conversation_arc_members",
+            "conversation_arc_events",
         } <= table_names
+        observation_columns = {
+            row[1] for row in store.connection.execute("PRAGMA table_info(development_observations)")
+        }
+        assert {
+            "arc_id",
+            "arc_reentry",
+            "reentry_initiator",
+            "reentry_origin_arc_id",
+            "refractory_active",
+        } <= observation_columns
+        arc_columns = {
+            row[1] for row in store.connection.execute("PRAGMA table_info(conversation_arcs)")
+        }
+        assert {"start_turn", "end_turn", "source_roles_json", "outcome_keys_json"} <= arc_columns
 
 
 def test_schema_five_migration_adds_phase_two_records_and_keeps_backup(tmp_path):
@@ -81,7 +98,7 @@ def test_schema_five_migration_adds_phase_two_records_and_keeps_backup(tmp_path)
     SQLiteStore.migrate(path, backup=backup)
     assert backup.is_file()
     with SQLiteStore(path, read_only=True) as migrated:
-        assert migrated.connection.execute("PRAGMA user_version").fetchone()[0] == 10
+        assert migrated.connection.execute("PRAGMA user_version").fetchone()[0] == 11
         assert migrated.connection.execute(
             "SELECT learning_allowed FROM policies"
         ).fetchone()[0] == 0
@@ -99,7 +116,7 @@ def test_schema_eight_contains_review_quarantine_and_recovery_records(tmp_path):
     path = tmp_path / "phase-two.sqlite3"
     with SQLiteStore(path) as store:
         store.create_root()
-        assert store.connection.execute("PRAGMA user_version").fetchone()[0] == 10
+        assert store.connection.execute("PRAGMA user_version").fetchone()[0] == 11
         tables = {
             row[0]
             for row in store.connection.execute(
