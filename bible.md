@@ -1431,3 +1431,12 @@ floor, fixed-point total budget 1.0, four contributors, and a 900-character
 host payload; optional stochastic exploration remains disabled. Full pytest
 passed (506 tests), with Ruff and strict mypy passing for the changed modules.
 The implementation receipt is `docs/receipts/MNEME_P2_F0_Implementation_20260926.md`.
+
+## 2026-09-26 F0 C/R/F0 prospective schedule frozen
+
+Frozen the new prospective C/R/F0 run contract in
+`docs/receipts/MNEME_P2_F0_C_R_F0_Preflight_20260926.md` and
+`tools/run_p23_f0_shared_interloper.py`. It uses a fresh three-thread shared
+Interloper trajectory, local Gemma/GLiNER/DeBERTa development, and frozen C,
+existing discrete R, and deterministic graph-pressure F0 readouts. Historical
+r6/r7 evidence is immutable; no provider calls were made by the preflight.
