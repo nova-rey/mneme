@@ -16,6 +16,14 @@ The documents are preserved in their supplied form and are intentionally not mer
   is an owner-supplied research-intent clarification preserved for future planning. It
   is not an execution plan and does not alter frozen experiments, scoring, learner rules,
   approvals, or release gates.
+* `research/MNEME_Research_Target_Amendment_History_Shaped_Influence_2026-09-26.md`
+  is an owner-supplied research-target clarification for future reference. It separates
+  history-shaped influence from utility, recall, and consolidation proxies; it is not an
+  execution plan and does not reopen Phase Two or authorize inference.
+* `research/MNEME_Phase_Three_Methodology_Supplement_Shared_Interloper_2026-09-26.md`
+  is a methodology input for future Phase Three planning. It describes a shared-Interloper,
+  paired-seed condition and its limits; it is not an approved plan, execution authorization,
+  queue dependency, or Phase Three start.
 * `decisions/MNEME_Research_Decision_Episodic_Evidence_Provenance_2026-09-25.md` is the
   supplied research/architecture decision note on conversational episodes and re-entry
   provenance. It is archived as reference context; the current implementation decision

@@ -1273,3 +1273,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 final episodic artifact verification
 
 - Independently verified the durable final recovery evidence bundle at commit `d756ea3`: 281 manifest-declared artifacts were present with matching SHA-256 values, all required contract/preflight/study-plan/binding digests matched, and the artifact-index digest matched the run manifest. Published the machine/human artifact verification receipts. This strengthens evidence integrity only; the scientific result remains `NOT_DEMONSTRATED` and the P2.3 adequacy review remains unresolved.
+
+## 2026-09-26 future research reference archive
+
+- Filed the owner-supplied `RI-HSI-2026-09-26` history-shaped-influence amendment and `P3-METH-SHARED-01` shared-Interloper methodology supplement verbatim under `docs/research/` for librarian and future-reference use. Their SHA-256 digests are `e58d595ecfd25f44abdb95d3bb030d979f5e0f7fd344cdfde44eb78de6f02a03` and `b0dd24a9d365d50c06184ed1d6f6285aeb59ed0c3c0efd1710cd8d92806153b6`. Added discoverability entries to `docs/README.md`; no implementation, queue state, credentials, provider call, Phase Two evidence, or Phase Three execution changed.
