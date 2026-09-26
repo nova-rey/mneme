@@ -12,6 +12,14 @@ The documents are preserved in their supplied form and are intentionally not mer
   as design context, with its Phase One allocation recorded in the approved graph-wrapper
   preview plan below. Adaptive developmental dynamics remain Phase Two or later;
   plan approval does not authorize implementation.
+* `research/MNEME_Research_Intent_Amendment_Experiential_Individuality_2026-09-25_Rev2.md`
+  is an owner-supplied research-intent clarification preserved for future planning. It
+  is not an execution plan and does not alter frozen experiments, scoring, learner rules,
+  approvals, or release gates.
+* `decisions/MNEME_Research_Decision_Episodic_Evidence_Provenance_2026-09-25.md` is the
+  supplied research/architecture decision note on conversational episodes and re-entry
+  provenance. It is archived as reference context; the current implementation decision
+  and evidence are recorded separately in the Phase Two episodic provenance addendum.
 * `research/MNEME_Related_Work_Research_Dossier.docx` is unchanged historical/reference
   material, not a normative implementation specification.
 * `setup/deepinfra.md` is the operational procedure for the selected live P0.1 backend.
