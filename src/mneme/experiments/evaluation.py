@@ -9,6 +9,8 @@ development/evaluation execution is a P0.4 concern.
 from __future__ import annotations
 
 import copy
+import hashlib
+import json
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
@@ -17,11 +19,41 @@ from ..contracts import GenerationRequest, GenerationResult
 from ..host import Host
 from ..state.policy import PermissionState, PolicyError, PolicyService
 from ..state.reader import CheckpointReader
+from ..state.storage import SQLiteStore
 from .artifacts import ArtifactError, ArtifactStore, content_digest, file_digest
 
 
 class EvaluationError(RuntimeError):
     """The frozen evaluation boundary cannot safely execute a probe."""
+
+
+def logical_state_digest(store: SQLiteStore) -> str:
+    """Digest every logical row in a writable lineage store.
+
+    The current revision/manifest descriptor is not sufficient to prove that
+    evaluation was read-only: an auxiliary table can change without advancing
+    the developmental revision.  Include table schemas and all logical rows,
+    in deterministic table/row order, so that those mutations are detected.
+    """
+
+    digest = hashlib.sha256()
+    tables = store.connection.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' "
+        "ORDER BY name"
+    ).fetchall()
+    for table_row in tables:
+        table = str(table_row[0])
+        columns = [
+            str(row[1])
+            for row in store.connection.execute(f'PRAGMA table_info("{table}")')
+        ]
+        digest.update(
+            json.dumps({"table": table, "columns": columns}, sort_keys=True).encode()
+        )
+        for row in store.connection.execute(f'SELECT * FROM "{table}" ORDER BY rowid'):
+            values = [value.hex() if isinstance(value, bytes) else value for value in row]
+            digest.update(json.dumps(values, sort_keys=False, default=str).encode())
+    return digest.hexdigest()
 
 
 class FrozenEvaluationView:

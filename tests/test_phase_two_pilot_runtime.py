@@ -5,11 +5,18 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from mneme.contracts import GenerationRequest, GenerationResult, TokenUsage
 from mneme.development import QuarantineService
-from mneme.experiments.artifacts import ArtifactStore
+from mneme.experiments.artifacts import ArtifactStore, file_digest
 from mneme.experiments.pilot import PilotRun, host_role_binding
-from mneme.experiments.pilot_runtime import PilotRuntime, RuntimeSubject
+from mneme.experiments.pilot_runtime import (
+    EvaluationError,
+    PilotRuntime,
+    RuntimeSubject,
+    logical_state_digest,
+)
 from mneme.hosts import FakeHost
 from mneme.memory.interpretation import MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION
 from mneme.state.contracts import StoragePermissions
@@ -22,6 +29,33 @@ class CountingHost(FakeHost):
 
     def generate(self, request: GenerationRequest) -> GenerationResult:
         self.calls += 1
+        return super().generate(request)
+
+
+class AuxiliaryMutatingHost(CountingHost):
+    """Host fixture that mutates a writable auxiliary table during evaluation."""
+
+    def __init__(self, store: SQLiteStore) -> None:
+        super().__init__()
+        self.store = store
+
+    def generate(self, request: GenerationRequest) -> GenerationResult:
+        instance_id = str(self.store.current()["active_instance_id"])
+        self.store.connection.execute(
+            "INSERT INTO declarations "
+            "(declaration_id, instance_id, declaration_json, source_json, status, "
+            "accepted_revision, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (
+                "evaluation-auxiliary-mutation",
+                instance_id,
+                "{}",
+                "{}",
+                "PROPOSED",
+                0,
+                "2026-01-01T00:00:00+00:00",
+            ),
+        )
+        self.store.connection.commit()
         return super().generate(request)
 
 
@@ -435,8 +469,45 @@ def test_evaluation_uses_frozen_snapshot_and_never_writes_lineage(
         pilot.run_path / "evaluation" / "evaluation-s0-p0-r0.json"
     )
     assert artifact["developmental_state_before"] == artifact["developmental_state_after"]
+    assert artifact["checkpoint_sha256"] == file_digest(checkpoint)
+    assert artifact["checkpoint_state_digest"]
+    assert artifact["developmental_state_digest_before"] == artifact[
+        "developmental_state_digest_after"
+    ]
     reservation = pilot.run_path / "pilot" / "reservations" / "evaluation-s0-p0-r0.json"
     assert json.loads(reservation.read_text())["status"] == "RETURNED"
+
+
+def test_evaluation_rejects_auxiliary_lineage_mutation_without_revision_change(
+    tmp_path: Path,
+) -> None:
+    store = SQLiteStore(tmp_path / "mutating-subject.sqlite3")
+    instance = store.create_root(
+        permissions=StoragePermissions(store=True, export=True, interpret=True, learn=True)
+    )
+    host = AuxiliaryMutatingHost(store)
+    subject = RuntimeSubject(0, store, instance, host)
+    checkpoint = tmp_path / "mutating-checkpoint.sqlite3"
+    create_checkpoint(store, checkpoint, "checkpoint-mutation")
+    before = dict(store.current())
+    before_digest = logical_state_digest(store)
+    pilot = _pilot(tmp_path, calls=1)
+    runtime = PilotRuntime(pilot, {0: subject})
+
+    with pytest.raises(EvaluationError, match="evaluation changed developmental lineage state"):
+        runtime.evaluate(
+            slot=0,
+            call_id="evaluation-auxiliary-mutation",
+            coordinate={"subject": 0, "probe": 0, "repetition": 0},
+            checkpoint=checkpoint,
+            private_snapshot=checkpoint,
+            host=host,
+            messages=({"role": "user", "content": "held out"},),
+            max_output_tokens=20,
+        )
+
+    assert dict(store.current()) == before
+    assert logical_state_digest(store) != before_digest
 
 
 def test_evaluation_requires_the_bound_private_snapshot(tmp_path: Path) -> None:

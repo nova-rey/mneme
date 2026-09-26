@@ -1164,3 +1164,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 Phase Two queue reconciliation
 
 - Updated the P2.3 candidate pointer from the obsolete `2db5aed` implementation record to the current arc-integrated candidate `e21b4f2`, with the published audit at `d7f8524`. Queue validation remains valid; P2.3 is still `WAITING` on the explicit adequacy/accounting review dependency. No provider calls or release-state changes occurred.
+
+## 2026-09-26 Phase Two evaluation-isolation hardening
+
+- Strengthened `PilotRuntime.evaluate` with a deterministic full writable-lineage logical-state digest before and after every frozen evaluation. Evaluation receipts now retain the checkpoint file digest and checkpoint logical-state digest alongside the existing revision/manifest descriptor and writable-lineage digest pair. Added a regression proving an auxiliary-table mutation at unchanged revision is rejected; no provider calls occurred.

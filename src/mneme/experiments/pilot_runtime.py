@@ -36,8 +36,7 @@ from ..memory.residue import Residue
 from ..state.policy import PolicyError, PolicyService, host_ref
 from ..state.service import ContinuityError, ContinuityService, OperationReceipt
 from ..state.storage import SQLiteStore
-from .artifacts import file_digest
-from .evaluation import EvaluationError, FrozenEvaluationView
+from .evaluation import EvaluationError, FrozenEvaluationView, logical_state_digest
 from .evidence_review import (
     EvidenceReview,
     EvidenceReviewError,
@@ -916,6 +915,10 @@ class PilotRuntime:
             int(subject.store.current()["current_revision"]),
             str(subject.store.current()["current_manifest_id"]),
         )
+        developmental_digest_before = logical_state_digest(subject.store)
+        with FrozenEvaluationView(private_path) as checkpoint_view:
+            checkpoint_sha256 = checkpoint_view.checkpoint_file_digest
+            checkpoint_state_digest = checkpoint_view.state_digest
         reservation, provider_called = self._reserve_dispatch(
             call_id=call_id,
             role="evaluation",
@@ -957,14 +960,16 @@ class PilotRuntime:
             int(subject.store.current()["current_revision"]),
             str(subject.store.current()["current_manifest_id"]),
         )
-        if after != before:
+        developmental_digest_after = logical_state_digest(subject.store)
+        if after != before or developmental_digest_after != developmental_digest_before:
             raise EvaluationError("evaluation changed developmental lineage state")
         self._publish_call_artifact(
             "evaluation",
             call_id,
             {
                 "coordinate": dict(coordinate),
-                "checkpoint_sha256": file_digest(private_path),
+                "checkpoint_sha256": checkpoint_sha256,
+                "checkpoint_state_digest": checkpoint_state_digest,
                 "request": {
                     "messages": [dict(message) for message in messages],
                     "system": system,
@@ -975,6 +980,8 @@ class PilotRuntime:
                 "result": payload,
                 "developmental_state_before": before,
                 "developmental_state_after": after,
+                "developmental_state_digest_before": developmental_digest_before,
+                "developmental_state_digest_after": developmental_digest_after,
             },
         )
         return ProviderOutcome(call_id, payload, provider_called)
