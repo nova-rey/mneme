@@ -1256,3 +1256,8 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 final episodic run 7 invalid provider rate limit
 
 - Preserved `p23-final-episodic-run-7` as `INVALID` after the external branch completed and DeepInfra returned HTTP 429 at model-branch participant turn 27. No downstream work was dispatched and no scientific result was assigned. Recovery is limited to that failed coordinate in a copied continuation workspace; completed turns remain unchanged.
+
+## 2026-09-26 P2.3 final episodic recurrence result and Phase Two disposition
+
+- Completed the fixed two-branch Schema 11 episodic recurrence/consolidation schedule in the copied recovery workspace for `p23-final-episodic-run-7` after preserving the original HTTP-429 stop. The valid terminal result is `NOT_DEMONSTRATED`: both 30-turn branches completed with persisted extraction, assessment, provenance, and learner records, but no qualifying separated external support produced the existing consolidation transition. Published the complete sanitized evidence bundle under `docs/receipts/MNEME_P2.3_Final_Episodic_Run7_Recovery_Evidence/` and the human/machine result receipts. Historical runs, the original `COMPLETED_INADEQUATE` pilot, prior failures, and learner rules remain unchanged.
+- Published `docs/receipts/MNEME_Phase_Two_Final_Disposition_20260926.md` and `.json` as `PHASE_TWO_COMPLETE_WITH_LIMITATIONS`. Engineering/runtime and instrumentation evidence are documented; consolidation was not demonstrated in the fixed mechanism schedule; earlier behavioral/cross-thread results remain exploratory or inconclusive; Phase Three is explicitly unstarted.
