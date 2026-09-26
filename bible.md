@@ -1390,3 +1390,12 @@ tokens and permits only a small set of generic query descriptors; it does not
 create aliases or change canonical graph labels. Focused tests cover paraphrase
 reachability, unrelated lexical overlap, and learned-route memory payload
 construction. Historical r6 evidence is unchanged.
+
+## 2026-09-26 treatment-delivery preflight receipt
+
+The route-reachability correction was validated offline and published in
+`docs/receipts/MNEME_P2.3_Treatment_Delivery_Preflight_20260926.md` and its
+JSON companion. The synthetic preflight selected and applied two learned
+routes from an eligible state using descriptor-aware query wording, while
+preserving zero control influence. This is instrumentation evidence only; the
+r6 `INVALID_NO_TREATMENT` run remains unchanged.

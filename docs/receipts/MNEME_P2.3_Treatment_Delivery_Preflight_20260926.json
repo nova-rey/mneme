@@ -1,0 +1,34 @@
+{
+  "receipt_version": "p2.3-treatment-delivery-preflight-v1",
+  "status": "passed_instrumentation_only",
+  "implementation_commit": "fb3520bd4681e90ad979d1211aa6abaadc463d57",
+  "historical_run": {
+    "run_id": "p23-shared-interloper-ab-20260926-r6",
+    "status": "INVALID_NO_TREATMENT",
+    "preserved": true,
+    "first_missing_stage": "query_coverage_retrieval",
+    "learned_label": "Drip Irrigation",
+    "later_query": "drip method",
+    "selected_count": 0,
+    "applied_count": 0
+  },
+  "preflight": {
+    "provider_calls": 0,
+    "synthetic": true,
+    "query": "alpha method omega",
+    "eligible_state": true,
+    "considered_routes": 3,
+    "selected_routes": 2,
+    "applied_routes": 2,
+    "nonempty_memory_payload": true,
+    "control_influence": 0,
+    "assertions": [
+      "exact label reachability",
+      "generic descriptor reachability",
+      "unrelated lexical overlap rejected",
+      "learned selection produces applied payload"
+    ]
+  },
+  "historical_evidence_unchanged": true,
+  "scientific_result": null
+}
