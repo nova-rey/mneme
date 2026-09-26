@@ -1244,3 +1244,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 final episodic run 4 invalid envelope stop
 
 - Preserved `p23-final-episodic-run-4` as `INVALID` after its erroneous 100-call pilot envelope stopped the external branch at turn 24. No later coordinate was reserved or dispatched. Corrected the frozen preflight to a 300-call hard bound for at most 240 schedule role calls; historical evidence remains unchanged.
+
+## 2026-09-26 P2.3 final episodic run 5 invalid process supervision
+
+- Preserved `p23-final-episodic-run-5` as `INVALID` after the external branch reached turn 26 and persisted its partial provider/local artifacts, then the launcher terminated before transcript publication/assessment and before the model branch began. No scientific result was assigned and no historical evidence was changed. A detached process-supervised fresh run is required.
