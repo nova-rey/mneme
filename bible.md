@@ -1180,3 +1180,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 engineering hardening receipt
 
 - Published `docs/receipts/MNEME_P2.3_Engineering_Evidence_Hardening_Receipt_20260926.md` and its JSON companion for `c8565c4`. Full pytest (474), Ruff, strict mypy, wheel/fresh-install smoke, queue validation, and CI `36211287551` passed. P2.3 remains waiting on separated-support/consolidation adequacy and cumulative accounting review; no provider calls or Phase Three work occurred.
+
+## 2026-09-26 P2.3 candidate reconciliation after engineering hardening
+
+- Advanced the P2.3 queue candidate pointer to `22c0a4e` and recorded the engineering-evidence hardening validation while preserving `WAITING` on `review:p2.3-pilot-adequacy-after-normalization`. This records implementation progress only; it does not resolve the scientific adequacy or cumulative accounting blockers.
