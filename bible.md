@@ -1192,3 +1192,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 engineering audit closure receipt
 
 - Published `docs/receipts/MNEME_P2.3_Engineering_Audit_Closure_Hardening_Receipt_20260926.md` for `ea1c918`. The receipt records 477 pytest, Ruff, strict mypy, wheel/fresh-install smoke, `git diff --check`, and remote CI `36212530005`; no provider calls occurred. P2.3 remains waiting on separated-support/consolidation adequacy and cumulative accounting review.
+
+## 2026-09-26 P2.3 engineering audit queue validation
+
+- Recorded the offline audit-closure package `P2.3-ENGINEERING-AUDIT` as DONE at `b69a1f8`, with PASS results for replay, permissions/authority, coordinate integrity, and host provenance. Queue validation remains valid; the parent P2.3 package stays WAITING on `review:p2.3-pilot-adequacy-after-normalization`, and the campaign census is 12 DONE / 1 WAITING / 0 READY / 0 RUNNING / 0 VALIDATING. No provider calls occurred.
