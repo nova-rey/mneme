@@ -679,10 +679,18 @@ def resolve_provenance(
                 group_keys.append(f"exposure:{item['exposure_id']}")
             if isinstance(item.get("root"), str):
                 group_keys.append(f"replay:{item['root']}")
-            if len(group_keys) == before and isinstance(item.get("source_slot"), str):
-                group_keys.append(f"source:{item['source_slot']}")
+            if len(group_keys) == before:
+                # Source slots are request-local aliases and may be reused for
+                # different immutable episodes.  Prefer the durable source
+                # identity whenever the runtime supplied one; retain the slot
+                # fallback for historical requests that predate source IDs.
+                if isinstance(item.get("source_id"), str):
+                    group_keys.append(f"source:{item['source_id']}")
+                elif isinstance(item.get("source_slot"), str):
+                    group_keys.append(f"source:{item['source_slot']}")
         if not group_keys and evidence_source.role == "external":
-            group_keys.append(f"external:{evidence_source.slot}")
+            source_identity = evidence_source.source_id or evidence_source.slot
+            group_keys.append(f"external:{source_identity}")
         resolution = ProvenanceResolution(
             semantic.monitor_id,
             canonical,

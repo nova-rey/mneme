@@ -1138,3 +1138,8 @@ no provider calls were made in this commit.
 ## 2026-09-26 research reference archive
 
 - Archived the owner-supplied `RI-EIC-2026-09-25` revision 2 research-intent amendment at `docs/research/MNEME_Research_Intent_Amendment_Experiential_Individuality_2026-09-25_Rev2.md` (SHA-256 `818fdaa23c369f1ad4bc2f6801963a3e55296c1bf62184fbdc5df266b3dff366`) and the supplied conversational-episodes research decision at `docs/decisions/MNEME_Research_Decision_Episodic_Evidence_Provenance_2026-09-25.md` (SHA-256 `2bb796f9eb5f6c0d20b45c30abeb42c0c617f5d7579e3400f7e8aad82f69a19d`). Both were filed verbatim for librarian/reference use; neither changes implementation, frozen experiments, learner rules, queue state, approvals, or release gates.
+
+## 2026-09-26 Phase Two provenance-group correction and derived arc audit
+
+- Corrected provenance-group fallback to use immutable `source_id` values when available; request-local source slots remain a compatibility fallback for historical records without durable IDs. Added regression coverage proving distinct external source identities remain distinct groups. No provider calls were made.
+- Published the derived v6 arc rebuild at `docs/receipts/MNEME_P2.3_Cross_Thread_v6_Derived_Arc_Rebuild_20260926.md`. Conservative thread-level arcs and same-arc duplicate handling do not change the six current-input-echo observations, ten zero-state edge records, or the historical adequacy disposition. The production arc-integration gap remains under audit; no Phase Two release or Phase Three work is claimed.

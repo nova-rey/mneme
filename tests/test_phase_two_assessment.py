@@ -569,6 +569,29 @@ def test_external_antecedent_not_marked_echo_without_current_input_binding() -> 
     assert echo.dependence == "no_identified_link"
 
 
+def test_external_provenance_group_uses_immutable_source_identity() -> None:
+    case = next(case for case in qualification_cases() if case.case_id == "Q1")
+    source = case.request.sources[0]
+
+    def latch_group(source_id: str) -> tuple[str, ...]:
+        request = replace(
+            case.request,
+            sources=(replace(source, source_id=source_id), case.request.sources[1]),
+        )
+        rows = validate_qualification_case(replace(case, request=request), _valid_result("Q1"))
+        latch = next(row for row in rows if row.monitor_id == "latch")
+        return latch.provenance_group_keys
+
+    first = latch_group("episode-a")
+    same_identity = latch_group("episode-a")
+    different_identity = latch_group("episode-b")
+
+    assert first == ("external:episode-a",)
+    assert same_identity == first
+    assert different_identity == ("external:episode-b",)
+    assert different_identity != first
+
+
 def test_replay_only_and_multiple_ancestry_roots_are_preserved() -> None:
     case = next(case for case in qualification_cases() if case.case_id == "Q2")
     request = replace(
