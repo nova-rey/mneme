@@ -44,6 +44,24 @@ def test_direct_neighbor_has_bounded_pressure_and_active_concept():
     assert result.contributions[0].final_pressure > 0
     assert result.total_pressure <= FIXED_SCALE
     assert "Potentially accessible framings:" in result.payload
+    assert "drip irrigation" not in result.payload.casefold()
+    assert "soil moisture" not in result.payload.casefold()
+    assert "causes" not in result.payload.casefold()
+
+
+def test_renderer_exposes_abstract_tendencies_not_graph_labels():
+    concepts, edges = _graph(
+        ("a", "aviation"),
+        ("b", "redundancy"),
+        edges=(("e1", "a", "b", "supports"),),
+    )
+    result = compute_field("unrelated", concepts, edges, _state("e1"))
+    assert result.payload.startswith("Potentially accessible framings:")
+    assert "aviation" not in result.payload.casefold()
+    assert "redundancy" not in result.payload.casefold()
+    assert "supports" not in result.payload.casefold()
+    assert "Supporting components" in result.payload
+    assert len(result.payload) <= 900
 
 
 def test_multi_hop_attenuates_and_is_bounded():

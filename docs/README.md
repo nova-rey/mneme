@@ -33,6 +33,10 @@ The documents are preserved in their supplied form and are intentionally not mer
 * [F0 invalid credential-environment receipt](receipts/MNEME_P2_F0_Background_Run_Invalid_Missing_DeepInfra_Token_20260926.md)
   records the versioned background-plus-contextual pressure semantics, preserved v1
   compatibility, bounded field exploration, and focused offline validation.
+* [F0 v2 renderer-invalid run receipt](receipts/MNEME_P2_F0_Background_C_R_F0_V2_Invalid_Renderer_20260926.md)
+  preserves the completed 103-call credential-loaded run whose field computation
+  was valid but whose host payload still exposed raw graph labels. The published
+  bundle is retained unchanged; no behavioral interpretation is claimed.
 * `decisions/MNEME_Research_Decision_Episodic_Evidence_Provenance_2026-09-25.md` is the
   supplied research/architecture decision note on conversational episodes and re-entry
   provenance. It is archived as reference context; the current implementation decision

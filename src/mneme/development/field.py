@@ -250,20 +250,33 @@ def _render(
     contributions = tuple(item for item in contributions if item.final_pressure > 0)
     if not contributions:
         return ""
-    relation_words = {
-        "causal": "may help cause",
-        "causes": "may help cause",
-        "supports": "may support",
-        "enables": "may enable",
-        "constrains": "may constrain",
-        "associated_with": "may be associated with",
+    # Keep graph labels in the audit trace, not in the host-facing payload.
+    # The renderer exposes compact abstract tendencies; otherwise F0 collapses
+    # into label-dump retrieval and leaks the developmental graph verbatim.
+    tendency_by_relation = {
+        "causal": "Changes in one part may produce downstream effects.",
+        "causes": "Changes in one part may produce downstream effects.",
+        "supports": "Supporting components may keep essential functions available.",
+        "enables": "Enabling conditions may make a useful outcome possible.",
+        "constrains": "Constraints may shape which outcomes remain feasible.",
+        "depends_on": "Outcomes may depend on the conditions that support them.",
+        "retains": "Some arrangements may preserve a resource over time.",
+        "maintains": "Some arrangements may preserve a resource over time.",
+        "prevents": "Barriers may reduce unwanted outcomes.",
+        "part_of": "Components may matter as parts of a larger system.",
+        "associated_with": "Related factors may deserve joint consideration.",
+        "related": "Related factors may deserve joint consideration.",
     }
     lines = ["Potentially accessible framings:"]
+    rendered: set[str] = set()
     for item in contributions:
-        verb = relation_words.get(item.relationship.casefold(), "may relate")
-        source = (labels or {}).get(item.source, item.source)
-        target = (labels or {}).get(item.target, item.target)
-        line = f"- {source} {verb} {target}."
+        line = "- " + tendency_by_relation.get(
+            item.relationship.casefold(),
+            "Different factors may interact in ways worth considering.",
+        )
+        if line in rendered:
+            continue
+        rendered.add(line)
         if sum(len(value) + 1 for value in lines) + len(line) > max_chars:
             break
         lines.append(line)
