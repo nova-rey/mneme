@@ -1,0 +1,60 @@
+{
+  "receipt_type": "mneme-phase-two-closure-reconciliation",
+  "schema_version": 1,
+  "date": "2026-09-26",
+  "validation_source_sha": "94b8a6528cd5a97ce9b2a3860ac0bc3dbf9642d4",
+  "publication_sha": "recorded by the commit that adds this receipt",
+  "remote_sha_at_validation": "94b8a6528cd5a97ce9b2a3860ac0bc3dbf9642d4",
+  "disposition": "PHASE_TWO_COMPLETE_WITH_LIMITATIONS",
+  "phase_three_started": false,
+  "release_tag_created": false,
+  "gates": {
+    "p21": "PASS",
+    "p22": "PASS",
+    "p23_engineering": "PASS",
+    "p23_pilot_adequacy": "COMPLETED_INADEQUATE",
+    "p23_research": "NOT_DEMONSTRATED"
+  },
+  "validation": {
+    "pytest": 516,
+    "ruff": "PASS",
+    "mypy_strict": "PASS",
+    "wheel_smoke": "PASS",
+    "ci_run": 36280565566,
+    "ci": "PASS",
+    "queue_validate": "PASS",
+    "queue_can_idle": "campaign_complete=true"
+  },
+  "final_mechanism_run": {
+    "returned_calls": 220,
+    "input_tokens": 172605,
+    "output_tokens": 23345,
+    "total_tokens": 195950,
+    "estimated_hosted_cost_usd": 0.00990789,
+    "consolidation_events": 0
+  },
+  "historical_p23_ledger": {
+    "returned_or_attempted_calls": 456,
+    "persisted_results": 455,
+    "provider_returns_lost_before_persistence": 1,
+    "former_ceiling": 399,
+    "overage": 57
+  },
+  "additive_f0": {
+    "renderer_invalid_run_calls": 103,
+    "corrected_run_calls": 106,
+    "terminal": "VALID_INTERPRETABLE_C_R_F0",
+    "changes_approved_p23_disposition": false
+  },
+  "audit_reservations": [
+    "Historical q/r run-bound audit artifacts remain split and prepared snapshots are unavailable; this limitation is preserved rather than rewritten.",
+    "The corrected F0 comparison is additive exploratory text-mediated evidence and does not satisfy the approved P2.3 consolidation criterion."
+  ],
+  "historical_evidence_rewritten": false,
+  "evidence": [
+    "docs/receipts/MNEME_Phase_Two_Final_Disposition_20260926.md",
+    "docs/receipts/MNEME_P2.3_Final_Episodic_Run7_Recovery_Result_20260926.md",
+    "docs/receipts/MNEME_P2_F0_Background_C_R_F0_V3_Terminal_20260926.md",
+    ".codex/work-queue.json"
+  ]
+}
