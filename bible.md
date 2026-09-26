@@ -1467,3 +1467,18 @@ weighted field exploration uses a separate caller-supplied seed and is off by
 default. Focused cold-start, background, contextual-dominance, quarantine,
 budget, replay, and exploration tests pass; the receipt is
 `docs/receipts/MNEME_P2_F0_Field_Correction_20260926.md`.
+
+## 2026-09-26 F0 real-corpus local assessor correction
+
+Repaired the pinned local DeBERTa adapter as
+`p2-local-nli-deberta-v3-xsmall-v2-real-corpus`. The adapter now normalizes
+GLiNER proposition labels for semantic comparison while preserving raw labels
+and immutable evidence, uses deterministic relation templates, selects focused
+and adjacent lossless evidence windows, scopes uncertainty to the selected
+window, and recognizes ordinary relation wording such as `holds` and
+`depends on`. Self-relations are rejected as distinct supported propositions.
+All 25 forwarded F0 candidates are preserved in
+`docs/receipts/MNEME_P2_F0_Real_Corpus_Assessor_Regression_20260926.json`; the
+reviewed real-corpus gate recognized 5/5 supported cases with zero false
+support and rejected support for all 8 ambiguous cases. Historical F0 outputs
+and dispositions remain unchanged.

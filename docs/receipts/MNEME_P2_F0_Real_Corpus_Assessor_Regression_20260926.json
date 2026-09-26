@@ -1,0 +1,1778 @@
+{
+  "schema_version": "f0-real-corpus-assessor-regression-v1",
+  "status": "REVIEWED_EXPECTATIONS_PRESERVE_HISTORICAL_OUTPUT",
+  "run": "p23-f0-shared-interloper-20260926",
+  "immutable_source": "docs/receipts/MNEME_P2_F0_C_R_F0_Evidence_20260926",
+  "assessor_version": "p2-local-nli-deberta-v3-xsmall-v2-real-corpus",
+  "candidate_count": 25,
+  "notes": "Raw GLiNER candidates, immutable evidence, historical assessor/disposition, and reviewed expectations are preserved. Ambiguous cases are unknown for admission and are not relabeled as support. Historical artifacts are not mutated.",
+  "candidates": [
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "A",
+        "turn": 0,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-A-t0.json",
+      "edge_key": "e-12bdd14e379223a28243decc",
+      "candidate": {
+        "from": "Drip Irrigation",
+        "relation": "causes",
+        "to": "Slow Leak"
+      },
+      "source": {
+        "slot": "s1",
+        "evidence": "Drip Irrigation (The Slow Leak",
+        "immutable_text": "That sounds like a common problem! Since you need a reliable, hands-off solution for when you're away, here are a few ideas using common household materials:\n\n1.  **Drip Irrigation (The Slow Leak):** The simplest way is to create a slow-release system. You can buy a simple \"self-watering\" kit, but if you want to stick to \"ordinary household materials,\" you can create a \"wicking\" system. Take some empty, empty plastic bottles or old water bottles, puncture small holes in the bottom, fill them with water, and place them next to your pots. The soil will slowly suck the water up through the holes.\n2.  **Watering \"Sponge\" Method:** If you have old, slightly absorbent sponges (or even old towels), you can soak these in water and place them directly into the soil near the pots. They will slowly release moisture into the soil as the water evaporates or is absorbed. This is great for keeping the top layer damp without flooding the whole plant.\n3.  **Hose-Sip System:** If you have any old garden hose or even a flexible tube, you can run a very thin, slow drip from a faucet to the pots, letting the"
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "supported",
+        "expression_status": "affirmed",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": true,
+        "dependence": "no_identified_link",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "supported",
+        "relation_support": "affirmed",
+        "expression_status": "supported",
+        "review_label": "supported",
+        "rationale": "direct slow-release irrigation statement"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "supported",
+        "expression_status": "affirmed",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s1",
+          "quote": "**Drip Irrigation (The Slow Leak):** The simplest way is to create a slow-release system."
+        },
+        "corresponding_source_slots": [
+          "s1"
+        ]
+      },
+      "verification": {
+        "supported_expected": true,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": false
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "A",
+        "turn": 0,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-A-t0.json",
+      "edge_key": "e-a7c72e10ca6ad46ac0e32a0c",
+      "candidate": {
+        "from": "Drip Irrigation",
+        "relation": "part_of",
+        "to": "ordinary household materials"
+      },
+      "source": {
+        "slot": "s1",
+        "evidence": "Drip Irrigation (The Slow Leak):** The simplest way is to create a slow-release system. You can buy a simple \"self-watering\" kit, but if you want to stick to \"ordinary household materials",
+        "immutable_text": "That sounds like a common problem! Since you need a reliable, hands-off solution for when you're away, here are a few ideas using common household materials:\n\n1.  **Drip Irrigation (The Slow Leak):** The simplest way is to create a slow-release system. You can buy a simple \"self-watering\" kit, but if you want to stick to \"ordinary household materials,\" you can create a \"wicking\" system. Take some empty, empty plastic bottles or old water bottles, puncture small holes in the bottom, fill them with water, and place them next to your pots. The soil will slowly suck the water up through the holes.\n2.  **Watering \"Sponge\" Method:** If you have old, slightly absorbent sponges (or even old towels), you can soak these in water and place them directly into the soil near the pots. They will slowly release moisture into the soil as the water evaporates or is absorbed. This is great for keeping the top layer damp without flooding the whole plant.\n3.  **Hose-Sip System:** If you have any old garden hose or even a flexible tube, you can run a very thin, slow drip from a faucet to the pots, letting the"
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "no_identified_link",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "unsupported",
+        "relation_support": "unknown",
+        "expression_status": "unsupported",
+        "review_label": "unsupported",
+        "rationale": "co-occurring materials do not establish part-of"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s1",
+          "quote": "That sounds like a common problem! Since you need a reliable, hands-off solution for when you're away, here are a few ideas using common household materials:\n\n1.  **Drip Irrigation (The Slow Leak):** The simplest way is to create a slow-release system. You can buy a simple \"self-watering\" kit, but if you want to stick to \"ordinary household materials,\" you can create a \"wicking\" system. Take some empty, empty plastic bottles or old water bottles, puncture small holes in the bottom, fill them with water, and place them next to your pots. The soil will slowly suck the water up through the holes.\n2.  **Watering \"Sponge\" Method:** If you have old, slightly absorbent sponges (or even old towels), you can soak these in water and place them directly into the soil near the pots. They will slowly release moisture into the soil as the water evaporates or is absorbed. This is great for keeping the top layer damp without flooding the whole plant.\n3.  **Hose-Sip System:** If you have any old garden hose or even a flexible tube, you can run a very thin, slow drip from a faucet to the pots, letting the"
+        },
+        "corresponding_source_slots": []
+      },
+      "verification": {
+        "supported_expected": false,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": false
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "A",
+        "turn": 0,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-A-t0.json",
+      "edge_key": "e-b03a823100add6fa707f6609",
+      "candidate": {
+        "from": "Hose-Sip System",
+        "relation": "part_of",
+        "to": "ordinary household materials"
+      },
+      "source": {
+        "slot": "s1",
+        "evidence": "ordinary household materials,\" you can create a \"wicking\" system. Take some empty, empty plastic bottles or old water bottles, puncture small holes in the bottom, fill them with water, and place them next to your pots. The soil will slowly suck the water up through the holes.\n2.  **Watering \"Sponge\" Method:** If you have old, slightly absorbent sponges (or even old towels), you can soak these in water and place them directly into the soil near the pots. They will slowly release moisture into the soil as the water evaporates or is absorbed. This is great for keeping the top layer damp without flooding the whole plant.\n3.  **Hose-Sip System",
+        "immutable_text": "That sounds like a common problem! Since you need a reliable, hands-off solution for when you're away, here are a few ideas using common household materials:\n\n1.  **Drip Irrigation (The Slow Leak):** The simplest way is to create a slow-release system. You can buy a simple \"self-watering\" kit, but if you want to stick to \"ordinary household materials,\" you can create a \"wicking\" system. Take some empty, empty plastic bottles or old water bottles, puncture small holes in the bottom, fill them with water, and place them next to your pots. The soil will slowly suck the water up through the holes.\n2.  **Watering \"Sponge\" Method:** If you have old, slightly absorbent sponges (or even old towels), you can soak these in water and place them directly into the soil near the pots. They will slowly release moisture into the soil as the water evaporates or is absorbed. This is great for keeping the top layer damp without flooding the whole plant.\n3.  **Hose-Sip System:** If you have any old garden hose or even a flexible tube, you can run a very thin, slow drip from a faucet to the pots, letting the"
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "no_identified_link",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "unsupported",
+        "relation_support": "unknown",
+        "expression_status": "unsupported",
+        "review_label": "unsupported",
+        "rationale": "the hose option is described using materials, not as a part-of relation"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s1",
+          "quote": "You can buy a simple \"self-watering\" kit, but if you want to stick to \"ordinary household materials,\" you can create a \"wicking\" system."
+        },
+        "corresponding_source_slots": [
+          "s1"
+        ]
+      },
+      "verification": {
+        "supported_expected": false,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": false
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "A",
+        "turn": 0,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-A-t0.json",
+      "edge_key": "e-827f0b2c82024aad8c39b512",
+      "candidate": {
+        "from": "watering reliable",
+        "relation": "depends_on",
+        "to": "ordinary household materials"
+      },
+      "source": {
+        "slot": "s0",
+        "evidence": "ordinary household materials. How would you make watering reliable",
+        "immutable_text": "My balcony pots dry out during hot afternoons while I am away for a weekend, and I cannot check them daily. I can use ordinary household materials. How would you make watering reliable?"
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "external_supported",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "unsupported",
+        "relation_support": "unknown",
+        "expression_status": "unsupported",
+        "review_label": "unsupported",
+        "rationale": "question and answer context do not establish dependency"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s1",
+          "quote": "Since you need a reliable, hands-off solution for when you're away, here are a few ideas using common household materials:\n\n1."
+        },
+        "corresponding_source_slots": [
+          "s1"
+        ]
+      },
+      "verification": {
+        "supported_expected": false,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": false
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "A",
+        "turn": 0,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-A-t0.json",
+      "edge_key": "e-03184ccec0f48af56a99df73",
+      "candidate": {
+        "from": "solution",
+        "relation": "depends_on",
+        "to": "common household materials"
+      },
+      "source": {
+        "slot": "s1",
+        "evidence": "solution for when you're away, here are a few ideas using common household materials",
+        "immutable_text": "That sounds like a common problem! Since you need a reliable, hands-off solution for when you're away, here are a few ideas using common household materials:\n\n1.  **Drip Irrigation (The Slow Leak):** The simplest way is to create a slow-release system. You can buy a simple \"self-watering\" kit, but if you want to stick to \"ordinary household materials,\" you can create a \"wicking\" system. Take some empty, empty plastic bottles or old water bottles, puncture small holes in the bottom, fill them with water, and place them next to your pots. The soil will slowly suck the water up through the holes.\n2.  **Watering \"Sponge\" Method:** If you have old, slightly absorbent sponges (or even old towels), you can soak these in water and place them directly into the soil near the pots. They will slowly release moisture into the soil as the water evaporates or is absorbed. This is great for keeping the top layer damp without flooding the whole plant.\n3.  **Hose-Sip System:** If you have any old garden hose or even a flexible tube, you can run a very thin, slow drip from a faucet to the pots, letting the"
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "no_identified_link",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "unsupported",
+        "relation_support": "unknown",
+        "expression_status": "unsupported",
+        "review_label": "unsupported",
+        "rationale": "ideas use materials but source does not assert this dependency"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s1",
+          "quote": "Since you need a reliable, hands-off solution for when you're away, here are a few ideas using common household materials:\n\n1."
+        },
+        "corresponding_source_slots": [
+          "s1"
+        ]
+      },
+      "verification": {
+        "supported_expected": false,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": false
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "A",
+        "turn": 1,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-A-t1.json",
+      "edge_key": "e-55f30d3e489c915acab2d038",
+      "candidate": {
+        "from": "Insulation",
+        "relation": "prevents",
+        "to": "evaporation"
+      },
+      "source": {
+        "slot": "s3",
+        "evidence": "Insulation is Key:** If you can, try to place those filled bottles inside a slightly larger, more insulated container (like a larger bucket or even just a blanket over the top). This traps some humidity and slows the evaporation",
+        "immutable_text": "You're right to be concerned about evaporation! To make your \"wicking\" system last longer, the key is minimizing the surface area exposed to the air and maximizing the rate of absorption.\n\nHere are a couple of ways to boost the longevity of the water in those bottle-wick systems:\n\n1.  **Insulation is Key:** If you can, try to place those filled bottles inside a slightly larger, more insulated container (like a larger bucket or even just a blanket over the top). This traps some humidity and slows the evaporation from the soil surface.\n2.  **The \"Cap\" Method:** If your bottles are just sitting in the soil, the exposed top surface area is high. If you could *cover* the tops of the bottles with a piece of dark fabric or even a small, lightweight lid, you can significantly reduce the surface area where the water meets the air, slowing down the evaporation rate.\n3.  **Water Depth:** Ensure your \"water\" source is deep enough that the soil is always saturated, not just a thin layer on top. Deep, saturated soil holds moisture much longer than a dry top layer does.\n\nTry to make sure your soil is consistently damp, not just wet!"
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "no_identified_link",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "supported",
+        "relation_support": "affirmed",
+        "expression_status": "supported",
+        "review_label": "supported",
+        "rationale": "insulation is said to slow evaporation"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "supported",
+        "expression_status": "affirmed",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1",
+            "s2",
+            "s3"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s3",
+          "quote": "You're right to be concerned about evaporation! To make your \"wicking\" system last longer, the key is minimizing the surface area exposed to the air and maximizing the rate of absorption.\n\nHere are a couple of ways to boost the longevity of the water in those bottle-wick systems:\n\n1.  **Insulation is Key:** If you can, try to place those filled bottles inside a slightly larger, more insulated container (like a larger bucket or even just a blanket over the top). This traps some humidity and slows the evaporation from the soil surface.\n2.  **The \"Cap\" Method:** If your bottles are just sitting in the soil, the exposed top surface area is high. If you could *cover* the tops of the bottles with a piece of dark fabric or even a small, lightweight lid, you can significantly reduce the surface area where the water meets the air, slowing down the evaporation rate.\n3.  **Water Depth:** Ensure your \"water\" source is deep enough that the soil is always saturated, not just a thin layer on top. Deep, saturated soil holds moisture much longer than a dry top layer does.\n\nTry to make sure your soil is consistently damp, not just wet!"
+        },
+        "corresponding_source_slots": [
+          "s3"
+        ]
+      },
+      "verification": {
+        "supported_expected": true,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": false
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "A",
+        "turn": 1,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-A-t1.json",
+      "edge_key": "e-b501a12357b2dcda86c73821",
+      "candidate": {
+        "from": "evaporation",
+        "relation": "causes",
+        "to": "evaporation"
+      },
+      "source": {
+        "slot": "s3",
+        "evidence": "evaporation from the soil surface.\n2.  **The \"Cap\" Method:** If your bottles are just sitting in the soil, the exposed top surface area is high. If you could *cover* the tops of the bottles with a piece of dark fabric or even a small, lightweight lid, you can significantly reduce the surface area where the water meets the air, slowing down the evaporation",
+        "immutable_text": "You're right to be concerned about evaporation! To make your \"wicking\" system last longer, the key is minimizing the surface area exposed to the air and maximizing the rate of absorption.\n\nHere are a couple of ways to boost the longevity of the water in those bottle-wick systems:\n\n1.  **Insulation is Key:** If you can, try to place those filled bottles inside a slightly larger, more insulated container (like a larger bucket or even just a blanket over the top). This traps some humidity and slows the evaporation from the soil surface.\n2.  **The \"Cap\" Method:** If your bottles are just sitting in the soil, the exposed top surface area is high. If you could *cover* the tops of the bottles with a piece of dark fabric or even a small, lightweight lid, you can significantly reduce the surface area where the water meets the air, slowing down the evaporation rate.\n3.  **Water Depth:** Ensure your \"water\" source is deep enough that the soil is always saturated, not just a thin layer on top. Deep, saturated soil holds moisture much longer than a dry top layer does.\n\nTry to make sure your soil is consistently damp, not just wet!"
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "current_input_echo",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "absent",
+        "relation_support": "not_expressed",
+        "expression_status": "absent",
+        "review_label": "absent",
+        "rationale": "self-causal evaporation candidate is not expressed"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "absent",
+        "relation_support": "unsupported",
+        "expression_status": "not_expressed",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1",
+            "s2",
+            "s3"
+          ],
+          "reason": "self-relation is not a distinct proposition"
+        },
+        "evidence": null,
+        "corresponding_source_slots": [
+          "s2"
+        ]
+      },
+      "verification": {
+        "supported_expected": false,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": false
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "A",
+        "turn": 1,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-A-t1.json",
+      "edge_key": "e-07009151102f9d0845630c2c",
+      "candidate": {
+        "from": "saturated soil",
+        "relation": "retains",
+        "to": "moisture"
+      },
+      "source": {
+        "slot": "s3",
+        "evidence": "saturated soil holds moisture",
+        "immutable_text": "You're right to be concerned about evaporation! To make your \"wicking\" system last longer, the key is minimizing the surface area exposed to the air and maximizing the rate of absorption.\n\nHere are a couple of ways to boost the longevity of the water in those bottle-wick systems:\n\n1.  **Insulation is Key:** If you can, try to place those filled bottles inside a slightly larger, more insulated container (like a larger bucket or even just a blanket over the top). This traps some humidity and slows the evaporation from the soil surface.\n2.  **The \"Cap\" Method:** If your bottles are just sitting in the soil, the exposed top surface area is high. If you could *cover* the tops of the bottles with a piece of dark fabric or even a small, lightweight lid, you can significantly reduce the surface area where the water meets the air, slowing down the evaporation rate.\n3.  **Water Depth:** Ensure your \"water\" source is deep enough that the soil is always saturated, not just a thin layer on top. Deep, saturated soil holds moisture much longer than a dry top layer does.\n\nTry to make sure your soil is consistently damp, not just wet!"
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "no_identified_link",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "supported",
+        "relation_support": "affirmed",
+        "expression_status": "supported",
+        "review_label": "supported",
+        "rationale": "saturated soil explicitly holds moisture"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "supported",
+        "expression_status": "affirmed",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1",
+            "s2",
+            "s3"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s3",
+          "quote": "Deep, saturated soil holds moisture much longer than a dry top layer does."
+        },
+        "corresponding_source_slots": [
+          "s3"
+        ]
+      },
+      "verification": {
+        "supported_expected": true,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": false
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "A",
+        "turn": 2,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-A-t2.json",
+      "edge_key": "e-6d53cf496757e2c86a49965c",
+      "candidate": {
+        "from": "slow-release drip irrigation kit",
+        "relation": "part_of",
+        "to": "System"
+      },
+      "source": {
+        "slot": "s5",
+        "evidence": "System:** Instead of using a bottle with holes, look into **\"slow-release\" drip irrigation.** You can buy a cheap, slow-release drip irrigation kit",
+        "immutable_text": "You are right to be concerned about the weekend coming up! To make the system more self-sufficient, you need to focus on \"passive\" or passive methods that require minimal interaction once you leave.\n\nHere are two advanced, self-sufficient options using household items:\n\n**1. The Slow-Release Reservoir Method:**\nIf you have any large, empty plastic container (like a large, clean plastic bucket or large bucket), you can fill it with a small amount of water and then place your potted plants *inside* the container, or right next to it. If the soil is \"self-watering\" and has some existing moisture, you can use a **\"slow-release\"** method:\n\n*   **Water-filled \"Slow-Sip\" System:** Instead of using a bottle with holes, look into **\"slow-release\" drip irrigation.** You can buy a cheap, slow-release drip irrigation kit, or, more simply, use a **large, empty bucket or large jug** and place it near your pots. If you can't set up the full drip system, the next best thing is placing a small, slowly releasing *drip line* next to the base of the pots to ensure continuous, gentle watering without being"
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "no_identified_link",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "unknown",
+        "relation_support": "unknown",
+        "expression_status": "unknown",
+        "review_label": "ambiguous",
+        "rationale": "heading and system residue do not uniquely establish part-of"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1",
+            "s2",
+            "s3",
+            "s4",
+            "s5"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s1",
+          "quote": "**Drip Irrigation (The Slow Leak):** The simplest way is to create a slow-release system."
+        },
+        "corresponding_source_slots": []
+      },
+      "verification": {
+        "supported_expected": false,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": true
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "A",
+        "turn": 2,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-A-t2.json",
+      "edge_key": "e-95b154fbdf46b8126535c117",
+      "candidate": {
+        "from": "System",
+        "relation": "depends_on",
+        "to": "existing moisture"
+      },
+      "source": {
+        "slot": "s5",
+        "evidence": "existing moisture, you can use a **\"slow-release\"** method:\n\n*   **Water-filled \"Slow-Sip\" System",
+        "immutable_text": "You are right to be concerned about the weekend coming up! To make the system more self-sufficient, you need to focus on \"passive\" or passive methods that require minimal interaction once you leave.\n\nHere are two advanced, self-sufficient options using household items:\n\n**1. The Slow-Release Reservoir Method:**\nIf you have any large, empty plastic container (like a large, clean plastic bucket or large bucket), you can fill it with a small amount of water and then place your potted plants *inside* the container, or right next to it. If the soil is \"self-watering\" and has some existing moisture, you can use a **\"slow-release\"** method:\n\n*   **Water-filled \"Slow-Sip\" System:** Instead of using a bottle with holes, look into **\"slow-release\" drip irrigation.** You can buy a cheap, slow-release drip irrigation kit, or, more simply, use a **large, empty bucket or large jug** and place it near your pots. If you can't set up the full drip system, the next best thing is placing a small, slowly releasing *drip line* next to the base of the pots to ensure continuous, gentle watering without being"
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "no_identified_link",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "unsupported",
+        "relation_support": "unknown",
+        "expression_status": "unsupported",
+        "review_label": "unsupported",
+        "rationale": "existing moisture is mentioned as context, not a dependency"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1",
+            "s2",
+            "s3",
+            "s4",
+            "s5"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s3",
+          "quote": "You're right to be concerned about evaporation! To make your \"wicking\" system last longer, the key is minimizing the surface area exposed to the air and maximizing the rate of absorption.\n\nHere are a couple of ways to boost the longevity of the water in those bottle-wick systems:\n\n1.  **Insulation is Key:** If you can, try to place those filled bottles inside a slightly larger, more insulated container (like a larger bucket or even just a blanket over the top). This traps some humidity and slows the evaporation from the soil surface.\n2.  **The \"Cap\" Method:** If your bottles are just sitting in the soil, the exposed top surface area is high. If you could *cover* the tops of the bottles with a piece of dark fabric or even a small, lightweight lid, you can significantly reduce the surface area where the water meets the air, slowing down the evaporation rate.\n3.  **Water Depth:** Ensure your \"water\" source is deep enough that the soil is always saturated, not just a thin layer on top. Deep, saturated soil holds moisture much longer than a dry top layer does.\n\nTry to make sure your soil is consistently damp, not just wet!"
+        },
+        "corresponding_source_slots": []
+      },
+      "verification": {
+        "supported_expected": false,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": false
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "A",
+        "turn": 2,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-A-t2.json",
+      "edge_key": "e-5b1ff29410fe2be0a262ddfa",
+      "candidate": {
+        "from": "Slow-Release Reservoir Method",
+        "relation": "part_of",
+        "to": "System"
+      },
+      "source": {
+        "slot": "s5",
+        "evidence": "system more self-sufficient, you need to focus on \"passive\" or passive methods that require minimal interaction once you leave.\n\nHere are two advanced, self-sufficient options using household items:\n\n**1. The Slow-Release Reservoir Method",
+        "immutable_text": "You are right to be concerned about the weekend coming up! To make the system more self-sufficient, you need to focus on \"passive\" or passive methods that require minimal interaction once you leave.\n\nHere are two advanced, self-sufficient options using household items:\n\n**1. The Slow-Release Reservoir Method:**\nIf you have any large, empty plastic container (like a large, clean plastic bucket or large bucket), you can fill it with a small amount of water and then place your potted plants *inside* the container, or right next to it. If the soil is \"self-watering\" and has some existing moisture, you can use a **\"slow-release\"** method:\n\n*   **Water-filled \"Slow-Sip\" System:** Instead of using a bottle with holes, look into **\"slow-release\" drip irrigation.** You can buy a cheap, slow-release drip irrigation kit, or, more simply, use a **large, empty bucket or large jug** and place it near your pots. If you can't set up the full drip system, the next best thing is placing a small, slowly releasing *drip line* next to the base of the pots to ensure continuous, gentle watering without being"
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "replay_linked",
+        "actual_exposure": true,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "unknown",
+        "relation_support": "unknown",
+        "expression_status": "unknown",
+        "review_label": "ambiguous",
+        "rationale": "method heading may be an item in the system but source syntax is incomplete"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1",
+            "s2",
+            "s3",
+            "s4",
+            "s5"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s1",
+          "quote": "**Drip Irrigation (The Slow Leak):** The simplest way is to create a slow-release system."
+        },
+        "corresponding_source_slots": []
+      },
+      "verification": {
+        "supported_expected": false,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": true
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "B",
+        "turn": 0,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-B-t0.json",
+      "edge_key": "e-fc8babb5cd2eb4ec6cb81ff5",
+      "candidate": {
+        "from": "small trip",
+        "relation": "related",
+        "to": "conversational partner"
+      },
+      "source": {
+        "slot": "s0",
+        "evidence": "conversational partner before. One previous conversation involved gardening. I am planning a small trip",
+        "immutable_text": "You have spoken with this conversational partner before. One previous conversation involved gardening. I am planning a small trip with one bag and an uncertain return time. How would you keep the plan from becoming fragile?"
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "external_supported",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "absent",
+        "relation_support": "not_expressed",
+        "expression_status": "absent",
+        "review_label": "absent",
+        "rationale": "trip and conversational partner are co-mentioned without a relation"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s0",
+          "quote": "You have spoken with this conversational partner before. One previous conversation involved gardening. I am planning a small trip with one bag and an uncertain return time. How would you keep the plan from becoming fragile?"
+        },
+        "corresponding_source_slots": []
+      },
+      "verification": {
+        "supported_expected": false,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": false
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "B",
+        "turn": 0,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-B-t0.json",
+      "edge_key": "e-71be063d0e75a75db509152c",
+      "candidate": {
+        "from": "one bag",
+        "relation": "part_of",
+        "to": "plan"
+      },
+      "source": {
+        "slot": "s1",
+        "evidence": "one bag, how would you like to keep your plan",
+        "immutable_text": "Since you’ve spoken with me before about gardening, I’d love to hear more about your plans! Regarding your small trip with just one bag, how would you like to keep your plan from becoming fragile? Are you worried about weather, logistics, or maybe some other unexpected changes?"
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "current_input_echo",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "absent",
+        "relation_support": "not_expressed",
+        "expression_status": "absent",
+        "review_label": "absent",
+        "rationale": "one bag and plan are co-mentioned without part-of support"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s0",
+          "quote": "You have spoken with this conversational partner before. One previous conversation involved gardening. I am planning a small trip with one bag and an uncertain return time. How would you keep the plan from becoming fragile?"
+        },
+        "corresponding_source_slots": []
+      },
+      "verification": {
+        "supported_expected": false,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": false
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "B",
+        "turn": 1,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-B-t1.json",
+      "edge_key": "e-3af9c14893d0e2de358f3415",
+      "candidate": {
+        "from": "trip",
+        "relation": "depends_on",
+        "to": "space"
+      },
+      "source": {
+        "slot": "s2",
+        "evidence": "space for essentials if the trip",
+        "immutable_text": "I'm worried about not having enough space for essentials if the trip takes longer than expected. Maybe I should focus on versatile items that can serve multiple purposes?"
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "current_input_echo",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "unknown",
+        "relation_support": "unknown",
+        "expression_status": "unknown",
+        "review_label": "ambiguous",
+        "rationale": "trip/space wording suggests a constraint but does not assert dependency"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1",
+            "s2",
+            "s3"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s3",
+          "quote": "That makes sense; packing efficiently is key when space is limited! For your small bag and potential longer than expected trip, focusing on \"versatile\" items is a great idea.\n\nWhat kind of things do you usually need for a trip like this? Are we talking about basic clothing, specific tools for your hobby (like gardening supplies), or just general essentials?"
+        },
+        "corresponding_source_slots": [
+          "s3"
+        ]
+      },
+      "verification": {
+        "supported_expected": false,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": true
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "B",
+        "turn": 1,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-B-t1.json",
+      "edge_key": "e-c5e59fdc1a9de7498477f048",
+      "candidate": {
+        "from": "gardening supplies",
+        "relation": "part_of",
+        "to": "trip"
+      },
+      "source": {
+        "slot": "s3",
+        "evidence": "trip like this? Are we talking about basic clothing, specific tools for your hobby (like gardening supplies",
+        "immutable_text": "That makes sense; packing efficiently is key when space is limited! For your small bag and potential longer than expected trip, focusing on \"versatile\" items is a great idea.\n\nWhat kind of things do you usually need for a trip like this? Are we talking about basic clothing, specific tools for your hobby (like gardening supplies), or just general essentials?"
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "no_identified_link",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "absent",
+        "relation_support": "not_expressed",
+        "expression_status": "absent",
+        "review_label": "absent",
+        "rationale": "gardening supplies are an example question, not a part-of assertion"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1",
+            "s2",
+            "s3"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s3",
+          "quote": "That makes sense; packing efficiently is key when space is limited! For your small bag and potential longer than expected trip, focusing on \"versatile\" items is a great idea.\n\nWhat kind of things do you usually need for a trip like this? Are we talking about basic clothing, specific tools for your hobby (like gardening supplies), or just general essentials?"
+        },
+        "corresponding_source_slots": [
+          "s0",
+          "s1",
+          "s3"
+        ]
+      },
+      "verification": {
+        "supported_expected": false,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": false
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "B",
+        "turn": 2,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-B-t2.json",
+      "edge_key": "e-bd4cf929acb32e0bf66c7ecb",
+      "candidate": {
+        "from": "list",
+        "relation": "related",
+        "to": "nice-to-haves"
+      },
+      "source": {
+        "slot": "s4",
+        "evidence": "list of must-haves versus nice-to-haves",
+        "immutable_text": "I guess I usually pack basic clothes and a few personal items, but I'm not sure what's really necessary. Maybe I should make a list of must-haves versus nice-to-haves?"
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "external_supported",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "unknown",
+        "relation_support": "unknown",
+        "expression_status": "unknown",
+        "review_label": "ambiguous",
+        "rationale": "must-have/nice-to-have list relationship is underspecified by related"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1",
+            "s2",
+            "s3",
+            "s4",
+            "s5"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s4",
+          "quote": "Maybe I should make a list of must-haves versus nice-to-haves?"
+        },
+        "corresponding_source_slots": []
+      },
+      "verification": {
+        "supported_expected": false,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": true
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "B",
+        "turn": 2,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-B-t2.json",
+      "edge_key": "e-188bce3251905b33bbe98197",
+      "candidate": {
+        "from": "trip",
+        "relation": "related",
+        "to": "nice-to-have"
+      },
+      "source": {
+        "slot": "s5",
+        "evidence": "nice-to-have,\" could you tell me a little more about what kind of trip",
+        "immutable_text": "That sounds like a smart approach! To help you decide what's truly \"must-have\" versus \"nice-to-have,\" could you tell me a little more about what kind of trip this is? For example, is this a trip to a city, a forest, or maybe just a quick day trip to a local area? Knowing the setting will help me give you a better list of what to prioritize!"
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "no_identified_link",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "absent",
+        "relation_support": "not_expressed",
+        "expression_status": "absent",
+        "review_label": "absent",
+        "rationale": "trip and nice-to-have are co-mentioned without relation"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1",
+            "s2",
+            "s3",
+            "s4",
+            "s5"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s5",
+          "quote": "To help you decide what's truly \"must-have\" versus \"nice-to-have,\" could you tell me a little more about what kind of trip this is?"
+        },
+        "corresponding_source_slots": []
+      },
+      "verification": {
+        "supported_expected": false,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": false
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "C",
+        "turn": 0,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-C-t0.json",
+      "edge_key": "e-6af34b9cea513295a22945d6",
+      "candidate": {
+        "from": "part",
+        "relation": "part_of",
+        "to": "project"
+      },
+      "source": {
+        "slot": "s1",
+        "evidence": "part you're worried about failing will help me give you the best advice on what to keep on hand or what's essential for the rest of the project",
+        "immutable_text": "Since you're planning a remote workshop with limited equipment and infrequent deliveries, it sounds like a high-risk setup! If one part fails, you need to prioritize redundancy and robustness.\n\nWhat exactly are you planning? Knowing what kind of equipment or specific part you're worried about failing will help me give you the best advice on what to keep on hand or what's essential for the rest of the project."
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "no_identified_link",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "unknown",
+        "relation_support": "unknown",
+        "expression_status": "unknown",
+        "review_label": "ambiguous",
+        "rationale": "part/project wording may be structural but is not uniquely relational"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s1",
+          "quote": "Knowing what kind of equipment or specific part you're worried about failing will help me give you the best advice on what to keep on hand or what's essential for the rest of the project."
+        },
+        "corresponding_source_slots": [
+          "s1"
+        ]
+      },
+      "verification": {
+        "supported_expected": false,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": true
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "C",
+        "turn": 0,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-C-t0.json",
+      "edge_key": "e-3efea3aaa9ae9d30b32e86c1",
+      "candidate": {
+        "from": "remote workshop",
+        "relation": "depends_on",
+        "to": "limited equipment"
+      },
+      "source": {
+        "slot": "s1",
+        "evidence": "remote workshop with limited equipment",
+        "immutable_text": "Since you're planning a remote workshop with limited equipment and infrequent deliveries, it sounds like a high-risk setup! If one part fails, you need to prioritize redundancy and robustness.\n\nWhat exactly are you planning? Knowing what kind of equipment or specific part you're worried about failing will help me give you the best advice on what to keep on hand or what's essential for the rest of the project."
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "no_identified_link",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "unknown",
+        "relation_support": "unknown",
+        "expression_status": "unknown",
+        "review_label": "ambiguous",
+        "rationale": "with limited equipment gives context, not explicit dependency"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s1",
+          "quote": "Since you're planning a remote workshop with limited equipment and infrequent deliveries, it sounds like a high-risk setup!"
+        },
+        "corresponding_source_slots": [
+          "s0",
+          "s1"
+        ]
+      },
+      "verification": {
+        "supported_expected": false,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": true
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "C",
+        "turn": 1,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-C-t1.json",
+      "edge_key": "e-b67d2882420c9206a2e3d2aa",
+      "candidate": {
+        "from": "solar panel with a battery bank",
+        "relation": "supports",
+        "to": "essentials"
+      },
+      "source": {
+        "slot": "s2",
+        "evidence": "essentials running. Do you think a solar panel with a battery bank",
+        "immutable_text": "I was thinking about the power supply setup. If the main generator fails, I need something that can keep the essentials running. Do you think a solar panel with a battery bank would be reliable enough?"
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "external_supported",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "unknown",
+        "relation_support": "unknown",
+        "expression_status": "unknown",
+        "review_label": "ambiguous",
+        "rationale": "question asks whether the setup supports essentials; it does not assert outcome"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1",
+            "s2",
+            "s3"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s2",
+          "quote": "I was thinking about the power supply setup. If the main generator fails, I need something that can keep the essentials running. Do you think a solar panel with a battery bank would be reliable enough?"
+        },
+        "corresponding_source_slots": []
+      },
+      "verification": {
+        "supported_expected": false,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": true
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "C",
+        "turn": 1,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-C-t1.json",
+      "edge_key": "e-6cd26eb86712f4ac34d11b07",
+      "candidate": {
+        "from": "essentials",
+        "relation": "related",
+        "to": "machinery"
+      },
+      "source": {
+        "slot": "s3",
+        "evidence": "essentials\" include a high-power tool or machinery",
+        "immutable_text": "A solar panel with a battery bank is a very solid concept for a remote setup, especially if power reliability is critical.\n\nHowever, \"reliable enough\" really depends on the *load*. What are you planning to run? Is it a small, low-draw setup like a few lights and a small computer, or is it a full, high-power workshop setup?\n\nIf your \"essentials\" include a high-power tool or machinery, the battery bank will need to be significantly larger to handle peak loads.\n\nTo give you the best advice, could you tell me what specific \"essentials\" or \"parts\" are most critical? For instance, are you running servers, specialized machinery, or just basic lighting and communication?\""
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "no_identified_link",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "unsupported",
+        "relation_support": "unknown",
+        "expression_status": "unsupported",
+        "review_label": "unsupported",
+        "rationale": "essentials include machinery is membership, not related support"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1",
+            "s2",
+            "s3"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s3",
+          "quote": "If your \"essentials\" include a high-power tool or machinery, the battery bank will need to be significantly larger to handle peak loads."
+        },
+        "corresponding_source_slots": [
+          "s2",
+          "s3"
+        ]
+      },
+      "verification": {
+        "supported_expected": false,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": false
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "C",
+        "turn": 1,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-C-t1.json",
+      "edge_key": "e-9cde998ad5c9f298bc8e55e7",
+      "candidate": {
+        "from": "battery bank",
+        "relation": "part_of",
+        "to": "power supply setup"
+      },
+      "source": {
+        "slot": "s2",
+        "evidence": "power supply setup. If the main generator fails, I need something that can keep the essentials running. Do you think a solar panel with a battery bank",
+        "immutable_text": "I was thinking about the power supply setup. If the main generator fails, I need something that can keep the essentials running. Do you think a solar panel with a battery bank would be reliable enough?"
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "external_supported",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "unknown",
+        "relation_support": "unknown",
+        "expression_status": "unknown",
+        "review_label": "ambiguous",
+        "rationale": "battery bank/setup component relation is plausible but not stated as part-of"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1",
+            "s2",
+            "s3"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s2",
+          "quote": "I was thinking about the power supply setup. If the main generator fails, I need something that can keep the essentials running. Do you think a solar panel with a battery bank would be reliable enough?"
+        },
+        "corresponding_source_slots": []
+      },
+      "verification": {
+        "supported_expected": false,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": true
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "C",
+        "turn": 1,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-C-t1.json",
+      "edge_key": "e-760f2e194e5aa459410b663a",
+      "candidate": {
+        "from": "reliable enough",
+        "relation": "depends_on",
+        "to": "load"
+      },
+      "source": {
+        "slot": "s3",
+        "evidence": "reliable enough\" really depends on the *load",
+        "immutable_text": "A solar panel with a battery bank is a very solid concept for a remote setup, especially if power reliability is critical.\n\nHowever, \"reliable enough\" really depends on the *load*. What are you planning to run? Is it a small, low-draw setup like a few lights and a small computer, or is it a full, high-power workshop setup?\n\nIf your \"essentials\" include a high-power tool or machinery, the battery bank will need to be significantly larger to handle peak loads.\n\nTo give you the best advice, could you tell me what specific \"essentials\" or \"parts\" are most critical? For instance, are you running servers, specialized machinery, or just basic lighting and communication?\""
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "no_identified_link",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "supported",
+        "relation_support": "affirmed",
+        "expression_status": "supported",
+        "review_label": "supported",
+        "rationale": "source explicitly says reliable enough depends on load"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "supported",
+        "expression_status": "affirmed",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1",
+            "s2",
+            "s3"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s3",
+          "quote": "However, \"reliable enough\" really depends on the *load*."
+        },
+        "corresponding_source_slots": [
+          "s3"
+        ]
+      },
+      "verification": {
+        "supported_expected": true,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": false
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "C",
+        "turn": 1,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-C-t1.json",
+      "edge_key": "e-6d939dfb6f8a948315532ff2",
+      "candidate": {
+        "from": "solar panel",
+        "relation": "prevents",
+        "to": "power reliability"
+      },
+      "source": {
+        "slot": "s3",
+        "evidence": "solar panel with a battery bank is a very solid concept for a remote setup, especially if power reliability",
+        "immutable_text": "A solar panel with a battery bank is a very solid concept for a remote setup, especially if power reliability is critical.\n\nHowever, \"reliable enough\" really depends on the *load*. What are you planning to run? Is it a small, low-draw setup like a few lights and a small computer, or is it a full, high-power workshop setup?\n\nIf your \"essentials\" include a high-power tool or machinery, the battery bank will need to be significantly larger to handle peak loads.\n\nTo give you the best advice, could you tell me what specific \"essentials\" or \"parts\" are most critical? For instance, are you running servers, specialized machinery, or just basic lighting and communication?\""
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "no_identified_link",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "unsupported",
+        "relation_support": "unknown",
+        "expression_status": "unsupported",
+        "review_label": "unsupported",
+        "rationale": "source describes reliability as critical; it does not say solar prevents it"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1",
+            "s2",
+            "s3"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s3",
+          "quote": "A solar panel with a battery bank is a very solid concept for a remote setup, especially if power reliability is critical."
+        },
+        "corresponding_source_slots": []
+      },
+      "verification": {
+        "supported_expected": false,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": false
+      }
+    },
+    {
+      "coordinate": {
+        "experiment": "p2.3-f0-graph-pressure-c-r-f0",
+        "thread": "C",
+        "turn": 2,
+        "twin": "M"
+      },
+      "extraction_file": "extraction-M-C-t2.json",
+      "edge_key": "e-e6885b0412011ddebce03e0c",
+      "candidate": {
+        "from": "success",
+        "relation": "depends_on",
+        "to": "usage* profile"
+      },
+      "source": {
+        "slot": "s5",
+        "evidence": "success of that entire setup depends heavily on your *usage* profile",
+        "immutable_text": "Yes, that sounds completely feasible, but the success of that entire setup depends heavily on your *usage* profile.\n\nRunning lights, a radio, and a small fridge are actually quite manageable with a standard solar setup, provided you're mindful of the daily \"draw\" (how much power the radio uses vs. the lights/fridge).\n\nTo give you a precise recommendation, I'd need a little more information:\n\n1.  **The Load:** How many lights are you running (e.g., 20 watts vs. 500 watts)?\n2.  **The Fridge:** Does this fridge need constant power, or just a few hours a day?\n\nGenerally, if your \"essentials\" are just basic lighting and a small fridge, a decent setup of a high-efficiency solar panel with a 120-200Ah battery bank (like a deep cycle AGM/Lithium bank) should keep the essentials running for a full day or two, depending on the size of the battery bank.\n\nOnce you tell me your power needs, I can give you a much clearer \"yes\" or \"no\" on the solar setup!"
+      },
+      "gliner_confidence": 0.7,
+      "historical_assessor_output": {
+        "status": "present",
+        "relation_support": "unsupported",
+        "expression_status": "unknown",
+        "covered": true,
+        "relevant": true
+      },
+      "historical_downstream": {
+        "eligible": false,
+        "dependence": "no_identified_link",
+        "actual_exposure": false,
+        "credit_reason": null,
+        "credited_D": null
+      },
+      "reviewed_expected": {
+        "status": "supported",
+        "relation_support": "affirmed",
+        "expression_status": "supported",
+        "review_label": "supported",
+        "rationale": "source explicitly says success depends on usage profile"
+      },
+      "repaired_assessor_output": {
+        "monitor_id": "candidate",
+        "status": "present",
+        "relation_support": "supported",
+        "expression_status": "affirmed",
+        "coverage": {
+          "complete": true,
+          "source_slots": [
+            "s0",
+            "s1",
+            "s2",
+            "s3",
+            "s4",
+            "s5"
+          ],
+          "reason": null
+        },
+        "evidence": {
+          "source_slot": "s5",
+          "quote": "Yes, that sounds completely feasible, but the success of that entire setup depends heavily on your *usage* profile."
+        },
+        "corresponding_source_slots": [
+          "s5"
+        ]
+      },
+      "verification": {
+        "supported_expected": true,
+        "support_correct": true,
+        "false_supported": false,
+        "ambiguous_conservative": false
+      }
+    }
+  ],
+  "qualification": {
+    "real_corpus_supported_expected": 5,
+    "real_corpus_supported_matched": 5,
+    "false_supported": 0,
+    "ambiguous_rejected_without_support": 8,
+    "repaired_model_output": "local DeBERTa v2 adapter with proposition templates, Markdown-label normalization, focused/adjacent source windows, scoped uncertainty, and self-relation guard",
+    "qualification_disposition": "REAL_CORPUS_SUPPORTED_AND_FALSE_SUPPORT_GATES_PASS"
+  },
+  "adapter_diagnosis": {
+    "historical_failure": "The v1 adapter scanned all covered slots for uncertainty/intent and selected broad source windows; unrelated planning/would/try wording poisoned explicit propositions. Labels such as usage* profile were not normalized and relation hypotheses were bare token sequences. Relation cue coverage was incomplete for holds/depends_on/slow/prevents.",
+    "corrections": [
+      "normalize proposition labels for semantic comparison while preserving raw labels/evidence",
+      "verbalize relation hypotheses with deterministic templates",
+      "select endpoint/relation-focused adjacent bounded windows before whole-source fallback",
+      "scope uncertainty/intent to selected evidence window and prefer clean endpoint windows",
+      "add relation cues for holds, depends_on, supports, prevents and related",
+      "reject self-relations as distinct supported propositions"
+    ]
+  }
+}

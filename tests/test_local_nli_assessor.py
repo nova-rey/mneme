@@ -216,3 +216,113 @@ def test_local_nli_assessor_prefers_relevant_source_over_unrelated_question_cont
     )["assessments"][0]
     assert result["relation_support"] == "supported"
     assert result["evidence"]["source_slot"] == "s1"
+
+
+def test_local_nli_scopes_uncertainty_to_the_selected_evidence_window() -> None:
+    class EntailingBackend(QualificationBackend):
+        def score_pairs(self, pairs: Sequence[tuple[str, str]]) -> tuple[NliScores, ...]:
+            return tuple(NliScores(0.97, 0.01, 0.02) for _ in pairs)
+
+    relation = {"from": "reliable enough", "relation": "depends_on", "to": "load"}
+    request = AssessorRequest(
+        candidate=relation,
+        sources=(
+            AssessorSource("s0", "external", True, "I am planning a remote workshop."),
+            AssessorSource(
+                "s1",
+                "model_output",
+                True,
+                'However, "reliable enough" really depends on the *load*.',
+            ),
+        ),
+        monitors=(AssessorMonitor("candidate", relation, ("s0", "s1"), ("s0", "s1")),),
+    )
+    row = json.loads(
+        LocalNliAssessorHost(EntailingBackend()).generate(
+            assessor_generation_request(request)
+        ).content
+    )["assessments"][0]
+    assert row["relation_support"] == "supported"
+    assert row["evidence"]["source_slot"] == "s1"
+
+
+def test_local_nli_normalizes_markdown_residue_without_mutating_evidence() -> None:
+    class RecordingBackend(QualificationBackend):
+        seen: list[str] = []
+
+        def score_pairs(self, pairs: Sequence[tuple[str, str]]) -> tuple[NliScores, ...]:
+            self.seen.extend(hypothesis for _premise, hypothesis in pairs)
+            return tuple(NliScores(0.97, 0.01, 0.02) for _ in pairs)
+
+    backend = RecordingBackend()
+    relation = {"from": "success", "relation": "depends_on", "to": "usage* profile"}
+    request = AssessorRequest(
+        candidate=relation,
+        sources=(
+            AssessorSource(
+                "s0",
+                "model_output",
+                True,
+                "The success of that entire setup depends heavily on your *usage* profile.",
+            ),
+        ),
+        monitors=(AssessorMonitor("candidate", relation, ("s0",), ("s0",)),),
+    )
+    row = json.loads(
+        LocalNliAssessorHost(backend).generate(assessor_generation_request(request)).content
+    )["assessments"][0]
+    assert row["relation_support"] == "supported"
+    assert any("usage profile" in hypothesis for hypothesis in backend.seen)
+    assert "*usage* profile" in row["evidence"]["quote"]
+
+
+def test_local_nli_recognizes_holds_as_retention() -> None:
+    class EntailingBackend(QualificationBackend):
+        def score_pairs(self, pairs: Sequence[tuple[str, str]]) -> tuple[NliScores, ...]:
+            return tuple(NliScores(0.98, 0.01, 0.01) for _ in pairs)
+
+    relation = {"from": "saturated soil", "relation": "retains", "to": "moisture"}
+    request = AssessorRequest(
+        candidate=relation,
+        sources=(
+            AssessorSource(
+                "s0", "model_output", True, "Deep, saturated soil holds moisture much longer."
+            ),
+        ),
+        monitors=(AssessorMonitor("candidate", relation, ("s0",), ("s0",)),),
+    )
+    row = json.loads(
+        LocalNliAssessorHost(EntailingBackend()).generate(assessor_generation_request(request)).content
+    )["assessments"][0]
+    assert row["relation_support"] == "supported"
+
+
+def test_local_nli_does_not_accept_part_of_from_cooccurrence_alone() -> None:
+    class EntailingBackend(QualificationBackend):
+        def score_pairs(self, pairs: Sequence[tuple[str, str]]) -> tuple[NliScores, ...]:
+            return tuple(NliScores(0.97, 0.01, 0.02) for _ in pairs)
+
+    relation = {
+        "from": "Drip Irrigation",
+        "relation": "part_of",
+        "to": "ordinary household materials",
+    }
+    request = AssessorRequest(
+        candidate=relation,
+        sources=(
+            AssessorSource(
+                "s0",
+                "model_output",
+                True,
+                (
+                    "Drip Irrigation is a slow-release system; ordinary household materials "
+                    "can make a wick."
+                ),
+            ),
+        ),
+        monitors=(AssessorMonitor("candidate", relation, ("s0",), ("s0",)),),
+    )
+    row = json.loads(
+        LocalNliAssessorHost(EntailingBackend()).generate(assessor_generation_request(request)).content
+    )["assessments"][0]
+    assert row["relation_support"] == "unsupported"

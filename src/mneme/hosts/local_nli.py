@@ -38,7 +38,7 @@ LOCAL_NLI_MODEL_ID = "cross-encoder/nli-deberta-v3-xsmall"
 # this only when deliberately qualifying a new prospective model revision.
 LOCAL_NLI_MODEL_REVISION = "a150876415327c80daeff35ca6f68f5ed8cf5c24"
 LOCAL_NLI_CONFIG_SHA256 = "8d9f07bf7ba54a6fc3b1962483056f94c39dcf188db4cf61843e1c88f94b2342"
-LOCAL_NLI_VERSION = "p2-local-nli-deberta-v3-xsmall-v1"
+LOCAL_NLI_VERSION = "p2-local-nli-deberta-v3-xsmall-v2-real-corpus"
 # Compatibility name used by the experiment harness while the assessor
 # contract is versioned independently from the model fingerprint.
 LOCAL_NLI_ASSESSOR_VERSION = LOCAL_NLI_VERSION
@@ -145,6 +145,68 @@ def source_windows(
     return tuple(windows)
 
 
+def _semantic_windows(
+    source_slot: str,
+    text: str,
+    monitor: AssessorMonitor,
+    *,
+    max_chars: int,
+    overlap_chars: int,
+) -> tuple[SourceWindow, ...]:
+    """Choose bounded, proposition-focused windows before whole-source chunks.
+
+    The prior adapter scored a long mixed conversation window.  Any unrelated
+    ``would``/``planning`` language could then make a clear proposition look
+    uncertain.  Sentence windows retain exact offsets and keep the specialist
+    focused on the candidate's source evidence.  Long sources still fall back
+    to the lossless bounded windows, so coverage is never silently truncated.
+    """
+
+    if not text:
+        return ()
+    all_sentences: list[SourceWindow] = []
+    pattern = re.compile(r"[^.!?\n]+(?:[.!?](?:\s+|$)|\n+|$)", re.S)
+    for index, match in enumerate(pattern.finditer(text)):
+        sentence = match.group(0).strip()
+        if not sentence:
+            continue
+        start = match.start() + len(match.group(0)) - len(match.group(0).lstrip())
+        end = start + len(sentence)
+        all_sentences.append(SourceWindow(source_slot, sentence, start, end, index))
+    endpoint_sentences = [
+        window for window in all_sentences if _source_mentions_proposition(window.text, monitor)
+    ]
+    cue_sentences = [
+        window for window in all_sentences if _relation_is_expressed(window.text, monitor)
+    ]
+    # Markdown lists often split the subject heading from the predicate at a
+    # newline.  Join adjacent bounded fragments when one carries the
+    # endpoints and the other carries the relation cue.
+    joined: list[SourceWindow] = []
+    for index, window in enumerate(all_sentences):
+        neighbors: tuple[SourceWindow, ...] = (window,)
+        if index > 0:
+            neighbors = (all_sentences[index - 1],) + neighbors
+        if index + 1 < len(all_sentences):
+            neighbors += (all_sentences[index + 1],)
+        start = min(item.start for item in neighbors)
+        end = max(item.end for item in neighbors)
+        combined = text[start:end].strip()
+        if _source_mentions_proposition(combined, monitor) and _relation_is_expressed(
+            combined, monitor
+        ):
+            joined.append(SourceWindow(source_slot, combined, start, end, index))
+    sentences = joined or endpoint_sentences or cue_sentences
+    if sentences and all(len(window.text) <= max_chars for window in sentences):
+        return tuple(sentences)
+    return source_windows(
+        source_slot,
+        text,
+        max_chars=max_chars,
+        overlap_chars=overlap_chars,
+    )
+
+
 _WORD_RE = re.compile(r"[\w]+", re.UNICODE)
 _STOP_WORDS = frozenset(
     {
@@ -182,9 +244,13 @@ _TERM_ALIASES = {
 }
 
 _RELATION_CUES = {
-    "maintains": ("keep", "kept", "maintain", "retained", "retain", "stay", "stayed", "remain"),
+    "maintains": (
+        "keep", "kept", "maintain", "retained", "retain", "stay", "stayed", "remain",
+        "holds", "hold", "holding",
+    ),
     "retains": (
-        "keep", "kept", "maintain", "retains", "retained", "retain", "stay", "stayed", "remain"
+        "keep", "kept", "maintain", "retains", "retained", "retain", "stay", "stayed", "remain",
+        "holds", "hold", "holding",
     ),
     "causes": (
         "cause", "caused", "causes", "because", "led", "release", "released", "result"
@@ -192,11 +258,38 @@ _RELATION_CUES = {
     "raises": ("raise", "raised", "raises", "lift", "lifted", "increase", "increased"),
     "stops": ("stop", "stopped", "stops", "halt", "prevent", "prevents", "prevented"),
     "associated_with": ("associated", "related", "connected", "link", "linked"),
-    "part_of": ("part", "component", "inside", "within", "belong"),
+    "associated-with": ("associated", "related", "connected", "link", "linked"),
+    "related": ("associated", "related", "connected", "link", "linked"),
+    "part_of": ("part of", "component", "inside", "within", "belong", "included"),
+    "part-of": ("part of", "component", "inside", "within", "belong", "included"),
+    "depends_on": ("depends", "depend", "relies", "rely", "requires", "require", "contingent"),
+    "depends-on": ("depends", "depend", "relies", "rely", "requires", "require", "contingent"),
+    "supports": ("supports", "support", "helps", "help", "enables", "enable", "keeps", "keep"),
+    "prevents": ("prevents", "prevent", "reduces", "reduce", "slows", "slow", "avoids", "avoid"),
+}
+
+_RELATION_TEMPLATES = {
+    "causes": "{from_} causes {to}.",
+    "caused_by": "{from_} is caused by {to}.",
+    "caused-by": "{from_} is caused by {to}.",
+    "depends_on": "{from_} depends on {to}.",
+    "depends-on": "{from_} depends on {to}.",
+    "dependency": "{from_} depends on {to}.",
+    "part_of": "{from_} is part of {to}.",
+    "part-of": "{from_} is part of {to}.",
+    "retains": "{from_} retains {to}.",
+    "maintains": "{from_} maintains {to}.",
+    "prevents": "{from_} prevents {to}.",
+    "supports": "{from_} supports {to}.",
+    "enables": "{from_} enables {to}.",
+    "explains": "{from_} explains {to}.",
+    "related": "{from_} is related to {to}.",
+    "associated_with": "{from_} is associated with {to}.",
+    "associated-with": "{from_} is associated with {to}.",
 }
 
 _UNCERTAINTY_OR_INTENT = re.compile(
-    r"\b(?:might|may|could|perhaps|maybe|would|plan|planning|try|trying|tomorrow|not sure)\b",
+    r"\b(?:might|may|could|perhaps|maybe|would|plan|planning|tomorrow|not sure)\b|\?",
     re.IGNORECASE,
 )
 _UNSETTLED_OR_ATTEMPT = re.compile(
@@ -205,7 +298,7 @@ _UNSETTLED_OR_ATTEMPT = re.compile(
     re.IGNORECASE,
 )
 _NEGATED_OUTCOME = re.compile(
-    r"\b(?:didn't|did not|doesn't|does not|never|failed|fails|dried|dry|dead)\b",
+    r"\b(?:didn't|did not|doesn't|does not|never|failed|fails|dried out|dry out|dead)\b",
     re.IGNORECASE,
 )
 
@@ -218,21 +311,40 @@ def _terms(value: str) -> frozenset[str]:
     )
 
 
+def _proposition_text(value: str) -> str:
+    """Normalize model-produced labels for semantic comparison only.
+
+    GLiNER source-side labels sometimes contain Markdown residue (for example
+    ``usage* profile``).  This never changes immutable source quotations or
+    the persisted raw candidate.
+    """
+
+    return re.sub(r"\s+", " ", re.sub(r"[`*_]", " ", str(value))).strip()
+
+
 def _hypothesis(monitor: AssessorMonitor) -> str:
-    relation = str(monitor.relation["relation"]).replace("_", " ")
-    return f"{monitor.relation['from']} {relation} {monitor.relation['to']}."
+    relation = str(monitor.relation["relation"]).casefold()
+    from_ = _proposition_text(str(monitor.relation["from"]))
+    to = _proposition_text(str(monitor.relation["to"]))
+    template = _RELATION_TEMPLATES.get(relation)
+    if template is not None:
+        return template.format(from_=from_, to=to)
+    return f"{from_} {relation.replace('_', ' ')} {to}."
 
 
 def _source_mentions_proposition(source: str, monitor: AssessorMonitor) -> bool:
     source_terms = _terms(source)
-    subject_terms = _terms(str(monitor.relation["from"]))
-    object_terms = _terms(str(monitor.relation["to"]))
+    subject_terms = _terms(_proposition_text(str(monitor.relation["from"])))
+    object_terms = _terms(_proposition_text(str(monitor.relation["to"])))
     return bool(subject_terms & source_terms) and bool(object_terms & source_terms)
 
 
 def _relation_is_expressed(source: str, monitor: AssessorMonitor) -> bool:
-    cues = _RELATION_CUES.get(str(monitor.relation["relation"]))
-    return True if cues is None else any(cue in source.casefold() for cue in cues)
+    relation = str(monitor.relation["relation"]).casefold()
+    cues = _RELATION_CUES.get(relation)
+    if cues is None:
+        return False
+    return any(cue in source.casefold() for cue in cues)
 
 
 def _relation_is_negated(source: str, monitor: AssessorMonitor) -> bool:
@@ -349,9 +461,10 @@ class LocalNliAssessor:
             source = sources[slot]
             if source.available and source.text:
                 windows.extend(
-                    source_windows(
+                    _semantic_windows(
                         slot,
                         source.text,
+                        monitor,
                         max_chars=self.max_window_chars,
                         overlap_chars=self.overlap_chars,
                     )
@@ -363,12 +476,26 @@ class LocalNliAssessor:
         selected: dict[str, tuple[SourceWindow, NliScores]] = {}
         for window, score in zip(windows, scored):
             prior = selected.get(window.source_slot)
-            if prior is None or (
+            quality = (
+                not bool(_UNCERTAINTY_OR_INTENT.search(window.text)),
+                _source_mentions_proposition(window.text, monitor),
+                _relation_is_expressed(window.text, monitor),
                 max(score.entailment, score.contradiction),
                 -window.chunk_index,
-            ) > (
-                max(prior[1].entailment, prior[1].contradiction),
-                -prior[0].chunk_index,
+            )
+            prior_quality = (
+                (
+                    not bool(_UNCERTAINTY_OR_INTENT.search(prior[0].text)),
+                    _source_mentions_proposition(prior[0].text, monitor),
+                    _relation_is_expressed(prior[0].text, monitor),
+                    max(prior[1].entailment, prior[1].contradiction),
+                    -prior[0].chunk_index,
+                )
+                if prior is not None
+                else None
+            )
+            if prior is None or (
+                prior_quality is not None and quality > prior_quality
             ):
                 selected[window.source_slot] = (window, score)
         return selected
@@ -422,6 +549,11 @@ class LocalNliAssessor:
                     item[0],
                 ),
             )
+            # Restrict uncertainty/intent and relation cues to the selected
+            # evidence window.  Looking across every covered source slot made
+            # an unrelated ``would`` or ``planning`` sentence poison an
+            # otherwise explicit proposition.
+            best_text = best_window.text
             entailment = best.entailment
             contradiction = best.contradiction
             thresholds = self.thresholds
@@ -437,31 +569,24 @@ class LocalNliAssessor:
                 _source_mentions_proposition(source_map[slot].text or "", monitor)
                 for slot in available
             )
-            relation_expressed = any(
-                _relation_is_expressed(source_map[slot].text or "", monitor)
-                for slot in available
-            )
             relation_negated = any(
                 _relation_is_negated(source_map[slot].text or "", monitor)
                 and _source_mentions_proposition(source_map[slot].text or "", monitor)
                 for slot in available
             )
-            uncertain_or_intended = any(
-                _UNCERTAINTY_OR_INTENT.search(source_map[slot].text or "")
-                for slot in available
-                if _source_mentions_proposition(source_map[slot].text or "", monitor)
-                or _relation_is_expressed(source_map[slot].text or "", monitor)
-            )
-            unsettled_or_attempt = any(
-                _UNSETTLED_OR_ATTEMPT.search(source_map[slot].text or "")
-                for slot in available
+            uncertain_or_intended = bool(_UNCERTAINTY_OR_INTENT.search(best_text))
+            unsettled_or_attempt = bool(_UNSETTLED_OR_ATTEMPT.search(best_text))
+            best_relation_expressed = _relation_is_expressed(best_text, monitor)
+            best_mentioned = _source_mentions_proposition(best_text, monitor)
+            self_relation = _terms(_proposition_text(str(monitor.relation["from"]))) == _terms(
+                _proposition_text(str(monitor.relation["to"]))
             )
             addressed = unsettled_or_attempt or (
-                mentioned
-                and (relation_expressed or relation_negated)
+                best_mentioned
+                and (best_relation_expressed or relation_negated)
             ) or (
                 strongly_entails
-                and (relation_expressed or relation_negated)
+                and (best_relation_expressed or relation_negated)
             )
             # NLI contradiction can be spuriously high when a hypothesis
             # contains an entity absent from the premise (for example,
@@ -470,17 +595,22 @@ class LocalNliAssessor:
             # cannot establish that the proposition is addressed unless both
             # proposition sides occur in the covered source.  Keep the
             # existing semantic boundary fail-closed for those cases.
-            if (
+            if self_relation:
+                status, support, expression = "absent", "unsupported", "not_expressed"
+                coverage["reason"] = "self-relation is not a distinct proposition"
+            elif (
                 (strongly_contradicts or relation_negated)
-                and _source_mentions_proposition(source_map[best_slot].text or "", monitor)
-                and (relation_expressed or relation_negated)
+                and best_mentioned
+                and (best_relation_expressed or relation_negated)
                 and not uncertain_or_intended
+                and not self_relation
             ):
                 status, support, expression = "present", "contradicted", "negated"
             elif (
-                (strongly_entails or (relation_expressed and mentioned))
+                (strongly_entails or (best_relation_expressed and best_mentioned))
                 and addressed
                 and not uncertain_or_intended
+                and not self_relation
             ):
                 status, support, expression = "present", "supported", "affirmed"
             elif addressed or mentioned:
