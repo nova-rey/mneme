@@ -157,3 +157,33 @@ def test_schema_nine_migrates_modeled_advance_ledger_with_backup(tmp_path):
         ).fetchone()[0]
         assert "operation_id TEXT PRIMARY KEY" in sql
         assert migrated.connection.execute("PRAGMA foreign_key_check").fetchall() == []
+
+
+def test_schema_ten_migrates_conversation_arcs_with_backup(tmp_path):
+    path = tmp_path / "schema-ten.sqlite3"
+    backup = tmp_path / "schema-ten.before-v11.sqlite3"
+    with SQLiteStore(path) as store:
+        store.create_root()
+    raw = sqlite3.connect(path)
+    raw.execute("PRAGMA foreign_keys=OFF")
+    for table in ("conversation_arc_events", "conversation_arc_members", "conversation_arcs"):
+        raw.execute(f"DROP TABLE {table}")
+    for column in ("arc_id", "arc_reentry", "reentry_initiator", "reentry_origin_arc_id", "refractory_active"):
+        raw.execute(f"ALTER TABLE development_observations DROP COLUMN {column}")
+    raw.execute("UPDATE store_info SET schema_version=10")
+    raw.execute("PRAGMA user_version=10")
+    raw.commit()
+    raw.close()
+
+    SQLiteStore.migrate(path, backup=backup)
+    assert backup.is_file()
+    with SQLiteStore(path, read_only=True) as migrated:
+        assert migrated.connection.execute("PRAGMA user_version").fetchone()[0] == 11
+        tables = {
+            row[0]
+            for row in migrated.connection.execute(
+                "SELECT name FROM sqlite_master WHERE type='table'"
+            )
+        }
+        assert {"conversation_arcs", "conversation_arc_members", "conversation_arc_events"} <= tables
+        assert migrated.connection.execute("PRAGMA foreign_key_check").fetchall() == []

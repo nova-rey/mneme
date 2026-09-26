@@ -249,6 +249,15 @@ def test_supplement_empty_interloper_one_recovery_reuses_coordinate(tmp_path: Pa
     )
     assert recovery["coordinate"]["turn"] == initial["coordinate"]["turn"] == 0
     assert not any(record["partner"] == "" for record in report["records"])
+    assert study.subjects[0].store.connection.execute(
+        "SELECT COUNT(*) FROM conversation_arcs"
+    ).fetchone()[0] == 1
+    assert study.subjects[0].store.connection.execute(
+        "SELECT COUNT(*) FROM conversation_arc_members"
+    ).fetchone()[0] == 1
+    assert study.subjects[0].store.connection.execute(
+        "SELECT COUNT(*) FROM conversation_arc_events"
+    ).fetchone()[0] == 2
 
 
 def test_payload_preserves_provider_metadata_for_blank_forensics() -> None:

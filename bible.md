@@ -1152,3 +1152,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 arc-integration publication
 
 - Published the production arc-integration receipt and queue validation at `7faaf96`: 460 pytest, Ruff, strict mypy, isolated wheel/import smoke, queue JSON validation, and remote CI `36209632261` passed. The receipt records the fresh-run boundary and preserves the historical v6 inconclusive/no-credit audit. No provider calls were made; P2.3 remains `WAITING` on its existing adequacy/accounting review dependency and no Phase Two release or Phase Three work is claimed.
+
+## 2026-09-26 Phase Two migration and integration regressions
+
+- Added a schema 10→11 migration regression with backup and foreign-key checks, plus an end-to-end FakeHost supplement assertion proving accepted turns publish one arc, one member, and open/close events. These tests strengthen the already-pushed episodic integration without changing learner semantics or historical evidence; no provider calls were made.
