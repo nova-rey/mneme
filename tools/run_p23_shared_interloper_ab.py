@@ -12,6 +12,7 @@ from __future__ import annotations
 import json
 import os
 import sys
+import time
 import uuid
 from collections.abc import Mapping
 from pathlib import Path
@@ -91,6 +92,9 @@ def _call(
     coordinate: Mapping[str, Any],
     max_tokens: int,
 ) -> Any:
+    if role in {"interloper", "assessor", "assessor-qualification"}:
+        # Keep the fixed schedule intact while avoiding provider burst limits.
+        time.sleep(5.0)
     reservation = pilot.reserve_call(
         call_id=call_id,
         role=role,

@@ -1289,3 +1289,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 shared-Interloper launcher correction
 
 - Corrected direct execution of the new runner so its repository-local host adapters resolve when launched as a script. No experiment coordinate or scientific contract changed.
+
+## 2026-09-26 shared-Interloper provider-rate-limit preservation
+
+- The first prospective shared-Interloper run stopped before qualification after DeepInfra returned HTTP 429 on its first Qwen call; the request remains durably recorded as `UNCERTAIN` and no developmental or evaluation call followed. Added fixed five-second pacing before Qwen role calls for the next prospective run; historical evidence remains unchanged.
