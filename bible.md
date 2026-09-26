@@ -1228,3 +1228,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 final episodic role-array correction
 
 - Corrected the final episodic harness so Qwen receives each prior Gemma response exactly once as `role=user`, while its own prior participant messages remain `role=assistant`. Added an exact serialized-array regression for the historical unfinished-response shape. Offline focused tests, Ruff, strict mypy, and diff checks passed; no provider calls occurred.
+
+## 2026-09-26 P2.3 final episodic pilot-envelope correction
+
+- The first live dispatch attempt made no provider call and failed closed at `PilotRun` envelope validation because reused qualification still requires the existing three-call qualification allocation in the prepared envelope. Corrected only the accounting metadata (`3` qualification / `97` pilot within the frozen `100` reservation bound); scientific schedule and historical evidence are unchanged.
