@@ -1176,3 +1176,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 engineering evidence audit
 
 - Added a bounded durable engineering audit for `PilotStudyReport`. Engineering adequacy now requires the real `PilotRun` ledger, terminal reservations, host provenance, study-progress coordinates, artifact inventory, and evaluation-isolation receipts to pass; schedule counters alone are explicitly insufficient. Fake/count-only test doubles remain readable but cannot report engineering adequacy. No provider calls occurred.
+
+## 2026-09-26 P2.3 engineering hardening receipt
+
+- Published `docs/receipts/MNEME_P2.3_Engineering_Evidence_Hardening_Receipt_20260926.md` and its JSON companion for `c8565c4`. Full pytest (474), Ruff, strict mypy, wheel/fresh-install smoke, queue validation, and CI `36211287551` passed. P2.3 remains waiting on separated-support/consolidation adequacy and cumulative accounting review; no provider calls or Phase Three work occurred.
