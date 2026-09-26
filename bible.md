@@ -1305,3 +1305,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 shared-Interloper smaller-model run stopped at assessor rate limit
 
 The selected smaller Qwen Interloper `Qwen/Qwen3-30B-A3B` passed its fixed three-call qualification and returned nonempty participant text. The first production assessment using the unchanged Qwen3-235B assessor then received HTTP 429 from DeepInfra at `assessment-M-A-t0`; local development and specialist extraction had already returned. Preserved run `p23-shared-interloper-ab-20260926-r3` is `INVALID_PROVIDER_RATE_LIMIT`, with no treatment exposure or behavioral result. The assessor role was not silently substituted, and prior rate-limit receipts remain unchanged. Sanitized evidence is published in `docs/receipts/MNEME_P2.3_Shared_Interloper_Assessor_Rate_Limit_20260926.md` and `.json`.
+
+## 2026-09-26 shared-Interloper local-assessor harness substitution
+
+- Updated the prospective shared-Interloper runner to require an explicit pinned local semantic-assessor factory (`mneme.hosts.local_nli:LocalNliAssessorHost` by default), with CPU DeBERTa model/revision configuration and no provider-assessor fallback. The runner now uses the existing production-shaped Q1/Q2/Q3 qualification against the configured local assessor, reuses the already-qualified `Qwen/Qwen3-30B-A3B` Interloper qualification receipt, and retains the mandatory treatment-exposure gate and historical-evidence boundary. Added offline factory/fail-closed regressions; no provider call occurred.

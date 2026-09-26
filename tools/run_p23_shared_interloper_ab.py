@@ -24,6 +24,7 @@ from mneme.experiments.artifacts import ArtifactStore, content_digest
 from mneme.experiments.pilot import PilotRun, host_role_binding
 from mneme.experiments.pilot_runtime import PilotRuntime, RuntimeSubject
 from mneme.experiments.pilot_study import DevelopmentFixture, ProductionAssessmentAdapter
+from mneme.experiments.qualification import run_assessor_qualification
 from mneme.experiments.shared_interloper import (
     GEMMA_SYSTEM_PROMPT,
     ThreadSpec,
@@ -44,9 +45,57 @@ from tools.run_p23_cross_thread import RemoteGlinerHost, RemoteLlamaHost
 ROOT = Path(os.environ.get("MNEME_SHARED_AB_LAB", "/tmp/mneme-p23-shared-ab-20260926"))
 RUN_ID = os.environ.get("MNEME_SHARED_AB_RUN_ID", "p23-shared-interloper-ab-20260926")
 EXPERIMENT = "p2.3-valid-three-thread-shared-interloper-ab"
-REVISION = 1
+REVISION = 2
 PLANNED_CALLS = 100
 MAX_OUTPUT_TOKENS = 120_000
+
+
+def _load_assessor_host() -> Any:
+    """Load the pinned local semantic assessor without a provider fallback.
+
+    The assessor is deliberately configured as an explicit import target so a
+    missing or unusable local specialist fails before the A/B run.  Falling
+    back to either DeepInfra Qwen role here would turn an instrumentation
+    substitution into an unrecorded experimental change.
+    """
+
+    spec = os.environ.get(
+        "MNEME_LOCAL_ASSESSOR_FACTORY",
+        "mneme.hosts.local_nli:LocalNliAssessorHost",
+    )
+    if spec == "mneme.hosts.local_nli:LocalNliAssessorHost":
+        from mneme.hosts.local_nli import LocalNliAssessorHost, TransformersNliBackend
+
+        backend = TransformersNliBackend(
+            model_id=os.environ.get("MNEME_NLI_MODEL_ID", "cross-encoder/nli-deberta-v3-xsmall"),
+            revision=os.environ.get(
+                "MNEME_NLI_MODEL_REVISION",
+                "a150876415327c80daeff35ca6f68f5ed8cf5c24",
+            ),
+            device="cpu",
+            batch_size=int(os.environ.get("MNEME_NLI_BATCH_SIZE", "8")),
+            max_length=int(os.environ.get("MNEME_NLI_MAX_LENGTH", "512")),
+            local_files_only=os.environ.get("MNEME_NLI_LOCAL_FILES_ONLY", "0") == "1",
+        )
+        return LocalNliAssessorHost(backend)
+    module_name, separator, attribute = spec.partition(":")
+    if not separator or not module_name or not attribute:
+        raise RuntimeError(
+            "MNEME_LOCAL_ASSESSOR_FACTORY must be module:attribute; "
+            "no provider assessor fallback is permitted"
+        )
+    import importlib
+
+    factory = getattr(importlib.import_module(module_name), attribute, None)
+    if factory is None:
+        raise RuntimeError(f"configured local assessor is unavailable: {spec}")
+    if hasattr(factory, "from_environment"):
+        host = factory.from_environment()
+    else:
+        host = factory()
+    if not hasattr(host, "generate") or not hasattr(host, "fingerprint"):
+        raise RuntimeError(f"configured local assessor is not a Host: {spec}")
+    return host
 
 
 THREADS = (
@@ -225,7 +274,10 @@ def main() -> int:
         quantization="provider-managed",
         context_length=40960,
     )
-    assessor = DeepInfraQwenAssessorHost(token=None)
+    # The Qwen 235B assessor is historical/reference instrumentation only.
+    # This run requires the pinned local specialist; the factory is explicit
+    # and has no provider fallback.
+    assessor = _load_assessor_host()
     contract = {
         "name": EXPERIMENT,
         "contract_revision": REVISION,
@@ -233,6 +285,19 @@ def main() -> int:
         "shared_interloper": True,
         "historical_runs_unchanged": True,
         "role_perspective": "shared-interloper-v1",
+        "semantic_assessor": {
+            "mode": "local-specialist",
+            "factory": os.environ.get(
+                "MNEME_LOCAL_ASSESSOR_FACTORY",
+                "mneme.hosts.local_nli:LocalNliAssessorHost",
+            ),
+            "provider_fallback": False,
+        },
+        "interloper_qualification": {
+            "status": "REUSED_PRIOR_FIXED_QUALIFICATION",
+            "model_id": "Qwen/Qwen3-30B-A3B",
+            "receipt": "docs/receipts/MNEME_P2.3_Shared_Interloper_Model_Substitution_20260926.md",
+        },
         "seed_plan": "local-gemma-seed=10000+thread*100+turn",
         "probes": list(PROBES),
     }
@@ -286,25 +351,21 @@ def main() -> int:
         metadata={"experiment": EXPERIMENT, "revision": REVISION},
         role_bindings=role_bindings,
     )
-    pilot.begin_qualification()
-    qualification_request = build_shared_interloper_request(
-        thread=THREADS[0],
-        prior_participant=None,
-        responses={"A": "I am here.", "B": "I am here."},
-        turn=0,
+    qualification = run_assessor_qualification(
+        pilot,
+        assessor_host=assessor,
+        max_output_tokens=1_536,
     )
-    for index in range(3):
-        result = _call(
-            pilot,
-            interloper,
-            qualification_request,
-            call_id=f"qualification-{index}",
-            role="assessor-qualification",
-            coordinate={"kind": "shared-interloper-qualification", "index": index},
-            max_tokens=192,
-        )
-        require_nonempty_message(result.content, role="Qwen qualification")
-    pilot.complete_qualification(passed=True, details={"status": "PASS"})
+    if qualification.get("status") != "QUALIFIED":
+        report = {
+            "status": "INVALID_ASSESSOR_QUALIFICATION",
+            "qualification": qualification,
+            "interloper_qualification": contract["interloper_qualification"],
+            "historical_evidence_unchanged": True,
+        }
+        pilot.publish_artifact("qualification", "final-report.json", report)
+        print(json.dumps(report, indent=2))
+        return 2
     pilot.begin_pilot()
 
     subjects: dict[int, RuntimeSubject] = {}

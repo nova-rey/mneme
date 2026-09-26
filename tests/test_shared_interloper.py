@@ -1,3 +1,9 @@
+import sys
+import types
+from pathlib import Path
+
+import pytest
+
 from mneme.experiments.shared_interloper import (
     ThreadSpec,
     build_shared_interloper_request,
@@ -6,6 +12,42 @@ from mneme.experiments.shared_interloper import (
     subject_history,
     treatment_exposure_gate,
 )
+
+
+def test_shared_runner_requires_explicit_local_assessor_factory(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from tools.run_p23_shared_interloper_ab import _load_assessor_host
+
+    monkeypatch.setenv("MNEME_LOCAL_ASSESSOR_FACTORY", "missing_assessor:Host")
+    with pytest.raises(RuntimeError, match="configured local assessor is unavailable"):
+        _load_assessor_host()
+
+
+def test_shared_runner_loads_configured_local_assessor_without_provider_fallback(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from tools.run_p23_shared_interloper_ab import _load_assessor_host
+
+    module = types.ModuleType("test_local_assessor")
+
+    class Host:
+        @classmethod
+        def from_environment(cls) -> "Host":
+            return cls()
+
+        def generate(self, request: object) -> object:
+            return request
+
+        def fingerprint(self) -> dict[str, str]:
+            return {"model_id": "local-test"}
+
+    module.Host = Host  # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, "test_local_assessor", module)
+    monkeypatch.setenv("MNEME_LOCAL_ASSESSOR_FACTORY", "test_local_assessor:Host")
+    assert isinstance(_load_assessor_host(), Host)
 
 
 def test_subject_history_is_gemma_perspective() -> None:
