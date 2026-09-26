@@ -395,10 +395,26 @@ class ProductionAssessmentAdapter:
                 publish_excluded,
                 excluded_reason=reason,
             )
+        raw_concepts = getattr(residue, "core_concepts", ())
+        concept_labels = {
+            str(concept.get("key")): str(concept.get("label"))
+            for concept in raw_concepts
+            if isinstance(concept, Mapping)
+            and concept.get("key") is not None
+            and isinstance(concept.get("label"), str)
+            and concept.get("label")
+        }
+
+        def semantic_term(value: Any) -> str:
+            # Provider/model-facing assessment must reason over source
+            # language, not opaque canonical IDs.  The canonical edge key is
+            # retained separately for publication and provenance.
+            return concept_labels.get(str(value), str(value))
+
         relations = [
             {
-                "from": str(edge["from"]),
-                "to": str(edge["to"]),
+                "from": semantic_term(edge["from"]),
+                "to": semantic_term(edge["to"]),
                 "relation": str(edge["relationship"]),
             }
             for edge in edges

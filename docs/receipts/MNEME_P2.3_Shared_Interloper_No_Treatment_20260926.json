@@ -1,0 +1,25 @@
+{
+  "date": "2026-09-26",
+  "status": "INVALID_NO_TREATMENT",
+  "run_id": "p23-shared-interloper-ab-20260926-r5",
+  "experiment": "p2.3-valid-three-thread-shared-interloper-ab",
+  "historical_evidence_unchanged": true,
+  "failure": {
+    "gate": "treatment_exposure_gate",
+    "reason": "M completed development and extraction/assessment calls, but no eligible route was selected or applied at any coordinate",
+    "first_coordinate": "A:0"
+  },
+  "diagnosis": {
+    "cause": "The production assessment request exposed opaque canonical concept IDs (for example c-15bbcf...) as proposition terms. The local NLI specialist correctly cannot match those IDs to source language, so the valid source relationships were classified absent and no learner-eligible state formed.",
+    "correction": "The adapter now maps residue concept keys to their source-language labels only in the assessor-facing proposition; canonical edge keys remain authoritative for provenance/publication.",
+    "scientific_state": "No behavioral comparison was interpreted; C received zero MNEME influence by design."
+  },
+  "persisted_before_stop": {
+    "artifact_manifest_sha256": "e361ef12cfeab9bf9d2623eee979cda65a660708152825d2a29d204629778d1f",
+    "artifact_count": 69,
+    "reservation_count": 45,
+    "artifact_root": "/tmp/mneme-p23-shared-ab-20260926-r5/experiments/p2.3-valid-three-thread-shared-interloper-ab/revisions/2/runs/p23-shared-interloper-ab-20260926-r5"
+  },
+  "provider_calls_after_failure": 0,
+  "behavioral_result": "not_assigned"
+}

@@ -1341,3 +1341,16 @@ keeping control `interpret`, `recall`, and `learn` disabled, so ordinary chat
 history is allowed without MNEME influence. Evidence is in
 `docs/receipts/MNEME_P2.3_Shared_Interloper_Control_Permission_Stop_20260926.md`
 and `.json`.
+
+## 2026-09-26 shared-Interloper no-treatment diagnosis
+
+Prospective run `p23-shared-interloper-ab-20260926-r5` stopped at the mandatory
+treatment gate as `INVALID_NO_TREATMENT`: local Gemma and GLiNER completed, but
+no M route was selected or applied. The production assessment request exposed
+opaque canonical concept IDs to the local NLI specialist, so source-grounded
+relationships were classified absent. The adapter correction maps residue
+concept keys to source-language labels only for assessor-facing propositions;
+canonical edge keys remain authoritative for publication and provenance. No
+behavioral result was assigned. Evidence is in
+`docs/receipts/MNEME_P2.3_Shared_Interloper_No_Treatment_20260926.md` and
+`.json`.

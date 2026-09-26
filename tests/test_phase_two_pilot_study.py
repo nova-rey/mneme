@@ -302,8 +302,17 @@ def test_production_assessment_adapter_serializes_complete_monitor_and_resolves_
         episode_id="episode-s0-e0",
         operation_id="interpretation-s0-e0",
         residue=SimpleNamespace(
+            core_concepts=(
+                {"key": "key-a", "label": "cloth wick"},
+                {"key": "key-b", "label": "soil moisture"},
+            ),
             edge_candidates=(
-                {"key": "edge-ab", "from": "A", "to": "B", "relationship": "supports"},
+                {
+                    "key": "edge-ab",
+                    "from": "key-a",
+                    "to": "key-b",
+                    "relationship": "supports",
+                },
             )
         ),
     )
@@ -312,7 +321,11 @@ def test_production_assessment_adapter_serializes_complete_monitor_and_resolves_
     assert plan.semantic_request is not None
     payload = plan.semantic_request.to_dict()
     monitor = payload["monitors"][0]
-    assert monitor["relation"] == {"from": "A", "to": "B", "relation": "supports"}
+    assert monitor["relation"] == {
+        "from": "cloth wick",
+        "to": "soil moisture",
+        "relation": "supports",
+    }
     assert monitor["required_source_slots"] == ["s0", "s1"]
     assert monitor["correspondence_source_slots"] == ["s0", "s1"]
     result = {
