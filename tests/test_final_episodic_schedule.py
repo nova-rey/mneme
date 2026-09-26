@@ -88,3 +88,16 @@ def test_final_harness_uses_explicit_model_perspectives_without_duplicate_latest
     ]
     assert qwen[-1]["content"] == "Gemma ends with smoked"
     assert sum(item["content"] == "Gemma ends with smoked" for item in qwen) == 1
+
+
+def test_remote_ssh_decodes_malformed_utf8_without_discarding_result(monkeypatch) -> None:
+    captured = {}
+
+    def fake_run(*args, **kwargs):
+        captured.update(kwargs)
+        return type("Result", (), {"returncode": 0, "stdout": "ok", "stderr": ""})()
+
+    monkeypatch.setattr(_HARNESS.subprocess, "run", fake_run)
+    _HARNESS._RemoteBase()._ssh("true", "payload", 1.0)
+    assert captured["text"] is True
+    assert captured["errors"] == "replace"

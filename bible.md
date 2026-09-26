@@ -1248,3 +1248,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 final episodic run 5 invalid process supervision
 
 - Preserved `p23-final-episodic-run-5` as `INVALID` after the external branch reached turn 26 and persisted its partial provider/local artifacts, then the launcher terminated before transcript publication/assessment and before the model branch began. No scientific result was assigned and no historical evidence was changed. A detached process-supervised fresh run is required.
+
+## 2026-09-26 P2.3 final episodic run 6 invalid remote decode
+
+- Preserved `p23-final-episodic-run-6` as `INVALID` after the external branch completed and local Gemma development at model turn 12 raised a strict UTF-8 decode error before result persistence. No scientific result was assigned. The bounded correction decodes remote subprocess text with replacement semantics; model, learner, provenance, and acceptance rules remain unchanged.

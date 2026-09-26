@@ -84,7 +84,7 @@ class _RemoteBase:
         env.update({"DISPLAY": ":0", "SSH_ASKPASS": SSH_ASKPASS, "SSH_ASKPASS_REQUIRE": "force"})
         return subprocess.run(
             ["setsid", "-w", "ssh", "-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/tmp/mneme-known-hosts", f"{MSI_USER}@{MSI_HOST}", command],
-            input=payload, capture_output=True, text=True, timeout=timeout, env=env,
+            input=payload, capture_output=True, text=True, errors="replace", timeout=timeout, env=env,
         )
 
 
