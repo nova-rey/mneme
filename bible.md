@@ -1148,3 +1148,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 production arc integration correction
 
 - Integrated deterministic declared conversation arcs into the contingent and separated-support runners. Accepted turn commits now publish idempotent arc/member/open-close records before interpretation, and the production assessment adapter receives the same arc identity so learner observations retain arc, prior-arc, re-entry, and refractory metadata. Feedback source bindings are classified as external outcome evidence while controller, replay, tool, and model rows remain model-origin for provenance resolution. Added regressions for chapter-window grouping, pivot/re-entry timing, idempotent retry, and feedback-role preservation. No provider calls were made; historical v6 records remain unchanged pending the derived audit receipt.
+
+## 2026-09-26 P2.3 arc-integration publication
+
+- Published the production arc-integration receipt and queue validation at `7faaf96`: 460 pytest, Ruff, strict mypy, isolated wheel/import smoke, queue JSON validation, and remote CI `36209632261` passed. The receipt records the fresh-run boundary and preserves the historical v6 inconclusive/no-credit audit. No provider calls were made; P2.3 remains `WAITING` on its existing adequacy/accounting review dependency and no Phase Two release or Phase Three work is claimed.
