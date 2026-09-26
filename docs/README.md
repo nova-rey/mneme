@@ -102,6 +102,9 @@ The documents are preserved in their supplied form and are intentionally not mer
   The [current Phase Two state audit](receipts/MNEME_Phase_Two_Current_State_Audit_20260926.md)
   reconciles the later cross-thread v6 evidence and cumulative call ledger;
   P2.3 remains waiting and no Phase Two release or Phase Three work is claimed.
+  The [current-state refresh at `ad18b4f`](receipts/MNEME_Phase_Two_Current_State_Audit_20260926_ad18b4f.md)
+  records the same scientific and accounting disposition after the offline
+  engineering-audit closure, with 477-test validation and CI `36212795871`.
   The [modeled temporal advance correction](receipts/MNEME_P2_Modeled_Advance_Correction_Receipt_20260925.md) closes the approved learner-advance CLI path with an immutable schema-10 ledger, atomic materialization, replay, and idempotent recovery; it is provider-free and does not change the P2.3 or contingent live boundaries.
   The [reviewed-continuation correction receipt](receipts/MNEME_P2_Contingent_Reviewed_Continuation_Correction_Receipt_20260924.md) records the additive post-correction segment accounting and offline validation.
   The corrected continuation's [exact turns 9–11 transcript](receipts/MNEME_P2_Contingent_PostCorrection_Transcript_20260924.md) and [post-correction stop receipt](receipts/MNEME_P2_Contingent_PostCorrection_Live_Stop_Receipt_20260924.md) preserve the new terminal measurement failures and separate 0/3 quality result.
