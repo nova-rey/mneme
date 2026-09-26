@@ -1224,3 +1224,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 final episodic recurrence preflight
 
 - Froze the authorized final Schema 11 mechanism schedule in `docs/receipts/MNEME_P2.3_Final_Episodic_Preflight_20260926.md` and its JSON companion. The schedule uses matched external/model branches, five spaced target opportunities, the fixed learner gap and rolling-cap arithmetic, local Gemma/GLiNER/Qwen role bindings, and hard null-output stops. Historical Phase Two evidence remains unchanged; no provider calls occurred during preflight.
+
+## 2026-09-26 P2.3 final episodic role-array correction
+
+- Corrected the final episodic harness so Qwen receives each prior Gemma response exactly once as `role=user`, while its own prior participant messages remain `role=assistant`. Added an exact serialized-array regression for the historical unfinished-response shape. Offline focused tests, Ruff, strict mypy, and diff checks passed; no provider calls occurred.

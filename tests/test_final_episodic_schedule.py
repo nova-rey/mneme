@@ -11,6 +11,7 @@ from mneme.development.learner import (
     TransitionInput,
     apply_transition,
 )
+from mneme.experiments.contingent import _interloper_history, _subject_history
 
 _SPEC = importlib.util.spec_from_file_location(
     "mneme_final_episodic_harness",
@@ -67,3 +68,23 @@ def test_external_schedule_reaches_fixed_consolidation_gap_without_cap_hack() ->
     assert update.credited == 80_000
     assert update.after.relevant_opportunities == 5
     assert update.after.last_consolidation_opportunity == 5
+
+
+def test_final_harness_uses_explicit_model_perspectives_without_duplicate_latest_reply() -> None:
+    pairs = [("participant one", "Gemma one"), ("participant two", "Gemma ends with smoked")]
+    qwen = _interloper_history(pairs, limit=2)
+    gemma = _subject_history(pairs, limit=2)
+    assert qwen == [
+        {"role": "assistant", "content": "participant one"},
+        {"role": "user", "content": "Gemma one"},
+        {"role": "assistant", "content": "participant two"},
+        {"role": "user", "content": "Gemma ends with smoked"},
+    ]
+    assert gemma == [
+        {"role": "user", "content": "participant one"},
+        {"role": "assistant", "content": "Gemma one"},
+        {"role": "user", "content": "participant two"},
+        {"role": "assistant", "content": "Gemma ends with smoked"},
+    ]
+    assert qwen[-1]["content"] == "Gemma ends with smoked"
+    assert sum(item["content"] == "Gemma ends with smoked" for item in qwen) == 1

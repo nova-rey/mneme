@@ -316,10 +316,11 @@ def main() -> int:
         traces: list[dict[str, Any]] = []
         for turn, chapter, prompt in turns:
             messages = _interloper_history(pairs, limit=2)
-            if pairs:
+            if pairs and (not messages or messages[-1].get("content") != pairs[-1][1]):
                 messages.append({"role": "user", "content": pairs[-1][1]})
             else:
-                messages.append({"role": "user", "content": prompt})
+                if not pairs:
+                    messages.append({"role": "user", "content": prompt})
             request = GenerationRequest(tuple(messages), system=INTERLOPER_SYSTEM_PROMPT + "\nPrivate current circumstance (do not quote):\n" + prompt, parameters={"temperature": 0.8, "top_p": 0.9, "max_new_tokens": 256}, run_metadata={"experiment": EXPERIMENT, "branch": branch, "turn": turn, "role_perspective": ROLE_PERSPECTIVE_VERSION})
             partner = _call(pilot, qwen, request, call_id=f"interloper-{branch}-t{turn:02d}", role="interloper", coordinate={"branch": branch, "turn": turn, "role": "participant"}, max_tokens=256).content
             if not partner.strip():
