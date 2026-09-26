@@ -1365,3 +1365,14 @@ provenance, and learner publication. The local NLI adapter also chooses a
 relevant source window before interpreting unrelated question context and keeps
 negation/uncertainty scoped to the supporting source. Focused regressions and
 full validation passed; the prior invalid run remains preserved.
+
+## 2026-09-26 shared-Interloper local-assessor treatment gate
+
+The first prospective shared-Interloper run using the qualified local DeBERTa
+assessor is preserved as `INVALID_NO_TREATMENT`. The local qualification and
+production assessment path worked: a supported `Drip Irrigation -> causes ->
+Slow Leak` observation formed learner state. The frozen schedule nevertheless
+selected and applied zero routes at all nine coordinates, so no MNEME influence
+reached M and no behavioral comparison was interpreted. This is recorded in
+`docs/receipts/MNEME_P2.3_Shared_Interloper_Local_Assessor_No_Treatment_20260926.md`
+and its JSON companion; historical receipts remain unchanged.

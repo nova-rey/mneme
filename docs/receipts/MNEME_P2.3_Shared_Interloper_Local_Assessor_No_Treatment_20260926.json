@@ -1,0 +1,71 @@
+{
+  "date": "2026-09-26",
+  "status": "INVALID_NO_TREATMENT",
+  "run_id": "p23-shared-interloper-ab-20260926-r6",
+  "experiment": "p2.3-valid-three-thread-shared-interloper-ab",
+  "historical_evidence_unchanged": true,
+  "assessor": {
+    "mode": "local-specialist",
+    "model_id": "cross-encoder/nli-deberta-v3-xsmall",
+    "revision": "a150876415327c80daeff35ca6f68f5ed8cf5c24",
+    "qualification_receipt": "MNEME_P2.3_Local_NLI_Assessor_Qualification_20260926",
+    "provider_fallback": false
+  },
+  "interloper": {
+    "model_id": "Qwen/Qwen3-30B-A3B",
+    "qualification": "reused_prior_fixed_qualification"
+  },
+  "failure": {
+    "gate": "treatment_exposure_gate",
+    "reason": "M did not receive a verified nonzero MNEME influence",
+    "eligible_state": true,
+    "selected_influence": false,
+    "applied_influence": false,
+    "control_influence_zero": true,
+    "coordinates": 9,
+    "selected_coordinates": 0,
+    "applied_coordinates": 0
+  },
+  "validity": {
+    "null_or_empty_participant": false,
+    "provider_rate_limit": false,
+    "local_assessor_returned": true,
+    "behavioral_result": "not_assigned",
+    "readout_calls": 0,
+    "evaluation_calls": 0
+  },
+  "state_evidence": {
+    "supported_observation_coordinate": "development-M-A-t0",
+    "relationship": "Drip Irrigation -> causes -> Slow Leak",
+    "canonical_edge": "edge:66571a2fb4f35a3ba9656a34c66279d25b5ed5e1087c841928c2b9420d358136",
+    "accessibility": 20000,
+    "support": 5000,
+    "lifetime_credit": 20000,
+    "interpretation": "supported model-output observation admitted; no route was selected"
+  },
+  "diagnosis": {
+    "cause": "The frozen environmental wording and route eligibility did not produce a selected route after state formation. At A:2 the considered routes were sponge method -> causes -> mold and wicking idea -> related -> mold; the admitted Drip Irrigation -> causes -> Slow Leak edge was not query-matched by the frozen wording drip method. Later B/C inputs were unrelated.",
+    "classification": "experimental-condition/route-eligibility mismatch",
+    "required_change": "A separately justified change to the frozen opportunity/route matching or route-selection semantics would be required; unchanged resampling is not a repair.",
+    "not_provider_or_assessor_failure": true
+  },
+  "persisted_before_stop": {
+    "artifact_manifest_sha256": "b88ffd5fad5cc8196366231efa823ab03a9c9f8d34c4089b6caae480e5883989",
+    "artifact_count": 68,
+    "reservation_count": 44,
+    "reservation_roles": {
+      "development-response": 18,
+      "development-extraction": 9,
+      "assessor": 8,
+      "assessor-qualification": 3,
+      "interloper": 6
+    },
+    "deepinfra_usage": {
+      "input_tokens": 4487,
+      "output_tokens": 244,
+      "total_tokens": 4731
+    },
+    "artifact_root": "/tmp/mneme-p23-shared-ab-20260926-r6/experiments/p2.3-valid-three-thread-shared-interloper-ab/revisions/2/runs/p23-shared-interloper-ab-20260926-r6"
+  },
+  "provider_calls_after_failure": 0
+}
