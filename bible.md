@@ -1313,3 +1313,7 @@ The selected smaller Qwen Interloper `Qwen/Qwen3-30B-A3B` passed its fixed three
 ## 2026-09-26 local-assessor semantic contract coverage
 
 - Added focused local-NLI contract coverage for the frozen Q1/Q2/Q3 semantic matrix, missing-source UNKNOWN handling, multi-window source processing, and addressed-but-unsupported propositions. The tests exercise the existing `p2-assessor-v6` adapter without changing historical schemas or provider receipts.
+
+## 2026-09-26 local-assessor adapter pinning
+
+- Added the CPU-first `cross-encoder/nli-deberta-v3-xsmall` adapter at immutable Hugging Face revision `a150876415327c80daeff35ca6f68f5ed8cf5c24`, with deterministic source windows, score aggregation, coverage handling, and the existing v6 result contract. Recorded the config digest and offline contract receipt; actual MSI model benchmarking remains a separate qualification gate.
