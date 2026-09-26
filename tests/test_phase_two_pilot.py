@@ -13,6 +13,8 @@ from mneme.experiments.pilot import (
     host_role_binding,
 )
 from mneme.hosts import FakeHost
+from mneme.state.contracts import StoragePermissions
+from mneme.state.storage import SQLiteStore
 
 
 def _published(tmp_path: Path) -> ArtifactStore:
@@ -220,6 +222,56 @@ def test_completed_dispatch_rejects_changed_expected_host_binding(tmp_path: Path
     altered["model_id"] = "other"
     with pytest.raises(PilotError, match="expected_host_fingerprint"):
         pilot.dispatch_call("q-1", expected_host_fingerprint=altered)
+
+
+def test_returned_call_rejects_host_fingerprint_drift(tmp_path: Path) -> None:
+    store = _published(tmp_path)
+    host = FakeHost(model_id="assessor")
+    pilot = PilotRun(store, "run-1")
+    pilot.prepare(planned_calls=3, max_output_tokens=30, qualification_calls=3)
+    pilot.begin_qualification()
+    pilot.reserve_call(
+        call_id="q-1",
+        role="assessor-qualification",
+        coordinate={"case": "Q1"},
+        max_output_tokens=10,
+    )
+    expected = host.fingerprint().to_dict()
+    pilot.dispatch_call("q-1", expected_host_fingerprint=expected)
+    altered = dict(expected)
+    altered["model_id"] = "other"
+    with pytest.raises(PilotError, match="different host binding"):
+        pilot.return_call("q-1", result={"ok": True}, actual_host_fingerprint=altered)
+    assert pilot.reservations_report()["calls"][0]["status"] == CallStatus.DISPATCHED.value
+
+
+def test_subject_authority_snapshot_is_idempotent_and_durable(tmp_path: Path) -> None:
+    store = _published(tmp_path)
+    pilot = PilotRun(store, "run-1")
+    pilot.prepare(planned_calls=3, max_output_tokens=30, qualification_calls=3)
+    subject_store = SQLiteStore(tmp_path / "subject.sqlite3")
+    instance_id = subject_store.create_root(
+        permissions=StoragePermissions(store=True, export=True, interpret=True, learn=True)
+    )
+    host = FakeHost(model_id="developing")
+    subject = type(
+        "Subject",
+        (),
+        {
+            "slot": 0,
+            "store": subject_store,
+            "instance_id": instance_id,
+            "host": host,
+        },
+    )()
+    first = pilot.capture_subject_bindings({0: subject})
+    second = pilot.capture_subject_bindings({0: subject})
+    assert first["subject_bindings"] == second["subject_bindings"]
+    binding = first["subject_bindings"][0]
+    assert binding["instance_id"] == instance_id
+    assert binding["permission"]["authority_available"] is True
+    assert binding["host_ref"]
+    subject_store.close()
 
 
 def test_role_binding_missing_assessor_fails_closed(tmp_path: Path) -> None:

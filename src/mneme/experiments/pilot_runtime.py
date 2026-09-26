@@ -204,6 +204,7 @@ class PilotRuntime:
         )
         status = str(reservation.get("status"))
         if status == CallStatus.RETURNED.value:
+            self.pilot.assert_returned_host(call_id)
             return reservation, False
         if status != CallStatus.RESERVED.value:
             if status in {CallStatus.DISPATCHED.value, CallStatus.UNCERTAIN.value}:

@@ -1184,3 +1184,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 candidate reconciliation after engineering hardening
 
 - Advanced the P2.3 queue candidate pointer to `22c0a4e` and recorded the engineering-evidence hardening validation while preserving `WAITING` on `review:p2.3-pilot-adequacy-after-normalization`. This records implementation progress only; it does not resolve the scientific adequacy or cumulative accounting blockers.
+
+## 2026-09-26 P2.3 engineering audit closure hardening
+
+- Extended the pilot ledger with an immutable prepared subject/permission/authority/host snapshot and made `PilotStudy` capture it before developmental execution. The engineering audit now consumes that snapshot and final lineage state, verifies exact learner replay against materialized state, rejects unexpected schedule coordinates, and compares returned host fingerprints with both reserved and configured role bindings. Returned-call persistence also fails closed on host drift. Added focused replay, authority-snapshot, coordinate, and host-drift regressions; no provider calls or scientific acceptance criteria changed.

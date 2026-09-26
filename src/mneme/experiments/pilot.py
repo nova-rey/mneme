@@ -20,6 +20,7 @@ from pathlib import Path
 from typing import Any
 
 from ..host import Host
+from ..state.policy import PolicyError, PolicyService, host_ref
 from .artifacts import ArtifactError, ArtifactStore, _write_json, content_digest
 
 
@@ -335,6 +336,70 @@ class PilotRun:
             raise PilotError(f"host fingerprint contents do not match configured {role} binding")
         return expected
 
+    def capture_subject_bindings(self, subjects: Mapping[int, Any]) -> dict[str, Any]:
+        """Persist the prepared subject/authority boundary before pilot work.
+
+        The pilot ledger is outside the lineage stores, so the prepared
+        subject identity and effective permission authority must be copied
+        into it before the first developmental transition.  The snapshot is
+        idempotent and immutable for a run; a restart that observes different
+        bindings fails closed.
+        """
+
+        state = self.status()
+        snapshots: list[dict[str, Any]] = []
+        for slot in sorted(subjects):
+            subject = subjects[slot]
+            if getattr(subject, "slot", None) != slot:
+                raise PilotError(f"subject mapping key does not match slot {slot}")
+            store = getattr(subject, "store", None)
+            instance_id = str(getattr(subject, "instance_id", ""))
+            if store is None or not instance_id:
+                raise PilotError(f"subject {slot} lacks a writable lineage binding")
+            try:
+                current = dict(store.current())
+                policy = PolicyService(store, instance_id).current().to_dict()
+            except (KeyError, PolicyError, TypeError, ValueError) as exc:
+                raise PilotError(f"subject {slot} authority snapshot failed") from exc
+            fingerprint = getattr(subject, "host", None)
+            if fingerprint is None or not hasattr(fingerprint, "fingerprint"):
+                raise PilotError(f"subject {slot} lacks a host binding")
+            host_fingerprint = fingerprint.fingerprint().to_dict()
+            prepared_binding: Mapping[str, Any] | None = None
+            raw_subjects = self.bindings.get("subjects")
+            if isinstance(raw_subjects, list):
+                matches = [
+                    item for item in raw_subjects
+                    if isinstance(item, Mapping) and item.get("slot") == slot
+                ]
+                if len(matches) == 1:
+                    prepared_binding = dict(matches[0])
+            snapshots.append(
+                {
+                    "slot": slot,
+                    "instance_id": instance_id,
+                    "prepared_binding": prepared_binding,
+                    "current": {
+                        "active_instance_id": str(current["active_instance_id"]),
+                        "current_revision": int(current["current_revision"]),
+                        "current_manifest_id": str(current["current_manifest_id"]),
+                    },
+                    "permission": policy,
+                    "host_fingerprint": host_fingerprint,
+                    "host_ref": host_ref(host_fingerprint),
+                }
+            )
+        existing = state.get("subject_bindings")
+        if existing is not None and existing != snapshots:
+            raise PilotError("prepared subject authority bindings are immutable")
+        if existing is not None:
+            return state
+        try:
+            status = PilotStatus(str(state["status"]))
+        except (KeyError, ValueError) as exc:
+            raise PilotError("pilot state has an invalid lifecycle status") from exc
+        return self._write_state(status, subject_bindings=snapshots)
+
     def begin_qualification(self) -> dict[str, Any]:
         state = self.status()
         if state["status"] == PilotStatus.QUALIFYING.value:
@@ -491,6 +556,17 @@ class PilotRun:
             or output_tokens < 0
         ):
             raise PilotError("output_tokens must be a non-negative integer or null")
+        path = self._reservation_path(call_id)
+        if path.is_file():
+            existing = self.artifacts._read_json(path)
+            expected = existing.get("expected_host_fingerprint")
+            if expected is not None:
+                if not isinstance(expected, Mapping) or not isinstance(
+                    actual_host_fingerprint, Mapping
+                ):
+                    raise PilotError(f"call {call_id} has incomplete host provenance")
+                if dict(expected) != dict(actual_host_fingerprint):
+                    raise PilotError(f"call {call_id} returned from a different host binding")
         return self._transition_call(
             call_id,
             CallStatus.DISPATCHED,

@@ -10,10 +10,13 @@ inspect or alter developmental state and it does not make provider calls.
 from __future__ import annotations
 
 import json
+from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from ..development.recovery import verify_replay
+from ..state.policy import PolicyError, PolicyService
 from .pilot import CallStatus
 
 
@@ -74,6 +77,7 @@ def audit_pilot_run(
     pilot: Any,
     schedule: Any,
     *,
+    subjects: Mapping[int, Any] | None = None,
     status: str,
     development_completed: int,
     extractions_valid: int,
@@ -143,6 +147,123 @@ def audit_pilot_run(
         for repetition in range(schedule.evaluation_repetitions)
     }
 
+    def _coordinate(kind: str, slot: int, item: Any, attempt: int | None = None) -> dict[str, Any]:
+        method = getattr(schedule, f"{kind}_coordinate", None)
+        if callable(method):
+            if kind == "extraction":
+                return dict(method(slot, item, attempt=int(attempt or 0)))
+            if kind == "evaluation":
+                raise AssertionError("evaluation coordinates require a repetition")
+            return dict(method(slot, item))
+        if kind == "extraction":
+            return {"subject": slot, "episode": int(item.ordinal), "attempt": int(attempt or 0)}
+        return {"subject": slot, "episode": int(item.ordinal)}
+
+    expected_coordinates: dict[tuple[str, str], set[str]] = {}
+
+    def _encoded(value: Any) -> str:
+        return json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+
+    for slot in schedule.subject_slots:
+        for episode in schedule.episodes:
+            development_id = f"development-s{slot}-e{episode.ordinal}"
+            expected_coordinates[("development-response", development_id)] = {
+                _encoded(_coordinate("development", slot, episode))
+            }
+            assessment_id = f"assessment-s{slot}-e{episode.ordinal}"
+            expected_coordinates[("assessor", assessment_id)] = {
+                _encoded(_coordinate("assessment", slot, episode))
+            }
+            extraction_id = f"extraction-s{slot}-e{episode.ordinal}"
+            expected_coordinates[("development-extraction", extraction_id)] = {
+                _encoded(_coordinate("extraction", slot, episode, attempt=0)),
+                _encoded(_coordinate("extraction", slot, episode, attempt=1)),
+            }
+        for probe in schedule.probes:
+            for repetition in range(schedule.evaluation_repetitions):
+                evaluation_id = f"evaluation-s{slot}-p{probe.ordinal}-r{repetition}"
+                method = getattr(schedule, "evaluation_coordinate", None)
+                coordinate = (
+                    dict(method(slot, probe, repetition))
+                    if callable(method)
+                    else {"subject": slot, "probe": int(probe.ordinal), "repetition": repetition}
+                )
+                expected_coordinates[("evaluation", evaluation_id)] = {_encoded(coordinate)}
+
+    coordinate_failures: list[dict[str, Any]] = []
+    known_extraction_ids = {
+        call_id for role, call_id in expected_coordinates if role == "development-extraction"
+    }
+
+    def _is_extraction_coordinate(call_id: Any) -> bool:
+        return isinstance(call_id, str) and any(
+            call_id == expected_id
+            or call_id.startswith(f"{expected_id}-repair")
+            or call_id.startswith(f"{expected_id}-recovery-")
+            for expected_id in known_extraction_ids
+        )
+
+    for item in calls:
+        role = str(item.get("role"))
+        call_id = str(item.get("call_id"))
+        coordinate = item.get("coordinate")
+        encoded = _encoded(coordinate) if isinstance(coordinate, Mapping) else None
+        allowed: set[str] | None = expected_coordinates.get((role, call_id))
+        if allowed is None and role == "development-extraction":
+            # Recovery calls carry a fixed suffix but retain the same
+            # schedule coordinate.  They are bounded alternatives to the
+            # base attempt, never new schedule coordinates.
+            base = next(
+                (
+                    expected_id
+                    for expected_role, expected_id in expected_coordinates
+                    if expected_role == role
+                    and (
+                        call_id == expected_id
+                        or call_id.startswith(f"{expected_id}-repair")
+                        or call_id.startswith(f"{expected_id}-recovery-")
+                    )
+                ),
+                None,
+            )
+            if base is not None:
+                allowed = expected_coordinates[(role, base)]
+        if role == "assessor-qualification":
+            allowed = {_encoded({"case": f"Q{ordinal}"}) for ordinal in range(1, 4)}
+        elif role == "evidence-reviewer":
+            extraction_call = (
+                coordinate.get("extraction_call")
+                if isinstance(coordinate, Mapping)
+                else None
+            )
+            evidence_index = (
+                coordinate.get("evidence_index")
+                if isinstance(coordinate, Mapping)
+                else None
+            )
+            allowed = None
+            if (
+                isinstance(coordinate, Mapping)
+                and coordinate.get("kind") == "semantic-evidence-reconciliation"
+                and isinstance(extraction_call, str)
+                and _is_extraction_coordinate(extraction_call)
+                and isinstance(evidence_index, int)
+                and not isinstance(evidence_index, bool)
+                and 0 <= evidence_index < 4
+            ):
+                allowed = {encoded or ""}
+        if allowed is None or encoded not in allowed:
+            coordinate_failures.append(
+                {"call_id": call_id, "role": role, "coordinate": coordinate}
+            )
+    checks.append(
+        _check(
+            "call-coordinates",
+            not coordinate_failures,
+            unexpected=coordinate_failures,
+        )
+    )
+
     returned = [item for item in calls if item.get("status") == CallStatus.RETURNED.value]
     pending = [
         item
@@ -188,7 +309,8 @@ def audit_pilot_run(
         _check(
             "development-coordinates",
             expected_development <= development_ids
-            and all(item in development_ids for item in expected_development),
+            and all(item in development_ids for item in expected_development)
+            and development_ids <= expected_development,
             expected=len(expected_development),
             observed=len(expected_development & development_ids),
         )
@@ -204,17 +326,72 @@ def audit_pilot_run(
     checks.append(
         _check(
             "evaluation-coordinates",
-            expected_evaluation <= evaluation_ids,
+            expected_evaluation <= evaluation_ids and evaluation_ids <= expected_evaluation,
             expected=len(expected_evaluation),
             observed=len(expected_evaluation & evaluation_ids),
         )
     )
 
-    host_complete = all(
-        isinstance(item.get("actual_host_fingerprint"), dict)
-        for item in returned
+    host_failures: list[dict[str, Any]] = []
+    envelope = status_value.get("envelope") if isinstance(status_value, Mapping) else None
+    role_bindings = envelope.get("role_bindings") if isinstance(envelope, Mapping) else None
+
+    def _binding_role(role: str) -> str:
+        if role in {"development-response", "development-extraction"}:
+            if isinstance(role_bindings, Mapping) and role in role_bindings:
+                return role
+            return "developing"
+        if role in {"assessor", "assessor-qualification", "evaluation-assessor"}:
+            return "assessor"
+        return role
+
+    for item in returned:
+        expected = item.get("expected_host_fingerprint")
+        actual = item.get("actual_host_fingerprint")
+        configured = None
+        binding = (
+            role_bindings.get(_binding_role(str(item.get("role"))))
+            if isinstance(role_bindings, Mapping)
+            else None
+        )
+        if isinstance(binding, Mapping):
+            configured = binding.get("fingerprint")
+        if isinstance(role_bindings, Mapping) and (
+            not isinstance(expected, Mapping) or not isinstance(actual, Mapping)
+        ):
+            host_failures.append(
+                {"call_id": item.get("call_id"), "reason": "missing host fingerprint"}
+            )
+        elif (
+            isinstance(expected, Mapping)
+            and isinstance(actual, Mapping)
+            and dict(expected) != dict(actual)
+        ):
+            host_failures.append(
+                {
+                    "call_id": item.get("call_id"),
+                    "reason": "returned host differs from reserved host",
+                }
+            )
+        elif (
+            isinstance(configured, Mapping)
+            and isinstance(actual, Mapping)
+            and dict(configured) != dict(actual)
+        ):
+            host_failures.append(
+                {
+                    "call_id": item.get("call_id"),
+                    "reason": "returned host differs from role binding",
+                }
+            )
+    checks.append(
+        _check(
+            "host-provenance",
+            not host_failures,
+            failures=host_failures,
+            returned=len(returned),
+        )
     )
-    checks.append(_check("host-provenance", host_complete, returned=len(returned)))
 
     progress = status_value.get("study_progress") if isinstance(status_value, dict) else None
     progress_ok = (
@@ -300,6 +477,108 @@ def audit_pilot_run(
             isolation_failures.append(path.name)
     checks.append(
         _check("evaluation-isolation-receipts", isolation_ok, failures=isolation_failures)
+    )
+
+    replay_results: list[dict[str, Any]] = []
+    replay_failures: list[str] = []
+    subject_bindings = (
+        status_value.get("subject_bindings")
+        if isinstance(status_value, Mapping)
+        else None
+    )
+    if not isinstance(subjects, Mapping) or not isinstance(subject_bindings, list):
+        replay_failures.append("prepared subject/replay evidence is unavailable")
+    else:
+        snapshots = {
+            item.get("slot"): item
+            for item in subject_bindings
+            if isinstance(item, Mapping) and isinstance(item.get("slot"), int)
+        }
+        prepared_subjects = pilot.bindings.get("subjects") if isinstance(
+            getattr(pilot, "bindings", None), Mapping
+        ) else None
+        if (
+            set(snapshots) != set(schedule.subject_slots)
+            or set(subjects) != set(schedule.subject_slots)
+            or not isinstance(prepared_subjects, list)
+        ):
+            replay_failures.append("subject slots do not match the prepared schedule")
+        for slot in schedule.subject_slots:
+            snapshot = snapshots.get(slot)
+            subject = subjects.get(slot)
+            if not isinstance(snapshot, Mapping) or subject is None:
+                replay_failures.append(f"missing subject binding for slot {slot}")
+                continue
+            prepared_matches = [
+                item
+                for item in (prepared_subjects or [])
+                if isinstance(item, Mapping) and item.get("slot") == slot
+            ]
+            if (
+                len(prepared_matches) != 1
+                or snapshot.get("prepared_binding") != dict(prepared_matches[0])
+            ):
+                replay_failures.append(f"prepared subject binding mismatch for slot {slot}")
+            store = getattr(subject, "store", None)
+            try:
+                if store is not None and hasattr(store, "connection"):
+                    replay_value = verify_replay(store)
+                else:
+                    replay_raw = getattr(subject, "replay_evidence", None)
+                    if not isinstance(replay_raw, Mapping):
+                        raise ValueError("replay evidence is unavailable")
+                    replay_value = dict(replay_raw)
+                replay_results.append({"slot": slot, **replay_value})
+                if replay_value.get("matches_materialized") is not True:
+                    replay_failures.append(
+                        "learner replay does not match materialized state "
+                        f"for slot {slot}"
+                    )
+                authority_evidence = getattr(subject, "authority_evidence", {})
+                if store is not None and hasattr(store, "current"):
+                    current = dict(store.current())
+                    policy = PolicyService(
+                        store, str(getattr(subject, "instance_id", ""))
+                    ).current().to_dict()
+                elif isinstance(authority_evidence, Mapping):
+                    current = dict(authority_evidence.get("current", {}))
+                    policy = dict(authority_evidence.get("permission", {}))
+                else:
+                    current, policy = {}, {}
+                prepared_current = snapshot.get("current")
+                prepared_policy = snapshot.get("permission")
+                if not isinstance(prepared_current, Mapping) or not isinstance(
+                    prepared_policy, Mapping
+                ):
+                    raise ValueError("prepared subject authority snapshot is incomplete")
+                if str(current.get("active_instance_id")) != str(snapshot.get("instance_id")):
+                    replay_failures.append(f"final subject identity differs for slot {slot}")
+                if str(policy.get("policy_id")) != str(prepared_policy.get("policy_id")):
+                    replay_failures.append(f"policy identity changed for slot {slot}")
+                if str(policy.get("scope_id")) != str(prepared_policy.get("scope_id")):
+                    replay_failures.append(f"policy scope changed for slot {slot}")
+                if (
+                    policy.get("authority_available") is not True
+                    or prepared_policy.get("authority_available") is not True
+                ):
+                    replay_failures.append(f"permission authority unavailable for slot {slot}")
+                for permission in ("storage", "interpret", "learn"):
+                    if (
+                        prepared_policy.get(permission) is True
+                        and policy.get(permission) is not True
+                    ):
+                        replay_failures.append(
+                            f"prepared {permission} permission was lost for slot {slot}"
+                        )
+            except (PolicyError, OSError, TypeError, ValueError, KeyError) as exc:
+                replay_failures.append(f"slot {slot}: {type(exc).__name__}: {exc}")
+    checks.append(
+        _check(
+            "subject-authority-and-replay",
+            not replay_failures,
+            failures=replay_failures,
+            replay=replay_results,
+        )
     )
 
     complete = status == "COMPLETE"

@@ -672,6 +672,7 @@ class PilotStudy:
         engineering_audit = audit_pilot_run(
             self.pilot,
             self.schedule,
+            subjects=self.runtime.subjects,
             status=status,
             development_completed=development,
             extractions_valid=extractions,
@@ -711,6 +712,9 @@ class PilotStudy:
         """
 
         state = self.pilot.status()
+        capture = getattr(self.pilot, "capture_subject_bindings", None)
+        if callable(capture):
+            capture(self.runtime.subjects)
         if state["status"] == PilotStatus.QUALIFIED.value:
             self.pilot.begin_pilot()
         elif state["status"] == PilotStatus.PAUSED.value:
