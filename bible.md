@@ -1188,3 +1188,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 engineering audit closure hardening
 
 - Extended the pilot ledger with an immutable prepared subject/permission/authority/host snapshot and made `PilotStudy` capture it before developmental execution. The engineering audit now consumes that snapshot and final lineage state, verifies exact learner replay against materialized state, rejects unexpected schedule coordinates, and compares returned host fingerprints with both reserved and configured role bindings. Returned-call persistence also fails closed on host drift. Added focused replay, authority-snapshot, coordinate, and host-drift regressions; no provider calls or scientific acceptance criteria changed.
+
+## 2026-09-26 P2.3 engineering audit closure receipt
+
+- Published `docs/receipts/MNEME_P2.3_Engineering_Audit_Closure_Hardening_Receipt_20260926.md` for `ea1c918`. The receipt records 477 pytest, Ruff, strict mypy, wheel/fresh-install smoke, `git diff --check`, and remote CI `36212530005`; no provider calls occurred. P2.3 remains waiting on separated-support/consolidation adequacy and cumulative accounting review.
