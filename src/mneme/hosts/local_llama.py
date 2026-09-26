@@ -40,7 +40,13 @@ class LocalLlamaHost:
 
     def capabilities(self) -> HostCapabilities:
         return HostCapabilities(
-            frozenset({Capability.TEXT_GENERATION, Capability.LOCAL_WEIGHTS})
+            frozenset(
+                {
+                    Capability.TEXT_GENERATION,
+                    Capability.LOCAL_WEIGHTS,
+                    Capability.SEED_CONTROL,
+                }
+            )
         )
 
     def fingerprint(self) -> HostFingerprint:
@@ -85,9 +91,10 @@ class LocalLlamaHost:
             self.gpu_layers,
             "--reasoning",
             self.reasoning,
-            "-p",
-            prompt,
         ]
+        if request.seed is not None:
+            command.extend(("--seed", str(request.seed)))
+        command.extend(("-p", prompt))
         started = time.perf_counter()
         try:
             completed = subprocess.run(

@@ -100,7 +100,9 @@ class _RemoteBase:
 
 class RemoteLlamaHost(_RemoteBase):
     def capabilities(self) -> HostCapabilities:
-        return HostCapabilities(frozenset({Capability.TEXT_GENERATION, Capability.LOCAL_WEIGHTS}))
+        return HostCapabilities(
+            frozenset({Capability.TEXT_GENERATION, Capability.LOCAL_WEIGHTS, Capability.SEED_CONTROL})
+        )
 
     def fingerprint(self) -> HostFingerprint:
         return _fp(
@@ -117,7 +119,9 @@ class RemoteLlamaHost(_RemoteBase):
             "cat > /tmp/mneme-cross-thread-prompt && "
             f"{MSI_LLAMA} -m {MSI_MODEL} -st --no-display-prompt -n "
             f"{int(request.parameters.get('max_new_tokens', 384))} -c 4096 -ngl all "
-            f"--reasoning off -f /tmp/mneme-cross-thread-prompt"
+            f"--reasoning off "
+            + (f"--seed {int(request.seed)} " if request.seed is not None else "")
+            + "-f /tmp/mneme-cross-thread-prompt"
         )
         started = time.perf_counter()
         result = self._ssh(command, prompt, 900.0)
