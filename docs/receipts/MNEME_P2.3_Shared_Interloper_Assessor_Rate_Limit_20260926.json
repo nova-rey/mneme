@@ -1,0 +1,37 @@
+{
+  "experiment": "p2.3-valid-three-thread-shared-interloper-ab",
+  "run_id": "p23-shared-interloper-ab-20260926-r3",
+  "disposition": "INVALID_PROVIDER_RATE_LIMIT",
+  "historical_runs_unchanged": true,
+  "interloper": {
+    "model_id": "Qwen/Qwen3-30B-A3B",
+    "qualification": {
+      "status": "PASS",
+      "calls": 3,
+      "nonempty_returns": 3,
+      "finish_reasons": ["stop", "stop", "stop"],
+      "output_tokens": 48,
+      "total_tokens": 1077,
+      "estimated_cost_usd": 0.00014748
+    }
+  },
+  "assessor": {
+    "model_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+    "failed_coordinate": "assessment-M-A-t0",
+    "provider": "DeepInfra",
+    "status": "UNCERTAIN",
+    "provider_error": "HTTP 429",
+    "response_returned": false,
+    "usage": "unknown"
+  },
+  "completed_local_coordinates": [
+    "development-M-A-t0",
+    "extraction-M-A-t0"
+  ],
+  "downstream_coordinates_dispatched": 0,
+  "treatment_exposure": "not_reached",
+  "behavioral_result": "not_interpretable",
+  "credential_or_interloper_blocker": false,
+  "assessor_substitution": false,
+  "private_workspace": "/tmp/mneme-p23-shared-ab-20260926-r3"
+}

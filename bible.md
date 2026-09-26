@@ -1301,3 +1301,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 shared-Interloper smaller-Qwen selection
 
 - Selected the exact live catalog model `Qwen/Qwen3-30B-A3B` for the Interloper role after the prior 235B rate-limit stops. A non-thinking health probe returned HTTP 200 with usable participant text; the existing 235B assessor role remains unchanged. Model-selection and probe evidence is published in `docs/receipts/MNEME_P2.3_Shared_Interloper_Model_Substitution_20260926.md` and `.json`.
+
+## 2026-09-26 shared-Interloper smaller-model run stopped at assessor rate limit
+
+The selected smaller Qwen Interloper `Qwen/Qwen3-30B-A3B` passed its fixed three-call qualification and returned nonempty participant text. The first production assessment using the unchanged Qwen3-235B assessor then received HTTP 429 from DeepInfra at `assessment-M-A-t0`; local development and specialist extraction had already returned. Preserved run `p23-shared-interloper-ab-20260926-r3` is `INVALID_PROVIDER_RATE_LIMIT`, with no treatment exposure or behavioral result. The assessor role was not silently substituted, and prior rate-limit receipts remain unchanged. Sanitized evidence is published in `docs/receipts/MNEME_P2.3_Shared_Interloper_Assessor_Rate_Limit_20260926.md` and `.json`.
