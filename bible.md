@@ -1440,3 +1440,17 @@ Frozen the new prospective C/R/F0 run contract in
 Interloper trajectory, local Gemma/GLiNER/DeBERTa development, and frozen C,
 existing discrete R, and deterministic graph-pressure F0 readouts. Historical
 r6/r7 evidence is immutable; no provider calls were made by the preflight.
+
+## 2026-09-26 F0 C/R/F0 run terminal disposition
+
+The fresh `p23-f0-shared-interloper-20260926` run completed 57 returned calls
+with no invalid provider/runtime events. Its machine-readable bundle is
+published under `docs/receipts/MNEME_P2_F0_C_R_F0_Evidence_20260926/`. Local
+Gemma/GLiNER2.5/DeBERTa development admitted one supported
+`Drip Irrigation -> causes -> Slow Leak` edge; F0 was enabled and evaluated at
+four frozen probes, but all had zero pressure contributors and R delivered no
+route note. C/R/F0 outputs were identical under paired seeds. The derived
+analysis records `VALID_ZERO_FIELD_EXPOSURE_INCONCLUSIVE`, not a behavioral
+negative: the field ran correctly but supplied no nonzero pressure, and the
+single-edge state was insufficient for the planned richly developed-field
+comparison. Historical r6/r7 remain unchanged.

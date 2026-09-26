@@ -484,3 +484,4 @@ current specification identifies it as historical context.
 
 - The bounded F0 graph-pressure implementation is recorded in [the F0 offline implementation receipt](receipts/MNEME_P2_F0_Implementation_20260926.md); live developmental and C/R/F0 measurement remain pending.
 - The frozen C/R/F0 prospective schedule is recorded in [the F0 preflight receipt](receipts/MNEME_P2_F0_C_R_F0_Preflight_20260926.md) and is executed only by the new runner; historical r6/r7 remain unchanged.
+- The first F0 C/R/F0 prospective run is published in [the complete evidence bundle](receipts/MNEME_P2_F0_C_R_F0_Evidence_20260926/) with the derived [analysis receipt](receipts/MNEME_P2_F0_C_R_F0_Analysis_20260926.md): F0 executed but all four neutral probes had zero pressure, so the result is valid zero-field exposure/inconclusive rather than a behavioral negative.
