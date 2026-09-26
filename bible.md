@@ -1216,3 +1216,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 budget and accounting current audit
 
 - Published the current factual accounting reconciliation: 456 attempted/returned provider calls and 455 persisted results, including one return lost before local persistence. The arithmetic is exact; the 57-call overage above the recorded 399-call operational cap remains an authority-review consequence. No provider calls occurred and P2.3 remains WAITING.
+
+## 2026-09-26 P2.3 budget-audit candidate reconciliation
+
+- Advanced the P2.3 candidate pointer to `8d00a2f`, which includes the factual 456/455 budget-accounting audit. The parent package remains WAITING on scientific adequacy and authority review; no provider calls or historical evidence changes occurred.
