@@ -1483,3 +1483,4 @@ reviewed real-corpus gate recognized 5/5 supported cases with zero false
 support and rejected support for all 8 ambiguous cases. Historical F0 outputs
 and dispositions remain unchanged.
 * 2026-09-26: F0 correction integration prepared at current HEAD: real-corpus DeBERTa v2 adapter and background/contextual F0 v2 are validated offline; the extended six-turn-per-thread C/R/F0 runner is frozen for the next prospective run. Historical F0/r6/r7 evidence remains unchanged.
+* 2026-09-26: The first extended F0 prospective dispatch passed local assessor qualification but stopped before the first Interloper turn because the process lacked inherited DEEPINFRA_TOKEN. The request/result reservation is preserved as INVALID_PROVIDER_CONFIGURATION; no developmental or readout evidence was accepted. A fresh credential-loaded run is required.
