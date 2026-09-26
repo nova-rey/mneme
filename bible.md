@@ -1156,3 +1156,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 Phase Two migration and integration regressions
 
 - Added a schema 10→11 migration regression with backup and foreign-key checks, plus an end-to-end FakeHost supplement assertion proving accepted turns publish one arc, one member, and open/close events. These tests strengthen the already-pushed episodic integration without changing learner semantics or historical evidence; no provider calls were made.
+
+## 2026-09-26 Phase Two regression publication
+
+- Published `MNEME_P2.3_Migration_And_Arc_Regression_Receipt_20260926.md` for `e21b4f2`: 461 pytest, Ruff, strict mypy, isolated wheel/import smoke, queue validation, and CI `36210057361` passed. P2.3 remains waiting on the existing adequacy/accounting review; no provider calls, release tag, or Phase Three work occurred.
