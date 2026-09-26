@@ -1208,3 +1208,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 run-bound engineering audit
 
 - Applied the current durable engineering audit read-only to the preserved q→r continuation artifacts. The strong single-run audit did not pass because developmental, extraction, assessment, and evaluation artifacts are split across continuation runs and the historical execution predates prepared subject/replay snapshots. Published `docs/receipts/MNEME_P2.3_Run_Bound_Engineering_Audit_20260926.md`; historical evidence, `COMPLETED_INADEQUATE` disposition, and queue WAITING state remain unchanged. No provider calls occurred.
+
+## 2026-09-26 P2.3 run-bound audit candidate reconciliation
+
+- Advanced the P2.3 candidate pointer to `3c8eb16`, which publishes the read-only run-bound q→r engineering-audit receipt and machine-readable evidence. The candidate remains WAITING on the existing adequacy/accounting review; no historical artifacts or provider results were changed and no provider calls occurred.
