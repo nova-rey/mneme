@@ -1,0 +1,20 @@
+{
+  "date": "2026-09-26",
+  "status": "QUALIFIED_FOR_PROSPECTIVE_P23_ASSESSOR_USE",
+  "historical_qwen_receipts_unchanged": true,
+  "adapter_version": "p2-local-nli-deberta-v3-xsmall-v1",
+  "model_id": "cross-encoder/nli-deberta-v3-xsmall",
+  "model_revision": "a150876415327c80daeff35ca6f68f5ed8cf5c24",
+  "config_sha256": "8d9f07bf7ba54a6fc3b1962483056f94c39dcf188db4cf61843e1c88f94b2342",
+  "snapshot_manifest_sha256": "01935707184d31d6f6862e320a0b20d8f39036e12962ed46055ffebdc40524ea",
+  "runtime": {"torch": "2.14.0+cpu", "transformers": "4.57.6", "device": "cpu"},
+  "host": {"hostname": "brokeass-msi", "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU", "vram_mib": 6144, "driver": "595.91.07", "mem_kib": 3368780},
+  "windowing": {"max_chars": 1800, "overlap_chars": 200, "tokenizer_max_length": 512},
+  "thresholds": {"entailment_min": 0.6, "contradiction_min": 0.6, "margin_min": 0.1},
+  "qualification": {"Q1": "PASS", "Q2": "PASS", "Q3": "PASS", "cases": 3},
+  "held_out": {"items": 10, "supported": {"correct": 4, "total": 4}, "contradicted": {"correct": 3, "total": 3}, "unsupported": {"correct": 2, "total": 2}, "absent": {"correct": 1, "total": 1}, "unknown": {"correct": 1, "total": 1}, "false_supported": 0, "false_contradicted": 0},
+  "performance": {"pairs": 14, "elapsed_seconds": 4.423, "pairs_per_second": 3.165, "qualification_seconds": {"Q1": 13.909, "Q2": 10.224, "Q3": 3.453}},
+  "provider_calls": 0,
+  "deepinfra_calls": 0,
+  "behavioral_ab_result": "not_run"
+}

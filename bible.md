@@ -1317,3 +1317,15 @@ The selected smaller Qwen Interloper `Qwen/Qwen3-30B-A3B` passed its fixed three
 ## 2026-09-26 local-assessor adapter pinning
 
 - Added the CPU-first `cross-encoder/nli-deberta-v3-xsmall` adapter at immutable Hugging Face revision `a150876415327c80daeff35ca6f68f5ed8cf5c24`, with deterministic source windows, score aggregation, coverage handling, and the existing v6 result contract. Recorded the config digest and offline contract receipt; actual MSI model benchmarking remains a separate qualification gate.
+
+## 2026-09-26 local specialist assessor qualification
+
+The pinned CPU-only `cross-encoder/nli-deberta-v3-xsmall` adapter passed the
+production-shaped Q1/Q2/Q3 semantic qualification and a separate ten-item
+held-out set on the authenticated MSI host `brokeass-msi`. The adapter preserves
+the existing `p2-assessor-v6` contract while deterministic MNEME code owns
+coverage, evidence, correspondence, and learner boundaries. The qualification
+used zero DeepInfra calls; historical Qwen/Qwen3-235B assessor rate-limit
+receipts remain unchanged. Evidence is in
+`docs/receipts/MNEME_P2.3_Local_NLI_Assessor_Qualification_20260926.md` and
+`.json`.

@@ -33,6 +33,7 @@ from mneme.experiments.shared_interloper import (
     treatment_exposure_gate,
 )
 from mneme.hosts.deepinfra import DeepInfraQwenAssessorHost
+from mneme.hosts.local_nli import LocalNliAssessorHost, NliScores
 from mneme.memory.interpretation import MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION
 from mneme.state.contracts import StoragePermissions
 from mneme.state.snapshots import create_checkpoint
@@ -40,7 +41,7 @@ from mneme.state.storage import SQLiteStore
 
 # The repository's tools directory is intentionally not a Python package.
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from tools.run_p23_cross_thread import RemoteGlinerHost, RemoteLlamaHost
+from tools.run_p23_cross_thread import MSI_PYTHON, RemoteGlinerHost, RemoteLlamaHost, _RemoteBase
 
 ROOT = Path(os.environ.get("MNEME_SHARED_AB_LAB", "/tmp/mneme-p23-shared-ab-20260926"))
 RUN_ID = os.environ.get("MNEME_SHARED_AB_RUN_ID", "p23-shared-interloper-ab-20260926")
@@ -48,6 +49,61 @@ EXPERIMENT = "p2.3-valid-three-thread-shared-interloper-ab"
 REVISION = 2
 PLANNED_CALLS = 100
 MAX_OUTPUT_TOKENS = 120_000
+REMOTE_NLI_HELPER = "/home/rey/mneme-tools/mneme_nli_scores.py"
+
+
+class RemoteNliBackend(_RemoteBase):
+    """Proxy score-only NLI inference to the MSI CPU environment."""
+
+    model_id = "cross-encoder/nli-deberta-v3-xsmall"
+    model_revision = "a150876415327c80daeff35ca6f68f5ed8cf5c24"
+    runtime_version = "torch-2.14.0+cpu/transformers-4.57.6"
+
+    def __init__(self) -> None:
+        self._deployed = False
+
+    def ensure_helper(self) -> None:
+        if self._deployed:
+            return
+        script = (Path(__file__).with_name("remote_nli_scores.py")).read_text(encoding="utf-8")
+        result = self._ssh(
+            f"mkdir -p $(dirname {REMOTE_NLI_HELPER}) && cat > {REMOTE_NLI_HELPER}",
+            script,
+            30.0,
+        )
+        if result.returncode != 0:
+            raise RuntimeError(f"failed to deploy local NLI helper: {result.stderr[-500:]}")
+        self._deployed = True
+
+    def score_pairs(self, pairs: Any) -> tuple[NliScores, ...]:
+        self.ensure_helper()
+        request = json.dumps(
+            {
+                "model_id": self.model_id,
+                "revision": self.model_revision,
+                "pairs": [[str(premise), str(hypothesis)] for premise, hypothesis in pairs],
+                "batch_size": int(os.environ.get("MNEME_NLI_BATCH_SIZE", "8")),
+                "max_length": int(os.environ.get("MNEME_NLI_MAX_LENGTH", "512")),
+            },
+            ensure_ascii=False,
+        )
+        result = self._ssh(
+            f"{MSI_PYTHON} {REMOTE_NLI_HELPER}",
+            request,
+            300.0,
+        )
+        if result.returncode != 0:
+            raise RuntimeError(f"local NLI inference failed: {result.stderr[-1000:]}")
+        lines = [line for line in result.stdout.splitlines() if line.strip()]
+        if not lines:
+            raise RuntimeError("local NLI helper returned no JSON")
+        payload = json.loads(lines[-1])
+        scores = payload.get("scores")
+        if payload.get("model_id") != self.model_id or payload.get("revision") != self.model_revision:
+            raise RuntimeError("local NLI helper returned an unexpected model binding")
+        if not isinstance(scores, list) or len(scores) != len(pairs):
+            raise RuntimeError("local NLI helper returned an unexpected score count")
+        return tuple(NliScores(float(row[0]), float(row[1]), float(row[2])) for row in scores)
 
 
 def _load_assessor_host() -> Any:
@@ -64,19 +120,8 @@ def _load_assessor_host() -> Any:
         "mneme.hosts.local_nli:LocalNliAssessorHost",
     )
     if spec == "mneme.hosts.local_nli:LocalNliAssessorHost":
-        from mneme.hosts.local_nli import LocalNliAssessorHost, TransformersNliBackend
-
-        backend = TransformersNliBackend(
-            model_id=os.environ.get("MNEME_NLI_MODEL_ID", "cross-encoder/nli-deberta-v3-xsmall"),
-            revision=os.environ.get(
-                "MNEME_NLI_MODEL_REVISION",
-                "a150876415327c80daeff35ca6f68f5ed8cf5c24",
-            ),
-            device="cpu",
-            batch_size=int(os.environ.get("MNEME_NLI_BATCH_SIZE", "8")),
-            max_length=int(os.environ.get("MNEME_NLI_MAX_LENGTH", "512")),
-            local_files_only=os.environ.get("MNEME_NLI_LOCAL_FILES_ONLY", "0") == "1",
-        )
+        backend = RemoteNliBackend()
+        backend.ensure_helper()
         return LocalNliAssessorHost(backend)
     module_name, separator, attribute = spec.partition(":")
     if not separator or not module_name or not attribute:
@@ -86,7 +131,11 @@ def _load_assessor_host() -> Any:
         )
     import importlib
 
-    factory = getattr(importlib.import_module(module_name), attribute, None)
+    try:
+        module = importlib.import_module(module_name)
+    except (ImportError, ModuleNotFoundError) as exc:
+        raise RuntimeError(f"configured local assessor is unavailable: {spec}") from exc
+    factory = getattr(module, attribute, None)
     if factory is None:
         raise RuntimeError(f"configured local assessor is unavailable: {spec}")
     if hasattr(factory, "from_environment"):

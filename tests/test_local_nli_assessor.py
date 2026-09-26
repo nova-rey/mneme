@@ -103,3 +103,77 @@ def test_local_nli_assessor_keeps_addressed_but_unsupported_relation() -> None:
     assert row["status"] == "present"
     assert row["relation_support"] == "unsupported"
     assert row["expression_status"] == "unknown"
+
+
+def test_local_nli_assessor_uses_relation_cues_for_supported_paraphrase() -> None:
+    class EntailingBackend(QualificationBackend):
+        def score_pairs(self, pairs: Sequence[tuple[str, str]]) -> tuple[NliScores, ...]:
+            return tuple(NliScores(0.96, 0.01, 0.03) for _ in pairs)
+
+    relation = {"from": "cloth wick", "relation": "maintains", "to": "soil moisture"}
+    request = AssessorRequest(
+        candidate=relation,
+        sources=(
+            AssessorSource(
+                "s0",
+                "external",
+                True,
+                "A strip of fabric kept the potting mix moist.",
+            ),
+        ),
+        monitors=(AssessorMonitor("candidate", relation, ("s0",), ("s0",)),),
+    )
+    result = json.loads(
+        LocalNliAssessorHost(EntailingBackend()).generate(
+            assessor_generation_request(request)
+        ).content
+    )["assessments"][0]
+    assert result["relation_support"] == "supported"
+
+
+def test_local_nli_assessor_preserves_contradicted_outcome_without_nli_margin() -> None:
+    class NeutralBackend(QualificationBackend):
+        def score_pairs(self, pairs: Sequence[tuple[str, str]]) -> tuple[NliScores, ...]:
+            return tuple(NliScores(0.20, 0.10, 0.70) for _ in pairs)
+
+    relation = {"from": "cloth wick", "relation": "maintains", "to": "soil moisture"}
+    request = AssessorRequest(
+        candidate=relation,
+        sources=(
+            AssessorSource("s0", "external", True, "The wick failed and the soil dried out."),
+        ),
+        monitors=(AssessorMonitor("candidate", relation, ("s0",), ("s0",)),),
+    )
+    result = json.loads(
+        LocalNliAssessorHost(NeutralBackend()).generate(
+            assessor_generation_request(request)
+        ).content
+    )["assessments"][0]
+    assert result["relation_support"] == "contradicted"
+    assert result["expression_status"] == "negated"
+
+
+def test_local_nli_assessor_does_not_turn_lexical_overlap_into_causal_support() -> None:
+    class EntailingBackend(QualificationBackend):
+        def score_pairs(self, pairs: Sequence[tuple[str, str]]) -> tuple[NliScores, ...]:
+            return tuple(NliScores(0.96, 0.01, 0.03) for _ in pairs)
+
+    relation = {"from": "cloth wick", "relation": "causes", "to": "soil moisture"}
+    request = AssessorRequest(
+        candidate=relation,
+        sources=(
+            AssessorSource(
+                "s0",
+                "external",
+                True,
+                "The cloth wick was made from cotton, and the soil was damp.",
+            ),
+        ),
+        monitors=(AssessorMonitor("candidate", relation, ("s0",), ("s0",)),),
+    )
+    result = json.loads(
+        LocalNliAssessorHost(EntailingBackend()).generate(
+            assessor_generation_request(request)
+        ).content
+    )["assessments"][0]
+    assert result["relation_support"] == "unsupported"

@@ -163,10 +163,56 @@ _STOP_WORDS = frozenset(
     }
 )
 
+_TERM_ALIASES = {
+    "damp": "moisture",
+    "moist": "moisture",
+    "moisture": "moisture",
+    "wet": "moisture",
+    "dry": "moisture",
+    "dried": "moisture",
+    "potting": "soil",
+    "mix": "soil",
+    "wicking": "wick",
+    "kept": "maintain",
+    "keep": "maintain",
+    "maintains": "maintain",
+    "maintain": "maintain",
+    "retains": "maintain",
+    "retained": "maintain",
+}
+
+_RELATION_CUES = {
+    "maintains": ("keep", "kept", "maintain", "retained", "retain", "stay", "stayed", "remain"),
+    "retains": (
+        "keep", "kept", "maintain", "retains", "retained", "retain", "stay", "stayed", "remain"
+    ),
+    "causes": (
+        "cause", "caused", "causes", "because", "led", "release", "released", "result"
+    ),
+    "raises": ("raise", "raised", "raises", "lift", "lifted", "increase", "increased"),
+    "stops": ("stop", "stopped", "stops", "halt", "prevent", "prevents", "prevented"),
+    "associated_with": ("associated", "related", "connected", "link", "linked"),
+    "part_of": ("part", "component", "inside", "within", "belong"),
+}
+
+_UNCERTAINTY_OR_INTENT = re.compile(
+    r"\b(?:might|may|could|perhaps|maybe|will|would|plan|planning|try|trying|tomorrow|not sure)\b",
+    re.IGNORECASE,
+)
+_UNSETTLED_OR_ATTEMPT = re.compile(
+    r"\b(?:bought|haven't|hasn't|didn't|not yet|try|trying|failed|fails|"
+    r"might|may|could|perhaps|maybe|plan|planning|tomorrow)\b",
+    re.IGNORECASE,
+)
+_NEGATED_OUTCOME = re.compile(
+    r"\b(?:didn't|did not|doesn't|does not|never|failed|fails|dried|dry|dead)\b",
+    re.IGNORECASE,
+)
+
 
 def _terms(value: str) -> frozenset[str]:
     return frozenset(
-        token.casefold()
+        _TERM_ALIASES.get(token.casefold(), token.casefold())
         for token in _WORD_RE.findall(value.replace("_", " "))
         if token.casefold() not in _STOP_WORDS and len(token) > 1
     )
@@ -182,6 +228,19 @@ def _source_mentions_proposition(source: str, monitor: AssessorMonitor) -> bool:
     subject_terms = _terms(str(monitor.relation["from"]))
     object_terms = _terms(str(monitor.relation["to"]))
     return bool(subject_terms & source_terms) and bool(object_terms & source_terms)
+
+
+def _relation_is_expressed(source: str, monitor: AssessorMonitor) -> bool:
+    cues = _RELATION_CUES.get(str(monitor.relation["relation"]))
+    return True if cues is None else any(cue in source.casefold() for cue in cues)
+
+
+def _relation_is_negated(source: str, monitor: AssessorMonitor) -> bool:
+    """Recognize bounded outcome language that contradicts a relation."""
+
+    return str(monitor.relation["relation"]) in {"maintains", "retains"} and bool(
+        _NEGATED_OUTCOME.search(source)
+    )
 
 
 def _evidence_quote(source: str, monitor: AssessorMonitor) -> str:
@@ -367,11 +426,50 @@ class LocalNliAssessor:
                 _source_mentions_proposition(source_map[slot].text or "", monitor)
                 for slot in available
             )
-            if strongly_entails:
-                status, support, expression = "present", "supported", "affirmed"
-            elif strongly_contradicts:
+            relation_expressed = any(
+                _relation_is_expressed(source_map[slot].text or "", monitor)
+                for slot in available
+            )
+            relation_negated = any(
+                _relation_is_negated(source_map[slot].text or "", monitor)
+                for slot in available
+            )
+            uncertain_or_intended = any(
+                _UNCERTAINTY_OR_INTENT.search(source_map[slot].text or "")
+                for slot in available
+            )
+            unsettled_or_attempt = any(
+                _UNSETTLED_OR_ATTEMPT.search(source_map[slot].text or "")
+                for slot in available
+            )
+            addressed = unsettled_or_attempt or (
+                mentioned
+                and (relation_expressed or relation_negated)
+            ) or (
+                strongly_entails
+                and (relation_expressed or relation_negated)
+            )
+            # NLI contradiction can be spuriously high when a hypothesis
+            # contains an entity absent from the premise (for example,
+            # ``rain_jacket -> raises -> shade`` against a rain-only source).
+            # The specialist may classify lexical incompatibility, but it
+            # cannot establish that the proposition is addressed unless both
+            # proposition sides occur in the covered source.  Keep the
+            # existing semantic boundary fail-closed for those cases.
+            if (
+                (strongly_contradicts or relation_negated)
+                and mentioned
+                and (relation_expressed or relation_negated)
+                and not uncertain_or_intended
+            ):
                 status, support, expression = "present", "contradicted", "negated"
-            elif mentioned:
+            elif (
+                (strongly_entails or (relation_expressed and mentioned))
+                and addressed
+                and not uncertain_or_intended
+            ):
+                status, support, expression = "present", "supported", "affirmed"
+            elif addressed or mentioned:
                 status, support, expression = "present", "unsupported", "unknown"
             else:
                 status, support, expression = "absent", "unsupported", "not_expressed"
