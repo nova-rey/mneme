@@ -358,13 +358,13 @@ def main() -> int:
             traces.extend(_trace(subjects[slot].store, extraction.operation_id))
             records.append({"turn": turn, "chapter": chapter, "prompt": prompt, "partner": partner, "subject": response, "operation_id": development.operation.operation_id, "arc_id": arc.episode_id, "arc_initiation_role": arc.initiation_role, "interpretation": interpretation, "admitted": admitted})
             pairs.append((partner, response))
-            artifacts.publish_artifact("transcripts", f"{branch}-turn-{turn:02d}.json", records[-1])
-        artifacts.publish_artifact("arcs", f"{branch}-arc-plan.json", {"arcs": [arc.to_dict() for arc in sorted(set(arc_map.values()), key=lambda item: item.start_ordinal)]})
-        artifacts.publish_artifact("learner", f"{branch}-traces.json", {"traces": traces})
-        artifacts.publish_artifact("transcripts", f"{branch}-transcript.json", {"branch": branch, "records": records})
+            pilot.publish_artifact("transcripts", f"{branch}-turn-{turn:02d}.json", records[-1])
+        pilot.publish_artifact("arcs", f"{branch}-arc-plan.json", {"arcs": [arc.to_dict() for arc in sorted(set(arc_map.values()), key=lambda item: item.start_ordinal)]})
+        pilot.publish_artifact("learner", f"{branch}-traces.json", {"traces": traces})
+        pilot.publish_artifact("transcripts", f"{branch}-transcript.json", {"branch": branch, "records": records})
         summaries[branch] = {"records": records, "traces": traces, "consolidation": [trace for trace in traces if trace.get("last_consolidation_opportunity") is not None]}
     report = {"experiment": contract, "run_id": RUN_ID, "terminal_result": "DEMONSTRATED" if any(summaries[b]["consolidation"] for b in summaries) else "NOT_DEMONSTRATED", "branches": summaries, "accounting": pilot.reservations_report(), "historical_evidence_unchanged": True}
-    artifacts.publish_artifact("reports", "final-report.json", report)
+    pilot.publish_artifact("reports", "final-report.json", report)
     pilot.finish(summary={"terminal_result": report["terminal_result"], "branches": ["external", "model"], "consolidation_events": sum(len(summaries[b]["consolidation"]) for b in summaries)})
     print(json.dumps({"run_id": RUN_ID, "root": str(ROOT), "terminal_result": report["terminal_result"], "counts": pilot.reservations_report().get("counts", {})}, indent=2))
     return 0

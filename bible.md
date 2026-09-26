@@ -1236,3 +1236,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 final episodic qualification reuse correction
 
 - The second dispatch attempt also made no provider call and failed closed because `complete_qualification()` requires three newly returned qualification reservations even when the approved assessor qualification is explicitly reused. The harness now records the existing approved qualification through the same durable qualified state transition used by the prior supplement, without dispatching or reclassifying any qualification call.
+
+## 2026-09-26 P2.3 final episodic run 3 invalid stop
+
+- Preserved `p23-final-episodic-run-3` as `INVALID` after four successful first-coordinate calls were followed by a transcript publication API defect. No later coordinate ran and no scientific result was assigned. The exact partial evidence and sanitized disposition are published in `docs/receipts/MNEME_P2.3_Final_Episodic_Run3_Invalid_20260926.md`; historical runs remain unchanged.
