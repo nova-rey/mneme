@@ -1482,3 +1482,4 @@ All 25 forwarded F0 candidates are preserved in
 reviewed real-corpus gate recognized 5/5 supported cases with zero false
 support and rejected support for all 8 ambiguous cases. Historical F0 outputs
 and dispositions remain unchanged.
+* 2026-09-26: F0 correction integration prepared at current HEAD: real-corpus DeBERTa v2 adapter and background/contextual F0 v2 are validated offline; the extended six-turn-per-thread C/R/F0 runner is frozen for the next prospective run. Historical F0/r6/r7 evidence remains unchanged.

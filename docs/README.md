@@ -29,6 +29,7 @@ The documents are preserved in their supplied form and are intentionally not mer
   as bounded pressure on future host trajectories. It is not an implementation plan and does
   not alter active Phase Two rules, historical evidence, queue state, or Phase Three status.
 * [F0 field correction receipt](receipts/MNEME_P2_F0_Field_Correction_20260926.md)
+* [F0 real-corpus assessor regression](receipts/MNEME_P2_F0_Real_Corpus_Assessor_Regression_20260926.md)
   records the versioned background-plus-contextual pressure semantics, preserved v1
   compatibility, bounded field exploration, and focused offline validation.
 * `decisions/MNEME_Research_Decision_Episodic_Evidence_Provenance_2026-09-25.md` is the
