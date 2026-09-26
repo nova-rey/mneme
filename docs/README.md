@@ -24,6 +24,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   is a methodology input for future Phase Three planning. It describes a shared-Interloper,
   paired-seed condition and its limits; it is not an approved plan, execution authorization,
   queue dependency, or Phase Three start.
+* `research/MNEME_Research_Architecture_Amendment_Associative_Deformation_Field_2026-09-26.md`
+  is owner-supplied future research architecture context describing associative deformation
+  as bounded pressure on future host trajectories. It is not an implementation plan and does
+  not alter active Phase Two rules, historical evidence, queue state, or Phase Three status.
 * `decisions/MNEME_Research_Decision_Episodic_Evidence_Provenance_2026-09-25.md` is the
   supplied research/architecture decision note on conversational episodes and re-entry
   provenance. It is archived as reference context; the current implementation decision

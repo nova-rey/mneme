@@ -1412,3 +1412,11 @@ applied. The complete sanitized run bundle and receipt are preserved under
 This is not a behavioral negative result. Further unchanged resampling would
 be favorable-sample selection; a valid test now requires an explicit schedule
 or condition decision.
+
+## 2026-09-26 future research architecture filing
+
+Filed the owner-supplied `RA-ADF-2026-09-26` Associative Deformation Field
+amendment under `docs/research/` for librarian and future-reference use. It
+is additive research context only: it does not alter the approved Phase Two
+plan, historical evidence, learner rules, queue state, or Phase Three
+authorization.
