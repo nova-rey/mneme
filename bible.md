@@ -1265,3 +1265,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 final disposition queue validation
 
 - Advanced P2.3 to `VALIDATING` at candidate `52c1229` and recorded the final episodic runtime, scientific audit, and Phase Two disposition validation receipts. The final mechanism result is `NOT_DEMONSTRATED`, so this records a truthful completed disposition for owner review rather than claiming consolidation success or marking the package DONE. Historical receipts remain unchanged and Phase Three remains unstarted.
+
+## 2026-09-26 P2.3 authority-review wait state
+
+- Reconciled P2.3 from `VALIDATING` to `WAITING` on `review:p2.3-final-phase-two-disposition` after the final fixed episodic schedule completed as `NOT_DEMONSTRATED`. The approved plan requires one separated-support/consolidation opportunity for pilot adequacy and forbids automatic release/tagging when central coverage is inadequate. The final disposition is ready for owner review; no additional Phase Two campaign, release tag, or Phase Three work was started.
