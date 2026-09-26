@@ -58,6 +58,9 @@ SSH_ASKPASS = "/tmp/mneme-askpass"
 
 
 def _fp(model_family: str, model_id: str, provider: str, runtime: str, *, execution: Mapping[str, Any] | None = None) -> HostFingerprint:
+    capabilities = {Capability.TEXT_GENERATION, Capability.LOCAL_WEIGHTS}
+    if model_family == "Gemma 4":
+        capabilities.add(Capability.SEED_CONTROL)
     return HostFingerprint(
         model_family=model_family,
         model_id=model_id,
@@ -70,7 +73,7 @@ def _fp(model_family: str, model_id: str, provider: str, runtime: str, *, execut
         runtime_version=None,
         provider=provider,
         execution=dict(execution or {}),
-        capabilities=frozenset({Capability.TEXT_GENERATION}),
+        capabilities=frozenset(capabilities),
     )
 
 
