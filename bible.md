@@ -1293,3 +1293,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 shared-Interloper provider-rate-limit preservation
 
 - The first prospective shared-Interloper run stopped before qualification after DeepInfra returned HTTP 429 on its first Qwen call; the request remains durably recorded as `UNCERTAIN` and no developmental or evaluation call followed. Added fixed five-second pacing before Qwen role calls for the next prospective run; historical evidence remains unchanged.
+
+## 2026-09-26 shared-Interloper rate-limit blocker
+
+- The paced second prospective run stopped at the same first Qwen qualification coordinate with HTTP 429. Published the sanitized blocker receipt at `docs/receipts/MNEME_P2.3_Shared_Interloper_AB_Rate_Limit_20260926.md` and `.json`. Two new provider calls were consumed; no Gemma, extraction, learner, treatment, readout, or evaluation coordinate ran.
