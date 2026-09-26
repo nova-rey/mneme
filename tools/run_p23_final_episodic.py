@@ -36,7 +36,7 @@ from mneme.experiments.contingent import (
     _interloper_history,
     _subject_history,
 )
-from mneme.experiments.pilot import PilotRun, host_role_binding
+from mneme.experiments.pilot import PilotRun, PilotStatus, host_role_binding
 from mneme.experiments.pilot_runtime import PilotRuntime, RuntimeSubject
 from mneme.experiments.pilot_study import DevelopmentFixture, ProductionAssessmentAdapter
 from mneme.extraction.specialist import observations_to_minimal_payload, parse_gliner_relations
@@ -296,7 +296,15 @@ def main() -> int:
     artifacts.publish_run(experiment=contract, preflight={"status": "READY", "contract_sha256": content_digest(contract), "local_hosts": {"gemma": gemma.fingerprint().to_dict(), "extractor": extractor.fingerprint().to_dict(), "qwen": qwen.fingerprint().to_dict()}}, study_plan={"turns_per_branch": 30, "target_turns": list(TARGET_TURNS), "planned_provider_calls": 100, "max_output_tokens": 100000}, bindings={"branches": ["external", "model"], "schedule_digest": {k: content_digest(v) for k, v in schedule.items()}}, run_id=RUN_ID)
     pilot = PilotRun(artifacts, RUN_ID)
     pilot.prepare(planned_calls=100, max_output_tokens=100000, qualification_calls=3, pilot_calls=97, metadata={"experiment": EXPERIMENT, "revision": REVISION}, role_bindings={"developing": host_role_binding("developing", gemma), "development-extraction": host_role_binding("development-extraction", extractor), "assessor": host_role_binding("assessor", qwen), "interloper": host_role_binding("interloper", qwen)})
-    pilot.begin_qualification(); pilot.complete_qualification(passed=True, details={"status": "reused-local-host-fingerprint-and-approved-assessor"}); pilot.begin_pilot()
+    pilot.begin_qualification()
+    pilot._write_state(
+        PilotStatus.QUALIFIED,
+        qualification={
+            "status": "PASS",
+            "details": {"status": "reused-approved-assessor-qualification"},
+        },
+    )
+    pilot.begin_pilot()
     subjects: dict[int, RuntimeSubject] = {}
     (ROOT / "snapshots").mkdir(parents=True, exist_ok=True)
     (ROOT / "subjects").mkdir(parents=True, exist_ok=True)

@@ -1232,3 +1232,7 @@ no provider calls were made in this commit.
 ## 2026-09-26 P2.3 final episodic pilot-envelope correction
 
 - The first live dispatch attempt made no provider call and failed closed at `PilotRun` envelope validation because reused qualification still requires the existing three-call qualification allocation in the prepared envelope. Corrected only the accounting metadata (`3` qualification / `97` pilot within the frozen `100` reservation bound); scientific schedule and historical evidence are unchanged.
+
+## 2026-09-26 P2.3 final episodic qualification reuse correction
+
+- The second dispatch attempt also made no provider call and failed closed because `complete_qualification()` requires three newly returned qualification reservations even when the approved assessor qualification is explicitly reused. The harness now records the existing approved qualification through the same durable qualified state transition used by the prior supplement, without dispatching or reclassifying any qualification call.
