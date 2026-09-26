@@ -1376,3 +1376,17 @@ selected and applied zero routes at all nine coordinates, so no MNEME influence
 reached M and no behavioral comparison was interpreted. This is recorded in
 `docs/receipts/MNEME_P2.3_Shared_Interloper_Local_Assessor_No_Treatment_20260926.md`
 and its JSON companion; historical receipts remain unchanged.
+
+## 2026-09-26 learned-route semantic reachability correction
+
+The r6 shared-Interloper A/B treatment gate remains preserved as
+`INVALID_NO_TREATMENT`. Its learner state contained an eligible
+`Drip Irrigation -> causes -> Slow Leak` association, but route coverage used
+only exact contiguous label tokens and therefore discarded later input using
+`drip method` before selection. The controller now retains exact matching as
+its fast path and adds a bounded, deterministic descriptor-aware lexical
+reachability rule with conservative morphology. It requires shared content
+tokens and permits only a small set of generic query descriptors; it does not
+create aliases or change canonical graph labels. Focused tests cover paraphrase
+reachability, unrelated lexical overlap, and learned-route memory payload
+construction. Historical r6 evidence is unchanged.

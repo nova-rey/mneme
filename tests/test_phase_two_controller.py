@@ -6,8 +6,8 @@ import uuid
 import pytest
 
 from mneme.contracts import GenerationRequest
-from mneme.controller import ControllerError, ResponseController, TurnIntent
-from mneme.development import ConsequenceAssessment
+from mneme.controller import ControllerError, ResponseController, TurnIntent, _phrase
+from mneme.development import ConsequenceAssessment, Observation
 from mneme.hosts import FakeHost
 from mneme.memory import InterpretationPublisher, validate_residue
 from mneme.state.contracts import StoragePermissions
@@ -75,6 +75,89 @@ def _graph_store(tmp_path, *, learning: bool = False):
     publisher = InterpretationPublisher(store, instance)
     publisher.publish(publisher.prepare(operation.episode_id), residue)
     return store, instance
+
+
+def test_route_query_reachability_accepts_conservative_descriptor_paraphrase():
+    assert _phrase("drip irrigation", "Drip Irrigation")
+    assert _phrase("drip method", "Drip Irrigation")
+    assert _phrase("drip system", "Drip Irrigation")
+    assert not _phrase("drip coffee", "Drip Irrigation")
+    assert not _phrase("unrelated concept", "Drip Irrigation")
+
+
+def test_learned_route_reachability_constructs_treatment_payload(tmp_path):
+    """A reachable learned route must result in an applied memory payload."""
+
+    store, instance = _graph_store(tmp_path, learning=True)
+    source = "alpha guides bridge and bridge guides omega"
+    residue = validate_residue(
+        {
+            "core_concepts": [
+                {
+                    "key": "a",
+                    "label": "alpha",
+                    "source_spans": [{"source_slot": "s0", "start": 0, "end": 5}],
+                    "confidence": 0.9,
+                },
+                {
+                    "key": "b",
+                    "label": "bridge",
+                    "source_spans": [{"source_slot": "s0", "start": 13, "end": 19}],
+                    "confidence": 0.9,
+                },
+                {
+                    "key": "c",
+                    "label": "omega",
+                    "source_spans": [{"source_slot": "s0", "start": 38, "end": 43}],
+                    "confidence": 0.9,
+                },
+            ],
+            "edge_candidates": [
+                {
+                    "key": "e1",
+                    "from": "a",
+                    "to": "b",
+                    "relationship": "causal",
+                    "source_spans": [{"source_slot": "s0", "start": 0, "end": 19}],
+                    "confidence": 0.9,
+                },
+                {
+                    "key": "e2",
+                    "from": "b",
+                    "to": "c",
+                    "relationship": "causal",
+                    "source_spans": [{"source_slot": "s0", "start": 13, "end": 43}],
+                    "confidence": 0.9,
+                },
+            ],
+        },
+        {"s0": source},
+    )
+    host = FakeHost()
+    continuity = ContinuityService(store, instance, host)
+    operation = continuity.prepare_episode(
+        GenerationRequest(({"role": "user", "content": source},)),
+        operation_id="route-preflight-generation",
+    )
+    continuity.generate_operation(operation.operation_id)
+    continuity.accept_episode(operation.operation_id)
+    publisher = InterpretationPublisher(store, instance)
+    publisher.publish(
+        publisher.prepare(operation.episode_id, operation_id="route-preflight-interpretation"),
+        residue,
+        observations=(Observation(target_key="e1", occurrence_key="preflight"),),
+        development_operation_id="route-preflight-development",
+        opportunity=1,
+    )
+
+    with store:
+        prepared = ResponseController(store, instance, host).prepare(
+            TurnIntent("alpha method omega", memory="graph", selection_policy="learned-v1")
+        )
+    assert prepared.selected
+    assert prepared.applied == prepared.selected
+    assert any(route.query_coverage >= 1 for route in prepared.selected)
+    assert "Memory data:" in (prepared.request.system or "")
 
 
 def test_controller_discovers_bounded_path_without_route_candidate(tmp_path):

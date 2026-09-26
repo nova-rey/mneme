@@ -117,6 +117,68 @@ def _tokens(text: str) -> tuple[str, ...]:
     return tuple(re.findall(r"[\w]+(?:['-][\w]+)*", text.casefold(), re.UNICODE))
 
 
+# Query-only words which commonly describe a concept without changing its
+# identity (for example, "drip method" for a graph concept labelled
+# "Drip Irrigation").  This is deliberately a small, versioned lexical
+# reachability aid.  It does not create aliases or merge canonical concepts;
+# source grounding, resolution, and route eligibility remain authoritative.
+_QUERY_DESCRIPTOR_TOKENS = frozenset(
+    {
+        "a",
+        "an",
+        "and",
+        "approach",
+        "arrangement",
+        "be",
+        "can",
+        "could",
+        "device",
+        "for",
+        "how",
+        "idea",
+        "in",
+        "is",
+        "kind",
+        "method",
+        "my",
+        "of",
+        "on",
+        "option",
+        "process",
+        "setup",
+        "solution",
+        "style",
+        "system",
+        "technique",
+        "that",
+        "the",
+        "this",
+        "to",
+        "tool",
+        "type",
+        "way",
+        "with",
+        "without",
+        "would",
+        "your",
+    }
+)
+
+
+def _token_stem(token: str) -> str:
+    """Apply only conservative morphology for query reachability."""
+
+    if len(token) > 5 and token.endswith("ies"):
+        return token[:-3] + "y"
+    if len(token) > 5 and token.endswith("ing"):
+        return token[:-3]
+    if len(token) > 4 and token.endswith("es"):
+        return token[:-2]
+    if len(token) > 3 and token.endswith("s"):
+        return token[:-1]
+    return token
+
+
 def _host_ref(host: Host) -> str:
     """Return the canonical identity of the host pinned for a prepared turn."""
 
@@ -128,9 +190,24 @@ def _host_ref(host: Host) -> str:
 
 def _phrase(query: str, label: str) -> bool:
     q, target = _tokens(query), _tokens(label)
-    return bool(target) and any(
+    if not target:
+        return False
+    if any(
         q[i : i + len(target)] == target for i in range(len(q) - len(target) + 1)
-    )
+    ):
+        return True
+
+    # Keep ordinary query wording reachable without turning route lookup into
+    # unrestricted fuzzy matching.  A non-empty shared content token is
+    # required, and every query-only token must be a generic descriptor.  Thus
+    # "drip method" can reach "Drip Irrigation", while "drip coffee" cannot.
+    q_stems = {_token_stem(token) for token in q}
+    target_stems = {_token_stem(token) for token in target}
+    shared = q_stems & target_stems
+    if not shared:
+        return False
+    unmatched = q_stems - target_stems
+    return unmatched <= _QUERY_DESCRIPTOR_TOKENS
 
 
 def _messages(intent: TurnIntent) -> tuple[dict[str, str], ...]:
