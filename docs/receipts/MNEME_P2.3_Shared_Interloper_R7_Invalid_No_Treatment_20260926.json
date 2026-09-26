@@ -1,0 +1,38 @@
+{
+  "receipt_version": "p2.3-shared-interloper-r7-invalid-v1",
+  "run_id": "p23-shared-interloper-ab-20260926-r7",
+  "implementation_commit": "a183cbca73d066201b533b7824e6f3fd094b9f5c",
+  "status": "INVALID_NO_TREATMENT",
+  "historical_runs_unchanged": true,
+  "qualification": {"calls": 3, "status": "PASS", "model": "cross-encoder/nli-deberta-v3-xsmall"},
+  "pilot": {"scheduled_role_calls": 97, "total_scheduled_calls": 100, "evaluation_dispatched": false},
+  "models": {
+    "developing": "google/gemma-4-E4B-it / local-msi / UD-Q2_K_XL",
+    "extractor": "fastino/gliner2.5-base-v1 / local-msi",
+    "assessor": "cross-encoder/nli-deberta-v3-xsmall / local-cpu / revision a150876415327c80daeff35ca6f68f5ed8cf5c24",
+    "interloper": "Qwen/Qwen3-30B-A3B / DeepInfra"
+  },
+  "gate": {
+    "eligible_state": true,
+    "selected_influence": false,
+    "applied_influence": false,
+    "control_influence_zero": true,
+    "first_applied_coordinate": null
+  },
+  "diagnosis": {
+    "r6_failure_stage": "exact_query_coverage_retrieval",
+    "r7_route_fix_preflight": "passed",
+    "r7_failure_stage": "no_later_relevant_external_query",
+    "learned_relationship": "Drip Irrigation -> causes -> Slow Leak",
+    "later_external_inputs": [
+      "bucket with a hole / soil drying",
+      "trip planning",
+      "remote workshop and solar station"
+    ],
+    "unchanged_resampling_allowed": false,
+    "material_schedule_decision_required": true
+  },
+  "usage": {"input_tokens": 4324, "output_tokens": 255, "total_tokens": 4579, "source": "persisted provider usage"},
+  "evidence_bundle": "docs/receipts/MNEME_P2.3_Shared_Interloper_R7_Invalid_No_Treatment_Evidence",
+  "scientific_result": null
+}

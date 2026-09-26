@@ -1399,3 +1399,16 @@ JSON companion. The synthetic preflight selected and applied two learned
 routes from an eligible state using descriptor-aware query wording, while
 preserving zero control influence. This is instrumentation evidence only; the
 r6 `INVALID_NO_TREATMENT` run remains unchanged.
+
+## 2026-09-26 shared-Interloper r7 no-treatment disposition
+
+The route-reachability correction and instrumentation preflight passed, then
+prospective run `p23-shared-interloper-ab-20260926-r7` completed with
+`INVALID_NO_TREATMENT`. Gemma/GLiNER2.5/local DeBERTa formed an eligible
+`Drip Irrigation -> causes -> Slow Leak` state, but Qwen's later stochastic
+messages never supplied a relevant external query; no route was selected or
+applied. The complete sanitized run bundle and receipt are preserved under
+`docs/receipts/MNEME_P2.3_Shared_Interloper_R7_Invalid_No_Treatment*`.
+This is not a behavioral negative result. Further unchanged resampling would
+be favorable-sample selection; a valid test now requires an explicit schedule
+or condition decision.
