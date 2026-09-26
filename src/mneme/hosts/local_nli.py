@@ -196,7 +196,7 @@ _RELATION_CUES = {
 }
 
 _UNCERTAINTY_OR_INTENT = re.compile(
-    r"\b(?:might|may|could|perhaps|maybe|will|would|plan|planning|try|trying|tomorrow|not sure)\b",
+    r"\b(?:might|may|could|perhaps|maybe|would|plan|planning|try|trying|tomorrow|not sure)\b",
     re.IGNORECASE,
 )
 _UNSETTLED_OR_ATTEMPT = re.compile(
@@ -404,8 +404,19 @@ class LocalNliAssessor:
             score_by_source = self._scores(monitor, source_map, available)
             if not score_by_source:
                 raise ValueError(f"monitor {monitor.monitor_id} has no source windows")
+            relevant_slots = tuple(
+                slot
+                for slot in available
+                if _source_mentions_proposition(source_map[slot].text or "", monitor)
+                or _relation_is_expressed(source_map[slot].text or "", monitor)
+            )
+            score_candidates = {
+                slot: score_by_source[slot]
+                for slot in relevant_slots
+                if slot in score_by_source
+            } or score_by_source
             best_slot, (best_window, best) = max(
-                score_by_source.items(),
+                score_candidates.items(),
                 key=lambda item: (
                     max(item[1][1].entailment, item[1][1].contradiction),
                     item[0],
@@ -432,11 +443,14 @@ class LocalNliAssessor:
             )
             relation_negated = any(
                 _relation_is_negated(source_map[slot].text or "", monitor)
+                and _source_mentions_proposition(source_map[slot].text or "", monitor)
                 for slot in available
             )
             uncertain_or_intended = any(
                 _UNCERTAINTY_OR_INTENT.search(source_map[slot].text or "")
                 for slot in available
+                if _source_mentions_proposition(source_map[slot].text or "", monitor)
+                or _relation_is_expressed(source_map[slot].text or "", monitor)
             )
             unsettled_or_attempt = any(
                 _UNSETTLED_OR_ATTEMPT.search(source_map[slot].text or "")
@@ -458,7 +472,7 @@ class LocalNliAssessor:
             # existing semantic boundary fail-closed for those cases.
             if (
                 (strongly_contradicts or relation_negated)
-                and mentioned
+                and _source_mentions_proposition(source_map[best_slot].text or "", monitor)
                 and (relation_expressed or relation_negated)
                 and not uncertain_or_intended
             ):

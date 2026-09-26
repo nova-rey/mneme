@@ -1354,3 +1354,14 @@ canonical edge keys remain authoritative for publication and provenance. No
 behavioral result was assigned. Evidence is in
 `docs/receipts/MNEME_P2.3_Shared_Interloper_No_Treatment_20260926.md` and
 `.json`.
+
+## 2026-09-26 local assessor source-language boundary correction
+
+The no-treatment run exposed a second instrumentation defect: assessor monitors
+used opaque residue concept keys as semantic proposition text. The production
+adapter now maps those keys to immutable extracted concept labels only in the
+assessor-facing request; canonical edge keys remain separate for graph,
+provenance, and learner publication. The local NLI adapter also chooses a
+relevant source window before interpreting unrelated question context and keeps
+negation/uncertainty scoped to the supporting source. Focused regressions and
+full validation passed; the prior invalid run remains preserved.

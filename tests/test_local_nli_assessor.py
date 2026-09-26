@@ -177,3 +177,42 @@ def test_local_nli_assessor_does_not_turn_lexical_overlap_into_causal_support() 
         ).content
     )["assessments"][0]
     assert result["relation_support"] == "unsupported"
+
+
+def test_local_nli_assessor_prefers_relevant_source_over_unrelated_question_context() -> None:
+    class MixedBackend(QualificationBackend):
+        def score_pairs(self, pairs: Sequence[tuple[str, str]]) -> tuple[NliScores, ...]:
+            values = []
+            for premise, _ in pairs:
+                if "balcony" in premise:
+                    values.append(NliScores(0.01, 0.68, 0.31))
+                else:
+                    values.append(NliScores(0.59, 0.02, 0.39))
+            return tuple(values)
+
+    relation = {"from": "Drip Irrigation", "relation": "causes", "to": "Slow Leak"}
+    request = AssessorRequest(
+        candidate=relation,
+        sources=(
+            AssessorSource(
+                "s0",
+                "external",
+                True,
+                "My balcony pots dry out. How would you make watering reliable?",
+            ),
+            AssessorSource(
+                "s1",
+                "model_output",
+                True,
+                "Drip Irrigation (The Slow Leak) creates a slow-release system.",
+            ),
+        ),
+        monitors=(AssessorMonitor("candidate", relation, ("s0", "s1"), ("s0", "s1")),),
+    )
+    result = json.loads(
+        LocalNliAssessorHost(MixedBackend()).generate(
+            assessor_generation_request(request)
+        ).content
+    )["assessments"][0]
+    assert result["relation_support"] == "supported"
+    assert result["evidence"]["source_slot"] == "s1"
