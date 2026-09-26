@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import pytest
+
 from mneme.development import (
     FIXED_SCALE,
+    LEGACY_FIELD_VERSION,
     EdgeState,
     FieldConfig,
     LearnerState,
@@ -83,7 +86,95 @@ def test_quarantined_and_unrelated_context_apply_no_pressure():
     unrelated = compute_field("airplane music", concepts, edges, _state("e1"))
     assert quarantined.total_pressure == 0
     assert quarantined.contributions[0].eligibility_reason == "quarantined"
-    assert unrelated.total_pressure == 0
+    assert unrelated.total_pressure > 0
+    assert all(item.component == "background" for item in unrelated.contributions)
+    assert "Potentially accessible framings:" in unrelated.payload
+
+
+def test_legacy_v1_retains_relevance_gated_zero_field_behavior():
+    concepts, edges = _graph(
+        ("a", "drip irrigation"),
+        ("b", "moisture"),
+        edges=(("e1", "a", "b", "causes"),),
+    )
+    result = compute_field(
+        "airplane music",
+        concepts,
+        edges,
+        _state("e1"),
+        config=FieldConfig(version=LEGACY_FIELD_VERSION),
+    )
+    assert result.total_pressure == 0
+    assert result.config.version == LEGACY_FIELD_VERSION
+
+
+def test_contextual_pressure_dominates_weak_background():
+    concepts, edges = _graph(
+        ("a", "drip irrigation"),
+        ("b", "soil moisture"),
+        ("c", "aviation"),
+        ("d", "failure monitoring"),
+        edges=(
+            ("e1", "a", "b", "causes"),
+            ("e2", "c", "d", "supports"),
+        ),
+    )
+    result = compute_field("drip method", concepts, edges, _state("e1", "e2"))
+    accepted = [item for item in result.contributions if item.eligible]
+    assert accepted[0].edge_key == "e1"
+    assert accepted[0].component == "contextual"
+    assert any(item.component == "background" for item in accepted)
+
+
+def test_cold_start_has_no_background_field():
+    concepts, edges = _graph(
+        ("a", "alpha"),
+        ("b", "beta"),
+        edges=(("e1", "a", "b", "causes"),),
+    )
+    result = compute_field("alpha", concepts, edges, LearnerState())
+    assert result.total_pressure == 0
+    assert result.payload == ""
+
+
+def test_exploration_is_weighted_bounded_and_replayable():
+    concepts, edges = _graph(
+        ("a", "alpha"), ("b", "beta"), ("c", "gamma"), ("d", "delta"),
+        edges=(
+            ("e1", "a", "b", "supports"),
+            ("e2", "b", "c", "supports"),
+            ("e3", "c", "d", "supports"),
+        ),
+    )
+    config = FieldConfig(exploration="on", max_contributors=1)
+    first = compute_field(
+        "unrelated", concepts, edges, _state("e1", "e2", "e3"),
+        config=config, field_seed=19,
+    )
+    second = compute_field(
+        "unrelated", concepts, edges, _state("e1", "e2", "e3"),
+        config=config, field_seed=19,
+    )
+    assert first.to_dict() == second.to_dict()
+    assert first.field_seed == 19
+    assert sum(item.exploration_selected for item in first.contributions) <= 1
+    assert first.total_pressure <= config.total_budget
+
+
+def test_exploration_requires_separate_field_seed():
+    concepts, edges = _graph(
+        ("a", "alpha"),
+        ("b", "beta"),
+        edges=(("e1", "a", "b", "supports"),),
+    )
+    with pytest.raises(ValueError, match="field_seed"):
+        compute_field(
+            "unrelated",
+            concepts,
+            edges,
+            _state("e1"),
+            config=FieldConfig(exploration="on"),
+        )
 
 
 def test_negative_consequence_does_not_create_positive_pressure():

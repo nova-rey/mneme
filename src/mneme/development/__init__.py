@@ -49,6 +49,7 @@ from .episodes import (
 )
 from .field import (
     FIELD_VERSION,
+    LEGACY_FIELD_VERSION,
     ActiveConcept,
     FieldConfig,
     FieldResult,
@@ -116,6 +117,7 @@ __all__ = [
     "persist_conversation_arc_progress",
     "persist_conversation_episode",
     "FIELD_VERSION",
+    "LEGACY_FIELD_VERSION",
     "ActiveConcept",
     "FieldConfig",
     "FieldResult",

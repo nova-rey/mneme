@@ -7,7 +7,7 @@ import pytest
 
 from mneme.contracts import GenerationRequest
 from mneme.controller import ControllerError, ResponseController, TurnIntent, _phrase
-from mneme.development import ConsequenceAssessment, Observation
+from mneme.development import FIELD_VERSION, ConsequenceAssessment, Observation
 from mneme.hosts import FakeHost
 from mneme.memory import InterpretationPublisher, validate_residue
 from mneme.state.contracts import StoragePermissions
@@ -235,7 +235,7 @@ def test_field_policy_builds_bounded_payload_and_trace(tmp_path):
             "SELECT query_json FROM turn_traces WHERE operation_id=?",
             (result.operation.operation_id,),
         ).fetchone()[0]
-        assert json.loads(query)["field"]["version"] == "f0-graph-pressure-v1"
+        assert json.loads(query)["field"]["version"] == FIELD_VERSION
 
 
 def test_controller_discovers_bounded_path_without_route_candidate(tmp_path):

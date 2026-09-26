@@ -1454,3 +1454,16 @@ analysis records `VALID_ZERO_FIELD_EXPOSURE_INCONCLUSIVE`, not a behavioral
 negative: the field ran correctly but supplied no nonzero pressure, and the
 single-edge state was insufficient for the planned richly developed-field
 comparison. Historical r6/r7 remain unchanged.
+
+## 2026-09-26 F0 background-field correction
+
+Added the versioned `f0-graph-pressure-v2-background` approximation while
+preserving explicit `f0-graph-pressure-v1` relevance-gated replay. The corrected
+field keeps weak pressure from eligible earned graph state after a context
+change, lets contextual activation amplify relevant neighborhoods, retains
+quarantined/ineligible zero records, and renders a bounded strongest background
+framing when no contextual contributor clears the normal render floor. Optional
+weighted field exploration uses a separate caller-supplied seed and is off by
+default. Focused cold-start, background, contextual-dominance, quarantine,
+budget, replay, and exploration tests pass; the receipt is
+`docs/receipts/MNEME_P2_F0_Field_Correction_20260926.md`.
