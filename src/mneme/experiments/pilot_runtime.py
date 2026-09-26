@@ -175,7 +175,10 @@ class PilotRuntime:
                 binding_role = "assessor"
             if role == "development-extraction":
                 configured_roles = envelope.get("role_bindings")
-                if not isinstance(configured_roles, Mapping) or "development-extraction" not in configured_roles:
+                if (
+                    not isinstance(configured_roles, Mapping)
+                    or "development-extraction" not in configured_roles
+                ):
                     # Preserve legacy single-host prepared runs. Mixed-role
                     # runs publish an explicit specialist binding.
                     binding_role = "developing"

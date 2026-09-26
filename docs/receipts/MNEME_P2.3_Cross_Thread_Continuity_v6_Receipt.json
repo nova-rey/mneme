@@ -1,0 +1,44 @@
+{
+  "schema_version": "p2.3-cross-thread-receipt-v1",
+  "run_id": "cross-thread-v6",
+  "correction_commit": "0009575",
+  "historical_run_preserved": true,
+  "terminal_result": "INCONCLUSIVE",
+  "reason": "No learner-eligible MNEME influence existed at frozen readout time; corrected M readouts therefore did not test a treatment/control distinction.",
+  "development": {
+    "accepted_episodes": 9,
+    "lineage_revision": 18,
+    "graph_revision": 5,
+    "edge_states": 10,
+    "positive_support_or_accessibility_edges": 0,
+    "eligible_routes": 0,
+    "consolidation": false,
+    "admitted_supported_observations": 6
+  },
+  "readouts": {
+    "corrected_m_local_calls": 18,
+    "reused_control_rows": 18,
+    "all_nonempty": true,
+    "state_digest_invariant": true,
+    "m_memory_notes_after_filter": 0,
+    "evidence": "MNEME_P2.3_Cross_Thread_v6_Evidence/evaluation/corrected-readouts.json"
+  },
+  "blinded_evaluation": {
+    "persisted_calls": 2,
+    "stage1_total_tokens": 6180,
+    "stage2_total_tokens": 6313,
+    "labels_randomized": true,
+    "history_revealed_after_stage1": true,
+    "used_for_causal_claim": false,
+    "evidence": "MNEME_P2.3_Cross_Thread_v6_Evidence/evaluation/corrected-blinded-evaluation.json",
+    "first_persistence_attempt": "provider returned; local TokenUsage serialization failed before receipt write; no developmental state changed; fixed evaluation rerun once"
+  },
+  "accounting": {
+    "historical_v6_returned_calls": 82,
+    "additional_local_readout_calls": 18,
+    "additional_persisted_provider_calls": 2,
+    "additional_unpersisted_provider_attempts": 1,
+    "phase_three_started": false
+  },
+  "evidence_root": "MNEME_P2.3_Cross_Thread_v6_Evidence"
+}

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# ruff: noqa: E501
 """Run the bounded Phase Two cross-thread continuity experiment.
 
 The script is an experiment harness only.  Developmental persistence remains
@@ -7,23 +8,31 @@ owned by PilotRuntime/ContinuityService and readouts use FrozenComparator.
 
 from __future__ import annotations
 
-import hashlib
 import json
 import os
-import shutil
 import subprocess
 import time
 import uuid
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
-from mneme.contracts import Capability, GenerationRequest, GenerationResult, HostCapabilities, HostFingerprint
+from mneme.contracts import (
+    Capability,
+    GenerationRequest,
+    GenerationResult,
+    HostCapabilities,
+    HostFingerprint,
+)
 from mneme.development.learner import DevelopmentalLearner
-from mneme.experiments.artifacts import ArtifactStore, content_digest
+from mneme.experiments.artifacts import ArtifactStore
 from mneme.experiments.comparison import ComparisonProbe, FrozenComparator
-from mneme.experiments.contingent import INTERLOPER_SYSTEM_PROMPT, _interloper_history, _subject_history
-from mneme.experiments.pilot import PilotRun, PilotStatus, host_role_binding
+from mneme.experiments.contingent import (
+    INTERLOPER_SYSTEM_PROMPT,
+    _interloper_history,
+    _subject_history,
+)
+from mneme.experiments.pilot import PilotRun, host_role_binding
 from mneme.experiments.pilot_runtime import PilotRuntime, RuntimeSubject
 from mneme.experiments.pilot_study import DevelopmentFixture, ProductionAssessmentAdapter
 from mneme.extraction.specialist import observations_to_minimal_payload, parse_gliner_relations
@@ -34,7 +43,6 @@ from mneme.memory.residue import SUPPORTED_RELATIONSHIP_KINDS
 from mneme.state.contracts import StoragePermissions
 from mneme.state.snapshots import create_checkpoint
 from mneme.state.storage import SQLiteStore
-
 
 ROOT = Path(os.environ.get("MNEME_CROSS_THREAD_LAB", "/tmp/mneme-p23-cross-thread-v6-20260925"))
 EXPERIMENT = "p23-cross-thread-continuity"
@@ -175,7 +183,6 @@ class RemoteGlinerHost(_RemoteBase):
         raw = rows[-1].get("raw")
         if not isinstance(raw, Mapping):
             raise RuntimeError("specialist extractor response has no raw payload")
-        extraction = parse_gliner_relations(raw, {"s0": "\n".join(joined)}, model="fastino/gliner2.5-base-v1")
         # The remote tool sees one joined source. Re-map spans and text into
         # original source slots before deterministic parsing/admission.
         remapped: dict[str, Any] = {"relation_extraction": {}}
@@ -311,8 +318,6 @@ def main() -> int:
         subjects[slot] = RuntimeSubject(slot, subject_store, instance, gemma)
     runtime = PilotRuntime(pilot, subjects)
     records: dict[int, list[dict[str, Any]]] = {0: [], 1: []}
-    pairs_m: list[tuple[str, str]] = []
-    qwen_call_count = 0
     global_turn = 0
     adapter = ProductionAssessmentAdapter(runtime, qwen)
     checkpoint_paths: dict[str, dict[int, Path]] = {}
