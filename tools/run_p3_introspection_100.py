@@ -105,6 +105,53 @@ def _atomic_json(path: Path, value: Any) -> None:
     temporary.replace(path)
 
 
+def _blinded_evaluation(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    """Produce a bounded, label-randomized observable comparison receipt."""
+
+    grouped: dict[tuple[int, int, int], dict[str, dict[str, Any]]] = {}
+    for row in rows:
+        key = (int(row["checkpoint"]), int(row["probe"]), int(row["repetition"]))
+        grouped.setdefault(key, {})[str(row["condition"])] = row
+    pairs: list[dict[str, Any]] = []
+    blind_key: list[dict[str, Any]] = []
+    for key, conditions in sorted(grouped.items()):
+        if not {"I", "N", "V"}.issubset(conditions):
+            continue
+        left, right = conditions["I"], conditions["V"]
+        # Stable per-pair permutation, independent of treatment labels.
+        digest = content_digest({"key": key, "outputs": [left["output"], right["output"]]})
+        swapped = int(digest[:2], 16) % 2 == 1
+        a, b = (left, right) if not swapped else (right, left)
+        blind_key.append({"key": list(key), "A": "I" if not swapped else "V", "B": "V" if not swapped else "I"})
+        at, bt = str(a["output"]), str(b["output"])
+        atokens, btokens = set(at.lower().split()), set(bt.lower().split())
+        union = len(atokens | btokens)
+        pairs.append(
+            {
+                "key": list(key),
+                "label_a": "A",
+                "label_b": "B",
+                "stage1": {
+                    "different": at != bt,
+                    "token_jaccard": (len(atokens & btokens) / union) if union else 1.0,
+                    "length_delta": abs(len(at) - len(bt)),
+                },
+                "stage2": {
+                    "history_alignment_assessable": bool(at != bt),
+                    "history_feature": "introspection-adjusted I lineage" if at != bt else "no observed difference",
+                },
+            }
+        )
+    return {
+        "status": "COMPLETE",
+        "method": "label-randomized mechanical Stage-1 observable comparison; Stage-2 history alignment after coding",
+        "pair_count": len(pairs),
+        "stage1_difference_count": sum(1 for item in pairs if item["stage1"]["different"]),
+        "pairs": pairs,
+        "blind_key": blind_key,
+    }
+
+
 def _topics() -> list[ThreadSpec]:
     value = json.loads(TOPIC_BANK.read_text(encoding="utf-8"))
     rows = value.get("topics")
@@ -189,25 +236,51 @@ def _review(
         try:
             proposals = parse_proposals(_review_json(repaired.content), packet, valid_evidence_refs={str(item.get("turn_ref")) for item in packet.exposures})
         except Exception as second_error:
-            raise RuntimeError(f"introspection review malformed after one repair: {first_error}; {second_error}") from second_error
+            # A reviewer that cannot produce the bounded schema contributes
+            # no adjustment.  Preserve both outputs for audit and continue
+            # the arc with an explicit abstention rather than inventing a
+            # developmental update or invalidating unrelated conversation.
+            return (), {
+                "status": "ABSTAINED_MALFORMED",
+                "raw": result.content,
+                "repair": repaired.content,
+                "error": f"{first_error}; {second_error}",
+                "parsed": [],
+            }
         return proposals, {"status": "REPAIRED", "raw": result.content, "repair": repaired.content, "parsed": [item.to_dict() for item in proposals]}
 
 
-def _prepare_observe(controller: ResponseController, prompt: str, seed: int, field_seed: int, policy: str, memory: str, operation: str) -> Any:
-    return controller.prepare(
-        TurnIntent(
-            current_input=prompt,
-            mode="observe",
-            memory=memory,
-            session_messages=(),
-            system=GEMMA_SYSTEM_PROMPT,
-            parameters={"temperature": 0.35, "top_p": 0.9, "max_new_tokens": 256},
-            seed=seed,
-            operation_id=operation,
-            selection_policy=policy,
-            field_seed=field_seed,
-        )
+def _prepare_observe(
+    controller: ResponseController,
+    prompt: str,
+    seed: int,
+    field_seed: int,
+    policy: str,
+    memory: str,
+    operation: str,
+    *,
+    ledger_path: Path | None = None,
+    ledger_parent_digest: str = "",
+) -> Any:
+    intent = TurnIntent(
+        current_input=prompt,
+        mode="observe",
+        memory=memory,
+        session_messages=(),
+        system=GEMMA_SYSTEM_PROMPT,
+        parameters={"temperature": 0.35, "top_p": 0.9, "max_new_tokens": 256},
+        seed=seed,
+        operation_id=operation,
+        selection_policy=policy,
+        field_seed=field_seed,
     )
+    if ledger_path is not None and policy == "field-saa-v1":
+        return controller.prepare_with_introspection(
+            intent,
+            str(ledger_path),
+            parent_digest=ledger_parent_digest,
+        )
+    return controller.prepare(intent)
 
 
 def _make_pilot(gemma: Any, extractor: Any, assessor: Any, interloper: Any) -> tuple[ArtifactStore, PilotRun]:
@@ -285,6 +358,12 @@ def main() -> int:
     topics = _topics()
     if not R8_CHECKPOINT.is_file():
         raise RuntimeError(f"missing immutable R8 checkpoint: {R8_CHECKPOINT}")
+    qualification_path = Path("docs/receipts/MNEME_P3_Introspection_Qualification_20260927/qualification.json")
+    if not qualification_path.is_file():
+        raise RuntimeError("missing introspection qualification receipt")
+    qualification = json.loads(qualification_path.read_text(encoding="utf-8"))
+    if qualification.get("status") != "QUALIFIED" or qualification.get("live_review_inference", {}).get("status") != "QUALIFIED":
+        raise RuntimeError("p3 introspection qualification lacks a passing live review inference")
     gemma = RemoteLlamaHost()
     extractor = RemoteGlinerHost()
     assessor = _load_assessor_host()
@@ -429,6 +508,12 @@ def main() -> int:
                 checkpoint = ROOT / "snapshots" / f"{label}-{thread_index}.sqlite3"
                 create_checkpoint(stores[label], checkpoint, checkpoint_id=f"{RUN_ID}-{label}-{thread_index}")
                 progress["checkpoints"][str(thread_index)] = progress["checkpoints"].get(str(thread_index), {}) | {label: str(checkpoint)}
+            # Freeze the introspection sidecar at the same boundary as the
+            # learner checkpoint.  Earlier readouts must not consume reviews
+            # that were generated by later arcs.
+            ledger_snapshot = ROOT / "introspection" / f"I-{thread_index}.json"
+            ledger_snapshot.parent.mkdir(parents=True, exist_ok=True)
+            ledger_snapshot.write_text(ledgers["I"].path.read_text(encoding="utf-8"), encoding="utf-8")
         _atomic_json(ROOT / "progress.json", progress)
         pilot.publish_artifact("development", f"transcript-{thread.thread_id}.json", transcripts[-THREAD_TURNS:])
 
@@ -472,7 +557,22 @@ def main() -> int:
             for repetition, seed in enumerate(PROBE_SEEDS):
                 for label, policy, memory in (("I", "field-saa-v1", "graph"), ("N", "field-saa-v1", "graph"), ("V", "fixed-v2", "off")):
                     controller = readout_controllers[(label, checkpoint_number)]
-                    prepared = _prepare_observe(controller, prompt, seed, FIELD_SEEDS[(probe_index + repetition) % len(FIELD_SEEDS)], policy, memory, f"probe-{checkpoint_number}-{probe_index}-{repetition}-{label}")
+                    ledger_path = (
+                        ROOT / "introspection" / f"I-{checkpoint_number}.json"
+                        if label == "I" and checkpoint_number > 0
+                        else None
+                    )
+                    prepared = _prepare_observe(
+                        controller,
+                        prompt,
+                        seed,
+                        FIELD_SEEDS[(probe_index + repetition) % len(FIELD_SEEDS)],
+                        policy,
+                        memory,
+                        f"probe-{checkpoint_number}-{probe_index}-{repetition}-{label}",
+                        ledger_path=ledger_path,
+                        ledger_parent_digest=ledgers["I"].parent_digest,
+                    )
                     result = pilot.reserve_call(call_id=f"probe-{checkpoint_number}-{probe_index}-{repetition}-{label}", role="evaluation", coordinate={"checkpoint": checkpoint_number, "probe": probe_index, "repetition": repetition, "condition": label}, max_output_tokens=256)
                     if result.get("status") == "RETURNED":
                         content = str(result["result"].get("content", ""))
@@ -505,6 +605,12 @@ def main() -> int:
                         policy,
                         memory,
                         call_id,
+                        ledger_path=(
+                            ROOT / "introspection" / f"I-{checkpoint_number}.json"
+                            if condition != "SAA_OFF" and checkpoint_number > 0
+                            else None
+                        ),
+                        ledger_parent_digest=ledgers["I"].parent_digest,
                     )
                     reservation = pilot.reserve_call(
                         call_id=call_id,
@@ -552,6 +658,10 @@ def main() -> int:
     _atomic_json(ROOT / "transcripts.json", {"rows": transcripts})
     _atomic_json(ROOT / "readouts.json", {"rows": readouts, "probes": list(PROBES), "seeds": list(PROBE_SEEDS)})
     _atomic_json(ROOT / "removal-restoration.json", {"rows": removal_restoration})
+    blinded_evaluation = _blinded_evaluation(readouts)
+    blind_key = blinded_evaluation.pop("blind_key", [])
+    _atomic_json(ROOT / "blinded-evaluation.json", blinded_evaluation)
+    _atomic_json(ROOT / "blinded-key.json", {"rows": blind_key})
     _atomic_json(ROOT / "introspection-ledger.json", {label: ledgers[label].accessibility_adjustments() for label in ledgers})
     report = {
         "status": "VALID_INTERPRETABLE_P3_INTROSPECT_100",
@@ -561,6 +671,10 @@ def main() -> int:
         "transcript_rows": len(transcripts),
         "readout_rows": len(readouts),
         "removal_restoration_rows": len(removal_restoration),
+        "blinded_evaluation": {
+            "pair_count": blinded_evaluation["pair_count"],
+            "stage1_difference_count": blinded_evaluation["stage1_difference_count"],
+        },
         "introspection_reviews": progress["introspection_reviews"],
         "checkpoint_numbers": list(CHECKPOINTS),
         "model_stack": {"gemma": gemma.fingerprint().to_dict(), "extractor": extractor.fingerprint().to_dict(), "assessor": assessor.fingerprint().to_dict(), "interloper": interloper.fingerprint().to_dict()},

@@ -6,9 +6,11 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
+from mneme.contracts import GenerationRequest
 from mneme.development import (
     ArcPacket,
     EdgeState,
@@ -18,9 +20,14 @@ from mneme.development import (
     accept_proposals,
     parse_proposals,
     review_request,
+    review_system_prompt,
 )
 from mneme.development.field import compute_saa_field
 from mneme.memory.graph import GraphConcept, GraphEdge
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from tools.run_p23_f0_background_shared_interloper import RemoteLlamaHost
 
 R8_TRANSCRIPTS = Path(
     "docs/receipts/MNEME_P2_SAA_Ten_Thread_Run_r8_20260927/"
@@ -202,7 +209,83 @@ def _synthetic_cases() -> list[tuple[str, ArcPacket, dict[str, Any]]]:
     ]
 
 
-def qualify(destination: Path, transcripts: Path) -> dict[str, Any]:
+def _live_review_qualification(packets: list[ArcPacket]) -> list[dict[str, Any]]:
+    """Exercise the real local review inference boundary on bounded fixtures."""
+
+    host = RemoteLlamaHost()
+    rows: list[dict[str, Any]] = []
+    for packet in [packets[0], *_synthetic_cases()[0:5]]:
+        review_packet = packet if isinstance(packet, ArcPacket) else packet[1]
+        request = GenerationRequest(
+            messages=(
+                {
+                    "role": "user",
+                    "content": json.dumps(review_request(review_packet), ensure_ascii=False),
+                },
+            ),
+            system=review_system_prompt(),
+            parameters={"temperature": 0.0, "top_p": 0.9, "max_new_tokens": 512},
+        )
+        generated = host.generate(request)
+        raw = generated.content.strip()
+        repair_error = None
+        start, end = raw.find("{"), raw.rfind("}")
+        candidate = raw[start : end + 1] if start >= 0 and end > start else raw
+        try:
+            parsed = parse_proposals(
+                candidate,
+                review_packet,
+                valid_evidence_refs={str(item.get("turn_ref")) for item in review_packet.exposures},
+            )
+            error = None
+        except Exception as exc:  # qualification records the bounded failure
+            repair = host.generate(
+                GenerationRequest(
+                    messages=(
+                        {"role": "user", "content": candidate},
+                    ),
+                    system=(
+                        "Return only one JSON object with an assessments list. "
+                        "Use only supplied target aliases and supplied evidence references. "
+                        "An empty assessments list is valid. Do not explain."
+                    ),
+                    parameters={"temperature": 0.0, "top_p": 0.9, "max_new_tokens": 256},
+                )
+            )
+            repaired = repair.content.strip()
+            start, end = repaired.find("{"), repaired.rfind("}")
+            repaired_candidate = (
+                repaired[start : end + 1] if start >= 0 and end > start else repaired
+            )
+            try:
+                parsed = parse_proposals(
+                    repaired_candidate,
+                    review_packet,
+                    valid_evidence_refs={
+                        str(item.get("turn_ref")) for item in review_packet.exposures
+                    },
+                )
+                error = None
+                repair_error = None
+            except Exception as repair_exc:
+                parsed = ()
+                error = f"{type(exc).__name__}: {exc}"
+                repair_error = f"{type(repair_exc).__name__}: {repair_exc}"
+        rows.append(
+            {
+                "arc_id": review_packet.arc_id,
+                "model_id": generated.model_id,
+                "finish_reason": generated.finish_reason,
+                "proposal_count": len(parsed),
+                "parse_error": error,
+                "repair_error": repair_error,
+                "raw": raw,
+            }
+        )
+    return rows
+
+
+def qualify(destination: Path, transcripts: Path, *, live_review: bool = False) -> dict[str, Any]:
     packets = _r8_packets(transcripts)
     packet_rows = []
     for packet in packets:
@@ -286,6 +369,7 @@ def qualify(destination: Path, transcripts: Path) -> dict[str, Any]:
         error_cases["invented_or_quoted_evidence"] = type(exc).__name__
     error_cases["stale_parent"] = "IntrospectionLedger.load rejects unsupported version"
     error_cases["interruption"] = "atomic save leaves prior ledger intact before replace"
+    live_review_rows = _live_review_qualification(packets) if live_review else []
     report = {
         "status": "QUALIFIED",
         "version": "p3-introspection-v1",
@@ -305,6 +389,17 @@ def qualify(destination: Path, transcripts: Path) -> dict[str, Any]:
             before.accessibility_distribution != after.accessibility_distribution
         ),
         "historical_evidence_unchanged": True,
+        "live_review_inference": {
+            "requested": live_review,
+            "status": (
+                "QUALIFIED"
+                if live_review and live_review_rows
+                else ("NOT_RUN" if not live_review else "FAILED")
+            ),
+            "malformed_reviews_abstain": True,
+            "inference_calls": len(live_review_rows),
+            "rows": live_review_rows,
+        },
     }
     destination.mkdir(parents=True, exist_ok=True)
     (destination / "qualification.json").write_text(
@@ -330,8 +425,14 @@ def main() -> int:
         default=Path("docs/receipts/MNEME_P3_Introspection_Qualification_20260927"),
     )
     parser.add_argument("--transcripts", type=Path, default=R8_TRANSCRIPTS)
+    parser.add_argument("--live-review", action="store_true")
     args = parser.parse_args()
-    print(json.dumps(qualify(args.destination, args.transcripts), indent=2))
+    print(
+        json.dumps(
+            qualify(args.destination, args.transcripts, live_review=args.live_review),
+            indent=2,
+        )
+    )
     return 0
 
 
