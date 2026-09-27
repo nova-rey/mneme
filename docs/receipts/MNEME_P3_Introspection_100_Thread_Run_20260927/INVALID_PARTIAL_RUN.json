@@ -1,0 +1,12 @@
+{
+  "status": "INVALID_PREMEASUREMENT_STOPPED",
+  "run_id": "p3-introspect-100-20260927-r1",
+  "historical_r8_unchanged": true,
+  "returned_calls": 36,
+  "dispatched_calls": 1,
+  "threads_completed": 0,
+  "reason": "Readout implementation was discovered before measurement to prepare every checkpoint from the live final controller rather than the exact frozen I/N/V checkpoint. Continuing would invalidate checkpoint comparisons. The run was stopped before any checkpoint readout or introspection review was accepted.",
+  "preserved_artifacts": ["pilot/reservations", "subjects/I.sqlite3", "subjects/N.sqlite3", "subjects/V.sqlite3"],
+  "replacement": "p3-introspect-100-20260927-r2",
+  "correction_commit": "840bd5b"
+}
