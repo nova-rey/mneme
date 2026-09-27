@@ -184,7 +184,6 @@ def main(argv: list[str] | None = None) -> int:
         "name": contract["name"],
         "contract_revision": contract["contract_revision"],
         "contract": contract,
-        "contract_sha256": content_digest(contract),
         "live_runner": "run_p23_saa_ten_thread_live.py",
         "historical_evidence_unchanged": True,
         "model_fingerprints": {
@@ -194,6 +193,7 @@ def main(argv: list[str] | None = None) -> int:
             "assessor": assessor.fingerprint().to_dict(),
         },
     }
+    experiment["contract_sha256"] = content_digest(experiment)
     store.publish_run(
         experiment=experiment,
         preflight={"status": "READY", "contract_sha256": experiment["contract_sha256"]},
