@@ -1,15 +1,19 @@
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 from typing import Any
 
 from mneme.development import EdgeState, LearnerState
-from tools.run_p23_saa_ten_thread import call_budget_breakdown, maximum_call_budget
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from tools.run_p23_saa_ten_thread import call_budget_breakdown, maximum_call_budget  # noqa: E402
 from tools.run_p23_saa_ten_thread_live import (
     _consequence_subtest,
     _measurement_field_check,
     _record_measurement_unknown,
-)
+)  # noqa: E402
 
 
 class _Pilot:
