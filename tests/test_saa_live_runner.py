@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from tools.run_p23_saa_ten_thread_live import _record_measurement_unknown
+from tools.run_p23_saa_ten_thread_live import _measurement_field_check, _record_measurement_unknown
 
 
 class _Pilot:
@@ -33,3 +33,35 @@ def test_assessor_validation_miss_is_recorded_without_credit_or_absence() -> Non
     assert receipt["learner_credit"] == 0
     assert receipt["absence_evidence"] is False
     assert receipt["validation_error"] == "invalid monitor row"
+
+
+def test_measurement_field_gate_ignores_cold_start_and_off_removal() -> None:
+    check = _measurement_field_check(
+        [{"condition": "SAA", "field": {"field_enabled": True, "total_pressure": 20000}}],
+        [
+            {
+                "condition": "SAA",
+                "probe": 0,
+                "field": {"field_enabled": True, "total_pressure": 20000},
+            }
+        ],
+        [
+            {"condition": "SAA_ON", "field": {"field_enabled": True, "total_pressure": 20000}},
+            {"condition": "SAA_OFF", "field": None},
+            {
+                "condition": "SAA_RESTORED",
+                "field": {"field_enabled": True, "total_pressure": 20000},
+            },
+        ],
+    )
+    assert check == {"checked": 4, "invalid": [], "valid": True}
+
+
+def test_measurement_field_gate_rejects_zero_measurement_pressure() -> None:
+    check = _measurement_field_check(
+        [{"condition": "SAA", "field": {"field_enabled": True, "total_pressure": 0}}],
+        [],
+        [],
+    )
+    assert check["valid"] is False
+    assert check["invalid"] == [{"condition": "SAA", "coordinate": None, "total_pressure": 0.0}]

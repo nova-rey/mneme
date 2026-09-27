@@ -151,6 +151,51 @@ def _nonzero_edges(controller: ResponseController) -> list[Any]:
     return [item for item in state.edge_states if item.accessibility > 0 or item.support > 0]
 
 
+def _measurement_field_check(
+    readouts: list[dict[str, Any]],
+    probes: list[dict[str, Any]],
+    removal: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Validate SAA fields after development has produced eligible state.
+
+    Development traces legitimately include cold-start coordinates before the
+    first eligible association exists.  The treatment gate therefore checks
+    actual SAA readouts, probes, and ON/RESTORED removal checks.  The OFF
+    removal condition is intentionally field-free and is excluded.
+    """
+
+    rows = (
+        [row for row in readouts if row.get("condition") == "SAA"]
+        + [row for row in probes if row.get("condition") == "SAA"]
+        + [
+            row
+            for row in removal
+            if row.get("condition") in {"SAA_ON", "SAA_RESTORED"}
+        ]
+    )
+    invalid: list[dict[str, Any]] = []
+    for row in rows:
+        field = row.get("field")
+        if not isinstance(field, Mapping) or not bool(field.get("field_enabled")):
+            invalid.append(
+                {"condition": row.get("condition"), "coordinate": row.get("coordinate", row.get("probe"))}
+            )
+            continue
+        try:
+            pressure = float(field.get("total_pressure", 0))
+        except (TypeError, ValueError):
+            pressure = 0.0
+        if pressure <= 0:
+            invalid.append(
+                {
+                    "condition": row.get("condition"),
+                    "coordinate": row.get("coordinate", row.get("probe")),
+                    "total_pressure": pressure,
+                }
+            )
+    return {"checked": len(rows), "invalid": invalid, "valid": bool(rows) and not invalid}
+
+
 def _write_json(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -484,12 +529,13 @@ def main(argv: list[str] | None = None) -> int:
             comparisons.append({"probe": key[0], "repetition": key[1], "label_order": ["response_A", "response_B"],
                                 "response_A": values["SAA"], "response_B": values["C"], "different": values["SAA"] != values["C"]})
     pilot.publish_artifact("evaluation", "blinded-stage1.json", {"stage": "mechanical-observable", "rows": comparisons})
-    valid_field = all(bool(row.get("field", {}).get("field_enabled")) and bool(row.get("field", {}).get("total_pressure", 0)) for row in field_traces if row.get("field"))
+    field_check = _measurement_field_check(readouts, probes, removal)
+    valid_field = bool(field_check["valid"])
     report = {
         "status": "VALID_INTERPRETABLE_C_SAA" if valid_field else "INVALID_ZERO_FIELD_PRESSURE",
         "mode_definitions": {"C": "vanilla/no MNEME", "SAA": SAA_VERSION},
         "development_gate": gate,
-        "treatment_gate": {"SAA_state_nonzero": bool(nonzero), "SAA_field_coordinates": len(field_traces), "SAA_nonzero_pressure": valid_field, "control_influence": 0},
+        "treatment_gate": {"SAA_state_nonzero": bool(nonzero), "SAA_development_field_coordinates": len(field_traces), "SAA_measurement_field_check": field_check, "SAA_nonzero_pressure": valid_field, "control_influence": 0},
         "transcript_count": len(transcripts),
         "thread10_readouts": readouts,
         "probe_comparisons": comparisons,
