@@ -35,6 +35,12 @@ The documents are preserved in their supplied form and are intentionally not mer
   does not reopen Phase Two, authorize stochastic exploration, alter the current F0 receipts,
   or begin Phase Three. The byte-preserving ingestion record is
   [here](receipts/MNEME_Research_Architecture_Amendment_Stochastic_Associative_Accessibility_Ingestion_20260926.md).
+* [Phase Four research brief: on-demand neural influence](research/MNEME_Phase_Four_Research_Brief_On_Demand_Neural_Influence_2026-09-27.md)
+  (`P4-RB-NEURAL-2026-09-27`, revision 1) is owner-supplied research context for
+  Librarian and future planning: SAA selection, host-specific activation steering,
+  qualified compilation caches, and learned translators (CAA, PSR, HyperSteer,
+  ReFT). It is not execution authorization, a Phase Four start, or Phase Three closure.
+  [Source integrity, retrieval keywords, and project cross-links](receipts/MNEME_Phase_Four_Neural_Influence_Brief_Ingestion_20260927.md).
 * [F0 field correction receipt](receipts/MNEME_P2_F0_Field_Correction_20260926.md)
 * [F0 real-corpus assessor regression](receipts/MNEME_P2_F0_Real_Corpus_Assessor_Regression_20260926.md)
 * [F0 invalid credential-environment receipt](receipts/MNEME_P2_F0_Background_Run_Invalid_Missing_DeepInfra_Token_20260926.md)
