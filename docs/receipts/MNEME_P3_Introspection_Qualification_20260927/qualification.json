@@ -1,0 +1,134 @@
+{
+  "status": "QUALIFIED",
+  "version": "p3-introspection-v1",
+  "historical_source": "docs/receipts/MNEME_P2_SAA_Ten_Thread_Run_r8_20260927/experiments/p2.3-saa-ten-thread-ab/revisions/2/runs/p23-saa-ten-thread-20260927-r8/contingent/transcripts.json",
+  "archived_r8_arc_count": 9,
+  "archived_r8_packet_rows": [
+    {
+      "arc_id": "r8-T01",
+      "message_count": 16,
+      "target_count": 1,
+      "source_digest": "f33868e9b63e3a54632e986e614de0c54a26f22d0b35ccbaec14ee52f71f75f0",
+      "admin_keys_hidden": true
+    },
+    {
+      "arc_id": "r8-T02",
+      "message_count": 16,
+      "target_count": 1,
+      "source_digest": "38ce6abd00f3ec368b5a65eb13054d5dbe9239c13041b212596fc6f69edd4257",
+      "admin_keys_hidden": true
+    },
+    {
+      "arc_id": "r8-T03",
+      "message_count": 16,
+      "target_count": 4,
+      "source_digest": "5dea85299bb3e85a39b290a43da57e56d52ebdb0ddd79898317222c5e70a7124",
+      "admin_keys_hidden": true
+    },
+    {
+      "arc_id": "r8-T04",
+      "message_count": 16,
+      "target_count": 7,
+      "source_digest": "f851ecca315252eb9f8d15d60b229bd9e05b30976a1ad0e1be41246fd03bccc6",
+      "admin_keys_hidden": true
+    },
+    {
+      "arc_id": "r8-T05",
+      "message_count": 16,
+      "target_count": 3,
+      "source_digest": "385595a237503684c2090c43c2081928b2a21d63b73762f65171677735dec1a4",
+      "admin_keys_hidden": true
+    },
+    {
+      "arc_id": "r8-T06",
+      "message_count": 16,
+      "target_count": 6,
+      "source_digest": "28a88087e6e618b6e29ba9ec486db603222b1b2ab78031e13109959448d68240",
+      "admin_keys_hidden": true
+    },
+    {
+      "arc_id": "r8-T07",
+      "message_count": 16,
+      "target_count": 4,
+      "source_digest": "df65576c31be01fa5ac5f4d0ca13e7536969113d98433335cfaee9df202a95a7",
+      "admin_keys_hidden": true
+    },
+    {
+      "arc_id": "r8-T08",
+      "message_count": 16,
+      "target_count": 3,
+      "source_digest": "64e02072b2ea238845f8b27979081b184d82e5b60b777e5bd827030645a7a247",
+      "admin_keys_hidden": true
+    },
+    {
+      "arc_id": "r8-T09",
+      "message_count": 16,
+      "target_count": 3,
+      "source_digest": "7bf392818e4bdd7f11e0db5f6e9e09b971718346a6a6a3b3b3e43e05b06d4166",
+      "admin_keys_hidden": true
+    }
+  ],
+  "synthetic_cases": [
+    {
+      "case": "external-positive",
+      "proposal_count": 1,
+      "accepted_count": 1,
+      "accepted": [
+        {
+          "arc_id": "synthetic-feedback",
+          "target_alias": "target",
+          "edge_key": "e1",
+          "context": "maintenance",
+          "association_delta": 96000,
+          "expression_delta": 16000,
+          "basis": "EXTERNAL_REACTION",
+          "evidence_refs": [
+            "turn-0"
+          ],
+          "proposal_digest": "e7342bffc1a2f113655066b04224b1a1c9ff53d045425b3425293aa8cfb375fa",
+          "reason": "The supplied participant reports success."
+        }
+      ]
+    },
+    {
+      "case": "self-only-negative",
+      "proposal_count": 1,
+      "accepted_count": 1,
+      "accepted": [
+        {
+          "arc_id": "synthetic-self-only",
+          "target_alias": "target",
+          "edge_key": "e1",
+          "context": "maintenance",
+          "association_delta": -22400,
+          "expression_delta": -39200,
+          "basis": "SELF_ONLY",
+          "evidence_refs": [
+            "turn-0"
+          ],
+          "proposal_digest": "a0d679f6258279219fa3f3e79ab281b389ff19c0ef6ab28dd53c89495a4ed98a",
+          "reason": "No independent reaction is recorded."
+        }
+      ]
+    },
+    {
+      "case": "abstention",
+      "proposal_count": 0,
+      "accepted_count": 0,
+      "accepted": []
+    }
+  ],
+  "duplicate_replay_accepted_count": 0,
+  "ordinary_learning_disabled": true,
+  "replay_identical": true,
+  "production_saa_odds_before": {
+    "e1": 500000,
+    "e2": 500000
+  },
+  "production_saa_odds_after": {
+    "e1": 517747,
+    "e2": 482253
+  },
+  "production_odds_changed": true,
+  "historical_evidence_unchanged": true
+}

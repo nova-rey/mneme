@@ -1,0 +1,120 @@
+{
+  "adjustments": [
+    {
+      "arc_id": "synthetic-feedback",
+      "association_delta": 96000,
+      "basis": "EXTERNAL_REACTION",
+      "context": "maintenance",
+      "edge_key": "e1",
+      "evidence_refs": [
+        "turn-0"
+      ],
+      "expression_delta": 16000,
+      "proposal_digest": "e7342bffc1a2f113655066b04224b1a1c9ff53d045425b3425293aa8cfb375fa",
+      "reason": "The supplied participant reports success.",
+      "target_alias": "target"
+    },
+    {
+      "arc_id": "synthetic-self-only",
+      "association_delta": -22400,
+      "basis": "SELF_ONLY",
+      "context": "maintenance",
+      "edge_key": "e1",
+      "evidence_refs": [
+        "turn-0"
+      ],
+      "expression_delta": -39200,
+      "proposal_digest": "a0d679f6258279219fa3f3e79ab281b389ff19c0ef6ab28dd53c89495a4ed98a",
+      "reason": "No independent reaction is recorded.",
+      "target_alias": "target"
+    }
+  ],
+  "dedup_keys": [
+    "a0d679f6258279219fa3f3e79ab281b389ff19c0ef6ab28dd53c89495a4ed98a",
+    "e7342bffc1a2f113655066b04224b1a1c9ff53d045425b3425293aa8cfb375fa"
+  ],
+  "parent_digest": "fixture-parent",
+  "reviews": [
+    {
+      "accepted": [
+        {
+          "arc_id": "synthetic-feedback",
+          "association_delta": 96000,
+          "basis": "EXTERNAL_REACTION",
+          "context": "maintenance",
+          "edge_key": "e1",
+          "evidence_refs": [
+            "turn-0"
+          ],
+          "expression_delta": 16000,
+          "proposal_digest": "e7342bffc1a2f113655066b04224b1a1c9ff53d045425b3425293aa8cfb375fa",
+          "reason": "The supplied participant reports success.",
+          "target_alias": "target"
+        }
+      ],
+      "arc_id": "synthetic-feedback",
+      "ordinary_learning": false,
+      "packet_digest": "c7be462066ae3b6c11d4d2e4407d9edcb924f8c0a5894e504ad7e94c07746053",
+      "proposals": [
+        {
+          "abstain": false,
+          "association_effect": 0.6,
+          "basis": "EXTERNAL_REACTION",
+          "confidence": 0.8,
+          "evidence_refs": [
+            "turn-0"
+          ],
+          "expression_effect": 0.1,
+          "reason": "The supplied participant reports success.",
+          "target_alias": "target"
+        }
+      ],
+      "status": "COMPLETE"
+    },
+    {
+      "accepted": [
+        {
+          "arc_id": "synthetic-self-only",
+          "association_delta": -22400,
+          "basis": "SELF_ONLY",
+          "context": "maintenance",
+          "edge_key": "e1",
+          "evidence_refs": [
+            "turn-0"
+          ],
+          "expression_delta": -39200,
+          "proposal_digest": "a0d679f6258279219fa3f3e79ab281b389ff19c0ef6ab28dd53c89495a4ed98a",
+          "reason": "No independent reaction is recorded.",
+          "target_alias": "target"
+        }
+      ],
+      "arc_id": "synthetic-self-only",
+      "ordinary_learning": false,
+      "packet_digest": "e594ec98ed229115c94225880ef9713cf8da8ecbd71e0cb9035ce102228fc59c",
+      "proposals": [
+        {
+          "abstain": false,
+          "association_effect": -0.4,
+          "basis": "SELF_ONLY",
+          "confidence": 0.7,
+          "evidence_refs": [
+            "turn-0"
+          ],
+          "expression_effect": -0.7,
+          "reason": "No independent reaction is recorded.",
+          "target_alias": "target"
+        }
+      ],
+      "status": "COMPLETE"
+    },
+    {
+      "accepted": [],
+      "arc_id": "synthetic-feedback",
+      "ordinary_learning": false,
+      "packet_digest": "c7be462066ae3b6c11d4d2e4407d9edcb924f8c0a5894e504ad7e94c07746053",
+      "proposals": [],
+      "status": "COMPLETE"
+    }
+  ],
+  "version": "p3-introspection-v1"
+}

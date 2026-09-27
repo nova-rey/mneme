@@ -11,7 +11,7 @@ from __future__ import annotations
 import random
 import re
 from collections import defaultdict, deque
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 from dataclasses import dataclass, replace
 from typing import TYPE_CHECKING, Any
 
@@ -645,6 +645,7 @@ def _saa_distribution(
     concepts: tuple[Any, ...],
     candidates: tuple[tuple[Any, int], ...],
     chosen: FieldConfig,
+    accessibility_adjustments: Mapping[str, int] | None = None,
 ) -> tuple[tuple[tuple[str, int], ...], int, int]:
     """Return ``(distribution, flatness, novelty)`` for SAA v1.
 
@@ -661,6 +662,7 @@ def _saa_distribution(
     max_context = max(context_by_key.values(), default=0)
     novelty = FIXED_ONE - max_context
     raw_weights: list[tuple[str, int]] = []
+    adjustments = accessibility_adjustments or {}
     for edge, strength in candidates:
         source_context = context_by_key.get(edge.source, 0)
         target_context = context_by_key.get(edge.target, 0)
@@ -677,7 +679,13 @@ def _saa_distribution(
         factor = chosen.saa_background_weight + (
             chosen.saa_context_weight * contextual
         ) // FIXED_ONE
-        raw_weights.append((edge.key, max(1, (strength * factor) // FIXED_ONE)))
+        base_weight = (strength * factor) // FIXED_ONE
+        # Phase Three introspection may apply a small, signed, contextual
+        # adjustment to an already-earned edge.  It changes odds; it never
+        # creates an edge or bypasses eligibility/quarantine.
+        delta = int(adjustments.get(edge.key, 0))
+        adjusted_weight = base_weight + (base_weight * delta) // FIXED_ONE
+        raw_weights.append((edge.key, max(1, adjusted_weight)))
     total = sum(weight for _, weight in raw_weights)
     if not total:
         return (), 0, novelty
@@ -737,6 +745,7 @@ def compute_saa_field(
     ineligible_edges: Iterable[str] = (),
     field_enabled: bool = True,
     field_seed: int | None = None,
+    accessibility_adjustments: Mapping[str, int] | None = None,
 ) -> FieldResult:
     """Compute the inspectable stochastic associative accessibility field.
 
@@ -782,7 +791,7 @@ def compute_saa_field(
     if not candidates_tuple:
         return _saa_empty_result(query, chosen, active, field_enabled=True, field_seed=field_seed)
     distribution, flatness, novelty = _saa_distribution(
-        query, concept_rows, candidates_tuple, chosen
+        query, concept_rows, candidates_tuple, chosen, accessibility_adjustments
     )
     if not distribution:
         return _saa_empty_result(

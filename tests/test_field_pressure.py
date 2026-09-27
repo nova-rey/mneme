@@ -356,6 +356,27 @@ def test_saa_same_seed_replays_and_different_history_changes_pay_table():
     assert first.accessibility_distribution != altered.accessibility_distribution
 
 
+def test_introspection_adjustment_changes_production_saa_odds_without_new_edge():
+    concepts, edges = _graph(
+        ("a", "alpha"), ("b", "beta"), ("c", "gamma"), ("d", "delta"),
+        edges=(
+            ("e1", "a", "b", "supports"),
+            ("e2", "c", "d", "supports"),
+        ),
+    )
+    state = _state("e1", "e2")
+    before = compute_saa_field("unrelated", concepts, edges, state, field_seed=7)
+    after = compute_saa_field(
+        "unrelated", concepts, edges, state, field_seed=7,
+        accessibility_adjustments={"e1": 200_000},
+    )
+    assert (
+        dict(before.accessibility_distribution)["e1"]
+        < dict(after.accessibility_distribution)["e1"]
+    )
+    assert {item.edge_key for item in after.contributions} <= {"e1", "e2"}
+
+
 def test_saa_different_field_seed_can_land_differently():
     concepts, edges = _graph(
         ("a", "alpha"), ("b", "beta"), ("c", "gamma"),

@@ -59,6 +59,10 @@ class TurnIntent:
     # Dedicated accessibility RNG.  It is caller-supplied and never derived
     # from administrative identifiers, timestamps, or host-generation seed.
     field_seed: int | None = None
+    # Versioned Phase Three introspection adjustments.  These are signed
+    # contextual odds deltas for already-earned edges; they are never graph
+    # state and cannot bypass learner/quarantine eligibility.
+    field_adjustments: Mapping[str, int] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -527,6 +531,7 @@ class ResponseController:
                     and pin.provider_reuse_allowed
                 ),
                 field_seed=intent.field_seed,
+                accessibility_adjustments=intent.field_adjustments,
             )
         return compute_field(
             intent.current_input,

@@ -2017,30 +2017,209 @@
           "CI"
         ],
         "results": {
-          "live terminal report": {
-            "receipt": "docs/receipts/MNEME_P2_SAA_Ten_Thread_Run_r8_20260927/TERMINAL_VALID.md",
-            "status": "PASS",
-            "recorded_at": "2026-09-27T17:56:11.215923Z"
+          "CI": {
+            "receipt": "GitHub Actions run 36338782794",
+            "recorded_at": "2026-09-27T17:57:38.183025Z",
+            "status": "PASS"
           },
           "complete transcript/evidence publication": {
             "receipt": "docs/receipts/MNEME_P2_SAA_Ten_Thread_Run_r8_20260927/SHA256SUMS.json",
-            "status": "PASS",
-            "recorded_at": "2026-09-27T17:56:11.215923Z"
+            "recorded_at": "2026-09-27T17:56:11.215923Z",
+            "status": "PASS"
+          },
+          "live terminal report": {
+            "receipt": "docs/receipts/MNEME_P2_SAA_Ten_Thread_Run_r8_20260927/TERMINAL_VALID.md",
+            "recorded_at": "2026-09-27T17:56:11.215923Z",
+            "status": "PASS"
           },
           "replay/artifact audit": {
             "receipt": "docs/receipts/MNEME_P2_SAA_Ten_Thread_Run_r8_20260927/SHA256SUMS.json",
-            "status": "PASS",
-            "recorded_at": "2026-09-27T17:56:11.215923Z"
-          },
-          "CI": {
-            "receipt": "GitHub Actions run 36338782794",
-            "status": "PASS",
-            "recorded_at": "2026-09-27T17:57:38.183025Z"
+            "recorded_at": "2026-09-27T17:56:11.215923Z",
+            "status": "PASS"
           }
         }
       },
       "waiting_on": [],
       "workstream": "saa-v1"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "72bc69bd78ec9d80de193c76a44dd0e716f862d8",
+      "campaign": "mneme-phase-two",
+      "candidate": null,
+      "completion_criterion": "Qualification demonstrates bounded review, provenance validation, exactly-once replay, and production SAA odds changes without ordinary graph credit.",
+      "created_at": "2026-09-27T18:49:08.177919Z",
+      "dependencies": [],
+      "domain": "python-development-instrumentation",
+      "edit_boundaries": [
+        "src/mneme",
+        "tests",
+        "tools",
+        "docs",
+        "bible.md"
+      ],
+      "evidence_refs": [],
+      "id": "P3-INTROSPECT-QUAL",
+      "notes": "",
+      "owner": "root-foreman",
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "P3-introspection-contract",
+        "P3-qualification",
+        "P3-production-odds"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": false,
+          "name": "canonical-integration",
+          "units": 1
+        }
+      ],
+      "scope": "Implement and qualify bounded introspection over immutable R8 arcs and synthetic malformed/attack fixtures.",
+      "session_ids": [
+        "p3-qual-20260927"
+      ],
+      "status": "RUNNING",
+      "title": "Qualify arc-bound introspection against archived R8",
+      "updated_at": "2026-09-27T18:49:24.602704Z",
+      "validation": {
+        "required": [
+          "pytest focused introspection",
+          "ruff",
+          "mypy",
+          "qualification receipt"
+        ],
+        "results": {}
+      },
+      "waiting_on": [],
+      "workstream": "p3-introspection"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "72bc69bd78ec9d80de193c76a44dd0e716f862d8",
+      "campaign": "mneme-phase-two",
+      "candidate": null,
+      "completion_criterion": "Study reaches terminal interpretable result or a material blocker with preserved evidence; all scheduled checkpoints and readouts are accounted for.",
+      "created_at": "2026-09-27T18:49:20.708730Z",
+      "dependencies": [
+        "package:P3-INTROSPECT-QUAL"
+      ],
+      "domain": "live-local-inference",
+      "edit_boundaries": [
+        "tools",
+        "docs",
+        "bible.md"
+      ],
+      "evidence_refs": [],
+      "id": "P3-INTROSPECT-RUN",
+      "notes": "",
+      "owner": null,
+      "priority": 2,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "P3-topic-bank",
+        "P3-100-thread-study",
+        "P3-checkpoints",
+        "P3-readouts"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": false,
+          "name": "model-agent",
+          "units": 1
+        }
+      ],
+      "scope": "Fork R8 state into introspection and no-introspection lineages; run frozen 100-topic shared-interloper study, checkpoints, probes, ON/OFF/RESTORED, and report.",
+      "session_ids": [],
+      "status": "WAITING",
+      "title": "Run P3-INTROSPECT-100 two-lineage study",
+      "updated_at": "2026-09-27T18:49:20.708730Z",
+      "validation": {
+        "required": [
+          "preflight receipt",
+          "complete study receipt",
+          "checkpoint/replay audit"
+        ],
+        "results": {}
+      },
+      "waiting_on": [
+        "package:P3-INTROSPECT-QUAL"
+      ],
+      "workstream": "p3-introspection"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "72bc69bd78ec9d80de193c76a44dd0e716f862d8",
+      "campaign": "mneme-phase-two",
+      "candidate": null,
+      "completion_criterion": "Phase Three evidence and release are reproducible, historical runs remain immutable, and one evidence-based Phase Four recommendation is published without beginning Phase Four.",
+      "created_at": "2026-09-27T18:49:20.800303Z",
+      "dependencies": [
+        "package:P3-INTROSPECT-RUN"
+      ],
+      "domain": "release-validation",
+      "edit_boundaries": [
+        "src/mneme",
+        "tools",
+        "docs",
+        "tests",
+        "README.md",
+        "bible.md",
+        "pyproject.toml",
+        ".github"
+      ],
+      "evidence_refs": [],
+      "id": "P3-RELEASE",
+      "notes": "",
+      "owner": null,
+      "priority": 3,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "P3-roadmap-reconciliation",
+        "P3-release",
+        "P3-final-disposition"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": false,
+          "name": "canonical-integration",
+          "units": 1
+        }
+      ],
+      "scope": "Reconcile attached Phase Three steer with roadmap requirements, package inspector/report/recovery artifacts, run full validation/CI, and publish final Phase Three decision.",
+      "session_ids": [],
+      "status": "WAITING",
+      "title": "Package Phase Three evidence and release",
+      "updated_at": "2026-09-27T18:49:20.800303Z",
+      "validation": {
+        "required": [
+          "pytest",
+          "ruff",
+          "mypy",
+          "wheel smoke",
+          "queue validation",
+          "CI",
+          "release receipt"
+        ],
+        "results": {}
+      },
+      "waiting_on": [
+        "package:P3-INTROSPECT-RUN"
+      ],
+      "workstream": "p3-release"
     }
   ],
   "project": "nova-rey/mneme",
@@ -2055,5 +2234,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-27T17:59:16.312072Z"
+  "updated_at": "2026-09-27T18:49:24.602842Z"
 }
