@@ -14,6 +14,7 @@ import json
 import os
 import sys
 import uuid
+from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
@@ -153,6 +154,40 @@ def _nonzero_edges(controller: ResponseController) -> list[Any]:
 def _write_json(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def _record_measurement_unknown(
+    pilot: PilotRun,
+    *,
+    call_id: str,
+    coordinate: Mapping[str, Any],
+    operation_id: str,
+    validation_error: str | None,
+) -> None:
+    """Persist an assessor validation miss without mutating developmental state.
+
+    The raw provider result and validator error are already retained by
+    ``PilotRuntime.provider_call``.  This companion receipt makes the
+    downstream disposition explicit: the episode remains conversational
+    evidence, but it contributes neither learner credit nor absence evidence.
+    In particular, do not pass ``None`` to the production publication adapter;
+    that adapter correctly accepts only resolved semantic rows.
+    """
+
+    pilot.publish_artifact(
+        "assessment",
+        f"{call_id}-measurement-unknown.json",
+        {
+            "status": "measurement_unknown / interpretation_unavailable",
+            "call_id": call_id,
+            "coordinate": dict(coordinate),
+            "operation_id": operation_id,
+            "validation_error": validation_error,
+            "admitted_relationships": 0,
+            "learner_credit": 0,
+            "absence_evidence": False,
+        },
+    )
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -329,7 +364,13 @@ def main(argv: list[str] | None = None) -> int:
                                 admitted = plan.publish(assessed.validated)
                                 status = "complete"
                             else:
-                                plan.publish(None)
+                                _record_measurement_unknown(
+                                    pilot,
+                                    call_id=f"assess-{thread.thread_id}-{turn}",
+                                    coordinate={"thread": thread.thread_id, "turn": turn},
+                                    operation_id=outcome.operation.operation_id,
+                                    validation_error=assessed.validation_error,
+                                )
                                 status = "measurement_unknown"
                         else:
                             admitted = plan.publish(None)
