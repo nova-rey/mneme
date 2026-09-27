@@ -1,0 +1,12 @@
+{
+  "status": "INVALID_RESIDENT_GEMMA_OOM",
+  "run_id": "p3-introspect-100-20260927-r8",
+  "returned_calls": 190,
+  "uncertain_calls": 1,
+  "failed_call": "dev-I-P3-004-6",
+  "cause": "The resident llama-server was killed by the MSI kernel OOM killer. Its default 8192 MiB prompt-cache reservation exceeded the 3.2 GiB host when combined with the resident GLiNER and DeBERTa services.",
+  "evidence": "MSI kernel log records OOM kill of llama-server pid 617954; no scientific evidence accepted.",
+  "scientific_disposition": "No developmental or behavioral evidence accepted.",
+  "preservation": "All r8 reservations and service logs remain immutable evidence.",
+  "created_utc": "2026-09-27T23:50:00Z"
+}

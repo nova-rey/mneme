@@ -16,5 +16,6 @@ nohup env CUDA_VISIBLE_DEVICES= "$PYTHON" "$SERVICE_DIR/msi_resident_server.py" 
   --role gliner --host 0.0.0.0 --port 64171 \
   > "$SERVICE_DIR/logs/gliner.log" 2>&1 < /dev/null &
 nohup "$LLAMA" -m "$MODEL" --host 0.0.0.0 --port 64170 \
-  -c 4096 -ngl 99 --no-webui --reasoning off --parallel 1 \
+  -c 4096 -ngl 99 --cache-ram 256 --no-cache-idle-slots \
+  --no-cont-batching --no-webui --reasoning off --parallel 1 \
   > "$SERVICE_DIR/logs/gemma-server.log" 2>&1 < /dev/null &
