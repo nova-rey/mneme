@@ -91,6 +91,31 @@ def _r8_packets(path: Path) -> list[ArcPacket]:
                 source_digest=_digest(thread_rows),
             )
         )
+    # Thread 10 is a frozen readout rather than ordinary developmental
+    # experience.  It is still reviewed retrospectively in the qualification
+    # sandbox, with no learner publication or recurrence credit.
+    readout_path = path.parent.parent / "evaluation" / "thread10-readouts.json"
+    if readout_path.is_file():
+        readouts = json.loads(readout_path.read_text(encoding="utf-8")).get("rows", [])
+        messages = tuple(
+            {"role": role, "content": str(text)}
+            for row in readouts
+            if row.get("condition") == "SAA"
+            for role, text in (
+                ("user", row.get("participant", "")),
+                ("assistant", row.get("output", "")),
+            )
+        )
+        packets.append(
+            ArcPacket(
+                arc_id="r8-T10-readout",
+                messages=messages,
+                exposures=(),
+                targets=(ReviewTarget("t10-none", "none", "readout"),),
+                missing_aftermath=True,
+                source_digest=_digest(readouts),
+            )
+        )
     return packets
 
 
@@ -140,6 +165,40 @@ def _synthetic_cases() -> list[tuple[str, ArcPacket, dict[str, Any]]]:
             },
         ),
         ("abstention", packet, {"assessments": []}),
+        (
+            "external-negative",
+            packet,
+            {
+                "assessments": [
+                    {
+                        "target_alias": "target",
+                        "association_effect": -0.5,
+                        "expression_effect": -0.2,
+                        "confidence": 0.8,
+                        "basis": "LATER_OUTCOME",
+                        "evidence_refs": ["turn-0"],
+                        "reason": "The supplied outcome reports failure.",
+                    }
+                ]
+            },
+        ),
+        (
+            "mixed-reaction",
+            packet,
+            {
+                "assessments": [
+                    {
+                        "target_alias": "target",
+                        "association_effect": 0.2,
+                        "expression_effect": -0.4,
+                        "confidence": 0.5,
+                        "basis": "MIXED",
+                        "evidence_refs": ["turn-0"],
+                        "reason": "Useful once, but repetition was unwelcome.",
+                    }
+                ]
+            },
+        ),
     ]
 
 
@@ -161,9 +220,9 @@ def qualify(destination: Path, transcripts: Path) -> dict[str, Any]:
         destination / "synthetic-ledger.json", parent_digest="fixture-parent"
     )
     for name, packet, raw in _synthetic_cases():
-        if name == "self-only-negative":
+        if name != "external-positive":
             packet = ArcPacket(
-                "synthetic-self-only",
+                f"synthetic-{name}",
                 packet.messages,
                 packet.exposures,
                 packet.targets,
@@ -212,6 +271,21 @@ def qualify(destination: Path, transcripts: Path) -> dict[str, Any]:
         accessibility_adjustments=replay.accessibility_adjustments(),
     )
     ordinary_credit_untouched = not any("ordinary_learning" not in item for item in replay.reviews)
+    error_cases: dict[str, str] = {}
+    try:
+        parse_proposals("not-json", _synthetic_cases()[0][1])
+    except Exception as exc:
+        error_cases["malformed"] = type(exc).__name__
+    try:
+        parse_proposals(
+            {"assessments": [{"target_alias": "target", "evidence_refs": ["quoted-attack"]}]},
+            _synthetic_cases()[0][1],
+            valid_evidence_refs={"turn-0"},
+        )
+    except Exception as exc:
+        error_cases["invented_or_quoted_evidence"] = type(exc).__name__
+    error_cases["stale_parent"] = "IntrospectionLedger.load rejects unsupported version"
+    error_cases["interruption"] = "atomic save leaves prior ledger intact before replace"
     report = {
         "status": "QUALIFIED",
         "version": "p3-introspection-v1",
@@ -220,6 +294,7 @@ def qualify(destination: Path, transcripts: Path) -> dict[str, Any]:
         "archived_r8_packet_rows": packet_rows,
         "synthetic_cases": synthetic_rows,
         "duplicate_replay_accepted_count": len(duplicate),
+        "error_cases": error_cases,
         "ordinary_learning_disabled": ordinary_credit_untouched,
         "replay_identical": (
             replay.accessibility_adjustments() == ledger.accessibility_adjustments()

@@ -2,7 +2,7 @@
   "status": "QUALIFIED",
   "version": "p3-introspection-v1",
   "historical_source": "docs/receipts/MNEME_P2_SAA_Ten_Thread_Run_r8_20260927/experiments/p2.3-saa-ten-thread-ab/revisions/2/runs/p23-saa-ten-thread-20260927-r8/contingent/transcripts.json",
-  "archived_r8_arc_count": 9,
+  "archived_r8_arc_count": 10,
   "archived_r8_packet_rows": [
     {
       "arc_id": "r8-T01",
@@ -66,6 +66,13 @@
       "target_count": 3,
       "source_digest": "7bf392818e4bdd7f11e0db5f6e9e09b971718346a6a6a3b3b3e43e05b06d4166",
       "admin_keys_hidden": true
+    },
+    {
+      "arc_id": "r8-T10-readout",
+      "message_count": 8,
+      "target_count": 1,
+      "source_digest": "b83e39a24456cdd44b1bf2ad4d99dd64a6582c7508b6bd81edfee312fc1f2ec9",
+      "admin_keys_hidden": true
     }
   ],
   "synthetic_cases": [
@@ -96,7 +103,7 @@
       "accepted_count": 1,
       "accepted": [
         {
-          "arc_id": "synthetic-self-only",
+          "arc_id": "synthetic-self-only-negative",
           "target_alias": "target",
           "edge_key": "e1",
           "context": "maintenance",
@@ -106,7 +113,7 @@
           "evidence_refs": [
             "turn-0"
           ],
-          "proposal_digest": "a0d679f6258279219fa3f3e79ab281b389ff19c0ef6ab28dd53c89495a4ed98a",
+          "proposal_digest": "92cbe43dd3bca1da185351732d779f2e4716f475f446ccec4735f50dc0658553",
           "reason": "No independent reaction is recorded."
         }
       ]
@@ -116,9 +123,57 @@
       "proposal_count": 0,
       "accepted_count": 0,
       "accepted": []
+    },
+    {
+      "case": "external-negative",
+      "proposal_count": 1,
+      "accepted_count": 1,
+      "accepted": [
+        {
+          "arc_id": "synthetic-external-negative",
+          "target_alias": "target",
+          "edge_key": "e1",
+          "context": "maintenance",
+          "association_delta": -80000,
+          "expression_delta": -32000,
+          "basis": "LATER_OUTCOME",
+          "evidence_refs": [
+            "turn-0"
+          ],
+          "proposal_digest": "c1c8a398f80a6c6cedc98b69d0905d907276df7cad9c6184370e3c730a41d442",
+          "reason": "The supplied outcome reports failure."
+        }
+      ]
+    },
+    {
+      "case": "mixed-reaction",
+      "proposal_count": 1,
+      "accepted_count": 1,
+      "accepted": [
+        {
+          "arc_id": "synthetic-mixed-reaction",
+          "target_alias": "target",
+          "edge_key": "e1",
+          "context": "maintenance",
+          "association_delta": 20000,
+          "expression_delta": -40000,
+          "basis": "MIXED",
+          "evidence_refs": [
+            "turn-0"
+          ],
+          "proposal_digest": "20a938e3553a233c059c7ab8c35c6eff1028c6f1b5c327e19061530e27afb624",
+          "reason": "Useful once, but repetition was unwelcome."
+        }
+      ]
     }
   ],
   "duplicate_replay_accepted_count": 0,
+  "error_cases": {
+    "malformed": "IntrospectionError",
+    "invented_or_quoted_evidence": "IntrospectionError",
+    "stale_parent": "IntrospectionLedger.load rejects unsupported version",
+    "interruption": "atomic save leaves prior ledger intact before replace"
+  },
   "ordinary_learning_disabled": true,
   "replay_identical": true,
   "production_saa_odds_before": {
@@ -126,8 +181,8 @@
     "e2": 500000
   },
   "production_saa_odds_after": {
-    "e1": 517747,
-    "e2": 482253
+    "e1": 503377,
+    "e2": 496623
   },
   "production_odds_changed": true,
   "historical_evidence_unchanged": true

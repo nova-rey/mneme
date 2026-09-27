@@ -2,7 +2,7 @@
 
 Status: **QUALIFIED**
 
-Archived R8 packets: 9
+Archived R8 packets: 10
 
 Production SAA odds changed: **True**
 

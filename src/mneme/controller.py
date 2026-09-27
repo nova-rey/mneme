@@ -8,7 +8,7 @@ import re
 import sqlite3
 import uuid
 from collections.abc import Mapping
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any
 
 from .contracts import GenerationRequest, GenerationResult
@@ -873,6 +873,28 @@ class ResponseController:
             applied,
             policy,
             field_result,
+        )
+
+    def prepare_with_introspection(
+        self,
+        intent: TurnIntent,
+        ledger_path: str,
+        *,
+        parent_digest: str = "",
+    ) -> PreparedTurn:
+        """Load a persisted review ledger at the production field boundary.
+
+        The ledger can only adjust odds for already-earned edges.  Loading it
+        here keeps persistence/reload and the host-facing SAA sampler on one
+        auditable path instead of relying on a caller to copy a mapping by
+        hand.  Historical callers continue to use :meth:`prepare` unchanged.
+        """
+
+        from .development import IntrospectionLedger
+
+        ledger = IntrospectionLedger.load(ledger_path, parent_digest=parent_digest)
+        return self.prepare(
+            replace(intent, field_adjustments=ledger.accessibility_adjustments())
         )
 
     def execute(self, prepared: PreparedTurn) -> TurnResult:

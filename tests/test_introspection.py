@@ -4,6 +4,7 @@ import json
 
 import pytest
 
+from mneme.controller import ResponseController, TurnIntent
 from mneme.development import (
     ArcPacket,
     EvidenceBasis,
@@ -15,6 +16,9 @@ from mneme.development import (
     parse_proposals,
     review_request,
 )
+from mneme.hosts import FakeHost
+from mneme.state.contracts import StoragePermissions
+from mneme.state.storage import SQLiteStore
 
 
 def _packet() -> ArcPacket:
@@ -84,3 +88,30 @@ def test_invalid_role_and_abstention_contract() -> None:
         packet,
         (ReflectionProposal("t1", 0, 0, 0.0, EvidenceBasis.INSUFFICIENT, abstain=True),),
     ) == ()
+
+
+def test_controller_loads_persisted_ledger_at_saa_boundary(tmp_path) -> None:
+    store = SQLiteStore(tmp_path / "subject.sqlite3")
+    instance = store.create_root(
+        permissions=StoragePermissions(True, True, True, True, True, True),
+        host_binding=FakeHost().fingerprint().to_dict(),
+    )
+    ledger = IntrospectionLedger(tmp_path / "ledger.json")
+    packet = _packet()
+    proposal = ReflectionProposal(
+        "t1", 0.5, 0, 0.8, EvidenceBasis.EXTERNAL_REACTION, ("turn-1",)
+    )
+    accepted = accept_proposals(packet, (proposal,))
+    ledger.record_review(packet, (proposal,), accepted=accepted)
+    ledger.save()
+    prepared = ResponseController(store, instance, FakeHost()).prepare_with_introspection(
+        TurnIntent(
+            "unrelated context",
+            memory="graph",
+            selection_policy="field-saa-v1",
+            field_seed=7,
+            operation_id="ledger-boundary",
+        ),
+        str(ledger.path),
+    )
+    assert prepared.intent.field_adjustments == ledger.accessibility_adjustments()
