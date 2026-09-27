@@ -2,6 +2,14 @@
   "campaign": "mneme-phase-two",
   "created_at": "2026-09-17T23:26:09.185518Z",
   "dependencies": {
+    "MSI local inference host recovery": {
+      "created_at": "2026-09-27T02:32:35.844465Z",
+      "kind": "external",
+      "receipt": null,
+      "reference": "docs/receipts/MNEME_P2_SAA_MSI_Setup_Receipt_20260927.md",
+      "resolved_at": null,
+      "status": "UNRESOLVED"
+    },
     "external:gemma-live-qualification": {
       "created_at": "2026-09-17T23:27:03.300000Z",
       "kind": "external",
@@ -1967,7 +1975,8 @@
       "completion_criterion": "A valid interpretable ten-thread SAA result or a preserved invalid run with corrected rerun/terminal blocker is published without rewriting historical evidence.",
       "created_at": "2026-09-27T00:41:16.932819Z",
       "dependencies": [
-        "package:SAA-HARNESS-01"
+        "package:SAA-HARNESS-01",
+        "MSI local inference host recovery"
       ],
       "domain": "phase-two-experiment",
       "edit_boundaries": [
@@ -1978,7 +1987,7 @@
       "evidence_refs": [],
       "id": "SAA-LIVE-01",
       "notes": "",
-      "owner": "/root",
+      "owner": null,
       "priority": 3,
       "project": "nova-rey/mneme",
       "required": true,
@@ -1996,12 +2005,10 @@
         }
       ],
       "scope": "Run the authorized ten-thread SAA developmental A/B, frozen Thread-10 readouts, bounded removal/restoration and consequence checks, and publish terminal evidence.",
-      "session_ids": [
-        "saa-live-validation"
-      ],
-      "status": "VALIDATING",
+      "session_ids": [],
+      "status": "WAITING",
       "title": "SAA ten-thread prospective experiment",
-      "updated_at": "2026-09-27T02:29:28.402680Z",
+      "updated_at": "2026-09-27T02:32:35.844508Z",
       "validation": {
         "required": [
           "live terminal report",
@@ -2011,7 +2018,9 @@
         ],
         "results": {}
       },
-      "waiting_on": [],
+      "waiting_on": [
+        "MSI local inference host recovery"
+      ],
       "workstream": "saa-v1"
     }
   ],
@@ -2027,5 +2036,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-27T02:29:28.402775Z"
+  "updated_at": "2026-09-27T02:32:35.844595Z"
 }
