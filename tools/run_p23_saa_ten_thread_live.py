@@ -182,6 +182,7 @@ def main(argv: list[str] | None = None) -> int:
     store = ArtifactStore(ROOT)
     experiment = {
         "name": contract["name"],
+        "contract_revision": contract["contract_revision"],
         "contract": contract,
         "contract_sha256": content_digest(contract),
         "live_runner": "run_p23_saa_ten_thread_live.py",
