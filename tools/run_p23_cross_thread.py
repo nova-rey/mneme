@@ -12,6 +12,7 @@ import json
 import os
 import subprocess
 import time
+import urllib.request
 import uuid
 from collections.abc import Mapping
 from pathlib import Path
@@ -110,15 +111,58 @@ class RemoteLlamaHost(_RemoteBase):
         )
 
     def fingerprint(self) -> HostFingerprint:
+        service_url = os.environ.get("MNEME_MSI_GEMMA_URL")
         return _fp(
             "Gemma 4",
             "google/gemma-4-E4B-it",
             "local-msi",
-            "llama.cpp",
-            execution={"model_path": MSI_MODEL, "executable": MSI_LLAMA, "reasoning": "off", "context_size": 4096},
+            "llama.cpp-server" if service_url else "llama.cpp",
+            execution={
+                "model_path": MSI_MODEL,
+                "executable": MSI_LLAMA,
+                "reasoning": "off",
+                "context_size": 4096,
+                "resident_service": bool(service_url),
+                "service_url": service_url,
+            },
         )
 
     def generate(self, request: GenerationRequest) -> GenerationResult:
+        service_url = os.environ.get("MNEME_MSI_GEMMA_URL")
+        if service_url:
+            messages: list[dict[str, str]] = []
+            if request.system:
+                messages.append({"role": "system", "content": request.system})
+            messages.extend({"role": str(item["role"]), "content": str(item["content"])} for item in request.messages)
+            parameters = dict(request.parameters)
+            payload: dict[str, Any] = {
+                "messages": messages,
+                "max_tokens": int(parameters.get("max_new_tokens", 384)),
+                "temperature": float(parameters.get("temperature", 0.7)),
+                "top_p": float(parameters.get("top_p", 0.95)),
+                "stream": False,
+            }
+            if request.seed is not None:
+                payload["seed"] = int(request.seed)
+            body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+            started = time.perf_counter()
+            response = urllib.request.urlopen(
+                urllib.request.Request(service_url, data=body, headers={"Content-Type": "application/json"}),
+                timeout=900,
+            )
+            decoded = json.loads(response.read().decode("utf-8"))
+            choices = decoded.get("choices")
+            content = choices[0].get("message", {}).get("content", "") if isinstance(choices, list) and choices else ""
+            if not isinstance(content, str) or not content.strip():
+                raise RuntimeError("resident Gemma service returned no usable content")
+            finish_reason = choices[0].get("finish_reason") if isinstance(choices, list) and choices else "stop"
+            return GenerationResult(
+                content=content.strip(), model_id="google/gemma-4-E4B-it", provider="local-msi",
+                effective_parameters=dict(request.parameters), seed=request.seed,
+                token_usage=decoded.get("usage"), latency_ms=(time.perf_counter() - started) * 1000,
+                finish_reason=str(finish_reason) if finish_reason is not None else "stop",
+                raw_metadata={"resident_service": service_url}, provenance={"host": self.fingerprint().to_dict()},
+            )
         prompt = _render_prompt(request)
         command = (
             "cat > /tmp/mneme-cross-thread-prompt && "
@@ -154,12 +198,13 @@ class RemoteGlinerHost(_RemoteBase):
         return HostCapabilities(frozenset({Capability.TEXT_GENERATION, Capability.LOCAL_WEIGHTS}))
 
     def fingerprint(self) -> HostFingerprint:
+        service_url = os.environ.get("MNEME_MSI_GLINER_URL")
         return _fp(
             "GLiNER2.5 specialist extractor",
             "fastino/gliner2.5-base-v1",
             "local-msi",
             "gliner2",
-            execution={"script": MSI_GLINER, "threshold": 0.35, "max_len": 4096},
+            execution={"script": MSI_GLINER, "threshold": 0.35, "max_len": 4096, "resident_service": bool(service_url), "service_url": service_url},
         )
 
     def generate(self, request: GenerationRequest) -> GenerationResult:
@@ -169,7 +214,20 @@ class RemoteGlinerHost(_RemoteBase):
         source_slots = payload.get("source_slots")
         if not isinstance(source_slots, Mapping):
             raise RuntimeError("specialist request has no source_slots")
-        line = json.dumps({"id": "episode", "text": "\n".join(str(v) for v in source_slots.values())}, ensure_ascii=False) + "\n"
+        resident_url = os.environ.get("MNEME_MSI_GLINER_URL")
+        started = time.perf_counter()
+        resident_response: dict[str, Any] | None = None
+        if resident_url:
+            body = json.dumps({"source_slots": dict(source_slots), "threshold": 0.35, "max_len": 4096}, ensure_ascii=False).encode("utf-8")
+            response = urllib.request.urlopen(
+                urllib.request.Request(resident_url, data=body, headers={"Content-Type": "application/json"}),
+                timeout=900,
+            )
+            resident_response = json.loads(response.read().decode("utf-8"))
+            rows = [resident_response]
+        else:
+            line = json.dumps({"id": "episode", "text": "\n".join(str(v) for v in source_slots.values())}, ensure_ascii=False) + "\n"
+            rows = []
         # The specialist receives each source slot as one lossless block. Its
         # raw spans are remapped to the original slot below; no fuzzy matching
         # or label invention is performed.
@@ -181,12 +239,13 @@ class RemoteGlinerHost(_RemoteBase):
             joined.append(str(text))
             offset += len(str(text)) + 1
         line = json.dumps({"id": "episode", "text": "\n".join(joined)}, ensure_ascii=False) + "\n"
-        command = f"{MSI_PYTHON} {MSI_GLINER} --model fastino/gliner2.5-base-v1 --threshold 0.35"
-        started = time.perf_counter()
-        result = self._ssh(command, line, 900.0)
-        if result.returncode != 0:
-            raise RuntimeError(f"specialist extractor failed: {result.stderr[-500:]}")
-        rows = [json.loads(item) for item in result.stdout.splitlines() if item.strip()]
+        if not resident_url:
+            command = f"{MSI_PYTHON} {MSI_GLINER} --model fastino/gliner2.5-base-v1 --threshold 0.35"
+            started = time.perf_counter()
+            result = self._ssh(command, line, 900.0)
+            if result.returncode != 0:
+                raise RuntimeError(f"specialist extractor failed: {result.stderr[-500:]}")
+            rows = [json.loads(item) for item in result.stdout.splitlines() if item.strip()]
         if not rows:
             raise RuntimeError("specialist extractor returned no JSON")
         raw = rows[-1].get("raw")

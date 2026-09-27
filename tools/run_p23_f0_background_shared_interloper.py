@@ -13,6 +13,7 @@ import json
 import os
 import sys
 import time
+import urllib.request
 import uuid
 from collections.abc import Mapping
 from pathlib import Path
@@ -77,7 +78,6 @@ class RemoteNliBackend(_RemoteBase):
         self._deployed = True
 
     def score_pairs(self, pairs: Any) -> tuple[NliScores, ...]:
-        self.ensure_helper()
         request = json.dumps(
             {
                 "model_id": self.model_id,
@@ -88,17 +88,26 @@ class RemoteNliBackend(_RemoteBase):
             },
             ensure_ascii=False,
         )
-        result = self._ssh(
-            f"{MSI_PYTHON} {REMOTE_NLI_HELPER}",
-            request,
-            300.0,
-        )
-        if result.returncode != 0:
-            raise RuntimeError(f"local NLI inference failed: {result.stderr[-1000:]}")
-        lines = [line for line in result.stdout.splitlines() if line.strip()]
-        if not lines:
-            raise RuntimeError("local NLI helper returned no JSON")
-        payload = json.loads(lines[-1])
+        service_url = os.environ.get("MNEME_MSI_NLI_URL")
+        if service_url:
+            response = urllib.request.urlopen(
+                urllib.request.Request(service_url, data=request.encode("utf-8"), headers={"Content-Type": "application/json"}),
+                timeout=300,
+            )
+            payload = json.loads(response.read().decode("utf-8"))
+        else:
+            self.ensure_helper()
+            result = self._ssh(
+                f"{MSI_PYTHON} {REMOTE_NLI_HELPER}",
+                request,
+                300.0,
+            )
+            if result.returncode != 0:
+                raise RuntimeError(f"local NLI inference failed: {result.stderr[-1000:]}")
+            lines = [line for line in result.stdout.splitlines() if line.strip()]
+            if not lines:
+                raise RuntimeError("local NLI helper returned no JSON")
+            payload = json.loads(lines[-1])
         scores = payload.get("scores")
         if payload.get("model_id") != self.model_id or payload.get("revision") != self.model_revision:
             raise RuntimeError("local NLI helper returned an unexpected model binding")
