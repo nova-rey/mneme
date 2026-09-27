@@ -73,6 +73,24 @@ PROBES = (
     "Plan a modest event whose timing, people, and materials are all somewhat uncertain.",
 )
 
+# Every provider/local-model operation is reserved through PilotRun.  This is
+# the exact frozen worst case: both developing branches perform development,
+# extraction, and one assessment per turn; Qwen supplies seven continuations
+# per thread; introspection allows one repair; then the primary and
+# ON/OFF/RESTORED readouts are emitted.  Keep a small fixed plumbing margin,
+# rather than relying on expected sparsity of candidates.
+THREAD_COUNT = 100
+HARD_MAX_CALLS = (
+    3  # qualification
+    + THREAD_COUNT * THREAD_TURNS * 2 * 3  # I/N development, extraction, assessment
+    + THREAD_COUNT * (THREAD_TURNS - 1)  # shared Interloper continuations
+    + THREAD_COUNT * 2  # introspection review plus one repair
+    + len(CHECKPOINTS) * len(PROBES) * len(PROBE_SEEDS) * 3  # I/N/V readouts
+    + 3 * len(PROBES) * len(PROBE_SEEDS) * 3  # I ON/OFF/RESTORED
+)
+RESERVATION_MARGIN = 49
+RESERVATION_CEILING = HARD_MAX_CALLS + RESERVATION_MARGIN
+
 
 def _permissions() -> StoragePermissions:
     return StoragePermissions(
@@ -199,12 +217,17 @@ def _make_pilot(gemma: Any, extractor: Any, assessor: Any, interloper: Any) -> t
         "methodology": "arc-bound-introspection-two-lineage",
         "topic_bank_sha256": content_digest(json.loads(TOPIC_BANK.read_text(encoding="utf-8"))),
         "r8_parent": str(R8_CHECKPOINT),
-        "threads": 100,
+        "threads": THREAD_COUNT,
         "exchanges_per_thread": THREAD_TURNS,
         "checkpoints": list(CHECKPOINTS),
         "probe_count": len(PROBES),
         "probe_seeds": list(PROBE_SEEDS),
         "introspection_version": "p3-introspection-v1",
+        "call_budget": {
+            "hard_max": HARD_MAX_CALLS,
+            "reservation_margin": RESERVATION_MARGIN,
+            "reservation_ceiling": RESERVATION_CEILING,
+        },
     }
     contract["contract_sha256"] = content_digest(contract)
     store = ArtifactStore(ROOT)
@@ -223,7 +246,7 @@ def _make_pilot(gemma: Any, extractor: Any, assessor: Any, interloper: Any) -> t
     }
     experiment.pop("contract_sha256", None)
     experiment["contract_sha256"] = content_digest(experiment)
-    planned = 6200
+    planned = RESERVATION_CEILING
     store.publish_run(
         experiment=experiment,
         preflight={"status": "READY", "topic_bank_sha256": contract["topic_bank_sha256"]},
