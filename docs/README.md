@@ -28,6 +28,13 @@ The documents are preserved in their supplied form and are intentionally not mer
   is owner-supplied future research architecture context describing associative deformation
   as bounded pressure on future host trajectories. It is not an implementation plan and does
   not alter active Phase Two rules, historical evidence, queue state, or Phase Three status.
+* `research/MNEME_Research_Architecture_Amendment_Stochastic_Associative_Accessibility_2026-09-26.md`
+  is an owner-supplied additive research architecture amendment describing seeded,
+  history-shaped associative accessibility, bounded local propagation, activation decay, and
+  consequence-shaped route geometry. It is archived for Librarian/future reference only; it
+  does not reopen Phase Two, authorize stochastic exploration, alter the current F0 receipts,
+  or begin Phase Three. The byte-preserving ingestion record is
+  [here](receipts/MNEME_Research_Architecture_Amendment_Stochastic_Associative_Accessibility_Ingestion_20260926.md).
 * [F0 field correction receipt](receipts/MNEME_P2_F0_Field_Correction_20260926.md)
 * [F0 real-corpus assessor regression](receipts/MNEME_P2_F0_Real_Corpus_Assessor_Regression_20260926.md)
 * [F0 invalid credential-environment receipt](receipts/MNEME_P2_F0_Background_Run_Invalid_Missing_DeepInfra_Token_20260926.md)
