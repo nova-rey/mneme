@@ -515,7 +515,11 @@ def main() -> int:
             ledger_snapshot.parent.mkdir(parents=True, exist_ok=True)
             ledger_snapshot.write_text(ledgers["I"].path.read_text(encoding="utf-8"), encoding="utf-8")
         _atomic_json(ROOT / "progress.json", progress)
-        pilot.publish_artifact("development", f"transcript-{thread.thread_id}.json", transcripts[-THREAD_TURNS:])
+        pilot.publish_artifact(
+            "development",
+            f"transcript-{thread.thread_id}.json",
+            {"rows": transcripts[-THREAD_TURNS:]},
+        )
 
     # Frozen checkpoint readouts: the two developing lineages plus a vanilla
     # fork of the immutable R8 state.  Readouts never update any lineage.
