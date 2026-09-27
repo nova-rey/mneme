@@ -5,10 +5,10 @@
     "MSI local inference host recovery": {
       "created_at": "2026-09-27T02:32:35.844465Z",
       "kind": "external",
-      "receipt": null,
+      "receipt": "Host recovered and validated 2026-09-27: brokeass-msi online at 100.115.208.48; Gemma, GLiNER2.5, pinned DeBERTa helper, llama.cpp, GPU, and minimal local inference health checks passed.",
       "reference": "docs/receipts/MNEME_P2_SAA_MSI_Setup_Receipt_20260927.md",
-      "resolved_at": null,
-      "status": "UNRESOLVED"
+      "resolved_at": "2026-09-27T12:47:03.171887Z",
+      "status": "RESOLVED"
     },
     "external:gemma-live-qualification": {
       "created_at": "2026-09-17T23:27:03.300000Z",
@@ -1987,7 +1987,7 @@
       "evidence_refs": [],
       "id": "SAA-LIVE-01",
       "notes": "",
-      "owner": null,
+      "owner": "/root",
       "priority": 3,
       "project": "nova-rey/mneme",
       "required": true,
@@ -2005,10 +2005,12 @@
         }
       ],
       "scope": "Run the authorized ten-thread SAA developmental A/B, frozen Thread-10 readouts, bounded removal/restoration and consequence checks, and publish terminal evidence.",
-      "session_ids": [],
-      "status": "WAITING",
+      "session_ids": [
+        "saa-r5-live-20260927"
+      ],
+      "status": "RUNNING",
       "title": "SAA ten-thread prospective experiment",
-      "updated_at": "2026-09-27T02:32:35.844508Z",
+      "updated_at": "2026-09-27T12:47:10.022732Z",
       "validation": {
         "required": [
           "live terminal report",
@@ -2018,9 +2020,7 @@
         ],
         "results": {}
       },
-      "waiting_on": [
-        "MSI local inference host recovery"
-      ],
+      "waiting_on": [],
       "workstream": "saa-v1"
     }
   ],
@@ -2036,5 +2036,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-27T02:32:35.844595Z"
+  "updated_at": "2026-09-27T12:47:10.022894Z"
 }
