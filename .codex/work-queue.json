@@ -1966,25 +1966,25 @@
       "base_sha": "bc8233907461e88b9f350b4604fa85631ec9052a",
       "campaign": "mneme-phase-two",
       "candidate": {
-        "artifact": null,
-        "base_sha": "bc8233907461e88b9f350b4604fa85631ec9052a",
-        "returned_at": "2026-09-27T13:38:33.794762Z",
+        "artifact": "docs/receipts/MNEME_P2_SAA_Ten_Thread_Run_r8_20260927/TERMINAL_VALID.md",
+        "base_sha": "c8424d6d1e3f40267463c70418b6c331989915e7",
+        "returned_at": "2026-09-27T17:56:11.215923Z",
         "returned_by": "/root",
-        "sha": "7ad0992"
+        "sha": "01018f7"
       },
       "completion_criterion": "A valid interpretable ten-thread SAA result or a preserved invalid run with corrected rerun/terminal blocker is published without rewriting historical evidence.",
       "created_at": "2026-09-27T00:41:16.932819Z",
-      "dependencies": [
-        "package:SAA-HARNESS-01",
-        "MSI local inference host recovery"
-      ],
+      "dependencies": [],
       "domain": "phase-two-experiment",
       "edit_boundaries": [
         "docs/receipts",
         "bible.md",
         ".codex/work-queue.json"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "docs/receipts/MNEME_P2_SAA_Ten_Thread_Run_r8_20260927/TERMINAL_VALID.md",
+        "docs/receipts/MNEME_P2_SAA_Ten_Thread_Run_r8_20260927/SHA256SUMS.json"
+      ],
       "id": "SAA-LIVE-01",
       "notes": "",
       "owner": "/root",
@@ -2008,9 +2008,9 @@
       "session_ids": [
         "saa-r5-live-20260927"
       ],
-      "status": "VALIDATING",
+      "status": "DONE",
       "title": "SAA ten-thread prospective experiment",
-      "updated_at": "2026-09-27T13:38:33.794806Z",
+      "updated_at": "2026-09-27T17:56:11.215923Z",
       "validation": {
         "required": [
           "live terminal report",
@@ -2018,7 +2018,28 @@
           "replay/artifact audit",
           "CI"
         ],
-        "results": {}
+        "results": {
+          "live terminal report": {
+            "receipt": "docs/receipts/MNEME_P2_SAA_Ten_Thread_Run_r8_20260927/TERMINAL_VALID.md",
+            "status": "PASS",
+            "recorded_at": "2026-09-27T17:56:11.215923Z"
+          },
+          "complete transcript/evidence publication": {
+            "receipt": "docs/receipts/MNEME_P2_SAA_Ten_Thread_Run_r8_20260927/SHA256SUMS.json",
+            "status": "PASS",
+            "recorded_at": "2026-09-27T17:56:11.215923Z"
+          },
+          "replay/artifact audit": {
+            "receipt": "docs/receipts/MNEME_P2_SAA_Ten_Thread_Run_r8_20260927/SHA256SUMS.json",
+            "status": "PASS",
+            "recorded_at": "2026-09-27T17:56:11.215923Z"
+          },
+          "CI": {
+            "receipt": "pending current evidence commit",
+            "status": "PENDING",
+            "recorded_at": "2026-09-27T17:56:11.215923Z"
+          }
+        }
       },
       "waiting_on": [],
       "workstream": "saa-v1"
@@ -2036,5 +2057,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-27T13:38:33.794946Z"
+  "updated_at": "2026-09-27T17:56:11.215923Z"
 }
