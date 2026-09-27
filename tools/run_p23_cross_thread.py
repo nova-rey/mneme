@@ -159,9 +159,10 @@ class RemoteLlamaHost(_RemoteBase):
             return GenerationResult(
                 content=content.strip(), model_id="google/gemma-4-E4B-it", provider="local-msi",
                 effective_parameters=dict(request.parameters), seed=request.seed,
-                token_usage=decoded.get("usage"), latency_ms=(time.perf_counter() - started) * 1000,
+                token_usage=None, latency_ms=(time.perf_counter() - started) * 1000,
                 finish_reason=str(finish_reason) if finish_reason is not None else "stop",
-                raw_metadata={"resident_service": service_url}, provenance={"host": self.fingerprint().to_dict()},
+                raw_metadata={"resident_service": service_url, "usage": decoded.get("usage")},
+                provenance={"host": self.fingerprint().to_dict()},
             )
         prompt = _render_prompt(request)
         command = (
