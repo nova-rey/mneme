@@ -433,3 +433,45 @@ def test_saa_renderer_distinguishes_directional_neighborhoods_without_labels():
         assert "redundancy" not in payload.casefold()
         assert "rhythm" not in payload.casefold()
         assert "e1" not in payload
+
+
+def test_low_information_overlap_does_not_make_novelty_familiar():
+    concepts, edges = _graph(
+        ("it", "It"), ("a", "meaningful process"), ("b", "outcome"),
+        edges=(
+            ("e1", "it", "b", "supports"),
+            ("e2", "a", "b", "supports"),
+        ),
+    )
+    result = compute_saa_field("it", concepts, edges, _state("e1", "e2"), field_seed=17)
+    it = next(item for item in result.active_concepts if item.label == "It")
+    assert it.contextual_activation == 0
+    assert result.novelty > 0
+
+
+def test_meaningful_multiword_overlap_still_establishes_context():
+    concepts, edges = _graph(
+        ("a", "shared process"), ("b", "outcome"),
+        edges=(("e1", "a", "b", "supports"),),
+    )
+    result = compute_saa_field(
+        "that shared process is useful", concepts, edges, _state("e1"), field_seed=19
+    )
+    assert result.active_concepts[0].contextual_activation > 0
+    assert result.novelty < 1_000_000
+
+
+def test_renderer_preserves_generic_facets_without_thread_specific_labels():
+    concepts, edges = _graph(
+        ("a", "budget constraint"), ("b", "fallback option"),
+        edges=(("e1", "a", "b", "supports"),),
+    )
+    first = compute_saa_field("unrelated", concepts, edges, _state("e1"), field_seed=3)
+    concepts2, edges2 = _graph(
+        ("a", "shared coordination"), ("b", "trust schedule"),
+        edges=(("e1", "a", "b", "supports"),),
+    )
+    second = compute_saa_field("unrelated", concepts2, edges2, _state("e1"), field_seed=3)
+    assert first.payload != second.payload
+    assert "budget constraint" not in first.payload.casefold()
+    assert "shared coordination" not in second.payload.casefold()

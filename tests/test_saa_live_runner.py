@@ -1,8 +1,15 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
-from tools.run_p23_saa_ten_thread_live import _measurement_field_check, _record_measurement_unknown
+from mneme.development import EdgeState, LearnerState
+from tools.run_p23_saa_ten_thread import call_budget_breakdown, maximum_call_budget
+from tools.run_p23_saa_ten_thread_live import (
+    _consequence_subtest,
+    _measurement_field_check,
+    _record_measurement_unknown,
+)
 
 
 class _Pilot:
@@ -11,6 +18,21 @@ class _Pilot:
 
     def publish_artifact(self, category: str, name: str, value: dict[str, Any]) -> None:
         self.artifacts.append((category, name, value))
+
+
+class _Controller:
+    def __init__(self) -> None:
+        self.state = LearnerState(
+            edge_states=(
+                EdgeState("e1", context="general", accessibility=100_000, support=100_000),
+            )
+        )
+
+    def _pin(self) -> object:
+        return object()
+
+    def _learner_state(self, _pin: object) -> LearnerState:
+        return self.state
 
 
 def test_assessor_validation_miss_is_recorded_without_credit_or_absence() -> None:
@@ -65,3 +87,19 @@ def test_measurement_field_gate_rejects_zero_measurement_pressure() -> None:
     )
     assert check["valid"] is False
     assert check["invalid"] == [{"condition": "SAA", "coordinate": None, "total_pressure": 0.0}]
+
+
+def test_frozen_call_budget_matches_all_configured_coordinates() -> None:
+    budget = call_budget_breakdown()
+    assert budget["qualification"] == 3
+    assert budget["consequence_provider_calls"] == 0
+    assert maximum_call_budget() == sum(budget.values()) == 392
+
+
+def test_consequence_subtest_adjusts_contextual_route_without_mutating_primary() -> None:
+    result = _consequence_subtest(_Controller(), Path("checkpoint.sqlite3"))
+    assert result["status"] == "PASS"
+    assert result["primary_state_mutated"] is False
+    assert result["positive_external"]["route_score"][1] > result["before"]["route_score"][1]
+    assert result["negative_external"]["route_score"][1] < result["before"]["route_score"][1]
+    assert result["edge_state_preserved"] is True

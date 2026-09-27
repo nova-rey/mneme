@@ -26,8 +26,8 @@ from typing import Any
 from mneme.experiments.shared_interloper import ThreadSpec
 
 EXPERIMENT = "p2.3-saa-ten-thread-ab"
-CONTRACT_REVISION = 1
-SAA_VERSION = "f0-saa-v1"
+CONTRACT_REVISION = 2
+SAA_VERSION = "f0-saa-v1.1"
 FIELD_RNG_ALGORITHM = "python-random.Random-mt19937"
 
 # These values are part of the prospective contract.  They are intentionally
@@ -39,6 +39,30 @@ DEVELOPMENT_TURNS_MIN = 6
 DEVELOPMENT_TURNS_TARGET = 8
 DEVELOPMENT_TURNS_MAX = 10
 READOUT_REPETITIONS = 3
+READOUT_TURNS = 4
+
+
+def call_budget_breakdown() -> dict[str, int]:
+    """Return the exact bounded reservation envelope for the frozen schedule."""
+
+    development_threads = len(THREAD_SCHEDULE) - 1
+    development_turns = DEVELOPMENT_TURNS_TARGET
+    return {
+        "qualification": 3,
+        "development_gemma": development_threads * development_turns * 2,
+        "development_interloper": development_threads * (development_turns - 1),
+        "development_extraction": development_threads * development_turns,
+        "development_assessment_maximum": development_threads * development_turns,
+        "thread10_interloper": READOUT_TURNS - 1,
+        "thread10_gemma": READOUT_TURNS * 2,
+        "heldout_probe_gemma": len(READOUT_PROBES) * READOUT_REPETITIONS * 2,
+        "removal_restoration_gemma": 3,
+        "consequence_provider_calls": 0,
+    }
+
+
+def maximum_call_budget() -> int:
+    return sum(call_budget_breakdown().values())
 
 _SAFE_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 
@@ -334,6 +358,12 @@ def saa_contract(config: SAAConfig | None = None) -> dict[str, Any]:
             },
             "sibling_different_history": "deferred_unless_bounded_without_scope_explosion",
         },
+        "call_budget": {
+            "breakdown": call_budget_breakdown(),
+            "maximum": maximum_call_budget(),
+            "margin": 0,
+            "provider_cost_accounted_separately": True,
+        },
         "evidence": {
             "field_trace_schema": "saa-field-trace-v1",
             "complete_transcripts": True,
@@ -367,6 +397,9 @@ def validate_saa_contract(contract: dict[str, Any]) -> None:
     measurement = contract.get("measurement", {})
     if measurement.get("readout_repetitions") != READOUT_REPETITIONS:
         raise ValueError("readout repetition count drifted")
+    budget = contract.get("call_budget", {})
+    if budget.get("breakdown") != call_budget_breakdown() or budget.get("maximum") != maximum_call_budget():
+        raise ValueError("SAA call budget does not match the frozen schedule")
 
 
 def validate_field_trace(trace: SAAFieldTrace) -> None:

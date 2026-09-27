@@ -33,6 +33,16 @@ _DESCRIPTORS = frozenset(
         "without", "would", "your",
     }
 )
+_LOW_INFORMATION = _DESCRIPTORS | frozenset(
+    {
+        "i", "it", "he", "she", "they", "them", "we", "us", "you",
+        "me", "this", "that", "these", "those", "there", "here", "who",
+        "what", "which", "when", "where", "why", "how", "am", "are", "was",
+        "were", "been", "being", "do", "does", "did", "done", "has", "have",
+        "had", "will", "shall", "should", "may", "might", "must", "not",
+        "very", "just", "more", "most", "some", "any", "one",
+    }
+)
 
 
 def _tokens(value: str) -> tuple[str, ...]:
@@ -58,6 +68,11 @@ def _activation(query: str, label: str) -> tuple[int, tuple[str, ...]]:
         return 0, ()
     target = tuple(_stem(item) for item in label_tokens)
     query_stems = tuple(_stem(item) for item in query_tokens)
+    target_content = set(target) - _LOW_INFORMATION
+    # A pronoun or function-word label can remain in the earned graph for
+    # provenance, but it must not make a context appear maximally familiar.
+    if not target_content:
+        return 0, ()
     if any(
         query_stems[index : index + len(target)] == target
         for index in range(len(query_stems) - len(target) + 1)
@@ -67,10 +82,9 @@ def _activation(query: str, label: str) -> tuple[int, tuple[str, ...]]:
     # semantic concept (for example the article ``a`` in ``a battery bank``).
     # Keep them out of contextual activation while retaining the conservative
     # exact-phrase path above.
-    query_content = set(query_stems) - _DESCRIPTORS
-    target_content = set(target) - _DESCRIPTORS
+    query_content = set(query_stems) - _LOW_INFORMATION
     shared = tuple(sorted(query_content & target_content))
-    if not shared or set(query_stems) - set(target) > _DESCRIPTORS:
+    if not shared or set(query_stems) - set(target) > _LOW_INFORMATION:
         return 0, shared
     # A shared content token is useful evidence, but weaker than the complete
     # phrase.  The score is deterministic and intentionally conservative.
@@ -381,7 +395,34 @@ _SAA_LABEL_FAMILIES: tuple[tuple[frozenset[str], str], ...] = (
         frozenset({"choice", "probability", "chance", "risk", "uncertainty"}),
         "Unequal possibilities may still be managed as a structured set.",
     ),
+    (
+        frozenset({"sequence", "order", "timing", "stage", "transition", "phase"}),
+        "Order and transitions may change what is possible next.",
+    ),
+    (
+        frozenset({"role", "shared", "trust", "group", "coordination", "schedule"}),
+        "Clear roles and shared expectations may keep coordination workable.",
+    ),
+    (
+        frozenset({"contrast", "pattern", "shape", "color", "texture", "composition"}),
+        "Contrast and repetition may organize attention without making it uniform.",
+    ),
+    (
+        frozenset({"cost", "effort", "limited", "constraint", "scarce", "budget"}),
+        "Limited resources may make tradeoffs and fallback options more salient.",
+    ),
 )
+
+
+def _saa_label_facets(labels: dict[str, str], item: PressureContribution) -> tuple[str, ...]:
+    """Return bounded semantic facets without exposing endpoint labels."""
+
+    tokens = {
+        _stem(token)
+        for endpoint in (item.source, item.target)
+        for token in _tokens(labels.get(endpoint, ""))
+    }
+    return tuple(text for family, text in _SAA_LABEL_FAMILIES if tokens & family)
 
 
 def _render_saa(
@@ -405,30 +446,15 @@ def _render_saa(
     for item in active:
         relation = re.sub(r"[^a-z0-9_]+", "_", item.relationship.casefold()).strip("_")
         line_text = _SAA_RELATION_TENDENCIES.get(relation)
-        family_text: str | None = None
-        if line_text is None and labels is not None:
-            label_tokens = set(
-                _stem(token)
-                for endpoint in (item.source, item.target)
-                for token in _tokens(labels.get(endpoint, ""))
+        facets = _saa_label_facets(labels or {}, item)
+        if line_text is None:
+            line_text = (
+                facets[0]
+                if facets
+                else "Different factors may interact in ways worth considering."
             )
-            family_text = next(
-                (text for family, text in _SAA_LABEL_FAMILIES if label_tokens & family),
-                None,
-            )
-            line_text = family_text
-        elif labels is not None:
-            label_tokens = set(
-                _stem(token)
-                for endpoint in (item.source, item.target)
-                for token in _tokens(labels.get(endpoint, ""))
-            )
-            family_text = next(
-                (text for family, text in _SAA_LABEL_FAMILIES if label_tokens & family),
-                None,
-            )
-            if family_text is not None and family_text != line_text:
-                line_text = f"{line_text} {family_text}"
+        elif facets and facets[0] != line_text:
+            line_text = f"{line_text} {facets[0]}"
         line = "- " + (line_text or "Different factors may interact in ways worth considering.")
         if line in seen:
             continue

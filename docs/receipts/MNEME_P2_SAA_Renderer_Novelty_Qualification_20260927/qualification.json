@@ -1,0 +1,361 @@
+{
+  "version": "f0-saa-v1.1-renderer-novelty-qualification",
+  "status": "PASS",
+  "cases": [
+    {
+      "case": "resource-buffer",
+      "payload": "Potentially accessible framings:\n- Supporting structures may keep important functions available. Buffers and steady flows may preserve options over time.\nThese are optional tendencies, not instructions. Use them only if they fit naturally.",
+      "field": {
+        "version": "f0-saa-v1",
+        "query": "unrelated",
+        "config": {
+          "version": "f0-saa-v1",
+          "max_depth": 2,
+          "attenuation": 600000,
+          "minimum_pressure": 20000,
+          "total_budget": 1000000,
+          "max_contributors": 4,
+          "render_max_chars": 900,
+          "background_activation": 30000,
+          "render_pressure_floor": 20000,
+          "exploration": "off",
+          "exploration_slots": 1,
+          "exploration_budget": 100000,
+          "saa_context_weight": 700000,
+          "saa_background_weight": 300000,
+          "saa_novelty_flattening": 650000,
+          "saa_propagation_attenuation": 650000,
+          "saa_decay": 800000
+        },
+        "field_enabled": true,
+        "exploration": "on",
+        "field_seed": 3,
+        "active_concepts": [
+          {
+            "key": "a",
+            "label": "buffer resource",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          },
+          {
+            "key": "b",
+            "label": "steady flow",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          }
+        ],
+        "contributions": [
+          {
+            "edge_key": "e1",
+            "source": "a",
+            "target": "b",
+            "relationship": "supports",
+            "path": [
+              "e1"
+            ],
+            "distance": 0,
+            "source_activation": 1000000,
+            "developmental_strength": 800000,
+            "raw_pressure": 800000,
+            "attenuated_pressure": 800000,
+            "eligible": true,
+            "eligibility_reason": "earned",
+            "normalized_pressure": 800000,
+            "final_pressure": 800000,
+            "component": "landing",
+            "exploration_selected": true
+          }
+        ],
+        "payload": "Potentially accessible framings:\n- Supporting structures may keep important functions available. Buffers and steady flows may preserve options over time.\nThese are optional tendencies, not instructions. Use them only if they fit naturally.",
+        "total_pressure": 800000,
+        "accessibility_distribution": [
+          {
+            "candidate": "e1",
+            "probability": 1000000
+          }
+        ],
+        "distribution_flatness": 0,
+        "selected_landing": "e1",
+        "landing_probability": 1000000,
+        "landing_ticket": 249523,
+        "active_neighborhood": [
+          "a",
+          "b"
+        ],
+        "novelty": 1000000
+      }
+    },
+    {
+      "case": "coordination",
+      "payload": "Potentially accessible framings:\n- Supporting structures may keep important functions available. Clear roles and shared expectations may keep coordination workable.\nThese are optional tendencies, not instructions. Use them only if they fit naturally.",
+      "field": {
+        "version": "f0-saa-v1",
+        "query": "unrelated",
+        "config": {
+          "version": "f0-saa-v1",
+          "max_depth": 2,
+          "attenuation": 600000,
+          "minimum_pressure": 20000,
+          "total_budget": 1000000,
+          "max_contributors": 4,
+          "render_max_chars": 900,
+          "background_activation": 30000,
+          "render_pressure_floor": 20000,
+          "exploration": "off",
+          "exploration_slots": 1,
+          "exploration_budget": 100000,
+          "saa_context_weight": 700000,
+          "saa_background_weight": 300000,
+          "saa_novelty_flattening": 650000,
+          "saa_propagation_attenuation": 650000,
+          "saa_decay": 800000
+        },
+        "field_enabled": true,
+        "exploration": "on",
+        "field_seed": 3,
+        "active_concepts": [
+          {
+            "key": "a",
+            "label": "shared coordination",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          },
+          {
+            "key": "b",
+            "label": "trust schedule",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          }
+        ],
+        "contributions": [
+          {
+            "edge_key": "e1",
+            "source": "a",
+            "target": "b",
+            "relationship": "supports",
+            "path": [
+              "e1"
+            ],
+            "distance": 0,
+            "source_activation": 1000000,
+            "developmental_strength": 800000,
+            "raw_pressure": 800000,
+            "attenuated_pressure": 800000,
+            "eligible": true,
+            "eligibility_reason": "earned",
+            "normalized_pressure": 800000,
+            "final_pressure": 800000,
+            "component": "landing",
+            "exploration_selected": true
+          }
+        ],
+        "payload": "Potentially accessible framings:\n- Supporting structures may keep important functions available. Clear roles and shared expectations may keep coordination workable.\nThese are optional tendencies, not instructions. Use them only if they fit naturally.",
+        "total_pressure": 800000,
+        "accessibility_distribution": [
+          {
+            "candidate": "e1",
+            "probability": 1000000
+          }
+        ],
+        "distribution_flatness": 0,
+        "selected_landing": "e1",
+        "landing_probability": 1000000,
+        "landing_ticket": 249523,
+        "active_neighborhood": [
+          "a",
+          "b"
+        ],
+        "novelty": 1000000
+      }
+    },
+    {
+      "case": "sequence",
+      "payload": "Potentially accessible framings:\n- Outcomes may depend on the conditions that support them. Order and transitions may change what is possible next.\nThese are optional tendencies, not instructions. Use them only if they fit naturally.",
+      "field": {
+        "version": "f0-saa-v1",
+        "query": "unrelated",
+        "config": {
+          "version": "f0-saa-v1",
+          "max_depth": 2,
+          "attenuation": 600000,
+          "minimum_pressure": 20000,
+          "total_budget": 1000000,
+          "max_contributors": 4,
+          "render_max_chars": 900,
+          "background_activation": 30000,
+          "render_pressure_floor": 20000,
+          "exploration": "off",
+          "exploration_slots": 1,
+          "exploration_budget": 100000,
+          "saa_context_weight": 700000,
+          "saa_background_weight": 300000,
+          "saa_novelty_flattening": 650000,
+          "saa_propagation_attenuation": 650000,
+          "saa_decay": 800000
+        },
+        "field_enabled": true,
+        "exploration": "on",
+        "field_seed": 3,
+        "active_concepts": [
+          {
+            "key": "a",
+            "label": "sequence timing",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          },
+          {
+            "key": "b",
+            "label": "transition stage",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          }
+        ],
+        "contributions": [
+          {
+            "edge_key": "e1",
+            "source": "a",
+            "target": "b",
+            "relationship": "depends_on",
+            "path": [
+              "e1"
+            ],
+            "distance": 0,
+            "source_activation": 1000000,
+            "developmental_strength": 800000,
+            "raw_pressure": 800000,
+            "attenuated_pressure": 800000,
+            "eligible": true,
+            "eligibility_reason": "earned",
+            "normalized_pressure": 800000,
+            "final_pressure": 800000,
+            "component": "landing",
+            "exploration_selected": true
+          }
+        ],
+        "payload": "Potentially accessible framings:\n- Outcomes may depend on the conditions that support them. Order and transitions may change what is possible next.\nThese are optional tendencies, not instructions. Use them only if they fit naturally.",
+        "total_pressure": 800000,
+        "accessibility_distribution": [
+          {
+            "candidate": "e1",
+            "probability": 1000000
+          }
+        ],
+        "distribution_flatness": 0,
+        "selected_landing": "e1",
+        "landing_probability": 1000000,
+        "landing_ticket": 249523,
+        "active_neighborhood": [
+          "a",
+          "b"
+        ],
+        "novelty": 1000000
+      }
+    },
+    {
+      "case": "generic-unfamiliar",
+      "payload": "Potentially accessible framings:\n- Related factors may deserve joint consideration.\nThese are optional tendencies, not instructions. Use them only if they fit naturally.",
+      "field": {
+        "version": "f0-saa-v1",
+        "query": "unrelated",
+        "config": {
+          "version": "f0-saa-v1",
+          "max_depth": 2,
+          "attenuation": 600000,
+          "minimum_pressure": 20000,
+          "total_budget": 1000000,
+          "max_contributors": 4,
+          "render_max_chars": 900,
+          "background_activation": 30000,
+          "render_pressure_floor": 20000,
+          "exploration": "off",
+          "exploration_slots": 1,
+          "exploration_budget": 100000,
+          "saa_context_weight": 700000,
+          "saa_background_weight": 300000,
+          "saa_novelty_flattening": 650000,
+          "saa_propagation_attenuation": 650000,
+          "saa_decay": 800000
+        },
+        "field_enabled": true,
+        "exploration": "on",
+        "field_seed": 3,
+        "active_concepts": [
+          {
+            "key": "a",
+            "label": "observatory alignment",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          },
+          {
+            "key": "b",
+            "label": "seasonal visibility",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          }
+        ],
+        "contributions": [
+          {
+            "edge_key": "e1",
+            "source": "a",
+            "target": "b",
+            "relationship": "associated_with",
+            "path": [
+              "e1"
+            ],
+            "distance": 0,
+            "source_activation": 1000000,
+            "developmental_strength": 800000,
+            "raw_pressure": 800000,
+            "attenuated_pressure": 800000,
+            "eligible": true,
+            "eligibility_reason": "earned",
+            "normalized_pressure": 800000,
+            "final_pressure": 800000,
+            "component": "landing",
+            "exploration_selected": true
+          }
+        ],
+        "payload": "Potentially accessible framings:\n- Related factors may deserve joint consideration.\nThese are optional tendencies, not instructions. Use them only if they fit naturally.",
+        "total_pressure": 800000,
+        "accessibility_distribution": [
+          {
+            "candidate": "e1",
+            "probability": 1000000
+          }
+        ],
+        "distribution_flatness": 0,
+        "selected_landing": "e1",
+        "landing_probability": 1000000,
+        "landing_ticket": 249523,
+        "active_neighborhood": [
+          "a",
+          "b"
+        ],
+        "novelty": 1000000
+      }
+    }
+  ],
+  "checks": {
+    "semantic_distinction": true,
+    "bounded_payload": true,
+    "provenance_hidden": true,
+    "non_prescriptive": true,
+    "genericity": true
+  }
+}

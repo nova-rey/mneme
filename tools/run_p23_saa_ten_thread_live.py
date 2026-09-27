@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Any
 
 from mneme.controller import ResponseController, TurnIntent
+from mneme.development import ConsequenceAssessment, apply_consequence, route_score
 from mneme.experiments.artifacts import ArtifactStore, content_digest
 from mneme.experiments.pilot import PilotRun, host_role_binding
 from mneme.experiments.pilot_runtime import PilotRuntime, RuntimeSubject
@@ -49,6 +50,8 @@ from tools.run_p23_saa_ten_thread import (  # noqa: E402
     READOUT_PROBES,
     SAA_VERSION,
     THREAD_SCHEDULE,
+    call_budget_breakdown,
+    maximum_call_budget,
     saa_contract,
     validate_saa_contract,
 )
@@ -59,7 +62,7 @@ DEVELOPMENT_TURNS = 8
 READOUT_TURNS = 4
 READOUT_REPETITIONS = 3
 MAX_OUTPUT_TOKENS = 300_000
-PLANNED_CALLS = 380
+PLANNED_CALLS = maximum_call_budget()
 
 
 def _permissions(slot: int) -> StoragePermissions:
@@ -196,6 +199,79 @@ def _measurement_field_check(
     return {"checked": len(rows), "invalid": invalid, "valid": bool(rows) and not invalid}
 
 
+def _consequence_subtest(controller: ResponseController, checkpoint: Path) -> dict[str, Any]:
+    """Run the bounded pure-state consequence check on a disposable branch.
+
+    The primary developed checkpoint is read-only.  Positive and negative
+    external outcomes are applied to independent immutable learner states, so
+    the trace proves contextual route adjustment without mutating primary
+    measurement evidence or spending provider calls.
+    """
+
+    pin = controller._pin()
+    before = controller._learner_state(pin)
+    edges = _nonzero_edges(controller)
+    if not edges:
+        return {"status": "INCONCLUSIVE", "reason": "no eligible route", "checkpoint": str(checkpoint)}
+    edge_key = edges[0].key[0]
+    context = edges[0].context
+    edge_keys = (edge_key,)
+    base_before = route_score(before, edge_keys, edge_key, context)
+    positive = apply_consequence(
+        before,
+        ConsequenceAssessment(
+            operation_id="saa-consequence-positive",
+            route_key=edge_key,
+            context=context,
+            direction=1,
+            exposure_id="external-saa-positive",
+            outcome="known",
+            relevant=True,
+        ),
+    )
+    negative = apply_consequence(
+        before,
+        ConsequenceAssessment(
+            operation_id="saa-consequence-negative",
+            route_key=edge_key,
+            context=context,
+            direction=-1,
+            exposure_id="external-saa-negative",
+            outcome="known",
+            relevant=True,
+        ),
+    )
+    assert hasattr(positive, "state") and hasattr(negative, "state")
+    positive_state = positive.state
+    negative_state = negative.state
+    positive_score = route_score(positive_state, edge_keys, edge_key, context)
+    negative_score = route_score(negative_state, edge_keys, edge_key, context)
+    alternate_context = "different-context"
+    alternate_score = route_score(negative_state, edge_keys, edge_key, alternate_context)
+    return {
+        "status": "PASS" if positive_score[1] > base_before[1] and negative_score[1] < base_before[1] else "FAIL",
+        "checkpoint": str(checkpoint),
+        "route_key": edge_key,
+        "context": context,
+        "edge_state_preserved": bool(negative_state.edge(edge_key, context).accessibility > 0),
+        "before": {"route_score": base_before},
+        "positive_external": {
+            "assessment": "known/relevant/direction=1",
+            "route_score": positive_score,
+            "awarded": positive.awarded,
+            "reason": positive.reason,
+        },
+        "negative_external": {
+            "assessment": "known/relevant/direction=-1",
+            "route_score": negative_score,
+            "awarded": negative.awarded,
+            "reason": negative.reason,
+        },
+        "different_context_after_negative": {"route_score": alternate_score},
+        "primary_state_mutated": False,
+    }
+
+
 def _write_json(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -274,16 +350,18 @@ def main(argv: list[str] | None = None) -> int:
         },
     }
     experiment["contract_sha256"] = content_digest(experiment)
+    budget = call_budget_breakdown()
     store.publish_run(
         experiment=experiment,
         preflight={"status": "READY", "contract_sha256": experiment["contract_sha256"]},
         study_plan={
-            "development_calls": 9 * DEVELOPMENT_TURNS * 2,
-            "extraction_calls": 9 * DEVELOPMENT_TURNS,
-            "assessment_calls": 9 * DEVELOPMENT_TURNS,
-            "shared_interloper_calls": 9 * (DEVELOPMENT_TURNS - 1) + READOUT_TURNS,
-            "readout_calls": READOUT_TURNS * 2 + len(READOUT_PROBES) * READOUT_REPETITIONS * 2,
-            "removal_restoration_calls": 3,
+            "development_calls": budget["development_gemma"],
+            "extraction_calls": budget["development_extraction"],
+            "assessment_calls": budget["development_assessment_maximum"],
+            "shared_interloper_calls": budget["development_interloper"] + budget["thread10_interloper"],
+            "readout_calls": budget["thread10_gemma"] + budget["heldout_probe_gemma"],
+            "removal_restoration_calls": budget["removal_restoration_gemma"],
+            "call_budget_breakdown": budget,
             "planned_calls": PLANNED_CALLS,
             "max_output_tokens": MAX_OUTPUT_TOKENS,
         },
@@ -520,6 +598,8 @@ def main(argv: list[str] | None = None) -> int:
     pilot.publish_artifact("evaluation", "thread10-readouts.json", {"rows": readouts})
     pilot.publish_artifact("evaluation", "heldout-probes.json", {"rows": probes, "probe_bank": list(READOUT_PROBES)})
     pilot.publish_artifact("evaluation", "removal-restoration.json", {"rows": removal})
+    consequence = _consequence_subtest(controllers[0], m_checkpoint)
+    pilot.publish_artifact("evaluation", "consequence-subtest.json", consequence)
     by_coord: dict[tuple[int, int], dict[str, str]] = {}
     for row in probes:
         by_coord.setdefault((int(row["probe"]), int(row["repetition"])), {})[str(row["condition"])] = str(row["output"])
@@ -540,7 +620,7 @@ def main(argv: list[str] | None = None) -> int:
         "thread10_readouts": readouts,
         "probe_comparisons": comparisons,
         "removal_restoration": removal,
-        "consequence_subtest": {"status": "deferred", "reason": "no primary-state mutation after frozen measurement"},
+        "consequence_subtest": consequence,
         "sibling_check": {"status": "deferred", "reason": "bounded ten-thread scope"},
         "accounting": pilot.reservations_report(),
         "historical_evidence_unchanged": True,
