@@ -5,10 +5,12 @@ import pytest
 from mneme.development import (
     FIXED_SCALE,
     LEGACY_FIELD_VERSION,
+    SAA_FIELD_VERSION,
     EdgeState,
     FieldConfig,
     LearnerState,
     compute_field,
+    compute_saa_field,
 )
 from mneme.memory.graph import GraphConcept, GraphEdge
 
@@ -213,3 +215,221 @@ def test_replay_is_identical_and_zero_field_is_valid_result():
     disabled = compute_field("alpha", concepts, edges, state, field_enabled=False)
     assert not disabled.field_enabled
     assert disabled.total_pressure == 0
+
+
+def test_saa_cold_start_and_required_seed_are_fail_closed():
+    concepts, edges = _graph(
+        ("a", "alpha"), ("b", "beta"), edges=(("e1", "a", "b", "supports"),)
+    )
+    empty = compute_saa_field("unrelated", concepts, edges, LearnerState(), field_seed=7)
+    assert empty.config.version == SAA_FIELD_VERSION
+    assert empty.selected_landing is None
+    assert empty.accessibility_distribution == ()
+    with pytest.raises(ValueError, match="field_seed"):
+        compute_saa_field("alpha", concepts, edges, _state("e1"))
+
+
+def test_saa_replays_and_keeps_novel_context_flatter():
+    concepts, edges = _graph(
+        ("a", "alpha"), ("b", "beta"), ("c", "gamma"),
+        edges=(
+            ("e1", "a", "b", "supports"),
+            ("e2", "b", "c", "supports"),
+        ),
+    )
+    state = _state("e1", "e2")
+    familiar = compute_saa_field("alpha", concepts, edges, state, field_seed=19)
+    novel = compute_saa_field("unrelated topic", concepts, edges, state, field_seed=19)
+    replay = compute_saa_field("unrelated topic", concepts, edges, state, field_seed=19)
+    assert familiar.distribution_flatness < novel.distribution_flatness
+    assert novel.to_dict() == replay.to_dict()
+    assert novel.selected_landing is not None
+    assert novel.landing_ticket is not None
+
+
+def test_saa_same_seed_can_land_differently_for_different_history():
+    concepts, edges = _graph(
+        ("a", "alpha"), ("b", "beta"), ("c", "gamma"),
+        edges=(
+            ("e1", "a", "b", "supports"),
+            ("e2", "b", "c", "rhythm"),
+        ),
+    )
+    first = compute_saa_field(
+        "unrelated", concepts, edges, _state("e1", strength=900_000), field_seed=3
+    )
+    second = compute_saa_field(
+        "unrelated", concepts, edges, _state("e2", strength=900_000), field_seed=3
+    )
+    assert first.selected_landing != second.selected_landing
+
+
+def test_saa_renderer_preserves_directional_neighborhood_shape():
+    concepts, edges = _graph(
+        ("a", "alpha"), ("b", "beta"),
+        edges=(("e1", "a", "b", "supports"),),
+    )
+    support = compute_saa_field("unrelated", concepts, edges, _state("e1"), field_seed=5)
+    concepts2, edges2 = _graph(
+        ("a", "alpha"), ("b", "beta"),
+        edges=(("e1", "a", "b", "rhythm"),),
+    )
+    rhythm = compute_saa_field("unrelated", concepts2, edges2, _state("e1"), field_seed=5)
+    assert support.payload != rhythm.payload
+    assert "alpha" not in support.payload.casefold()
+    assert "beta" not in rhythm.payload.casefold()
+    assert len(support.payload) <= 900
+
+
+def test_saa_propagation_is_bounded_and_quarantine_blocks_landing():
+    concepts, edges = _graph(
+        ("a", "alpha"), ("b", "beta"), ("c", "gamma"),
+        edges=(
+            ("e1", "a", "b", "supports"),
+            ("e2", "b", "c", "supports"),
+        ),
+    )
+    state = _state("e1", "e2")
+    result = compute_saa_field("unrelated", concepts, edges, state, field_seed=4)
+    accepted = [item for item in result.contributions if item.eligible]
+    assert len(accepted) <= 4
+    assert result.total_pressure <= FIXED_SCALE
+    blocked = compute_saa_field(
+        "unrelated", concepts, edges, state, quarantined_edges={"e1", "e2"}, field_seed=4
+    )
+    assert blocked.selected_landing is None
+    assert blocked.total_pressure == 0
+
+
+def test_saa_requires_a_dedicated_field_seed_and_has_a_version():
+    concepts, edges = _graph(
+        ("a", "alpha"), ("b", "beta"), edges=(("e1", "a", "b", "supports"),)
+    )
+    state = _state("e1")
+    with pytest.raises(ValueError, match="field_seed"):
+        compute_saa_field("unrelated", concepts, edges, state)
+    result = compute_saa_field("unrelated", concepts, edges, state, field_seed=4)
+    assert result.config.version == SAA_FIELD_VERSION
+    assert result.field_seed == 4
+
+
+def test_saa_cold_start_has_no_fabricated_landing():
+    concepts, edges = _graph(
+        ("a", "alpha"), ("b", "beta"), edges=(("e1", "a", "b", "supports"),)
+    )
+    result = compute_saa_field("alpha", concepts, edges, LearnerState(), field_seed=1)
+    assert result.accessibility_distribution == ()
+    assert result.selected_landing is None
+    assert result.total_pressure == 0
+
+
+def test_saa_novel_context_flattens_but_does_not_erase_history():
+    concepts, edges = _graph(
+        ("a", "alpha"), ("b", "beta"), ("c", "gamma"),
+        edges=(
+            ("e1", "a", "b", "supports"),
+            ("e2", "b", "c", "depends_on"),
+            ("e3", "c", "a", "rhythm"),
+        ),
+    )
+    state = _state("e1", "e2", "e3")
+    familiar = compute_saa_field("alpha", concepts, edges, state, field_seed=7)
+    novel = compute_saa_field("unrelated", concepts, edges, state, field_seed=7)
+    assert familiar.distribution_flatness < novel.distribution_flatness
+    assert novel.accessibility_distribution
+    assert novel.total_pressure > 0
+
+
+def test_saa_same_seed_replays_and_different_history_changes_pay_table():
+    concepts, edges = _graph(
+        ("a", "alpha"), ("b", "beta"), ("c", "gamma"),
+        edges=(
+            ("e1", "a", "b", "supports"),
+            ("e2", "b", "c", "depends_on"),
+        ),
+    )
+    first = compute_saa_field("unrelated", concepts, edges, _state("e1", "e2"), field_seed=11)
+    replay = compute_saa_field("unrelated", concepts, edges, _state("e1", "e2"), field_seed=11)
+    altered = compute_saa_field("unrelated", concepts, edges, _state("e1"), field_seed=11)
+    assert first.to_dict() == replay.to_dict()
+    assert first.selected_landing == replay.selected_landing
+    assert first.accessibility_distribution != altered.accessibility_distribution
+
+
+def test_saa_different_field_seed_can_land_differently():
+    concepts, edges = _graph(
+        ("a", "alpha"), ("b", "beta"), ("c", "gamma"),
+        edges=(
+            ("e1", "a", "b", "supports"),
+            ("e2", "b", "c", "depends_on"),
+        ),
+    )
+    state = _state("e1", "e2")
+    landings = {
+        compute_saa_field("unrelated", concepts, edges, state, field_seed=seed).selected_landing
+        for seed in range(20)
+    }
+    assert len(landings) > 1
+
+
+def test_saa_quarantine_removes_candidate_from_distribution():
+    concepts, edges = _graph(
+        ("a", "alpha"), ("b", "beta"), ("c", "gamma"),
+        edges=(
+            ("e1", "a", "b", "supports"),
+            ("e2", "b", "c", "depends_on"),
+        ),
+    )
+    result = compute_saa_field(
+        "unrelated", concepts, edges, _state("e1", "e2"),
+        quarantined_edges={"e1"}, field_seed=2,
+    )
+    assert "e1" not in dict(result.accessibility_distribution)
+    assert result.selected_landing == "e2"
+
+
+def test_saa_local_propagation_attenuates_and_stays_bounded():
+    concepts, edges = _graph(
+        ("a", "alpha"), ("b", "beta"), ("c", "gamma"), ("d", "delta"),
+        edges=(
+            ("e1", "a", "b", "supports"),
+            ("e2", "b", "c", "depends_on"),
+            ("e3", "c", "d", "rhythm"),
+        ),
+    )
+    config = FieldConfig(version=SAA_FIELD_VERSION, max_depth=2, max_contributors=4)
+    result = compute_saa_field(
+        "alpha", concepts, edges, _state("e1", "e2", "e3"), config=config, field_seed=0
+    )
+    by_edge = {item.edge_key: item for item in result.contributions}
+    assert result.total_pressure <= config.total_budget
+    assert result.selected_landing is not None
+    assert by_edge[result.selected_landing].component == "landing"
+    propagated = [
+        item for item in by_edge.values()
+        if item.edge_key != result.selected_landing
+    ]
+    assert all(item.distance <= config.max_depth for item in propagated)
+    assert all(
+        item.final_pressure < by_edge[result.selected_landing].final_pressure
+        for item in propagated
+    )
+
+
+def test_saa_renderer_distinguishes_directional_neighborhoods_without_labels():
+    concepts, supports = _graph(
+        ("a", "redundancy"), ("b", "fallback"),
+        edges=(("e1", "a", "b", "supports"),),
+    )
+    _, rhythm = _graph(
+        ("a", "rhythm"), ("b", "variation"),
+        edges=(("e1", "a", "b", "rhythm"),),
+    )
+    state = _state("e1")
+    first = compute_saa_field("unrelated", concepts, supports, state, field_seed=0)
+    second = compute_saa_field("unrelated", concepts, rhythm, state, field_seed=0)
+    assert first.payload != second.payload
+    for payload in (first.payload, second.payload):
+        assert "redundancy" not in payload.casefold()
+        assert "rhythm" not in payload.casefold()
+        assert "e1" not in payload

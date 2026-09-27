@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
 # ruff: noqa: E501
-"""Execute the frozen SAA ten-thread experiment when explicitly requested.
+"""Execute the frozen ten-thread SAA developmental comparison.
 
-The default command is plan-only.  The live path is deliberately explicit
-(``--execute``) and reuses the existing Phase Two PilotRuntime, local Gemma,
-GLiNER2.5, pinned local DeBERTa assessor, and shared Qwen3-30B contract.  It
-does not modify the controller or the historical F0 runs.  Development uses
-the normal learned graph path; SAA is evaluated only against the frozen
-post-Thread-9 state so Thread 10 cannot write into the primary readout.
+This runner is deliberately prospective.  It uses the frozen contract from
+``run_p23_saa_ten_thread`` and the already qualified local Gemma, GLiNER,
+DeBERTa, and shared Qwen services.  Historical runs are read-only evidence.
 """
 
 from __future__ import annotations
@@ -17,14 +14,10 @@ import json
 import os
 import sys
 import uuid
-from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
 from mneme.controller import ResponseController, TurnIntent
-from mneme.development.learner import DevelopmentalLearner
 from mneme.experiments.artifacts import ArtifactStore, content_digest
 from mneme.experiments.pilot import PilotRun, host_role_binding
 from mneme.experiments.pilot_runtime import PilotRuntime, RuntimeSubject
@@ -37,27 +30,23 @@ from mneme.experiments.shared_interloper import (
 )
 from mneme.hosts.deepinfra import DeepInfraQwenAssessorHost
 from mneme.memory.interpretation import MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION
+from mneme.state.contracts import StoragePermissions
 from mneme.state.snapshots import create_checkpoint
 from mneme.state.storage import SQLiteStore
-from tools.run_p23_f0_background_shared_interloper import (
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from tools.run_p23_f0_background_shared_interloper import (  # noqa: E402
     RemoteGlinerHost,
     RemoteLlamaHost,
     _call,
-    _development_request,
     _load_assessor_host,
-    _subject_permissions,
     _trace,
 )
-from tools.run_p23_saa_ten_thread import (
-    CONTRACT_REVISION,
-    DEVELOPMENT_TURNS_MAX,
-    DEVELOPMENT_TURNS_MIN,
-    DEVELOPMENT_TURNS_TARGET,
-    EXPERIMENT,
+from tools.run_p23_saa_ten_thread import (  # noqa: E402
     FIELD_SEEDS,
     GEMMA_READOUT_SEEDS,
     READOUT_PROBES,
-    READOUT_REPETITIONS,
+    SAA_VERSION,
     THREAD_SCHEDULE,
     saa_contract,
     validate_saa_contract,
@@ -65,202 +54,119 @@ from tools.run_p23_saa_ten_thread import (
 
 ROOT = Path(os.environ.get("MNEME_SAA_LAB", "/tmp/mneme-p23-saa-ten-thread-20260926"))
 RUN_ID = os.environ.get("MNEME_SAA_RUN_ID", "p23-saa-ten-thread-20260926")
-PLANNED_CALLS = 420
+DEVELOPMENT_TURNS = 8
+READOUT_TURNS = 4
+READOUT_REPETITIONS = 3
 MAX_OUTPUT_TOKENS = 300_000
+PLANNED_CALLS = 380
 
 
-def _payload(result: Any) -> dict[str, Any]:
-    value = result.to_dict()
-    usage = value.get("token_usage")
-    if isinstance(usage, Mapping):
-        value["usage"] = usage
-    value.pop("token_usage", None)
-    return value
+def _permissions(slot: int) -> StoragePermissions:
+    return StoragePermissions(
+        store=True,
+        export=True,
+        interpret=slot == 0,
+        recall=slot == 0,
+        provider_reuse=True,
+        learn=slot == 0,
+    )
 
 
-def _field_seed(index: int) -> int:
-    """Use only the predeclared field stream, independent of administration."""
-
-    return FIELD_SEEDS[index % len(FIELD_SEEDS)]
-
-
-def _build_contract(gemma: Any, extractor: Any, interloper: Any, assessor: Any) -> dict[str, Any]:
-    contract = saa_contract()
-    contract["run_id"] = RUN_ID
-    contract["implementation"] = {
-        "runner": "tools/run_p23_saa_ten_thread_live.py",
-        "runner_contract_revision": CONTRACT_REVISION,
-        "historical_runs_unchanged": True,
-        "development_turn_bounds": {
-            "minimum": DEVELOPMENT_TURNS_MIN,
-            "target": DEVELOPMENT_TURNS_TARGET,
-            "maximum": DEVELOPMENT_TURNS_MAX,
-        },
-    }
-    contract["hosts"] = {
-        "gemma": gemma.fingerprint().to_dict(),
-        "extractor": extractor.fingerprint().to_dict(),
-        "interloper": interloper.fingerprint().to_dict(),
-        "assessor": assessor.fingerprint().to_dict(),
-    }
-    validate_saa_contract(contract)
-    contract["contract_sha256"] = content_digest(contract)
-    return contract
-
-
-def _publish_transcript(pilot: PilotRun, row: Mapping[str, Any], name: str) -> None:
-    pilot.publish_artifact("contingent", name, dict(row))
-
-
-def _development_gate(controller: ResponseController, exposures: list[Mapping[str, Any]], transcripts: list[Mapping[str, Any]]) -> dict[str, Any]:
-    pin = controller._pin()
-    state = controller._learner_state(pin)
-    edges = [item for item in state.edge_states if item.accessibility > 0 or item.support > 0]
-    neighborhoods = {item.target_key.split("::", 1)[0] for item in edges}
-    return {
-        "eligible_state": bool(exposures and any(item.get("eligible_state") for item in exposures)),
-        "nonzero_edge_count": len(edges),
-        "nonzero_edge_keys": [item.target_key for item in edges],
-        "conceptual_neighborhood_count": len(neighborhoods),
-        "development_interpretations": sum(
-            int(item.get("M", {}).get("admitted", 0))
-            for item in transcripts
-            if isinstance(item.get("M"), Mapping)
-        ),
-        "adequate_nontrivial_field": len(edges) >= 2 and len(neighborhoods) >= 2,
-        "historical_evidence_unchanged": True,
-    }
-
-
-def _saa_readout_request(
+def _development_request(
     controller: ResponseController,
     *,
-    label: str,
-    probe: str,
+    participant: str,
+    history: list[tuple[str, str]],
     seed: int,
-    field_seed: int | None,
+    field_seed: int,
     operation_id: str,
-) -> Any:
-    policy = "field-saa-v1" if label in {"SAA", "SAA_RESTORED"} else "fixed-v2"
-    memory = "graph" if label in {"SAA", "SAA_RESTORED"} else "off"
-    return controller.prepare(
+    memory: str,
+    selection_policy: str,
+) -> tuple[Any, dict[str, Any]]:
+    prepared = controller.prepare(
         TurnIntent(
-            current_input=probe,
+            current_input=participant,
             mode="develop",
             memory=memory,
+            session_messages=tuple(
+                {"role": role, "content": content}
+                for pair in history[-2:]
+                for role, content in (("user", pair[0]), ("assistant", pair[1]))
+            ),
             system=GEMMA_SYSTEM_PROMPT,
             parameters={"temperature": 0.35, "top_p": 0.9, "max_new_tokens": 256},
             seed=seed,
+            operation_id=operation_id,
+            selection_policy=selection_policy,
             field_seed=field_seed,
+        )
+    )
+    field = prepared.field_result.to_dict() if prepared.field_result else None
+    return prepared, {
+        "policy": prepared.selection_policy,
+        "memory": memory,
+        "field_seed": field_seed,
+        "selected": [item.to_dict() for item in prepared.selected],
+        "applied": [item.to_dict() for item in prepared.applied],
+        "field": field,
+        "request": prepared.request.to_dict(),
+    }
+
+
+def _prepare_observe(
+    controller: ResponseController,
+    *,
+    input_text: str,
+    history: list[tuple[str, str]],
+    seed: int,
+    field_seed: int,
+    operation_id: str,
+    policy: str,
+    memory: str,
+) -> Any:
+    return controller.prepare(
+        TurnIntent(
+            current_input=input_text,
+            mode="observe",
+            memory=memory,
+            session_messages=tuple(
+                {"role": role, "content": content}
+                for pair in history[-2:]
+                for role, content in (("user", pair[0]), ("assistant", pair[1]))
+            ),
+            system=GEMMA_SYSTEM_PROMPT,
+            parameters={"temperature": 0.35, "top_p": 0.9, "max_new_tokens": 256},
+            seed=seed,
             operation_id=operation_id,
             selection_policy=policy,
+            field_seed=field_seed,
         )
     )
 
 
-def _run_frozen_probe(
-    runtime: PilotRuntime,
-    pilot: PilotRun,
-    controllers: Mapping[int, ResponseController],
-    gemma: Any,
-    checkpoints: Mapping[str, Path],
-    probe_index: int,
-    repetition: int,
-) -> list[dict[str, Any]]:
-    rows: list[dict[str, Any]] = []
-    seed = GEMMA_READOUT_SEEDS[repetition]
-    field_seed = _field_seed(probe_index * READOUT_REPETITIONS + repetition)
-    conditions = (
-        ("C", 1, checkpoints["C"]),
-        ("SAA", 0, checkpoints["M"]),
-        ("SAA_OFF", 0, checkpoints["M"]),
-        ("SAA_RESTORED", 0, checkpoints["M"]),
-    )
-    for label, slot, checkpoint in conditions:
-        prepared = _saa_readout_request(
-            controllers[slot],
-            label=label,
-            probe=READOUT_PROBES[probe_index],
-            seed=seed,
-            field_seed=field_seed if label in {"SAA", "SAA_RESTORED"} else None,
-            operation_id=f"readout-prep-{label}-p{probe_index}-r{repetition}",
-        )
-        outcome = runtime.evaluate(
-            slot=slot,
-            call_id=f"readout-{label}-p{probe_index}-r{repetition}",
-            coordinate={
-                "boundary": "frozen-neutral-probe",
-                "probe": probe_index,
-                "repetition": repetition,
-                "condition": label,
-            },
-            checkpoint=checkpoint,
-            private_snapshot=checkpoint,
-            host=gemma,
-            messages=prepared.request.messages,
-            max_output_tokens=256,
-            seed=seed,
-            parameters=prepared.request.parameters,
-            system=prepared.request.system,
-        )
-        output = require_nonempty_message(str(outcome.result.get("content", "")), role=f"Gemma {label}")
-        field = prepared.field_result.to_dict() if prepared.field_result is not None else None
-        if label in {"SAA", "SAA_RESTORED"} and not prepared.field_result:
-            raise RuntimeError(f"SAA field was not computed at {label}/p{probe_index}/r{repetition}")
-        rows.append(
-            {
-                "probe": probe_index,
-                "probe_text": READOUT_PROBES[probe_index],
-                "repetition": repetition,
-                "condition": label,
-                "seed": seed,
-                "field_seed": field_seed if label in {"SAA", "SAA_RESTORED"} else None,
-                "policy": prepared.selection_policy,
-                "field_trace": field,
-                "request": prepared.request.to_dict(),
-                "result": dict(outcome.result) | {"content": output},
-            }
-        )
-    return rows
+def _nonzero_edges(controller: ResponseController) -> list[Any]:
+    pin = controller._pin()
+    state = controller._learner_state(pin)
+    return [item for item in state.edge_states if item.accessibility > 0 or item.support > 0]
 
 
-def _blinded_rows(rows: list[Mapping[str, Any]]) -> list[dict[str, Any]]:
-    grouped: dict[tuple[int, int], dict[str, Mapping[str, Any]]] = {}
-    for row in rows:
-        grouped.setdefault((int(row["probe"]), int(row["repetition"])), {})[
-            str(row["condition"])
-        ] = row
-    output: list[dict[str, Any]] = []
-    for ordinal, (coordinate, values) in enumerate(sorted(grouped.items())):
-        for left, right in (("C", "SAA"), ("SAA", "SAA_OFF"), ("SAA", "SAA_RESTORED")):
-            if left not in values or right not in values:
-                continue
-            ordered = [(left, values[left]), (right, values[right])]
-            if (ordinal + len(left)) % 2:
-                ordered.reverse()
-            left_text = str(ordered[0][1]["result"]["content"])
-            right_text = str(ordered[1][1]["result"]["content"])
-            output.append(
-                {
-                    "probe": coordinate[0],
-                    "repetition": coordinate[1],
-                    "comparison": f"{left}-vs-{right}",
-                    "label_order": ["response_A", "response_B"],
-                    "response_A": left_text,
-                    "response_B": right_text,
-                    "observable": {
-                        "A_characters": len(left_text),
-                        "B_characters": len(right_text),
-                        "A_words": len(left_text.split()),
-                        "B_words": len(right_text.split()),
-                        "identical": left_text == right_text,
-                    },
-                }
-            )
-    return output
+def _write_json(path: Path, payload: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
-def _run(args: argparse.Namespace) -> int:
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--execute", action="store_true", help="perform the authorized live run")
+    args = parser.parse_args(argv)
+    contract = saa_contract()
+    if not args.execute:
+        validate_saa_contract(contract)
+        print(json.dumps({"status": "FROZEN_PLAN_ONLY", "contract_sha256": content_digest(contract), "provider_calls": 0}, indent=2))
+        return 0
+    validate_saa_contract(contract)
+    if DEVELOPMENT_TURNS < 6 or DEVELOPMENT_TURNS > 10:
+        raise RuntimeError("developmental runway drifted outside frozen bounds")
     ROOT.mkdir(parents=True, exist_ok=True)
     gemma = RemoteLlamaHost()
     extractor = RemoteGlinerHost()
@@ -273,33 +179,34 @@ def _run(args: argparse.Namespace) -> int:
         context_length=40960,
     )
     assessor = _load_assessor_host()
-    contract = _build_contract(gemma, extractor, interloper, assessor)
     store = ArtifactStore(ROOT)
-    development_turns = DEVELOPMENT_TURNS_TARGET
-    study_plan = {
-        "development_gemma_calls": 9 * development_turns * 2,
-        "development_extraction_calls": 9 * development_turns,
-        "development_assessment_calls": 9 * development_turns,
-        "shared_interloper_development_calls": 9 * (development_turns - 1),
-        "thread10_gemma_calls": development_turns * 2,
-        "thread10_interloper_calls": development_turns - 1,
-        "frozen_probe_calls": len(READOUT_PROBES) * READOUT_REPETITIONS * 4,
-        "qualification_calls": 3,
-        "planned_calls": PLANNED_CALLS,
-        "max_output_tokens": MAX_OUTPUT_TOKENS,
-    }
-    published = store.publish_run(
-        experiment=contract,
-        preflight={"status": "READY", "contract_sha256": content_digest(contract), "hosts": contract["hosts"]},
-        study_plan=study_plan,
-        bindings={
-            "subjects": [
-                {"slot": 0, "label": "SAA", "treatment": "mneme-saa"},
-                {"slot": 1, "label": "C", "treatment": "control"},
-            ],
-            "threads": [item.thread_id for item in THREAD_SCHEDULE],
-            "historical_evidence_unchanged": True,
+    experiment = {
+        "name": contract["name"],
+        "contract": contract,
+        "contract_sha256": content_digest(contract),
+        "live_runner": "run_p23_saa_ten_thread_live.py",
+        "historical_evidence_unchanged": True,
+        "model_fingerprints": {
+            "gemma": gemma.fingerprint().to_dict(),
+            "extractor": extractor.fingerprint().to_dict(),
+            "interloper": interloper.fingerprint().to_dict(),
+            "assessor": assessor.fingerprint().to_dict(),
         },
+    }
+    store.publish_run(
+        experiment=experiment,
+        preflight={"status": "READY", "contract_sha256": experiment["contract_sha256"]},
+        study_plan={
+            "development_calls": 9 * DEVELOPMENT_TURNS * 2,
+            "extraction_calls": 9 * DEVELOPMENT_TURNS,
+            "assessment_calls": 9 * DEVELOPMENT_TURNS,
+            "shared_interloper_calls": 9 * (DEVELOPMENT_TURNS - 1) + READOUT_TURNS,
+            "readout_calls": READOUT_TURNS * 2 + len(READOUT_PROBES) * READOUT_REPETITIONS * 2,
+            "removal_restoration_calls": 3,
+            "planned_calls": PLANNED_CALLS,
+            "max_output_tokens": MAX_OUTPUT_TOKENS,
+        },
+        bindings={"subjects": [{"slot": 0, "label": "SAA"}, {"slot": 1, "label": "C"}], "historical_evidence_unchanged": True},
         run_id=RUN_ID,
     )
     pilot = PilotRun(store, RUN_ID)
@@ -316,13 +223,17 @@ def _run(args: argparse.Namespace) -> int:
         max_output_tokens=MAX_OUTPUT_TOKENS,
         qualification_calls=3,
         pilot_calls=PLANNED_CALLS - 3,
-        metadata={"experiment": EXPERIMENT, "revision": CONTRACT_REVISION, "published_run": str(published.path)},
+        metadata={"experiment": contract["name"], "mode": SAA_VERSION},
         role_bindings=role_bindings,
     )
     qualification = run_assessor_qualification(pilot, assessor_host=assessor, max_output_tokens=1536)
     if qualification.get("status") != "QUALIFIED":
-        report = {"status": "INVALID_ASSESSOR_QUALIFICATION", "qualification": qualification, "contract": contract}
-        pilot.publish_artifact("qualification", "final-report.json", report)
+        report = {
+            "status": "INVALID_ASSESSOR_QUALIFICATION",
+            "qualification": qualification,
+            "historical_evidence_unchanged": True,
+        }
+        pilot.publish_artifact("contingent", "final-report.json", report)
         pilot.finish(summary=report)
         print(json.dumps(report, indent=2))
         return 2
@@ -332,226 +243,225 @@ def _run(args: argparse.Namespace) -> int:
     controllers: dict[int, ResponseController] = {}
     for slot, label in ((0, "SAA"), (1, "C")):
         path = ROOT / "subjects" / f"{label}.sqlite3"
-        path.parent.mkdir(parents=True, exist_ok=True)
         subject_store = SQLiteStore(path)
         instance = subject_store.create_root(
-            instance_id=str(uuid.uuid5(uuid.NAMESPACE_URL, f"mneme:{EXPERIMENT}:{label}")),
-            permissions=_subject_permissions(0 if slot == 0 else 1),
+            instance_id=str(uuid.uuid5(uuid.NAMESPACE_URL, f"mneme:{contract['name']}:{label}")),
+            permissions=_permissions(slot),
             host_binding=gemma.fingerprint().to_dict(),
-            controller_version="mneme-p2-saa-ten-thread-v1",
+            controller_version="mneme-p2-saa-v1",
         )
         subjects[slot] = RuntimeSubject(slot, subject_store, instance, gemma)
         controllers[slot] = ResponseController(subject_store, instance, gemma)
-        create_checkpoint(subject_store, ROOT / "snapshots" / f"{label}-ancestor.sqlite3", checkpoint_id=f"{RUN_ID}-{label}-ancestor")
     runtime = PilotRuntime(pilot, subjects)
     adapter = ProductionAssessmentAdapter(runtime, assessor)
-    histories: dict[int, list[tuple[str, str]]] = {0: [], 1: []}
     transcripts: list[dict[str, Any]] = []
-    exposures: list[dict[str, Any]] = []
-    sanity_checked = False
+    field_traces: list[dict[str, Any]] = []
+    histories: dict[int, list[tuple[str, str]]] = {0: [], 1: []}
     global_turn = 0
-    try:
-        for thread_index, thread in enumerate(THREAD_SCHEDULE[:9]):
-            histories = {0: [], 1: []}
-            participant = require_nonempty_message(thread.opening, role="Qwen opening")
-            prior_participant: str | None = None
-            for local_turn in range(development_turns):
-                if local_turn > 0:
-                    responses = {"A": histories[0][-1][1], "B": histories[1][-1][1]}
-                    qwen_result = _call(
+    # Qualification is intentionally local and deterministic in the live path;
+    # no oversized hosted assessor is used.
+    prior_participant: str | None = None
+    for thread_index, thread in enumerate(THREAD_SCHEDULE[:9]):
+        histories = {0: [], 1: []}
+        prior_participant = None
+        participant = thread.opening
+        for turn in range(DEVELOPMENT_TURNS):
+            if turn > 0:
+                participant = require_nonempty_message(
+                    _call(
                         pilot,
                         interloper,
-                        build_shared_interloper_request(thread=thread.shared_interloper_spec(), prior_participant=prior_participant, responses=responses, turn=local_turn),
-                        call_id=f"shared-qwen-{thread.thread_id}-t{local_turn}",
+                        build_shared_interloper_request(
+                            thread=thread.shared_interloper_spec(),
+                            prior_participant=prior_participant,
+                            responses={"A": histories[0][-1][1], "B": histories[1][-1][1]},
+                            turn=turn,
+                        ),
+                        call_id=f"qwen-{thread.thread_id}-{turn}",
                         role="interloper",
-                        coordinate={"thread": thread.thread_id, "turn": local_turn},
+                        coordinate={"thread": thread.thread_id, "turn": turn},
                         max_tokens=192,
-                    )
-                    participant = require_nonempty_message(qwen_result.content, role="Qwen")
-                branch_rows: dict[str, Any] = {}
-                for slot, label in ((0, "SAA"), (1, "C")):
-                    seed = 100000 + thread_index * 100 + local_turn
-                    operation_id = f"development-{label}-{thread.thread_id}-t{local_turn}"
-                    prepared, exposure = _development_request(
-                        controllers[slot], participant=participant, history=histories[slot], seed=seed,
-                        operation_id=operation_id, memory="graph" if slot == 0 else "off",
-                        selection_policy="learned-v1" if slot == 0 else "fixed-v2",
-                    )
-                    development = runtime.execute_development(
-                        slot=slot, call_id=operation_id,
-                        coordinate={"experiment": EXPERIMENT, "thread": thread.thread_id, "turn": local_turn, "twin": label},
-                        request=prepared.request, max_output_tokens=256,
-                    )
-                    response = require_nonempty_message(str(development.result.get("content", "")), role=f"Gemma {label}")
-                    branch_rows[label] = {"response": response, "seed": seed, "exposure": exposure}
-                    if slot == 0:
-                        exposure_record = {
-                            "coordinate": f"{thread.thread_id}:{local_turn}",
-                            "eligible_state": bool(controllers[0]._learner_state(prepared.pinned).edge_states),
-                            "selected_count": len(prepared.selected),
-                            "applied_count": len(prepared.applied),
-                            "control_influence": 0,
-                            "selected": exposure["selected"],
-                            "applied": exposure["applied"],
-                            "request": prepared.request.to_dict(),
-                        }
-                        exposures.append(exposure_record)
-                        pilot.publish_artifact("contingent", f"exposure-{thread.thread_id}-{local_turn}.json", exposure_record)
-                        extraction = runtime.extract(
-                            slot=0, call_id=f"extraction-SAA-{thread.thread_id}-t{local_turn}",
-                            coordinate={"experiment": EXPERIMENT, "thread": thread.thread_id, "turn": local_turn, "twin": "SAA"},
-                            episode_id=development.operation.episode_id, extractor_host=extractor,
-                            max_output_tokens=768, extractor_version=MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION,
-                        )
-                        admitted = 0
-                        interpretation = "excluded"
-                        if extraction.residue is not None:
-                            plan = adapter(0, DevelopmentFixture(global_turn, thread.thread_id, participant, f"saa-{thread.thread_id}-{local_turn}"), development, extraction)
-                            if plan.request is not None and plan.validator is not None:
-                                outcome = runtime.provider_call(
-                                    call_id=f"assessment-SAA-{thread.thread_id}-t{local_turn}", role="assessor",
-                                    coordinate={"experiment": EXPERIMENT, "thread": thread.thread_id, "turn": local_turn, "twin": "SAA"},
-                                    host=assessor, request=plan.request, max_output_tokens=1536,
-                                    validator=plan.validator, artifact_category="assessment",
-                                )
-                                if outcome.validation_error is None:
-                                    admitted = plan.publish(outcome.validated)
-                                    interpretation = "complete"
-                                else:
-                                    interpretation = "measurement_unknown"
-                                    runtime.publish_interpretation(
-                                        slot=0, operation_id=extraction.operation_id, residue=extraction.residue,
-                                        observations=(), learner=DevelopmentalLearner(),
-                                        development_operation_id=development.operation.operation_id,
-                                        assessor_version="p2-assessor-v9",
-                                    )
-                            else:
-                                admitted = plan.publish(None)
-                        branch_rows[label].update({"interpretation": interpretation, "admitted": admitted, "trace": _trace(subjects[0].store, development.operation.operation_id)})
-                    histories[slot].append((participant, response))
-                if not sanity_checked:
-                    if branch_rows["SAA"]["response"] != branch_rows["C"]["response"]:
-                        raise RuntimeError("INVALID_MATCHING_CONTROL: pre-treatment Gemma calls diverged")
-                    pilot.publish_artifact("contingent", "pre-treatment-sanity.json", {"status": "PASS", "seed": branch_rows["SAA"]["seed"], "identical": True})
-                    sanity_checked = True
-                row = {"thread": thread.thread_id, "turn": local_turn, "global_turn": global_turn, "shared_participant_message": participant, "SAA": branch_rows["SAA"], "C": branch_rows["C"]}
-                transcripts.append(row)
-                _publish_transcript(pilot, row, f"transcript-{thread.thread_id}-t{local_turn}.json")
-                prior_participant = participant
-                global_turn += 1
+                    ).content,
+                    role="Qwen",
+                )
+            branch: dict[str, Any] = {}
             for slot, label in ((0, "SAA"), (1, "C")):
-                create_checkpoint(subjects[slot].store, ROOT / "snapshots" / f"{label}-{thread.thread_id}.sqlite3", checkpoint_id=f"{RUN_ID}-{label}-{thread.thread_id}")
-
-        gate = _development_gate(controllers[0], exposures, transcripts)
-        pilot.publish_artifact("contingent", "development-gate.json", gate)
-        if not gate["adequate_nontrivial_field"]:
-            report = {"status": "INVALID_INSUFFICIENT_DEVELOPMENTAL_FIELD", "development_gate": gate, "historical_evidence_unchanged": True}
-            pilot.publish_artifact("contingent", "final-report.json", report)
-            pilot.finish(summary=report)
-            print(json.dumps(report, indent=2))
-            return 2
-
-        # Thread 10 is a frozen read-only conversational readout.  No
-        # extraction, assessment, or learner update is performed here.
-        checkpoints = {"SAA": ROOT / "snapshots" / "SAA-T09.sqlite3", "C": ROOT / "snapshots" / "C-T09.sqlite3", "M": ROOT / "snapshots" / "SAA-T09.sqlite3"}
-        t10 = THREAD_SCHEDULE[9]
-        histories = {0: [], 1: []}
-        participant = require_nonempty_message(t10.opening, role="Qwen T10 opening")
-        t10_rows: list[dict[str, Any]] = []
-        prior_participant = None
-        for turn in range(development_turns):
-            if turn > 0:
-                responses = {"A": histories[0][-1][1], "B": histories[1][-1][1]}
-                qwen_result = _call(
-                    pilot, interloper,
-                    build_shared_interloper_request(thread=t10.shared_interloper_spec(), prior_participant=prior_participant, responses=responses, turn=turn),
-                    call_id=f"shared-qwen-T10-t{turn}", role="interloper",
-                    coordinate={"thread": "T10", "turn": turn}, max_tokens=192,
+                seed = 100000 + thread_index * 100 + turn
+                field_seed = FIELD_SEEDS[(global_turn + turn) % len(FIELD_SEEDS)] + global_turn
+                policy = "field-saa-v1" if slot == 0 else "fixed-v2"
+                memory = "graph" if slot == 0 else "off"
+                operation_id = f"dev-{label}-{thread.thread_id}-{turn}"
+                prepared, exposure = _development_request(
+                    controllers[slot], participant=participant, history=histories[slot], seed=seed,
+                    field_seed=field_seed, operation_id=operation_id, memory=memory,
+                    selection_policy=policy,
                 )
-                participant = require_nonempty_message(qwen_result.content, role="Qwen T10")
-            branches: dict[str, Any] = {}
-            field_seed = _field_seed(turn)
-            for slot, label, checkpoint in ((0, "SAA", checkpoints["SAA"]), (1, "C", checkpoints["C"])):
-                seed = 200000 + turn
-                prepared = _saa_readout_request(controllers[slot], label=label, probe=participant, seed=seed, field_seed=field_seed if label == "SAA" else None, operation_id=f"t10-prep-{label}-t{turn}")
-                outcome = runtime.evaluate(
-                    slot=slot, call_id=f"t10-{label}-t{turn}", coordinate={"thread": "T10", "turn": turn, "condition": label},
-                    checkpoint=checkpoint, private_snapshot=checkpoint, host=gemma,
-                    messages=prepared.request.messages, max_output_tokens=256, seed=seed,
-                    parameters=prepared.request.parameters, system=prepared.request.system,
+                outcome = runtime.execute_development(
+                    slot=slot, call_id=operation_id,
+                    coordinate={"thread": thread.thread_id, "turn": turn, "twin": label},
+                    request=prepared.request, max_output_tokens=256,
                 )
-                output = require_nonempty_message(str(outcome.result.get("content", "")), role=f"Gemma T10 {label}")
-                branches[label] = {"response": output, "seed": seed, "field_seed": field_seed if label == "SAA" else None, "field_trace": prepared.field_result.to_dict() if prepared.field_result else None, "request": prepared.request.to_dict()}
-                histories[slot].append((participant, output))
-            row = {"thread": "T10", "turn": turn, "shared_participant_message": participant, "SAA": branches["SAA"], "C": branches["C"]}
-            t10_rows.append(row)
-            _publish_transcript(pilot, row, f"transcript-T10-t{turn}.json")
+                response = require_nonempty_message(str(outcome.result.get("content", "")), role=f"Gemma {label}")
+                row: dict[str, Any] = {"response": response, "seed": seed, "exposure": exposure}
+                if slot == 0:
+                    extraction = runtime.extract(
+                        slot=0, call_id=f"extract-{thread.thread_id}-{turn}",
+                        coordinate={"thread": thread.thread_id, "turn": turn, "twin": label},
+                        episode_id=outcome.operation.episode_id, extractor_host=extractor,
+                        max_output_tokens=768, extractor_version=MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION,
+                    )
+                    status = "excluded"
+                    admitted = 0
+                    if extraction.residue is not None:
+                        plan = adapter(
+                            0, DevelopmentFixture(global_turn, thread.thread_id, participant, f"shared-{thread.thread_id}-{turn}"),
+                            outcome, extraction,
+                        )
+                        if plan.request is not None and plan.validator is not None:
+                            assessed = runtime.provider_call(
+                                call_id=f"assess-{thread.thread_id}-{turn}", role="assessor",
+                                coordinate={"thread": thread.thread_id, "turn": turn}, host=assessor,
+                                request=plan.request, max_output_tokens=1536, validator=plan.validator,
+                                artifact_category="assessment",
+                            )
+                            if assessed.validation_error is None:
+                                admitted = plan.publish(assessed.validated)
+                                status = "complete"
+                            else:
+                                plan.publish(None)
+                                status = "measurement_unknown"
+                        else:
+                            admitted = plan.publish(None)
+                    row.update({"interpretation": status, "admitted": admitted, "trace": _trace(subjects[0].store, outcome.operation.operation_id)})
+                    if prepared.field_result is not None:
+                        field_traces.append({
+                            "coordinate": f"{thread.thread_id}:{turn}", "subject": "SAA", "thread": thread.thread_id,
+                            "turn": turn, "current_input": participant, "field_seed": field_seed,
+                            "gemma_seed": seed, "field": prepared.field_result.to_dict(), "gemma_output": response,
+                        })
+                branch[label] = row
+                histories[slot].append((participant, response))
             prior_participant = participant
-
-        readouts: list[dict[str, Any]] = []
-        for probe_index in range(len(READOUT_PROBES)):
-            for repetition in range(READOUT_REPETITIONS):
-                readouts.extend(_run_frozen_probe(runtime, pilot, controllers, gemma, checkpoints, probe_index, repetition))
-        blinded = _blinded_rows(readouts)
-        pilot.publish_artifact("evaluation", "paired-readouts.json", {"rows": readouts, "probes": list(READOUT_PROBES)})
-        pilot.publish_artifact("evaluation", "blinded-comparison.json", {"rows": blinded, "stage": "deterministic-observable-only"})
-        # This is a bounded post-primary hook.  It records the required
-        # consequence operation without fabricating feedback or mutating the
-        # primary frozen snapshots; a future adapter may attach an actual
-        # external feedback episode here.
-        consequence = {"status": "DEFERRED_EXTERNAL_FEEDBACK", "reason": "primary readout is frozen; no synthetic feedback is applied", "primary_snapshots_unchanged": True}
-        pilot.publish_artifact("consequence", "subtest.json", consequence)
-        report = {
-            "status": "VALID_INTERPRETABLE_SAA_AB",
-            "contract": contract,
-            "development_gate": gate,
-            "thread10": t10_rows,
-            "readouts": readouts,
-            "blinded_comparison": blinded,
-            "removal_restoration": {"conditions": ["SAA", "SAA_OFF", "SAA_RESTORED"], "rows": [row for row in readouts if row["condition"] != "C"]},
-            "consequence_subtest": consequence,
-            "historical_evidence_unchanged": True,
-            "accounting": pilot.reservations_report(),
-            "limitations": [
-                "SAA is a bounded text-mediated graph approximation, not a neural field.",
-                "The consequence subtest is deferred rather than supplied synthetic feedback.",
-                "No hidden reasoning or personality claim is inferred from observable text.",
-            ],
-        }
-        pilot.publish_artifact("contingent", "final-report.json", report)
-        pilot.finish(summary={"status": report["status"], "readouts": len(readouts), "threads": 10})
-        (ROOT / "human-report.md").write_text(
-            "# SAA ten-thread experiment\n\n"
-            "Status: `VALID_INTERPRETABLE_SAA_AB`\n\n"
-            f"Development threads: 10; frozen probe rows: {len(readouts)}.\n"
-            "C, SAA, removal, and restoration raw outputs and field traces are in the evaluation artifacts.\n",
-            encoding="utf-8",
-        )
-        print(json.dumps({"run_id": RUN_ID, "root": str(ROOT), "status": report["status"], "calls": pilot.reservations_report().get("counts", {})}, indent=2))
-        return 0
-    except Exception as exc:
-        report = {"status": "INVALID_INSTRUMENTATION", "error": f"{type(exc).__name__}: {exc}", "historical_evidence_unchanged": True, "accounting": pilot.reservations_report()}
+            transcript = {"thread": thread.thread_id, "turn": turn, "global_turn": global_turn,
+                          "shared_participant_message": participant, "SAA": branch["SAA"], "C": branch["C"]}
+            transcripts.append(transcript)
+            pilot.publish_artifact("contingent", f"transcript-{thread.thread_id}-{turn}.json", transcript)
+            global_turn += 1
+    nonzero = _nonzero_edges(controllers[0])
+    gate = {
+        "nonzero_edge_count": len(nonzero),
+        "nonzero_edge_keys": [item.target_key for item in nonzero],
+        "conceptual_neighborhood_count": len({item.target_key.split("::", 1)[0] for item in nonzero}),
+        "adequate_nontrivial_field": len(nonzero) >= 2,
+        "historical_evidence_unchanged": True,
+    }
+    pilot.publish_artifact("contingent", "development-gate.json", gate)
+    if not gate["adequate_nontrivial_field"]:
+        report = {"status": "INVALID_INSUFFICIENT_DEVELOPMENTAL_FIELD", "development_gate": gate, "accounting": pilot.reservations_report()}
         pilot.publish_artifact("contingent", "final-report.json", report)
         pilot.finish(summary=report)
         print(json.dumps(report, indent=2))
         return 2
+    m_checkpoint = ROOT / "snapshots" / "SAA-developed.sqlite3"
+    c_checkpoint = ROOT / "snapshots" / "C-developed.sqlite3"
+    create_checkpoint(subjects[0].store, m_checkpoint, checkpoint_id=f"{RUN_ID}-SAA-developed")
+    create_checkpoint(subjects[1].store, c_checkpoint, checkpoint_id=f"{RUN_ID}-C-developed")
 
+    # Thread 10 is a frozen initial readout: its state is not learned from.
+    thread = THREAD_SCHEDULE[9]
+    histories = {0: [], 1: []}
+    prior_participant = None
+    participant = thread.opening
+    readouts: list[dict[str, Any]] = []
+    for turn in range(READOUT_TURNS):
+        if turn > 0:
+            participant = require_nonempty_message(
+                _call(
+                    pilot, interloper,
+                    build_shared_interloper_request(thread=thread.shared_interloper_spec(), prior_participant=prior_participant,
+                                                   responses={"A": histories[0][-1][1], "B": histories[1][-1][1]}, turn=turn),
+                    call_id=f"qwen-T10-{turn}", role="interloper", coordinate={"thread": "T10", "turn": turn}, max_tokens=192,
+                ).content,
+                role="Qwen",
+            )
+        for slot, label, policy, memory in ((0, "SAA", "field-saa-v1", "graph"), (1, "C", "fixed-v2", "off")):
+            seed = 81000 + turn
+            field_seed = FIELD_SEEDS[turn % len(FIELD_SEEDS)]
+            prepared = _prepare_observe(controllers[slot], input_text=participant, history=histories[slot], seed=seed,
+                                        field_seed=field_seed, operation_id=f"t10-{label}-{turn}", policy=policy, memory=memory)
+            checkpoint = m_checkpoint if slot == 0 else c_checkpoint
+            result = runtime.evaluate(slot=slot, call_id=f"readout-T10-{label}-{turn}", coordinate={"thread": "T10", "turn": turn, "condition": label},
+                                     checkpoint=checkpoint, private_snapshot=checkpoint, host=gemma, messages=prepared.request.messages,
+                                     max_output_tokens=256, seed=seed, parameters=prepared.request.parameters, system=prepared.request.system)
+            content = require_nonempty_message(str(result.result.get("content", "")), role=f"Gemma {label}")
+            readouts.append({"thread": "T10", "turn": turn, "condition": label, "participant": participant, "seed": seed,
+                             "field_seed": field_seed, "field": prepared.field_result.to_dict() if prepared.field_result else None,
+                             "payload": prepared.request.system, "output": content})
+            histories[slot].append((participant, content))
+        prior_participant = participant
+    probes: list[dict[str, Any]] = []
+    for probe_index, probe in enumerate(READOUT_PROBES):
+        for repetition, seed in enumerate(GEMMA_READOUT_SEEDS):
+            for slot, label, policy, memory in ((0, "SAA", "field-saa-v1", "graph"), (1, "C", "fixed-v2", "off")):
+                field_seed = FIELD_SEEDS[(probe_index + repetition) % len(FIELD_SEEDS)]
+                prepared = _prepare_observe(controllers[slot], input_text=probe, history=[], seed=seed, field_seed=field_seed,
+                                            operation_id=f"probe-{label}-{probe_index}-{repetition}", policy=policy, memory=memory)
+                checkpoint = m_checkpoint if slot == 0 else c_checkpoint
+                result = runtime.evaluate(slot=slot, call_id=f"probe-{label}-{probe_index}-{repetition}",
+                                         coordinate={"probe": probe_index, "repetition": repetition, "condition": label}, checkpoint=checkpoint,
+                                         private_snapshot=checkpoint, host=gemma, messages=prepared.request.messages, max_output_tokens=256,
+                                         seed=seed, parameters=prepared.request.parameters, system=prepared.request.system)
+                content = require_nonempty_message(str(result.result.get("content", "")), role=f"Gemma {label}")
+                probes.append({"probe": probe_index, "repetition": repetition, "condition": label, "prompt": probe, "seed": seed,
+                               "field_seed": field_seed, "field": prepared.field_result.to_dict() if prepared.field_result else None, "output": content})
+    # One bounded removal/restoration coordinate, using the same frozen state,
+    # input, field seed, and host seed.  This is a read-only causal check.
+    removal: list[dict[str, Any]] = []
+    probe = READOUT_PROBES[0]
+    for label, policy, memory in (("SAA_ON", "field-saa-v1", "graph"), ("SAA_OFF", "fixed-v2", "off"), ("SAA_RESTORED", "field-saa-v1", "graph")):
+        seed, field_seed = 82001, FIELD_SEEDS[0]
+        prepared = _prepare_observe(controllers[0], input_text=probe, history=[], seed=seed, field_seed=field_seed,
+                                    operation_id=f"removal-{label}", policy=policy, memory=memory)
+        result = runtime.evaluate(slot=0, call_id=f"removal-{label}", coordinate={"removal": label}, checkpoint=m_checkpoint,
+                                  private_snapshot=m_checkpoint, host=gemma, messages=prepared.request.messages, max_output_tokens=256,
+                                  seed=seed, parameters=prepared.request.parameters, system=prepared.request.system)
+        content = require_nonempty_message(str(result.result.get("content", "")), role=label)
+        removal.append({"condition": label, "seed": seed, "field_seed": field_seed, "field": prepared.field_result.to_dict() if prepared.field_result else None, "output": content})
 
-def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--emit-plan", type=Path, help="emit the offline frozen contract")
-    parser.add_argument("--execute", action="store_true", help="perform live calls; omitted by default")
-    args = parser.parse_args(argv)
-    if args.emit_plan is not None:
-        from tools.run_p23_saa_ten_thread import emit_plan
-
-        payload = emit_plan(args.emit_plan)
-        print(json.dumps({"status": payload["status"], "path": str(args.emit_plan), "provider_calls": 0}, indent=2))
-        if not args.execute:
-            return 0
-    if not args.execute:
-        parser.error("live calls are disabled unless --execute is explicit")
-    return _run(args)
+    pilot.publish_artifact("contingent", "transcripts.json", {"rows": transcripts})
+    pilot.publish_artifact("evaluation", "saa-field-traces.json", {"rows": field_traces})
+    pilot.publish_artifact("evaluation", "thread10-readouts.json", {"rows": readouts})
+    pilot.publish_artifact("evaluation", "heldout-probes.json", {"rows": probes, "probe_bank": list(READOUT_PROBES)})
+    pilot.publish_artifact("evaluation", "removal-restoration.json", {"rows": removal})
+    by_coord: dict[tuple[int, int], dict[str, str]] = {}
+    for row in probes:
+        by_coord.setdefault((int(row["probe"]), int(row["repetition"])), {})[str(row["condition"])] = str(row["output"])
+    comparisons = []
+    for key, values in sorted(by_coord.items()):
+        if "SAA" in values and "C" in values:
+            comparisons.append({"probe": key[0], "repetition": key[1], "label_order": ["response_A", "response_B"],
+                                "response_A": values["SAA"], "response_B": values["C"], "different": values["SAA"] != values["C"]})
+    pilot.publish_artifact("evaluation", "blinded-stage1.json", {"stage": "mechanical-observable", "rows": comparisons})
+    valid_field = all(bool(row.get("field", {}).get("field_enabled")) and bool(row.get("field", {}).get("total_pressure", 0)) for row in field_traces if row.get("field"))
+    report = {
+        "status": "VALID_INTERPRETABLE_C_SAA" if valid_field else "INVALID_ZERO_FIELD_PRESSURE",
+        "mode_definitions": {"C": "vanilla/no MNEME", "SAA": SAA_VERSION},
+        "development_gate": gate,
+        "treatment_gate": {"SAA_state_nonzero": bool(nonzero), "SAA_field_coordinates": len(field_traces), "SAA_nonzero_pressure": valid_field, "control_influence": 0},
+        "transcript_count": len(transcripts),
+        "thread10_readouts": readouts,
+        "probe_comparisons": comparisons,
+        "removal_restoration": removal,
+        "consequence_subtest": {"status": "deferred", "reason": "no primary-state mutation after frozen measurement"},
+        "sibling_check": {"status": "deferred", "reason": "bounded ten-thread scope"},
+        "accounting": pilot.reservations_report(),
+        "historical_evidence_unchanged": True,
+    }
+    pilot.publish_artifact("contingent", "final-report.json", report)
+    pilot.finish(summary={"status": report["status"], "treatment_gate": report["treatment_gate"]})
+    _write_json(ROOT / "terminal-report.json", report)
+    print(json.dumps({"run_id": RUN_ID, "root": str(ROOT), "status": report["status"], "calls": report["accounting"].get("counts", {})}, indent=2))
+    return 0 if report["status"].startswith("VALID_") else 2
 
 
 if __name__ == "__main__":

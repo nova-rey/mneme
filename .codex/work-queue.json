@@ -1772,6 +1772,182 @@
       },
       "waiting_on": [],
       "workstream": "phase-two"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "bc8233907461e88b9f350b4604fa85631ec9052a",
+      "campaign": "mneme-phase-two",
+      "candidate": null,
+      "completion_criterion": "Versioned SAA field, renderer, landing/propagation traces, and offline tests pass without changing historical F0 behavior.",
+      "created_at": "2026-09-27T00:41:16.838872Z",
+      "dependencies": [],
+      "domain": "development-field",
+      "edit_boundaries": [
+        "src/mneme/development/field.py",
+        "tests/test_field_pressure.py",
+        "docs/receipts",
+        "docs/README.md",
+        "bible.md"
+      ],
+      "evidence_refs": [],
+      "id": "SAA-FIELD-01",
+      "notes": "",
+      "owner": "/root/saa_field_engine",
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "saa-version",
+        "saa-distribution",
+        "saa-landing",
+        "saa-propagation",
+        "saa-renderer"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": false,
+          "name": "canonical-integration",
+          "units": 1
+        }
+      ],
+      "scope": "Add the versioned inspectable SAA field computation and offline qualification while preserving historical F0 modes.",
+      "session_ids": [
+        "saa-field-engine"
+      ],
+      "status": "RUNNING",
+      "title": "SAA v1 field and renderer",
+      "updated_at": "2026-09-27T00:41:21.118922Z",
+      "validation": {
+        "required": [
+          "focused SAA field tests",
+          "pytest",
+          "ruff",
+          "strict mypy"
+        ],
+        "results": {}
+      },
+      "waiting_on": [],
+      "workstream": "saa-v1"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "bc8233907461e88b9f350b4604fa85631ec9052a",
+      "campaign": "mneme-phase-two",
+      "candidate": null,
+      "completion_criterion": "Frozen ten-thread schedule, thread-10 predeclared scenario, field-seed schedule, and complete evidence schema are validated offline.",
+      "created_at": "2026-09-27T00:41:16.889757Z",
+      "dependencies": [
+        "package:SAA-FIELD-01"
+      ],
+      "domain": "experiment-harness",
+      "edit_boundaries": [
+        "tools/run_p23_saa_ten_thread.py",
+        "docs/receipts",
+        "docs/README.md",
+        "bible.md"
+      ],
+      "evidence_refs": [],
+      "id": "SAA-HARNESS-01",
+      "notes": "",
+      "owner": null,
+      "priority": 2,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "saa-ten-thread",
+        "saa-thread10",
+        "saa-evidence"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": false,
+          "name": "model-agent",
+          "units": 1
+        }
+      ],
+      "scope": "Freeze the ten-thread developmental schedule and implement the prospective SAA C/A-B evidence runner using the existing local/shared-Interloper stack.",
+      "session_ids": [],
+      "status": "WAITING",
+      "title": "SAA ten-thread harness contract",
+      "updated_at": "2026-09-27T00:41:16.889757Z",
+      "validation": {
+        "required": [
+          "offline runner/preflight",
+          "serialized contract audit",
+          "pytest",
+          "ruff",
+          "strict mypy"
+        ],
+        "results": {}
+      },
+      "waiting_on": [
+        "package:SAA-FIELD-01"
+      ],
+      "workstream": "saa-v1"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "bc8233907461e88b9f350b4604fa85631ec9052a",
+      "campaign": "mneme-phase-two",
+      "candidate": null,
+      "completion_criterion": "A valid interpretable ten-thread SAA result or a preserved invalid run with corrected rerun/terminal blocker is published without rewriting historical evidence.",
+      "created_at": "2026-09-27T00:41:16.932819Z",
+      "dependencies": [
+        "package:SAA-HARNESS-01"
+      ],
+      "domain": "phase-two-experiment",
+      "edit_boundaries": [
+        "docs/receipts",
+        "bible.md",
+        ".codex/work-queue.json"
+      ],
+      "evidence_refs": [],
+      "id": "SAA-LIVE-01",
+      "notes": "",
+      "owner": null,
+      "priority": 3,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "saa-live-development",
+        "saa-thread10-readout",
+        "saa-removal-restoration",
+        "saa-consequence"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": true,
+          "name": "model-agent",
+          "units": 1
+        }
+      ],
+      "scope": "Run the authorized ten-thread SAA developmental A/B, frozen Thread-10 readouts, bounded removal/restoration and consequence checks, and publish terminal evidence.",
+      "session_ids": [],
+      "status": "WAITING",
+      "title": "SAA ten-thread prospective experiment",
+      "updated_at": "2026-09-27T00:41:16.932819Z",
+      "validation": {
+        "required": [
+          "live terminal report",
+          "complete transcript/evidence publication",
+          "replay/artifact audit",
+          "CI"
+        ],
+        "results": {}
+      },
+      "waiting_on": [
+        "package:SAA-HARNESS-01"
+      ],
+      "workstream": "saa-v1"
     }
   ],
   "project": "nova-rey/mneme",
@@ -1786,5 +1962,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-26T23:47:14.922082Z"
+  "updated_at": "2026-09-27T00:41:21.119012Z"
 }

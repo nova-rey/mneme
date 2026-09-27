@@ -13,6 +13,7 @@ from typing import Any
 
 from .contracts import GenerationRequest, GenerationResult
 from .development import (
+    SAA_FIELD_VERSION,
     EdgeState,
     FieldConfig,
     FieldResult,
@@ -20,6 +21,7 @@ from .development import (
     RouteSpec,
     RouteState,
     compute_field,
+    compute_saa_field,
     select_routes,
 )
 from .development.learner import CreditWindow
@@ -54,6 +56,9 @@ class TurnIntent:
     response_format: Mapping[str, Any] | None = None
     operation_id: str | None = None
     selection_policy: str | None = None
+    # Dedicated accessibility RNG.  It is caller-supplied and never derived
+    # from administrative identifiers, timestamps, or host-generation seed.
+    field_seed: int | None = None
 
 
 @dataclass(frozen=True)
@@ -465,7 +470,13 @@ class ResponseController:
         )
         return graph_concepts, tuple(edges)
 
-    def _compute_field(self, intent: TurnIntent, pin: PinnedState) -> FieldResult:
+    def _compute_field(
+        self,
+        intent: TurnIntent,
+        pin: PinnedState,
+        *,
+        policy: str = "field-v0",
+    ) -> FieldResult:
         concepts, edges = self._field_graph(pin)
         ineligible: set[str] = set()
         quarantined: set[str] = set()
@@ -487,6 +498,36 @@ class ResponseController:
                 ineligible.add(edge.key)
                 if gated.suppressed_reason == "quarantined":
                     quarantined.add(edge.key)
+        if policy == "field-saa-v1":
+            if intent.field_seed is None:
+                raise ControllerError("field-saa-v1 requires an explicit field_seed")
+            return compute_saa_field(
+                intent.current_input,
+                concepts,
+                edges,
+                self._learner_state(pin),
+                config=FieldConfig(
+                    version=SAA_FIELD_VERSION,
+                    max_depth=2,
+                    total_budget=1_000_000,
+                    max_contributors=4,
+                    render_max_chars=900,
+                    exploration="on",
+                    saa_context_weight=700_000,
+                    saa_background_weight=300_000,
+                    saa_novelty_flattening=650_000,
+                    saa_propagation_attenuation=600_000,
+                    saa_decay=800_000,
+                ),
+                quarantined_edges=quarantined,
+                ineligible_edges=ineligible - quarantined,
+                field_enabled=(
+                    intent.memory != "off"
+                    and pin.recall_allowed
+                    and pin.provider_reuse_allowed
+                ),
+                field_seed=intent.field_seed,
+            )
         return compute_field(
             intent.current_input,
             concepts,
@@ -506,8 +547,10 @@ class ResponseController:
         policy = intent.selection_policy
         if policy is None:
             return "learned-v1" if pin.learning_allowed else "fixed-v2"
-        if policy not in {"fixed-v2", "learned-v1", "field-v0"}:
-            raise ControllerError("selection_policy must be fixed-v2, learned-v1, or field-v0")
+        if policy not in {"fixed-v2", "learned-v1", "field-v0", "field-saa-v1"}:
+            raise ControllerError(
+                "selection_policy must be fixed-v2, learned-v1, field-v0, or field-saa-v1"
+            )
         if policy == "learned-v1" and not pin.learning_allowed:
             raise ControllerError("learned-v1 requires learning permission")
         return policy
@@ -763,8 +806,16 @@ class ResponseController:
             raise ControllerError("unsupported mode")
         pin = self._pin()
         policy = self._selection_policy(intent, pin)
-        field_result = self._compute_field(intent, pin) if policy == "field-v0" else None
-        considered = () if policy == "field-v0" else self._find_routes(intent, pin)
+        field_result = (
+            self._compute_field(intent, pin, policy=policy)
+            if policy in {"field-v0", "field-saa-v1"}
+            else None
+        )
+        considered = (
+            ()
+            if policy in {"field-v0", "field-saa-v1"}
+            else self._find_routes(intent, pin)
+        )
         gated = tuple(self._gate(route, intent) for route in considered)
         suppressed = tuple(route for route in gated if route.suppressed_reason)
         selected = self._select(gated, pin, policy)

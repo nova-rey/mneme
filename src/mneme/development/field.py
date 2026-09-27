@@ -23,6 +23,7 @@ if TYPE_CHECKING:
 
 LEGACY_FIELD_VERSION = "f0-graph-pressure-v1"
 FIELD_VERSION = "f0-graph-pressure-v2-background"
+SAA_FIELD_VERSION = "f0-saa-v1"
 _DESCRIPTORS = frozenset(
     {
         "a", "an", "and", "approach", "arrangement", "be", "can", "could",
@@ -117,6 +118,14 @@ class FieldConfig:
     exploration: str = "off"
     exploration_slots: int = 1
     exploration_budget: int = 100_000
+    # SAA v1 parameters.  They are ignored by the historical F0 paths and
+    # live here so a single serialisable configuration can be persisted by a
+    # caller selecting the new version.
+    saa_context_weight: int = 700_000
+    saa_background_weight: int = 300_000
+    saa_novelty_flattening: int = 650_000
+    saa_propagation_attenuation: int = 650_000
+    saa_decay: int = 800_000
 
     def __post_init__(self) -> None:
         if self.max_depth < 1 or self.max_depth > 4:
@@ -137,6 +146,16 @@ class FieldConfig:
             raise ValueError("exploration_slots must be in [0, max_contributors]")
         if not 0 <= self.exploration_budget <= self.total_budget:
             raise ValueError("exploration_budget must be within total_budget")
+        for name in (
+            "saa_context_weight",
+            "saa_background_weight",
+            "saa_novelty_flattening",
+            "saa_propagation_attenuation",
+            "saa_decay",
+        ):
+            value = getattr(self, name)
+            if not 0 <= value <= FIXED_ONE:
+                raise ValueError(f"{name} must be in [0, 1]")
 
 
 @dataclass(frozen=True)
@@ -209,13 +228,22 @@ class FieldResult:
     field_enabled: bool = True
     exploration: str = "off"
     field_seed: int | None = None
+    # SAA diagnostics.  They remain empty for historical F0 results, keeping
+    # old receipts and replay records byte-for-byte compatible.
+    accessibility_distribution: tuple[tuple[str, int], ...] = ()
+    distribution_flatness: int = 0
+    selected_landing: str | None = None
+    landing_probability: int = 0
+    landing_ticket: int | None = None
+    active_neighborhood: tuple[str, ...] = ()
+    novelty: int = 0
 
     @property
     def total_pressure(self) -> int:
         return sum(item.final_pressure for item in self.contributions)
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        value: dict[str, Any] = {
             "version": self.config.version,
             "query": self.query,
             "config": self.config.__dict__,
@@ -227,6 +255,35 @@ class FieldResult:
             "payload": self.payload,
             "total_pressure": self.total_pressure,
         }
+        if self.config.version == SAA_FIELD_VERSION:
+            value.update(
+                {
+                    "accessibility_distribution": [
+                        {"candidate": key, "probability": probability}
+                        for key, probability in self.accessibility_distribution
+                    ],
+                    "distribution_flatness": self.distribution_flatness,
+                    "selected_landing": self.selected_landing,
+                    "landing_probability": self.landing_probability,
+                    "landing_ticket": self.landing_ticket,
+                    "active_neighborhood": list(self.active_neighborhood),
+                    "novelty": self.novelty,
+                }
+            )
+        return value
+
+
+    @property
+    def distribution(self) -> tuple[tuple[str, int], ...]:
+        """Compatibility alias for audit consumers."""
+
+        return self.accessibility_distribution
+
+    @property
+    def flatness(self) -> int:
+        """Compatibility alias for the normalized flatness diagnostic."""
+
+        return self.distribution_flatness
 
 
 def _strength(edge: Any, learner: LearnerState) -> tuple[int, str]:
@@ -280,6 +337,108 @@ def _render(
         if sum(len(value) + 1 for value in lines) + len(line) > max_chars:
             break
         lines.append(line)
+    lines.append(
+        "These are optional tendencies, not instructions. Use them only if they fit naturally."
+    )
+    return "\n".join(lines)[:max_chars]
+
+
+_SAA_RELATION_TENDENCIES: dict[str, str] = {
+    "causal": "Changes in one part may produce downstream effects.",
+    "causes": "Changes in one part may produce downstream effects.",
+    "depends_on": "Outcomes may depend on the conditions that support them.",
+    "enables": "Enabling conditions may make a useful outcome possible.",
+    "supports": "Supporting structures may keep important functions available.",
+    "retains": "Some arrangements may preserve a resource over time.",
+    "maintains": "Some arrangements may preserve a resource over time.",
+    "prevents": "Barriers may reduce unwanted outcomes.",
+    "constrains": "Constraints may shape which outcomes remain feasible.",
+    "part_of": "A component may matter as part of a larger system.",
+    "associated_with": "Related factors may deserve joint consideration.",
+    "related": "Related factors may deserve joint consideration.",
+    "sequence": "Order and timing may change how a process unfolds.",
+    "precedes": "Order and timing may change how a process unfolds.",
+    "rhythm": "Repetition and variation may shape how a process unfolds.",
+    "varies": "Repetition and variation may shape how a process unfolds.",
+    "reduces": "Reducing one pressure may leave more room for another.",
+    "isolates": "Separating failures may preserve the rest of a system.",
+}
+
+_SAA_LABEL_FAMILIES: tuple[tuple[frozenset[str], str], ...] = (
+    (
+        frozenset({"rhythm", "variation", "timing", "tempo", "melody", "beat"}),
+        "Repetition and variation may shape how a process unfolds.",
+    ),
+    (
+        frozenset({"redundancy", "fallback", "failure", "backup", "isolate"}),
+        "Separating failures may preserve the rest of a system.",
+    ),
+    (
+        frozenset({"resource", "reservoir", "water", "moisture", "flow", "buffer"}),
+        "Buffers and steady flows may preserve options over time.",
+    ),
+    (
+        frozenset({"choice", "probability", "chance", "risk", "uncertainty"}),
+        "Unequal possibilities may still be managed as a structured set.",
+    ),
+)
+
+
+def _render_saa(
+    contributions: tuple[PressureContribution, ...],
+    max_chars: int,
+    labels: dict[str, str] | None = None,
+) -> str:
+    """Render active SAA pressure as a small, label-free abstraction.
+
+    Graph labels, IDs, provenance, and scores deliberately never enter this
+    function.  Directional relationship semantics are retained through a
+    bounded relation vocabulary; unknown relations use a stable generic
+    tendency rather than leaking their spelling to the host.
+    """
+
+    active = tuple(item for item in contributions if item.final_pressure > 0)
+    if not active:
+        return ""
+    lines = ["Potentially accessible framings:"]
+    seen: set[str] = set()
+    for item in active:
+        relation = re.sub(r"[^a-z0-9_]+", "_", item.relationship.casefold()).strip("_")
+        line_text = _SAA_RELATION_TENDENCIES.get(relation)
+        family_text: str | None = None
+        if line_text is None and labels is not None:
+            label_tokens = set(
+                _stem(token)
+                for endpoint in (item.source, item.target)
+                for token in _tokens(labels.get(endpoint, ""))
+            )
+            family_text = next(
+                (text for family, text in _SAA_LABEL_FAMILIES if label_tokens & family),
+                None,
+            )
+            line_text = family_text
+        elif labels is not None:
+            label_tokens = set(
+                _stem(token)
+                for endpoint in (item.source, item.target)
+                for token in _tokens(labels.get(endpoint, ""))
+            )
+            family_text = next(
+                (text for family, text in _SAA_LABEL_FAMILIES if label_tokens & family),
+                None,
+            )
+            if family_text is not None and family_text != line_text:
+                line_text = f"{line_text} {family_text}"
+        line = "- " + (line_text or "Different factors may interact in ways worth considering.")
+        if line in seen:
+            continue
+        candidate_length = sum(len(value) + 1 for value in lines) + len(line)
+        if candidate_length + 84 > max_chars:
+            break
+        seen.add(line)
+        lines.append(line)
+    if len(lines) == 1:
+        return ""
     lines.append(
         "These are optional tendencies, not instructions. Use them only if they fit naturally."
     )
@@ -455,6 +614,320 @@ def _select_exploration_candidate(
     return base[:keep] + explored, field_seed
 
 
+def _saa_distribution(
+    query: str,
+    concepts: tuple[Any, ...],
+    candidates: tuple[tuple[Any, int], ...],
+    chosen: FieldConfig,
+) -> tuple[tuple[tuple[str, int], ...], int, int]:
+    """Return ``(distribution, flatness, novelty)`` for SAA v1.
+
+    Context is a modulator, never an admission gate.  The baseline component
+    keeps every eligible earned edge in the distribution; high contextual
+    activation makes the distribution more peaked.  Integer fixed-point
+    arithmetic keeps replay stable and makes the receipt self-contained.
+    """
+
+    context_by_key = {
+        item.key: _activation(query, item.label)[0]
+        for item in concepts
+    }
+    max_context = max(context_by_key.values(), default=0)
+    novelty = FIXED_ONE - max_context
+    raw_weights: list[tuple[str, int]] = []
+    for edge, strength in candidates:
+        source_context = context_by_key.get(edge.source, 0)
+        target_context = context_by_key.get(edge.target, 0)
+        context = max(source_context, target_context)
+        # In a novel context flatten contextual discrimination toward the
+        # developmental prior.  A familiar context retains a peaked score.
+        if max_context < FIXED_ONE // 2:
+            contextual = (
+                context * (FIXED_ONE - chosen.saa_novelty_flattening)
+                + FIXED_ONE * chosen.saa_novelty_flattening
+            ) // FIXED_ONE
+        else:
+            contextual = context
+        factor = chosen.saa_background_weight + (
+            chosen.saa_context_weight * contextual
+        ) // FIXED_ONE
+        raw_weights.append((edge.key, max(1, (strength * factor) // FIXED_ONE)))
+    total = sum(weight for _, weight in raw_weights)
+    if not total:
+        return (), 0, novelty
+    probabilities = [
+        (key, (weight * FIXED_ONE) // total)
+        for key, weight in raw_weights
+    ]
+    # Preserve exact normalization without allowing order-dependent floating
+    # point drift.  The residual is assigned to the strongest first candidate;
+    # ties are already canonically sorted by edge key.
+    residual = FIXED_ONE - sum(probability for _, probability in probabilities)
+    if residual:
+        probabilities[0] = (probabilities[0][0], probabilities[0][1] + residual)
+    max_probability = max(probability for _, probability in probabilities)
+    # 0 means maximally peaked; a uniform N-way distribution approaches 1.
+    flatness = (
+        0
+        if len(probabilities) <= 1
+        else ((FIXED_ONE - max_probability) * len(probabilities) * FIXED_ONE)
+        // (FIXED_ONE * (len(probabilities) - 1))
+    )
+    return tuple(probabilities), min(FIXED_ONE, flatness), novelty
+
+
+def _saa_empty_result(
+    query: str,
+    chosen: FieldConfig,
+    active: tuple[ActiveConcept, ...],
+    *,
+    field_enabled: bool,
+    field_seed: int,
+    novelty: int = 0,
+) -> FieldResult:
+    return FieldResult(
+        query,
+        chosen,
+        active,
+        (),
+        "",
+        field_enabled=field_enabled,
+        exploration="on",
+        field_seed=field_seed,
+        accessibility_distribution=(),
+        distribution_flatness=0,
+        novelty=novelty,
+    )
+
+
+def compute_saa_field(
+    query: str,
+    concepts: Iterable[Any],
+    edges: Iterable[Any],
+    learner: LearnerState,
+    *,
+    config: FieldConfig | None = None,
+    quarantined_edges: Iterable[str] = (),
+    ineligible_edges: Iterable[str] = (),
+    field_enabled: bool = True,
+    field_seed: int | None = None,
+) -> FieldResult:
+    """Compute the inspectable stochastic associative accessibility field.
+
+    SAA performs exactly one weighted landing over eligible earned edges and
+    then conducts activation through a bounded local graph neighborhood.  The
+    random stream is explicitly supplied by ``field_seed``; no administrative
+    value participates in the draw.  This function is additive: callers using
+    :func:`compute_field` with either historical F0 version retain their prior
+    behavior unchanged.
+    """
+
+    if field_seed is None:
+        raise ValueError("field_seed is required for f0-saa-v1")
+    chosen = config or FieldConfig(version=SAA_FIELD_VERSION)
+    if chosen.version != SAA_FIELD_VERSION:
+        chosen = replace(chosen, version=SAA_FIELD_VERSION)
+    concept_rows = tuple(sorted(concepts, key=lambda item: (item.key, item.label)))
+    edge_rows = tuple(sorted(edges, key=lambda item: (item.source, item.target, item.key)))
+    active = tuple(
+        ActiveConcept(
+            item.key,
+            item.label,
+            _activation(query, item.label)[0],
+            _activation(query, item.label)[1],
+            contextual_activation=_activation(query, item.label)[0],
+        )
+        for item in concept_rows
+    )
+    if not field_enabled:
+        return _saa_empty_result(query, chosen, active, field_enabled=False, field_seed=field_seed)
+
+    blocked_quarantine = set(quarantined_edges)
+    blocked_ineligible = set(ineligible_edges)
+    blocked = blocked_quarantine | blocked_ineligible
+    candidates: list[tuple[Any, int]] = []
+    for edge in edge_rows:
+        if edge.key in blocked:
+            continue
+        strength, _ = _strength(edge, learner)
+        if strength > 0:
+            candidates.append((edge, strength))
+    candidates_tuple = tuple(candidates)
+    if not candidates_tuple:
+        return _saa_empty_result(query, chosen, active, field_enabled=True, field_seed=field_seed)
+    distribution, flatness, novelty = _saa_distribution(
+        query, concept_rows, candidates_tuple, chosen
+    )
+    if not distribution:
+        return _saa_empty_result(
+            query,
+            chosen,
+            active,
+            field_enabled=True,
+            field_seed=field_seed,
+            novelty=novelty,
+        )
+    rng = random.Random(field_seed)
+    ticket = rng.randrange(FIXED_ONE)
+    cumulative = 0
+    selected_key = distribution[-1][0]
+    selected_probability = distribution[-1][1]
+    for key, probability in distribution:
+        cumulative += probability
+        if ticket < cumulative:
+            selected_key = key
+            selected_probability = probability
+            break
+    selected_edge = next(edge for edge, _ in candidates_tuple if edge.key == selected_key)
+    strength_by_key = {edge.key: strength for edge, strength in candidates_tuple}
+    outgoing: dict[str, list[Any]] = defaultdict(list)
+    for edge in edge_rows:
+        outgoing[edge.source].append(edge)
+    raw: list[PressureContribution] = []
+    # The landing itself receives the full local starting activation.  Its
+    # graph edge strength still bounds the pressure, while propagation from
+    # both endpoints lets a selected nexus conduct to nearby earned edges.
+    landing_strength = strength_by_key[selected_key]
+    raw.append(
+        PressureContribution(
+            selected_edge.key,
+            selected_edge.source,
+            selected_edge.target,
+            selected_edge.relationship,
+            (selected_edge.key,),
+            0,
+            FIXED_ONE,
+            landing_strength,
+            landing_strength,
+            landing_strength,
+            True,
+            "earned",
+            component="landing",
+            exploration_selected=True,
+        )
+    )
+    queue: deque[tuple[str, int, int, tuple[str, ...], frozenset[str]]] = deque(
+        (
+            node,
+            0,
+            FIXED_ONE,
+            (selected_edge.key,),
+            frozenset((node,)),
+        )
+        for node in (selected_edge.source, selected_edge.target)
+    )
+    while queue:
+        node, depth, activation, path, visited = queue.popleft()
+        if depth >= chosen.max_depth:
+            continue
+        for edge in outgoing.get(node, ()):
+            if edge.target in visited:
+                continue
+            next_depth = depth + 1
+            next_path = (*path, edge.key)
+            if edge.key in blocked:
+                raw.append(
+                    PressureContribution(
+                        edge.key,
+                        edge.source,
+                        edge.target,
+                        edge.relationship,
+                        next_path,
+                        next_depth,
+                        activation,
+                        0,
+                        0,
+                        0,
+                        False,
+                        "quarantined" if edge.key in blocked_quarantine else "ineligible",
+                        component="propagated",
+                    )
+                )
+                continue
+            propagated_strength = strength_by_key.get(edge.key)
+            if propagated_strength is None:
+                propagated_strength, _ = _strength(edge, learner)
+            if propagated_strength <= 0:
+                continue
+            attenuation = chosen.saa_propagation_attenuation ** next_depth
+            denominator = FIXED_ONE ** next_depth
+            attenuated = (
+                activation
+                * propagated_strength
+                * attenuation
+                * chosen.saa_decay
+                // (FIXED_ONE * denominator * FIXED_ONE)
+            )
+            if attenuated <= 0:
+                continue
+            raw.append(
+                PressureContribution(
+                    edge.key,
+                    edge.source,
+                    edge.target,
+                    edge.relationship,
+                    next_path,
+                    next_depth,
+                    activation,
+                    propagated_strength,
+                    (activation * propagated_strength) // FIXED_ONE,
+                    attenuated,
+                    True,
+                    "earned",
+                    component="propagated",
+                )
+            )
+            queue.append((edge.target, next_depth, attenuated, next_path, visited | {edge.target}))
+    by_edge: dict[str, PressureContribution] = {}
+    for item in (item for item in raw if item.eligible):
+        previous = by_edge.get(item.edge_key)
+        if previous is None or item.attenuated_pressure > previous.attenuated_pressure:
+            by_edge[item.edge_key] = item
+    ordered = sorted(
+        by_edge.values(),
+        key=lambda item: (-item.attenuated_pressure, item.distance, item.edge_key, item.path),
+    )[: chosen.max_contributors]
+    total = sum(item.attenuated_pressure for item in ordered)
+    scale = min(FIXED_ONE, (chosen.total_budget * FIXED_ONE) // total) if total else 0
+    normalized: list[PressureContribution] = []
+    for item in ordered:
+        pressure = (item.attenuated_pressure * scale) // FIXED_ONE
+        normalized.append(
+            replace(item, normalized_pressure=pressure, final_pressure=pressure)
+        )
+    blocked_records = tuple(
+        sorted(
+            (item for item in raw if not item.eligible),
+            key=lambda item: (item.edge_key, item.path),
+        )
+    )
+    final = tuple(normalized) + blocked_records
+    active_neighborhood: set[str] = set()
+    for item in normalized:
+        active_neighborhood.update((item.source, item.target))
+    return FieldResult(
+        query,
+        chosen,
+        active,
+        final,
+        _render_saa(
+            tuple(normalized),
+            chosen.render_max_chars,
+            {item.key: item.label for item in concept_rows},
+        ),
+        field_enabled=True,
+        exploration="on",
+        field_seed=field_seed,
+        accessibility_distribution=tuple(distribution),
+        distribution_flatness=flatness,
+        selected_landing=selected_key,
+        landing_probability=selected_probability,
+        landing_ticket=ticket,
+        active_neighborhood=tuple(sorted(active_neighborhood)),
+        novelty=novelty,
+    )
+
+
 def compute_field(
     query: str,
     concepts: Iterable[Any],
@@ -487,6 +960,18 @@ def compute_field(
             quarantined_edges=quarantined_edges,
             ineligible_edges=ineligible_edges,
             field_enabled=field_enabled,
+        )
+    if chosen.version == SAA_FIELD_VERSION:
+        return compute_saa_field(
+            query,
+            concepts,
+            edges,
+            learner,
+            config=chosen,
+            quarantined_edges=quarantined_edges,
+            ineligible_edges=ineligible_edges,
+            field_enabled=field_enabled,
+            field_seed=field_seed,
         )
     if chosen.version != FIELD_VERSION:
         raise ValueError(f"unsupported field version: {chosen.version}")
@@ -658,6 +1143,7 @@ def compute_field(
 
 
 __all__ = [
-    "FIELD_VERSION", "LEGACY_FIELD_VERSION", "ActiveConcept", "FieldConfig", "FieldResult",
-    "PressureContribution", "compute_field",
+    "FIELD_VERSION", "LEGACY_FIELD_VERSION", "SAA_FIELD_VERSION", "ActiveConcept",
+    "FieldConfig", "FieldResult", "PressureContribution", "compute_field",
+    "compute_saa_field",
 ]

@@ -50,11 +50,13 @@ from .episodes import (
 from .field import (
     FIELD_VERSION,
     LEGACY_FIELD_VERSION,
+    SAA_FIELD_VERSION,
     ActiveConcept,
     FieldConfig,
     FieldResult,
     PressureContribution,
     compute_field,
+    compute_saa_field,
 )
 from .learner import (
     FIXED_SCALE,
@@ -118,11 +120,13 @@ __all__ = [
     "persist_conversation_episode",
     "FIELD_VERSION",
     "LEGACY_FIELD_VERSION",
+    "SAA_FIELD_VERSION",
     "ActiveConcept",
     "FieldConfig",
     "FieldResult",
     "PressureContribution",
     "compute_field",
+    "compute_saa_field",
     "FIXED_SCALE",
     "ConsequenceAssessment",
     "ConsequenceResult",
