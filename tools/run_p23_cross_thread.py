@@ -111,19 +111,16 @@ class RemoteLlamaHost(_RemoteBase):
         )
 
     def fingerprint(self) -> HostFingerprint:
-        service_url = os.environ.get("MNEME_MSI_GEMMA_URL")
         return _fp(
             "Gemma 4",
             "google/gemma-4-E4B-it",
             "local-msi",
-            "llama.cpp-server" if service_url else "llama.cpp",
+            "llama.cpp",
             execution={
                 "model_path": MSI_MODEL,
                 "executable": MSI_LLAMA,
                 "reasoning": "off",
                 "context_size": 4096,
-                "resident_service": bool(service_url),
-                "service_url": service_url,
             },
         )
 
@@ -199,13 +196,12 @@ class RemoteGlinerHost(_RemoteBase):
         return HostCapabilities(frozenset({Capability.TEXT_GENERATION, Capability.LOCAL_WEIGHTS}))
 
     def fingerprint(self) -> HostFingerprint:
-        service_url = os.environ.get("MNEME_MSI_GLINER_URL")
         return _fp(
             "GLiNER2.5 specialist extractor",
             "fastino/gliner2.5-base-v1",
             "local-msi",
             "gliner2",
-            execution={"script": MSI_GLINER, "threshold": 0.35, "max_len": 4096, "resident_service": bool(service_url), "service_url": service_url},
+            execution={"script": MSI_GLINER, "threshold": 0.35, "max_len": 4096},
         )
 
     def generate(self, request: GenerationRequest) -> GenerationResult:
