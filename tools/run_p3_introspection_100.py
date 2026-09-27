@@ -50,7 +50,7 @@ from tools.run_p23_f0_background_shared_interloper import (
     _load_assessor_host,
     _trace,
 )
-from tools.run_p23_saa_ten_thread_live import _development_request
+from tools.run_p23_saa_ten_thread_live import _development_request, _record_measurement_unknown
 
 ROOT = Path(os.environ.get("MNEME_P3_INTROSPECT_LAB", "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20260927"))
 RUN_ID = os.environ.get("MNEME_P3_INTROSPECT_RUN_ID", "p3-introspect-100-20260927-r1")
@@ -376,7 +376,13 @@ def main() -> int:
                         status = "complete"
                     else:
                         status = "measurement_unknown"
-                        plan.publish(None)
+                        _record_measurement_unknown(
+                            pilot,
+                            call_id=f"assess-{label}-{thread.thread_id}-{turn}",
+                            coordinate={"thread": thread.thread_id, "turn": turn, "lineage": label},
+                            operation_id=outcome.operation.operation_id,
+                            validation_error=assessed.validation_error,
+                        )
                 else:
                     admitted = plan.publish(None)
                 row = {"response": response, "seed": seed, "exposure": exposure, "interpretation": status, "admitted": admitted, "trace": _trace(stores[label], outcome.operation.operation_id)}
@@ -405,15 +411,44 @@ def main() -> int:
 
     # Frozen checkpoint readouts: the two developing lineages plus a vanilla
     # fork of the immutable R8 state.  Readouts never update any lineage.
-    vanilla_controller = ResponseController(stores["V"], stores["V"].current()["active_instance_id"], gemma)
-    checkpoints = {0: R8_CHECKPOINT, **{number: Path(path) for number, rows in progress["checkpoints"].items() for path in []}}
-    for number in CHECKPOINTS[1:]:
-        checkpoints[number] = ROOT / "snapshots" / f"I-{number}.sqlite3"
+    # Readouts must be prepared from the frozen checkpoint for that coordinate.
+    # Using the live development controller here would silently evaluate every
+    # checkpoint against the final state.  Keep the checkpoint map explicit so
+    # I/N lineage identity remains auditable and cannot collapse by accident.
+    checkpoint_paths: dict[str, dict[int, Path]] = {
+        "I": {0: R8_CHECKPOINT},
+        "N": {0: R8_CHECKPOINT},
+        "V": {number: R8_CHECKPOINT for number in CHECKPOINTS},
+    }
+    for number_text, rows in progress["checkpoints"].items():
+        number = int(number_text)
+        if not isinstance(rows, Mapping):
+            raise RuntimeError(f"checkpoint receipt for {number} is malformed")
+        for label in ("I", "N"):
+            raw_path = rows.get(label)
+            if not isinstance(raw_path, str):
+                raise RuntimeError(f"missing {label} checkpoint for {number}")
+            checkpoint_paths[label][number] = Path(raw_path)
+    readout_controllers: dict[tuple[str, int], ResponseController] = {}
+    readout_stores: list[SQLiteStore] = []
+    for label in ("I", "N", "V"):
+        for number in CHECKPOINTS:
+            checkpoint = checkpoint_paths[label][number]
+            if not checkpoint.is_file():
+                raise RuntimeError(f"missing frozen {label} checkpoint {number}: {checkpoint}")
+            frozen_store = SQLiteStore(checkpoint, read_only=True)
+            readout_stores.append(frozen_store)
+            readout_controllers[(label, number)] = ResponseController(
+                frozen_store,
+                frozen_store.current()["active_instance_id"],
+                gemma,
+            )
     readouts: list[dict[str, Any]] = []
-    for checkpoint_number, checkpoint in checkpoints.items():
+    for checkpoint_number in CHECKPOINTS:
         for probe_index, prompt in enumerate(PROBES):
             for repetition, seed in enumerate(PROBE_SEEDS):
-                for label, controller, policy, memory in (("I", controllers["I"], "field-saa-v1", "graph"), ("N", controllers["N"], "field-saa-v1", "graph"), ("V", vanilla_controller, "fixed-v2", "off")):
+                for label, policy, memory in (("I", "field-saa-v1", "graph"), ("N", "field-saa-v1", "graph"), ("V", "fixed-v2", "off")):
+                    controller = readout_controllers[(label, checkpoint_number)]
                     prepared = _prepare_observe(controller, prompt, seed, FIELD_SEEDS[(probe_index + repetition) % len(FIELD_SEEDS)], policy, memory, f"probe-{checkpoint_number}-{probe_index}-{repetition}-{label}")
                     result = pilot.reserve_call(call_id=f"probe-{checkpoint_number}-{probe_index}-{repetition}-{label}", role="evaluation", coordinate={"checkpoint": checkpoint_number, "probe": probe_index, "repetition": repetition, "condition": label}, max_output_tokens=256)
                     if result.get("status") == "RETURNED":
@@ -424,8 +459,76 @@ def main() -> int:
                         content = require_nonempty_message(generated.content, role=f"Gemma {label}")
                         pilot.return_call(f"probe-{checkpoint_number}-{probe_index}-{repetition}-{label}", result={"content": content, "model_id": generated.model_id, "provider": generated.provider, "effective_parameters": generated.effective_parameters, "seed": generated.seed, "finish_reason": generated.finish_reason, "provenance": generated.provenance}, actual_host_fingerprint=gemma.fingerprint().to_dict())
                     readouts.append({"checkpoint": checkpoint_number, "probe": probe_index, "repetition": repetition, "condition": label, "seed": seed, "field_seed": FIELD_SEEDS[(probe_index + repetition) % len(FIELD_SEEDS)], "prompt": prompt, "output": content, "payload": prepared.request.system})
+    # Required removal/restoration check on the I lineage.  These are frozen,
+    # read-only views of the same checkpoint and probe; only the SAA field is
+    # toggled.  The primary checkpoint is never mutated by this measurement.
+    removal_restoration: list[dict[str, Any]] = []
+    for checkpoint_number in (0, 50, 100):
+        controller = readout_controllers[("I", checkpoint_number)]
+        for probe_index, prompt in enumerate(PROBES):
+            for repetition, seed in enumerate(PROBE_SEEDS):
+                field_seed = FIELD_SEEDS[(probe_index + repetition) % len(FIELD_SEEDS)]
+                for condition, policy, memory in (
+                    ("SAA_ON", "field-saa-v1", "graph"),
+                    ("SAA_OFF", "fixed-v2", "off"),
+                    ("SAA_RESTORED", "field-saa-v1", "graph"),
+                ):
+                    call_id = f"removal-{checkpoint_number}-{probe_index}-{repetition}-{condition}"
+                    prepared = _prepare_observe(
+                        controller,
+                        prompt,
+                        seed,
+                        field_seed,
+                        policy,
+                        memory,
+                        call_id,
+                    )
+                    reservation = pilot.reserve_call(
+                        call_id=call_id,
+                        role="evaluation",
+                        coordinate={
+                            "checkpoint": checkpoint_number,
+                            "probe": probe_index,
+                            "repetition": repetition,
+                            "condition": condition,
+                        },
+                        max_output_tokens=256,
+                    )
+                    if reservation.get("status") == "RETURNED":
+                        content = str(reservation["result"].get("content", ""))
+                    else:
+                        pilot.dispatch_call(call_id, expected_host_fingerprint=gemma.fingerprint().to_dict())
+                        generated = gemma.generate(prepared.request)
+                        content = require_nonempty_message(generated.content, role=f"Gemma {condition}")
+                        pilot.return_call(
+                            call_id,
+                            result={
+                                "content": content,
+                                "model_id": generated.model_id,
+                                "provider": generated.provider,
+                                "effective_parameters": generated.effective_parameters,
+                                "seed": generated.seed,
+                                "finish_reason": generated.finish_reason,
+                                "provenance": generated.provenance,
+                            },
+                            actual_host_fingerprint=gemma.fingerprint().to_dict(),
+                        )
+                    removal_restoration.append(
+                        {
+                            "checkpoint": checkpoint_number,
+                            "probe": probe_index,
+                            "repetition": repetition,
+                            "condition": condition,
+                            "seed": seed,
+                            "field_seed": field_seed,
+                            "prompt": prompt,
+                            "output": content,
+                            "payload": prepared.request.system,
+                        }
+                    )
     _atomic_json(ROOT / "transcripts.json", {"rows": transcripts})
     _atomic_json(ROOT / "readouts.json", {"rows": readouts, "probes": list(PROBES), "seeds": list(PROBE_SEEDS)})
+    _atomic_json(ROOT / "removal-restoration.json", {"rows": removal_restoration})
     _atomic_json(ROOT / "introspection-ledger.json", {label: ledgers[label].accessibility_adjustments() for label in ledgers})
     report = {
         "status": "VALID_INTERPRETABLE_P3_INTROSPECT_100",
@@ -434,6 +537,7 @@ def main() -> int:
         "threads_completed": len(topics),
         "transcript_rows": len(transcripts),
         "readout_rows": len(readouts),
+        "removal_restoration_rows": len(removal_restoration),
         "introspection_reviews": progress["introspection_reviews"],
         "checkpoint_numbers": list(CHECKPOINTS),
         "model_stack": {"gemma": gemma.fingerprint().to_dict(), "extractor": extractor.fingerprint().to_dict(), "assessor": assessor.fingerprint().to_dict(), "interloper": interloper.fingerprint().to_dict()},
