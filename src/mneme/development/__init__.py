@@ -163,10 +163,10 @@ __all__ = [
     "validate_qualification_case",
 ]
 from .introspection import (
+    INTROSPECTION_VERSION,
     AcceptedAdjustment,
     ArcPacket,
     EvidenceBasis,
-    INTROSPECTION_VERSION,
     IntrospectionError,
     IntrospectionLedger,
     ReflectionProposal,

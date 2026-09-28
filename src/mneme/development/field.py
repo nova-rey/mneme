@@ -980,7 +980,9 @@ def compute_saa_field(
         landing_ticket=ticket,
         active_neighborhood=tuple(sorted(active_neighborhood)),
         novelty=novelty,
-        expression_adjustments=tuple(sorted((str(key), int(value)) for key, value in expression.items())),
+        expression_adjustments=tuple(
+            sorted((str(key), int(value)) for key, value in expression.items())
+        ),
     )
 
 

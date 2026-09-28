@@ -17,9 +17,9 @@ from mneme.development import (
     review_request,
 )
 from mneme.development.field import compute_saa_field
-from mneme.memory.graph import GraphConcept, GraphEdge
 from mneme.development.learner import EdgeState, LearnerState
 from mneme.hosts import FakeHost
+from mneme.memory.graph import GraphConcept, GraphEdge
 from mneme.state.contracts import StoragePermissions
 from mneme.state.storage import SQLiteStore
 
