@@ -490,6 +490,12 @@ def main() -> int:
             "I": IntrospectionLedger.load(parent_ledger),
             "N": IntrospectionLedger(ROOT / "introspection" / "N.json", parent_digest=content_digest({"parent": str(R8_CHECKPOINT), "label": "N"})),
         }
+        # Materialize the inherited sidecar inside the new prospective run so
+        # checkpoint-10 readouts bind to an immutable local artifact rather
+        # than reaching through the parent run at measurement time.
+        inherited_sidecar = ROOT / "introspection" / f"I-{start_thread}.json"
+        inherited_sidecar.parent.mkdir(parents=True, exist_ok=True)
+        inherited_sidecar.write_text(parent_ledger.read_text(encoding="utf-8"), encoding="utf-8")
         transcripts = _load_parent_transcripts(continuation_root, start_thread)
         progress = {
             "threads_completed": start_thread,

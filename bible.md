@@ -1528,3 +1528,4 @@ and dispositions remain unchanged.
 * 2026-09-28: Added prospective Phase Three continuation support from an intact checkpoint, restored persisted introspection ledgers on continuation, qualified live review over every archived R8 packet plus synthetic fixtures, preserved separate expression-side adjustments through the SAA host boundary, and expanded blinded mechanical comparison to I/N/V pairs; historical r1-r9 evidence remains unchanged.
 * 2026-09-28: Full pytest passed (545), Ruff passed, and strict mypy passed after the Phase Three continuation/qualification repair; no provider calls were made while the MSI remained unreachable.
 * 2026-09-28: GitHub CI run 36368443098 passed on commit 6ca0b03, including pytest, Ruff, and strict mypy.
+* 2026-09-28: Continuation runs now materialize the inherited checkpoint introspection sidecar locally, keeping checkpoint-10 readouts self-contained and parent artifacts immutable.
