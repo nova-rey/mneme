@@ -214,8 +214,15 @@ def _live_review_qualification(packets: list[ArcPacket]) -> list[dict[str, Any]]
 
     host = RemoteLlamaHost()
     rows: list[dict[str, Any]] = []
-    for packet in [packets[0], *_synthetic_cases()[0:5]]:
-        review_packet = packet if isinstance(packet, ArcPacket) else packet[1]
+    # Every archived R8 packet is a qualification input.  Synthetic fixtures
+    # remain additional adversarial coverage, but they cannot stand in for
+    # live review coverage of the archived arcs.
+    review_cases: list[tuple[str, ArcPacket]] = [
+        ("archived_r8", packet) for packet in packets
+    ] + [
+        ("synthetic", packet) for _, packet, _ in _synthetic_cases()
+    ]
+    for source_kind, review_packet in review_cases:
         request = GenerationRequest(
             messages=(
                 {
@@ -273,6 +280,7 @@ def _live_review_qualification(packets: list[ArcPacket]) -> list[dict[str, Any]]
                 repair_error = f"{type(repair_exc).__name__}: {repair_exc}"
         rows.append(
             {
+                "source_kind": source_kind,
                 "arc_id": review_packet.arc_id,
                 "model_id": generated.model_id,
                 "finish_reason": generated.finish_reason,
@@ -370,6 +378,9 @@ def qualify(destination: Path, transcripts: Path, *, live_review: bool = False) 
     error_cases["stale_parent"] = "IntrospectionLedger.load rejects unsupported version"
     error_cases["interruption"] = "atomic save leaves prior ledger intact before replace"
     live_review_rows = _live_review_qualification(packets) if live_review else []
+    archived_live_count = sum(
+        item.get("source_kind") == "archived_r8" for item in live_review_rows
+    )
     report = {
         "status": "QUALIFIED",
         "version": "p3-introspection-v1",
@@ -393,11 +404,17 @@ def qualify(destination: Path, transcripts: Path, *, live_review: bool = False) 
             "requested": live_review,
             "status": (
                 "QUALIFIED"
-                if live_review and live_review_rows
+                if live_review and archived_live_count == len(packets)
                 else ("NOT_RUN" if not live_review else "FAILED")
             ),
             "malformed_reviews_abstain": True,
             "inference_calls": len(live_review_rows),
+            "archived_inference_calls": sum(
+                item.get("source_kind") == "archived_r8" for item in live_review_rows
+            ),
+            "synthetic_inference_calls": sum(
+                item.get("source_kind") == "synthetic" for item in live_review_rows
+            ),
             "rows": live_review_rows,
         },
     }

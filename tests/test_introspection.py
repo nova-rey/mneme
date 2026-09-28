@@ -16,6 +16,9 @@ from mneme.development import (
     parse_proposals,
     review_request,
 )
+from mneme.development.field import compute_saa_field
+from mneme.memory.graph import GraphConcept, GraphEdge
+from mneme.development.learner import EdgeState, LearnerState
 from mneme.hosts import FakeHost
 from mneme.state.contracts import StoragePermissions
 from mneme.state.storage import SQLiteStore
@@ -115,3 +118,24 @@ def test_controller_loads_persisted_ledger_at_saa_boundary(tmp_path) -> None:
         str(ledger.path),
     )
     assert prepared.intent.field_adjustments == ledger.accessibility_adjustments()
+    assert prepared.intent.expression_adjustments == ledger.expression_adjustments()
+
+
+def test_expression_adjustment_is_applied_after_accessibility_selection() -> None:
+    concepts = (
+        GraphConcept("a", "passive supply", "concept"),
+        GraphConcept("b", "soil moisture", "concept"),
+    )
+    edges = (GraphEdge("e1", "a", "b", "maintains"),)
+    state = LearnerState(
+        edge_states=(EdgeState("e1", accessibility=700_000, support=700_000),)
+    )
+    baseline = compute_saa_field("passive supply", concepts, edges, state, field_seed=17)
+    reduced = compute_saa_field(
+        "passive supply", concepts, edges, state, field_seed=17,
+        expression_adjustments={"e1": -500_000},
+    )
+    assert reduced.selected_landing == baseline.selected_landing == "e1"
+    assert reduced.accessibility_distribution == baseline.accessibility_distribution
+    assert reduced.total_pressure < baseline.total_pressure
+    assert dict(reduced.expression_adjustments) == {"e1": -500_000}

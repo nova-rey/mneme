@@ -251,6 +251,9 @@ class FieldResult:
     landing_ticket: int | None = None
     active_neighborhood: tuple[str, ...] = ()
     novelty: int = 0
+    # Signed expression-side adjustments are persisted separately from
+    # accessibility odds so replay can prove the two effects were distinct.
+    expression_adjustments: tuple[tuple[str, int], ...] = ()
 
     @property
     def total_pressure(self) -> int:
@@ -282,6 +285,10 @@ class FieldResult:
                     "landing_ticket": self.landing_ticket,
                     "active_neighborhood": list(self.active_neighborhood),
                     "novelty": self.novelty,
+                    "expression_adjustments": [
+                        {"edge_key": key, "delta": delta}
+                        for key, delta in self.expression_adjustments
+                    ],
                 }
             )
         return value
@@ -746,6 +753,7 @@ def compute_saa_field(
     field_enabled: bool = True,
     field_seed: int | None = None,
     accessibility_adjustments: Mapping[str, int] | None = None,
+    expression_adjustments: Mapping[str, int] | None = None,
 ) -> FieldResult:
     """Compute the inspectable stochastic associative accessibility field.
 
@@ -925,8 +933,20 @@ def compute_saa_field(
     total = sum(item.attenuated_pressure for item in ordered)
     scale = min(FIXED_ONE, (chosen.total_budget * FIXED_ONE) // total) if total else 0
     normalized: list[PressureContribution] = []
+    expression = expression_adjustments or {}
     for item in ordered:
         pressure = (item.attenuated_pressure * scale) // FIXED_ONE
+        # Expression effects are applied only after association selection and
+        # propagation.  This preserves the distinction between "reachable"
+        # and "more/less likely to be expressed".
+        expression_delta = int(expression.get(item.edge_key, 0))
+        pressure = max(
+            0,
+            min(
+                chosen.total_budget,
+                (pressure * max(0, FIXED_ONE + expression_delta)) // FIXED_ONE,
+            ),
+        )
         normalized.append(
             replace(item, normalized_pressure=pressure, final_pressure=pressure)
         )
@@ -960,6 +980,7 @@ def compute_saa_field(
         landing_ticket=ticket,
         active_neighborhood=tuple(sorted(active_neighborhood)),
         novelty=novelty,
+        expression_adjustments=tuple(sorted((str(key), int(value)) for key, value in expression.items())),
     )
 
 

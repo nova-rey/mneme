@@ -63,6 +63,10 @@ class TurnIntent:
     # contextual odds deltas for already-earned edges; they are never graph
     # state and cannot bypass learner/quarantine eligibility.
     field_adjustments: Mapping[str, int] = field(default_factory=dict)
+    # Distinct expression-side introspection adjustments.  These affect the
+    # host-facing pressure after association odds are computed; they never
+    # create or remove graph eligibility.
+    expression_adjustments: Mapping[str, int] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -532,6 +536,7 @@ class ResponseController:
                 ),
                 field_seed=intent.field_seed,
                 accessibility_adjustments=intent.field_adjustments,
+                expression_adjustments=intent.expression_adjustments,
             )
         return compute_field(
             intent.current_input,
@@ -894,7 +899,11 @@ class ResponseController:
 
         ledger = IntrospectionLedger.load(ledger_path, parent_digest=parent_digest)
         return self.prepare(
-            replace(intent, field_adjustments=ledger.accessibility_adjustments())
+            replace(
+                intent,
+                field_adjustments=ledger.accessibility_adjustments(),
+                expression_adjustments=ledger.expression_adjustments(),
+            )
         )
 
     def execute(self, prepared: PreparedTurn) -> TurnResult:

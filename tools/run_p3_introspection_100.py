@@ -117,31 +117,39 @@ def _blinded_evaluation(rows: list[dict[str, Any]]) -> dict[str, Any]:
     for key, conditions in sorted(grouped.items()):
         if not {"I", "N", "V"}.issubset(conditions):
             continue
-        left, right = conditions["I"], conditions["V"]
-        # Stable per-pair permutation, independent of treatment labels.
-        digest = content_digest({"key": key, "outputs": [left["output"], right["output"]]})
-        swapped = int(digest[:2], 16) % 2 == 1
-        a, b = (left, right) if not swapped else (right, left)
-        blind_key.append({"key": list(key), "A": "I" if not swapped else "V", "B": "V" if not swapped else "I"})
-        at, bt = str(a["output"]), str(b["output"])
-        atokens, btokens = set(at.lower().split()), set(bt.lower().split())
-        union = len(atokens | btokens)
-        pairs.append(
-            {
-                "key": list(key),
-                "label_a": "A",
-                "label_b": "B",
-                "stage1": {
-                    "different": at != bt,
-                    "token_jaccard": (len(atokens & btokens) / union) if union else 1.0,
-                    "length_delta": abs(len(at) - len(bt)),
-                },
-                "stage2": {
-                    "history_alignment_assessable": bool(at != bt),
-                    "history_feature": "introspection-adjusted I lineage" if at != bt else "no observed difference",
-                },
-            }
-        )
+        for pair_name in (("I", "N"), ("I", "V"), ("N", "V")):
+            left, right = conditions[pair_name[0]], conditions[pair_name[1]]
+            # Stable per-pair permutation, independent of treatment labels.
+            digest = content_digest({"key": key, "pair": pair_name, "outputs": [left["output"], right["output"]]})
+            swapped = int(digest[:2], 16) % 2 == 1
+            a, b = (left, right) if not swapped else (right, left)
+            blind_key.append({"key": list(key), "pair": list(pair_name), "A": pair_name[0] if not swapped else pair_name[1], "B": pair_name[1] if not swapped else pair_name[0]})
+            at, bt = str(a["output"]), str(b["output"])
+            atokens, btokens = set(at.lower().split()), set(bt.lower().split())
+            union = len(atokens | btokens)
+            pairs.append(
+                {
+                    "key": list(key),
+                    "pair": list(pair_name),
+                    "label_a": "A",
+                    "label_b": "B",
+                    "stage1": {
+                        "different": at != bt,
+                        "token_jaccard": (len(atokens & btokens) / union) if union else 1.0,
+                        "length_delta": abs(len(at) - len(bt)),
+                    },
+                    "stage2": {
+                        "history_alignment_assessable": bool(at != bt),
+                        "history_feature": (
+                            "introspection-adjusted I lineage"
+                            if pair_name[0] == "I" and at != bt
+                            else "baseline/control comparison"
+                            if at != bt
+                            else "no observed difference"
+                        ),
+                    },
+                }
+            )
     return {
         "status": "COMPLETE",
         "method": "label-randomized mechanical Stage-1 observable comparison; Stage-2 history alignment after coding",
@@ -283,13 +291,37 @@ def _prepare_observe(
     return controller.prepare(intent)
 
 
-def _make_pilot(gemma: Any, extractor: Any, assessor: Any, interloper: Any) -> tuple[ArtifactStore, PilotRun]:
+def _field_trace(prepared: Any) -> dict[str, Any] | None:
+    field = getattr(prepared, "field_result", None)
+    return field.to_dict() if field is not None else None
+
+
+def _make_pilot(
+    gemma: Any,
+    extractor: Any,
+    assessor: Any,
+    interloper: Any,
+    *,
+    start_thread: int = 0,
+    parent_root: Path | None = None,
+) -> tuple[ArtifactStore, PilotRun]:
+    remaining = THREAD_COUNT - start_thread
+    hard_max = (
+        3
+        + remaining * THREAD_TURNS * 2 * 3
+        + remaining * (THREAD_TURNS - 1)
+        + remaining * 2
+        + len(CHECKPOINTS) * len(PROBES) * len(PROBE_SEEDS) * 3
+        + 3 * len(PROBES) * len(PROBE_SEEDS) * 3
+    )
     contract = {
         "name": "p3-introspect-100",
         "contract_revision": 1,
         "methodology": "arc-bound-introspection-two-lineage",
         "topic_bank_sha256": content_digest(json.loads(TOPIC_BANK.read_text(encoding="utf-8"))),
         "r8_parent": str(R8_CHECKPOINT),
+        "continuation_parent": str(parent_root) if parent_root else None,
+        "continuation_start_thread": start_thread,
         "threads": THREAD_COUNT,
         "exchanges_per_thread": THREAD_TURNS,
         "checkpoints": list(CHECKPOINTS),
@@ -297,9 +329,9 @@ def _make_pilot(gemma: Any, extractor: Any, assessor: Any, interloper: Any) -> t
         "probe_seeds": list(PROBE_SEEDS),
         "introspection_version": "p3-introspection-v1",
         "call_budget": {
-            "hard_max": HARD_MAX_CALLS,
+            "hard_max": hard_max,
             "reservation_margin": RESERVATION_MARGIN,
-            "reservation_ceiling": RESERVATION_CEILING,
+            "reservation_ceiling": hard_max + RESERVATION_MARGIN,
         },
     }
     contract["contract_sha256"] = content_digest(contract)
@@ -319,7 +351,7 @@ def _make_pilot(gemma: Any, extractor: Any, assessor: Any, interloper: Any) -> t
     }
     experiment.pop("contract_sha256", None)
     experiment["contract_sha256"] = content_digest(experiment)
-    planned = RESERVATION_CEILING
+    planned = hard_max + RESERVATION_MARGIN
     store.publish_run(
         experiment=experiment,
         preflight={"status": "READY", "topic_bank_sha256": contract["topic_bank_sha256"]},
@@ -347,15 +379,49 @@ def _make_pilot(gemma: Any, extractor: Any, assessor: Any, interloper: Any) -> t
     return store, pilot
 
 
+def _load_parent_transcripts(parent_root: Path, through_thread: int) -> list[dict[str, Any]]:
+    """Load only complete thread artifacts from an interrupted parent run."""
+
+    rows: list[dict[str, Any]] = []
+    for index in range(1, through_thread + 1):
+        matches = sorted(parent_root.rglob(f"transcript-P3-{index:03d}.json"))
+        path = next((item for item in matches if item.parent.name == "development"), None)
+        if path is None:
+            raise RuntimeError(f"missing intact parent transcript for thread {index}: {path}")
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        thread_rows = payload.get("rows")
+        if not isinstance(thread_rows, list) or len(thread_rows) != THREAD_TURNS:
+            raise RuntimeError(f"parent transcript for thread {index} is incomplete: {path}")
+        rows.extend(dict(item) for item in thread_rows)
+    return rows
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--execute", action="store_true")
+    parser.add_argument(
+        "--continue-from-root",
+        type=Path,
+        help="start a new prospective continuation from an intact parent checkpoint",
+    )
+    parser.add_argument("--continue-from-thread", type=int, default=0)
     args = parser.parse_args()
     if not args.execute:
         print(json.dumps({"status": "FROZEN_PLAN_ONLY", "topic_count": 100, "checkpoints": CHECKPOINTS}, indent=2))
         return 0
     ROOT.mkdir(parents=True, exist_ok=True)
     topics = _topics()
+    continuation_root = args.continue_from_root
+    start_thread = int(args.continue_from_thread)
+    if continuation_root is not None:
+        if start_thread not in CHECKPOINTS[1:]:
+            raise RuntimeError("continuation must start at a published nonzero checkpoint")
+        if not continuation_root.is_dir():
+            raise RuntimeError(f"continuation parent root is missing: {continuation_root}")
+        if RUN_ID.endswith("-r1"):
+            raise RuntimeError("continuation must use a fresh run id")
+    elif start_thread:
+        raise RuntimeError("--continue-from-thread requires --continue-from-root")
     if not R8_CHECKPOINT.is_file():
         raise RuntimeError(f"missing immutable R8 checkpoint: {R8_CHECKPOINT}")
     qualification_path = Path("docs/receipts/MNEME_P3_Introspection_Qualification_20260927/qualification.json")
@@ -375,7 +441,14 @@ def main() -> int:
         quantization="provider-managed",
         context_length=40960,
     )
-    store, pilot = _make_pilot(gemma, extractor, assessor, interloper)
+    store, pilot = _make_pilot(
+        gemma,
+        extractor,
+        assessor,
+        interloper,
+        start_thread=start_thread,
+        parent_root=continuation_root,
+    )
     # Three local qualification calls are required by the durable pilot
     # envelope.  They test the real local host binding but do not enter study
     # data or learner state.
@@ -394,18 +467,49 @@ def main() -> int:
     for path in branches.values():
         path.parent.mkdir(parents=True, exist_ok=True)
     if not branches["I"].exists():
-        fork_from_checkpoint(R8_CHECKPOINT, branches["I"], child_id=str(uuid.uuid5(uuid.NAMESPACE_URL, f"mneme:{RUN_ID}:I")))
-        fork_from_checkpoint(R8_CHECKPOINT, branches["N"], child_id=str(uuid.uuid5(uuid.NAMESPACE_URL, f"mneme:{RUN_ID}:N")))
+        source_i = R8_CHECKPOINT
+        source_n = R8_CHECKPOINT
+        if continuation_root is not None:
+            source_i = continuation_root / "snapshots" / f"I-{start_thread}.sqlite3"
+            source_n = continuation_root / "snapshots" / f"N-{start_thread}.sqlite3"
+            if not source_i.is_file() or not source_n.is_file():
+                raise RuntimeError("continuation parent lacks the requested frozen checkpoints")
+        fork_from_checkpoint(source_i, branches["I"], child_id=str(uuid.uuid5(uuid.NAMESPACE_URL, f"mneme:{RUN_ID}:I")))
+        fork_from_checkpoint(source_n, branches["N"], child_id=str(uuid.uuid5(uuid.NAMESPACE_URL, f"mneme:{RUN_ID}:N")))
         fork_from_checkpoint(R8_CHECKPOINT, branches["V"], child_id=str(uuid.uuid5(uuid.NAMESPACE_URL, f"mneme:{RUN_ID}:V")))
     stores = {label: SQLiteStore(path) for label, path in branches.items()}
     subjects = {slot: RuntimeSubject(slot, stores[label], stores[label].current()["active_instance_id"], gemma) for slot, label in ((0, "I"), (1, "N"))}
     runtime = PilotRuntime(pilot, subjects)
     adapter = ProductionAssessmentAdapter(runtime, assessor)
     controllers = {label: ResponseController(stores[label], stores[label].current()["active_instance_id"], gemma) for label in ("I", "N")}
-    ledgers = {label: IntrospectionLedger(ROOT / "introspection" / f"{label}.json", parent_digest=content_digest({"parent": str(R8_CHECKPOINT), "label": label})) for label in ("I", "N")}
-    transcripts: list[dict[str, Any]] = []
-    progress = {"threads_completed": 0, "checkpoints": {}, "introspection_reviews": 0}
+    if continuation_root is not None:
+        parent_ledger = continuation_root / "introspection" / f"I-{start_thread}.json"
+        if not parent_ledger.is_file():
+            raise RuntimeError(f"continuation parent lacks introspection sidecar: {parent_ledger}")
+        ledgers = {
+            "I": IntrospectionLedger.load(parent_ledger),
+            "N": IntrospectionLedger(ROOT / "introspection" / "N.json", parent_digest=content_digest({"parent": str(R8_CHECKPOINT), "label": "N"})),
+        }
+        transcripts = _load_parent_transcripts(continuation_root, start_thread)
+        progress = {
+            "threads_completed": start_thread,
+            "checkpoints": {
+                str(start_thread): {
+                    "I": str(continuation_root / "snapshots" / f"I-{start_thread}.sqlite3"),
+                    "N": str(continuation_root / "snapshots" / f"N-{start_thread}.sqlite3"),
+                }
+            },
+            "introspection_reviews": start_thread,
+            "continuation_parent": str(continuation_root),
+            "continuation_from_thread": start_thread,
+        }
+    else:
+        ledgers = {label: IntrospectionLedger(ROOT / "introspection" / f"{label}.json", parent_digest=content_digest({"parent": str(R8_CHECKPOINT), "label": label})) for label in ("I", "N")}
+        transcripts = []
+        progress = {"threads_completed": 0, "checkpoints": {}, "introspection_reviews": 0}
     for thread_index, thread in enumerate(topics, 1):
+        if thread_index <= start_thread:
+            continue
         histories = {"I": [], "N": []}
         exposure_rows = []
         participant: str | None = None
@@ -448,9 +552,11 @@ def main() -> int:
                             operation_id=f"dev-{label}-{thread.thread_id}-{turn}",
                             selection_policy="field-saa-v1", field_seed=field_seed,
                             field_adjustments=ledgers["I"].accessibility_adjustments(),
+                            expression_adjustments=ledgers["I"].expression_adjustments(),
                         )
                     )
                     exposure["field_adjustments"] = ledgers["I"].accessibility_adjustments()
+                    exposure["expression_adjustments"] = ledgers["I"].expression_adjustments()
                 outcome = runtime.execute_development(
                     slot=slot, call_id=f"dev-{label}-{thread.thread_id}-{turn}",
                     coordinate={"thread": thread.thread_id, "turn": turn, "lineage": label},
@@ -585,7 +691,7 @@ def main() -> int:
                         generated = gemma.generate(prepared.request)
                         content = require_nonempty_message(generated.content, role=f"Gemma {label}")
                         pilot.return_call(f"probe-{checkpoint_number}-{probe_index}-{repetition}-{label}", result={"content": content, "model_id": generated.model_id, "provider": generated.provider, "effective_parameters": generated.effective_parameters, "seed": generated.seed, "finish_reason": generated.finish_reason, "provenance": generated.provenance}, actual_host_fingerprint=gemma.fingerprint().to_dict())
-                    readouts.append({"checkpoint": checkpoint_number, "probe": probe_index, "repetition": repetition, "condition": label, "seed": seed, "field_seed": FIELD_SEEDS[(probe_index + repetition) % len(FIELD_SEEDS)], "prompt": prompt, "output": content, "payload": prepared.request.system})
+                    readouts.append({"checkpoint": checkpoint_number, "probe": probe_index, "repetition": repetition, "condition": label, "seed": seed, "field_seed": FIELD_SEEDS[(probe_index + repetition) % len(FIELD_SEEDS)], "prompt": prompt, "output": content, "payload": prepared.request.system, "field_trace": _field_trace(prepared)})
     # Required removal/restoration check on the I lineage.  These are frozen,
     # read-only views of the same checkpoint and probe; only the SAA field is
     # toggled.  The primary checkpoint is never mutated by this measurement.
@@ -657,6 +763,7 @@ def main() -> int:
                             "prompt": prompt,
                             "output": content,
                             "payload": prepared.request.system,
+                            "field_trace": _field_trace(prepared),
                         }
                     )
     _atomic_json(ROOT / "transcripts.json", {"rows": transcripts})
@@ -666,7 +773,31 @@ def main() -> int:
     blind_key = blinded_evaluation.pop("blind_key", [])
     _atomic_json(ROOT / "blinded-evaluation.json", blinded_evaluation)
     _atomic_json(ROOT / "blinded-key.json", {"rows": blind_key})
-    _atomic_json(ROOT / "introspection-ledger.json", {label: ledgers[label].accessibility_adjustments() for label in ledgers})
+    _atomic_json(
+        ROOT / "introspection-ledger.json",
+        {
+            label: {
+                "accessibility": ledgers[label].accessibility_adjustments(),
+                "expression": ledgers[label].expression_adjustments(),
+            }
+            for label in ledgers
+        },
+    )
+    landing_counts: dict[str, int] = {}
+    for item in readouts:
+        trace = item.get("field_trace") or {}
+        landing = trace.get("selected_landing")
+        if landing:
+            landing_counts[str(landing)] = landing_counts.get(str(landing), 0) + 1
+    introspection_summary = {
+        label: {
+            "review_count": len(ledgers[label].reviews),
+            "accepted_adjustment_count": len(ledgers[label].adjustments),
+            "accessibility_adjustment_count": len(ledgers[label].accessibility_adjustments()),
+            "expression_adjustment_count": len(ledgers[label].expression_adjustments()),
+        }
+        for label in ledgers
+    }
     report = {
         "status": "VALID_INTERPRETABLE_P3_INTROSPECT_100",
         "run_id": RUN_ID,
@@ -681,6 +812,24 @@ def main() -> int:
         },
         "introspection_reviews": progress["introspection_reviews"],
         "checkpoint_numbers": list(CHECKPOINTS),
+        "checkpoint_paths": {
+            label: {str(number): str(path) for number, path in paths.items()}
+            for label, paths in checkpoint_paths.items()
+        },
+        "continuation": {
+            "parent_root": str(continuation_root) if continuation_root else None,
+            "start_thread": start_thread,
+            "parent_checkpoint_preserved": bool(continuation_root),
+        },
+        "introspection_summary": introspection_summary,
+        "saa_landing_counts": landing_counts,
+        "evidence_files": {
+            "development_transcripts": str(ROOT / "experiments"),
+            "readouts": str(ROOT / "readouts.json"),
+            "removal_restoration": str(ROOT / "removal-restoration.json"),
+            "blinded_evaluation": str(ROOT / "blinded-evaluation.json"),
+            "blinded_key": str(ROOT / "blinded-key.json"),
+        },
         "model_stack": {"gemma": gemma.fingerprint().to_dict(), "extractor": extractor.fingerprint().to_dict(), "assessor": assessor.fingerprint().to_dict(), "interloper": interloper.fingerprint().to_dict()},
         "phase_four_recommendation": "planning_only_after_owner_review",
         "limitations": ["two related adaptive lineages are not 100 independent subjects", "introspection is a bounded text-mediated review path", "no Phase Four neural backend was started"],
