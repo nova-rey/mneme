@@ -1,0 +1,17 @@
+{
+  "status": "PAUSED_BATTERY_STOP",
+  "run_id": "p3-introspect-100-20260927-r9",
+  "threads_completed": 24,
+  "target_checkpoint": 25,
+  "provider_reservations": {
+    "returned": 1280,
+    "dispatched_at_stop": 1,
+    "failed": 0,
+    "uncertain": 1
+  },
+  "reason": "Owner-directed battery preservation. MSI reached 11 percent while Thread 25 was incomplete; execution was interrupted before checkpoint publication to prevent power-loss corruption.",
+  "scientific_disposition": "Partial prospective evidence; not a terminal scientific result and not a behavioral negative.",
+  "preservation": "All returned reservations, transcripts, state, and service receipts remain immutable evidence.",
+  "next_action": "After MSI power restoration, resume only from a fresh prospective execution or explicitly approved checkpoint recovery; do not treat this partial run as the 25-thread checkpoint.",
+  "created_utc": "2026-09-28T00:20:00Z"
+}
