@@ -1530,3 +1530,4 @@ and dispositions remain unchanged.
 * 2026-09-28: GitHub CI run 36368443098 passed on commit 6ca0b03, including pytest, Ruff, and strict mypy.
 * 2026-09-28: Continuation runs now materialize the inherited checkpoint introspection sidecar locally, keeping checkpoint-10 readouts self-contained and parent artifacts immutable.
 * 2026-09-28: GitHub CI run 36368571472 passed on commit 64fbe8d after the checkpoint-sidecar correction.
+* 2026-09-28: Added dependency-free trajectory summary JSON/SVG generation to the Phase Three terminal artifact path so checkpoint readout shape, payload diversity, and landing diversity are published without adding a model or provider dependency.

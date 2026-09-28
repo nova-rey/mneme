@@ -296,6 +296,69 @@ def _field_trace(prepared: Any) -> dict[str, Any] | None:
     return field.to_dict() if field is not None else None
 
 
+def _trajectory_summary(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    grouped: dict[tuple[int, str], list[dict[str, Any]]] = {}
+    for row in rows:
+        grouped.setdefault((int(row["checkpoint"]), str(row["condition"])), []).append(row)
+    summary: list[dict[str, Any]] = []
+    for (checkpoint, condition), items in sorted(grouped.items()):
+        payloads = {str(item.get("payload", "")) for item in items}
+        landings = {
+            str((item.get("field_trace") or {}).get("selected_landing"))
+            for item in items
+            if (item.get("field_trace") or {}).get("selected_landing")
+        }
+        summary.append(
+            {
+                "checkpoint": checkpoint,
+                "condition": condition,
+                "count": len(items),
+                "mean_output_chars": sum(len(str(item.get("output", ""))) for item in items) / max(len(items), 1),
+                "unique_payloads": len(payloads),
+                "unique_landings": len(landings),
+                "landings": sorted(landings),
+            }
+        )
+    return {"rows": summary, "source_row_count": len(rows)}
+
+
+def _write_summary_plot(path: Path, summary: Mapping[str, Any]) -> None:
+    """Write a dependency-free SVG of mean readout length by checkpoint."""
+
+    rows = summary.get("rows", [])
+    points: dict[str, list[tuple[int, float]]] = {"I": [], "N": [], "V": []}
+    for row in rows:
+        condition = str(row.get("condition", ""))
+        if condition in points:
+            points[condition].append((int(row["checkpoint"]), float(row["mean_output_chars"])))
+    width, height = 760, 360
+    max_value = max((value for values in points.values() for _, value in values), default=1.0)
+    colors = {"I": "#7c3aed", "N": "#2563eb", "V": "#6b7280"}
+    def xy(point: tuple[int, float]) -> tuple[float, float]:
+        x = 60 + (point[0] / 100.0) * 650
+        y = 300 - (point[1] / max_value) * 240
+        return x, y
+    lines = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
+        '<rect width="100%" height="100%" fill="white"/>',
+        '<text x="60" y="24" font-family="sans-serif" font-size="16">P3 readout mean output length</text>',
+        '<line x1="60" y1="300" x2="710" y2="300" stroke="#111827"/>',
+        '<line x1="60" y1="60" x2="60" y2="300" stroke="#111827"/>',
+    ]
+    for condition, values in points.items():
+        values.sort()
+        if not values:
+            continue
+        coords = " ".join(f"{xy(point)[0]:.1f},{xy(point)[1]:.1f}" for point in values)
+        lines.append(f'<polyline points="{coords}" fill="none" stroke="{colors[condition]}" stroke-width="3"/>')
+        for point in values:
+            x, y = xy(point)
+            lines.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="4" fill="{colors[condition]}"/>')
+        lines.append(f'<text x="{650 + (0 if condition == "I" else 25 if condition == "N" else 50)}" y="50" fill="{colors[condition]}" font-family="sans-serif">{condition}</text>')
+    lines.append("</svg>\n")
+    path.write_text("\n".join(lines), encoding="utf-8")
+
+
 def _make_pilot(
     gemma: Any,
     extractor: Any,
@@ -775,6 +838,9 @@ def main() -> int:
     _atomic_json(ROOT / "transcripts.json", {"rows": transcripts})
     _atomic_json(ROOT / "readouts.json", {"rows": readouts, "probes": list(PROBES), "seeds": list(PROBE_SEEDS)})
     _atomic_json(ROOT / "removal-restoration.json", {"rows": removal_restoration})
+    trajectory_summary = _trajectory_summary(readouts)
+    _atomic_json(ROOT / "trajectory-summary.json", trajectory_summary)
+    _write_summary_plot(ROOT / "trajectory-summary.svg", trajectory_summary)
     blinded_evaluation = _blinded_evaluation(readouts)
     blind_key = blinded_evaluation.pop("blind_key", [])
     _atomic_json(ROOT / "blinded-evaluation.json", blinded_evaluation)
@@ -835,6 +901,8 @@ def main() -> int:
             "removal_restoration": str(ROOT / "removal-restoration.json"),
             "blinded_evaluation": str(ROOT / "blinded-evaluation.json"),
             "blinded_key": str(ROOT / "blinded-key.json"),
+            "trajectory_summary": str(ROOT / "trajectory-summary.json"),
+            "trajectory_plot": str(ROOT / "trajectory-summary.svg"),
         },
         "model_stack": {"gemma": gemma.fingerprint().to_dict(), "extractor": extractor.fingerprint().to_dict(), "assessor": assessor.fingerprint().to_dict(), "interloper": interloper.fingerprint().to_dict()},
         "phase_four_recommendation": "planning_only_after_owner_review",
