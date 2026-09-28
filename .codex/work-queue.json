@@ -2049,7 +2049,13 @@
       },
       "base_sha": "72bc69bd78ec9d80de193c76a44dd0e716f862d8",
       "campaign": "mneme-phase-two",
-      "candidate": null,
+      "candidate": {
+        "artifact": null,
+        "base_sha": "72bc69bd78ec9d80de193c76a44dd0e716f862d8",
+        "returned_at": "2026-09-27T19:02:22.256262Z",
+        "returned_by": "root-foreman",
+        "sha": "d05df05"
+      },
       "completion_criterion": "Qualification demonstrates bounded review, provenance validation, exactly-once replay, and production SAA odds changes without ordinary graph credit.",
       "created_at": "2026-09-27T18:49:08.177919Z",
       "dependencies": [],
@@ -2061,10 +2067,12 @@
         "docs",
         "bible.md"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "d05df05; archived ten-packet qualification and production-boundary tests passed"
+      ],
       "id": "P3-INTROSPECT-QUAL",
       "notes": "",
-      "owner": "root-foreman",
+      "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -2081,12 +2089,10 @@
         }
       ],
       "scope": "Implement and qualify bounded introspection over immutable R8 arcs and synthetic malformed/attack fixtures.",
-      "session_ids": [
-        "p3-qual-20260927"
-      ],
-      "status": "RUNNING",
+      "session_ids": [],
+      "status": "DONE",
       "title": "Qualify arc-bound introspection against archived R8",
-      "updated_at": "2026-09-27T18:49:24.602704Z",
+      "updated_at": "2026-09-27T19:02:22.548496Z",
       "validation": {
         "required": [
           "pytest focused introspection",
@@ -2094,7 +2100,28 @@
           "mypy",
           "qualification receipt"
         ],
-        "results": {}
+        "results": {
+          "mypy": {
+            "receipt": "strict mypy passed for controller/introspection/field on d05df05",
+            "recorded_at": "2026-09-27T19:02:22.456090Z",
+            "status": "PASS"
+          },
+          "pytest focused introspection": {
+            "receipt": "35 focused tests passed on d05df05",
+            "recorded_at": "2026-09-27T19:02:22.367233Z",
+            "status": "PASS"
+          },
+          "qualification receipt": {
+            "receipt": "docs/receipts/MNEME_P3_Introspection_Qualification_20260927/qualification.json reports QUALIFIED with 10 R8 packets and production SAA odds changed",
+            "recorded_at": "2026-09-27T19:02:22.500257Z",
+            "status": "PASS"
+          },
+          "ruff": {
+            "receipt": "Ruff passed on d05df05",
+            "recorded_at": "2026-09-27T19:02:22.411699Z",
+            "status": "PASS"
+          }
+        }
       },
       "waiting_on": [],
       "workstream": "p3-introspection"
@@ -2118,9 +2145,15 @@
         "docs",
         "bible.md"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "r5 PAUSED_RUNTIME_OPTIMIZATION",
+        "r6 INVALID_RUNTIME_ADAPTER",
+        "r7 INVALID_POLICY_FINGERPRINT_BOUNDARY",
+        "r8 INVALID_RESIDENT_GEMMA_OOM",
+        "r9 PAUSED_BATTERY_STOP"
+      ],
       "id": "P3-INTROSPECT-RUN",
-      "notes": "",
+      "notes": "r5 paused for resident-runtime optimization; r6-r8 preserved invalid; r9 paused at 24 completed threads/11% battery before 25 checkpoint. Resume only after MSI power restoration and owner direction.",
       "owner": null,
       "priority": 2,
       "project": "nova-rey/mneme",
@@ -2142,7 +2175,7 @@
       "session_ids": [],
       "status": "WAITING",
       "title": "Run P3-INTROSPECT-100 two-lineage study",
-      "updated_at": "2026-09-27T18:49:20.708730Z",
+      "updated_at": "2026-09-28T01:54:45.389285+00:00",
       "validation": {
         "required": [
           "preflight receipt",
@@ -2152,7 +2185,7 @@
         "results": {}
       },
       "waiting_on": [
-        "package:P3-INTROSPECT-QUAL"
+        "external:MSI-power-restoration"
       ],
       "workstream": "p3-introspection"
     },
@@ -2234,5 +2267,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-09-27T18:49:24.602842Z"
+  "updated_at": "2026-09-27T19:02:26.937154Z"
 }
