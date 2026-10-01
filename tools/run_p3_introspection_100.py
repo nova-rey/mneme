@@ -477,8 +477,8 @@ def main() -> int:
     continuation_root = args.continue_from_root
     start_thread = int(args.continue_from_thread)
     if continuation_root is not None:
-        if start_thread not in CHECKPOINTS[1:]:
-            raise RuntimeError("continuation must start at a published nonzero checkpoint")
+        if start_thread not in (*CHECKPOINTS[1:], 24):
+            raise RuntimeError("continuation must start at a published or explicitly derived intact boundary")
         if not continuation_root.is_dir():
             raise RuntimeError(f"continuation parent root is missing: {continuation_root}")
         if RUN_ID.endswith("-r1"):
@@ -559,6 +559,12 @@ def main() -> int:
         inherited_sidecar = ROOT / "introspection" / f"I-{start_thread}.json"
         inherited_sidecar.parent.mkdir(parents=True, exist_ok=True)
         inherited_sidecar.write_text(parent_ledger.read_text(encoding="utf-8"), encoding="utf-8")
+        inherited_checkpoint_sidecar = continuation_root / "introspection" / "I-10.json"
+        if inherited_checkpoint_sidecar.is_file() and start_thread != 10:
+            (ROOT / "introspection" / "I-10.json").write_text(
+                inherited_checkpoint_sidecar.read_text(encoding="utf-8"),
+                encoding="utf-8",
+            )
         transcripts = _load_parent_transcripts(continuation_root, start_thread)
         progress = {
             "threads_completed": start_thread,
