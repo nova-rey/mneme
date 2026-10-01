@@ -1,0 +1,351 @@
+{
+  "status": "QUALIFIED",
+  "version": "p3-introspection-v2",
+  "historical_source": "docs/receipts/MNEME_P2_SAA_Ten_Thread_Run_r8_20260927/experiments/p2.3-saa-ten-thread-ab/revisions/2/runs/p23-saa-ten-thread-20260927-r8/contingent/transcripts.json",
+  "archived_r8_arc_count": 10,
+  "archived_r8_packet_rows": [
+    {
+      "arc_id": "r8-T01",
+      "message_count": 16,
+      "target_count": 1,
+      "source_digest": "f33868e9b63e3a54632e986e614de0c54a26f22d0b35ccbaec14ee52f71f75f0",
+      "admin_keys_hidden": true
+    },
+    {
+      "arc_id": "r8-T02",
+      "message_count": 16,
+      "target_count": 1,
+      "source_digest": "38ce6abd00f3ec368b5a65eb13054d5dbe9239c13041b212596fc6f69edd4257",
+      "admin_keys_hidden": true
+    },
+    {
+      "arc_id": "r8-T03",
+      "message_count": 16,
+      "target_count": 4,
+      "source_digest": "5dea85299bb3e85a39b290a43da57e56d52ebdb0ddd79898317222c5e70a7124",
+      "admin_keys_hidden": true
+    },
+    {
+      "arc_id": "r8-T04",
+      "message_count": 16,
+      "target_count": 7,
+      "source_digest": "f851ecca315252eb9f8d15d60b229bd9e05b30976a1ad0e1be41246fd03bccc6",
+      "admin_keys_hidden": true
+    },
+    {
+      "arc_id": "r8-T05",
+      "message_count": 16,
+      "target_count": 3,
+      "source_digest": "385595a237503684c2090c43c2081928b2a21d63b73762f65171677735dec1a4",
+      "admin_keys_hidden": true
+    },
+    {
+      "arc_id": "r8-T06",
+      "message_count": 16,
+      "target_count": 6,
+      "source_digest": "28a88087e6e618b6e29ba9ec486db603222b1b2ab78031e13109959448d68240",
+      "admin_keys_hidden": true
+    },
+    {
+      "arc_id": "r8-T07",
+      "message_count": 16,
+      "target_count": 4,
+      "source_digest": "df65576c31be01fa5ac5f4d0ca13e7536969113d98433335cfaee9df202a95a7",
+      "admin_keys_hidden": true
+    },
+    {
+      "arc_id": "r8-T08",
+      "message_count": 16,
+      "target_count": 3,
+      "source_digest": "64e02072b2ea238845f8b27979081b184d82e5b60b777e5bd827030645a7a247",
+      "admin_keys_hidden": true
+    },
+    {
+      "arc_id": "r8-T09",
+      "message_count": 16,
+      "target_count": 3,
+      "source_digest": "7bf392818e4bdd7f11e0db5f6e9e09b971718346a6a6a3b3b3e43e05b06d4166",
+      "admin_keys_hidden": true
+    },
+    {
+      "arc_id": "r8-T10-readout",
+      "message_count": 8,
+      "target_count": 1,
+      "source_digest": "b83e39a24456cdd44b1bf2ad4d99dd64a6582c7508b6bd81edfee312fc1f2ec9",
+      "admin_keys_hidden": true
+    }
+  ],
+  "synthetic_cases": [
+    {
+      "case": "external-positive",
+      "proposal_count": 1,
+      "accepted_count": 1,
+      "accepted": [
+        {
+          "arc_id": "synthetic-feedback",
+          "target_alias": "target",
+          "edge_key": "e1",
+          "context": "maintenance",
+          "association_delta": 96000,
+          "expression_delta": 16000,
+          "basis": "EXTERNAL_REACTION",
+          "evidence_refs": [
+            "turn-0"
+          ],
+          "proposal_digest": "e7342bffc1a2f113655066b04224b1a1c9ff53d045425b3425293aa8cfb375fa",
+          "reason": "The supplied participant reports success."
+        }
+      ]
+    },
+    {
+      "case": "self-only-negative",
+      "proposal_count": 1,
+      "accepted_count": 1,
+      "accepted": [
+        {
+          "arc_id": "synthetic-self-only-negative",
+          "target_alias": "target",
+          "edge_key": "e1",
+          "context": "maintenance",
+          "association_delta": -22400,
+          "expression_delta": -39200,
+          "basis": "SELF_ONLY",
+          "evidence_refs": [
+            "turn-0"
+          ],
+          "proposal_digest": "92cbe43dd3bca1da185351732d779f2e4716f475f446ccec4735f50dc0658553",
+          "reason": "No independent reaction is recorded."
+        }
+      ]
+    },
+    {
+      "case": "abstention",
+      "proposal_count": 0,
+      "accepted_count": 0,
+      "accepted": []
+    },
+    {
+      "case": "external-negative",
+      "proposal_count": 1,
+      "accepted_count": 1,
+      "accepted": [
+        {
+          "arc_id": "synthetic-external-negative",
+          "target_alias": "target",
+          "edge_key": "e1",
+          "context": "maintenance",
+          "association_delta": -80000,
+          "expression_delta": -32000,
+          "basis": "LATER_OUTCOME",
+          "evidence_refs": [
+            "turn-0"
+          ],
+          "proposal_digest": "c1c8a398f80a6c6cedc98b69d0905d907276df7cad9c6184370e3c730a41d442",
+          "reason": "The supplied outcome reports failure."
+        }
+      ]
+    },
+    {
+      "case": "mixed-reaction",
+      "proposal_count": 1,
+      "accepted_count": 1,
+      "accepted": [
+        {
+          "arc_id": "synthetic-mixed-reaction",
+          "target_alias": "target",
+          "edge_key": "e1",
+          "context": "maintenance",
+          "association_delta": 20000,
+          "expression_delta": -40000,
+          "basis": "MIXED",
+          "evidence_refs": [
+            "turn-0"
+          ],
+          "proposal_digest": "20a938e3553a233c059c7ab8c35c6eff1028c6f1b5c327e19061530e27afb624",
+          "reason": "Useful once, but repetition was unwelcome."
+        }
+      ]
+    }
+  ],
+  "duplicate_replay_accepted_count": 0,
+  "error_cases": {
+    "malformed": "IntrospectionError",
+    "invented_or_quoted_evidence": "IntrospectionError",
+    "stale_parent": "IntrospectionLedger.load rejects unsupported version",
+    "interruption": "atomic save leaves prior ledger intact before replace"
+  },
+  "ordinary_learning_disabled": true,
+  "replay_identical": true,
+  "production_saa_odds_before": {
+    "e1": 500000,
+    "e2": 500000
+  },
+  "production_saa_odds_after": {
+    "e1": 503377,
+    "e2": 496623
+  },
+  "production_odds_changed": true,
+  "historical_evidence_unchanged": true,
+  "live_review_inference": {
+    "requested": true,
+    "status": "QUALIFIED",
+    "malformed_reviews_abstain": false,
+    "valid_inference_rows": 15,
+    "synthetic_positive_fixture_passed": true,
+    "inference_calls": 15,
+    "archived_inference_calls": 10,
+    "synthetic_inference_calls": 5,
+    "rows": [
+      {
+        "source_kind": "archived_r8",
+        "arc_id": "r8-T01",
+        "model_id": "google/gemma-4-E4B-it",
+        "finish_reason": "stop",
+        "proposal_count": 1,
+        "parse_error": null,
+        "repair_error": null,
+        "raw": "{\"assessments\": [{\"target_alias\": \"t01-none\", \"association_effect\": 0.0, \"expression_effect\": 0.0, \"confidence\": 0.0, \"basis\": \"INSUFFICIENT\", \"evidence_refs\": [], \"reason\": \"\"}]"
+      },
+      {
+        "source_kind": "archived_r8",
+        "arc_id": "r8-T02",
+        "model_id": "google/gemma-4-E4B-it",
+        "finish_reason": "stop",
+        "proposal_count": 1,
+        "parse_error": null,
+        "repair_error": null,
+        "raw": "{\"assessments\": [{\"target_alias\": \"t02-none\", \"association_effect\": 0.0, \"expression_effect\": 0.0, \"confidence\": 0.0, \"basis\": \"INSUFFICIENT\", \"evidence_refs\": [], \"reason\": \"\"}]"
+      },
+      {
+        "source_kind": "archived_r8",
+        "arc_id": "r8-T03",
+        "model_id": "google/gemma-4-E4B-it",
+        "finish_reason": "stop",
+        "proposal_count": 1,
+        "parse_error": null,
+        "repair_error": null,
+        "raw": "{\"assessments\": [{\"target_alias\": \"t03-t5-0\", \"association_effect\": 0.0, \"expression_effect\": 0.0, \"confidence\": 0.0, \"basis\": \"INSUFFICIENT\", \"evidence_refs\": [], \"reason\": \"\"}]"
+      },
+      {
+        "source_kind": "archived_r8",
+        "arc_id": "r8-T04",
+        "model_id": "google/gemma-4-E4B-it",
+        "finish_reason": "stop",
+        "proposal_count": 1,
+        "parse_error": null,
+        "repair_error": null,
+        "raw": "{\"assessments\": [{\"target_alias\": \"t04-t0-0\", \"association_effect\": 0.0, \"expression_effect\": 0.0, \"confidence\": 0.0, \"basis\": \"INSUFFICIENT\", \"evidence_refs\": [], \"reason\": \"\"}]"
+      },
+      {
+        "source_kind": "archived_r8",
+        "arc_id": "r8-T05",
+        "model_id": "google/gemma-4-E4B-it",
+        "finish_reason": "stop",
+        "proposal_count": 1,
+        "parse_error": null,
+        "repair_error": null,
+        "raw": "{\"assessments\": [{\"target_alias\": \"t05-t0-0\", \"association_effect\": 0.0, \"expression_effect\": 0.0, \"confidence\": 0.0, \"basis\": \"INSUFFICIENT\", \"evidence_refs\": [], \"reason\": \"\"}]"
+      },
+      {
+        "source_kind": "archived_r8",
+        "arc_id": "r8-T06",
+        "model_id": "google/gemma-4-E4B-it",
+        "finish_reason": "stop",
+        "proposal_count": 1,
+        "parse_error": null,
+        "repair_error": null,
+        "raw": "{\"assessments\": [{\"target_alias\": \"t06-t0-0\", \"association_effect\": 0.0, \"expression_effect\": 0.0, \"confidence\": 0.0, \"basis\": \"INSUFFICIENT\", \"evidence_refs\": [], \"reason\": \"\"}]"
+      },
+      {
+        "source_kind": "archived_r8",
+        "arc_id": "r8-T07",
+        "model_id": "google/gemma-4-E4B-it",
+        "finish_reason": "stop",
+        "proposal_count": 1,
+        "parse_error": null,
+        "repair_error": null,
+        "raw": "{\"assessments\": [{\"target_alias\": \"t07-t0-0\", \"association_effect\": 0.0, \"expression_effect\": 0.0, \"confidence\": 0.0, \"basis\": \"INSUFFICIENT\", \"evidence_refs\": [], \"reason\": \"\"}]"
+      },
+      {
+        "source_kind": "archived_r8",
+        "arc_id": "r8-T08",
+        "model_id": "google/gemma-4-E4B-it",
+        "finish_reason": "stop",
+        "proposal_count": 1,
+        "parse_error": null,
+        "repair_error": null,
+        "raw": "{\"assessments\": [{\"target_alias\": \"t08-t0-0\", \"association_effect\": 0.0, \"expression_effect\": 0.0, \"confidence\": 0.0, \"basis\": \"INSUFFICIENT\", \"evidence_refs\": [], \"reason\": \"\"}]"
+      },
+      {
+        "source_kind": "archived_r8",
+        "arc_id": "r8-T09",
+        "model_id": "google/gemma-4-E4B-it",
+        "finish_reason": "stop",
+        "proposal_count": 1,
+        "parse_error": null,
+        "repair_error": null,
+        "raw": "{\"assessments\": [{\"target_alias\": \"t09-t0-0\", \"association_effect\": 0.0, \"expression_effect\": 0.0, \"confidence\": 0.0, \"basis\": \"INSUFFICIENT\", \"evidence_refs\": [], \"reason\": \"\"}]"
+      },
+      {
+        "source_kind": "archived_r8",
+        "arc_id": "r8-T10-readout",
+        "model_id": "google/gemma-4-E4B-it",
+        "finish_reason": "stop",
+        "proposal_count": 1,
+        "parse_error": null,
+        "repair_error": null,
+        "raw": "{\"assessments\": [{\"target_alias\": \"t10-none\", \"association_effect\": 0.0, \"expression_effect\": 0.0, \"confidence\": 0.0, \"basis\": \"INSUFFICIENT\", \"evidence_refs\": [], \"reason\": \"\"}]"
+      },
+      {
+        "source_kind": "synthetic",
+        "arc_id": "synthetic-feedback",
+        "model_id": "google/gemma-4-E4B-it",
+        "finish_reason": "stop",
+        "proposal_count": 1,
+        "parse_error": null,
+        "repair_error": null,
+        "raw": "{\"assessments\":[{\"target_alias\":\"target\",\"association_effect\":0.0,\"expression_effect\":0.0,\"confidence\":0.0,\"basis\":\"INSUFFICIENT\",\"evidence_refs\":[],\"reason\":\"\"}]"
+      },
+      {
+        "source_kind": "synthetic",
+        "arc_id": "synthetic-feedback",
+        "model_id": "google/gemma-4-E4B-it",
+        "finish_reason": "stop",
+        "proposal_count": 1,
+        "parse_error": null,
+        "repair_error": null,
+        "raw": "{\"assessments\": [{\"target_alias\": \"target\", \"association_effect\": 0.0, \"expression_effect\": 0.0, \"confidence\": 0.0, \"basis\": \"INSUFFICIENT\", \"evidence_refs\": [], \"reason\": \"\"}]"
+      },
+      {
+        "source_kind": "synthetic",
+        "arc_id": "synthetic-feedback",
+        "model_id": "google/gemma-4-E4B-it",
+        "finish_reason": "stop",
+        "proposal_count": 1,
+        "parse_error": null,
+        "repair_error": null,
+        "raw": "{\"assessments\": [{\"target_alias\": \"target\", \"association_effect\": 0.0, \"expression_effect\": 0.0, \"confidence\": 0.0, \"basis\": \"INSUFFICIENT\", \"evidence_refs\": [], \"reason\": \"\"}]"
+      },
+      {
+        "source_kind": "synthetic",
+        "arc_id": "synthetic-feedback",
+        "model_id": "google/gemma-4-E4B-it",
+        "finish_reason": "stop",
+        "proposal_count": 1,
+        "parse_error": null,
+        "repair_error": null,
+        "raw": "{\"assessments\": [{\"target_alias\": \"target\", \"association_effect\": 0.0, \"expression_effect\": 0.0, \"confidence\": 0.0, \"basis\": \"INSUFFICIENT\", \"evidence_refs\": [], \"reason\": \"\"}]"
+      },
+      {
+        "source_kind": "synthetic",
+        "arc_id": "synthetic-feedback",
+        "model_id": "google/gemma-4-E4B-it",
+        "finish_reason": "stop",
+        "proposal_count": 1,
+        "parse_error": null,
+        "repair_error": null,
+        "raw": "{\"assessments\": [{\"target_alias\": \"target\", \"association_effect\": 0.0, \"expression_effect\": 0.0, \"confidence\": 0.0, \"basis\": \"INSUFFICIENT\", \"evidence_refs\": [], \"reason\": \"\"}]"
+      }
+    ]
+  }
+}

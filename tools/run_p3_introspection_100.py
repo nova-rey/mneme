@@ -547,6 +547,7 @@ def main() -> int:
     if not R8_CHECKPOINT.is_file():
         raise RuntimeError(f"missing immutable R8 checkpoint: {R8_CHECKPOINT}")
     qualification_candidates = (
+        Path("docs/receipts/MNEME_P3_Introspection_Qualification_20261002/qualification.json"),
         Path("docs/receipts/MNEME_P3_Introspection_Qualification_20261001/qualification.json"),
         Path("docs/receipts/MNEME_P3_Introspection_Qualification_20260927/qualification.json"),
     )
