@@ -1,0 +1,159 @@
+{
+  "schema": "mneme.p3.introspection.100.spec-audit.v1",
+  "audit_date": "2026-10-01",
+  "run_id": "p3-introspect-100-20261001-r23",
+  "source_spec": "docs/research/MNEME_P3_Introspection_100_Thread_Codex_Steer_2026-09-27.md",
+  "verdict": "VALID_RUN_WITH_INTROSPECTION_COVERAGE_LIMITATION",
+  "method": "Requirement-by-requirement evidence reconciliation over the immutable r23 terminal receipt, compact readable exports, qualification receipt, frozen topic bank, and CI/test receipts.",
+  "requirements": [
+    {
+      "id": "preserve_r8",
+      "status": "PASS",
+      "evidence": [
+        "docs/receipts/MNEME_P2_SAA_Ten_Thread_Run_r8_20260927/",
+        "docs/receipts/MNEME_P3_Introspection_100_Thread_Experiment_20261001.json"
+      ],
+      "note": "R8 remains the declared parent and is not rewritten."
+    },
+    {
+      "id": "qualification",
+      "status": "PASS",
+      "evidence": [
+        "docs/receipts/MNEME_P3_Introspection_Qualification_20261002/qualification.json"
+      ],
+      "note": "Ten archived R8 packets and five synthetic cases are covered; production SAA odds changed in the synthetic write-path check."
+    },
+    {
+      "id": "frozen_topic_bank",
+      "status": "PASS",
+      "evidence": [
+        "docs/experiments/p3_introspection_100_topic_bank_v1.json",
+        "docs/receipts/MNEME_P3_Introspection_100_Thread_Study_Plan_20261001.json"
+      ],
+      "note": "The executed contract binds the 100-topic bank digest."
+    },
+    {
+      "id": "developmental_execution",
+      "status": "PASS",
+      "evidence": [
+        "docs/receipts/MNEME_P3_Introspection_100_Thread_Terminal_Receipt_20261001.json",
+        "docs/receipts/transcripts_001_025.json",
+        "docs/receipts/transcripts_026_050.json",
+        "docs/receipts/transcripts_051_075.json",
+        "docs/receipts/transcripts_076_100.json"
+      ],
+      "note": "Threads 1-100 completed at eight exchanges per I/N branch; invalid attempts did not contribute experience."
+    },
+    {
+      "id": "checkpoint_schedule",
+      "status": "PASS",
+      "evidence": [
+        "docs/receipts/checkpoint_development_summary.json",
+        "docs/receipts/frozen_readouts_checkpoint_000.json",
+        "docs/receipts/frozen_readouts_checkpoint_010.json",
+        "docs/receipts/frozen_readouts_checkpoint_025.json",
+        "docs/receipts/frozen_readouts_checkpoint_050.json",
+        "docs/receipts/frozen_readouts_checkpoint_075.json",
+        "docs/receipts/frozen_readouts_checkpoint_100.json"
+      ],
+      "note": "All six checkpoints and 432 scheduled I/N/V rows are present."
+    },
+    {
+      "id": "field_trace_publication",
+      "status": "PASS_WITH_LIMITATION",
+      "evidence": [
+        "docs/receipts/saa_field_trace_threads_001_025.json",
+        "docs/receipts/saa_field_trace_threads_026_050.json",
+        "docs/receipts/saa_field_trace_threads_051_075.json",
+        "docs/receipts/saa_field_trace_threads_076_100.json"
+      ],
+      "note": "Compact traces retain the published exposure details, but 74 developmental rows explicitly carry NO_SEPARATE_FIELD_TRACE_PERSISTED."
+    },
+    {
+      "id": "removal_restoration",
+      "status": "PASS",
+      "evidence": [
+        "docs/receipts/removal_restoration.json"
+      ],
+      "note": "216 ON/OFF/RESTORED rows are present with matched state, seeds, and explicit accepted run_id."
+    },
+    {
+      "id": "introspection_persistence",
+      "status": "PASS_WITH_LIMITATION",
+      "evidence": [
+        "docs/receipts/introspection_history.json"
+      ],
+      "note": "All 100 review boundaries are persisted, but status counts are 75 ABSTAINED_MALFORMED, 4 ABSTAINED_NO_TARGETS, 21 ABSTAINED_NO_CHANGE, and 0 accepted adjustments. Malformed output is not relabeled as a successful abstention or a developmental update."
+    },
+    {
+      "id": "trajectory_and_blinding",
+      "status": "PASS_WITH_LIMITATION",
+      "evidence": [
+        "docs/receipts/MNEME_P3_Introspection_100_Thread_Trajectory_Summary_20261001.json",
+        "docs/receipts/MNEME_P3_Introspection_100_Thread_Blinded_Evaluation_20261001.json",
+        "docs/receipts/paired_trajectory_view.md"
+      ],
+      "note": "Mechanical comparison and trajectory summaries are published; the evaluator artifact does not expose a blind-label mapping, so qualitative blinding is not independently verifiable."
+    },
+    {
+      "id": "runtime_models_and_seeds",
+      "status": "PASS",
+      "evidence": [
+        "docs/receipts/MNEME_P3_Introspection_100_Thread_Experiment_20261001.json",
+        "docs/receipts/MNEME_P3_Introspection_100_Thread_Study_Plan_20261001.json",
+        "docs/receipts/MNEME_P3_Introspection_100_Thread_Shared_Interloper_Trace_20261001.json"
+      ],
+      "note": "Gemma, GLiNER2.5, DeBERTa, Qwen3-30B, field seeds, probe seeds, call budget, and available Qwen reservation receipts are recorded; private paired request bodies were not persisted."
+    },
+    {
+      "id": "publication_surface",
+      "status": "PASS_AFTER_SCOPE_CORRECTION",
+      "evidence": [
+        "docs/receipts/MNEME_P3_Introspection_100_Thread_Final_Evidence_Index_20261001.json"
+      ],
+      "note": "Current-tip publication is being reduced to readable review artifacts; local canonical binaries remain hash-indexed. The superseded remote commit is preserved in history and is not rewritten."
+    },
+    {
+      "id": "phase_four_boundary",
+      "status": "PASS",
+      "evidence": [
+        "docs/receipts/MNEME_P3_Introspection_100_Thread_Final_Report_20261001.md"
+      ],
+      "note": "No Phase Four execution or neural intervention was started; the report gives a planning recommendation only."
+    }
+  ],
+  "invalid_attempts": [
+    "r12",
+    "r13",
+    "r14",
+    "r15",
+    "r16",
+    "r17",
+    "r18",
+    "r19",
+    "r20",
+    "r21",
+    "r22"
+  ],
+  "interpretation_boundary": "The r23 conversation/SAA/readout/removal measurements are interpretable. Introspection-induced treatment effect is not demonstrated because no live review adjustment was accepted; malformed review rows, 74 absent separate field traces, absent evaluator blind mapping, and absent private paired request bodies remain evidence limitations.",
+  "validation_receipts": {
+    "pytest": "548 passed (fresh, .venv2)",
+    "ruff": "passed (fresh, .venv2)",
+    "strict_mypy": "passed (fresh, .venv2)",
+    "wheel_smoke": "passed",
+    "ci": "passed on 3476d708e87ca40ff6ca0a36ca7656b8f771e4cd",
+    "targeted_introspection_pytest": "10 passed (fresh, .venv2)"
+  },
+  "independent_audit": {
+    "auditor": "phase3_verifier",
+    "verdict": "PASS_WITH_RESERVATIONS",
+    "findings": [
+      "800 accepted transcript rows cover Threads 1-100; all participant/I/N responses are nonempty and paired seeds match.",
+      "Six checkpoint files provide 432 I/N/V rows; removal/restoration provides 216 rows.",
+      "74 field-trace rows explicitly carry NO_SEPARATE_FIELD_TRACE_PERSISTED; full exposure-to-field-trace coverage is therefore limited.",
+      "The published blinded-evaluation artifact supports mechanical comparison counts but does not contain a blind-label mapping, so genuine qualitative blinding cannot be independently verified.",
+      "Shared-Interloper reservation receipts are now indexed where available; private paired Gemma request bodies are not persisted in the compact source artifacts.",
+      "The removal/restoration export now carries the accepted run_id on its container and every row."
+    ]
+  }
+}
