@@ -2150,7 +2150,7 @@
         "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11/PAUSED_AT_CHECKPOINT_75.json"
       ],
       "id": "P3-INTROSPECT-RUN",
-      "notes": "r11 paused cleanly at checkpoint 75 after completing prospective threads 25-75; no threads 76-100 or readouts dispatched. Validated I/N-75 checkpoints and compact review bundles are published; resume only on owner instruction from the prepared checkpoint-75 continuation parent.",
+      "notes": "r11 checkpoint-75 pause is preserved and continuation plumbing is validated; resume run is prepared but live dispatch is waiting for brokeass-msi to return online. No threads 76-100 have been dispatched.",
       "owner": null,
       "priority": 2,
       "project": "nova-rey/mneme",
@@ -2172,7 +2172,7 @@
       "session_ids": [],
       "status": "WAITING",
       "title": "Run P3-INTROSPECT-100 two-lineage study",
-      "updated_at": "2026-10-01T18:00:24.478667+00:00",
+      "updated_at": "2026-10-01T18:11:11.665389+00:00",
       "validation": {
         "required": [
           "preflight receipt",
@@ -2182,7 +2182,7 @@
         "results": {}
       },
       "waiting_on": [
-        "user:resume-after-checkpoint-75-review"
+        "external:MSI-host-offline"
       ],
       "workstream": "p3-introspection"
     },
@@ -2264,5 +2264,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-10-01T18:00:24.478688+00:00"
+  "updated_at": "2026-10-01T18:11:11.665416+00:00"
 }
