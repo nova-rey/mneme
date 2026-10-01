@@ -55,6 +55,7 @@ from tools.run_p23_saa_ten_thread_live import _development_request, _record_meas
 ROOT = Path(os.environ.get("MNEME_P3_INTROSPECT_LAB", "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20260927"))
 RUN_ID = os.environ.get("MNEME_P3_INTROSPECT_RUN_ID", "p3-introspect-100-20260927-r1")
 PARTIAL_SOURCE = Path(os.environ["MNEME_P3_PARTIAL_SOURCE"]) if os.environ.get("MNEME_P3_PARTIAL_SOURCE") else None
+PARTIAL_RUN_ROOT = Path(os.environ["MNEME_P3_PARTIAL_RUN_ROOT"]) if os.environ.get("MNEME_P3_PARTIAL_RUN_ROOT") else None
 PARTIAL_THREAD = int(os.environ.get("MNEME_P3_PARTIAL_THREAD", "0"))
 PARTIAL_TURN = int(os.environ.get("MNEME_P3_PARTIAL_TURN", "0"))
 TOPIC_BANK = Path("docs/experiments/p3_introspection_100_topic_bank_v1.json")
@@ -574,7 +575,7 @@ def _load_partial_thread_state(
     the SQLite stores remain the authority for accepted developmental state.
     """
 
-    run_root = next(source_root.glob("experiments/**/runs/*"))
+    run_root = PARTIAL_RUN_ROOT or next(source_root.glob("experiments/**/runs/*"))
     participants = [thread.opening]
     for turn in range(1, through_turn + 1):
         path = run_root / "pilot" / "reservations" / f"qwen-{thread.thread_id}-{turn}.json"

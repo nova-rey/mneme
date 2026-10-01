@@ -1550,3 +1550,4 @@ and dispositions remain unchanged.
 * 2026-10-01: Preserved r13 as INVALID_MALFORMED_T76 after a valid zero-effect review used the arc ID instead of one of two target aliases; archived the exact attempt and added deterministic no-change recognition that cannot create developmental credit.
 * 2026-10-01: Preserved r14 after the execution wrapper stopped during Thread 87 with Thread 86 durable; added narrow artifact-backed partial-thread recovery so completed coordinates are never replayed, and kept the partial bundle immutable as a distinct historical attempt.
 * 2026-10-01: Added an explicit final-checkpoint hardlink mode for the validated compact continuation; Thread-100 readouts can reference the immutable post-development live stores without another simultaneous full SQLite backup.
+* 2026-10-01: Made partial recovery bind to an explicit archived source run root so the new prospective continuation cannot accidentally read its own newly published artifacts.
