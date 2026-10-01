@@ -45,7 +45,13 @@
   },
   "resume": {
     "required_start_thread": 76,
-    "note": "resume must use the aggregate checkpoint-75 continuation manifest so inherited threads 1-24 and prospective transcripts 25-75 remain visible without repeating work"
+    "note": "resume must use the aggregate checkpoint-75 continuation manifest so inherited threads 1-24 and prospective transcripts 25-75 remain visible without repeating work",
+    "required_inputs": {
+      "checkpoint_10": "prepared in continuation parent",
+      "checkpoint_25_50": "prepared in continuation parent and preserved in pre75 archive",
+      "checkpoint_75": "prepared in continuation parent",
+      "readout_sidecars": "I-10/I-25/I-50/I-75 prepared in continuation parent"
+    }
   },
   "historical_preservation": {
     "r10": "preserved as verified compressed archive and prior committed invalid receipt",
@@ -75,6 +81,11 @@
     "reviews25_75": {
       "path": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11_reviews25_75.tar.zst",
       "sha256": "0783e32b976d1f3688409cda634fb000c6400db8f99451a6ede87d24ef252635"
+    },
+    "working_subjects": {
+      "path": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11_subjects.tar.zst",
+      "sha256": "872d7639415d976f7ff54e9f652e540acbde4ade8414eb1bb99c1e32de805362",
+      "note": "verified archive of r11 I/N/V working databases; the published I/N-75 checkpoints are the resumable state"
     }
   },
   "continuation_parent": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11_checkpoint75_parent"

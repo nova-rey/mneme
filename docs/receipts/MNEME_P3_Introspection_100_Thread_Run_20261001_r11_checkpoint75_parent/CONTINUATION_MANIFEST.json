@@ -7,11 +7,27 @@
   "inherited_threads_1_24": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20260927_r9_boundary24.tar.zst",
   "prospective_threads_25_75": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11",
   "snapshots": {
-    "I": "snapshots/I-75.sqlite3",
-    "N": "snapshots/N-75.sqlite3"
+    "I": [
+      "snapshots/I-10.sqlite3",
+      "snapshots/I-25.sqlite3",
+      "snapshots/I-50.sqlite3",
+      "snapshots/I-75.sqlite3"
+    ],
+    "N": [
+      "snapshots/N-10.sqlite3",
+      "snapshots/N-25.sqlite3",
+      "snapshots/N-50.sqlite3",
+      "snapshots/N-75.sqlite3"
+    ]
   },
   "ledger": "introspection/I-75.json",
   "resume_start_thread": 75,
   "next_thread": 76,
-  "note": "Transcript files 1-24 are extracted from the verified boundary archive; 25-75 are hardlinks to the r11 records. SQLite snapshots are hardlinks to r11 immutable checkpoint copies."
+  "note": "All frozen I/N checkpoints 10,25,50,75 and I-sidecars 10,25,50,75 are materialized. Pre-75 duplicates and working subjects remain preserved in verified compressed archives.",
+  "sidecars": [
+    "introspection/I-10.json",
+    "introspection/I-25.json",
+    "introspection/I-50.json",
+    "introspection/I-75.json"
+  ]
 }
