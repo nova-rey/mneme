@@ -16,7 +16,7 @@ The archived qualification passed over all ten R8 packets plus five synthetic fi
 
 The mechanical blinded evaluator reported 318 difference-positive pairs out of 432; this is descriptive text comparison, not a claim that I is better. Readouts, payloads, landings, and field traces are directly readable in the checkpoint JSON files. The independent audit records 74 developmental rows with `NO_SEPARATE_FIELD_TRACE_PERSISTED`; those rows remain explicit rather than being backfilled. The published mechanical evaluator has no independently inspectable blind-label mapping, and the compact source artifacts do not retain private paired Gemma request bodies; the shared participant text and available Qwen reservation receipts are indexed separately.
 
-The trajectory summary (`MNEME_P3_Introspection_100_Thread_Trajectory_Summary_20261001.json`) reports payload/landing diversity and output-length summaries by checkpoint and condition. The readable transcripts expose each branch's generation seed, finish-reason field, and deterministic field-trace/exposure join alongside the nested raw exposure record.
+The trajectory summary (`MNEME_P3_Introspection_100_Thread_Trajectory_Summary_20261001.json`) reports payload/landing diversity and output-length summaries by checkpoint and condition. The readable transcripts expose each branch's generation seed, finish-reason field, and deterministic field-trace/exposure join alongside the nested raw exposure record. For early accepted rows whose original provider receipt is not in the compact source set, the finish-reason field is explicitly `not_persisted_in_compact_source` rather than guessed.
 
 ## Removal/restoration
 
