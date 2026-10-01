@@ -278,6 +278,18 @@ def _review(
     reflection_seed: int,
     formatting_seed: int,
 ) -> tuple[tuple[Any, ...], dict[str, Any]]:
+    if not packet.exposures or all(target.edge_key == "none" for target in packet.targets):
+        # A closed arc with no recorded field exposure is a valid bounded
+        # abstention.  Do not ask Gemma to invent a target alias for a packet
+        # whose only synthetic target is the administrative ``none`` marker.
+        return (), {
+            "status": "ABSTAINED_NO_TARGETS",
+            "raw": None,
+            "repair": None,
+            "parsed": [],
+            "reflection_seed": reflection_seed,
+            "formatting_seed": formatting_seed,
+        }
     request = GenerationRequest(
         messages=(
             {"role": "user", "content": json.dumps(review_request(packet), ensure_ascii=False)},

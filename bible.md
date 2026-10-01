@@ -1546,3 +1546,4 @@ and dispositions remain unchanged.
 * 2026-10-01: Added the repository-root test path setup required for CI to collect the new compact-checkpoint/arc coverage; no experimental behavior changed.
 * 2026-10-01: Kept hosted Interloper qualification throttling intact while removing the unnecessary five-second delay for the resident local NLI assessor; this changes wall-clock scheduling only and preserves call order, seeds, and experimental inputs.
 * 2026-10-01: Corrected Ruff import ordering and removed the unused storage-compaction import after CI review; no storage or study behavior changed.
+* 2026-10-01: Preserved r12 as INVALID_MALFORMED_T76 after the first no-exposure arc review used an impossible synthetic target alias; archived the exact attempt and corrected no-target arcs to deterministic valid abstentions before restarting from compact Thread-75 state.
