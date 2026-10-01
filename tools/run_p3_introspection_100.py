@@ -927,7 +927,17 @@ def main() -> int:
         if thread_index in CHECKPOINTS[1:]:
             for label in ("I", "N"):
                 checkpoint = ROOT / "snapshots" / f"{label}-{thread_index}.sqlite3"
-                create_checkpoint(stores[label], checkpoint, checkpoint_id=f"{RUN_ID}-{label}-{thread_index}")
+                # The compact continuation keeps the live stores immutable
+                # after Thread 100.  A hardlink is therefore an exact,
+                # storage-safe final checkpoint; earlier checkpoints retain
+                # their ordinary immutable-copy policy.
+                if thread_index == 100 and os.environ.get("MNEME_P3_FINAL_CHECKPOINT_HARDLINK") == "1":
+                    checkpoint.parent.mkdir(parents=True, exist_ok=True)
+                    if checkpoint.exists():
+                        checkpoint.unlink()
+                    os.link(branches[label], checkpoint)
+                else:
+                    create_checkpoint(stores[label], checkpoint, checkpoint_id=f"{RUN_ID}-{label}-{thread_index}")
                 progress["checkpoints"][str(thread_index)] = progress["checkpoints"].get(str(thread_index), {}) | {label: str(checkpoint)}
             # Freeze the introspection sidecar at the same boundary as the
             # learner checkpoint.  Earlier readouts must not consume reviews
