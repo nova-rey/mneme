@@ -56,6 +56,7 @@ ROOT = Path(os.environ.get("MNEME_P3_INTROSPECT_LAB", "docs/receipts/MNEME_P3_In
 RUN_ID = os.environ.get("MNEME_P3_INTROSPECT_RUN_ID", "p3-introspect-100-20260927-r1")
 PARTIAL_SOURCE = Path(os.environ["MNEME_P3_PARTIAL_SOURCE"]) if os.environ.get("MNEME_P3_PARTIAL_SOURCE") else None
 PARTIAL_RUN_ROOT = Path(os.environ["MNEME_P3_PARTIAL_RUN_ROOT"]) if os.environ.get("MNEME_P3_PARTIAL_RUN_ROOT") else None
+PARTIAL_SKIP_BRANCH = os.environ.get("MNEME_P3_PARTIAL_SKIP_BRANCH")
 PARTIAL_THREAD = int(os.environ.get("MNEME_P3_PARTIAL_THREAD", "0"))
 PARTIAL_TURN = int(os.environ.get("MNEME_P3_PARTIAL_TURN", "0"))
 TOPIC_BANK = Path("docs/experiments/p3_introspection_100_topic_bank_v1.json")
@@ -577,7 +578,8 @@ def _load_partial_thread_state(
 
     run_root = PARTIAL_RUN_ROOT or next(source_root.glob("experiments/**/runs/*"))
     participants = [thread.opening]
-    for turn in range(1, through_turn + 1):
+    participant_qwen_turns = through_turn if PARTIAL_SKIP_BRANCH else through_turn - 1
+    for turn in range(1, participant_qwen_turns + 1):
         path = run_root / "pilot" / "reservations" / f"qwen-{thread.thread_id}-{turn}.json"
         payload = json.loads(path.read_text(encoding="utf-8"))
         content = payload.get("result", {}).get("content")
@@ -604,21 +606,22 @@ def _load_partial_thread_state(
                 "trace": {"source_artifact": str(path)},
             }
         prefix_rows.append({"thread": thread.thread_id, "turn": turn, "participant": participants[turn], **branch_rows})
-    existing_i_path = run_root / "development" / f"dev-I-{thread.thread_id}-{through_turn}.json"
-    existing_i = json.loads(existing_i_path.read_text(encoding="utf-8"))
-    existing_i_content = existing_i.get("result", {}).get("content")
-    if not isinstance(existing_i_content, str) or not existing_i_content.strip():
-        raise RuntimeError(f"partial source has no completed I response at turn {through_turn}: {existing_i_path}")
-    return participants, histories, prefix_rows, {
-        "I": {
-            "response": existing_i_content,
-            "seed": existing_i.get("request", {}).get("seed"),
-            "exposure": {"partial_recovery": True, "source_artifact": str(existing_i_path)},
+    recovered: dict[str, Any] = {}
+    if PARTIAL_SKIP_BRANCH:
+        existing_path = run_root / "development" / f"dev-{PARTIAL_SKIP_BRANCH}-{thread.thread_id}-{through_turn}.json"
+        existing = json.loads(existing_path.read_text(encoding="utf-8"))
+        content = existing.get("result", {}).get("content")
+        if not isinstance(content, str) or not content.strip():
+            raise RuntimeError(f"partial source has no completed {PARTIAL_SKIP_BRANCH} response at turn {through_turn}: {existing_path}")
+        recovered[PARTIAL_SKIP_BRANCH] = {
+            "response": content,
+            "seed": existing.get("request", {}).get("seed"),
+            "exposure": {"partial_recovery": True, "source_artifact": str(existing_path)},
             "interpretation": "recovered_persisted",
             "admitted": None,
-            "trace": {"source_artifact": str(existing_i_path)},
+            "trace": {"source_artifact": str(existing_path)},
         }
-    }
+    return participants, histories, prefix_rows, recovered
 
 
 def main() -> int:
@@ -774,14 +777,14 @@ def main() -> int:
         if PARTIAL_SOURCE is not None and thread_index == PARTIAL_THREAD:
             if PARTIAL_TURN < 1 or PARTIAL_TURN >= THREAD_TURNS:
                 raise RuntimeError("partial continuation turn must identify a completed noninitial coordinate")
-            participants, histories, recovered_rows, recovered_i = _load_partial_thread_state(
+            participants, histories, recovered_rows, recovered_rows_by_branch = _load_partial_thread_state(
                 PARTIAL_SOURCE, thread, PARTIAL_TURN
             )
             transcripts.extend(recovered_rows)
-            partial_state = {"participants": participants, "I": recovered_i["I"]}
+            partial_state = {"participants": participants, "recovered": recovered_rows_by_branch}
             turn_start = PARTIAL_TURN
         for turn in range(turn_start, THREAD_TURNS):
-            if partial_state is not None and turn == PARTIAL_TURN:
+            if partial_state is not None and turn == PARTIAL_TURN and PARTIAL_SKIP_BRANCH:
                 participant = partial_state["participants"][turn]
             elif turn == 0:
                 participant = thread.opening
@@ -805,8 +808,8 @@ def main() -> int:
                 )
             branch_rows: dict[str, Any] = {}
             for slot, label in ((0, "I"), (1, "N")):
-                if partial_state is not None and turn == PARTIAL_TURN and label == "I":
-                    branch_rows[label] = partial_state["I"]
+                if partial_state is not None and turn == PARTIAL_TURN and label in partial_state["recovered"]:
+                    branch_rows[label] = partial_state["recovered"][label]
                     histories[label].append((participant, str(branch_rows[label]["response"])))
                     continue
                 seed = 200000 + thread_index * 100 + turn

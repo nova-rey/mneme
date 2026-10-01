@@ -1551,3 +1551,4 @@ and dispositions remain unchanged.
 * 2026-10-01: Preserved r14 after the execution wrapper stopped during Thread 87 with Thread 86 durable; added narrow artifact-backed partial-thread recovery so completed coordinates are never replayed, and kept the partial bundle immutable as a distinct historical attempt.
 * 2026-10-01: Added an explicit final-checkpoint hardlink mode for the validated compact continuation; Thread-100 readouts can reference the immutable post-development live stores without another simultaneous full SQLite backup.
 * 2026-10-01: Made partial recovery bind to an explicit archived source run root so the new prospective continuation cannot accidentally read its own newly published artifacts.
+* 2026-10-01: Extended artifact-backed partial continuation to resume either a single already-completed branch or a fully completed prefix of a stopped thread, preserving exact provider work without replay.
