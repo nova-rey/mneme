@@ -17,7 +17,6 @@ import sqlite3
 from pathlib import Path
 from typing import Any
 
-from mneme.experiments.artifacts import content_digest
 from mneme.state.snapshots import create_checkpoint
 from mneme.state.storage import SQLiteStore
 
@@ -271,7 +270,9 @@ def main() -> int:
     parser.add_argument("--completed-threads", type=int, default=24)
     args = parser.parse_args()
     print(
-        json.dumps(derive(args.source_root, args.destination_root, args.completed_threads), indent=2)
+        json.dumps(
+            derive(args.source_root, args.destination_root, args.completed_threads), indent=2
+        )
     )
     return 0
 
