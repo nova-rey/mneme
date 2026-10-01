@@ -217,8 +217,12 @@ def _call(
     coordinate: Mapping[str, Any],
     max_tokens: int,
 ) -> Any:
-    if role in {"interloper", "assessor", "assessor-qualification"}:
-        # Keep the fixed schedule intact while avoiding provider burst limits.
+    if role in {"interloper", "assessor-qualification"} or (
+        role == "assessor" and host.fingerprint().provider != "local-msi"
+    ):
+        # Keep hosted-provider calls below burst limits.  The pinned local NLI
+        # service is resident on the MSI, so it does not need an artificial
+        # delay between deterministic batch requests.
         time.sleep(5.0)
     reservation = pilot.reserve_call(
         call_id=call_id,
