@@ -62,7 +62,9 @@ def _derive_clean_copy(source: Path, destination: Path, cutoff: int) -> dict[str
     future_episodes = {
         str(row[0])
         for row in connection.execute(
-            "SELECT episode_id FROM episodes WHERE operation_id IN ({})".format(",".join("?" * len(future_operations))),
+            "SELECT episode_id FROM episodes WHERE operation_id IN ({})".format(
+                ",".join("?" * len(future_operations))
+            ),
             tuple(future_operations),
         )
     } if future_operations else set()
@@ -75,35 +77,45 @@ def _derive_clean_copy(source: Path, destination: Path, cutoff: int) -> dict[str
     future_candidates = {
         str(row[0])
         for row in connection.execute(
-            "SELECT candidate_id FROM candidates WHERE interpretation_id IN ({})".format(",".join("?" * len(future_interpretations))),
+            "SELECT candidate_id FROM candidates WHERE interpretation_id IN ({})".format(
+                ",".join("?" * len(future_interpretations))
+            ),
             tuple(future_interpretations),
         )
     } if future_interpretations else set()
     future_bindings = {
         str(row[0])
         for row in connection.execute(
-            "SELECT binding_id FROM semantic_bindings WHERE interpretation_id IN ({})".format(",".join("?" * len(future_interpretations))),
+            "SELECT binding_id FROM semantic_bindings WHERE interpretation_id IN ({})".format(
+                ",".join("?" * len(future_interpretations))
+            ),
             tuple(future_interpretations),
         )
     } if future_interpretations else set()
     future_sources = {
         str(row[0])
         for row in connection.execute(
-            "SELECT source_id FROM sources WHERE operation_id IN ({})".format(",".join("?" * len(future_operations))),
+            "SELECT source_id FROM sources WHERE operation_id IN ({})".format(
+                ",".join("?" * len(future_operations))
+            ),
             tuple(future_operations),
         )
     } if future_operations else set()
     future_generations = {
         str(row[0])
         for row in connection.execute(
-            "SELECT generation_id FROM generation_records WHERE operation_id IN ({})".format(",".join("?" * len(future_operations))),
+            "SELECT generation_id FROM generation_records WHERE operation_id IN ({})".format(
+                ",".join("?" * len(future_operations))
+            ),
             tuple(future_operations),
         )
     } if future_operations else set()
     future_updates = {
         str(row[0])
         for row in connection.execute(
-            "SELECT update_id FROM learner_updates WHERE operation_id IN ({})".format(",".join("?" * len(future_operations))),
+            "SELECT update_id FROM learner_updates WHERE operation_id IN ({})".format(
+                ",".join("?" * len(future_operations))
+            ),
             tuple(future_operations),
         )
     } if future_operations else set()
@@ -123,7 +135,10 @@ def _derive_clean_copy(source: Path, destination: Path, cutoff: int) -> dict[str
         "generation_id": future_generations,
         "update_id": future_updates,
     }
-    tables = [str(row[0]) for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table'")]
+    tables = [
+        str(row[0])
+        for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table'")
+    ]
     for table in tables:
         columns = [str(row[1]) for row in connection.execute(f'PRAGMA table_info("{table}")')]
         if "revision" in columns and table != "revisions":
@@ -186,7 +201,11 @@ def derive(source_root: Path, destination_root: Path, completed_threads: int) ->
         working = dest_subjects / f"{label}.sqlite3"
         records.append(_derive_clean_copy(source, working, cutoff))
         with SQLiteStore(working) as store:
-            create_checkpoint(store, dest_snapshots / f"{label}-{completed_threads}.sqlite3", checkpoint_id=f"p3-boundary-{label}-{completed_threads}")
+            create_checkpoint(
+                store,
+                dest_snapshots / f"{label}-{completed_threads}.sqlite3",
+                checkpoint_id=f"p3-boundary-{label}-{completed_threads}",
+            )
     source_ledger = source_root / "introspection" / "I.json"
     destination_ledger = destination_root / "introspection" / f"I-{completed_threads}.json"
     destination_ledger.parent.mkdir(parents=True, exist_ok=True)
@@ -219,7 +238,9 @@ def derive(source_root: Path, destination_root: Path, completed_threads: int) ->
         "introspection_reviews": completed_threads,
         "derived_from": str(source_root),
     }
-    (destination_root / "progress.json").write_text(json.dumps(progress, indent=2) + "\n", encoding="utf-8")
+    (destination_root / "progress.json").write_text(
+        json.dumps(progress, indent=2) + "\n", encoding="utf-8"
+    )
     receipt = {
         "status": "DERIVED_CLEAN_CONTINUATION_BOUNDARY",
         "source_run": str(source_root),
@@ -228,14 +249,18 @@ def derive(source_root: Path, destination_root: Path, completed_threads: int) ->
         "copied_transcript_count": copied_transcripts,
         "checkpoint_sha256": {
             label: hashlib.sha256(
-                Path(destination_root / "snapshots" / f"{label}-{completed_threads}.sqlite3").read_bytes()
+                Path(
+                    destination_root / "snapshots" / f"{label}-{completed_threads}.sqlite3"
+                ).read_bytes()
             ).hexdigest()
             for label in ("I", "N")
         },
         "partial_thread_state_excluded": True,
         "historical_source_unchanged": True,
     }
-    (destination_root / "BOUNDARY_DERIVATION.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
+    (destination_root / "BOUNDARY_DERIVATION.json").write_text(
+        json.dumps(receipt, indent=2) + "\n", encoding="utf-8"
+    )
     return receipt
 
 
@@ -245,7 +270,9 @@ def main() -> int:
     parser.add_argument("--destination-root", type=Path, required=True)
     parser.add_argument("--completed-threads", type=int, default=24)
     args = parser.parse_args()
-    print(json.dumps(derive(args.source_root, args.destination_root, args.completed_threads), indent=2))
+    print(
+        json.dumps(derive(args.source_root, args.destination_root, args.completed_threads), indent=2)
+    )
     return 0
 
 
