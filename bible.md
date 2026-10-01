@@ -1552,3 +1552,4 @@ and dispositions remain unchanged.
 * 2026-10-01: Added an explicit final-checkpoint hardlink mode for the validated compact continuation; Thread-100 readouts can reference the immutable post-development live stores without another simultaneous full SQLite backup.
 * 2026-10-01: Made partial recovery bind to an explicit archived source run root so the new prospective continuation cannot accidentally read its own newly published artifacts.
 * 2026-10-01: Extended artifact-backed partial continuation to resume either a single already-completed branch or a fully completed prefix of a stopped thread, preserving exact provider work without replay.
+# 2026-10-01: Phase Three continuation now supports post-development recovery for a thread whose provider, extraction, and learner rows persisted but whose introspection review failed; recovery reuses immutable artifacts and reruns only the review boundary.

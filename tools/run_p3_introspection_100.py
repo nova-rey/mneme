@@ -59,6 +59,8 @@ PARTIAL_RUN_ROOT = Path(os.environ["MNEME_P3_PARTIAL_RUN_ROOT"]) if os.environ.g
 PARTIAL_SKIP_BRANCH = os.environ.get("MNEME_P3_PARTIAL_SKIP_BRANCH")
 PARTIAL_THREAD = int(os.environ.get("MNEME_P3_PARTIAL_THREAD", "0"))
 PARTIAL_TURN = int(os.environ.get("MNEME_P3_PARTIAL_TURN", "0"))
+POST_DEV_RUN_ROOT = Path(os.environ["MNEME_P3_POST_DEV_RUN_ROOT"]) if os.environ.get("MNEME_P3_POST_DEV_RUN_ROOT") else None
+POST_DEV_THREAD = int(os.environ.get("MNEME_P3_POST_DEV_THREAD", "0"))
 TOPIC_BANK = Path("docs/experiments/p3_introspection_100_topic_bank_v1.json")
 R8_CHECKPOINT = Path(
     "docs/receipts/MNEME_P2_SAA_Ten_Thread_Run_r8_20260927/snapshots/SAA-developed.sqlite3"
@@ -624,6 +626,49 @@ def _load_partial_thread_state(
     return participants, histories, prefix_rows, recovered
 
 
+def _load_post_development_thread_state(
+    run_root: Path, thread: ThreadSpec
+) -> tuple[dict[str, list[tuple[str, str]]], list[dict[str, Any]], list[dict[str, Any]]]:
+    """Recover a fully generated thread whose review stage alone failed.
+
+    Provider, extraction, assessment, and learner rows are already persisted in
+    ``run_root``.  This path reconstructs only the in-memory transcript and the
+    bounded review inputs; it never re-dispatches a completed development
+    coordinate.
+    """
+
+    participants = [thread.opening]
+    for turn in range(1, THREAD_TURNS):
+        path = run_root / "pilot" / "reservations" / f"qwen-{thread.thread_id}-{turn}.json"
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        content = payload.get("result", {}).get("content")
+        if not isinstance(content, str) or not content.strip():
+            raise RuntimeError(f"post-development source has no participant for turn {turn}: {path}")
+        participants.append(content)
+    histories: dict[str, list[tuple[str, str]]] = {"I": [], "N": []}
+    transcripts: list[dict[str, Any]] = []
+    exposure_rows: list[dict[str, Any]] = []
+    for turn in range(THREAD_TURNS):
+        branch_rows: dict[str, Any] = {}
+        for label in ("I", "N"):
+            path = run_root / "development" / f"dev-{label}-{thread.thread_id}-{turn}.json"
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            response = payload.get("result", {}).get("content")
+            if not isinstance(response, str) or not response.strip():
+                raise RuntimeError(f"post-development source has no {label} response at turn {turn}: {path}")
+            histories[label].append((participants[turn], response))
+            branch_rows[label] = {
+                "response": response,
+                "seed": payload.get("request", {}).get("seed"),
+                "exposure": {"post_development_recovery": True, "source_artifact": str(path)},
+                "interpretation": "recovered_persisted",
+                "admitted": None,
+                "trace": {"source_artifact": str(path)},
+            }
+        transcripts.append({"thread": thread.thread_id, "turn": turn, "participant": participants[turn], **branch_rows})
+    return histories, transcripts, exposure_rows
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--execute", action="store_true")
@@ -645,6 +690,8 @@ def main() -> int:
         allowed_boundaries = (*CHECKPOINTS[1:], 24)
         if PARTIAL_SOURCE is not None:
             allowed_boundaries = (*allowed_boundaries, PARTIAL_THREAD - 1)
+        if POST_DEV_RUN_ROOT is not None and POST_DEV_THREAD > 0:
+            allowed_boundaries = (*allowed_boundaries, POST_DEV_THREAD - 1)
         if start_thread not in allowed_boundaries:
             raise RuntimeError("continuation must start at a published or explicitly derived intact boundary")
         if not continuation_root.is_dir():
@@ -774,7 +821,18 @@ def main() -> int:
         participant: str | None = None
         partial_state = None
         turn_start = 0
+        post_development_recovery = (
+            POST_DEV_RUN_ROOT is not None and thread_index == POST_DEV_THREAD
+        )
+        if post_development_recovery:
+            histories, recovered_transcripts, exposure_rows = _load_post_development_thread_state(
+                POST_DEV_RUN_ROOT, thread
+            )
+            transcripts.extend(recovered_transcripts)
+            turn_start = THREAD_TURNS
         if PARTIAL_SOURCE is not None and thread_index == PARTIAL_THREAD:
+            if post_development_recovery:
+                raise RuntimeError("partial and post-development recovery cannot target the same thread")
             if PARTIAL_TURN < 1 or PARTIAL_TURN >= THREAD_TURNS:
                 raise RuntimeError("partial continuation turn must identify a completed noninitial coordinate")
             participants, histories, recovered_rows, recovered_rows_by_branch = _load_partial_thread_state(
