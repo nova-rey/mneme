@@ -1,0 +1,81 @@
+{
+  "schema": "mneme.p3.introspection.pause.v1",
+  "run_id": "p3-introspect-100-20261001-r11",
+  "status": "PAUSED_AT_CHECKPOINT_75",
+  "created_at_utc": "2026-10-01T17:52:37.058073+00:00",
+  "owner_instruction": "pause after thread 75; do not dispatch threads 76-100",
+  "execution": {
+    "inherited_clean_boundary": 24,
+    "prospective_threads_completed": "25-75",
+    "threads_completed": 75,
+    "post_75_calls_dispatched": false,
+    "original_failure": "sqlite3.OperationalError: database or disk is full while creating I-75 checkpoint",
+    "recovery": "removed only the incomplete staging snapshot; archived verified duplicate boundary artifacts; created validated I-75 and N-75 checkpoints"
+  },
+  "models": {
+    "gemma": "local Gemma 4 E4B via resident llama.cpp on brokeass-msi",
+    "gliner": "fastino/gliner2.5-base-v1 resident local service",
+    "nli": "cross-encoder/nli-deberta-v3-xsmall resident local service",
+    "interloper": "Qwen/Qwen3-30B-A3B via DeepInfra"
+  },
+  "artifacts": {
+    "progress": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11/progress.json",
+    "transcript_75": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11/experiments/p3-introspect-100/revisions/1/runs/p3-introspect-100-20261001-r11/development/transcript-P3-075.json",
+    "introspection_review_75": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11/experiments/p3-introspect-100/revisions/1/runs/p3-introspect-100-20261001-r11/introspection/review-P3-075.json",
+    "checkpoint_I_75": {
+      "path": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11/snapshots/I-75.sqlite3",
+      "bytes": 1095016448,
+      "sha256": "d4a0a5d4a15914e3755dc8969a3374fd11a13a815fbb83c4b1bbc6182d0c280b"
+    },
+    "checkpoint_N_75": {
+      "path": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11/snapshots/N-75.sqlite3",
+      "bytes": 1230663680,
+      "sha256": "98da60d03240d5d06886f526a02a784805c1e89f3719a90541bfbcf7a417deb5"
+    },
+    "subject_I": {
+      "path": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11/subjects/I.sqlite3",
+      "bytes": 1095016448,
+      "sha256": "c60f981a0fc1f8748ba7621d04cb253c03d7de85b11123765d12ac2cc0f64a5a"
+    },
+    "subject_N": {
+      "path": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11/subjects/N.sqlite3",
+      "bytes": 1230663680,
+      "sha256": "d09b5a02715aabd326aa9d1de29f438a4119e8a6cee2595e17e888cdc4ff9f63"
+    }
+  },
+  "resume": {
+    "required_start_thread": 76,
+    "note": "resume must use the aggregate checkpoint-75 continuation manifest so inherited threads 1-24 and prospective transcripts 25-75 remain visible without repeating work"
+  },
+  "historical_preservation": {
+    "r10": "preserved as verified compressed archive and prior committed invalid receipt",
+    "r11_partial_snapshot": "removed only after the failed staging artifact was proven incomplete; no accepted record was removed"
+  },
+  "archives": {
+    "historical_r10": {
+      "path": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r10.tar.zst",
+      "sha256": "a75c49a1958183535e5033b246c8abadcaac12c95a7ba0a458173f7ff3773ff2"
+    },
+    "inherited_r9": {
+      "path": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20260927_r9.tar.zst",
+      "sha256": "157d15b6ff62645c941917fd3275b96bbde3b3ef011a114083de5a417fd6d124"
+    },
+    "boundary24": {
+      "path": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20260927_r9_boundary24.tar.zst",
+      "sha256": "6e07378476ebf598a405c92766b8b84eeaaae6f8ec676b0d6410aaa5a811e72a"
+    },
+    "pre75_checkpoints": {
+      "path": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11_pre75_snapshots.tar.zst",
+      "sha256": "bbd79359a3e9f0e192aed21671e30b5a31308724f24fb9c7112536130f174602"
+    },
+    "readable_transcripts75": {
+      "path": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11_readable_transcripts75.tar.zst",
+      "sha256": "017057ffe0920bee34a8f21365abce63bd181385d87ca78ed422f06529e3ad2b"
+    },
+    "reviews25_75": {
+      "path": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11_reviews25_75.tar.zst",
+      "sha256": "0783e32b976d1f3688409cda634fb000c6400db8f99451a6ede87d24ef252635"
+    }
+  },
+  "continuation_parent": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11_checkpoint75_parent"
+}
