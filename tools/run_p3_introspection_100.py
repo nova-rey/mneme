@@ -549,31 +549,42 @@ def main() -> int:
         parent_ledger = continuation_root / "introspection" / f"I-{start_thread}.json"
         if not parent_ledger.is_file():
             raise RuntimeError(f"continuation parent lacks introspection sidecar: {parent_ledger}")
-        ledgers = {
-            "I": IntrospectionLedger.load(parent_ledger),
-            "N": IntrospectionLedger(ROOT / "introspection" / "N.json", parent_digest=content_digest({"parent": str(R8_CHECKPOINT), "label": "N"})),
-        }
-        # Materialize the inherited sidecar inside the new prospective run so
-        # checkpoint-10 readouts bind to an immutable local artifact rather
-        # than reaching through the parent run at measurement time.
+        # Copy the inherited ledger before loading it so later reviews are
+        # written into the new prospective run rather than mutating the
+        # immutable continuation parent.
         inherited_sidecar = ROOT / "introspection" / f"I-{start_thread}.json"
         inherited_sidecar.parent.mkdir(parents=True, exist_ok=True)
         inherited_sidecar.write_text(parent_ledger.read_text(encoding="utf-8"), encoding="utf-8")
-        inherited_checkpoint_sidecar = continuation_root / "introspection" / "I-10.json"
-        if inherited_checkpoint_sidecar.is_file() and start_thread != 10:
-            (ROOT / "introspection" / "I-10.json").write_text(
-                inherited_checkpoint_sidecar.read_text(encoding="utf-8"),
-                encoding="utf-8",
-            )
+        ledgers = {
+            "I": IntrospectionLedger.load(inherited_sidecar),
+            "N": IntrospectionLedger(ROOT / "introspection" / "N.json", parent_digest=content_digest({"parent": str(R8_CHECKPOINT), "label": "N"})),
+        }
+        # Carry every already-published I/N checkpoint and I-sidecar needed by
+        # the frozen 0/10/25/50/75/100 readout contract.  A continuation may
+        # start after several checkpoints, so inheriting only the start point
+        # would make the final readout map incomplete.
+        inherited_checkpoints: dict[str, dict[str, str]] = {}
+        for checkpoint_number in CHECKPOINTS:
+            rows: dict[str, str] = {}
+            for label in ("I", "N"):
+                checkpoint = continuation_root / "snapshots" / f"{label}-{checkpoint_number}.sqlite3"
+                if checkpoint.is_file():
+                    rows[label] = str(checkpoint)
+            if rows:
+                if set(rows) != {"I", "N"}:
+                    raise RuntimeError(
+                        f"continuation parent has incomplete checkpoint {checkpoint_number}"
+                    )
+                inherited_checkpoints[str(checkpoint_number)] = rows
+            sidecar = continuation_root / "introspection" / f"I-{checkpoint_number}.json"
+            if sidecar.is_file():
+                (ROOT / "introspection" / sidecar.name).write_text(
+                    sidecar.read_text(encoding="utf-8"), encoding="utf-8"
+                )
         transcripts = _load_parent_transcripts(continuation_root, start_thread)
         progress = {
             "threads_completed": start_thread,
-            "checkpoints": {
-                str(start_thread): {
-                    "I": str(continuation_root / "snapshots" / f"I-{start_thread}.sqlite3"),
-                    "N": str(continuation_root / "snapshots" / f"N-{start_thread}.sqlite3"),
-                }
-            },
+            "checkpoints": inherited_checkpoints,
             "introspection_reviews": start_thread,
             "continuation_parent": str(continuation_root),
             "continuation_from_thread": start_thread,
