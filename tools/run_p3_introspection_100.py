@@ -54,6 +54,9 @@ from tools.run_p23_saa_ten_thread_live import _development_request, _record_meas
 
 ROOT = Path(os.environ.get("MNEME_P3_INTROSPECT_LAB", "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20260927"))
 RUN_ID = os.environ.get("MNEME_P3_INTROSPECT_RUN_ID", "p3-introspect-100-20260927-r1")
+PARTIAL_SOURCE = Path(os.environ["MNEME_P3_PARTIAL_SOURCE"]) if os.environ.get("MNEME_P3_PARTIAL_SOURCE") else None
+PARTIAL_THREAD = int(os.environ.get("MNEME_P3_PARTIAL_THREAD", "0"))
+PARTIAL_TURN = int(os.environ.get("MNEME_P3_PARTIAL_TURN", "0"))
 TOPIC_BANK = Path("docs/experiments/p3_introspection_100_topic_bank_v1.json")
 R8_CHECKPOINT = Path(
     "docs/receipts/MNEME_P2_SAA_Ten_Thread_Run_r8_20260927/snapshots/SAA-developed.sqlite3"
@@ -560,6 +563,63 @@ def _load_parent_transcripts(parent_root: Path, through_thread: int) -> list[dic
     return rows
 
 
+def _load_partial_thread_state(
+    source_root: Path, thread: ThreadSpec, through_turn: int
+) -> tuple[list[str], dict[str, list[tuple[str, str]]], list[dict[str, Any]], dict[str, Any]]:
+    """Recover a stopped thread without replaying completed provider calls.
+
+    This is deliberately narrow: it is only for an interrupted continuation
+    whose exact per-coordinate artifacts were persisted.  The source bundle
+    is archived before it is used, and the returned rows are audit context;
+    the SQLite stores remain the authority for accepted developmental state.
+    """
+
+    run_root = next(source_root.glob("experiments/**/runs/*"))
+    participants = [thread.opening]
+    for turn in range(1, through_turn + 1):
+        path = run_root / "pilot" / "reservations" / f"qwen-{thread.thread_id}-{turn}.json"
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        content = payload.get("result", {}).get("content")
+        if not isinstance(content, str) or not content.strip():
+            raise RuntimeError(f"partial source has no persisted participant for turn {turn}: {path}")
+        participants.append(content)
+    histories: dict[str, list[tuple[str, str]]] = {"I": [], "N": []}
+    prefix_rows: list[dict[str, Any]] = []
+    for turn in range(through_turn):
+        branch_rows: dict[str, Any] = {}
+        for label in ("I", "N"):
+            path = run_root / "development" / f"dev-{label}-{thread.thread_id}-{turn}.json"
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            content = payload.get("result", {}).get("content")
+            if not isinstance(content, str) or not content.strip():
+                raise RuntimeError(f"partial source has no persisted {label} response: {path}")
+            histories[label].append((participants[turn], content))
+            branch_rows[label] = {
+                "response": content,
+                "seed": payload.get("request", {}).get("seed"),
+                "exposure": {"partial_recovery": True, "source_artifact": str(path)},
+                "interpretation": "recovered_persisted",
+                "admitted": None,
+                "trace": {"source_artifact": str(path)},
+            }
+        prefix_rows.append({"thread": thread.thread_id, "turn": turn, "participant": participants[turn], **branch_rows})
+    existing_i_path = run_root / "development" / f"dev-I-{thread.thread_id}-{through_turn}.json"
+    existing_i = json.loads(existing_i_path.read_text(encoding="utf-8"))
+    existing_i_content = existing_i.get("result", {}).get("content")
+    if not isinstance(existing_i_content, str) or not existing_i_content.strip():
+        raise RuntimeError(f"partial source has no completed I response at turn {through_turn}: {existing_i_path}")
+    return participants, histories, prefix_rows, {
+        "I": {
+            "response": existing_i_content,
+            "seed": existing_i.get("request", {}).get("seed"),
+            "exposure": {"partial_recovery": True, "source_artifact": str(existing_i_path)},
+            "interpretation": "recovered_persisted",
+            "admitted": None,
+            "trace": {"source_artifact": str(existing_i_path)},
+        }
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--execute", action="store_true")
@@ -578,7 +638,10 @@ def main() -> int:
     continuation_root = args.continue_from_root
     start_thread = int(args.continue_from_thread)
     if continuation_root is not None:
-        if start_thread not in (*CHECKPOINTS[1:], 24):
+        allowed_boundaries = (*CHECKPOINTS[1:], 24)
+        if PARTIAL_SOURCE is not None:
+            allowed_boundaries = (*allowed_boundaries, PARTIAL_THREAD - 1)
+        if start_thread not in allowed_boundaries:
             raise RuntimeError("continuation must start at a published or explicitly derived intact boundary")
         if not continuation_root.is_dir():
             raise RuntimeError(f"continuation parent root is missing: {continuation_root}")
@@ -705,8 +768,21 @@ def main() -> int:
         histories = {"I": [], "N": []}
         exposure_rows = []
         participant: str | None = None
-        for turn in range(THREAD_TURNS):
-            if turn == 0:
+        partial_state = None
+        turn_start = 0
+        if PARTIAL_SOURCE is not None and thread_index == PARTIAL_THREAD:
+            if PARTIAL_TURN < 1 or PARTIAL_TURN >= THREAD_TURNS:
+                raise RuntimeError("partial continuation turn must identify a completed noninitial coordinate")
+            participants, histories, recovered_rows, recovered_i = _load_partial_thread_state(
+                PARTIAL_SOURCE, thread, PARTIAL_TURN
+            )
+            transcripts.extend(recovered_rows)
+            partial_state = {"participants": participants, "I": recovered_i["I"]}
+            turn_start = PARTIAL_TURN
+        for turn in range(turn_start, THREAD_TURNS):
+            if partial_state is not None and turn == PARTIAL_TURN:
+                participant = partial_state["participants"][turn]
+            elif turn == 0:
                 participant = thread.opening
             else:
                 participant = require_nonempty_message(
@@ -728,6 +804,10 @@ def main() -> int:
                 )
             branch_rows: dict[str, Any] = {}
             for slot, label in ((0, "I"), (1, "N")):
+                if partial_state is not None and turn == PARTIAL_TURN and label == "I":
+                    branch_rows[label] = partial_state["I"]
+                    histories[label].append((participant, str(branch_rows[label]["response"])))
+                    continue
                 seed = 200000 + thread_index * 100 + turn
                 field_seed = FIELD_SEEDS[(thread_index + turn) % len(FIELD_SEEDS)] + thread_index
                 prepared, exposure = _development_request(
