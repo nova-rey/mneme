@@ -189,6 +189,30 @@ def _review_json(content: str) -> str:
     return text
 
 
+def _is_explicit_no_change(value: Any) -> bool:
+    """Recognize a bounded no-op without trusting an invalid target alias."""
+
+    if not isinstance(value, Mapping):
+        return False
+    assessments = value.get("assessments", value.get("proposals", []))
+    if not isinstance(assessments, list):
+        return False
+    for item in assessments:
+        if not isinstance(item, Mapping):
+            return False
+        if float(item.get("association_effect", 0.0)) != 0.0:
+            return False
+        if float(item.get("expression_effect", 0.0)) != 0.0:
+            return False
+        if float(item.get("confidence", 0.0)) != 0.0:
+            return False
+        if str(item.get("basis", "INSUFFICIENT")) != "INSUFFICIENT":
+            return False
+        if item.get("evidence_refs", []) not in ([], None):
+            return False
+    return True
+
+
 def _packet(thread_id: str, history: list[tuple[str, str]], exposures: list[dict[str, Any]]) -> ArcPacket:
     targets: list[ReviewTarget] = []
     refs: list[dict[str, Any]] = []
@@ -301,6 +325,9 @@ def _review(
     result = _call(pilot, host, request, call_id=call_id, role="introspection", coordinate=coordinate, max_tokens=512)
     raw = _review_json(result.content)
     try:
+        decoded = json.loads(raw)
+        if _is_explicit_no_change(decoded):
+            return (), {"status": "ABSTAINED_NO_CHANGE", "raw": result.content, "parsed": []}
         proposals = parse_proposals(raw, packet, valid_evidence_refs={str(item.get("turn_ref")) for item in packet.exposures})
         return proposals, {"status": "COMPLETE", "raw": result.content, "parsed": [item.to_dict() for item in proposals]}
     except Exception as first_error:
@@ -316,6 +343,9 @@ def _review(
         )
         repaired = _call(pilot, host, repair_request, call_id=f"{call_id}-repair", role="introspection", coordinate=coordinate, max_tokens=512)
         try:
+            repaired_decoded = json.loads(_review_json(repaired.content))
+            if _is_explicit_no_change(repaired_decoded):
+                return (), {"status": "ABSTAINED_NO_CHANGE", "raw": result.content, "repair": repaired.content, "parsed": []}
             proposals = parse_proposals(_review_json(repaired.content), packet, valid_evidence_refs={str(item.get("turn_ref")) for item in packet.exposures})
         except Exception as second_error:
             return (), {
