@@ -1,0 +1,126 @@
+{
+  "version": "p3-storage-audit-v1",
+  "date": "2026-10-01",
+  "historical_threads_1_75_unchanged": true,
+  "measured": {
+    "I": {
+      "exact_archive": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11_I75.sqlite3.zst",
+      "compressed_bytes": 138527883,
+      "sqlite_bytes": 1095016448,
+      "page_count": 267338,
+      "page_size": 4096,
+      "freelist_count": 0,
+      "graph_snapshot_count": 462,
+      "graph_concepts_rows": 293867,
+      "graph_concepts_unique": 1240,
+      "graph_edges_rows": 275179,
+      "graph_edges_unique": 1263,
+      "graph_routes_rows": 3678,
+      "graph_routes_unique": 8,
+      "learner_updates_rows": 364355,
+      "learner_values_rows": 422921,
+      "learner_snapshots_rows": 634,
+      "dominant_table_bytes": {
+        "learner_updates": 498712576,
+        "learner_snapshots": 179666944,
+        "learner_values": 156057600,
+        "graph_edges": 59478016,
+        "graph_concepts": 34471936
+      }
+    },
+    "N": {
+      "exact_archive": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11_N75.sqlite3.zst",
+      "compressed_bytes": 158680019,
+      "sqlite_bytes": 1230663680,
+      "page_count": 300455,
+      "page_size": 4096,
+      "freelist_count": 0,
+      "graph_snapshot_count": 479,
+      "graph_concepts_rows": 323145,
+      "graph_concepts_unique": null,
+      "graph_edges_rows": 315038,
+      "graph_edges_unique": null,
+      "graph_routes_rows": 3814,
+      "graph_routes_unique": null,
+      "learner_updates_rows": 409919,
+      "learner_values_rows": 474272,
+      "learner_snapshots_rows": 641,
+      "dominant_table_bytes": {
+        "learner_updates": 561078272,
+        "learner_snapshots": 203358208,
+        "learner_values": 175058944,
+        "graph_edges": 68087808,
+        "graph_concepts": 37998592
+      }
+    }
+  },
+  "graph_duplication": {
+    "I_concept_rows_per_unique": 236.98951612903227,
+    "I_edge_rows_per_unique": 217.87727632620744,
+    "I_snapshot_count": 462,
+    "conclusion": "graph materialization duplicates approximately 236.99 concept rows and 217.88 edge rows per unique key across revisions, but graph tables are about 100 MB, not the dominant gigabytes"
+  },
+  "dominant_conclusion": "learner_updates, learner_values, and learner_snapshots account for approximately 835 MiB of I and 912 MiB of N; learner history JSON state is repeated per accepted operation. Full SQLite checkpoints then duplicate the whole store.",
+  "checkpoint_files": [
+    {
+      "name": "N-75.sqlite3",
+      "bytes": 183562240,
+      "links": 2
+    },
+    {
+      "name": "I-25.sqlite3",
+      "bytes": 196771840,
+      "links": 1
+    },
+    {
+      "name": "N-25.sqlite3",
+      "bytes": 219578368,
+      "links": 1
+    },
+    {
+      "name": "I-10.sqlite3",
+      "bytes": 60444672,
+      "links": 1
+    },
+    {
+      "name": "I-50.sqlite3",
+      "bytes": 534921216,
+      "links": 1
+    },
+    {
+      "name": "N-10.sqlite3",
+      "bytes": 63991808,
+      "links": 1
+    },
+    {
+      "name": "I-75.sqlite3",
+      "bytes": 165036032,
+      "links": 2
+    },
+    {
+      "name": "N-50.sqlite3",
+      "bytes": 613769216,
+      "links": 1
+    }
+  ],
+  "compact_copies": {
+    "I": {
+      "bytes": 165036032,
+      "learner_updates": 1804,
+      "learner_values": 1804,
+      "learner_snapshots": 3,
+      "verify": [],
+      "learner_digest": "bdd66678e2d4aa3445d067c6c926c40822f65a32c3204a36987656a7d90ba4ea"
+    },
+    "N": {
+      "bytes": 183562240,
+      "learner_updates": 1990,
+      "learner_values": 1990,
+      "learner_snapshots": 3,
+      "verify": [],
+      "learner_digest": "verified_equal_to_source"
+    }
+  },
+  "strategy": "retain exact compressed learner-history archives; run remaining development on compact working copies containing latest materialized learner value/update per edge/context and latest learner snapshot; keep graph/provenance/source tables unchanged; run scratch and checkpoint 100 on /dev/shm; publish only one final compressed checkpoint per lineage.",
+  "expected_remaining_storage": "Approximately 0.35 GiB compact starting I/N plus bounded growth for 200 turns; /dev/shm 2 GiB leaves room for one final checkpoint pair and read-only views; no intermediate checkpoints after 75."
+}
