@@ -29,5 +29,17 @@
     "introspection/I-25.json",
     "introspection/I-50.json",
     "introspection/I-75.json"
-  ]
+  ],
+  "storage_correction": {
+    "version": "p3-storage-compact-v1",
+    "thread_75_sources": {
+      "I": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_I75_compact.sqlite3",
+      "N": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_N75_compact.sqlite3"
+    },
+    "learner_history_archives": {
+      "I": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_I75_learner_history.jsonl.zst",
+      "N": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_N75_learner_history.jsonl.zst"
+    },
+    "notes": "Compact copy retains latest materialized learner value/update per edge/context and latest learner snapshot; full historical learner rows are exact compressed archives. Graph/provenance/development tables remain identical."
+  }
 }

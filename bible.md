@@ -1553,3 +1553,4 @@ and dispositions remain unchanged.
 * 2026-10-01: Made partial recovery bind to an explicit archived source run root so the new prospective continuation cannot accidentally read its own newly published artifacts.
 * 2026-10-01: Extended artifact-backed partial continuation to resume either a single already-completed branch or a fully completed prefix of a stopped thread, preserving exact provider work without replay.
 # 2026-10-01: Phase Three continuation now supports post-development recovery for a thread whose provider, extraction, and learner rows persisted but whose introspection review failed; recovery reuses immutable artifacts and reruns only the review boundary.
+# 2026-10-01: Completed the valid P3 introspection-100 continuation after storage-safe recovery; published direct GitHub-readable transcripts, SAA traces, checkpoint summaries, readouts, removal/restoration evidence, and the final evidence index.
