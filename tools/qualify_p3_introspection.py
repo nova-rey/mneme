@@ -381,9 +381,24 @@ def qualify(destination: Path, transcripts: Path, *, live_review: bool = False) 
     archived_live_count = sum(
         item.get("source_kind") == "archived_r8" for item in live_review_rows
     )
+    valid_live_rows = [
+        item for item in live_review_rows
+        if not item.get("parse_error") and not item.get("repair_error")
+    ]
+    synthetic_positive = any(
+        item.get("source_kind") == "synthetic"
+        and int(item.get("proposal_count", 0)) > 0
+        for item in live_review_rows
+    )
+    live_qualified = bool(
+        live_review
+        and archived_live_count == len(packets)
+        and len(valid_live_rows) == len(live_review_rows)
+        and synthetic_positive
+    )
     report = {
-        "status": "QUALIFIED",
-        "version": "p3-introspection-v1",
+        "status": "QUALIFIED" if live_qualified else ("NOT_RUN" if not live_review else "FAILED"),
+        "version": "p3-introspection-v2",
         "historical_source": str(transcripts),
         "archived_r8_arc_count": len(packets),
         "archived_r8_packet_rows": packet_rows,
@@ -404,10 +419,12 @@ def qualify(destination: Path, transcripts: Path, *, live_review: bool = False) 
             "requested": live_review,
             "status": (
                 "QUALIFIED"
-                if live_review and archived_live_count == len(packets)
+                if live_qualified
                 else ("NOT_RUN" if not live_review else "FAILED")
             ),
-            "malformed_reviews_abstain": True,
+            "malformed_reviews_abstain": False,
+            "valid_inference_rows": len(valid_live_rows),
+            "synthetic_positive_fixture_passed": synthetic_positive,
             "inference_calls": len(live_review_rows),
             "archived_inference_calls": sum(
                 item.get("source_kind") == "archived_r8" for item in live_review_rows

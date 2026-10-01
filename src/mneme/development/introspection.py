@@ -191,8 +191,13 @@ def review_system_prompt() -> str:
         "An unusual connection is not inherently a mistake. Separate usefulness or interest "
         "from whether repeating or expressing it was unwelcome. Cite supplied evidence for "
         "external reaction. You may form a self-only opinion when no external reaction exists, "
-        "but label it as such. Do not invent feedback or claim hidden reasoning. Return bounded "
-        "proposals only for supplied target aliases. No change is an allowed result."
+        "but label it as such. Do not invent feedback or claim hidden reasoning. Return exactly "
+        "one JSON object and no markdown or commentary, with this shape: "
+        '{"assessments":[{"target_alias":"supplied-alias","association_effect":0.0,'
+        '"expression_effect":0.0,"confidence":0.0,"basis":"INSUFFICIENT",'
+        '"evidence_refs":[],"reason":""}]}. '
+        "Use only supplied target aliases and evidence references. An empty assessments list "
+        "is valid when no bounded change is justified. No change is an allowed result."
     )
 
 

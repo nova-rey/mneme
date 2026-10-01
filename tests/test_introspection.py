@@ -22,6 +22,7 @@ from mneme.hosts import FakeHost
 from mneme.memory.graph import GraphConcept, GraphEdge
 from mneme.state.contracts import StoragePermissions
 from mneme.state.storage import SQLiteStore
+from tools.run_p3_introspection_100 import _arc_slices
 
 
 def _packet() -> ArcPacket:
@@ -139,3 +140,28 @@ def test_expression_adjustment_is_applied_after_accessibility_selection() -> Non
     assert reduced.accessibility_distribution == baseline.accessibility_distribution
     assert reduced.total_pressure < baseline.total_pressure
     assert dict(reduced.expression_adjustments) == {"e1": -500_000}
+
+
+def test_arc_slices_keep_continuous_subject_together() -> None:
+    history = [
+        ("My plants are drying.", "How often do you water?"),
+        ("The pots are in strong sun.", "A reservoir could help."),
+        ("I can check them on Sunday.", "That gives you a maintenance window."),
+        ("The soil is still warm.", "Shade may reduce stress."),
+    ]
+    assert [item[1:3] for item in _arc_slices("P3-001", history, [])] == [(0, 4)]
+
+
+def test_arc_slices_close_on_explicit_topic_pivot() -> None:
+    history = [
+        ("My plants are drying.", "How often do you water?"),
+        ("The pots are in strong sun.", "A reservoir could help."),
+        ("Anyway, I need to pack for a road trip.", "How long is the trip?"),
+        ("I have one bag.", "Choose the essentials first."),
+    ]
+    assert [item[1:3] for item in _arc_slices("P3-002", history, [])] == [(0, 2), (2, 4)]
+
+
+def test_arc_slices_are_replay_deterministic() -> None:
+    history = [("A topic continues.", "A response."), ("More detail.", "Another response.")]
+    assert _arc_slices("P3-003", history, []) == _arc_slices("P3-003", history, [])

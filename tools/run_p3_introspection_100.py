@@ -59,6 +59,7 @@ R8_CHECKPOINT = Path(
     "docs/receipts/MNEME_P2_SAA_Ten_Thread_Run_r8_20260927/snapshots/SAA-developed.sqlite3"
 )
 THREAD_TURNS = 8
+MAX_ARCS_PER_THREAD = 4
 CHECKPOINTS = (0, 10, 25, 50, 75, 100)
 PROBE_SEEDS = (61001, 61002, 61003)
 FIELD_SEEDS = (71001, 71004, 71007, 71010, 71013, 71016, 71019, 71022)
@@ -84,7 +85,7 @@ HARD_MAX_CALLS = (
     3  # qualification
     + THREAD_COUNT * THREAD_TURNS * 2 * 3  # I/N development, extraction, assessment
     + THREAD_COUNT * (THREAD_TURNS - 1)  # shared Interloper continuations
-    + THREAD_COUNT * 2  # introspection review plus one repair
+    + THREAD_COUNT * MAX_ARCS_PER_THREAD * 2  # one review plus one repair per bounded arc
     + len(CHECKPOINTS) * len(PROBES) * len(PROBE_SEEDS) * 3  # I/N/V readouts
     + 3 * len(PROBES) * len(PROBE_SEEDS) * 3  # I ON/OFF/RESTORED
 )
@@ -210,6 +211,63 @@ def _packet(thread_id: str, history: list[tuple[str, str]], exposures: list[dict
     return ArcPacket(thread_id, messages, tuple(refs), tuple(targets), missing_aftermath=True)
 
 
+_PIVOT_MARKERS = re.compile(
+    r"\b(?:anyway|separately|on another note|different question|changing subjects|"
+    r"switching gears|unrelatedly|now,? about)\b",
+    re.IGNORECASE,
+)
+_TOPIC_STOPWORDS = frozenset(
+    "a an the and or but if then this that it its to of in on for with is are was were "
+    "be been being i you we they he she me my your our their do does did can could "
+    "would should have has had about from as at by into how what why when where".split()
+)
+
+
+def _topic_tokens(text: str) -> set[str]:
+    return {
+        token
+        for token in re.findall(r"[a-z][a-z0-9'-]{2,}", text.lower())
+        if token not in _TOPIC_STOPWORDS
+    }
+
+
+def _arc_slices(
+    thread_id: str,
+    history: list[tuple[str, str]],
+    exposures: list[dict[str, Any]],
+) -> list[tuple[str, int, int, str]]:
+    """Return conservative, deterministic arc slices for a completed thread.
+
+    A marker or a strong content-word pivot closes an arc only after at least
+    two turns.  The pivot turn belongs to the new arc.  The bounded four-arc
+    cap keeps review reservations finite while retaining the full transcript.
+    """
+
+    if not history:
+        return []
+    cuts: list[tuple[int, str]] = []
+    start = 0
+    for index in range(1, len(history)):
+        if index - start < 2 or len(cuts) >= MAX_ARCS_PER_THREAD - 1:
+            continue
+        participant, _response = history[index]
+        marked = bool(_PIVOT_MARKERS.search(participant))
+        # A lexical divergence alone is not enough: a semantic episode can
+        # legitimately introduce new vocabulary while continuing its subject.
+        # Explicit discourse pivots are the conservative deterministic signal;
+        # the overlap diagnostic is retained in the audit-friendly helper for
+        # future reviewer qualification without fragmenting ordinary arcs.
+        if marked:
+            cuts.append((index, "topic_marker"))
+            start = index
+    boundaries = [0] + [cut for cut, _ in cuts] + [len(history)]
+    reasons = [reason for _, reason in cuts] + ["thread_boundary"]
+    result: list[tuple[str, int, int, str]] = []
+    for ordinal, (left, right) in enumerate(zip(boundaries, boundaries[1:])):
+        result.append((f"{thread_id.lower()}-arc-{ordinal:02d}", left, right, reasons[ordinal]))
+    return result
+
+
 def _review(
     pilot: PilotRun,
     host: Any,
@@ -217,6 +275,8 @@ def _review(
     *,
     call_id: str,
     coordinate: Mapping[str, Any],
+    reflection_seed: int,
+    formatting_seed: int,
 ) -> tuple[tuple[Any, ...], dict[str, Any]]:
     request = GenerationRequest(
         messages=(
@@ -224,6 +284,7 @@ def _review(
         ),
         system=review_system_prompt(),
         parameters={"temperature": 0.1, "top_p": 0.9, "max_new_tokens": 512},
+        seed=reflection_seed,
     )
     result = _call(pilot, host, request, call_id=call_id, role="introspection", coordinate=coordinate, max_tokens=512)
     raw = _review_json(result.content)
@@ -239,17 +300,14 @@ def _review(
                 "Do not invent an assessment."
             ),
             parameters={"temperature": 0.0, "top_p": 0.9, "max_new_tokens": 512},
+            seed=formatting_seed,
         )
         repaired = _call(pilot, host, repair_request, call_id=f"{call_id}-repair", role="introspection", coordinate=coordinate, max_tokens=512)
         try:
             proposals = parse_proposals(_review_json(repaired.content), packet, valid_evidence_refs={str(item.get("turn_ref")) for item in packet.exposures})
         except Exception as second_error:
-            # A reviewer that cannot produce the bounded schema contributes
-            # no adjustment.  Preserve both outputs for audit and continue
-            # the arc with an explicit abstention rather than inventing a
-            # developmental update or invalidating unrelated conversation.
             return (), {
-                "status": "ABSTAINED_MALFORMED",
+                "status": "INVALID_MALFORMED",
                 "raw": result.content,
                 "repair": repaired.content,
                 "error": f"{first_error}; {second_error}",
@@ -373,7 +431,7 @@ def _make_pilot(
         3
         + remaining * THREAD_TURNS * 2 * 3
         + remaining * (THREAD_TURNS - 1)
-        + remaining * 2
+        + remaining * MAX_ARCS_PER_THREAD * 2
         + len(CHECKPOINTS) * len(PROBES) * len(PROBE_SEEDS) * 3
         + 3 * len(PROBES) * len(PROBE_SEEDS) * 3
     )
@@ -387,10 +445,11 @@ def _make_pilot(
         "continuation_start_thread": start_thread,
         "threads": THREAD_COUNT,
         "exchanges_per_thread": THREAD_TURNS,
+        "max_arcs_per_thread": MAX_ARCS_PER_THREAD,
         "checkpoints": list(CHECKPOINTS),
         "probe_count": len(PROBES),
         "probe_seeds": list(PROBE_SEEDS),
-        "introspection_version": "p3-introspection-v1",
+        "introspection_version": "p3-introspection-v2",
         "call_budget": {
             "hard_max": hard_max,
             "reservation_margin": RESERVATION_MARGIN,
@@ -428,7 +487,7 @@ def _make_pilot(
         max_output_tokens=2_000_000,
         qualification_calls=3,
         pilot_calls=planned - 3,
-        metadata={"experiment": "p3-introspect-100", "version": "p3-introspection-v1"},
+        metadata={"experiment": "p3-introspect-100", "version": "p3-introspection-v2"},
         role_bindings={
             "developing": host_role_binding("developing", gemma),
             "development-response": host_role_binding("development-response", gemma),
@@ -487,8 +546,12 @@ def main() -> int:
         raise RuntimeError("--continue-from-thread requires --continue-from-root")
     if not R8_CHECKPOINT.is_file():
         raise RuntimeError(f"missing immutable R8 checkpoint: {R8_CHECKPOINT}")
-    qualification_path = Path("docs/receipts/MNEME_P3_Introspection_Qualification_20260927/qualification.json")
-    if not qualification_path.is_file():
+    qualification_candidates = (
+        Path("docs/receipts/MNEME_P3_Introspection_Qualification_20261001/qualification.json"),
+        Path("docs/receipts/MNEME_P3_Introspection_Qualification_20260927/qualification.json"),
+    )
+    qualification_path = next((path for path in qualification_candidates if path.is_file()), None)
+    if qualification_path is None:
         raise RuntimeError("missing introspection qualification receipt")
     qualification = json.loads(qualification_path.read_text(encoding="utf-8"))
     if qualification.get("status") != "QUALIFIED" or qualification.get("live_review_inference", {}).get("status") != "QUALIFIED":
@@ -687,14 +750,57 @@ def main() -> int:
                     for contribution in field.get("contributions", []):
                         exposure_rows.append({"turn_ref": f"{thread.thread_id}:turn:{turn}", "edge_key": contribution.get("edge_key"), "context": contribution.get("relationship", "general"), "payload": field.get("payload", "")})
             transcripts.append({"thread": thread.thread_id, "turn": turn, "participant": participant, "I": branch_rows["I"], "N": branch_rows["N"]})
-        packet = _packet(thread.thread_id, histories["I"], exposure_rows)
-        proposals, review = _review(pilot, gemma, packet, call_id=f"introspect-{thread.thread_id}", coordinate={"thread": thread.thread_id, "boundary": "closed"})
-        accepted = accept_proposals(packet, proposals, existing_dedup=ledgers["I"].dedup_keys)
-        ledgers["I"].record_review(packet, proposals, accepted=accepted, status=review["status"])
-        ledgers["I"].save()
-        pilot.publish_artifact("introspection", f"review-{thread.thread_id}.json", {"packet": packet.to_dict(), "review": review, "accepted": [item.to_dict() for item in accepted]})
+        arc_records: list[dict[str, Any]] = []
+        for arc_ordinal, (arc_id, left, right, close_reason) in enumerate(
+            _arc_slices(thread.thread_id, histories["I"], exposure_rows)
+        ):
+            arc_history = histories["I"][left:right]
+            arc_exposures = [
+                item
+                for item in exposure_rows
+                if left <= int(str(item.get("turn_ref", "").rsplit(":", 1)[-1])) < right
+            ]
+            packet = _packet(arc_id, arc_history, arc_exposures)
+            reflection_seed = 810000 + thread_index * 100 + arc_ordinal * 2
+            formatting_seed = reflection_seed + 1
+            proposals, review = _review(
+                pilot,
+                gemma,
+                packet,
+                call_id=f"introspect-{arc_id}",
+                coordinate={"thread": thread.thread_id, "arc": arc_id, "boundary": close_reason},
+                reflection_seed=reflection_seed,
+                formatting_seed=formatting_seed,
+            )
+            accepted = accept_proposals(packet, proposals, existing_dedup=ledgers["I"].dedup_keys)
+            ledgers["I"].record_review(packet, proposals, accepted=accepted, status=review["status"])
+            ledgers["I"].save()
+            pilot.publish_artifact(
+                "introspection",
+                f"review-{arc_id}.json",
+                {
+                    "packet": packet.to_dict(),
+                    "review": review,
+                    "accepted": [item.to_dict() for item in accepted],
+                    "reflection_seed": reflection_seed,
+                    "formatting_seed": formatting_seed,
+                    "close_reason": close_reason,
+                },
+            )
+            arc_records.append(
+                {
+                    "arc_id": arc_id,
+                    "start_turn": left,
+                    "end_turn": right - 1,
+                    "close_reason": close_reason,
+                    "review_status": review["status"],
+                    "accepted": len(accepted),
+                }
+            )
+            if review["status"] == "INVALID_MALFORMED":
+                raise RuntimeError(f"introspection reviewer produced malformed output for {arc_id}")
         progress["threads_completed"] = thread_index
-        progress["introspection_reviews"] += 1
+        progress["introspection_reviews"] += len(arc_records)
         if thread_index in CHECKPOINTS[1:]:
             for label in ("I", "N"):
                 checkpoint = ROOT / "snapshots" / f"{label}-{thread_index}.sqlite3"
@@ -710,7 +816,7 @@ def main() -> int:
         pilot.publish_artifact(
             "development",
             f"transcript-{thread.thread_id}.json",
-            {"rows": transcripts[-THREAD_TURNS:]},
+            {"rows": transcripts[-THREAD_TURNS:], "arcs": arc_records},
         )
 
     # Frozen checkpoint readouts: the two developing lineages plus a vanilla
