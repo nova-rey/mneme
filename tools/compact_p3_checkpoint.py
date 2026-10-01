@@ -14,13 +14,11 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import os
 import shutil
 import sqlite3
 import subprocess
 from pathlib import Path
 from typing import Any
-
 
 LEARNER_TABLES = ("learner_updates", "learner_values", "learner_snapshots")
 

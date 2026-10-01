@@ -24,6 +24,7 @@ from mneme.hosts import FakeHost
 from mneme.memory.graph import GraphConcept, GraphEdge
 from mneme.state.contracts import StoragePermissions
 from mneme.state.storage import SQLiteStore
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from tools.run_p3_introspection_100 import _arc_slices
 
