@@ -2783,10 +2783,12 @@
       "edit_boundaries": [
         "report matrices receipts and canonical integration"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "docs/experiments/three_pressure_v2/report.md"
+      ],
       "id": "METER2-INTEGRATE",
       "notes": "",
-      "owner": "root",
+      "owner": null,
       "priority": 10,
       "project": "nova-rey/mneme",
       "required": true,
@@ -2795,17 +2797,21 @@
       ],
       "resource_requirements": [],
       "scope": "Transcript fidelity review, score analysis, regression and serialized integration",
-      "session_ids": [
-        "three-pressure-v2"
-      ],
-      "status": "VALIDATING",
+      "session_ids": [],
+      "status": "DONE",
       "title": "Transcript fidelity review, score analysis, regression and serialized integration",
-      "updated_at": "2026-10-02T19:32:41.035978Z",
+      "updated_at": "2026-10-02T19:35:56.354829Z",
       "validation": {
         "required": [
           "evidence"
         ],
-        "results": {}
+        "results": {
+          "evidence": {
+            "receipt": "docs/experiments/three_pressure_v2/publication_validation.json",
+            "recorded_at": "2026-10-02T19:35:56.259374Z",
+            "status": "PASS"
+          }
+        }
       },
       "waiting_on": [],
       "workstream": "three-pressure-v2"
@@ -2823,5 +2829,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-10-02T19:32:41.036114Z"
+  "updated_at": "2026-10-02T19:35:56.354973Z"
 }

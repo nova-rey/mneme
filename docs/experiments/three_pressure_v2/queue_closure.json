@@ -1,0 +1,46 @@
+{
+  "global_census": {
+    "campaign_complete": false,
+    "can_idle": true,
+    "counts": {
+      "DONE": 27,
+      "READY": 0,
+      "RUNNING": 0,
+      "VALIDATING": 0,
+      "WAITING": 2
+    },
+    "hard_blocked": true,
+    "unfinished_required": [
+      "P3-INTROSPECT-RUN",
+      "P3-RELEASE"
+    ],
+    "waiting_dependencies": {
+      "P3-INTROSPECT-RUN": [
+        "superseded-by:P3-D100-INTROSPECTION-10"
+      ],
+      "P3-RELEASE": [
+        "package:P3-INTROSPECT-RUN"
+      ]
+    }
+  },
+  "meters_packages": [
+    {
+      "id": "METER2-MAP",
+      "status": "DONE"
+    },
+    {
+      "id": "METER2-METERS",
+      "status": "DONE"
+    },
+    {
+      "id": "METER2-EVIDENCE",
+      "status": "DONE"
+    },
+    {
+      "id": "METER2-INTEGRATE",
+      "status": "DONE"
+    }
+  ],
+  "meters_scope_complete": true,
+  "note": "Two superseded historical P3 packages remain WAITING outside this authorized meters task. No historical campaign resumed."
+}

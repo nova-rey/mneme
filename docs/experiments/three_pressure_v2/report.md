@@ -290,3 +290,9 @@ isolation. Final remote CI is checked on the integrated commit at publication.
 
 This task stops at measurement and evidence. No historical campaign, developmental
 retuning, exploration modulation or Phase Four work is started.
+
+Implementation commit `6f13785a957b429e02e888c284761fd2ad33edd1` passed
+[GitHub CI run 37054892755](https://github.com/nova-rey/mneme/actions/runs/37054892755).
+The [publication receipt](publication_validation.json) records that exact tested
+revision. The subsequent closure commit only records validation and queue closure;
+its final CI and local/remote ref agreement are verified at handoff.
