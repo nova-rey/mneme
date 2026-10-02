@@ -219,3 +219,13 @@ so it is not independent domain generalization. Single-digit outputs do not
 explain why the model chose them; the study cannot separate task misunderstanding
 from a label preference. These limits narrow the conclusion, but do not justify
 advancing a prompt that misses the intended clear cases.
+
+## Integration closure
+
+Integrated onto current main after the local determinism operations note.
+Canonical validation again passed all 744 tests, Ruff and strict package/tool
+mypy. [Implementation CI](https://github.com/nova-rey/mneme/actions/runs/37072270172)
+passed for `18fb2d487cb94ce505cd484d2a0b09362529cdc9`.
+The [closure receipt](closure_receipt.json) records preservation of the CompactStore
+ancestor and all 8,552 pre-existing untracked paths. The documentation-only closure
+commit receives its own final CI verification, reported with the final commit.
