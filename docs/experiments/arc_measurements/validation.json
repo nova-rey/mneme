@@ -1,0 +1,78 @@
+{
+  "base_sha": "99075e4d40e1df40d82b70422c89192cfbdacd63",
+  "live_evidence": {
+    "accepted_turns": 40,
+    "active_learner_value_digests_excluding_fork_metadata": {
+      "network-F": "5f15e02094c44e14bfe234afc179b092885fb74d5289582b234c6e55b9b9092c",
+      "network-S": "5f15e02094c44e14bfe234afc179b092885fb74d5289582b234c6e55b9b9092c",
+      "watering-F": "5f15e02094c44e14bfe234afc179b092885fb74d5289582b234c6e55b9b9092c",
+      "watering-S": "5f15e02094c44e14bfe234afc179b092885fb74d5289582b234c6e55b9b9092c"
+    },
+    "all_calls_returned": true,
+    "calls": {
+      "extraction": 40,
+      "gemma": 40,
+      "quinn": 36
+    },
+    "condition_fidelity": "partial; intended labels only; no validated classifier claim",
+    "empty_validated_extractions": 6,
+    "fork_comparison_note": "Raw learner_values hashes differ across forks because value_id, instance_id and created_at differ. Compared all thirteen remaining columns for each active child; equal. Within-fork before/after complete table hashes equal.",
+    "gemma_finish_reason_length": 34,
+    "measurement_calls": 0,
+    "same_graph_and_semantic_learner_start_across_descendants": true,
+    "source_checkpoint_sha256_unchanged": true,
+    "within_descendant_state_checks_equal": true
+  },
+  "replay": {
+    "byte_identical": [
+      "matrix.json",
+      "matrix.csv",
+      "transcripts.md"
+    ],
+    "destination": "/tmp/mneme-arc-measurement-root-replay",
+    "provider_calls": 0,
+    "source": "docs/experiments/arc_measurements/records.json"
+  },
+  "scope": "passive arc measurement investigation",
+  "sha256": {
+    "docs/experiments/arc_measurements/analysis.json": "e407237afcab2c1de26648b4224b04ef9738a0559a6f5f5b383c7aed06ff647d",
+    "docs/experiments/arc_measurements/bindings.json": "5e7fcd40d4078809062b388750cf8cef8cf928b08a39a58044cb8477a671adcf",
+    "docs/experiments/arc_measurements/calls.json": "0d74fd4a5c54d5ebbd3e898ff91293cc61c00d86c3f02f59c1bb70e2ee275e73",
+    "docs/experiments/arc_measurements/construction.json": "24da36e1f02c6f575786c5654a6fd9659182d84a4702e83412739be862647d82",
+    "docs/experiments/arc_measurements/construction.md": "2cb958d1d9082935d6ef030f6fa982bf8403778be6c44259a73a0d35ff8d119e",
+    "docs/experiments/arc_measurements/matrix.csv": "74bb545f07adda03dba576f28dbad55588fd7d61e66b6b27cfb0b2c4aeef9a87",
+    "docs/experiments/arc_measurements/matrix.json": "5aa36142601a77666248483cf6ad72e5c55a724ab5749f5f2cae3f93c1872fd2",
+    "docs/experiments/arc_measurements/matrix.md": "d722850ee06e319f7e967eb7e3c71f8d5d51659f77e35bdf67f042201eef2bf6",
+    "docs/experiments/arc_measurements/records.json": "4276a89163f7275c141ff6c8142959cbbd8d8fa30e85d31cd81b0d280aee3fc3",
+    "docs/experiments/arc_measurements/report.md": "0a64fd67d2b38958b04bf537525f65ec3c5f01a67fae1c806d33b3039211fd8c",
+    "docs/experiments/arc_measurements/state_checks.json": "eebc973216f75f9afa96ed1e356132bf7f332e2ba409a07d92e73626822e4699",
+    "docs/experiments/arc_measurements/summary.json": "c852c0183e02b36241740b245168995ed8c6a2b05c03906b6fbc9e5103670145",
+    "docs/experiments/arc_measurements/transcripts.md": "9581384411e83cdca40c37c420eb4300a623ef895b194fb3b0288634f31461e8",
+    "src/mneme/experiments/arc_measurements.py": "3b645eebda292b8c9119b4237387bd9e5543af16645413812c7e565e455466fc",
+    "tests/test_arc_measurement_runner.py": "c46f8bdd68a98c794c0d21dfbfaaa5c13f048ba6b74738f64aaae85298cc871c",
+    "tests/test_arc_measurements.py": "7b40ab6b0e1f6610c11178fdddabf1121253996fb54d0e624dbb7875db3a7a36",
+    "tools/run_arc_measurements.py": "6189141e9204d94eb049a456ac498fc9df12baa71e39fdb67365bc06b36790d5"
+  },
+  "tests": [
+    {
+      "command": ".venv/bin/python -m pytest -q",
+      "passed": 621,
+      "result": "PASS",
+      "seconds": 52.58
+    },
+    {
+      "command": ".venv/bin/python -m ruff check .",
+      "result": "PASS"
+    },
+    {
+      "command": ".venv/bin/python -m mypy src/mneme",
+      "result": "PASS",
+      "source_files": 68
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "validated_at": "2026-10-02T17:48:12.657953+00:00"
+}

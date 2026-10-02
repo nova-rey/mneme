@@ -1578,3 +1578,5 @@ and dispositions remain unchanged.
 * 2026-10-02: Added the minimal tools package marker so clean CI can import the copy-only D100 migration test without relying on a local PYTHONPATH override.
 * 2026-10-02: Added the repository root to pytest pythonpath so clean CI can collect repository-level migration harness tests exactly as local validation does.
 * 2026-10-02: Added the explicit typed graph-revision boundary required by strict mypy; no CompactStore or trial behavior changed.
+
+* 2026-10-02: Added passive, deterministic arc movement/repetition and SAA-field measurements with no runtime policy changes; captured two prospective Quinn/Gemma F/S pairs (40 turns, 116 normal calls, zero measurement calls), replayable matrices and source/state receipts. Report preserves partial condition fidelity, empty-extraction and response-length confounds; no reliable stagnation detector or exploration regulator is claimed. Full pytest: 621 passed; Ruff and strict mypy passed.

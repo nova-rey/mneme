@@ -2,6 +2,10 @@
 
 The documents are preserved in their supplied form and are intentionally not merged.
 
+* [Passive arc movement investigation](experiments/arc_measurements/report.md)
+  documents additive, model-free measurements of focused versus circling
+  conversations. It does not authorize or implement SAA exploration modulation.
+
 * `specifications/MNEME_Model_Instance_Development_Spec.md` is the current normative
   architecture and research definition (revision 2026-09-13).
 * `specifications/MNEME_Development_Roadmap.md` is the normative implementation sequence

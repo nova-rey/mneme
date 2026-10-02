@@ -1,0 +1,88 @@
+{
+  "arc_contract": "declared_conversation_arcs: constant topic for ten accepted turns",
+  "checkpoint": {
+    "path": "docs/receipts/MNEME_P2_SAA_Ten_Thread_Run_r8_20260927/snapshots/SAA-developed.sqlite3",
+    "sha256": "122bdf3925ff3c50815bdf51958b34347890b12fd0083830a4df4cba92d2f753"
+  },
+  "conditions": [
+    "F",
+    "S"
+  ],
+  "history": "existing subject_history limit=2; Quinn sees latest participant and duplicated single Gemma reply in shared A/B slots",
+  "limitations": [
+    "Condition schedules are authored constructions, not independently judged quality labels.",
+    "Frozen graph isolates measurement but excludes ongoing developmental adaptation.",
+    "No topic control or repeated seed replication in this bounded experiment."
+  ],
+  "maximum_output_tokens": 47872,
+  "metric_definitions": {
+    "C1": "maturity*(1-rolling_concept_novelty_mean)",
+    "C2": "maturity*(1-(rolling_concept_novelty_mean+rolling_relationship_novelty_mean)/2)",
+    "C3": "C2*context_HHI",
+    "coverage": "require full semantic coverage; no fitting or retuning",
+    "maturity": "min(1,(accepted_arc_age-1)/5)",
+    "window": 3
+  },
+  "planned_calls": {
+    "extraction": 40,
+    "gemma": 40,
+    "measurement": 0,
+    "quinn": 36
+  },
+  "seed_rule": "Gemma 74000 + topic_index*100 + turn; field 84000 + topic_index*100 + turn; matched across conditions",
+  "state": "four independent forks of one immutable checkpoint; no assessment/publication/learner updates",
+  "topics": {
+    "network": {
+      "F": [
+        "The dashboard loses this sensor at 14:10 and 16:05, while two neighboring sensors stay online. Ask how that changes the first comparison.",
+        "The missing sensor's uptime counter resets after each outage. Ask what this adds beyond a dashboard connection loss.",
+        "A voltmeter records a short dip to 3.9 volts on its nominal five-volt supply during transmission. Ask how to isolate the cause of the dip.",
+        "Replacing only the long USB cable removes the voltage dip, but one outage remains when the fan motor starts. Ask how to separate those effects.",
+        "Moving the sensor supply to a separate outlet prevents resets during fan starts. Ask whether interference or shared supply loading remains more plausible.",
+        "A battery-powered test avoids resets, yet the dashboard occasionally shows stale readings with uptime continuing. Ask how to distinguish stale data from another reset.",
+        "Local logs show samples continue but publish acknowledgments time out. Ask which network-layer evidence to collect next.",
+        "The access point log shows weak signal and retransmissions behind the metal cabinet; a temporary higher location improves both. Ask how to validate placement.",
+        "A full shift with the shorter cable and higher placement has no resets or missed updates. Ask what to monitor before declaring the repair stable."
+      ],
+      "S": [
+        "Remain unsure whether Wi-Fi or power is responsible. Ask again which one to suspect, without measurements or new observations.",
+        "Say replacing parts at random feels wasteful, but you still wonder whether the radio or supply is the culprit. Revisit the same choice.",
+        "Acknowledge the suggested checks but return to the concern that either a connection issue or a power issue could make the dashboard lose it.",
+        "Ask whether it is more sensible to think about Wi-Fi first or power first. You have not tried the checks and have no additional evidence.",
+        "Say the uncertainty remains because an offline sensor could mean either weak Wi-Fi or unreliable power. Rephrase the same objection.",
+        "Reconsider replacing the radio versus replacing the supply, then hesitate about random replacement. Keep all circumstances the same.",
+        "Return to how difficult it is to tell power failure from disconnection using only the disappearing dashboard entry. Add no diagnostic result.",
+        "Acknowledge that testing could help but revisit which possibility to start with, power or Wi-Fi. Do not invent a reason testing is impossible.",
+        "Still worry that choosing the wrong component wastes effort. Ask again how to approach the same radio-versus-power uncertainty."
+      ],
+      "opening": "A temperature sensor in our workshop sometimes disappears from the Wi-Fi dashboard. I am unsure whether its radio connection or its power supply is the problem. How should I narrow this down without replacing parts at random?"
+    },
+    "watering": {
+      "F": [
+        "A two-hour trial shows the cotton wick gets wet but the soil surface stays dry. Ask how to tell surface dryness from failed delivery.",
+        "Report the pot weighs 40 grams more after four hours, with no drainage. Ask what that evidence implies about delivery.",
+        "A control pot without a wick lost 120 grams over the same warm afternoon. Ask how to compare inflow with evaporative demand.",
+        "The reservoir is now below the pot and delivery slowed as its level fell. Ask how to stabilize the driving conditions without a pump.",
+        "A wider cotton strip doubled delivery in a repeat trial. Ask how to choose strip width while allowing for cooler weather.",
+        "The smaller pot has dense soil and remains wet overnight while the large pot dries. Ask how to separate the two water demands.",
+        "Direct sun heats the reservoir and algae has begun growing. Ask how shading and an opaque cover fit the setup without blocking airflow.",
+        "There are 1.5 liters available and measured total loss is 400 milliliters per day. Ask how to budget a three-day absence and reserve.",
+        "Before leaving, the setup survives a full day but a wick sometimes slips from one pot. Ask how to secure it and make the final check."
+      ],
+      "S": [
+        "Remain worried that the cotton wick will deliver either too much or too little. Ask whether this basic approach is really dependable; add no test result.",
+        "Say a reservoir seems helpful but does not settle the worry about overwatering versus drying out. Revisit how a wick could be trusted.",
+        "Return to the same uncertainty about the cotton wick soaking the soil or leaving it dry. Ask whether the reservoir makes the risk worse.",
+        "Acknowledge the explanation but say you still cannot picture a reliable middle ground between wet and dry. Reconsider the same wick setup.",
+        "Wonder again whether relying on cotton to carry water is too uncertain. Keep the reservoir and pot arrangement unchanged; introduce no new constraint.",
+        "Say that too much water worries you just as much as too little. Rephrase the concern about whether the wick will find the right balance.",
+        "Circle back to whether the reservoir-and-wick approach is sensible for a weekend. You have no measurements or new practical evidence.",
+        "Acknowledge that trying it is an option, but revisit the same doubt that the pot might end up soaked or dry. Do not claim a trial happened.",
+        "Still hesitate about trusting a cotton wick and reservoir. Ask once more how to think about the same too-wet versus too-dry concern."
+      ],
+      "opening": "My balcony pots dry out while I am away for a weekend. I want a simple watering setup using a reservoir and cotton wick, but I worry it might give too much or too little water. How should I work through that?"
+    }
+  },
+  "turns_per_conversation": 10,
+  "version": "arc-measurement-construction-v1"
+}
