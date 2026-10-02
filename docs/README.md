@@ -11,6 +11,13 @@ remains readable for archived evidence, compatibility, explicit reproduction,
 and copy-only migration. Launch a legacy developmental workflow only with its
 explicit `--legacy-research-store` compatibility choice.
 
+## Operations notes
+
+The [local Gemma determinism operations note](operations/MNEME_Local_Gemma_Determinism_Operations_Note_20261002.md)
+records when matched-seed experiments must disable llama.cpp prompt-cache reuse
+and links the October 2 diagnostic evidence. Normal conversational inference may
+continue using prompt caching.
+
 The documents are preserved in their supplied form and are intentionally not merged.
 
 * [Passive meters: final bounded closure](experiments/meter_closure/report.md)
