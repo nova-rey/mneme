@@ -4,11 +4,12 @@ import json
 import os
 import sqlite3
 import sys
+import uuid
 from pathlib import Path
 from typing import Any
 
 from . import __version__
-from .chat import ChatSession
+from .chat import ChatSession, CompactChatSession
 from .demo import DemoError, run_phase_one_gate
 from .development import (
     FeedbackService,
@@ -25,7 +26,14 @@ from .experiments.inspection import inspect_store, inspect_turn
 from .hosts import DeepInfraGemmaHost, DeepInfraQwenAssessorHost, FakeHost, GemmaHost
 from .identity import IdentityService
 from .qualification import qualify
-from .state import SCHEMA_VERSION, SQLiteStore
+from .state import (
+    SCHEMA_VERSION,
+    CompactStore,
+    PersistenceMode,
+    SQLiteStore,
+    create_compact_instance,
+    detect_persistence_mode,
+)
 from .state.contracts import StoragePermissions
 from .state.policy import PolicyService
 from .state.reader import CheckpointReader
@@ -83,6 +91,17 @@ def main(argv: list[str] | None = None) -> int:
     create.add_argument("--development-enabled", action="store_true")
     create.add_argument("--learning-enabled", action="store_true")
     create.add_argument("--host")
+    create.add_argument(
+        "--persistence",
+        choices=(PersistenceMode.COMPACT.value, PersistenceMode.LEGACY_RESEARCH.value),
+        default=PersistenceMode.COMPACT.value,
+        help="writable state engine (compact is the default; legacy requires an explicit opt-in)",
+    )
+    create.add_argument(
+        "--legacy-research-store",
+        action="store_true",
+        help="explicitly authorize the historical SQLiteStore for compatibility/reproduction",
+    )
     isub.add_parser("list")
     inspect = isub.add_parser("inspect")
     inspect.add_argument("id")
@@ -240,33 +259,78 @@ def main(argv: list[str] | None = None) -> int:
                 raise SystemExit("--host is required with --development-enabled")
             if args.learning_enabled and not args.development_enabled:
                 raise SystemExit("--learning-enabled requires --development-enabled")
+            if args.persistence == PersistenceMode.LEGACY_RESEARCH.value and not args.legacy_research_store:
+                raise SystemExit(
+                    "legacy persistence is compatibility-only; pass --legacy-research-store "
+                    "to opt in explicitly"
+                )
             if args.store.exists() and args.store.is_dir():
-                path = args.store / f"{args.id or 'instance'}.sqlite3"
+                suffix = ".compact.sqlite3" if args.persistence == PersistenceMode.COMPACT.value else ".sqlite3"
+                path = args.store / f"{args.id or 'instance'}{suffix}"
             elif args.store.suffix.lower() in {".sqlite3", ".sqlite", ".db"}:
                 args.store.parent.mkdir(parents=True, exist_ok=True)
                 path = args.store
             else:
                 args.store.mkdir(parents=True, exist_ok=True)
                 path = args.store / f"{args.id or 'instance'}.sqlite3"
-            with SQLiteStore(path) as store:
-                selected_host = _host(args.host) if args.host else None
-                instance_id = store.create_root(
-                    instance_id=args.id,
+            if path.exists() and path.stat().st_size > 0:
+                raise SystemExit(f"instance path already contains state: {path}")
+            selected_host = _host(args.host) if args.host else None
+            instance_id = args.id or str(uuid.uuid4())
+            if args.persistence == PersistenceMode.COMPACT.value:
+                with create_compact_instance(
+                    path,
+                    instance_id=instance_id,
                     scope_id=args.scope,
-                    permissions=StoragePermissions(
-                        store=True,
-                        export=args.export,
-                        interpret=args.development_enabled,
-                        recall=args.development_enabled,
-                        provider_reuse=args.development_enabled,
-                        learn=args.learning_enabled,
-                    ),
-                    host_binding=(
-                        selected_host.fingerprint().to_dict() if selected_host is not None else None
-                    ),
-                )
+                ) as store:
+                    store.set_metadata(
+                        "host_binding",
+                        selected_host.fingerprint().to_dict() if selected_host is not None else None,
+                    )
+                    store.set_metadata(
+                        "permissions",
+                        {
+                            "store": True,
+                            "export": bool(args.export),
+                            "interpret": bool(args.development_enabled),
+                            "recall": bool(args.development_enabled),
+                            "provider_reuse": bool(args.development_enabled),
+                            "learn": bool(args.learning_enabled),
+                        },
+                    )
+            else:
+                with SQLiteStore(path) as store:
+                    instance_id = store.create_root(
+                        instance_id=args.id,
+                        scope_id=args.scope,
+                        permissions=StoragePermissions(
+                            store=True,
+                            export=args.export,
+                            interpret=args.development_enabled,
+                            recall=args.development_enabled,
+                            provider_reuse=args.development_enabled,
+                            learn=args.learning_enabled,
+                        ),
+                        host_binding=(
+                            selected_host.fingerprint().to_dict() if selected_host is not None else None
+                        ),
+                    )
             print(instance_id)
             return 0
+        if detect_persistence_mode(args.store) is PersistenceMode.COMPACT and args.command in {
+            "permission",
+            "quarantine",
+            "learner",
+            "feedback",
+            "identity",
+            "episode",
+            "operation",
+            "store",
+        }:
+            raise SystemExit(
+                f"{args.command} is a historical SQLiteStore operation; use the compact "
+                "runtime API or an explicit migrated legacy copy"
+            )
         if args.command == "permission":
             with SQLiteStore(args.store) as store:
                 current = store.current()
@@ -378,16 +442,27 @@ def main(argv: list[str] | None = None) -> int:
                 return 0
         if args.command == "chat":
             text = args.text if args.text is not None else sys.stdin.readline().rstrip("\n")
-            with SQLiteStore(args.store) as store:
-                current = store.current()
-                session = ChatSession(
-                    store,
-                    str(current["active_instance_id"]),
-                    _host(args.host),
-                    mode=args.mode,
-                    memory=args.memory,
-                )
-                chat_result = session.turn(text)
+            mode = detect_persistence_mode(args.store)
+            if mode is PersistenceMode.COMPACT:
+                with CompactStore(args.store, read_only=args.mode == "evaluate") as store:
+                    compact_session = CompactChatSession(
+                        store,
+                        _host(args.host),
+                        mode=args.mode,
+                        memory=args.memory,
+                    )
+                    chat_result = compact_session.turn(text)
+            else:
+                with SQLiteStore(args.store) as store:
+                    current = store.current()
+                    legacy_session = ChatSession(
+                        store,
+                        str(current["active_instance_id"]),
+                        _host(args.host),
+                        mode=args.mode,
+                        memory=args.memory,
+                    )
+                    chat_result = legacy_session.turn(text)
             if args.json:
                 print(json.dumps(chat_result.to_dict(), indent=2))
             else:
@@ -494,14 +569,38 @@ def main(argv: list[str] | None = None) -> int:
             print(json.dumps([str(p) for p in paths], indent=2))
             return 0
         if args.command == "instance" and args.instance_action == "inspect":
-            print(json.dumps(inspect_store(args.store), indent=2, default=str))
+            if detect_persistence_mode(args.store) is PersistenceMode.COMPACT:
+                with CompactStore(args.store, read_only=True) as store:
+                    print(
+                        json.dumps(
+                            {
+                                "persistence_mode": PersistenceMode.COMPACT.value,
+                                "metadata": {
+                                    key: store.metadata(key)
+                                    for key in ("instance", "permissions", "host_binding")
+                                    if store.metadata(key) is not None
+                                },
+                                "storage": store.storage_metrics(label="inspect"),
+                                "state_digest": store.state_digest(),
+                                "verify": store.verify(),
+                            },
+                            indent=2,
+                            sort_keys=True,
+                        )
+                    )
+            else:
+                print(json.dumps(inspect_store(args.store), indent=2, default=str))
             return 0
         if args.command == "instance" and args.instance_action == "fork":
             print(fork_from_checkpoint(args.checkpoint, args.output, args.id))
             return 0
         if args.command == "checkpoint" and args.checkpoint_action == "create":
-            with SQLiteStore(args.store) as store:
-                print(create_checkpoint(store, args.output, args.id))
+            if detect_persistence_mode(args.store) is PersistenceMode.COMPACT:
+                with CompactStore(args.store) as store:
+                    print(store.checkpoint(args.output, checkpoint_id=args.id))
+            else:
+                with SQLiteStore(args.store) as store:
+                    print(create_checkpoint(store, args.output, args.id))
             return 0
         if args.command == "checkpoint" and args.checkpoint_action == "list":
             paths = sorted(args.store.glob("*.sqlite3")) if args.store.is_dir() else [args.store]
@@ -519,8 +618,12 @@ def main(argv: list[str] | None = None) -> int:
                 print(json.dumps(reader.manifest(), indent=2))
             return 0
         if args.command == "backup":
-            with SQLiteStore(args.store) as store:
-                backup_instance(store, args.output)
+            if detect_persistence_mode(args.store) is PersistenceMode.COMPACT:
+                with CompactStore(args.store) as store:
+                    store.checkpoint(args.output, checkpoint_id=f"backup-{uuid.uuid4()}")
+            else:
+                with SQLiteStore(args.store) as store:
+                    backup_instance(store, args.output)
             return 0
         if args.command == "operation":
             with SQLiteStore(args.store, read_only=True) as store:

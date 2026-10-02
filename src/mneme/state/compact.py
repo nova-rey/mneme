@@ -281,6 +281,7 @@ class CompactStore:
         result: dict[str, Any] = {
             "label": label,
             "path": str(self.path),
+            "persistence_mode": "compact",
             "files": files,
             "database_bytes": files.get("database", 0),
             "page_count": page_count,
@@ -643,6 +644,16 @@ def migrate_sqlite(source_path: str | Path, destination_path: str | Path, *, jou
             payload = json.loads(str(row[12]))
             learner[(str(row[0]), str(row[1]))] = payload
         with CompactStore.create(destination, journal_retention=journal_retention) as compact:
+            compact.set_metadata(
+                "instance",
+                {
+                    "instance_id": instance_id,
+                    "persistence_mode": "compact",
+                    "developmental_writable": True,
+                    "migrated_from": str(source),
+                    "source_revision": revision,
+                },
+            )
             compact.put_graph(nodes=nodes, edges=edges, routes=routes)
             # Graph rows retain their local materialization keys for audit, but
             # runtime SAA must resolve them to the canonical learner identity.

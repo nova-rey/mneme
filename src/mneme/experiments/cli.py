@@ -25,6 +25,16 @@ def _json(value: Any) -> str:
     return json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False, default=str)
 
 
+def _require_legacy_research_opt_in(enabled: bool, operation: str) -> None:
+    """Keep snapshot-backed historical runners explicit at their boundary."""
+
+    if not enabled:
+        raise ArtifactError(
+            f"{operation} uses the historical SQLiteStore developmental path; "
+            "pass --legacy-research-store explicitly or use a CompactRuntime runner"
+        )
+
+
 def contingent_create(lab: Path, run_id: str) -> dict[str, Any]:
     """Prepare the additive contingent-conversation study."""
 
@@ -52,7 +62,9 @@ def contingent_create(lab: Path, run_id: str) -> dict[str, Any]:
     }
 
 
-def contingent_execute(lab: Path, run_id: str) -> dict[str, Any]:
+def contingent_execute(
+    lab: Path, run_id: str, *, legacy_research_store: bool = False
+) -> dict[str, Any]:
     """Execute or resume the additive contingent-conversation study."""
 
     from ..cli import _host
@@ -62,6 +74,7 @@ def contingent_execute(lab: Path, run_id: str) -> dict[str, Any]:
     from .pilot import PilotRun
     from .pilot_runtime import RuntimeSubject
 
+    _require_legacy_research_opt_in(legacy_research_store, "contingent execute")
     developing = _host("gemma-deepinfra")
     partner = _host("qwen-assessor-deepinfra")
     reviewer = DeepInfraEvidenceReviewHost(token=None)
@@ -105,7 +118,9 @@ def p23_supplement_create(lab: Path, run_id: str) -> dict[str, Any]:
     }
 
 
-def p23_supplement_execute(lab: Path, run_id: str) -> dict[str, Any]:
+def p23_supplement_execute(
+    lab: Path, run_id: str, *, legacy_research_store: bool = False
+) -> dict[str, Any]:
     """Execute or resume the fixed one-shot adequacy supplement."""
 
     from ..cli import _host
@@ -115,6 +130,7 @@ def p23_supplement_execute(lab: Path, run_id: str) -> dict[str, Any]:
     from .pilot import PilotRun
     from .pilot_runtime import RuntimeSubject
 
+    _require_legacy_research_opt_in(legacy_research_store, "p23 supplement execute")
     developing = _host("gemma-deepinfra")
     interloper = _host("qwen-assessor-deepinfra")
     artifacts = ArtifactStore(lab)
@@ -285,7 +301,13 @@ def reconcile_prepared_run(run_id: str, lab: Path) -> dict[str, Any]:
     return result
 
 
-def execute_run(run_id: str, lab: Path, host_name: str | None = None) -> dict[str, Any]:
+def execute_run(
+    run_id: str,
+    lab: Path,
+    host_name: str | None = None,
+    *,
+    legacy_research_store: bool = False,
+) -> dict[str, Any]:
     """Execute one prepared P0.4 run through the integrated runner.
 
     The import is intentionally lazy.  P0.3 installations can still validate
@@ -295,6 +317,17 @@ def execute_run(run_id: str, lab: Path, host_name: str | None = None) -> dict[st
     derives the host from the immutable prepared contract.
     """
 
+    if not legacy_research_store:
+        try:
+            run = ArtifactStore(lab).locate_run(run_id)
+            experiment = ArtifactStore._read_json(run / "experiment.json")
+        except (ArtifactError, OSError, json.JSONDecodeError):
+            # Programmatic test doubles and pre-artifact callers do not have
+            # a campaign manifest to classify.  The real prepared-run path is
+            # guarded once its immutable artifact exists.
+            experiment = None
+        if isinstance(experiment, dict) and experiment.get("persistence_mode") != "compact":
+            _require_legacy_research_opt_in(False, "experiment run execute")
     runner = importlib.import_module("mneme.experiments.runner")
     run_execute = cast(Callable[..., object], getattr(runner, "execute_run"))
     result = run_execute(run_id=run_id, lab=lab, host_name=host_name)
@@ -303,9 +336,23 @@ def execute_run(run_id: str, lab: Path, host_name: str | None = None) -> dict[st
     return result
 
 
-def resume_execution(run_id: str, lab: Path, host_name: str | None = None) -> dict[str, Any]:
+def resume_execution(
+    run_id: str,
+    lab: Path,
+    host_name: str | None = None,
+    *,
+    legacy_research_store: bool = False,
+) -> dict[str, Any]:
     """Resume a prepared or interrupted P0.4 run through the integrated runner."""
 
+    if not legacy_research_store:
+        try:
+            run = ArtifactStore(lab).locate_run(run_id)
+            experiment = ArtifactStore._read_json(run / "experiment.json")
+        except (ArtifactError, OSError, json.JSONDecodeError):
+            experiment = None
+        if isinstance(experiment, dict) and experiment.get("persistence_mode") != "compact":
+            _require_legacy_research_opt_in(False, "experiment run resume")
     runner = importlib.import_module("mneme.experiments.runner")
     run_resume = cast(Callable[..., object], getattr(runner, "resume_run"))
     result = run_resume(run_id=run_id, lab=lab, host_name=host_name)
@@ -494,9 +541,27 @@ def dispatch(args: Any) -> int:
         elif args.experiment_action == "run_inspect":
             result = inspect_run(args.run_id, args.lab, args.verify)
         elif args.experiment_action == "run_execute":
-            result = execute_run(args.run_id, args.lab, args.host)
+            opt_in = getattr(args, "legacy_research_store", None)
+            if opt_in is None:
+                result = execute_run(args.run_id, args.lab, args.host)
+            else:
+                result = execute_run(
+                    args.run_id,
+                    args.lab,
+                    args.host,
+                    legacy_research_store=bool(opt_in),
+                )
         elif args.experiment_action == "run_resume":
-            result = resume_execution(args.run_id, args.lab, args.host)
+            opt_in = getattr(args, "legacy_research_store", None)
+            if opt_in is None:
+                result = resume_execution(args.run_id, args.lab, args.host)
+            else:
+                result = resume_execution(
+                    args.run_id,
+                    args.lab,
+                    args.host,
+                    legacy_research_store=bool(opt_in),
+                )
         elif args.experiment_action == "baseline_report":
             result = baseline_report(args.run_id, args.lab, args.output)
         elif args.experiment_action == "compare":
@@ -522,11 +587,25 @@ def dispatch(args: Any) -> int:
         elif args.experiment_action == "contingent_create":
             result = contingent_create(args.lab, args.run_id)
         elif args.experiment_action == "contingent_execute":
-            result = contingent_execute(args.lab, args.run_id)
+            opt_in = getattr(args, "legacy_research_store", None)
+            result = (
+                contingent_execute(args.lab, args.run_id)
+                if opt_in is None
+                else contingent_execute(
+                    args.lab, args.run_id, legacy_research_store=bool(opt_in)
+                )
+            )
         elif args.experiment_action == "p23_supplement_create":
             result = p23_supplement_create(args.lab, args.run_id)
         elif args.experiment_action == "p23_supplement_execute":
-            result = p23_supplement_execute(args.lab, args.run_id)
+            opt_in = getattr(args, "legacy_research_store", None)
+            result = (
+                p23_supplement_execute(args.lab, args.run_id)
+                if opt_in is None
+                else p23_supplement_execute(
+                    args.lab, args.run_id, legacy_research_store=bool(opt_in)
+                )
+            )
         else:
             raise ArtifactError(f"unknown experiment action: {args.experiment_action}")
     except (ArtifactError, ContractError, PreflightError, OSError) as exc:
@@ -565,6 +644,12 @@ def add_parser(sub: Any) -> None:
         "--host",
         help="optional controlled-test host override; normally read from the prepared contract",
     )
+    resume.add_argument(
+        "--legacy-research-store",
+        action="store_true",
+        default=None,
+        help="explicitly resume the historical SQLiteStore compatibility path",
+    )
     resume.add_argument("--json", action="store_true", help="emit machine-readable JSON")
     execute = rsub.add_parser("execute")
     execute.add_argument("run_id")
@@ -572,6 +657,12 @@ def add_parser(sub: Any) -> None:
     execute.add_argument(
         "--host",
         help="optional controlled-test host override; normally read from the prepared contract",
+    )
+    execute.add_argument(
+        "--legacy-research-store",
+        action="store_true",
+        default=None,
+        help="explicitly run the historical SQLiteStore compatibility path",
     )
     execute.add_argument("--json", action="store_true", help="emit machine-readable JSON")
     check = esub.add_parser("check-isolation")
@@ -610,6 +701,7 @@ def add_parser(sub: Any) -> None:
     execute_contingent = csub.add_parser("execute")
     execute_contingent.add_argument("--lab", type=Path, required=True)
     execute_contingent.add_argument("--run-id", required=True)
+    execute_contingent.add_argument("--legacy-research-store", action="store_true", default=None)
     execute_contingent.add_argument("--json", action="store_true")
     supplement = esub.add_parser("p23-supplement")
     ssub = supplement.add_subparsers(dest="supplement_action", required=True)
@@ -620,6 +712,7 @@ def add_parser(sub: Any) -> None:
     execute_supplement = ssub.add_parser("execute")
     execute_supplement.add_argument("--lab", type=Path, required=True)
     execute_supplement.add_argument("--run-id", required=True)
+    execute_supplement.add_argument("--legacy-research-store", action="store_true", default=None)
     execute_supplement.add_argument("--json", action="store_true")
 
 

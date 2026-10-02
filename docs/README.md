@@ -1,5 +1,16 @@
 # MNEME project documents
 
+## Persistence boundary
+
+New writable developmental instances default to [CompactStore and
+CompactRuntime](decisions/MNEME_CompactStore_Production_Persistence_Boundary_20261002.md).
+CompactStore persists current graph/learner state plus bounded deltas and
+telemetry; explicit checkpoints are the only operation that intentionally
+creates a self-contained full-state copy. The historical SQLiteStore schema
+remains readable for archived evidence, compatibility, explicit reproduction,
+and copy-only migration. Launch a legacy developmental workflow only with its
+explicit `--legacy-research-store` compatibility choice.
+
 The documents are preserved in their supplied form and are intentionally not merged.
 
 * [Passive arc movement investigation](experiments/arc_measurements/report.md)

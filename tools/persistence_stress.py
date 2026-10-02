@@ -30,6 +30,15 @@ def run_case(events: int, root: Path, *, batch_size: int = 5_000) -> dict[str, A
     rows: list[dict[str, Any]] = []
     start = time.monotonic()
     with CompactStore.create(path, journal_retention=10_000) as store:
+        # Seed one nontrivial graph and then change a single node per batch.
+        # A snapshot-oriented implementation would duplicate this graph on
+        # every batch; CompactStore should retain two current nodes and delta
+        # revisions only.
+        store.put_graph(
+            nodes={"root": {"label": "root"}, "resource": {"label": "resource"}},
+            edges={"edge-root-resource": {"source": "root", "target": "resource"}},
+            routes={"route-root-resource": {"edge_keys": ["edge-root-resource"]}},
+        )
         for offset in range(0, events, batch_size):
             end = min(events, offset + batch_size)
             records = []
@@ -42,6 +51,14 @@ def run_case(events: int, root: Path, *, batch_size: int = 5_000) -> dict[str, A
                     (f"edge-{index % 256}", f"context-{index % 8}", value, f"op-{index}")
                 )
             store.put_learner_batch(records)
+            store.put_graph(
+                nodes={
+                    "root": {"label": "root", "epoch": end // batch_size},
+                    "resource": {"label": "resource"},
+                },
+                edges={"edge-root-resource": {"source": "root", "target": "resource"}},
+                routes={"route-root-resource": {"edge_keys": ["edge-root-resource"]}},
+            )
             if end in {10_000, 100_000, 1_000_000} or end == events:
                 rows.append(
                     {
@@ -59,6 +76,19 @@ def run_case(events: int, root: Path, *, batch_size: int = 5_000) -> dict[str, A
                                 "SELECT COUNT(*) FROM learner_journal"
                             ).fetchone()[0]
                         ),
+                        "graph_revision_rows": int(
+                            store.connection.execute(
+                                "SELECT COUNT(*) FROM graph_revisions"
+                            ).fetchone()[0]
+                        ),
+                        "graph_current_rows": sum(
+                            int(
+                                store.connection.execute(
+                                    f"SELECT COUNT(*) FROM {table}"
+                                ).fetchone()[0]
+                            )
+                            for table in ("graph_nodes", "graph_edges", "graph_routes")
+                        ),
                     }
                 )
         state_digest = store.state_digest()
@@ -68,6 +98,9 @@ def run_case(events: int, root: Path, *, batch_size: int = 5_000) -> dict[str, A
     with CompactStore(checkpoint, read_only=True) as restored:
         checkpoint_digest = restored.state_digest()
         checkpoint_problems = restored.verify()
+        checkpoint_rows = int(
+            restored.connection.execute("SELECT COUNT(*) FROM checkpoints").fetchone()[0]
+        )
     elapsed = time.monotonic() - start
     return {
         "events": events,
@@ -82,6 +115,7 @@ def run_case(events: int, root: Path, *, batch_size: int = 5_000) -> dict[str, A
         "verify": problems,
         "checkpoint_verify": checkpoint_problems,
         "bytes_per_event": round(_size(path) / events, 6),
+        "checkpoint_rows": checkpoint_rows,
     }
 
 
