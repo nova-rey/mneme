@@ -184,3 +184,8 @@ retained OFF request only in the four declared reasoning accommodations. All8,55
 pre-existing untracked paths remain preserved. See [validation](validation.json)
 and [raw-evidence hashes](retention_manifest.json). CI is checked on the integrated
 commit and reported in the closure receipt/final response.
+
+[Implementation CI](https://github.com/nova-rey/mneme/actions/runs/37076996592)
+passed for `a97d4a1d21810c99dc9ab1dfbbb92c32852df06e`. The
+[closure receipt](closure_receipt.json) records completion; final closure-commit CI
+is verified separately and reported with the exact final commit.
