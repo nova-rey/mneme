@@ -210,9 +210,15 @@ class PressureContribution:
     final_pressure: int = 0
     component: str = "background"
     exploration_selected: bool = False
+    # ``exploration_selected`` predates SAA and means "selected from the
+    # auxiliary exploration pool" in the F0 renderer.  SAA has one weighted
+    # landing over its complete accessibility distribution, so its landing
+    # must be traceable without being mislabeled as an exploration-pool hit.
+    selection_mode: str = "none"
+    candidate_component: str = "unknown"
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        value: dict[str, Any] = {
             "edge_key": self.edge_key,
             "source": self.source,
             "target": self.target,
@@ -230,6 +236,11 @@ class PressureContribution:
             "component": self.component,
             "exploration_selected": self.exploration_selected,
         }
+        if self.selection_mode != "none":
+            value["selection_mode"] = self.selection_mode
+        if self.candidate_component != "unknown":
+            value["candidate_component"] = self.candidate_component
+        return value
 
 
 @dataclass(frozen=True)
@@ -254,6 +265,13 @@ class FieldResult:
     # Signed expression-side adjustments are persisted separately from
     # accessibility odds so replay can prove the two effects were distinct.
     expression_adjustments: tuple[tuple[str, int], ...] = ()
+    # SAA trace semantics.  These remain empty/default for historical F0
+    # results.  A candidate can be eligible through the weak background field,
+    # the current context, or both; the landing itself is always selected from
+    # the final weighted distribution in SAA v1.
+    distribution_components: tuple[tuple[str, str], ...] = ()
+    landing_selection: str = "none"
+    landing_component: str | None = None
 
     @property
     def total_pressure(self) -> int:
@@ -289,6 +307,12 @@ class FieldResult:
                         {"edge_key": key, "delta": delta}
                         for key, delta in self.expression_adjustments
                     ],
+                    "distribution_components": [
+                        {"candidate": key, "component": component}
+                        for key, component in self.distribution_components
+                    ],
+                    "landing_selection": self.landing_selection,
+                    "landing_component": self.landing_component,
                 }
             )
         return value
@@ -641,7 +665,7 @@ def _select_exploration_candidate(
             if ticket < cumulative:
                 selected = item
                 break
-        selected = replace(selected, exploration_selected=True)
+        selected = replace(selected, exploration_selected=True, selection_mode="exploration_pool")
         explored.append(selected)
     keep = max(0, min(len(base), chosen.max_contributors - len(explored)))
     return base[:keep] + explored, field_seed
@@ -823,6 +847,24 @@ def compute_saa_field(
             break
     selected_edge = next(edge for edge, _ in candidates_tuple if edge.key == selected_key)
     strength_by_key = {edge.key: strength for edge, strength in candidates_tuple}
+    labels = {item.key: item.label for item in concept_rows}
+    edges_by_key = {edge.key: edge for edge, _ in candidates_tuple}
+    distribution_components = tuple(
+        (
+            edge_key,
+            (
+                "contextual_and_background"
+                if max(
+                    _activation(query, labels.get(edge.source, edge.source))[0],
+                    _activation(query, labels.get(edge.target, edge.target))[0],
+                ) > 0
+                else "background"
+            ),
+        )
+        for edge_key, _ in distribution
+        for edge in (edges_by_key[edge_key],)
+    )
+    component_by_key = dict(distribution_components)
     outgoing: dict[str, list[Any]] = defaultdict(list)
     for edge in edge_rows:
         outgoing[edge.source].append(edge)
@@ -846,7 +888,8 @@ def compute_saa_field(
             True,
             "earned",
             component="landing",
-            exploration_selected=True,
+            selection_mode="weighted_distribution",
+            candidate_component=component_by_key[selected_key],
         )
     )
     queue: deque[tuple[str, int, int, tuple[str, ...], frozenset[str]]] = deque(
@@ -968,7 +1011,7 @@ def compute_saa_field(
         _render_saa(
             tuple(normalized),
             chosen.render_max_chars,
-            {item.key: item.label for item in concept_rows},
+            labels,
         ),
         field_enabled=True,
         exploration="on",
@@ -983,6 +1026,9 @@ def compute_saa_field(
         expression_adjustments=tuple(
             sorted((str(key), int(value)) for key, value in expression.items())
         ),
+        distribution_components=distribution_components,
+        landing_selection="weighted_distribution",
+        landing_component=component_by_key[selected_key],
     )
 
 

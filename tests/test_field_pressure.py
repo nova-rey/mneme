@@ -11,6 +11,7 @@ from mneme.development import (
     LearnerState,
     compute_field,
     compute_saa_field,
+    assess_saa_treatment_health,
 )
 from mneme.memory.graph import GraphConcept, GraphEdge
 
@@ -49,6 +50,33 @@ def test_direct_neighbor_has_bounded_pressure_and_active_concept():
     assert "drip irrigation" not in result.payload.casefold()
     assert "soil moisture" not in result.payload.casefold()
     assert "causes" not in result.payload.casefold()
+
+
+def test_saa_health_distinguishes_cold_start_from_binding_failure():
+    concepts, edges = _graph(
+        ("a", "drip irrigation"),
+        ("b", "soil moisture"),
+        edges=(("e1", "a", "b", "causes"),),
+    )
+    empty = compute_saa_field("unrelated", concepts, edges, LearnerState(), field_seed=7)
+    assert assess_saa_treatment_health(empty, LearnerState(), edges)["status"] == "cold_start"
+
+    mismatched = _state("edge:canonical")
+    broken = compute_saa_field("unrelated", concepts, edges, mismatched, field_seed=7)
+    health = assess_saa_treatment_health(broken, mismatched, edges)
+    assert health["status"] == "binding_mismatch"
+    assert health["positive_state_count"] == 1
+
+
+def test_saa_health_accepts_delivered_field():
+    concepts, edges = _graph(
+        ("a", "drip irrigation"),
+        ("b", "soil moisture"),
+        edges=(("e1", "a", "b", "causes"),),
+    )
+    state = _state("e1")
+    result = compute_saa_field("unrelated", concepts, edges, state, field_seed=7)
+    assert assess_saa_treatment_health(result, state, edges)["status"] == "healthy"
 
 
 def test_renderer_exposes_abstract_tendencies_not_graph_labels():
@@ -496,3 +524,89 @@ def test_renderer_preserves_generic_facets_without_thread_specific_labels():
     assert first.payload != second.payload
     assert "budget constraint" not in first.payload.casefold()
     assert "shared coordination" not in second.payload.casefold()
+
+
+def test_saa_landing_trace_distinguishes_weighted_draw_from_exploration_pool():
+    concepts, edges = _graph(
+        ("a", "alpha"), ("b", "beta"), ("c", "gamma"), ("d", "delta"),
+        edges=(
+            ("e1", "a", "b", "supports"),
+            ("e2", "c", "d", "supports"),
+        ),
+    )
+    result = compute_saa_field("alpha", concepts, edges, _state("e1", "e2"), field_seed=7)
+    landing = next(
+        item for item in result.contributions if item.edge_key == result.selected_landing
+    )
+
+    assert result.landing_selection == "weighted_distribution"
+    assert result.landing_component == "contextual_and_background"
+    assert landing.selection_mode == "weighted_distribution"
+    assert landing.exploration_selected is False
+    assert dict(result.distribution_components) == {
+        "e1": "contextual_and_background",
+        "e2": "background",
+    }
+
+
+def test_saa_familiar_context_changes_seeded_landing_frequency():
+    concepts, edges = _graph(
+        ("a", "alpha"), ("b", "beta"), ("c", "gamma"), ("d", "delta"),
+        edges=(
+            ("e1", "a", "b", "supports"),
+            ("e2", "c", "d", "supports"),
+        ),
+    )
+    state = _state("e1", "e2")
+    familiar = compute_saa_field("alpha", concepts, edges, state, field_seed=0)
+    novel = compute_saa_field("unrelated topic", concepts, edges, state, field_seed=0)
+    assert dict(familiar.accessibility_distribution)["e1"] > dict(
+        novel.accessibility_distribution
+    )["e1"]
+
+    familiar_hits = 0
+    novel_hits = 0
+    for seed in range(2_000):
+        if (
+            compute_saa_field("alpha", concepts, edges, state, field_seed=seed).selected_landing
+            == "e1"
+        ):
+            familiar_hits += 1
+        if compute_saa_field(
+            "unrelated topic", concepts, edges, state, field_seed=seed
+        ).selected_landing == "e1":
+            novel_hits += 1
+    assert familiar_hits > novel_hits
+    assert familiar_hits / 2_000 > 0.50
+    assert novel_hits / 2_000 < familiar_hits / 2_000
+
+
+def test_saa_exploration_switch_does_not_change_weighted_distribution():
+    concepts, edges = _graph(
+        ("a", "alpha"), ("b", "beta"), ("c", "gamma"), ("d", "delta"),
+        edges=(
+            ("e1", "a", "b", "supports"),
+            ("e2", "c", "d", "supports"),
+        ),
+    )
+    state = _state("e1", "e2")
+    off = compute_saa_field(
+        "unrelated topic",
+        concepts,
+        edges,
+        state,
+        config=FieldConfig(version=SAA_FIELD_VERSION, exploration="off"),
+        field_seed=23,
+    )
+    on = compute_saa_field(
+        "unrelated topic",
+        concepts,
+        edges,
+        state,
+        config=FieldConfig(version=SAA_FIELD_VERSION, exploration="on"),
+        field_seed=23,
+    )
+    assert off.accessibility_distribution == on.accessibility_distribution
+    assert off.selected_landing == on.selected_landing
+    assert off.landing_selection == on.landing_selection == "weighted_distribution"
+    assert all(not item.exploration_selected for item in off.contributions if item.eligible)
