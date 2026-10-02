@@ -1,7 +1,7 @@
 # Five-turn micro-introspection: qualification failed
 
 **Recommendation: too unreliable, with material prompt sensitivity, under this
-frozen tiny-prompt configuration.** Latency is promising for short windows, but
+frozen tiny-prompt configuration.** Runtime cost is operationally reasonable, but
 the semantic reading is not qualified as a useful stagnation meter. Stop after
 Phase A. Phases B and C were not run; no Quinn or normal conversational generation
 was performed. No prompts were repaired or additional variants searched.
@@ -133,11 +133,13 @@ wall time has median.213s, p90.581s, maximum1.623s. Full observation additionall
 includes preprocessing and recording overhead. Network, shared-host load and
 timing-boundary differences remain relevant; this is not a cold-model benchmark.
 
-On these short windows the HTTP micro-call is usually sub-second, and the complete
-diagnostic observation is always within three seconds. That makes the proposed
-between-turn timing architecture plausible for similarly sized inputs. It does
-not establish latency for real five-turn windows, nor does speed rescue the
-failed semantic judgment. No runtime optimization was performed to hit a target.
+The observed cost is operationally reasonable for the intended between-turn use.
+Sub-second inference is not required; several seconds would also be acceptable.
+These timings were recorded incidentally during semantic qualification, not through
+a latency sweep or runtime optimization. The owner's [clarification](protocol_addendum.md)
+supersedes the unused ten-second Phase B gate: gross impracticality, not a tight
+latency target, is the relevant concern. This does not establish runtime cost for
+the longer preserved windows, and does not change the failed semantic qualification.
 
 ## Later phases and cadence
 
