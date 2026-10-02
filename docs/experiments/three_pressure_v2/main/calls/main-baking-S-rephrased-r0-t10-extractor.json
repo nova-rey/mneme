@@ -1,0 +1,547 @@
+{
+  "completed_utc": "2026-10-02T19:16:22.670485+00:00",
+  "elapsed_seconds": 1.1146774562075734,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"I still have not baked another loaf. The same temperature-versus-time decision remains unresolved for me. What if I check it too early and mess up the process?\", \"s1\": \"It sounds like you are worried about the *timing* of the process\\u2014specifically, whether to pull the item out *before* it's fully done or *after* it's fully done.\\n\\nWhen you are worried about \\\"messing up the process,\\\" it usually means you are afraid of **over-baking** (too dark/dry) or **under-baking** (too raw/wet).\\n\\n**If you are worried about timing, you need a \\\"Stop Point.\\\"**\\n\\n### How to avoid \\\"Messing Up\\\" the process:\\n\\n1.  **The \\\"Test\\\" Method (The Safe Way):**\\n    *   **Don't guess the time.** Instead, use a **probe/thermometer**. This is the only way to know for sure when it is done.\\n    *   **If you don't have a thermometer:** You must rely on \\\"visual cues\\\" (e.g., does the edges look set? Does the center feel firm?).\\n\\n2.  **The \\\"No-Guess\\\" Method (The Safety Net):**\\n    *   **If you are worried about the temperature being wrong:** You must **lower the temperature** and **increase the time**.\\n\\n**If you are worried about \\\"messing up\\\" the process, the best advice is to:**\\n\\n*   **Lower the temperature slightly** (e.g., if you were at 350\\u00b0F, drop to 325\\u00b0F).\\n*   **Increase the time** to compensate for the lower heat.\\n\\n**To give you a better answer, I need to know what you are trying to bake!** (e.g., Is it a cake? A roast? A bread?)\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-baking-S-rephrased-r0-t10"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"process\", \"relation\": \"related\", \"to\": \"timing\", \"source\": \"s1\", \"evidence\": \"timing* of the process\"}, {\"from\": \"Test\", \"relation\": \"part_of\", \"to\": \"process\", \"source\": \"s1\", \"evidence\": \"process:\\n\\n1.  **The \\\"Test\"}, {\"from\": \"process\", \"relation\": \"related\", \"to\": \"time\", \"source\": \"s1\", \"evidence\": \"time**.\\n\\n**If you are worried about \\\"messing up\\\" the process\"}, {\"from\": \"answer\", \"relation\": \"depends_on\", \"to\": \"visual cues\", \"source\": \"s1\", \"evidence\": \"visual cues\\\" (e.g., does the edges look set? Does the center feel firm?).\\n\\n2.  **The \\\"No-Guess\\\" Method (The Safety Net):**\\n    *   **If you are worried about the temperature being wrong:** You must **lower the temperature** and **increase the time**.\\n\\n**If you are worried about \\\"messing up\\\" the process, the best advice is to:**\\n\\n*   **Lower the temperature slightly** (e.g., if you were at 350\\u00b0F, drop to 325\\u00b0F).\\n*   **Increase the time** to compensate for the lower heat.\\n\\n**To give you a better answer\"}], \"episode_id\": \"main-baking-S-rephrased-r0-t10\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "controls",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "controls",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        }
+      ],
+      "specialist": {
+        "content_digest": "25276d975d23144bdd80cd2469406f58328810c1b87ef953106d085510f263c6",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 64,
+              "start": 42
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "timing",
+            "object_span": {
+              "end": 48,
+              "start": 42
+            },
+            "relation": "related",
+            "score": 0.6454768180847168,
+            "source_slot": "s1",
+            "subject": "process",
+            "subject_span": {
+              "end": 64,
+              "start": 57
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 959,
+              "start": 344
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "the process",
+            "object_span": {
+              "end": 959,
+              "start": 948
+            },
+            "relation": "associated_with",
+            "score": 0.3755451738834381,
+            "source_slot": "s1",
+            "subject": "timing",
+            "subject_span": {
+              "end": 350,
+              "start": 344
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 439,
+              "start": 414
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "process",
+            "object_span": {
+              "end": 421,
+              "start": 414
+            },
+            "relation": "controls",
+            "score": 0.4508993327617645,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 439,
+              "start": 435
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 439,
+              "start": 414
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "process",
+            "object_span": {
+              "end": 421,
+              "start": 414
+            },
+            "relation": "part_of",
+            "score": 0.41633114218711853,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 439,
+              "start": 435
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 447,
+              "start": 414
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "process",
+            "object_span": {
+              "end": 421,
+              "start": 414
+            },
+            "relation": "controls",
+            "score": 0.3754774034023285,
+            "source_slot": "s1",
+            "subject": "Method",
+            "subject_span": {
+              "end": 447,
+              "start": 441
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 959,
+              "start": 818
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "the process",
+            "object_span": {
+              "end": 959,
+              "start": 948
+            },
+            "relation": "associated_with",
+            "score": 0.7383705973625183,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 829,
+              "start": 818
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 959,
+              "start": 899
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 903,
+              "start": 899
+            },
+            "relation": "related",
+            "score": 0.5961344242095947,
+            "source_slot": "s1",
+            "subject": "process",
+            "subject_span": {
+              "end": 959,
+              "start": 952
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1094,
+              "start": 899
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 903,
+              "start": 899
+            },
+            "relation": "increases",
+            "score": 0.789409875869751,
+            "source_slot": "s1",
+            "subject": "time",
+            "subject_span": {
+              "end": 1094,
+              "start": 1090
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1161,
+              "start": 656
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "visual cues",
+            "object_span": {
+              "end": 667,
+              "start": 656
+            },
+            "relation": "depends_on",
+            "score": 0.8182479739189148,
+            "source_slot": "s1",
+            "subject": "answer",
+            "subject_span": {
+              "end": 1161,
+              "start": 1155
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "1160f90ebf582cf0a053389c2885b15da99f1b5b6c401450f56da8dec6f77b27",
+          "s1": "108dfd6bf3b41fe133975a3ef78238689b82e606555773a91e71f563d7ea6fa4"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.3755451738834381,
+                  "end": 510,
+                  "start": 504,
+                  "text": "timing"
+                },
+                "tail": {
+                  "confidence": 0.3755451738834381,
+                  "end": 1119,
+                  "start": 1108,
+                  "text": "the process"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7383705973625183,
+                  "end": 989,
+                  "start": 978,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.7383705973625183,
+                  "end": 1119,
+                  "start": 1108,
+                  "text": "the process"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [
+              {
+                "head": {
+                  "confidence": 0.4508993327617645,
+                  "end": 599,
+                  "start": 595,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.4508993327617645,
+                  "end": 581,
+                  "start": 574,
+                  "text": "process"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.3754774034023285,
+                  "end": 607,
+                  "start": 601,
+                  "text": "Method"
+                },
+                "tail": {
+                  "confidence": 0.3754774034023285,
+                  "end": 581,
+                  "start": 574,
+                  "text": "process"
+                }
+              }
+            ],
+            "depends_on": [
+              {
+                "head": {
+                  "confidence": 0.8182479739189148,
+                  "end": 1321,
+                  "start": 1315,
+                  "text": "answer"
+                },
+                "tail": {
+                  "confidence": 0.8182479739189148,
+                  "end": 827,
+                  "start": 816,
+                  "text": "visual cues"
+                }
+              }
+            ],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.789409875869751,
+                  "end": 1254,
+                  "start": 1250,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.789409875869751,
+                  "end": 1063,
+                  "start": 1059,
+                  "text": "time"
+                }
+              }
+            ],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.41633114218711853,
+                  "end": 599,
+                  "start": 595,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.41633114218711853,
+                  "end": 581,
+                  "start": 574,
+                  "text": "process"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.5133138298988342,
+                  "end": 224,
+                  "start": 217,
+                  "text": "process"
+                },
+                "tail": {
+                  "confidence": 0.5133138298988342,
+                  "end": 158,
+                  "start": 151,
+                  "text": "process"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6454768180847168,
+                  "end": 224,
+                  "start": 217,
+                  "text": "process"
+                },
+                "tail": {
+                  "confidence": 0.6454768180847168,
+                  "end": 208,
+                  "start": 202,
+                  "text": "timing"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5961344242095947,
+                  "end": 1119,
+                  "start": 1112,
+                  "text": "process"
+                },
+                "tail": {
+                  "confidence": 0.5961344242095947,
+                  "end": 1063,
+                  "start": 1059,
+                  "text": "time"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.5133138298988342,
+              "end": 224,
+              "start": 217,
+              "text": "process"
+            },
+            "tail": {
+              "confidence": 0.5133138298988342,
+              "end": 158,
+              "start": 151,
+              "text": "process"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:16:21.553283+00:00",
+  "status": "RETURNED"
+}

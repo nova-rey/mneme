@@ -1,0 +1,468 @@
+{
+  "completed_utc": "2026-10-02T19:12:33.960976+00:00",
+  "elapsed_seconds": 1.1812081539537758,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"On the middle rack in the light pan, the base no longer burns. What remains to be controlled?\", \"s1\": \"It sounds like you are trying to achieve a **perfectly even bake**, but the current setup is causing the bottom to burn before the top is done.\\n\\nSince you are now asking what *remains* to be controlled (or what needs to be adjusted), the focus shifts to **heat distribution and timing.**\\n\\nIf the base is \\\"no longer burning,\\\" it means the heat source is too intense for the bottom layer.\\n\\n**What remains to be controlled?**\\n\\nThe most critical factor to control now is **the temperature and the \\\"Baking Time.\\\"**\\n\\nHere is what needs control:\\n\\n1.  **The Temperature (Heat Source):** You need to reduce the temperature slightly. If the bottom is burning, the oven is too hot.\\n2.  **The \\\"Baking Time\\\" (Duration):** You need to monitor the time. If the base is burning, you need to pull it out *before* it reaches that critical point.\\n\\n**If you are asking what needs to be controlled next, it is the *timing* of the heat application:**\\n\\n*   **Control the Heat:** If the base is burning, you need to **lower the oven temperature** by 10-20 degrees (e.g., if you were at 350\\u00b0F, drop to 300\\u00b0F).\\n*   **Control the \\\"Baking Time\\\":** You need to check the internal temperature of the center of the loaf. If the base is burning, it means the heat is too concentrated at the bottom.\\n\\n**To summarize what remains to be controlled:**\\n\\n1.  **Reduce the Heat:** Lower the oven temperature.\\n2.  **Monitor the \\\"Internal Temperature\\\":** Don't rely on the time; rely on the internal temperature of the product.\\n\\n**If you are still seeing a dark base, you need to reduce the temperature and/or increase the time.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-baking-F-new-r0-t08"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"current setup\", \"relation\": \"causes\", \"to\": \"bottom to burn\", \"source\": \"s1\", \"evidence\": \"current setup is causing the bottom to burn\"}, {\"from\": \"temperature\", \"relation\": \"related\", \"to\": \"Baking Time\", \"source\": \"s1\", \"evidence\": \"temperature and the \\\"Baking Time\"}, {\"from\": \"temperature\", \"relation\": \"related\", \"to\": \"Temperature\", \"source\": \"s1\", \"evidence\": \"temperature and the \\\"Baking Time.\\\"**\\n\\nHere is what needs control:\\n\\n1.  **The Temperature\"}, {\"from\": \"Time\", \"relation\": \"related\", \"to\": \"Baking Time\", \"source\": \"s1\", \"evidence\": \"Baking Time\"}], \"episode_id\": \"main-baking-F-new-r0-t08\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 4,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "wilts",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "wilts",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "3e09483ff8a0ac663ad76d4e208f06002712b33491b2ed9bf366fa0d6a5d1850",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 119,
+              "start": 76
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bottom to burn",
+            "object_span": {
+              "end": 119,
+              "start": 105
+            },
+            "relation": "causes",
+            "score": 0.48648184537887573,
+            "source_slot": "s1",
+            "subject": "current setup",
+            "subject_span": {
+              "end": 89,
+              "start": 76
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 637,
+              "start": 76
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bottom",
+            "object_span": {
+              "end": 637,
+              "start": 631
+            },
+            "relation": "affects",
+            "score": 0.3771411180496216,
+            "source_slot": "s1",
+            "subject": "current setup",
+            "subject_span": {
+              "end": 89,
+              "start": 76
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 505,
+              "start": 473
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Baking Time",
+            "object_span": {
+              "end": 505,
+              "start": 494
+            },
+            "relation": "influences",
+            "score": 0.5464633107185364,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 484,
+              "start": 473
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 505,
+              "start": 473
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Baking Time",
+            "object_span": {
+              "end": 505,
+              "start": 494
+            },
+            "relation": "related",
+            "score": 0.429159015417099,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 484,
+              "start": 473
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 561,
+              "start": 473
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Temperature",
+            "object_span": {
+              "end": 561,
+              "start": 550
+            },
+            "relation": "related",
+            "score": 0.4651544392108917,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 484,
+              "start": 473
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 637,
+              "start": 373
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bottom",
+            "object_span": {
+              "end": 379,
+              "start": 373
+            },
+            "relation": "wilts",
+            "score": 0.3530588746070862,
+            "source_slot": "s1",
+            "subject": "bottom",
+            "subject_span": {
+              "end": 637,
+              "start": 631
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1115,
+              "start": 1104
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Baking Time",
+            "object_span": {
+              "end": 1115,
+              "start": 1104
+            },
+            "relation": "related",
+            "score": 0.4909568130970001,
+            "source_slot": "s1",
+            "subject": "Time",
+            "subject_span": {
+              "end": 1115,
+              "start": 1111
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1265,
+              "start": 1197
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bottom",
+            "object_span": {
+              "end": 1265,
+              "start": 1259
+            },
+            "relation": "wilts",
+            "score": 0.4665203094482422,
+            "source_slot": "s1",
+            "subject": "base",
+            "subject_span": {
+              "end": 1201,
+              "start": 1197
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "a47fe0f2c5947bdf3f9ad3a7c9abbbed53ad585d7ee9aa7ac118d3b03abb89cb",
+          "s1": "f02f5e01c860dc94fedb510b87a2135372fb92afbef0b09d67de3f2959fe3e0a"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.3771411180496216,
+                  "end": 183,
+                  "start": 170,
+                  "text": "current setup"
+                },
+                "tail": {
+                  "confidence": 0.3771411180496216,
+                  "end": 731,
+                  "start": 725,
+                  "text": "bottom"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.48648184537887573,
+                  "end": 183,
+                  "start": 170,
+                  "text": "current setup"
+                },
+                "tail": {
+                  "confidence": 0.48648184537887573,
+                  "end": 213,
+                  "start": 199,
+                  "text": "bottom to burn"
+                }
+              }
+            ],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.5464633107185364,
+                  "end": 578,
+                  "start": 567,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.5464633107185364,
+                  "end": 599,
+                  "start": 588,
+                  "text": "Baking Time"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.429159015417099,
+                  "end": 578,
+                  "start": 567,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.429159015417099,
+                  "end": 599,
+                  "start": 588,
+                  "text": "Baking Time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4651544392108917,
+                  "end": 578,
+                  "start": 567,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.4651544392108917,
+                  "end": 655,
+                  "start": 644,
+                  "text": "Temperature"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4909568130970001,
+                  "end": 1209,
+                  "start": 1205,
+                  "text": "Time"
+                },
+                "tail": {
+                  "confidence": 0.4909568130970001,
+                  "end": 1209,
+                  "start": 1198,
+                  "text": "Baking Time"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": [
+              {
+                "head": {
+                  "confidence": 0.3530588746070862,
+                  "end": 731,
+                  "start": 725,
+                  "text": "bottom"
+                },
+                "tail": {
+                  "confidence": 0.3530588746070862,
+                  "end": 473,
+                  "start": 467,
+                  "text": "bottom"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4665203094482422,
+                  "end": 1295,
+                  "start": 1291,
+                  "text": "base"
+                },
+                "tail": {
+                  "confidence": 0.4665203094482422,
+                  "end": 1359,
+                  "start": 1353,
+                  "text": "bottom"
+                }
+              }
+            ]
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:12:32.777239+00:00",
+  "status": "RETURNED"
+}

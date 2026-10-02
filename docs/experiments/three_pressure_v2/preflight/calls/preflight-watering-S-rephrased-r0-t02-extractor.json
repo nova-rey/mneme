@@ -1,0 +1,511 @@
+{
+  "completed_utc": "2026-10-02T18:54:54.382158+00:00",
+  "elapsed_seconds": 1.3122011690866202,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"I have not tried the wick. I still worry the soil could end up either soaked or dry. Any advice on how to balance that?\", \"s1\": \"That's a very common concern! Balancing the \\\"too wet vs. too dry\\\" balance is the hardest part of plant care.\\n\\nSince you haven't tried the wick yet, here is a breakdown of how to manage that risk:\\n\\n### \\ud83c\\udf3f 1. The \\\"Too Wet\\\" Risk (Root Rot)\\nIf the soil is constantly saturated, the roots can't breathe, and the plant will die from \\\"root rot.\\\"\\n*   **Solution:** Ensure your pot has excellent drainage. If you are using a pot, make sure it has a hole at the bottom.\\n\\n### \\ud83d\\udca7 2. The \\\"Too Dry\\\" Risk (Desiccation)\\nIf the plant dries out completely, it will wilt and die.\\n*   **Solution:** You need a \\\"slow-release\\\" system.\\n\\n### \\ud83d\\udca1 How to Balance the Two Risks:\\n\\n**The \\\"Wick\\\" Method (Your original idea):**\\nIf you use a cotton wick, you are essentially creating a \\\"self-watering\\\" system. To prevent it from being too wet or too dry:\\n\\n*   **To avoid being too WET:** Do not let the water level in the reservoir get *too* high. If the water level is too high, it will constantly soak the soil and create a swampy, soggy environment.\\n*   **To avoid being too DRY:** The plant needs a consistent, slow trickle.\\n\\n### \\ud83e\\udeb4 Practical Advice for Your Trip:\\n\\n1.  **The \\\"Drip\\\" Method:** If you can't use a full drip system, you can use a **slow-release watering system** (like a slow-release water bottle or a slow-release drip system) placed near the pot. This is the safest way to ensure a steady, slow, consistent moisture level without drowning the plant.\\n2.  **The \\\"Damp\\\" Method:** If you are only gone for a weekend, a simple **\\\"water-in-a-container\\\"** method works best. Place the pot in a large, shallow container of water. The plant will pull what it needs from the bottom.\\n\\n**My advice:** If you are only gone for a weekend, **a simple, large, shallow container of water placed near the pot is the safest, most reliable method.**\\n\\n**Which plant are you trying to keep alive?** Knowing the plant type (e.g., a succulent vs. a leafy herb) will help me give you a more specific recommendation!\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "preflight-watering-S-rephrased-r0-t02"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"risk\", \"relation\": \"related\", \"to\": \"plant care\", \"source\": \"s1\", \"evidence\": \"plant care.\\n\\nSince you haven't tried the wick yet, here is a breakdown of how to manage that risk\"}, {\"from\": \"root rot\", \"relation\": \"caused_by\", \"to\": \"plant dries out completely\", \"source\": \"s1\", \"evidence\": \"root rot.\\\"\\n*   **Solution:** Ensure your pot has excellent drainage. If you are using a pot, make sure it has a hole at the bottom.\\n\\n### \\ud83d\\udca7 2. The \\\"Too Dry\\\" Risk (Desiccation)\\nIf the plant dries out completely\"}, {\"from\": \"root rot\", \"relation\": \"causes\", \"to\": \"too dry\", \"source\": \"s1\", \"evidence\": \"root rot.\\\"\\n*   **Solution:** Ensure your pot has excellent drainage. If you are using a pot, make sure it has a hole at the bottom.\\n\\n### \\ud83d\\udca7 2. The \\\"Too Dry\\\" Risk (Desiccation)\\nIf the plant dries out completely, it will wilt and die.\\n*   **Solution:** You need a \\\"slow-release\\\" system.\\n\\n### \\ud83d\\udca1 How to Balance the Two Risks:\\n\\n**The \\\"Wick\\\" Method (Your original idea):**\\nIf you use a cotton wick, you are essentially creating a \\\"self-watering\\\" system. To prevent it from being too wet or too dry\"}, {\"from\": \"Desiccation\", \"relation\": \"caused_by\", \"to\": \"plant dries out completely\", \"source\": \"s1\", \"evidence\": \"Desiccation)\\nIf the plant dries out completely\"}, {\"from\": \"Desiccation\", \"relation\": \"causes\", \"to\": \"too dry\", \"source\": \"s1\", \"evidence\": \"Desiccation)\\nIf the plant dries out completely, it will wilt and die.\\n*   **Solution:** You need a \\\"slow-release\\\" system.\\n\\n### \\ud83d\\udca1 How to Balance the Two Risks:\\n\\n**The \\\"Wick\\\" Method (Your original idea):**\\nIf you use a cotton wick, you are essentially creating a \\\"self-watering\\\" system. To prevent it from being too wet or too dry\"}], \"episode_id\": \"preflight-watering-S-rephrased-r0-t02\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "controls",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 3,
+          "kind": "specialist_observation",
+          "relation": "caused_by",
+          "status": "forwarded"
+        },
+        {
+          "index": 4,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "specialist_observation",
+          "relation": "caused_by",
+          "status": "forwarded"
+        },
+        {
+          "index": 8,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        }
+      ],
+      "specialist": {
+        "content_digest": "1c7c60c99c2bb09c596a31b92877069f60dab01c5c13bfa443530e5031b05cff",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 224,
+              "start": 134
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Risk",
+            "object_span": {
+              "end": 224,
+              "start": 220
+            },
+            "relation": "controls",
+            "score": 0.7481604218482971,
+            "source_slot": "s1",
+            "subject": "the wick",
+            "subject_span": {
+              "end": 142,
+              "start": 134
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 717,
+              "start": 134
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "cotton wick",
+            "object_span": {
+              "end": 717,
+              "start": 706
+            },
+            "relation": "uses",
+            "score": 0.6587451100349426,
+            "source_slot": "s1",
+            "subject": "the wick",
+            "subject_span": {
+              "end": 142,
+              "start": 134
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 194,
+              "start": 97
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "plant care",
+            "object_span": {
+              "end": 107,
+              "start": 97
+            },
+            "relation": "related",
+            "score": 0.527860164642334,
+            "source_slot": "s1",
+            "subject": "risk",
+            "subject_span": {
+              "end": 194,
+              "start": 190
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 535,
+              "start": 327
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "plant dries out completely",
+            "object_span": {
+              "end": 535,
+              "start": 509
+            },
+            "relation": "caused_by",
+            "score": 0.4297729432582855,
+            "source_slot": "s1",
+            "subject": "root rot",
+            "subject_span": {
+              "end": 335,
+              "start": 327
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 817,
+              "start": 327
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "too dry",
+            "object_span": {
+              "end": 817,
+              "start": 810
+            },
+            "relation": "causes",
+            "score": 0.379880428314209,
+            "source_slot": "s1",
+            "subject": "root rot",
+            "subject_span": {
+              "end": 335,
+              "start": 327
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 717,
+              "start": 415
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "cotton wick",
+            "object_span": {
+              "end": 717,
+              "start": 706
+            },
+            "relation": "uses",
+            "score": 0.7526763677597046,
+            "source_slot": "s1",
+            "subject": "pot",
+            "subject_span": {
+              "end": 418,
+              "start": 415
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1091,
+              "start": 483
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "consistent, slow trickle",
+            "object_span": {
+              "end": 1091,
+              "start": 1067
+            },
+            "relation": "requires",
+            "score": 0.8438603281974792,
+            "source_slot": "s1",
+            "subject": "Risk",
+            "subject_span": {
+              "end": 487,
+              "start": 483
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 535,
+              "start": 489
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "plant dries out completely",
+            "object_span": {
+              "end": 535,
+              "start": 509
+            },
+            "relation": "caused_by",
+            "score": 0.4092402458190918,
+            "source_slot": "s1",
+            "subject": "Desiccation",
+            "subject_span": {
+              "end": 500,
+              "start": 489
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 817,
+              "start": 489
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "too dry",
+            "object_span": {
+              "end": 817,
+              "start": 810
+            },
+            "relation": "causes",
+            "score": 0.3756891191005707,
+            "source_slot": "s1",
+            "subject": "Desiccation",
+            "subject_span": {
+              "end": 500,
+              "start": 489
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "386ba43fc07fe7a5886d489559c552577f00925d98ffcc543792d088820bc72c",
+          "s1": "393ef604e6634d64a76dd9500dc0ae410cd85971859e79f7313f0c3442bf2f71"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [
+              {
+                "head": {
+                  "confidence": 0.4297729432582855,
+                  "end": 455,
+                  "start": 447,
+                  "text": "root rot"
+                },
+                "tail": {
+                  "confidence": 0.4297729432582855,
+                  "end": 655,
+                  "start": 629,
+                  "text": "plant dries out completely"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4092402458190918,
+                  "end": 620,
+                  "start": 609,
+                  "text": "Desiccation"
+                },
+                "tail": {
+                  "confidence": 0.4092402458190918,
+                  "end": 655,
+                  "start": 629,
+                  "text": "plant dries out completely"
+                }
+              }
+            ],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.379880428314209,
+                  "end": 455,
+                  "start": 447,
+                  "text": "root rot"
+                },
+                "tail": {
+                  "confidence": 0.379880428314209,
+                  "end": 937,
+                  "start": 930,
+                  "text": "too dry"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.3756891191005707,
+                  "end": 620,
+                  "start": 609,
+                  "text": "Desiccation"
+                },
+                "tail": {
+                  "confidence": 0.3756891191005707,
+                  "end": 937,
+                  "start": 930,
+                  "text": "too dry"
+                }
+              }
+            ],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [
+              {
+                "head": {
+                  "confidence": 0.7481604218482971,
+                  "end": 262,
+                  "start": 254,
+                  "text": "the wick"
+                },
+                "tail": {
+                  "confidence": 0.7481604218482971,
+                  "end": 344,
+                  "start": 340,
+                  "text": "Risk"
+                }
+              }
+            ],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.527860164642334,
+                  "end": 314,
+                  "start": 310,
+                  "text": "risk"
+                },
+                "tail": {
+                  "confidence": 0.527860164642334,
+                  "end": 227,
+                  "start": 217,
+                  "text": "plant care"
+                }
+              }
+            ],
+            "requires": [
+              {
+                "head": {
+                  "confidence": 0.8438603281974792,
+                  "end": 607,
+                  "start": 603,
+                  "text": "Risk"
+                },
+                "tail": {
+                  "confidence": 0.8438603281974792,
+                  "end": 1211,
+                  "start": 1187,
+                  "text": "consistent, slow trickle"
+                }
+              }
+            ],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.6587451100349426,
+                  "end": 262,
+                  "start": 254,
+                  "text": "the wick"
+                },
+                "tail": {
+                  "confidence": 0.6587451100349426,
+                  "end": 837,
+                  "start": 826,
+                  "text": "cotton wick"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7526763677597046,
+                  "end": 538,
+                  "start": 535,
+                  "text": "pot"
+                },
+                "tail": {
+                  "confidence": 0.7526763677597046,
+                  "end": 837,
+                  "start": 826,
+                  "text": "cotton wick"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T18:54:53.069539+00:00",
+  "status": "RETURNED"
+}

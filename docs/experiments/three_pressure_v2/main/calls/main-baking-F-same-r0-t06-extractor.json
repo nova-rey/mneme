@@ -1,0 +1,812 @@
+{
+  "completed_utc": "2026-10-02T19:13:56.600572+00:00",
+  "elapsed_seconds": 0.966827989090234,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"At 180 degrees Celsius for 45 minutes, the bread is brown outside and no longer wet in the middle. What does this first satisfactory result establish?\", \"s1\": \"This is a very positive sign!\\n\\nWhen you say the bread is **\\\"brown outside and no longer wet in the middle,\\\"** it means you have successfully achieved the desired result: **a fully cooked, stable, and finished product.**\\n\\n**What this \\\"satisfactory result\\\" establishes is:**\\n\\n1.  **The \\\"Perfect\\\" Temperature/Time Ratio:** You have found the \\\"sweet spot\\\" where the heat is high enough to brown the outside without burning it, but the time is long enough to ensure the center is fully cooked.\\n2.  **Consistency:** The process has successfully moved from \\\"wet\\\" (undercooked/raw) to \\\"done\\\" (fully cooked).\\n\\n**In practical terms, this establishes that:**\\n\\n*   **The 180\\u00b0C setting is the correct temperature.**\\n*   **The 45-minute duration is the correct time.**\\n*   **The \\\"wet\\\" problem is solved.**\\n\\n**The \\\"Dependable\\\" Conclusion:**\\nYou have successfully found the optimal \\\"recipe\\\" for your specific environment. You have successfully balanced the *heat* (180\\u00b0C) and the *time* (45 minutes) to achieve a perfect result.\\n\\n**What to do next?**\\nIf you want to make *more* bread, you have established a successful \\\"recipe.\\\" You can now use these same parameters (180\\u00b0C for 45 minutes) for future batches.\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-baking-F-same-r0-t06"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"satisfactory result\", \"relation\": \"enables\", \"to\": \"more\", \"source\": \"s1\", \"evidence\": \"satisfactory result\\\" establishes is:**\\n\\n1.  **The \\\"Perfect\\\" Temperature/Time Ratio:** You have found the \\\"sweet spot\\\" where the heat is high enough to brown the outside without burning it, but the time is long enough to ensure the center is fully cooked.\\n2.  **Consistency:** The process has successfully moved from \\\"wet\\\" (undercooked/raw) to \\\"done\\\" (fully cooked).\\n\\n**In practical terms, this establishes that:**\\n\\n*   **The 180\\u00b0C setting is the correct temperature.**\\n*   **The 45-minute duration is the correct time.**\\n*   **The \\\"wet\\\" problem is solved.**\\n\\n**The \\\"Dependable\\\" Conclusion:**\\nYou have successfully found the optimal \\\"recipe\\\" for your specific environment. You have successfully balanced the *heat* (180\\u00b0C) and the *time* (45 minutes) to achieve a perfect result.\\n\\n**What to do next?**\\nIf you want to make *more\"}, {\"from\": \"process\", \"relation\": \"depends_on\", \"to\": \"heat\", \"source\": \"s1\", \"evidence\": \"heat is high enough to brown the outside without burning it, but the time is long enough to ensure the center is fully cooked.\\n2.  **Consistency:** The process\"}, {\"from\": \"time\", \"relation\": \"part_of\", \"to\": \"recipe\", \"source\": \"s1\", \"evidence\": \"recipe\\\" for your specific environment. You have successfully balanced the *heat* (180\\u00b0C) and the *time\"}, {\"from\": \"recipe\", \"relation\": \"related\", \"to\": \"specific environment\", \"source\": \"s1\", \"evidence\": \"specific environment. You have successfully balanced the *heat* (180\\u00b0C) and the *time* (45 minutes) to achieve a perfect result.\\n\\n**What to do next?**\\nIf you want to make *more* bread, you have established a successful \\\"recipe\"}], \"episode_id\": \"main-baking-F-same-r0-t06\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "dries",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "wilts",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "specialist_observation",
+          "relation": "enables",
+          "status": "forwarded"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "helps",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "helps",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 11,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 12,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 13,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 14,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 15,
+          "kind": "unsupported_specialist_relation",
+          "relation": "used_for",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "3af3b21de9216195a1044d93e4747c983b38447d7f8357a923f66efefa964c18",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 65,
+              "start": 43
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "brown outside",
+            "object_span": {
+              "end": 65,
+              "start": 52
+            },
+            "relation": "dries",
+            "score": 0.5409450531005859,
+            "source_slot": "s0",
+            "subject": "bread",
+            "subject_span": {
+              "end": 48,
+              "start": 43
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 65,
+              "start": 43
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "brown outside",
+            "object_span": {
+              "end": 65,
+              "start": 52
+            },
+            "relation": "wilts",
+            "score": 0.4555800259113312,
+            "source_slot": "s0",
+            "subject": "bread",
+            "subject_span": {
+              "end": 48,
+              "start": 43
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 139,
+              "start": 120
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "result",
+            "object_span": {
+              "end": 139,
+              "start": 133
+            },
+            "relation": "improves",
+            "score": 0.7510412335395813,
+            "source_slot": "s0",
+            "subject": "satisfactory result",
+            "subject_span": {
+              "end": 139,
+              "start": 120
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 310,
+              "start": 234
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Time",
+            "object_span": {
+              "end": 310,
+              "start": 306
+            },
+            "relation": "reduces",
+            "score": 0.6547603607177734,
+            "source_slot": "s1",
+            "subject": "satisfactory result",
+            "subject_span": {
+              "end": 253,
+              "start": 234
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1060,
+              "start": 234
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "more",
+            "object_span": {
+              "end": 1060,
+              "start": 1056
+            },
+            "relation": "enables",
+            "score": 0.664777934551239,
+            "source_slot": "s1",
+            "subject": "satisfactory result",
+            "subject_span": {
+              "end": 253,
+              "start": 234
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1060,
+              "start": 234
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "more",
+            "object_span": {
+              "end": 1060,
+              "start": 1056
+            },
+            "relation": "helps",
+            "score": 0.6462612748146057,
+            "source_slot": "s1",
+            "subject": "satisfactory result",
+            "subject_span": {
+              "end": 253,
+              "start": 234
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1067,
+              "start": 234
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bread",
+            "object_span": {
+              "end": 1067,
+              "start": 1062
+            },
+            "relation": "helps",
+            "score": 0.6812028884887695,
+            "source_slot": "s1",
+            "subject": "satisfactory result",
+            "subject_span": {
+              "end": 253,
+              "start": 234
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 521,
+              "start": 362
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "heat",
+            "object_span": {
+              "end": 366,
+              "start": 362
+            },
+            "relation": "depends_on",
+            "score": 0.5493381023406982,
+            "source_slot": "s1",
+            "subject": "process",
+            "subject_span": {
+              "end": 521,
+              "start": 514
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 521,
+              "start": 362
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "heat",
+            "object_span": {
+              "end": 366,
+              "start": 362
+            },
+            "relation": "requires",
+            "score": 0.4471891224384308,
+            "source_slot": "s1",
+            "subject": "process",
+            "subject_span": {
+              "end": 521,
+              "start": 514
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 946,
+              "start": 867
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "heat",
+            "object_span": {
+              "end": 946,
+              "start": 942
+            },
+            "relation": "requires",
+            "score": 0.5773758888244629,
+            "source_slot": "s1",
+            "subject": "recipe",
+            "subject_span": {
+              "end": 873,
+              "start": 867
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1011,
+              "start": 867
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "result",
+            "object_span": {
+              "end": 1011,
+              "start": 1005
+            },
+            "relation": "improves",
+            "score": 0.6557267904281616,
+            "source_slot": "s1",
+            "subject": "recipe",
+            "subject_span": {
+              "end": 873,
+              "start": 867
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 969,
+              "start": 942
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 969,
+              "start": 965
+            },
+            "relation": "changes",
+            "score": 0.46547025442123413,
+            "source_slot": "s1",
+            "subject": "heat",
+            "subject_span": {
+              "end": 946,
+              "start": 942
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 969,
+              "start": 867
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "recipe",
+            "object_span": {
+              "end": 873,
+              "start": 867
+            },
+            "relation": "part_of",
+            "score": 0.5062848925590515,
+            "source_slot": "s1",
+            "subject": "time",
+            "subject_span": {
+              "end": 969,
+              "start": 965
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1110,
+              "start": 884
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "specific environment",
+            "object_span": {
+              "end": 904,
+              "start": 884
+            },
+            "relation": "related",
+            "score": 0.389250785112381,
+            "source_slot": "s1",
+            "subject": "recipe",
+            "subject_span": {
+              "end": 1110,
+              "start": 1104
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1150,
+              "start": 1104
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "same parameters",
+            "object_span": {
+              "end": 1150,
+              "start": 1135
+            },
+            "relation": "uses",
+            "score": 0.8871350288391113,
+            "source_slot": "s1",
+            "subject": "recipe",
+            "subject_span": {
+              "end": 1110,
+              "start": 1104
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1192,
+              "start": 1104
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "future batches",
+            "object_span": {
+              "end": 1192,
+              "start": 1178
+            },
+            "relation": "used_for",
+            "score": 0.8457300066947937,
+            "source_slot": "s1",
+            "subject": "recipe",
+            "subject_span": {
+              "end": 1110,
+              "start": 1104
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "670c210df6e4482ac6612495df0b1889c0546bac9d1da3cc8631e5312a7e0706",
+          "s1": "112e3ff8219ab59c79d1064bf94d785f00fd4bc7f7f7951c327c600020473f2b"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.46547025442123413,
+                  "end": 1097,
+                  "start": 1093,
+                  "text": "heat"
+                },
+                "tail": {
+                  "confidence": 0.46547025442123413,
+                  "end": 1120,
+                  "start": 1116,
+                  "text": "time"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [
+              {
+                "head": {
+                  "confidence": 0.5493381023406982,
+                  "end": 672,
+                  "start": 665,
+                  "text": "process"
+                },
+                "tail": {
+                  "confidence": 0.5493381023406982,
+                  "end": 517,
+                  "start": 513,
+                  "text": "heat"
+                }
+              }
+            ],
+            "dries": [
+              {
+                "head": {
+                  "confidence": 0.5409450531005859,
+                  "end": 48,
+                  "start": 43,
+                  "text": "bread"
+                },
+                "tail": {
+                  "confidence": 0.5409450531005859,
+                  "end": 65,
+                  "start": 52,
+                  "text": "brown outside"
+                }
+              }
+            ],
+            "enables": [
+              {
+                "head": {
+                  "confidence": 0.664777934551239,
+                  "end": 404,
+                  "start": 385,
+                  "text": "satisfactory result"
+                },
+                "tail": {
+                  "confidence": 0.664777934551239,
+                  "end": 1211,
+                  "start": 1207,
+                  "text": "more"
+                }
+              }
+            ],
+            "has": [],
+            "helps": [
+              {
+                "head": {
+                  "confidence": 0.6462612748146057,
+                  "end": 404,
+                  "start": 385,
+                  "text": "satisfactory result"
+                },
+                "tail": {
+                  "confidence": 0.6462612748146057,
+                  "end": 1211,
+                  "start": 1207,
+                  "text": "more"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6812028884887695,
+                  "end": 404,
+                  "start": 385,
+                  "text": "satisfactory result"
+                },
+                "tail": {
+                  "confidence": 0.6812028884887695,
+                  "end": 1218,
+                  "start": 1213,
+                  "text": "bread"
+                }
+              }
+            ],
+            "holds": [],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.7510412335395813,
+                  "end": 139,
+                  "start": 120,
+                  "text": "satisfactory result"
+                },
+                "tail": {
+                  "confidence": 0.7510412335395813,
+                  "end": 139,
+                  "start": 133,
+                  "text": "result"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6557267904281616,
+                  "end": 1024,
+                  "start": 1018,
+                  "text": "recipe"
+                },
+                "tail": {
+                  "confidence": 0.6557267904281616,
+                  "end": 1162,
+                  "start": 1156,
+                  "text": "result"
+                }
+              }
+            ],
+            "increases": [],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.5062848925590515,
+                  "end": 1120,
+                  "start": 1116,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.5062848925590515,
+                  "end": 1024,
+                  "start": 1018,
+                  "text": "recipe"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.6547603607177734,
+                  "end": 404,
+                  "start": 385,
+                  "text": "satisfactory result"
+                },
+                "tail": {
+                  "confidence": 0.6547603607177734,
+                  "end": 461,
+                  "start": 457,
+                  "text": "Time"
+                }
+              }
+            ],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.389250785112381,
+                  "end": 1261,
+                  "start": 1255,
+                  "text": "recipe"
+                },
+                "tail": {
+                  "confidence": 0.389250785112381,
+                  "end": 1055,
+                  "start": 1035,
+                  "text": "specific environment"
+                }
+              }
+            ],
+            "requires": [
+              {
+                "head": {
+                  "confidence": 0.4471891224384308,
+                  "end": 672,
+                  "start": 665,
+                  "text": "process"
+                },
+                "tail": {
+                  "confidence": 0.4471891224384308,
+                  "end": 517,
+                  "start": 513,
+                  "text": "heat"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5773758888244629,
+                  "end": 1024,
+                  "start": 1018,
+                  "text": "recipe"
+                },
+                "tail": {
+                  "confidence": 0.5773758888244629,
+                  "end": 1097,
+                  "start": 1093,
+                  "text": "heat"
+                }
+              }
+            ],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [
+              {
+                "head": {
+                  "confidence": 0.8457300066947937,
+                  "end": 1261,
+                  "start": 1255,
+                  "text": "recipe"
+                },
+                "tail": {
+                  "confidence": 0.8457300066947937,
+                  "end": 1343,
+                  "start": 1329,
+                  "text": "future batches"
+                }
+              }
+            ],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.8871350288391113,
+                  "end": 1261,
+                  "start": 1255,
+                  "text": "recipe"
+                },
+                "tail": {
+                  "confidence": 0.8871350288391113,
+                  "end": 1301,
+                  "start": 1286,
+                  "text": "same parameters"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": [
+              {
+                "head": {
+                  "confidence": 0.4555800259113312,
+                  "end": 48,
+                  "start": 43,
+                  "text": "bread"
+                },
+                "tail": {
+                  "confidence": 0.4555800259113312,
+                  "end": 65,
+                  "start": 52,
+                  "text": "brown outside"
+                }
+              }
+            ]
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:13:55.631254+00:00",
+  "status": "RETURNED"
+}

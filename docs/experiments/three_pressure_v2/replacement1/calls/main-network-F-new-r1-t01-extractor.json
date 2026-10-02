@@ -1,0 +1,255 @@
+{
+  "completed_utc": "2026-10-02T19:16:38.135136+00:00",
+  "elapsed_seconds": 1.558063151082024,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"A workshop sensor sometimes disappears from the Wi-Fi dashboard. I do not know whether power or Wi-Fi is responsible. How can I narrow it down without replacing parts at random?\", \"s1\": \"That sounds frustrating! Dealing with intermittent connectivity issues can be tricky because you don't know if it's a power issue or a network issue.\\n\\nSince you want to narrow it down without just replacing parts randomly, here are a few structured ways to investigate this:\\n\\n**1. Isolate the \\\"Power\\\" vs. \\\"Wi-Fi\\\" Problem:**\\n\\n*   **Test the Power:** Can you confirm the sensor is *always* powered on? If you can't see it at all, it's likely a power/hardware issue. If it's *sometimes* gone, it's likely a connection/Wi-Fi issue.\\n*   **Test the Wi-Fi:** If you have another device (like a phone or another sensor) that *is* connected, try to see if the network is stable.\\n*   **Check the \\\"Dashboard\\\" Side:** Is the dashboard itself showing the sensor as \\\"offline,\\\" or is the sensor *physically* offline (i.e., the device itself isn't responding)?\\n\\n**2. Systemic Troubleshooting Steps (The \\\"Narrowing Down\\\"):**\\n\\n*   **Check the Logs:** If you have access to the system logs, look for \\\"connection lost\\\" or \\\"timeout\\\" errors. This often tells you if the issue is a network dropout or a hardware failure.\\n*   **Check the Environment:** Is the sensor near a major source of interference (like a large metal object or a strong microwave)? Sometimes physical interference causes \\\"disappearing\\\" signals.\\n*   **Test the Network:** If you can, try to connect the sensor to a different, known-good Wi-Fi network. If it works there, the problem is your *home* Wi-Fi setup. If it still fails, the problem is likely the sensor/sensor itself.\\n\\n**3. The \\\"No-Replacement\\\" Strategy:**\\n\\n*   **The \\\"Simulated Replacement\\\":** Instead of replacing parts randomly, try to *simulate* the failure. If you have a spare, identical sensor, try swapping it in. If the problem follows the *sensor*, it's a hardware/power issue. If the problem stays with the *location*, it's a Wi-Fi/network issue.\\n\\n**In short, to narrow it down:**\\n\\n1.  **Check the power source:** Is the sensor getting consistent power?\\n2.  **Check the network:** Is the Wi-Fi signal strong and stable?\\n3.  **Test the connection:** Does it work on a different, known-good network?\\n\\nLet me know if you can provide more details about *what* is disappearing (is it the whole device, or just the data reporting?), and I can give you more specific steps!\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-F-new-r1-t01"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"sensor\", \"relation\": \"depends_on\", \"to\": \"power\", \"source\": \"s1\", \"evidence\": \"power source:** Is the sensor\"}, {\"from\": \"sensor\", \"relation\": \"depends_on\", \"to\": \"Wi-Fi\", \"source\": \"s1\", \"evidence\": \"sensor getting consistent power?\\n2.  **Check the network:** Is the Wi-Fi\"}], \"episode_id\": \"main-network-F-new-r1-t01\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 2,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        }
+      ],
+      "specialist": {
+        "content_digest": "8bfaa74d16ea21d8d94a4ea6c13f72a76713a03f57ca58495db7af126acde4ba",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 779,
+              "start": 742
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sensor",
+            "object_span": {
+              "end": 748,
+              "start": 742
+            },
+            "relation": "associated_with",
+            "score": 0.670183539390564,
+            "source_slot": "s1",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 779,
+              "start": 773
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1945,
+              "start": 1916
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "power",
+            "object_span": {
+              "end": 1921,
+              "start": 1916
+            },
+            "relation": "depends_on",
+            "score": 0.7342413067817688,
+            "source_slot": "s1",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 1945,
+              "start": 1939
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 2011,
+              "start": 1939
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi",
+            "object_span": {
+              "end": 2011,
+              "start": 2006
+            },
+            "relation": "depends_on",
+            "score": 0.5010128021240234,
+            "source_slot": "s1",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 1945,
+              "start": 1939
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "e6724fca54b6d88f494567faefcbf51a9aeece9c9cfac353c3edd2d3cda5c440",
+          "s1": "4db9c9874c60ca01b053c882656f209d2e7780ae8b79cd64aed78f9df6eee0f4"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.670183539390564,
+                  "end": 957,
+                  "start": 951,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.670183539390564,
+                  "end": 926,
+                  "start": 920,
+                  "text": "sensor"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [
+              {
+                "head": {
+                  "confidence": 0.7342413067817688,
+                  "end": 2123,
+                  "start": 2117,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.7342413067817688,
+                  "end": 2099,
+                  "start": 2094,
+                  "text": "power"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5010128021240234,
+                  "end": 2123,
+                  "start": 2117,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.5010128021240234,
+                  "end": 2189,
+                  "start": 2184,
+                  "text": "Wi-Fi"
+                }
+              }
+            ],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:16:36.572719+00:00",
+  "status": "RETURNED"
+}

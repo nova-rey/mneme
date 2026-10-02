@@ -1,0 +1,594 @@
+{
+  "completed_utc": "2026-10-02T19:15:09.212162+00:00",
+  "elapsed_seconds": 1.3702817619778216,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"I have not tested a different setting. The dark outside and underbaked middle still make me unsure where to start. Any ideas on how to approach this without guessing?\", \"s1\": \"It sounds like you are facing a **\\\"perfect balance\\\" problem**: you want the outside to be perfectly cooked (not too dark/burnt) while the inside is perfectly cooked (not raw).\\n\\nSince you are stuck between two conflicting results, here is a highly structured, step-by-step \\\"testing\\\" approach to find the right balance:\\n\\n### 1. The \\\"Test Run\\\" Method (The 2-Step Test)\\nSince you are unsure if the temperature or time is the issue, you need to isolate the variables.\\n\\n**Step A: The Temperature Test (The \\\"Slow Down\\\" Test)**\\n*   **Action:** Reduce your temperature by 10-15 degrees (e.g., if you were at 350\\u00b0F, try 325\\u00b0F).\\n*   **Why?** This tests if the *heat source* is too aggressive. If the outside is burning too fast, the temperature is too high.\\n\\n**Step B: The Time Test (The \\\"Slow Cook\\\" Test)**\\n*   **Action:** Keep the temperature the same, but **increase the time by 20-30%**.\\n*   **Why?** This tests if the \\\"raw\\\" middle is the problem.\\n\\n### 2. The \\\"Visual\\\" Check (The \\\"Visual\\\" Test)\\nIf you are baking something like bread or a cake, look at the *visual* evidence:\\n*   **If the outside is dark/brown:** The temperature is too high.\\n*   **If the middle is raw:** The time is too short.\\n\\n**If you can tell me what you are trying to bake, I can give you a specific \\\"dependable\\\" instruction.**\\n\\n---\\n\\n### \\ud83d\\udca1 The \\\"No Guessing\\\" Approach:\\n\\nSince you are worried about \\\"guessing,\\\" let's use **The \\\"Slow and Steady\\\" Approach:**\\n\\n1.  **Lower the Heat:** If you are currently at 350\\u00b0F, try 300\\u00b0F.\\n2.  **Increase the Time:** If you were aiming for 30 minutes, try 45 minutes.\\n\\n**If you can tell me *what* you are trying to bake (e.g., \\\"a chocolate cake,\\\" \\\"a sourdough,\\\" \\\"a chicken,\\\" etc.), I can give you the exact \\\"dependable\\\" temperature and time.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-baking-S-rephrased-r0-t04"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [], \"episode_id\": \"main-baking-S-rephrased-r0-t04\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "solves",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "solves",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "9a7d866795dbbe815f788f9a6d0f66aaf6db9c1f50f8b14892c00d1fe291807f",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 280,
+              "start": 35
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "perfect balance",
+            "object_span": {
+              "end": 50,
+              "start": 35
+            },
+            "relation": "solves",
+            "score": 0.40768149495124817,
+            "source_slot": "s1",
+            "subject": "testing",
+            "subject_span": {
+              "end": 280,
+              "start": 273
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 461,
+              "start": 273
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "variables",
+            "object_span": {
+              "end": 461,
+              "start": 452
+            },
+            "relation": "requires",
+            "score": 0.485284686088562,
+            "source_slot": "s1",
+            "subject": "testing",
+            "subject_span": {
+              "end": 280,
+              "start": 273
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 339,
+              "start": 35
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "perfect balance",
+            "object_span": {
+              "end": 50,
+              "start": 35
+            },
+            "relation": "solves",
+            "score": 0.39383015036582947,
+            "source_slot": "s1",
+            "subject": "Test Run",
+            "subject_span": {
+              "end": 339,
+              "start": 331
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 494,
+              "start": 409
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 413,
+              "start": 409
+            },
+            "relation": "changes",
+            "score": 0.677845299243927,
+            "source_slot": "s1",
+            "subject": "Temperature Test",
+            "subject_span": {
+              "end": 494,
+              "start": 478
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 494,
+              "start": 409
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 413,
+              "start": 409
+            },
+            "relation": "increases",
+            "score": 0.5294190645217896,
+            "source_slot": "s1",
+            "subject": "Temperature Test",
+            "subject_span": {
+              "end": 494,
+              "start": 478
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 494,
+              "start": 478
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Temperature",
+            "object_span": {
+              "end": 489,
+              "start": 478
+            },
+            "relation": "changes",
+            "score": 0.7461156249046326,
+            "source_slot": "s1",
+            "subject": "Temperature Test",
+            "subject_span": {
+              "end": 494,
+              "start": 478
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 494,
+              "start": 478
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Temperature",
+            "object_span": {
+              "end": 489,
+              "start": 478
+            },
+            "relation": "reduces",
+            "score": 0.7934085130691528,
+            "source_slot": "s1",
+            "subject": "Temperature Test",
+            "subject_span": {
+              "end": 494,
+              "start": 478
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 867,
+              "start": 478
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 867,
+              "start": 863
+            },
+            "relation": "reduces",
+            "score": 0.6872915625572205,
+            "source_slot": "s1",
+            "subject": "Temperature Test",
+            "subject_span": {
+              "end": 494,
+              "start": 478
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 771,
+              "start": 722
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 733,
+              "start": 722
+            },
+            "relation": "changes",
+            "score": 0.4677552282810211,
+            "source_slot": "s1",
+            "subject": "Time Test",
+            "subject_span": {
+              "end": 771,
+              "start": 762
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 771,
+              "start": 762
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Time",
+            "object_span": {
+              "end": 766,
+              "start": 762
+            },
+            "relation": "changes",
+            "score": 0.6302997469902039,
+            "source_slot": "s1",
+            "subject": "Time Test",
+            "subject_span": {
+              "end": 771,
+              "start": 762
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 771,
+              "start": 762
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Time",
+            "object_span": {
+              "end": 766,
+              "start": 762
+            },
+            "relation": "increases",
+            "score": 0.5157346129417419,
+            "source_slot": "s1",
+            "subject": "Time Test",
+            "subject_span": {
+              "end": 771,
+              "start": 762
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "1b4b20a374dfab915a3f3a3f76e44c5388e28e1878772b14c6f66b4ba3493f63",
+          "s1": "d89b9532e0d9c69f48bf46fee3207c709588a7d6a17f63306ff723d665805c36"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.677845299243927,
+                  "end": 661,
+                  "start": 645,
+                  "text": "Temperature Test"
+                },
+                "tail": {
+                  "confidence": 0.677845299243927,
+                  "end": 580,
+                  "start": 576,
+                  "text": "time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7461156249046326,
+                  "end": 661,
+                  "start": 645,
+                  "text": "Temperature Test"
+                },
+                "tail": {
+                  "confidence": 0.7461156249046326,
+                  "end": 656,
+                  "start": 645,
+                  "text": "Temperature"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4677552282810211,
+                  "end": 938,
+                  "start": 929,
+                  "text": "Time Test"
+                },
+                "tail": {
+                  "confidence": 0.4677552282810211,
+                  "end": 900,
+                  "start": 889,
+                  "text": "temperature"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6302997469902039,
+                  "end": 938,
+                  "start": 929,
+                  "text": "Time Test"
+                },
+                "tail": {
+                  "confidence": 0.6302997469902039,
+                  "end": 933,
+                  "start": 929,
+                  "text": "Time"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.5294190645217896,
+                  "end": 661,
+                  "start": 645,
+                  "text": "Temperature Test"
+                },
+                "tail": {
+                  "confidence": 0.5294190645217896,
+                  "end": 580,
+                  "start": 576,
+                  "text": "time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5157346129417419,
+                  "end": 938,
+                  "start": 929,
+                  "text": "Time Test"
+                },
+                "tail": {
+                  "confidence": 0.5157346129417419,
+                  "end": 933,
+                  "start": 929,
+                  "text": "Time"
+                }
+              }
+            ],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.7934085130691528,
+                  "end": 661,
+                  "start": 645,
+                  "text": "Temperature Test"
+                },
+                "tail": {
+                  "confidence": 0.7934085130691528,
+                  "end": 656,
+                  "start": 645,
+                  "text": "Temperature"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6872915625572205,
+                  "end": 661,
+                  "start": 645,
+                  "text": "Temperature Test"
+                },
+                "tail": {
+                  "confidence": 0.6872915625572205,
+                  "end": 1034,
+                  "start": 1030,
+                  "text": "time"
+                }
+              }
+            ],
+            "related": [],
+            "requires": [
+              {
+                "head": {
+                  "confidence": 0.485284686088562,
+                  "end": 447,
+                  "start": 440,
+                  "text": "testing"
+                },
+                "tail": {
+                  "confidence": 0.485284686088562,
+                  "end": 628,
+                  "start": 619,
+                  "text": "variables"
+                }
+              }
+            ],
+            "retains": [],
+            "shades": [],
+            "solves": [
+              {
+                "head": {
+                  "confidence": 0.40768149495124817,
+                  "end": 447,
+                  "start": 440,
+                  "text": "testing"
+                },
+                "tail": {
+                  "confidence": 0.40768149495124817,
+                  "end": 217,
+                  "start": 202,
+                  "text": "perfect balance"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.39383015036582947,
+                  "end": 506,
+                  "start": 498,
+                  "text": "Test Run"
+                },
+                "tail": {
+                  "confidence": 0.39383015036582947,
+                  "end": 217,
+                  "start": 202,
+                  "text": "perfect balance"
+                }
+              }
+            ],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:15:07.839518+00:00",
+  "status": "RETURNED"
+}

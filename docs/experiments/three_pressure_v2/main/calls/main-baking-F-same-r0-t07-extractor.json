@@ -1,0 +1,1381 @@
+{
+  "completed_utc": "2026-10-02T19:14:07.147857+00:00",
+  "elapsed_seconds": 0.9733437830582261,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"At 180 degrees Celsius for 50 minutes, the bread is dark outside and dry in the middle. How does this overshoot bound the time choice?\", \"s1\": \"This is a classic case of **over-baking**.\\n\\nWhen the bread is \\\"dark outside\\\" and \\\"dry in the middle,\\\" it means the heat has been applied for too long or too intensely.\\n\\nHere is what this \\\"overshoot\\\" tells you:\\n\\n1.  **The Heat is Too High:** The temperature (180\\u00b0C) might be slightly too high for the specific type of bread you are making, or the time (50 minutes) is too long.\\n2.  **The Result is \\\"Dry\\\":** \\\"Dry in the middle\\\" means the internal structure has dried out, likely losing moisture and texture.\\n\\n**What this \\\"overshoot\\\" establishes:**\\n\\n*   **The Time is Too Long:** You are likely over-baking. The 50 minutes is too long for the specific density/moisture content of your bread.\\n*   **The Temperature is Too High:** 180\\u00b0C might be too high for the specific recipe you are using.\\n\\n**The next step to take is to \\\"reduce the time\\\":**\\n\\n*   **Action:** You need to reduce the duration. Try 40 minutes instead of 50.\\n*   **Alternative Action:** If you cannot reduce the time, try lowering the temperature slightly (e.g., to 170\\u00b0C) to see if the \\\"dryness\\\" issue is resolved.\\n\\n**In short: The 50-minute mark is too long for your specific recipe.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-baking-F-same-r0-t07"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"overshoot\", \"relation\": \"supports\", \"to\": \"bread\", \"source\": \"s0\", \"evidence\": \"bread is dark outside and dry in the middle. How does this overshoot\"}, {\"from\": \"overshoot\", \"relation\": \"constrains\", \"to\": \"time\", \"source\": \"s0\", \"evidence\": \"overshoot bound the time\"}, {\"from\": \"heat\", \"relation\": \"causes\", \"to\": \"over-baking\", \"source\": \"s1\", \"evidence\": \"over-baking**.\\n\\nWhen the bread is \\\"dark outside\\\" and \\\"dry in the middle,\\\" it means the heat\"}, {\"from\": \"overshoot\", \"relation\": \"related\", \"to\": \"specific recipe\", \"source\": \"s1\", \"evidence\": \"overshoot\\\" establishes:**\\n\\n*   **The Time is Too Long:** You are likely over-baking. The 50 minutes is too long for the specific density/moisture content of your bread.\\n*   **The Temperature is Too High:** 180\\u00b0C might be too high for the specific recipe\"}, {\"from\": \"Temperature\", \"relation\": \"related\", \"to\": \"specific recipe\", \"source\": \"s1\", \"evidence\": \"Temperature is Too High:** 180\\u00b0C might be too high for the specific recipe\"}, {\"from\": \"time\", \"relation\": \"related\", \"to\": \"specific recipe\", \"source\": \"s1\", \"evidence\": \"specific recipe you are using.\\n\\n**The next step to take is to \\\"reduce the time\"}], \"episode_id\": \"main-baking-F-same-r0-t07\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "controls",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "protects",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "specialist_observation",
+          "relation": "supports",
+          "status": "forwarded"
+        },
+        {
+          "index": 5,
+          "kind": "specialist_observation",
+          "relation": "constrains",
+          "status": "forwarded"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "controls",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 11,
+          "kind": "unsupported_specialist_relation",
+          "relation": "controls",
+          "status": "rejected"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "controls",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 14,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 15,
+          "kind": "unsupported_specialist_relation",
+          "relation": "wilts",
+          "status": "rejected"
+        },
+        {
+          "index": 16,
+          "kind": "unsupported_specialist_relation",
+          "relation": "wilts",
+          "status": "rejected"
+        },
+        {
+          "index": 17,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 18,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 19,
+          "kind": "unsupported_specialist_relation",
+          "relation": "contains",
+          "status": "rejected"
+        },
+        {
+          "index": 20,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 21,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 22,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 23,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 24,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 25,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 26,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "141a361db3103cb5986cbfa454e83c5a615585c71c41bda8c3be1c26140d9194",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 111,
+              "start": 43
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bread",
+            "object_span": {
+              "end": 48,
+              "start": 43
+            },
+            "relation": "affects",
+            "score": 0.9675828814506531,
+            "source_slot": "s0",
+            "subject": "overshoot",
+            "subject_span": {
+              "end": 111,
+              "start": 102
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 111,
+              "start": 43
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bread",
+            "object_span": {
+              "end": 48,
+              "start": 43
+            },
+            "relation": "associated_with",
+            "score": 0.8276221752166748,
+            "source_slot": "s0",
+            "subject": "overshoot",
+            "subject_span": {
+              "end": 111,
+              "start": 102
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 111,
+              "start": 43
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bread",
+            "object_span": {
+              "end": 48,
+              "start": 43
+            },
+            "relation": "controls",
+            "score": 0.901541531085968,
+            "source_slot": "s0",
+            "subject": "overshoot",
+            "subject_span": {
+              "end": 111,
+              "start": 102
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 111,
+              "start": 43
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bread",
+            "object_span": {
+              "end": 48,
+              "start": 43
+            },
+            "relation": "protects",
+            "score": 0.7535626292228699,
+            "source_slot": "s0",
+            "subject": "overshoot",
+            "subject_span": {
+              "end": 111,
+              "start": 102
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 111,
+              "start": 43
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bread",
+            "object_span": {
+              "end": 48,
+              "start": 43
+            },
+            "relation": "supports",
+            "score": 0.6795449256896973,
+            "source_slot": "s0",
+            "subject": "overshoot",
+            "subject_span": {
+              "end": 111,
+              "start": 102
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 126,
+              "start": 102
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 126,
+              "start": 122
+            },
+            "relation": "constrains",
+            "score": 0.7655026912689209,
+            "source_slot": "s0",
+            "subject": "overshoot",
+            "subject_span": {
+              "end": 111,
+              "start": 102
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 126,
+              "start": 102
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 126,
+              "start": 122
+            },
+            "relation": "controls",
+            "score": 0.6964862942695618,
+            "source_slot": "s0",
+            "subject": "overshoot",
+            "subject_span": {
+              "end": 111,
+              "start": 102
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 126,
+              "start": 102
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 126,
+              "start": 122
+            },
+            "relation": "influences",
+            "score": 0.9134224653244019,
+            "source_slot": "s0",
+            "subject": "overshoot",
+            "subject_span": {
+              "end": 111,
+              "start": 102
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 119,
+              "start": 28
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "over-baking",
+            "object_span": {
+              "end": 39,
+              "start": 28
+            },
+            "relation": "causes",
+            "score": 0.4815228581428528,
+            "source_slot": "s1",
+            "subject": "heat",
+            "subject_span": {
+              "end": 119,
+              "start": 115
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 119,
+              "start": 53
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bread",
+            "object_span": {
+              "end": 58,
+              "start": 53
+            },
+            "relation": "affects",
+            "score": 0.9418119788169861,
+            "source_slot": "s1",
+            "subject": "heat",
+            "subject_span": {
+              "end": 119,
+              "start": 115
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 119,
+              "start": 53
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bread",
+            "object_span": {
+              "end": 58,
+              "start": 53
+            },
+            "relation": "associated_with",
+            "score": 0.8046208024024963,
+            "source_slot": "s1",
+            "subject": "heat",
+            "subject_span": {
+              "end": 119,
+              "start": 115
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 119,
+              "start": 53
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bread",
+            "object_span": {
+              "end": 58,
+              "start": 53
+            },
+            "relation": "controls",
+            "score": 0.8511590957641602,
+            "source_slot": "s1",
+            "subject": "heat",
+            "subject_span": {
+              "end": 119,
+              "start": 115
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 350,
+              "start": 221
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 350,
+              "start": 346
+            },
+            "relation": "controls",
+            "score": 0.6658381223678589,
+            "source_slot": "s1",
+            "subject": "Heat",
+            "subject_span": {
+              "end": 225,
+              "start": 221
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 350,
+              "start": 221
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 350,
+              "start": 346
+            },
+            "relation": "increases",
+            "score": 0.75553297996521,
+            "source_slot": "s1",
+            "subject": "Heat",
+            "subject_span": {
+              "end": 225,
+              "start": 221
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 350,
+              "start": 221
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 350,
+              "start": 346
+            },
+            "relation": "influences",
+            "score": 0.8727657198905945,
+            "source_slot": "s1",
+            "subject": "Heat",
+            "subject_span": {
+              "end": 225,
+              "start": 221
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 424,
+              "start": 221
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Dry in the middle",
+            "object_span": {
+              "end": 424,
+              "start": 407
+            },
+            "relation": "wilts",
+            "score": 0.4432278275489807,
+            "source_slot": "s1",
+            "subject": "Heat",
+            "subject_span": {
+              "end": 225,
+              "start": 221
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 256,
+              "start": 82
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "dry in the middle",
+            "object_span": {
+              "end": 99,
+              "start": 82
+            },
+            "relation": "wilts",
+            "score": 0.453252375125885,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 256,
+              "start": 245
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 773,
+              "start": 520
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "specific recipe",
+            "object_span": {
+              "end": 773,
+              "start": 758
+            },
+            "relation": "related",
+            "score": 0.42708835005760193,
+            "source_slot": "s1",
+            "subject": "overshoot",
+            "subject_span": {
+              "end": 529,
+              "start": 520
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 687,
+              "start": 300
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "specific type of bread",
+            "object_span": {
+              "end": 322,
+              "start": 300
+            },
+            "relation": "uses",
+            "score": 0.4254923164844513,
+            "source_slot": "s1",
+            "subject": "bread",
+            "subject_span": {
+              "end": 687,
+              "start": 682
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 687,
+              "start": 640
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "specific density/moisture content",
+            "object_span": {
+              "end": 673,
+              "start": 640
+            },
+            "relation": "contains",
+            "score": 0.5768861174583435,
+            "source_slot": "s1",
+            "subject": "bread",
+            "subject_span": {
+              "end": 687,
+              "start": 682
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 773,
+              "start": 682
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "specific recipe",
+            "object_span": {
+              "end": 773,
+              "start": 758
+            },
+            "relation": "uses",
+            "score": 0.3682186007499695,
+            "source_slot": "s1",
+            "subject": "bread",
+            "subject_span": {
+              "end": 687,
+              "start": 682
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 710,
+              "start": 682
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bread",
+            "object_span": {
+              "end": 687,
+              "start": 682
+            },
+            "relation": "associated_with",
+            "score": 0.7190775871276855,
+            "source_slot": "s1",
+            "subject": "Temperature",
+            "subject_span": {
+              "end": 710,
+              "start": 699
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 773,
+              "start": 699
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "specific recipe",
+            "object_span": {
+              "end": 773,
+              "start": 758
+            },
+            "relation": "related",
+            "score": 0.39249348640441895,
+            "source_slot": "s1",
+            "subject": "Temperature",
+            "subject_span": {
+              "end": 710,
+              "start": 699
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 836,
+              "start": 758
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "specific recipe",
+            "object_span": {
+              "end": 773,
+              "start": 758
+            },
+            "relation": "related",
+            "score": 0.5950444340705872,
+            "source_slot": "s1",
+            "subject": "time",
+            "subject_span": {
+              "end": 836,
+              "start": 832
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 905,
+              "start": 832
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 836,
+              "start": 832
+            },
+            "relation": "reduces",
+            "score": 0.7428669333457947,
+            "source_slot": "s1",
+            "subject": "40 minutes",
+            "subject_span": {
+              "end": 905,
+              "start": 895
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1008,
+              "start": 974
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 978,
+              "start": 974
+            },
+            "relation": "increases",
+            "score": 0.7637706995010376,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 1008,
+              "start": 997
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1008,
+              "start": 974
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 978,
+              "start": 974
+            },
+            "relation": "influences",
+            "score": 0.8405367732048035,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 1008,
+              "start": 997
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "74f797666d26b67e2f31381694ea278d0065c0298a2d79418cc01803b98213f7",
+          "s1": "6ee3d7b6efafbae43b3ac93258a703221b0eb308b8cf1c7e282b3450279335ea"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.9675828814506531,
+                  "end": 111,
+                  "start": 102,
+                  "text": "overshoot"
+                },
+                "tail": {
+                  "confidence": 0.9675828814506531,
+                  "end": 48,
+                  "start": 43,
+                  "text": "bread"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.9418119788169861,
+                  "end": 254,
+                  "start": 250,
+                  "text": "heat"
+                },
+                "tail": {
+                  "confidence": 0.9418119788169861,
+                  "end": 193,
+                  "start": 188,
+                  "text": "bread"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.8276221752166748,
+                  "end": 111,
+                  "start": 102,
+                  "text": "overshoot"
+                },
+                "tail": {
+                  "confidence": 0.8276221752166748,
+                  "end": 48,
+                  "start": 43,
+                  "text": "bread"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8046208024024963,
+                  "end": 254,
+                  "start": 250,
+                  "text": "heat"
+                },
+                "tail": {
+                  "confidence": 0.8046208024024963,
+                  "end": 193,
+                  "start": 188,
+                  "text": "bread"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7190775871276855,
+                  "end": 845,
+                  "start": 834,
+                  "text": "Temperature"
+                },
+                "tail": {
+                  "confidence": 0.7190775871276855,
+                  "end": 822,
+                  "start": 817,
+                  "text": "bread"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.753515362739563,
+                  "end": 111,
+                  "start": 102,
+                  "text": "overshoot"
+                },
+                "tail": {
+                  "confidence": 0.753515362739563,
+                  "end": 174,
+                  "start": 163,
+                  "text": "over-baking"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4815228581428528,
+                  "end": 254,
+                  "start": 250,
+                  "text": "heat"
+                },
+                "tail": {
+                  "confidence": 0.4815228581428528,
+                  "end": 174,
+                  "start": 163,
+                  "text": "over-baking"
+                }
+              }
+            ],
+            "changes": [],
+            "constrains": [
+              {
+                "head": {
+                  "confidence": 0.7655026912689209,
+                  "end": 111,
+                  "start": 102,
+                  "text": "overshoot"
+                },
+                "tail": {
+                  "confidence": 0.7655026912689209,
+                  "end": 126,
+                  "start": 122,
+                  "text": "time"
+                }
+              }
+            ],
+            "contains": [
+              {
+                "head": {
+                  "confidence": 0.5768861174583435,
+                  "end": 822,
+                  "start": 817,
+                  "text": "bread"
+                },
+                "tail": {
+                  "confidence": 0.5768861174583435,
+                  "end": 808,
+                  "start": 775,
+                  "text": "specific density/moisture content"
+                }
+              }
+            ],
+            "controls": [
+              {
+                "head": {
+                  "confidence": 0.901541531085968,
+                  "end": 111,
+                  "start": 102,
+                  "text": "overshoot"
+                },
+                "tail": {
+                  "confidence": 0.901541531085968,
+                  "end": 48,
+                  "start": 43,
+                  "text": "bread"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6964862942695618,
+                  "end": 111,
+                  "start": 102,
+                  "text": "overshoot"
+                },
+                "tail": {
+                  "confidence": 0.6964862942695618,
+                  "end": 126,
+                  "start": 122,
+                  "text": "time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8511590957641602,
+                  "end": 254,
+                  "start": 250,
+                  "text": "heat"
+                },
+                "tail": {
+                  "confidence": 0.8511590957641602,
+                  "end": 193,
+                  "start": 188,
+                  "text": "bread"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6658381223678589,
+                  "end": 360,
+                  "start": 356,
+                  "text": "Heat"
+                },
+                "tail": {
+                  "confidence": 0.6658381223678589,
+                  "end": 485,
+                  "start": 481,
+                  "text": "time"
+                }
+              }
+            ],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.75553297996521,
+                  "end": 360,
+                  "start": 356,
+                  "text": "Heat"
+                },
+                "tail": {
+                  "confidence": 0.75553297996521,
+                  "end": 485,
+                  "start": 481,
+                  "text": "time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7637706995010376,
+                  "end": 1143,
+                  "start": 1132,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.7637706995010376,
+                  "end": 1113,
+                  "start": 1109,
+                  "text": "time"
+                }
+              }
+            ],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.9134224653244019,
+                  "end": 111,
+                  "start": 102,
+                  "text": "overshoot"
+                },
+                "tail": {
+                  "confidence": 0.9134224653244019,
+                  "end": 126,
+                  "start": 122,
+                  "text": "time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8727657198905945,
+                  "end": 360,
+                  "start": 356,
+                  "text": "Heat"
+                },
+                "tail": {
+                  "confidence": 0.8727657198905945,
+                  "end": 485,
+                  "start": 481,
+                  "text": "time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8405367732048035,
+                  "end": 1143,
+                  "start": 1132,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.8405367732048035,
+                  "end": 1113,
+                  "start": 1109,
+                  "text": "time"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [
+              {
+                "head": {
+                  "confidence": 0.7535626292228699,
+                  "end": 111,
+                  "start": 102,
+                  "text": "overshoot"
+                },
+                "tail": {
+                  "confidence": 0.7535626292228699,
+                  "end": 48,
+                  "start": 43,
+                  "text": "bread"
+                }
+              }
+            ],
+            "provides": [],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.7428669333457947,
+                  "end": 1040,
+                  "start": 1030,
+                  "text": "40 minutes"
+                },
+                "tail": {
+                  "confidence": 0.7428669333457947,
+                  "end": 971,
+                  "start": 967,
+                  "text": "time"
+                }
+              }
+            ],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.42708835005760193,
+                  "end": 664,
+                  "start": 655,
+                  "text": "overshoot"
+                },
+                "tail": {
+                  "confidence": 0.42708835005760193,
+                  "end": 908,
+                  "start": 893,
+                  "text": "specific recipe"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.39249348640441895,
+                  "end": 845,
+                  "start": 834,
+                  "text": "Temperature"
+                },
+                "tail": {
+                  "confidence": 0.39249348640441895,
+                  "end": 908,
+                  "start": 893,
+                  "text": "specific recipe"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5950444340705872,
+                  "end": 971,
+                  "start": 967,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.5950444340705872,
+                  "end": 908,
+                  "start": 893,
+                  "text": "specific recipe"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [
+              {
+                "head": {
+                  "confidence": 0.6795449256896973,
+                  "end": 111,
+                  "start": 102,
+                  "text": "overshoot"
+                },
+                "tail": {
+                  "confidence": 0.6795449256896973,
+                  "end": 48,
+                  "start": 43,
+                  "text": "bread"
+                }
+              }
+            ],
+            "used_for": [],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.4362986087799072,
+                  "end": 126,
+                  "start": 122,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.4362986087799072,
+                  "end": 457,
+                  "start": 435,
+                  "text": "specific type of bread"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.42483463883399963,
+                  "end": 126,
+                  "start": 122,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.42483463883399963,
+                  "end": 908,
+                  "start": 893,
+                  "text": "specific recipe"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4254923164844513,
+                  "end": 822,
+                  "start": 817,
+                  "text": "bread"
+                },
+                "tail": {
+                  "confidence": 0.4254923164844513,
+                  "end": 457,
+                  "start": 435,
+                  "text": "specific type of bread"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.3682186007499695,
+                  "end": 822,
+                  "start": 817,
+                  "text": "bread"
+                },
+                "tail": {
+                  "confidence": 0.3682186007499695,
+                  "end": 908,
+                  "start": 893,
+                  "text": "specific recipe"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": [
+              {
+                "head": {
+                  "confidence": 0.4432278275489807,
+                  "end": 360,
+                  "start": 356,
+                  "text": "Heat"
+                },
+                "tail": {
+                  "confidence": 0.4432278275489807,
+                  "end": 559,
+                  "start": 542,
+                  "text": "Dry in the middle"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.453252375125885,
+                  "end": 391,
+                  "start": 380,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.453252375125885,
+                  "end": 234,
+                  "start": 217,
+                  "text": "dry in the middle"
+                }
+              }
+            ]
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.753515362739563,
+              "end": 111,
+              "start": 102,
+              "text": "overshoot"
+            },
+            "tail": {
+              "confidence": 0.753515362739563,
+              "end": 174,
+              "start": 163,
+              "text": "over-baking"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.4362986087799072,
+              "end": 126,
+              "start": 122,
+              "text": "time"
+            },
+            "tail": {
+              "confidence": 0.4362986087799072,
+              "end": 457,
+              "start": 435,
+              "text": "specific type of bread"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.42483463883399963,
+              "end": 126,
+              "start": 122,
+              "text": "time"
+            },
+            "tail": {
+              "confidence": 0.42483463883399963,
+              "end": 908,
+              "start": 893,
+              "text": "specific recipe"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:14:06.171954+00:00",
+  "status": "RETURNED"
+}

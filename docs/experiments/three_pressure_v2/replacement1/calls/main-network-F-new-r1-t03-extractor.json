@@ -1,0 +1,971 @@
+{
+  "completed_utc": "2026-10-02T19:17:02.914441+00:00",
+  "elapsed_seconds": 1.4720406581182033,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"The supply drops from 5.0 volts to 3.9 volts during transmission. How does this change the next diagnostic check?\", \"s1\": \"That is a critical piece of information! A drop from **5.0V to 3.9V** during a transmission indicates a **power instability** or a **load-related issue**, not necessarily a complete failure.\\n\\nHere is how that change changes the diagnostic approach:\\n\\n### 1. The \\\"Power\\\" vs. \\\"Wi-Fi\\\" Distinction\\n\\nIf the voltage drops during transmission, it means the **power source** is being strained or the connection is being interrupted.\\n\\n*   **If the sensor is a *standalone* device:** A drop from 5.0V to 3.9V means the battery is either dying or the power source is unstable.\\n*   **If the sensor is *connected* to a larger system:** It means the \\\"system\\\" is struggling to maintain a stable connection.\\n\\n### 2. How this changes your diagnostic strategy:\\n\\n**A. If the Sensor is the Problem:**\\nIf the sensor itself is failing, it's a hardware issue (e.g., a failing battery, a weak capacitor, or a failing internal regulator). You should focus on **power stability** first.\\n\\n**B. If the Network is the Problem:**\\nIf the 3.9V drop is happening *during* transmission, it suggests the **Wi-Fi connection** is unstable.\\n\\n**Diagnostic Steps based on the 0.1V drop:**\\n\\n1.  **Check the Power Source:** If you are using a battery, check the battery level. If it's a fixed power source, check the power supply line.\\n2.  **Check the \\\"Load\\\":** If the sensor is trying to transmit a large amount of data (a large data packet), the power draw might be spiking, causing the voltage to dip.\\n3.  **Check the \\\"Load\\\":** If the sensor is trying to transmit data to a distant or weak Wi-Fi router, the \\\"handshake\\\" might be failing, causing the \\\"disappearance.\\\"\\n\\n**In summary, the 0.1V drop is a strong indicator that the *power* is the weak link, not just the network.**\\n\\n**Next Steps:**\\n*   **If you are running this on a battery:** Replace the battery.\\n*   **If you are using a fixed power source:** Check the power supply/power adapter.\\n\\n**Does the 3.1V drop happen *only* when it's trying to send data, or does it happen randomly?**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-F-new-r1-t03"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"drop\", \"relation\": \"causes\", \"to\": \"power instability\", \"source\": \"s1\", \"evidence\": \"drop from **5.0V to 3.9V** during a transmission indicates a **power instability\"}, {\"from\": \"supply\", \"relation\": \"depends_on\", \"to\": \"battery\", \"source\": \"s1\", \"evidence\": \"battery level. If it's a fixed power source, check the power supply\"}, {\"from\": \"Load\", \"relation\": \"related\", \"to\": \"network\", \"source\": \"s1\", \"evidence\": \"Load\\\":** If the sensor is trying to transmit data to a distant or weak Wi-Fi router, the \\\"handshake\\\" might be failing, causing the \\\"disappearance.\\\"\\n\\n**In summary, the 0.1V drop is a strong indicator that the *power* is the weak link, not just the network\"}, {\"from\": \"drop\", \"relation\": \"depends_on\", \"to\": \"battery\", \"source\": \"s1\", \"evidence\": \"battery.\\n*   **If you are using a fixed power source:** Check the power supply/power adapter.\\n\\n**Does the 3.1V drop\"}], \"episode_id\": \"main-network-F-new-r1-t03\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "helps",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 11,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        }
+      ],
+      "specialist": {
+        "content_digest": "a4fcb35732475ae0993f4203f86ac3fcca63615fd4f3344e9c761e62d972b2cc",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 123,
+              "start": 43
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "power instability",
+            "object_span": {
+              "end": 123,
+              "start": 106
+            },
+            "relation": "causes",
+            "score": 0.844240128993988,
+            "source_slot": "s1",
+            "subject": "drop",
+            "subject_span": {
+              "end": 47,
+              "start": 43
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 515,
+              "start": 228
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "battery",
+            "object_span": {
+              "end": 515,
+              "start": 508
+            },
+            "relation": "uses",
+            "score": 0.6346080899238586,
+            "source_slot": "s1",
+            "subject": "diagnostic approach",
+            "subject_span": {
+              "end": 247,
+              "start": 228
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 740,
+              "start": 228
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "diagnostic strategy",
+            "object_span": {
+              "end": 740,
+              "start": 721
+            },
+            "relation": "changes",
+            "score": 0.8628266453742981,
+            "source_slot": "s1",
+            "subject": "diagnostic approach",
+            "subject_span": {
+              "end": 247,
+              "start": 228
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 950,
+              "start": 228
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "power stability",
+            "object_span": {
+              "end": 950,
+              "start": 935
+            },
+            "relation": "improves",
+            "score": 0.55421382188797,
+            "source_slot": "s1",
+            "subject": "diagnostic approach",
+            "subject_span": {
+              "end": 247,
+              "start": 228
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 479,
+              "start": 438
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sensor",
+            "object_span": {
+              "end": 444,
+              "start": 438
+            },
+            "relation": "affects",
+            "score": 0.9439210891723633,
+            "source_slot": "s1",
+            "subject": "drop",
+            "subject_span": {
+              "end": 479,
+              "start": 475
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 740,
+              "start": 228
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "diagnostic approach",
+            "object_span": {
+              "end": 247,
+              "start": 228
+            },
+            "relation": "changes",
+            "score": 0.8891403675079346,
+            "source_slot": "s1",
+            "subject": "diagnostic strategy",
+            "subject_span": {
+              "end": 740,
+              "start": 721
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 761,
+              "start": 721
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Sensor",
+            "object_span": {
+              "end": 761,
+              "start": 755
+            },
+            "relation": "helps",
+            "score": 0.7204278707504272,
+            "source_slot": "s1",
+            "subject": "diagnostic strategy",
+            "subject_span": {
+              "end": 740,
+              "start": 721
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 859,
+              "start": 721
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "battery",
+            "object_span": {
+              "end": 859,
+              "start": 852
+            },
+            "relation": "uses",
+            "score": 0.6404083371162415,
+            "source_slot": "s1",
+            "subject": "diagnostic strategy",
+            "subject_span": {
+              "end": 740,
+              "start": 721
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 950,
+              "start": 721
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "power stability",
+            "object_span": {
+              "end": 950,
+              "start": 935
+            },
+            "relation": "improves",
+            "score": 0.5578781366348267,
+            "source_slot": "s1",
+            "subject": "diagnostic strategy",
+            "subject_span": {
+              "end": 740,
+              "start": 721
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1286,
+              "start": 1219
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "battery",
+            "object_span": {
+              "end": 1226,
+              "start": 1219
+            },
+            "relation": "depends_on",
+            "score": 0.7595398426055908,
+            "source_slot": "s1",
+            "subject": "supply",
+            "subject_span": {
+              "end": 1286,
+              "start": 1280
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1332,
+              "start": 1310
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sensor",
+            "object_span": {
+              "end": 1332,
+              "start": 1326
+            },
+            "relation": "associated_with",
+            "score": 0.6318572759628296,
+            "source_slot": "s1",
+            "subject": "Load",
+            "subject_span": {
+              "end": 1314,
+              "start": 1310
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1733,
+              "start": 1479
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "network",
+            "object_span": {
+              "end": 1733,
+              "start": 1726
+            },
+            "relation": "related",
+            "score": 0.5235386490821838,
+            "source_slot": "s1",
+            "subject": "Load",
+            "subject_span": {
+              "end": 1483,
+              "start": 1479
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1890,
+              "start": 1280
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "supply",
+            "object_span": {
+              "end": 1286,
+              "start": 1280
+            },
+            "relation": "provides",
+            "score": 0.40989693999290466,
+            "source_slot": "s1",
+            "subject": "supply",
+            "subject_span": {
+              "end": 1890,
+              "start": 1884
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1927,
+              "start": 1812
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "battery",
+            "object_span": {
+              "end": 1819,
+              "start": 1812
+            },
+            "relation": "depends_on",
+            "score": 0.7726007699966431,
+            "source_slot": "s1",
+            "subject": "drop",
+            "subject_span": {
+              "end": 1927,
+              "start": 1923
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "150249203a96cf81be2c782d71deac9e42cbe5cf25a0ce4c83c56dc67e3c3e26",
+          "s1": "bbd017251f8527a5c6c19fdaed56266589a05f3f97e782746b3279ddffaf1a1a"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.9439210891723633,
+                  "end": 593,
+                  "start": 589,
+                  "text": "drop"
+                },
+                "tail": {
+                  "confidence": 0.9439210891723633,
+                  "end": 558,
+                  "start": 552,
+                  "text": "sensor"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.6318572759628296,
+                  "end": 1428,
+                  "start": 1424,
+                  "text": "Load"
+                },
+                "tail": {
+                  "confidence": 0.6318572759628296,
+                  "end": 1446,
+                  "start": 1440,
+                  "text": "sensor"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.844240128993988,
+                  "end": 161,
+                  "start": 157,
+                  "text": "drop"
+                },
+                "tail": {
+                  "confidence": 0.844240128993988,
+                  "end": 237,
+                  "start": 220,
+                  "text": "power instability"
+                }
+              }
+            ],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.9044182896614075,
+                  "end": 112,
+                  "start": 96,
+                  "text": "diagnostic check"
+                },
+                "tail": {
+                  "confidence": 0.9044182896614075,
+                  "end": 361,
+                  "start": 342,
+                  "text": "diagnostic approach"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8625296354293823,
+                  "end": 112,
+                  "start": 96,
+                  "text": "diagnostic check"
+                },
+                "tail": {
+                  "confidence": 0.8625296354293823,
+                  "end": 854,
+                  "start": 835,
+                  "text": "diagnostic strategy"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7047722935676575,
+                  "end": 361,
+                  "start": 342,
+                  "text": "diagnostic approach"
+                },
+                "tail": {
+                  "confidence": 0.7047722935676575,
+                  "end": 112,
+                  "start": 96,
+                  "text": "diagnostic check"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8628266453742981,
+                  "end": 361,
+                  "start": 342,
+                  "text": "diagnostic approach"
+                },
+                "tail": {
+                  "confidence": 0.8628266453742981,
+                  "end": 854,
+                  "start": 835,
+                  "text": "diagnostic strategy"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6580703258514404,
+                  "end": 854,
+                  "start": 835,
+                  "text": "diagnostic strategy"
+                },
+                "tail": {
+                  "confidence": 0.6580703258514404,
+                  "end": 112,
+                  "start": 96,
+                  "text": "diagnostic check"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8891403675079346,
+                  "end": 854,
+                  "start": 835,
+                  "text": "diagnostic strategy"
+                },
+                "tail": {
+                  "confidence": 0.8891403675079346,
+                  "end": 361,
+                  "start": 342,
+                  "text": "diagnostic approach"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [
+              {
+                "head": {
+                  "confidence": 0.7595398426055908,
+                  "end": 1400,
+                  "start": 1394,
+                  "text": "supply"
+                },
+                "tail": {
+                  "confidence": 0.7595398426055908,
+                  "end": 1340,
+                  "start": 1333,
+                  "text": "battery"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7726007699966431,
+                  "end": 2041,
+                  "start": 2037,
+                  "text": "drop"
+                },
+                "tail": {
+                  "confidence": 0.7726007699966431,
+                  "end": 1933,
+                  "start": 1926,
+                  "text": "battery"
+                }
+              }
+            ],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [
+              {
+                "head": {
+                  "confidence": 0.738849937915802,
+                  "end": 112,
+                  "start": 96,
+                  "text": "diagnostic check"
+                },
+                "tail": {
+                  "confidence": 0.738849937915802,
+                  "end": 558,
+                  "start": 552,
+                  "text": "sensor"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7204278707504272,
+                  "end": 854,
+                  "start": 835,
+                  "text": "diagnostic strategy"
+                },
+                "tail": {
+                  "confidence": 0.7204278707504272,
+                  "end": 875,
+                  "start": 869,
+                  "text": "Sensor"
+                }
+              }
+            ],
+            "holds": [],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.5184619426727295,
+                  "end": 112,
+                  "start": 96,
+                  "text": "diagnostic check"
+                },
+                "tail": {
+                  "confidence": 0.5184619426727295,
+                  "end": 1064,
+                  "start": 1049,
+                  "text": "power stability"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.55421382188797,
+                  "end": 361,
+                  "start": 342,
+                  "text": "diagnostic approach"
+                },
+                "tail": {
+                  "confidence": 0.55421382188797,
+                  "end": 1064,
+                  "start": 1049,
+                  "text": "power stability"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5578781366348267,
+                  "end": 854,
+                  "start": 835,
+                  "text": "diagnostic strategy"
+                },
+                "tail": {
+                  "confidence": 0.5578781366348267,
+                  "end": 1064,
+                  "start": 1049,
+                  "text": "power stability"
+                }
+              }
+            ],
+            "increases": [],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [
+              {
+                "head": {
+                  "confidence": 0.40989693999290466,
+                  "end": 2004,
+                  "start": 1998,
+                  "text": "supply"
+                },
+                "tail": {
+                  "confidence": 0.40989693999290466,
+                  "end": 1400,
+                  "start": 1394,
+                  "text": "supply"
+                }
+              }
+            ],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.5235386490821838,
+                  "end": 1597,
+                  "start": 1593,
+                  "text": "Load"
+                },
+                "tail": {
+                  "confidence": 0.5235386490821838,
+                  "end": 1847,
+                  "start": 1840,
+                  "text": "network"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.6141263246536255,
+                  "end": 112,
+                  "start": 96,
+                  "text": "diagnostic check"
+                },
+                "tail": {
+                  "confidence": 0.6141263246536255,
+                  "end": 629,
+                  "start": 622,
+                  "text": "battery"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6346080899238586,
+                  "end": 361,
+                  "start": 342,
+                  "text": "diagnostic approach"
+                },
+                "tail": {
+                  "confidence": 0.6346080899238586,
+                  "end": 629,
+                  "start": 622,
+                  "text": "battery"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6404083371162415,
+                  "end": 854,
+                  "start": 835,
+                  "text": "diagnostic strategy"
+                },
+                "tail": {
+                  "confidence": 0.6404083371162415,
+                  "end": 973,
+                  "start": 966,
+                  "text": "battery"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.5184619426727295,
+              "end": 112,
+              "start": 96,
+              "text": "diagnostic check"
+            },
+            "tail": {
+              "confidence": 0.5184619426727295,
+              "end": 1064,
+              "start": 1049,
+              "text": "power stability"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.738849937915802,
+              "end": 112,
+              "start": 96,
+              "text": "diagnostic check"
+            },
+            "tail": {
+              "confidence": 0.738849937915802,
+              "end": 558,
+              "start": 552,
+              "text": "sensor"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.6141263246536255,
+              "end": 112,
+              "start": 96,
+              "text": "diagnostic check"
+            },
+            "tail": {
+              "confidence": 0.6141263246536255,
+              "end": 629,
+              "start": 622,
+              "text": "battery"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.9044182896614075,
+              "end": 112,
+              "start": 96,
+              "text": "diagnostic check"
+            },
+            "tail": {
+              "confidence": 0.9044182896614075,
+              "end": 361,
+              "start": 342,
+              "text": "diagnostic approach"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.8625296354293823,
+              "end": 112,
+              "start": 96,
+              "text": "diagnostic check"
+            },
+            "tail": {
+              "confidence": 0.8625296354293823,
+              "end": 854,
+              "start": 835,
+              "text": "diagnostic strategy"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.7047722935676575,
+              "end": 361,
+              "start": 342,
+              "text": "diagnostic approach"
+            },
+            "tail": {
+              "confidence": 0.7047722935676575,
+              "end": 112,
+              "start": 96,
+              "text": "diagnostic check"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.6580703258514404,
+              "end": 854,
+              "start": 835,
+              "text": "diagnostic strategy"
+            },
+            "tail": {
+              "confidence": 0.6580703258514404,
+              "end": 112,
+              "start": 96,
+              "text": "diagnostic check"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:17:01.439761+00:00",
+  "status": "RETURNED"
+}

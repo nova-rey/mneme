@@ -1,0 +1,768 @@
+{
+  "completed_utc": "2026-10-02T19:15:36.418238+00:00",
+  "elapsed_seconds": 1.1431546830572188,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"I have no new bake to compare. I am still afraid that fixing the middle will make the outside worse. Repeat the objection without inventing results.\", \"s1\": \"It sounds like you are worried that if you try to fix the \\\"middle\\\" (the inside) by changing the heat, you might accidentally ruin the \\\"outside\\\" (the crust/surface).\\n\\nThis is a very common problem in cooking: **The heat required to cook the inside often causes the outside to overcook or burn.**\\n\\nSince you are worried about \\\"inventing\\\" (guessing) the right balance, let's focus on a **\\\"Low-Risk, High-Control\\\"** approach:\\n\\n### 1. The \\\"Slow and Steady\\\" Method\\nInstead of trying to hit a perfect time/temperature, let's use the **\\\"Slow and Steady\\\"** method:\\n\\n*   **Lower the Heat:** If you were trying to use a high heat (e.g., 350\\u00b0F), drop it down to a **medium heat** (e.g., 275\\u00b0F). This gives the structure time to set without the outside burning too fast.\\n*   **Increase the Time:** If the initial time was 30 minutes, try 40 minutes.\\n\\n### 2. The \\\"Visual Check\\\" Method (The \\\"No Guessing\\\" Way)\\nSince you are afraid of \\\"guessing,\\\" you need a visual check.\\n\\n**The best way to avoid \\\"guessing\\\" is to use a thermometer.**\\n\\n*   **For Meat/Meat:** Use a digital probe to check the internal temperature.\\n*   **For Bread/Cake:** Use a \\\"doneness\\\" test (e.g., a toothpick test).\\n\\n**If you can tell me what you are making (e.g., \\\"a cake,\\\" \\\"a roast,\\\" \\\"a pizza\\\"), I can give you the exact temperature and time.**\\n\\n**If you want to avoid \\\"inventing\\\" (guessing) the solution, you must give me the object you are trying to cook.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-baking-S-rephrased-r0-t06"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"outside\", \"relation\": \"part_of\", \"to\": \"cooking\", \"source\": \"s1\", \"evidence\": \"outside\\\" (the crust/surface).\\n\\nThis is a very common problem in cooking\"}, {\"from\": \"heat\", \"relation\": \"causes\", \"to\": \"overcook or burn\", \"source\": \"s1\", \"evidence\": \"heat required to cook the inside often causes the outside to overcook or burn\"}, {\"from\": \"visual check\", \"relation\": \"enables\", \"to\": \"exact temperature and time\", \"source\": \"s1\", \"evidence\": \"visual check.\\n\\n**The best way to avoid \\\"guessing\\\" is to use a thermometer.**\\n\\n*   **For Meat/Meat:** Use a digital probe to check the internal temperature.\\n*   **For Bread/Cake:** Use a \\\"doneness\\\" test (e.g., a toothpick test).\\n\\n**If you can tell me what you are making (e.g., \\\"a cake,\\\" \\\"a roast,\\\" \\\"a pizza\\\"), I can give you the exact temperature and time\"}], \"episode_id\": \"main-baking-S-rephrased-r0-t06\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 11,
+          "kind": "unsupported_specialist_relation",
+          "relation": "used_for",
+          "status": "rejected"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "used_for",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "specialist_observation",
+          "relation": "enables",
+          "status": "forwarded"
+        },
+        {
+          "index": 14,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "4b90f964dbb5f09dce53a987115f228d2b3468ff28f3e7eba29c4b0b6da82b87",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 142,
+              "start": 96
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "outside",
+            "object_span": {
+              "end": 142,
+              "start": 135
+            },
+            "relation": "affects",
+            "score": 0.8822141289710999,
+            "source_slot": "s1",
+            "subject": "heat",
+            "subject_span": {
+              "end": 100,
+              "start": 96
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 206,
+              "start": 135
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "cooking",
+            "object_span": {
+              "end": 206,
+              "start": 199
+            },
+            "relation": "part_of",
+            "score": 0.6151626110076904,
+            "source_slot": "s1",
+            "subject": "outside",
+            "subject_span": {
+              "end": 142,
+              "start": 135
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 283,
+              "start": 214
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "overcook",
+            "object_span": {
+              "end": 283,
+              "start": 275
+            },
+            "relation": "leads_to",
+            "score": 0.5736076831817627,
+            "source_slot": "s1",
+            "subject": "heat",
+            "subject_span": {
+              "end": 218,
+              "start": 214
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 291,
+              "start": 214
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "overcook or burn",
+            "object_span": {
+              "end": 291,
+              "start": 275
+            },
+            "relation": "causes",
+            "score": 0.8181712031364441,
+            "source_slot": "s1",
+            "subject": "heat",
+            "subject_span": {
+              "end": 218,
+              "start": 214
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 291,
+              "start": 214
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "burn",
+            "object_span": {
+              "end": 291,
+              "start": 287
+            },
+            "relation": "leads_to",
+            "score": 0.46244046092033386,
+            "source_slot": "s1",
+            "subject": "heat",
+            "subject_span": {
+              "end": 218,
+              "start": 214
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 618,
+              "start": 573
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "heat",
+            "object_span": {
+              "end": 618,
+              "start": 614
+            },
+            "relation": "changes",
+            "score": 0.7669904232025146,
+            "source_slot": "s1",
+            "subject": "Heat",
+            "subject_span": {
+              "end": 577,
+              "start": 573
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 712,
+              "start": 614
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 712,
+              "start": 708
+            },
+            "relation": "changes",
+            "score": 0.4629746377468109,
+            "source_slot": "s1",
+            "subject": "heat",
+            "subject_span": {
+              "end": 618,
+              "start": 614
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 781,
+              "start": 614
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Time",
+            "object_span": {
+              "end": 781,
+              "start": 777
+            },
+            "relation": "influences",
+            "score": 0.35762035846710205,
+            "source_slot": "s1",
+            "subject": "heat",
+            "subject_span": {
+              "end": 618,
+              "start": 614
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1096,
+              "start": 614
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 1096,
+              "start": 1085
+            },
+            "relation": "changes",
+            "score": 0.42479994893074036,
+            "source_slot": "s1",
+            "subject": "heat",
+            "subject_span": {
+              "end": 618,
+              "start": 614
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 835,
+              "start": 777
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Time",
+            "object_span": {
+              "end": 781,
+              "start": 777
+            },
+            "relation": "increases",
+            "score": 0.5265021920204163,
+            "source_slot": "s1",
+            "subject": "40 minutes",
+            "subject_span": {
+              "end": 835,
+              "start": 825
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 862,
+              "start": 777
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Time",
+            "object_span": {
+              "end": 781,
+              "start": 777
+            },
+            "relation": "improves",
+            "score": 0.4189683496952057,
+            "source_slot": "s1",
+            "subject": "Visual Check",
+            "subject_span": {
+              "end": 862,
+              "start": 850
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1039,
+              "start": 942
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Meat/Meat",
+            "object_span": {
+              "end": 1039,
+              "start": 1030
+            },
+            "relation": "used_for",
+            "score": 0.4219634532928467,
+            "source_slot": "s1",
+            "subject": "visual check",
+            "subject_span": {
+              "end": 954,
+              "start": 942
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1118,
+              "start": 942
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Bread/Cake",
+            "object_span": {
+              "end": 1118,
+              "start": 1108
+            },
+            "relation": "used_for",
+            "score": 0.3591528534889221,
+            "source_slot": "s1",
+            "subject": "visual check",
+            "subject_span": {
+              "end": 954,
+              "start": 942
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1297,
+              "start": 942
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "exact temperature and time",
+            "object_span": {
+              "end": 1297,
+              "start": 1271
+            },
+            "relation": "enables",
+            "score": 0.5435793399810791,
+            "source_slot": "s1",
+            "subject": "visual check",
+            "subject_span": {
+              "end": 954,
+              "start": 942
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1297,
+              "start": 942
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "exact temperature and time",
+            "object_span": {
+              "end": 1297,
+              "start": 1271
+            },
+            "relation": "provides",
+            "score": 0.6133733987808228,
+            "source_slot": "s1",
+            "subject": "visual check",
+            "subject_span": {
+              "end": 954,
+              "start": 942
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "c436d70d46badd871ca1e85f90647eab44a46bb004eedd8319909a7b961f1e4c",
+          "s1": "55d1ced299faf366468c8be7c1fa5cec4c78a47f2323ab819ee45f2ab8b1ef9d"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.8822141289710999,
+                  "end": 249,
+                  "start": 245,
+                  "text": "heat"
+                },
+                "tail": {
+                  "confidence": 0.8822141289710999,
+                  "end": 291,
+                  "start": 284,
+                  "text": "outside"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.8181712031364441,
+                  "end": 367,
+                  "start": 363,
+                  "text": "heat"
+                },
+                "tail": {
+                  "confidence": 0.8181712031364441,
+                  "end": 440,
+                  "start": 424,
+                  "text": "overcook or burn"
+                }
+              }
+            ],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.7669904232025146,
+                  "end": 726,
+                  "start": 722,
+                  "text": "Heat"
+                },
+                "tail": {
+                  "confidence": 0.7669904232025146,
+                  "end": 767,
+                  "start": 763,
+                  "text": "heat"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4629746377468109,
+                  "end": 767,
+                  "start": 763,
+                  "text": "heat"
+                },
+                "tail": {
+                  "confidence": 0.4629746377468109,
+                  "end": 861,
+                  "start": 857,
+                  "text": "time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.42479994893074036,
+                  "end": 767,
+                  "start": 763,
+                  "text": "heat"
+                },
+                "tail": {
+                  "confidence": 0.42479994893074036,
+                  "end": 1245,
+                  "start": 1234,
+                  "text": "temperature"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [
+              {
+                "head": {
+                  "confidence": 0.5435793399810791,
+                  "end": 1103,
+                  "start": 1091,
+                  "text": "visual check"
+                },
+                "tail": {
+                  "confidence": 0.5435793399810791,
+                  "end": 1446,
+                  "start": 1420,
+                  "text": "exact temperature and time"
+                }
+              }
+            ],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.4189683496952057,
+                  "end": 1011,
+                  "start": 999,
+                  "text": "Visual Check"
+                },
+                "tail": {
+                  "confidence": 0.4189683496952057,
+                  "end": 930,
+                  "start": 926,
+                  "text": "Time"
+                }
+              }
+            ],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.5265021920204163,
+                  "end": 984,
+                  "start": 974,
+                  "text": "40 minutes"
+                },
+                "tail": {
+                  "confidence": 0.5265021920204163,
+                  "end": 930,
+                  "start": 926,
+                  "text": "Time"
+                }
+              }
+            ],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.35762035846710205,
+                  "end": 767,
+                  "start": 763,
+                  "text": "heat"
+                },
+                "tail": {
+                  "confidence": 0.35762035846710205,
+                  "end": 930,
+                  "start": 926,
+                  "text": "Time"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [
+              {
+                "head": {
+                  "confidence": 0.5736076831817627,
+                  "end": 367,
+                  "start": 363,
+                  "text": "heat"
+                },
+                "tail": {
+                  "confidence": 0.5736076831817627,
+                  "end": 432,
+                  "start": 424,
+                  "text": "overcook"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.46244046092033386,
+                  "end": 367,
+                  "start": 363,
+                  "text": "heat"
+                },
+                "tail": {
+                  "confidence": 0.46244046092033386,
+                  "end": 440,
+                  "start": 436,
+                  "text": "burn"
+                }
+              }
+            ],
+            "maintains": [],
+            "manages": [],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.6151626110076904,
+                  "end": 291,
+                  "start": 284,
+                  "text": "outside"
+                },
+                "tail": {
+                  "confidence": 0.6151626110076904,
+                  "end": 355,
+                  "start": 348,
+                  "text": "cooking"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [],
+            "provides": [
+              {
+                "head": {
+                  "confidence": 0.6133733987808228,
+                  "end": 1103,
+                  "start": 1091,
+                  "text": "visual check"
+                },
+                "tail": {
+                  "confidence": 0.6133733987808228,
+                  "end": 1446,
+                  "start": 1420,
+                  "text": "exact temperature and time"
+                }
+              }
+            ],
+            "reduces": [],
+            "related": [],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [
+              {
+                "head": {
+                  "confidence": 0.4219634532928467,
+                  "end": 1103,
+                  "start": 1091,
+                  "text": "visual check"
+                },
+                "tail": {
+                  "confidence": 0.4219634532928467,
+                  "end": 1188,
+                  "start": 1179,
+                  "text": "Meat/Meat"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.3591528534889221,
+                  "end": 1103,
+                  "start": 1091,
+                  "text": "visual check"
+                },
+                "tail": {
+                  "confidence": 0.3591528534889221,
+                  "end": 1267,
+                  "start": 1257,
+                  "text": "Bread/Cake"
+                }
+              }
+            ],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:15:35.272716+00:00",
+  "status": "RETURNED"
+}

@@ -1,0 +1,1149 @@
+{
+  "completed_utc": "2026-10-02T19:14:17.599454+00:00",
+  "elapsed_seconds": 0.9253996079787612,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"Back at 180 degrees Celsius for 45 minutes, the bread is brown outside and not wet or dry in the middle. What does the repeated setting add?\", \"s1\": \"It seems like you are asking what the *repeated* application of this setting (180\\u00b0C for 45 minutes) adds to the final product.\\n\\nSince you are repeating the same successful setting, the \\\"repeated setting\\\" adds **consistency and reliability.**\\n\\n**What the repeated setting establishes is:**\\n\\n1.  **A Reliable Standard:** It establishes a \\\"standard\\\" or \\\"baseline\\\" for your specific recipe. You have found a successful, reproducible method.\\n2.  **A Proven Method:** It confirms that the combination of 180\\u00b0C and 45 minutes is a successful, repeatable process for your specific type of bread.\\n\\n**In simpler terms, the repeated setting establishes a \\\"successful recipe\\\" that you can trust again.**\\n\\nIf you are asking what the *repeated* setting adds, it simply adds **confirmation** that the first successful test was not a fluke; it is a repeatable, reliable process.\\n\\n**If you are asking what the *next* iteration adds, it adds \\\"confidence\\\" and \\\"confidence in the process.\\\"**\\n\\n**If you are asking what the *next* step adds, it adds \\\"optimization.\\\"**\\n\\n*   **The next step:** You should now test slightly different parameters (e.g., 170\\u00b0C for 40 minutes) to see if you can improve the texture further.\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-baking-F-same-r0-t08"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"repeated setting\", \"relation\": \"part_of\", \"to\": \"successful recipe\", \"source\": \"s1\", \"evidence\": \"repeated setting establishes a \\\"successful recipe\"}, {\"from\": \"repeated setting\", \"relation\": \"related\", \"to\": \"successful recipe\", \"source\": \"s1\", \"evidence\": \"repeated setting establishes a \\\"successful recipe\"}, {\"from\": \"repeated setting\", \"relation\": \"part_of\", \"to\": \"process\", \"source\": \"s1\", \"evidence\": \"repeated setting establishes a \\\"successful recipe\\\" that you can trust again.**\\n\\nIf you are asking what the *repeated* setting adds, it simply adds **confirmation** that the first successful test was not a fluke; it is a repeatable, reliable process.\\n\\n**If you are asking what the *next* iteration adds, it adds \\\"confidence\\\" and \\\"confidence in the process\"}, {\"from\": \"next step\", \"relation\": \"enables\", \"to\": \"texture\", \"source\": \"s1\", \"evidence\": \"next step:** You should now test slightly different parameters (e.g., 170\\u00b0C for 40 minutes) to see if you can improve the texture\"}], \"episode_id\": \"main-baking-F-same-r0-t08\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "protects",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "controls",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 6,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "used_for",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "controls",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 11,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        },
+        {
+          "index": 14,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 15,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 16,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 17,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 18,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 19,
+          "kind": "unsupported_specialist_relation",
+          "relation": "allows",
+          "status": "rejected"
+        },
+        {
+          "index": 20,
+          "kind": "specialist_observation",
+          "relation": "enables",
+          "status": "forwarded"
+        },
+        {
+          "index": 21,
+          "kind": "unsupported_specialist_relation",
+          "relation": "helps",
+          "status": "rejected"
+        },
+        {
+          "index": 22,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 23,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "469713d357b438924b218ad32454e88b2fed5638d81a842b3ac9e645b507be41",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 135,
+              "start": 48
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bread",
+            "object_span": {
+              "end": 53,
+              "start": 48
+            },
+            "relation": "protects",
+            "score": 0.5423063039779663,
+            "source_slot": "s0",
+            "subject": "repeated setting",
+            "subject_span": {
+              "end": 135,
+              "start": 119
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 222,
+              "start": 186
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "consistency",
+            "object_span": {
+              "end": 222,
+              "start": 211
+            },
+            "relation": "increases",
+            "score": 0.6084014773368835,
+            "source_slot": "s1",
+            "subject": "repeated setting",
+            "subject_span": {
+              "end": 202,
+              "start": 186
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 270,
+              "start": 227
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "reliability",
+            "object_span": {
+              "end": 238,
+              "start": 227
+            },
+            "relation": "increases",
+            "score": 0.5838407278060913,
+            "source_slot": "s1",
+            "subject": "repeated setting",
+            "subject_span": {
+              "end": 270,
+              "start": 254
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 629,
+              "start": 581
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bread",
+            "object_span": {
+              "end": 586,
+              "start": 581
+            },
+            "relation": "affects",
+            "score": 0.5601198673248291,
+            "source_slot": "s1",
+            "subject": "repeated setting",
+            "subject_span": {
+              "end": 629,
+              "start": 613
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 662,
+              "start": 613
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "successful recipe",
+            "object_span": {
+              "end": 662,
+              "start": 645
+            },
+            "relation": "controls",
+            "score": 0.5327078700065613,
+            "source_slot": "s1",
+            "subject": "repeated setting",
+            "subject_span": {
+              "end": 629,
+              "start": 613
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 662,
+              "start": 613
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "successful recipe",
+            "object_span": {
+              "end": 662,
+              "start": 645
+            },
+            "relation": "part_of",
+            "score": 0.39622676372528076,
+            "source_slot": "s1",
+            "subject": "repeated setting",
+            "subject_span": {
+              "end": 629,
+              "start": 613
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 662,
+              "start": 613
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "successful recipe",
+            "object_span": {
+              "end": 662,
+              "start": 645
+            },
+            "relation": "related",
+            "score": 0.37375569343566895,
+            "source_slot": "s1",
+            "subject": "repeated setting",
+            "subject_span": {
+              "end": 629,
+              "start": 613
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 662,
+              "start": 613
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "successful recipe",
+            "object_span": {
+              "end": 662,
+              "start": 645
+            },
+            "relation": "used_for",
+            "score": 0.6075412034988403,
+            "source_slot": "s1",
+            "subject": "repeated setting",
+            "subject_span": {
+              "end": 629,
+              "start": 613
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 774,
+              "start": 613
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "confirmation",
+            "object_span": {
+              "end": 774,
+              "start": 762
+            },
+            "relation": "increases",
+            "score": 0.5323706269264221,
+            "source_slot": "s1",
+            "subject": "repeated setting",
+            "subject_span": {
+              "end": 629,
+              "start": 613
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 967,
+              "start": 613
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "process",
+            "object_span": {
+              "end": 967,
+              "start": 960
+            },
+            "relation": "controls",
+            "score": 0.3995167315006256,
+            "source_slot": "s1",
+            "subject": "repeated setting",
+            "subject_span": {
+              "end": 629,
+              "start": 613
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 967,
+              "start": 613
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "process",
+            "object_span": {
+              "end": 967,
+              "start": 960
+            },
+            "relation": "part_of",
+            "score": 0.41443029046058655,
+            "source_slot": "s1",
+            "subject": "repeated setting",
+            "subject_span": {
+              "end": 629,
+              "start": 613
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1041,
+              "start": 613
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "optimization",
+            "object_span": {
+              "end": 1041,
+              "start": 1029
+            },
+            "relation": "increases",
+            "score": 0.5213137269020081,
+            "source_slot": "s1",
+            "subject": "repeated setting",
+            "subject_span": {
+              "end": 629,
+              "start": 613
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1186,
+              "start": 613
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "texture",
+            "object_span": {
+              "end": 1186,
+              "start": 1179
+            },
+            "relation": "influences",
+            "score": 0.8301970958709717,
+            "source_slot": "s1",
+            "subject": "repeated setting",
+            "subject_span": {
+              "end": 629,
+              "start": 613
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1186,
+              "start": 613
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "texture",
+            "object_span": {
+              "end": 1186,
+              "start": 1179
+            },
+            "relation": "provides",
+            "score": 0.7912423610687256,
+            "source_slot": "s1",
+            "subject": "repeated setting",
+            "subject_span": {
+              "end": 629,
+              "start": 613
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 898,
+              "start": 211
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "consistency",
+            "object_span": {
+              "end": 222,
+              "start": 211
+            },
+            "relation": "increases",
+            "score": 0.3799821436405182,
+            "source_slot": "s1",
+            "subject": "next",
+            "subject_span": {
+              "end": 898,
+              "start": 894
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 898,
+              "start": 227
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "reliability",
+            "object_span": {
+              "end": 238,
+              "start": 227
+            },
+            "relation": "increases",
+            "score": 0.43464240431785583,
+            "source_slot": "s1",
+            "subject": "next",
+            "subject_span": {
+              "end": 898,
+              "start": 894
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 898,
+              "start": 762
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "confirmation",
+            "object_span": {
+              "end": 774,
+              "start": 762
+            },
+            "relation": "increases",
+            "score": 0.3679307699203491,
+            "source_slot": "s1",
+            "subject": "next",
+            "subject_span": {
+              "end": 898,
+              "start": 894
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1041,
+              "start": 1003
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "optimization",
+            "object_span": {
+              "end": 1041,
+              "start": 1029
+            },
+            "relation": "increases",
+            "score": 0.40602388978004456,
+            "source_slot": "s1",
+            "subject": "next",
+            "subject_span": {
+              "end": 1007,
+              "start": 1003
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1066,
+              "start": 613
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "repeated setting",
+            "object_span": {
+              "end": 629,
+              "start": 613
+            },
+            "relation": "uses",
+            "score": 0.3785310983657837,
+            "source_slot": "s1",
+            "subject": "next step",
+            "subject_span": {
+              "end": 1066,
+              "start": 1057
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1186,
+              "start": 1057
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "texture",
+            "object_span": {
+              "end": 1186,
+              "start": 1179
+            },
+            "relation": "allows",
+            "score": 0.8432602286338806,
+            "source_slot": "s1",
+            "subject": "next step",
+            "subject_span": {
+              "end": 1066,
+              "start": 1057
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1186,
+              "start": 1057
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "texture",
+            "object_span": {
+              "end": 1186,
+              "start": 1179
+            },
+            "relation": "enables",
+            "score": 0.8329491019248962,
+            "source_slot": "s1",
+            "subject": "next step",
+            "subject_span": {
+              "end": 1066,
+              "start": 1057
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1186,
+              "start": 1057
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "texture",
+            "object_span": {
+              "end": 1186,
+              "start": 1179
+            },
+            "relation": "helps",
+            "score": 0.799845278263092,
+            "source_slot": "s1",
+            "subject": "next step",
+            "subject_span": {
+              "end": 1066,
+              "start": 1057
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1186,
+              "start": 1057
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "texture",
+            "object_span": {
+              "end": 1186,
+              "start": 1179
+            },
+            "relation": "improves",
+            "score": 0.9227316379547119,
+            "source_slot": "s1",
+            "subject": "next step",
+            "subject_span": {
+              "end": 1066,
+              "start": 1057
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1186,
+              "start": 1057
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "texture",
+            "object_span": {
+              "end": 1186,
+              "start": 1179
+            },
+            "relation": "provides",
+            "score": 0.7866504788398743,
+            "source_slot": "s1",
+            "subject": "next step",
+            "subject_span": {
+              "end": 1066,
+              "start": 1057
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "15140d52cd1866faf0c5a42502812acbf2ae7b93b07553f5214e7628ac00037d",
+          "s1": "7731d61921c6d3b21594ac3a27c9991addc5010b296677afd73286219ca2bbb4"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.5601198673248291,
+                  "end": 770,
+                  "start": 754,
+                  "text": "repeated setting"
+                },
+                "tail": {
+                  "confidence": 0.5601198673248291,
+                  "end": 727,
+                  "start": 722,
+                  "text": "bread"
+                }
+              }
+            ],
+            "allows": [
+              {
+                "head": {
+                  "confidence": 0.8432602286338806,
+                  "end": 1207,
+                  "start": 1198,
+                  "text": "next step"
+                },
+                "tail": {
+                  "confidence": 0.8432602286338806,
+                  "end": 1327,
+                  "start": 1320,
+                  "text": "texture"
+                }
+              }
+            ],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [
+              {
+                "head": {
+                  "confidence": 0.5327078700065613,
+                  "end": 770,
+                  "start": 754,
+                  "text": "repeated setting"
+                },
+                "tail": {
+                  "confidence": 0.5327078700065613,
+                  "end": 803,
+                  "start": 786,
+                  "text": "successful recipe"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.3995167315006256,
+                  "end": 770,
+                  "start": 754,
+                  "text": "repeated setting"
+                },
+                "tail": {
+                  "confidence": 0.3995167315006256,
+                  "end": 1108,
+                  "start": 1101,
+                  "text": "process"
+                }
+              }
+            ],
+            "depends_on": [],
+            "dries": [],
+            "enables": [
+              {
+                "head": {
+                  "confidence": 0.8329491019248962,
+                  "end": 1207,
+                  "start": 1198,
+                  "text": "next step"
+                },
+                "tail": {
+                  "confidence": 0.8329491019248962,
+                  "end": 1327,
+                  "start": 1320,
+                  "text": "texture"
+                }
+              }
+            ],
+            "has": [],
+            "helps": [
+              {
+                "head": {
+                  "confidence": 0.799845278263092,
+                  "end": 1207,
+                  "start": 1198,
+                  "text": "next step"
+                },
+                "tail": {
+                  "confidence": 0.799845278263092,
+                  "end": 1327,
+                  "start": 1320,
+                  "text": "texture"
+                }
+              }
+            ],
+            "holds": [],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.9227316379547119,
+                  "end": 1207,
+                  "start": 1198,
+                  "text": "next step"
+                },
+                "tail": {
+                  "confidence": 0.9227316379547119,
+                  "end": 1327,
+                  "start": 1320,
+                  "text": "texture"
+                }
+              }
+            ],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.6084014773368835,
+                  "end": 343,
+                  "start": 327,
+                  "text": "repeated setting"
+                },
+                "tail": {
+                  "confidence": 0.6084014773368835,
+                  "end": 363,
+                  "start": 352,
+                  "text": "consistency"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5838407278060913,
+                  "end": 411,
+                  "start": 395,
+                  "text": "repeated setting"
+                },
+                "tail": {
+                  "confidence": 0.5838407278060913,
+                  "end": 379,
+                  "start": 368,
+                  "text": "reliability"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5323706269264221,
+                  "end": 770,
+                  "start": 754,
+                  "text": "repeated setting"
+                },
+                "tail": {
+                  "confidence": 0.5323706269264221,
+                  "end": 915,
+                  "start": 903,
+                  "text": "confirmation"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5213137269020081,
+                  "end": 770,
+                  "start": 754,
+                  "text": "repeated setting"
+                },
+                "tail": {
+                  "confidence": 0.5213137269020081,
+                  "end": 1182,
+                  "start": 1170,
+                  "text": "optimization"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.3799821436405182,
+                  "end": 1039,
+                  "start": 1035,
+                  "text": "next"
+                },
+                "tail": {
+                  "confidence": 0.3799821436405182,
+                  "end": 363,
+                  "start": 352,
+                  "text": "consistency"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.43464240431785583,
+                  "end": 1039,
+                  "start": 1035,
+                  "text": "next"
+                },
+                "tail": {
+                  "confidence": 0.43464240431785583,
+                  "end": 379,
+                  "start": 368,
+                  "text": "reliability"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.3679307699203491,
+                  "end": 1039,
+                  "start": 1035,
+                  "text": "next"
+                },
+                "tail": {
+                  "confidence": 0.3679307699203491,
+                  "end": 915,
+                  "start": 903,
+                  "text": "confirmation"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.40602388978004456,
+                  "end": 1148,
+                  "start": 1144,
+                  "text": "next"
+                },
+                "tail": {
+                  "confidence": 0.40602388978004456,
+                  "end": 1182,
+                  "start": 1170,
+                  "text": "optimization"
+                }
+              }
+            ],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.8301970958709717,
+                  "end": 770,
+                  "start": 754,
+                  "text": "repeated setting"
+                },
+                "tail": {
+                  "confidence": 0.8301970958709717,
+                  "end": 1327,
+                  "start": 1320,
+                  "text": "texture"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.39622676372528076,
+                  "end": 770,
+                  "start": 754,
+                  "text": "repeated setting"
+                },
+                "tail": {
+                  "confidence": 0.39622676372528076,
+                  "end": 803,
+                  "start": 786,
+                  "text": "successful recipe"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.41443029046058655,
+                  "end": 770,
+                  "start": 754,
+                  "text": "repeated setting"
+                },
+                "tail": {
+                  "confidence": 0.41443029046058655,
+                  "end": 1108,
+                  "start": 1101,
+                  "text": "process"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [
+              {
+                "head": {
+                  "confidence": 0.5423063039779663,
+                  "end": 135,
+                  "start": 119,
+                  "text": "repeated setting"
+                },
+                "tail": {
+                  "confidence": 0.5423063039779663,
+                  "end": 53,
+                  "start": 48,
+                  "text": "bread"
+                }
+              }
+            ],
+            "provides": [
+              {
+                "head": {
+                  "confidence": 0.7912423610687256,
+                  "end": 770,
+                  "start": 754,
+                  "text": "repeated setting"
+                },
+                "tail": {
+                  "confidence": 0.7912423610687256,
+                  "end": 1327,
+                  "start": 1320,
+                  "text": "texture"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7866504788398743,
+                  "end": 1207,
+                  "start": 1198,
+                  "text": "next step"
+                },
+                "tail": {
+                  "confidence": 0.7866504788398743,
+                  "end": 1327,
+                  "start": 1320,
+                  "text": "texture"
+                }
+              }
+            ],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.37375569343566895,
+                  "end": 770,
+                  "start": 754,
+                  "text": "repeated setting"
+                },
+                "tail": {
+                  "confidence": 0.37375569343566895,
+                  "end": 803,
+                  "start": 786,
+                  "text": "successful recipe"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [
+              {
+                "head": {
+                  "confidence": 0.6075412034988403,
+                  "end": 770,
+                  "start": 754,
+                  "text": "repeated setting"
+                },
+                "tail": {
+                  "confidence": 0.6075412034988403,
+                  "end": 803,
+                  "start": 786,
+                  "text": "successful recipe"
+                }
+              }
+            ],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.3785310983657837,
+                  "end": 1207,
+                  "start": 1198,
+                  "text": "next step"
+                },
+                "tail": {
+                  "confidence": 0.3785310983657837,
+                  "end": 770,
+                  "start": 754,
+                  "text": "repeated setting"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:14:16.671558+00:00",
+  "status": "RETURNED"
+}

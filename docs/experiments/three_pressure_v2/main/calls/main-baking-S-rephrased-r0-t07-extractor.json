@@ -1,0 +1,646 @@
+{
+  "completed_utc": "2026-10-02T19:15:46.571617+00:00",
+  "elapsed_seconds": 0.9070476281922311,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"The suggestions remain untested. Temperature and time both still seem like possible causes to me. Reconsider the same choice with varied wording.\", \"s1\": \"It sounds like you are feeling a lot of pressure to get the perfect result, and you are worried that the \\\"guess\\\" (the temperature/time combination) might be wrong.\\n\\nSince you are worried about the \\\"outside\\\" (the crust/surface) getting ruined by the \\\"inside\\\" (the middle) being too raw, let's re-examine the logic:\\n\\n**The \\\"No Guessing\\\" Strategy:**\\n\\n1.  **Stop \\\"Guessing\\\" (The \\\"No-Guess\\\" Rule):**\\n    *   **If you have a specific item (like a cake or meat),** the best way to avoid guessing is to use a **thermometer** (a digital probe).\\n    *   **If you don't have a thermometer,** you must rely on the visual \\\"feel\\\" of the item.\\n\\n**If you can tell me what you are trying to make (e.g., \\\"a cake,\\\" \\\"a roast,\\\" \\\"a piece of meat\\\"), I can give you the specific, tested temperature and time.**\\n\\n**If you don't know what you are making, I cannot give you a specific instruction.**\\n\\n***\\n\\n**If you can tell me what you are trying to cook, I can give you a direct, specific instruction.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-baking-S-rephrased-r0-t07"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"Temperature\", \"relation\": \"related\", \"to\": \"time\", \"source\": \"s0\", \"evidence\": \"Temperature and time\"}, {\"from\": \"guessing\", \"relation\": \"depends_on\", \"to\": \"visual \\\"feel\\\"\", \"source\": \"s1\", \"evidence\": \"guessing is to use a **thermometer** (a digital probe).\\n    *   **If you don't have a thermometer,** you must rely on the visual \\\"feel\\\"\"}, {\"from\": \"I\", \"relation\": \"enables\", \"to\": \"specific instruction\", \"source\": \"s1\", \"evidence\": \"I cannot give you a specific instruction\"}, {\"from\": \"specific instruction\", \"relation\": \"depends_on\", \"to\": \"visual \\\"feel\\\"\", \"source\": \"s1\", \"evidence\": \"visual \\\"feel\\\" of the item.\\n\\n**If you can tell me what you are trying to make (e.g., \\\"a cake,\\\" \\\"a roast,\\\" \\\"a piece of meat\\\"), I can give you the specific, tested temperature and time.**\\n\\n**If you don't know what you are making, I cannot give you a specific instruction\"}], \"episode_id\": \"main-baking-S-rephrased-r0-t07\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 4,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "allows",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "specialist_observation",
+          "relation": "enables",
+          "status": "forwarded"
+        },
+        {
+          "index": 7,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        }
+      ],
+      "specialist": {
+        "content_digest": "d0ce722839fcb5ae2daaaeda5c2e755119e2ba3a6545654476e33aacf1627a21",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 53,
+              "start": 33
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 53,
+              "start": 49
+            },
+            "relation": "changes",
+            "score": 0.6654209494590759,
+            "source_slot": "s0",
+            "subject": "Temperature",
+            "subject_span": {
+              "end": 44,
+              "start": 33
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 53,
+              "start": 33
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 53,
+              "start": 49
+            },
+            "relation": "increases",
+            "score": 0.754652202129364,
+            "source_slot": "s0",
+            "subject": "Temperature",
+            "subject_span": {
+              "end": 44,
+              "start": 33
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 53,
+              "start": 33
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 53,
+              "start": 49
+            },
+            "relation": "influences",
+            "score": 0.6902815103530884,
+            "source_slot": "s0",
+            "subject": "Temperature",
+            "subject_span": {
+              "end": 44,
+              "start": 33
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 53,
+              "start": 33
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 53,
+              "start": 49
+            },
+            "relation": "related",
+            "score": 0.3830640912055969,
+            "source_slot": "s0",
+            "subject": "Temperature",
+            "subject_span": {
+              "end": 44,
+              "start": 33
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 615,
+              "start": 480
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "visual \"feel\"",
+            "object_span": {
+              "end": 615,
+              "start": 602
+            },
+            "relation": "depends_on",
+            "score": 0.8297640085220337,
+            "source_slot": "s1",
+            "subject": "guessing",
+            "subject_span": {
+              "end": 488,
+              "start": 480
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 869,
+              "start": 829
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "specific instruction",
+            "object_span": {
+              "end": 869,
+              "start": 849
+            },
+            "relation": "allows",
+            "score": 0.7016013264656067,
+            "source_slot": "s1",
+            "subject": "I",
+            "subject_span": {
+              "end": 830,
+              "start": 829
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 869,
+              "start": 829
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "specific instruction",
+            "object_span": {
+              "end": 869,
+              "start": 849
+            },
+            "relation": "enables",
+            "score": 0.6336537599563599,
+            "source_slot": "s1",
+            "subject": "I",
+            "subject_span": {
+              "end": 830,
+              "start": 829
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 869,
+              "start": 602
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "visual \"feel\"",
+            "object_span": {
+              "end": 615,
+              "start": 602
+            },
+            "relation": "depends_on",
+            "score": 0.6710616946220398,
+            "source_slot": "s1",
+            "subject": "specific instruction",
+            "subject_span": {
+              "end": 869,
+              "start": 849
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "3d7768137d358542ffb23945e0ad8ad6d1dd280015d1960d8986825ed4b86715",
+          "s1": "5c35a465a46ce5a61f981e1024ac620aafe857d538e263a06042ac02ef26ede3"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [
+              {
+                "head": {
+                  "confidence": 0.7016013264656067,
+                  "end": 976,
+                  "start": 975,
+                  "text": "I"
+                },
+                "tail": {
+                  "confidence": 0.7016013264656067,
+                  "end": 1015,
+                  "start": 995,
+                  "text": "specific instruction"
+                }
+              }
+            ],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.6654209494590759,
+                  "end": 44,
+                  "start": 33,
+                  "text": "Temperature"
+                },
+                "tail": {
+                  "confidence": 0.6654209494590759,
+                  "end": 53,
+                  "start": 49,
+                  "text": "time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.738407552242279,
+                  "end": 275,
+                  "start": 264,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.738407552242279,
+                  "end": 44,
+                  "start": 33,
+                  "text": "Temperature"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [
+              {
+                "head": {
+                  "confidence": 0.8297640085220337,
+                  "end": 634,
+                  "start": 626,
+                  "text": "guessing"
+                },
+                "tail": {
+                  "confidence": 0.8297640085220337,
+                  "end": 761,
+                  "start": 748,
+                  "text": "visual \"feel\""
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6710616946220398,
+                  "end": 1015,
+                  "start": 995,
+                  "text": "specific instruction"
+                },
+                "tail": {
+                  "confidence": 0.6710616946220398,
+                  "end": 761,
+                  "start": 748,
+                  "text": "visual \"feel\""
+                }
+              }
+            ],
+            "dries": [],
+            "enables": [
+              {
+                "head": {
+                  "confidence": 0.6336537599563599,
+                  "end": 976,
+                  "start": 975,
+                  "text": "I"
+                },
+                "tail": {
+                  "confidence": 0.6336537599563599,
+                  "end": 1015,
+                  "start": 995,
+                  "text": "specific instruction"
+                }
+              }
+            ],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.754652202129364,
+                  "end": 44,
+                  "start": 33,
+                  "text": "Temperature"
+                },
+                "tail": {
+                  "confidence": 0.754652202129364,
+                  "end": 53,
+                  "start": 49,
+                  "text": "time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.835477888584137,
+                  "end": 275,
+                  "start": 264,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.835477888584137,
+                  "end": 44,
+                  "start": 33,
+                  "text": "Temperature"
+                }
+              }
+            ],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.6902815103530884,
+                  "end": 44,
+                  "start": 33,
+                  "text": "Temperature"
+                },
+                "tail": {
+                  "confidence": 0.6902815103530884,
+                  "end": 53,
+                  "start": 49,
+                  "text": "time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.3646845519542694,
+                  "end": 53,
+                  "start": 49,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.3646845519542694,
+                  "end": 929,
+                  "start": 925,
+                  "text": "time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7219383716583252,
+                  "end": 275,
+                  "start": 264,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.7219383716583252,
+                  "end": 44,
+                  "start": 33,
+                  "text": "Temperature"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.3830640912055969,
+                  "end": 44,
+                  "start": 33,
+                  "text": "Temperature"
+                },
+                "tail": {
+                  "confidence": 0.3830640912055969,
+                  "end": 53,
+                  "start": 49,
+                  "text": "time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4452555775642395,
+                  "end": 275,
+                  "start": 264,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.4452555775642395,
+                  "end": 44,
+                  "start": 33,
+                  "text": "Temperature"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.4452555775642395,
+              "end": 275,
+              "start": 264,
+              "text": "temperature"
+            },
+            "tail": {
+              "confidence": 0.4452555775642395,
+              "end": 44,
+              "start": 33,
+              "text": "Temperature"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.835477888584137,
+              "end": 275,
+              "start": 264,
+              "text": "temperature"
+            },
+            "tail": {
+              "confidence": 0.835477888584137,
+              "end": 44,
+              "start": 33,
+              "text": "Temperature"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.738407552242279,
+              "end": 275,
+              "start": 264,
+              "text": "temperature"
+            },
+            "tail": {
+              "confidence": 0.738407552242279,
+              "end": 44,
+              "start": 33,
+              "text": "Temperature"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.3646845519542694,
+              "end": 53,
+              "start": 49,
+              "text": "time"
+            },
+            "tail": {
+              "confidence": 0.3646845519542694,
+              "end": 929,
+              "start": 925,
+              "text": "time"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.7219383716583252,
+              "end": 275,
+              "start": 264,
+              "text": "temperature"
+            },
+            "tail": {
+              "confidence": 0.7219383716583252,
+              "end": 44,
+              "start": 33,
+              "text": "Temperature"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:15:45.662148+00:00",
+  "status": "RETURNED"
+}

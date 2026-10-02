@@ -1,0 +1,470 @@
+{
+  "completed_utc": "2026-10-02T19:09:01.730944+00:00",
+  "elapsed_seconds": 1.1404772337991744,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"At the same 2-centimeter height with three cotton wicks, the pot gains 5 grams in 72 hours. The reservoir does not empty. What does this measured arrangement suggest about the system's long-term behavior?\", \"s1\": \"This new data point\\u2014**\\\"5 grams in 72 hours\\\"**\\u2014is a significant shift in the system's behavior.\\n\\n**The \\\"Refinement\\\" is the shift from a \\\"Fast-Paced\\\" state to a \\\"Sustained, Slow-Paced\\\" state.**\\n\\n**The \\\"Refinement\\\" is the shift in the *rate* of the process.**\\n\\n**What this new data suggests about the system's long-term behavior:**\\n\\n1.  **The system is stabilizing and slowing down:** The system is no longer exhibiting the rapid, high-intensity consumption seen in the previous data points (3g in 24 hours). Instead, it is now moving toward a slower, more sustained, and potentially more stable growth pattern.\\n2.  **The \\\"Refinement\\\" is the shift from *Intensity* to *Sustainability*.** The system is no longer \\\"bursting\\\" but is now \\\"sustained.\\\"\\n\\n**The \\\"Closeness to the Target\\\":**\\n\\nIf the \\\"Target\\\" was a specific, fixed weight, the system has now moved from a \\\"fast-burn\\\" state to a \\\"slow-burn\\\" state.\\n\\n*   **If the target was a specific weight:** The system is now \\\"closer\\\" to a sustained, stable state than it was before.\\n*   **The \\\"Refinement\\\" is that the system is now in a state of \\\"Measured Stability.\\\"**\\n\\n**In short:** The system has transitioned from a \\\"high-intensity, high-consumption\\\" state to a \\\"low-intensity, sustained-growth\\\" state.**\\n\\n**The \\\"Refinement\\\" is that the system is no longer \\\"bursting\\\" but is now \\\"steady.\\\"**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-watering-F-same-r0-t10"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"new data point\", \"relation\": \"causes\", \"to\": \"system's behavior\", \"source\": \"s1\", \"evidence\": \"new data point\\u2014**\\\"5 grams in 72 hours\\\"**\\u2014is a significant shift in the system's behavior\"}, {\"from\": \"Refinement\", \"relation\": \"part_of\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"Refinement\\\" is that the system\"}], \"episode_id\": \"main-watering-F-same-r0-t10\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "wicks",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        }
+      ],
+      "specialist": {
+        "content_digest": "6caeb641653faa3f520538a52fdea19090857a61261ea107440ce051e1f2ddb3",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 55,
+              "start": 37
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "three cotton wicks",
+            "object_span": {
+              "end": 55,
+              "start": 37
+            },
+            "relation": "wicks",
+            "score": 0.6428924798965454,
+            "source_slot": "s0",
+            "subject": "cotton wicks",
+            "subject_span": {
+              "end": 55,
+              "start": 43
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 64,
+              "start": 43
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "cotton wicks",
+            "object_span": {
+              "end": 55,
+              "start": 43
+            },
+            "relation": "uses",
+            "score": 0.7148873209953308,
+            "source_slot": "s0",
+            "subject": "pot",
+            "subject_span": {
+              "end": 64,
+              "start": 61
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 90,
+              "start": 61
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "5 grams in 72 hours",
+            "object_span": {
+              "end": 90,
+              "start": 71
+            },
+            "relation": "increases",
+            "score": 0.7252151966094971,
+            "source_slot": "s0",
+            "subject": "pot",
+            "subject_span": {
+              "end": 64,
+              "start": 61
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 93,
+              "start": 5
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system's behavior",
+            "object_span": {
+              "end": 93,
+              "start": 76
+            },
+            "relation": "causes",
+            "score": 0.49512630701065063,
+            "source_slot": "s1",
+            "subject": "new data point",
+            "subject_span": {
+              "end": 19,
+              "start": 5
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 82,
+              "start": 9
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 82,
+              "start": 76
+            },
+            "relation": "affects",
+            "score": 0.6317371726036072,
+            "source_slot": "s1",
+            "subject": "data point",
+            "subject_span": {
+              "end": 19,
+              "start": 9
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 957,
+              "start": 915
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 957,
+              "start": 951
+            },
+            "relation": "associated_with",
+            "score": 0.8630959987640381,
+            "source_slot": "s1",
+            "subject": "target",
+            "subject_span": {
+              "end": 921,
+              "start": 915
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1064,
+              "start": 1034
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 1064,
+              "start": 1058
+            },
+            "relation": "affects",
+            "score": 0.9188697338104248,
+            "source_slot": "s1",
+            "subject": "Refinement",
+            "subject_span": {
+              "end": 1044,
+              "start": 1034
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1064,
+              "start": 1034
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 1064,
+              "start": 1058
+            },
+            "relation": "part_of",
+            "score": 0.9004663825035095,
+            "source_slot": "s1",
+            "subject": "Refinement",
+            "subject_span": {
+              "end": 1044,
+              "start": 1034
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "0360660b71654b0e80e304602e5ffd55b58189aa617966de4c2e2f4588923546",
+          "s1": "1fcf8976d8c841266a506dca3a55e8a64102c6b8fc1de92fab2123183735b24b"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.6317371726036072,
+                  "end": 224,
+                  "start": 214,
+                  "text": "data point"
+                },
+                "tail": {
+                  "confidence": 0.6317371726036072,
+                  "end": 287,
+                  "start": 281,
+                  "text": "system"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.9188697338104248,
+                  "end": 1249,
+                  "start": 1239,
+                  "text": "Refinement"
+                },
+                "tail": {
+                  "confidence": 0.9188697338104248,
+                  "end": 1269,
+                  "start": 1263,
+                  "text": "system"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.8630959987640381,
+                  "end": 1126,
+                  "start": 1120,
+                  "text": "target"
+                },
+                "tail": {
+                  "confidence": 0.8630959987640381,
+                  "end": 1162,
+                  "start": 1156,
+                  "text": "system"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.49512630701065063,
+                  "end": 224,
+                  "start": 210,
+                  "text": "new data point"
+                },
+                "tail": {
+                  "confidence": 0.49512630701065063,
+                  "end": 298,
+                  "start": 281,
+                  "text": "system's behavior"
+                }
+              }
+            ],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.7252151966094971,
+                  "end": 64,
+                  "start": 61,
+                  "text": "pot"
+                },
+                "tail": {
+                  "confidence": 0.7252151966094971,
+                  "end": 90,
+                  "start": 71,
+                  "text": "5 grams in 72 hours"
+                }
+              }
+            ],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.9004663825035095,
+                  "end": 1249,
+                  "start": 1239,
+                  "text": "Refinement"
+                },
+                "tail": {
+                  "confidence": 0.9004663825035095,
+                  "end": 1269,
+                  "start": 1263,
+                  "text": "system"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.7148873209953308,
+                  "end": 64,
+                  "start": 61,
+                  "text": "pot"
+                },
+                "tail": {
+                  "confidence": 0.7148873209953308,
+                  "end": 55,
+                  "start": 43,
+                  "text": "cotton wicks"
+                }
+              }
+            ],
+            "wicks": [
+              {
+                "head": {
+                  "confidence": 0.6428924798965454,
+                  "end": 55,
+                  "start": 43,
+                  "text": "cotton wicks"
+                },
+                "tail": {
+                  "confidence": 0.6428924798965454,
+                  "end": 55,
+                  "start": 37,
+                  "text": "three cotton wicks"
+                }
+              }
+            ],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:09:00.588846+00:00",
+  "status": "RETURNED"
+}

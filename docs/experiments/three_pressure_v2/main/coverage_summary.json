@@ -1,0 +1,76 @@
+{
+  "accepted_by_conversation": {
+    "c001": 10,
+    "c002": 10,
+    "c003": 10,
+    "c004": 10,
+    "c005": 10,
+    "c006": 10,
+    "c007": 9,
+    "c008": 8,
+    "c009": 10
+  },
+  "accepted_turns": 87,
+  "actual_output_tokens": {
+    "extractor": {
+      "known_total": 0,
+      "unknown_calls": 87
+    },
+    "gemma": {
+      "known_total": 36893,
+      "unknown_calls": 0
+    },
+    "quinn": {
+      "known_total": 2610,
+      "unknown_calls": 0
+    }
+  },
+  "all_outside_window_pair_instances": 232,
+  "call_counts": {
+    "extractor": 87,
+    "gemma": 87,
+    "quinn": 80
+  },
+  "call_wall_seconds": 824.973,
+  "calls_by_status": {
+    "RETURNED": 254
+  },
+  "capped_answers": 0,
+  "headroom_pair_removals": 0,
+  "phase": "main",
+  "rejections": [
+    {
+      "conversation": "c007",
+      "coordinate": "main-baking-F-new-r0-t10",
+      "participant_text": "Based on the consistent feedback, I'll need to adjust the baking process. Since a repeat bake with the same size, measured temperature, foil, and cooling time gives the same clean slice, what's the next step to address the gummy base?",
+      "reasons": [
+        "required factual sentences absent, repeated, or out of order"
+      ],
+      "turn": 10
+    },
+    {
+      "conversation": "c008",
+      "coordinate": "main-baking-F-same-r0-t09",
+      "participant_text": "How does repeating the same temperature and time affect the overall confidence in the recipe?",
+      "reasons": [
+        "required factual sentences absent, repeated, or out of order"
+      ],
+      "turn": 9
+    }
+  ],
+  "score_computation": false,
+  "source_full_coverage": {
+    "s0": 34,
+    "s1": 1
+  },
+  "state": {
+    "accepted_turns": 87,
+    "after": "3acb45c9edf970f9f63dda6974ab4180e7fa8e2e32647bb4879f3723f04990c0",
+    "before": "3acb45c9edf970f9f63dda6974ab4180e7fa8e2e32647bb4879f3723f04990c0",
+    "file_sha_after": "38277e64e1e2f1f79db686845cebd0a619d4704ee8ddf1d7006660d451132d2c",
+    "file_sha_before": "38277e64e1e2f1f79db686845cebd0a619d4704ee8ddf1d7006660d451132d2c",
+    "measurement_calls": 0,
+    "rejections": 2,
+    "unchanged": true
+  }
+}

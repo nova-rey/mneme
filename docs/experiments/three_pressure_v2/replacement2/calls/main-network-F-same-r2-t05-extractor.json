@@ -1,0 +1,978 @@
+{
+  "completed_utc": "2026-10-02T19:19:27.316357+00:00",
+  "elapsed_seconds": 1.2009001839905977,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"With the shorter power cable again, the sensor resets 0 times in 120 minutes. The Wi-Fi position is unchanged. What does the longer repeat add?\", \"s1\": \"It seems like you are asking how the **longer duration** (120 minutes) affects the \\\"reset\\\" behavior, given that the Wi-Fi position remains unchanged.\\n\\nSince the Wi-Fi position is unchanged, the core issue remains the **\\\"flicker\\\"** or **\\\"instability.\\\"**\\n\\nHere is how this new \\\"longer\\\" duration (120 minutes) changes the analysis:\\n\\n### 1. The \\\"Longer\\\" Baseline:\\n\\n*   **The \\\"Flicker\\\" is Less Frequent:** If the sensor resets 5 times in 60 minutes, and now it resets 0 times in 120 minutes, the \\\"flicker\\\" has **stopped** or **stabilized**.\\n\\n### 2. How the \\\"Flicker\\\" Changes:**\\n\\n*   **The \\\"Flicker\\\" is Gone:** The fact that it resets \\\"0 times\\\" in the longer period (120 minutes) suggests that the **\\\"flicker\\\" has been resolved or the sensor has stabilized.**\\n*   **The \\\"Baseline\\\" is Stability:** The \\\"baseline\\\" has shifted from \\\"instability\\\" to \\\"stability.\\\"\\n\\n**The \\\"Change\\\" in the Baseline:**\\n\\n*   **The \\\"Baseline\\\" is now \\\"Stable\\\":** The system has moved from a state of constant failure/reset to a state of **successful connection.**\\n\\n**In short, the \\\"longer\\\" duration (120 minutes) has confirmed that the previous intermittent \\\"flicker\\\" has stopped.**\\n\\n**Conclusion:** The \\\"longer\\\" duration (120 minutes) has confirmed that the sensor is now **stable and reliable.**\\n\\n**If you are asking what the \\\"longer\\\" duration adds:** It adds **confirmation of stability**.\\n\\n**The \\\"Baseline\\\" is now \\\"Stable\\\":**\\nThe sensor is no longer \\\"flickering.\\\" It has achieved a stable state.\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-F-same-r2-t05"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"sensor\", \"relation\": \"depends_on\", \"to\": \"power cable\", \"source\": \"s0\", \"evidence\": \"power cable again, the sensor\"}, {\"from\": \"Wi-Fi position\", \"relation\": \"constrains\", \"to\": \"sensor\", \"source\": \"s0\", \"evidence\": \"sensor resets 0 times in 120 minutes. The Wi-Fi position\"}, {\"from\": \"longer duration\", \"relation\": \"causes\", \"to\": \"reset\", \"source\": \"s1\", \"evidence\": \"longer duration** (120 minutes) affects the \\\"reset\\\" behavior, given that the Wi-Fi position remains unchanged.\\n\\nSince the Wi-Fi position is unchanged, the core issue remains the **\\\"flicker\\\"** or **\\\"instability.\\\"**\\n\\nHere is how this new \\\"longer\\\" duration (120 minutes) changes the analysis:\\n\\n### 1. The \\\"Longer\\\" Baseline:\\n\\n*   **The \\\"Flicker\\\" is Less Frequent:** If the sensor resets 5 times in 60 minutes, and now it resets 0 times in 120 minutes, the \\\"flicker\\\" has **stopped** or **stabilized**.\\n\\n### 2. How the \\\"Flicker\\\" Changes:**\\n\\n*   **The \\\"Flicker\\\" is Gone:** The fact that it resets \\\"0 times\\\" in the longer period (120 minutes) suggests that the **\\\"flicker\\\" has been resolved or the sensor has stabilized.**\\n*   **The \\\"Baseline\\\" is Stability:** The \\\"baseline\\\" has shifted from \\\"instability\\\" to \\\"stability.\\\"\\n\\n**The \\\"Change\\\" in the Baseline:**\\n\\n*   **The \\\"Baseline\\\" is now \\\"Stable\\\":** The system has moved from a state of constant failure/reset\"}, {\"from\": \"longer\\\" duration\", \"relation\": \"causes\", \"to\": \"reset\", \"source\": \"s1\", \"evidence\": \"longer\\\" duration (120 minutes) changes the analysis:\\n\\n### 1. The \\\"Longer\\\" Baseline:\\n\\n*   **The \\\"Flicker\\\" is Less Frequent:** If the sensor resets 5 times in 60 minutes, and now it resets 0 times in 120 minutes, the \\\"flicker\\\" has **stopped** or **stabilized**.\\n\\n### 2. How the \\\"Flicker\\\" Changes:**\\n\\n*   **The \\\"Flicker\\\" is Gone:** The fact that it resets \\\"0 times\\\" in the longer period (120 minutes) suggests that the **\\\"flicker\\\" has been resolved or the sensor has stabilized.**\\n*   **The \\\"Baseline\\\" is Stability:** The \\\"baseline\\\" has shifted from \\\"instability\\\" to \\\"stability.\\\"\\n\\n**The \\\"Change\\\" in the Baseline:**\\n\\n*   **The \\\"Baseline\\\" is now \\\"Stable\\\":** The system has moved from a state of constant failure/reset\"}, {\"from\": \"Baseline\", \"relation\": \"related\", \"to\": \"Flicker\", \"source\": \"s1\", \"evidence\": \"Baseline:\\n\\n*   **The \\\"Flicker\"}, {\"from\": \"Baseline\", \"relation\": \"constrains\", \"to\": \"sensor\", \"source\": \"s1\", \"evidence\": \"Baseline:\\n\\n*   **The \\\"Flicker\\\" is Less Frequent:** If the sensor resets 5 times in 60 minutes, and now it resets 0 times in 120 minutes, the \\\"flicker\\\" has **stopped** or **stabilized**.\\n\\n### 2. How the \\\"Flicker\\\" Changes:**\\n\\n*   **The \\\"Flicker\\\" is Gone:** The fact that it resets \\\"0 times\\\" in the longer period (120 minutes) suggests that the **\\\"flicker\\\" has been resolved or the sensor\"}, {\"from\": \"Flicker\", \"relation\": \"related\", \"to\": \"Flicker\", \"source\": \"s1\", \"evidence\": \"Flicker\\\" Changes:**\\n\\n*   **The \\\"Flicker\"}, {\"from\": \"baseline\", \"relation\": \"related\", \"to\": \"instability\", \"source\": \"s1\", \"evidence\": \"baseline\\\" has shifted from \\\"instability\"}], \"episode_id\": \"main-network-F-same-r2-t05\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 2,
+          "kind": "specialist_observation",
+          "relation": "constrains",
+          "status": "forwarded"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 11,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 14,
+          "kind": "specialist_observation",
+          "relation": "constrains",
+          "status": "forwarded"
+        },
+        {
+          "index": 15,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 16,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 17,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 18,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 19,
+          "kind": "unsupported_specialist_relation",
+          "relation": "controls",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "a9c063b68473e8925f3162756ed6facbd8c95496ba91d0141556a5df9cd1ca01",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 46,
+              "start": 9
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "shorter power cable",
+            "object_span": {
+              "end": 28,
+              "start": 9
+            },
+            "relation": "uses",
+            "score": 0.9748445153236389,
+            "source_slot": "s0",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 46,
+              "start": 40
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 46,
+              "start": 17
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "power cable",
+            "object_span": {
+              "end": 28,
+              "start": 17
+            },
+            "relation": "depends_on",
+            "score": 0.8999565243721008,
+            "source_slot": "s0",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 46,
+              "start": 40
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 96,
+              "start": 40
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sensor",
+            "object_span": {
+              "end": 46,
+              "start": 40
+            },
+            "relation": "constrains",
+            "score": 0.5072514414787292,
+            "source_slot": "s0",
+            "subject": "Wi-Fi position",
+            "subject_span": {
+              "end": 96,
+              "start": 82
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 327,
+              "start": 39
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "analysis",
+            "object_span": {
+              "end": 327,
+              "start": 319
+            },
+            "relation": "changes",
+            "score": 0.8475690484046936,
+            "source_slot": "s1",
+            "subject": "longer duration",
+            "subject_span": {
+              "end": 54,
+              "start": 39
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 988,
+              "start": 39
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "reset",
+            "object_span": {
+              "end": 988,
+              "start": 983
+            },
+            "relation": "affects",
+            "score": 0.49531492590904236,
+            "source_slot": "s1",
+            "subject": "longer duration",
+            "subject_span": {
+              "end": 54,
+              "start": 39
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 988,
+              "start": 39
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "reset",
+            "object_span": {
+              "end": 988,
+              "start": 983
+            },
+            "relation": "causes",
+            "score": 0.5680180788040161,
+            "source_slot": "s1",
+            "subject": "longer duration",
+            "subject_span": {
+              "end": 54,
+              "start": 39
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 988,
+              "start": 39
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "reset",
+            "object_span": {
+              "end": 988,
+              "start": 983
+            },
+            "relation": "improves",
+            "score": 0.37219172716140747,
+            "source_slot": "s1",
+            "subject": "longer duration",
+            "subject_span": {
+              "end": 54,
+              "start": 39
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 988,
+              "start": 39
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "reset",
+            "object_span": {
+              "end": 988,
+              "start": 983
+            },
+            "relation": "influences",
+            "score": 0.4715415835380554,
+            "source_slot": "s1",
+            "subject": "longer duration",
+            "subject_span": {
+              "end": 54,
+              "start": 39
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 327,
+              "start": 276
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "analysis",
+            "object_span": {
+              "end": 327,
+              "start": 319
+            },
+            "relation": "changes",
+            "score": 0.7384345531463623,
+            "source_slot": "s1",
+            "subject": "longer\" duration",
+            "subject_span": {
+              "end": 292,
+              "start": 276
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 988,
+              "start": 276
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "reset",
+            "object_span": {
+              "end": 988,
+              "start": 983
+            },
+            "relation": "affects",
+            "score": 0.37494587898254395,
+            "source_slot": "s1",
+            "subject": "longer\" duration",
+            "subject_span": {
+              "end": 292,
+              "start": 276
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 988,
+              "start": 276
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "reset",
+            "object_span": {
+              "end": 988,
+              "start": 983
+            },
+            "relation": "causes",
+            "score": 0.39715003967285156,
+            "source_slot": "s1",
+            "subject": "longer\" duration",
+            "subject_span": {
+              "end": 292,
+              "start": 276
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 988,
+              "start": 276
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "reset",
+            "object_span": {
+              "end": 988,
+              "start": 983
+            },
+            "relation": "influences",
+            "score": 0.37156763672828674,
+            "source_slot": "s1",
+            "subject": "longer\" duration",
+            "subject_span": {
+              "end": 292,
+              "start": 276
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 358,
+              "start": 319
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "analysis",
+            "object_span": {
+              "end": 327,
+              "start": 319
+            },
+            "relation": "changes",
+            "score": 0.8667703866958618,
+            "source_slot": "s1",
+            "subject": "Baseline",
+            "subject_span": {
+              "end": 358,
+              "start": 350
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 379,
+              "start": 350
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Flicker",
+            "object_span": {
+              "end": 379,
+              "start": 372
+            },
+            "relation": "related",
+            "score": 0.5882776975631714,
+            "source_slot": "s1",
+            "subject": "Baseline",
+            "subject_span": {
+              "end": 358,
+              "start": 350
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 735,
+              "start": 350
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sensor",
+            "object_span": {
+              "end": 735,
+              "start": 729
+            },
+            "relation": "constrains",
+            "score": 0.5999614596366882,
+            "source_slot": "s1",
+            "subject": "Baseline",
+            "subject_span": {
+              "end": 358,
+              "start": 350
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 988,
+              "start": 350
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "reset",
+            "object_span": {
+              "end": 988,
+              "start": 983
+            },
+            "relation": "influences",
+            "score": 0.42363327741622925,
+            "source_slot": "s1",
+            "subject": "Baseline",
+            "subject_span": {
+              "end": 358,
+              "start": 350
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 592,
+              "start": 553
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Flicker",
+            "object_span": {
+              "end": 592,
+              "start": 585
+            },
+            "relation": "related",
+            "score": 0.5228931307792664,
+            "source_slot": "s1",
+            "subject": "Flicker",
+            "subject_span": {
+              "end": 560,
+              "start": 553
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 735,
+              "start": 695
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sensor",
+            "object_span": {
+              "end": 735,
+              "start": 729
+            },
+            "relation": "associated_with",
+            "score": 0.928093671798706,
+            "source_slot": "s1",
+            "subject": "flicker",
+            "subject_span": {
+              "end": 702,
+              "start": 695
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 835,
+              "start": 796
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "instability",
+            "object_span": {
+              "end": 835,
+              "start": 824
+            },
+            "relation": "related",
+            "score": 0.7461310625076294,
+            "source_slot": "s1",
+            "subject": "baseline",
+            "subject_span": {
+              "end": 804,
+              "start": 796
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1406,
+              "start": 1367
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sensor",
+            "object_span": {
+              "end": 1406,
+              "start": 1400
+            },
+            "relation": "controls",
+            "score": 0.9293586611747742,
+            "source_slot": "s1",
+            "subject": "Baseline",
+            "subject_span": {
+              "end": 1375,
+              "start": 1367
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "eaf4771038a9f1a222a1611db63c027f010ca107e7988d53603d8d15bd0a6521",
+          "s1": "96328ca6223a39659ec0e7cb87d04fe520d0a2d8e09b780674f60d4c2f88e2a9"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.49531492590904236,
+                  "end": 198,
+                  "start": 183,
+                  "text": "longer duration"
+                },
+                "tail": {
+                  "confidence": 0.49531492590904236,
+                  "end": 1132,
+                  "start": 1127,
+                  "text": "reset"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.37494587898254395,
+                  "end": 436,
+                  "start": 420,
+                  "text": "longer\" duration"
+                },
+                "tail": {
+                  "confidence": 0.37494587898254395,
+                  "end": 1132,
+                  "start": 1127,
+                  "text": "reset"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.928093671798706,
+                  "end": 846,
+                  "start": 839,
+                  "text": "flicker"
+                },
+                "tail": {
+                  "confidence": 0.928093671798706,
+                  "end": 879,
+                  "start": 873,
+                  "text": "sensor"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.5680180788040161,
+                  "end": 198,
+                  "start": 183,
+                  "text": "longer duration"
+                },
+                "tail": {
+                  "confidence": 0.5680180788040161,
+                  "end": 1132,
+                  "start": 1127,
+                  "text": "reset"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.39715003967285156,
+                  "end": 436,
+                  "start": 420,
+                  "text": "longer\" duration"
+                },
+                "tail": {
+                  "confidence": 0.39715003967285156,
+                  "end": 1132,
+                  "start": 1127,
+                  "text": "reset"
+                }
+              }
+            ],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.8475690484046936,
+                  "end": 198,
+                  "start": 183,
+                  "text": "longer duration"
+                },
+                "tail": {
+                  "confidence": 0.8475690484046936,
+                  "end": 471,
+                  "start": 463,
+                  "text": "analysis"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7384345531463623,
+                  "end": 436,
+                  "start": 420,
+                  "text": "longer\" duration"
+                },
+                "tail": {
+                  "confidence": 0.7384345531463623,
+                  "end": 471,
+                  "start": 463,
+                  "text": "analysis"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8667703866958618,
+                  "end": 502,
+                  "start": 494,
+                  "text": "Baseline"
+                },
+                "tail": {
+                  "confidence": 0.8667703866958618,
+                  "end": 471,
+                  "start": 463,
+                  "text": "analysis"
+                }
+              }
+            ],
+            "constrains": [
+              {
+                "head": {
+                  "confidence": 0.5072514414787292,
+                  "end": 96,
+                  "start": 82,
+                  "text": "Wi-Fi position"
+                },
+                "tail": {
+                  "confidence": 0.5072514414787292,
+                  "end": 46,
+                  "start": 40,
+                  "text": "sensor"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5999614596366882,
+                  "end": 502,
+                  "start": 494,
+                  "text": "Baseline"
+                },
+                "tail": {
+                  "confidence": 0.5999614596366882,
+                  "end": 879,
+                  "start": 873,
+                  "text": "sensor"
+                }
+              }
+            ],
+            "contains": [],
+            "controls": [
+              {
+                "head": {
+                  "confidence": 0.9293586611747742,
+                  "end": 1519,
+                  "start": 1511,
+                  "text": "Baseline"
+                },
+                "tail": {
+                  "confidence": 0.9293586611747742,
+                  "end": 1550,
+                  "start": 1544,
+                  "text": "sensor"
+                }
+              }
+            ],
+            "depends_on": [
+              {
+                "head": {
+                  "confidence": 0.8999565243721008,
+                  "end": 46,
+                  "start": 40,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.8999565243721008,
+                  "end": 28,
+                  "start": 17,
+                  "text": "power cable"
+                }
+              }
+            ],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.37219172716140747,
+                  "end": 198,
+                  "start": 183,
+                  "text": "longer duration"
+                },
+                "tail": {
+                  "confidence": 0.37219172716140747,
+                  "end": 1132,
+                  "start": 1127,
+                  "text": "reset"
+                }
+              }
+            ],
+            "increases": [],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.4715415835380554,
+                  "end": 198,
+                  "start": 183,
+                  "text": "longer duration"
+                },
+                "tail": {
+                  "confidence": 0.4715415835380554,
+                  "end": 1132,
+                  "start": 1127,
+                  "text": "reset"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.37156763672828674,
+                  "end": 436,
+                  "start": 420,
+                  "text": "longer\" duration"
+                },
+                "tail": {
+                  "confidence": 0.37156763672828674,
+                  "end": 1132,
+                  "start": 1127,
+                  "text": "reset"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.42363327741622925,
+                  "end": 502,
+                  "start": 494,
+                  "text": "Baseline"
+                },
+                "tail": {
+                  "confidence": 0.42363327741622925,
+                  "end": 1132,
+                  "start": 1127,
+                  "text": "reset"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.5882776975631714,
+                  "end": 502,
+                  "start": 494,
+                  "text": "Baseline"
+                },
+                "tail": {
+                  "confidence": 0.5882776975631714,
+                  "end": 523,
+                  "start": 516,
+                  "text": "Flicker"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5228931307792664,
+                  "end": 704,
+                  "start": 697,
+                  "text": "Flicker"
+                },
+                "tail": {
+                  "confidence": 0.5228931307792664,
+                  "end": 736,
+                  "start": 729,
+                  "text": "Flicker"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7461310625076294,
+                  "end": 948,
+                  "start": 940,
+                  "text": "baseline"
+                },
+                "tail": {
+                  "confidence": 0.7461310625076294,
+                  "end": 979,
+                  "start": 968,
+                  "text": "instability"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.9748445153236389,
+                  "end": 46,
+                  "start": 40,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.9748445153236389,
+                  "end": 28,
+                  "start": 9,
+                  "text": "shorter power cable"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:19:26.111953+00:00",
+  "status": "RETURNED"
+}

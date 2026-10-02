@@ -1,0 +1,878 @@
+{
+  "completed_utc": "2026-10-02T19:13:21.114752+00:00",
+  "elapsed_seconds": 0.9909547690767795,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"At 190 degrees Celsius for 30 minutes, the bread is lighter outside but still wet in the middle. What does changing only temperature establish?\", \"s1\": \"It sounds like you are trying to find the \\\"sweet spot\\\" where the heat is just right!\\n\\nBased on your description, it seems like the **temperature is too low** for the heat to penetrate the center properly, or the **time is too short** for the heat to fully penetrate the center.\\n\\nHere is how to frame the comparison:\\n\\n*   **If the outside is \\\"lighter\\\" but still wet inside:** This means the heat is not penetrating deep enough. The heat is hitting the surface, but not the core.\\n*   **The \\\"Dependable\\\" Setting:** You need to **increase the time** or **increase the temperature.**\\n\\n**The best way to frame this is to increase the heat:**\\n\\n1.  **Increase the Temperature:** Try moving from 190\\u00b0C to **200\\u00b0C (392\\u00b0F)**. A slight increase in temperature often helps drive the heat deeper into the center.\\n2.  **Increase the Time:** If 30 minutes isn't enough, try 40\\u201345 minutes.\\n\\n**In summary:** If the outside is \\\"lighter\\\" but the middle is still wet, the heat isn't reaching the center. **Increase the time, or increase the temperature.**\\n\\nIf you can tell me what you are baking (e.g., a loaf of sourdough, a cake, etc.), I can give you a more precise \\\"dependable\\\" setting!\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-baking-F-same-r0-t03"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [], \"episode_id\": \"main-baking-F-same-r0-t03\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 11,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "unsupported_specialist_relation",
+          "relation": "helps",
+          "status": "rejected"
+        },
+        {
+          "index": 14,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 15,
+          "kind": "unsupported_specialist_relation",
+          "relation": "used_for",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "7ce7d7a24b2c0da9299379792efc6e1d097409f6a35d77aebbb010e94e8f6942",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 170,
+              "start": 133
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "heat",
+            "object_span": {
+              "end": 170,
+              "start": 166
+            },
+            "relation": "affects",
+            "score": 0.933353066444397,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 144,
+              "start": 133
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 170,
+              "start": 133
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "heat",
+            "object_span": {
+              "end": 170,
+              "start": 166
+            },
+            "relation": "influences",
+            "score": 0.8485747575759888,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 144,
+              "start": 133
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 632,
+              "start": 539
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 543,
+              "start": 539
+            },
+            "relation": "increases",
+            "score": 0.4954954981803894,
+            "source_slot": "s1",
+            "subject": "increase the heat",
+            "subject_span": {
+              "end": 632,
+              "start": 615
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 632,
+              "start": 615
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "heat",
+            "object_span": {
+              "end": 632,
+              "start": 628
+            },
+            "relation": "increases",
+            "score": 0.38648372888565063,
+            "source_slot": "s1",
+            "subject": "increase the heat",
+            "subject_span": {
+              "end": 632,
+              "start": 615
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 667,
+              "start": 615
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Temperature",
+            "object_span": {
+              "end": 667,
+              "start": 656
+            },
+            "relation": "increases",
+            "score": 0.35053521394729614,
+            "source_slot": "s1",
+            "subject": "increase the heat",
+            "subject_span": {
+              "end": 632,
+              "start": 615
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 667,
+              "start": 628
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Temperature",
+            "object_span": {
+              "end": 667,
+              "start": 656
+            },
+            "relation": "changes",
+            "score": 0.8816054463386536,
+            "source_slot": "s1",
+            "subject": "heat",
+            "subject_span": {
+              "end": 632,
+              "start": 628
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 667,
+              "start": 539
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 543,
+              "start": 539
+            },
+            "relation": "increases",
+            "score": 0.5903257727622986,
+            "source_slot": "s1",
+            "subject": "Increase the Temperature",
+            "subject_span": {
+              "end": 667,
+              "start": 643
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 667,
+              "start": 628
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "heat",
+            "object_span": {
+              "end": 632,
+              "start": 628
+            },
+            "relation": "increases",
+            "score": 0.4855097234249115,
+            "source_slot": "s1",
+            "subject": "Increase the Temperature",
+            "subject_span": {
+              "end": 667,
+              "start": 643
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 667,
+              "start": 643
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Temperature",
+            "object_span": {
+              "end": 667,
+              "start": 656
+            },
+            "relation": "increases",
+            "score": 0.4968346655368805,
+            "source_slot": "s1",
+            "subject": "Increase the Temperature",
+            "subject_span": {
+              "end": 667,
+              "start": 643
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 747,
+              "start": 656
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 747,
+              "start": 736
+            },
+            "relation": "changes",
+            "score": 0.9278544783592224,
+            "source_slot": "s1",
+            "subject": "Temperature",
+            "subject_span": {
+              "end": 667,
+              "start": 656
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 747,
+              "start": 628
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "heat",
+            "object_span": {
+              "end": 632,
+              "start": 628
+            },
+            "relation": "increases",
+            "score": 0.49716031551361084,
+            "source_slot": "s1",
+            "subject": "slight increase in temperature",
+            "subject_span": {
+              "end": 747,
+              "start": 717
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 747,
+              "start": 717
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 747,
+              "start": 736
+            },
+            "relation": "increases",
+            "score": 0.40904495120048523,
+            "source_slot": "s1",
+            "subject": "slight increase in temperature",
+            "subject_span": {
+              "end": 747,
+              "start": 717
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 822,
+              "start": 717
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Time",
+            "object_span": {
+              "end": 822,
+              "start": 818
+            },
+            "relation": "increases",
+            "score": 0.6026075482368469,
+            "source_slot": "s1",
+            "subject": "slight increase in temperature",
+            "subject_span": {
+              "end": 747,
+              "start": 717
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 797,
+              "start": 724
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "drive the heat deeper into the center",
+            "object_span": {
+              "end": 797,
+              "start": 760
+            },
+            "relation": "helps",
+            "score": 0.45435312390327454,
+            "source_slot": "s1",
+            "subject": "increase in temperature",
+            "subject_span": {
+              "end": 747,
+              "start": 724
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 774,
+              "start": 724
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "heat",
+            "object_span": {
+              "end": 774,
+              "start": 770
+            },
+            "relation": "reduces",
+            "score": 0.8040753602981567,
+            "source_slot": "s1",
+            "subject": "increase in temperature",
+            "subject_span": {
+              "end": 747,
+              "start": 724
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1168,
+              "start": 1068
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "baking",
+            "object_span": {
+              "end": 1074,
+              "start": 1068
+            },
+            "relation": "used_for",
+            "score": 0.6771667003631592,
+            "source_slot": "s1",
+            "subject": "setting",
+            "subject_span": {
+              "end": 1168,
+              "start": 1161
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "47d4a2aafb727fadedc8ddf5a8736f62a0e3af2885a37f70748259c18a51f83e",
+          "s1": "f3395aca401fd99432bf93466df8a641f0edab7a437a156d6d9d7e4e33424725"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.933353066444397,
+                  "end": 288,
+                  "start": 277,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.933353066444397,
+                  "end": 314,
+                  "start": 310,
+                  "text": "heat"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.6012164354324341,
+                  "end": 213,
+                  "start": 209,
+                  "text": "heat"
+                },
+                "tail": {
+                  "confidence": 0.6012164354324341,
+                  "end": 48,
+                  "start": 43,
+                  "text": "bread"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.8816054463386536,
+                  "end": 776,
+                  "start": 772,
+                  "text": "heat"
+                },
+                "tail": {
+                  "confidence": 0.8816054463386536,
+                  "end": 811,
+                  "start": 800,
+                  "text": "Temperature"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.9278544783592224,
+                  "end": 811,
+                  "start": 800,
+                  "text": "Temperature"
+                },
+                "tail": {
+                  "confidence": 0.9278544783592224,
+                  "end": 891,
+                  "start": 880,
+                  "text": "temperature"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [
+              {
+                "head": {
+                  "confidence": 0.45435312390327454,
+                  "end": 891,
+                  "start": 868,
+                  "text": "increase in temperature"
+                },
+                "tail": {
+                  "confidence": 0.45435312390327454,
+                  "end": 941,
+                  "start": 904,
+                  "text": "drive the heat deeper into the center"
+                }
+              }
+            ],
+            "holds": [],
+            "improves": [],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.4954954981803894,
+                  "end": 776,
+                  "start": 759,
+                  "text": "increase the heat"
+                },
+                "tail": {
+                  "confidence": 0.4954954981803894,
+                  "end": 687,
+                  "start": 683,
+                  "text": "time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.38648372888565063,
+                  "end": 776,
+                  "start": 759,
+                  "text": "increase the heat"
+                },
+                "tail": {
+                  "confidence": 0.38648372888565063,
+                  "end": 776,
+                  "start": 772,
+                  "text": "heat"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.35053521394729614,
+                  "end": 776,
+                  "start": 759,
+                  "text": "increase the heat"
+                },
+                "tail": {
+                  "confidence": 0.35053521394729614,
+                  "end": 811,
+                  "start": 800,
+                  "text": "Temperature"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5903257727622986,
+                  "end": 811,
+                  "start": 787,
+                  "text": "Increase the Temperature"
+                },
+                "tail": {
+                  "confidence": 0.5903257727622986,
+                  "end": 687,
+                  "start": 683,
+                  "text": "time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4855097234249115,
+                  "end": 811,
+                  "start": 787,
+                  "text": "Increase the Temperature"
+                },
+                "tail": {
+                  "confidence": 0.4855097234249115,
+                  "end": 776,
+                  "start": 772,
+                  "text": "heat"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4968346655368805,
+                  "end": 811,
+                  "start": 787,
+                  "text": "Increase the Temperature"
+                },
+                "tail": {
+                  "confidence": 0.4968346655368805,
+                  "end": 811,
+                  "start": 800,
+                  "text": "Temperature"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.49716031551361084,
+                  "end": 891,
+                  "start": 861,
+                  "text": "slight increase in temperature"
+                },
+                "tail": {
+                  "confidence": 0.49716031551361084,
+                  "end": 776,
+                  "start": 772,
+                  "text": "heat"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.40904495120048523,
+                  "end": 891,
+                  "start": 861,
+                  "text": "slight increase in temperature"
+                },
+                "tail": {
+                  "confidence": 0.40904495120048523,
+                  "end": 891,
+                  "start": 880,
+                  "text": "temperature"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6026075482368469,
+                  "end": 891,
+                  "start": 861,
+                  "text": "slight increase in temperature"
+                },
+                "tail": {
+                  "confidence": 0.6026075482368469,
+                  "end": 966,
+                  "start": 962,
+                  "text": "Time"
+                }
+              }
+            ],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.841343104839325,
+                  "end": 132,
+                  "start": 121,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.841343104839325,
+                  "end": 288,
+                  "start": 277,
+                  "text": "temperature"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8485747575759888,
+                  "end": 288,
+                  "start": 277,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.8485747575759888,
+                  "end": 314,
+                  "start": 310,
+                  "text": "heat"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.8040753602981567,
+                  "end": 891,
+                  "start": 868,
+                  "text": "increase in temperature"
+                },
+                "tail": {
+                  "confidence": 0.8040753602981567,
+                  "end": 918,
+                  "start": 914,
+                  "text": "heat"
+                }
+              }
+            ],
+            "related": [],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [
+              {
+                "head": {
+                  "confidence": 0.6771667003631592,
+                  "end": 1312,
+                  "start": 1305,
+                  "text": "setting"
+                },
+                "tail": {
+                  "confidence": 0.6771667003631592,
+                  "end": 1218,
+                  "start": 1212,
+                  "text": "baking"
+                }
+              }
+            ],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.6012164354324341,
+              "end": 213,
+              "start": 209,
+              "text": "heat"
+            },
+            "tail": {
+              "confidence": 0.6012164354324341,
+              "end": 48,
+              "start": 43,
+              "text": "bread"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.841343104839325,
+              "end": 132,
+              "start": 121,
+              "text": "temperature"
+            },
+            "tail": {
+              "confidence": 0.841343104839325,
+              "end": 288,
+              "start": 277,
+              "text": "temperature"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:13:20.121732+00:00",
+  "status": "RETURNED"
+}

@@ -1,0 +1,385 @@
+{
+  "completed_utc": "2026-10-02T19:18:01.033160+00:00",
+  "elapsed_seconds": 1.6744925689417869,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"Above the cabinet, retransmissions fall from 30 percent to 2 percent. How do we interpret the placement comparison?\", \"s1\": \"This scenario describes a **\\\"Signal Degradation\\\"** or **\\\"Attenuation\\\"** problem.\\n\\nWhen you say, *\\\"Above the cabinet, retransmissions fall from 30 percent to 2 percent,\\\"* you are describing a **severe loss of data integrity or throughput.**\\n\\nTo interpret this \\\"connection evidence,\\\" you need to look at **what caused the drop.**\\n\\n### 1. The \\\"Evidence\\\" (The Cause):\\nThe \\\"evidence\\\" that matters is **the specific mechanism causing the drop.**\\n\\n**The \\\"Evidence\\\" is the \\\"Loss\\\" (The 28% drop):**\\n\\n*   **If the drop is 30% to 2%:** This is a massive loss of data integrity.\\n*   **The \\\"Evidence\\\" is the \\\"Path\\\":** The drop from 30% to 2% means the connection is failing.\\n\\n### 2. How to Interpret the \\\"Connection Evidence\\\":**\\n\\nThe \\\"evidence\\\" that matters is **the \\\"Path\\\"**:\\n\\n*   **If the signal was 30% and now it is 2%:** The evidence is that the **\\\"Path\\\"** has changed or been blocked.\\n\\n**The \\\"Evidence\\\" that matters is the \\\"Path\\\" (The Network Path):**\\n\\n*   **The \\\"Evidence\\\" is the \\\"Path\\\" (The Physical Route):** You need to check the physical connection between the source and the receiver.\\n*   **If the signal is \\\"stale,\\\"** the evidence is that the **connection is failing.**\\n\\n### 3. The \\\"Connection Evidence\\\" (The \\\"How\\\"):**\\n\\nSince you are asking how to interpret this specific drop (30% to 2%):\\n\\n*   **The evidence is the *signal quality*:** The \\\"evidence\\\" is the **Signal-to-Noise Ratio (SNR)**.\\n*   **The \\\"Evidence\\\" is the \\\"Path\\\":** The 30% to 2% drop indicates a catastrophic failure in the transmission path.\\n\\n**In summary, the \\\"Evidence\\\" that matters is the *quality of the connection*:**\\n\\n1.  **The \\\"Evidence\\\" is the \\\"Path\\\":** You must check the physical connection between the two points.\\n2.  **The \\\"Evidence\\\" is the \\\"Signal Strength\\\":** The drop from 30% to 2% is the evidence of a **severe failure.**\\n\\n**How to interpret this:**\\n\\n*   **If the drop is 30% to 2%, the \\\"Evidence\\\" is the \\\"Path\\\" itself.**\\n*   **If the signal is \\\"stale,\\\"** the evidence is that the **\\\"Path\\\"** is the problem.\\n\\n**The \\\"Evidence\\\" that matters is the \\\"Path\\\" (The physical connection).**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-F-new-r1-t08"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"drop\", \"relation\": \"causes\", \"to\": \"drop\", \"source\": \"s1\", \"evidence\": \"drop):**\\n\\n*   **If the drop\"}], \"episode_id\": \"main-network-F-new-r1-t08\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "solves",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "used_for",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "f8d17eda5e49096585852699ce0673af7393aac6f9770cf775fb3fafd45ad1e6",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 508,
+              "start": 481
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "drop",
+            "object_span": {
+              "end": 508,
+              "start": 504
+            },
+            "relation": "affects",
+            "score": 0.5351877808570862,
+            "source_slot": "s1",
+            "subject": "drop",
+            "subject_span": {
+              "end": 485,
+              "start": 481
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 508,
+              "start": 481
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "drop",
+            "object_span": {
+              "end": 508,
+              "start": 504
+            },
+            "relation": "causes",
+            "score": 0.6733466386795044,
+            "source_slot": "s1",
+            "subject": "drop",
+            "subject_span": {
+              "end": 485,
+              "start": 481
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 508,
+              "start": 481
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "drop",
+            "object_span": {
+              "end": 508,
+              "start": 504
+            },
+            "relation": "reduces",
+            "score": 0.7580794095993042,
+            "source_slot": "s1",
+            "subject": "drop",
+            "subject_span": {
+              "end": 485,
+              "start": 481
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 508,
+              "start": 481
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "drop",
+            "object_span": {
+              "end": 485,
+              "start": 481
+            },
+            "relation": "influences",
+            "score": 0.5290625095367432,
+            "source_slot": "s1",
+            "subject": "drop",
+            "subject_span": {
+              "end": 508,
+              "start": 504
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1879,
+              "start": 1847
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "drop",
+            "object_span": {
+              "end": 1851,
+              "start": 1847
+            },
+            "relation": "solves",
+            "score": 0.6442716717720032,
+            "source_slot": "s1",
+            "subject": "Evidence",
+            "subject_span": {
+              "end": 1879,
+              "start": 1871
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1879,
+              "start": 1847
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "drop",
+            "object_span": {
+              "end": 1851,
+              "start": 1847
+            },
+            "relation": "used_for",
+            "score": 0.5983225703239441,
+            "source_slot": "s1",
+            "subject": "Evidence",
+            "subject_span": {
+              "end": 1879,
+              "start": 1871
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "877d3767585d7cfe16ba1699ff4c03e2c89c6e368df0b1fe63cb79434e4c7a32",
+          "s1": "f1226237da899cd29f8ceb9f0182d16216dd492168dfc957c605204b8ec6fe37"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.5351877808570862,
+                  "end": 601,
+                  "start": 597,
+                  "text": "drop"
+                },
+                "tail": {
+                  "confidence": 0.5351877808570862,
+                  "end": 624,
+                  "start": 620,
+                  "text": "drop"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.6733466386795044,
+                  "end": 601,
+                  "start": 597,
+                  "text": "drop"
+                },
+                "tail": {
+                  "confidence": 0.6733466386795044,
+                  "end": 624,
+                  "start": 620,
+                  "text": "drop"
+                }
+              }
+            ],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.5290625095367432,
+                  "end": 624,
+                  "start": 620,
+                  "text": "drop"
+                },
+                "tail": {
+                  "confidence": 0.5290625095367432,
+                  "end": 601,
+                  "start": 597,
+                  "text": "drop"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.7580794095993042,
+                  "end": 601,
+                  "start": 597,
+                  "text": "drop"
+                },
+                "tail": {
+                  "confidence": 0.7580794095993042,
+                  "end": 624,
+                  "start": 620,
+                  "text": "drop"
+                }
+              }
+            ],
+            "related": [],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [
+              {
+                "head": {
+                  "confidence": 0.6442716717720032,
+                  "end": 1995,
+                  "start": 1987,
+                  "text": "Evidence"
+                },
+                "tail": {
+                  "confidence": 0.6442716717720032,
+                  "end": 1967,
+                  "start": 1963,
+                  "text": "drop"
+                }
+              }
+            ],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [
+              {
+                "head": {
+                  "confidence": 0.5983225703239441,
+                  "end": 1995,
+                  "start": 1987,
+                  "text": "Evidence"
+                },
+                "tail": {
+                  "confidence": 0.5983225703239441,
+                  "end": 1967,
+                  "start": 1963,
+                  "text": "drop"
+                }
+              }
+            ],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:17:59.355917+00:00",
+  "status": "RETURNED"
+}

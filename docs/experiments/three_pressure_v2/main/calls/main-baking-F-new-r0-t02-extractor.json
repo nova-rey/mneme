@@ -1,0 +1,598 @@
+{
+  "completed_utc": "2026-10-02T19:11:23.891977+00:00",
+  "elapsed_seconds": 1.1865963458549231,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"An oven thermometer reads 220 degrees Celsius when the dial is set to 200. How does this actual temperature change the diagnosis?\", \"s1\": \"That's a very common issue! When your oven *says* it's 200\\u00b0C, but the actual temperature is actually lower or higher, that's a classic \\\"oven inaccuracy.\\\"\\n\\nHere is how that temperature discrepancy changes the diagnosis:\\n\\n### 1. The \\\"Real\\\" Temperature vs. The \\\"Set\\\" Temperature\\nIf your oven is *reading* 200\\u00b0C but the actual temperature is different, it means your oven is **inaccurate**.\\n\\n*   **If the actual temperature is LOWER than 200\\u00b0C:** The food will take longer to cook, and the edges might stay raw.\\n*   **If the actual temperature is HIGHER than 200\\u00b0C:** The food will cook too fast, leading to the \\\"dark outside\\\" problem you mentioned earlier.\\n\\n### 2. How to \\\"Work Out\\\" the Setting\\nIf you are trying to get a specific result (like a perfect crust or a specific texture), you need to **calibrate** your oven.\\n\\n**The best \\\"work out\\\" is to use a reliable, external thermometer (like a probe thermometer) to check the actual internal temperature.**\\n\\n**If you want a dependable setting, you need to know what you are baking.**\\n\\n**For example:**\\n*   **If you are baking a cake:** You need a specific internal temperature (e.g., 90\\u00b0C for a cake).\\n*   **If you are baking bread:** You need a specific internal crumb temperature (e.g., 90\\u00b0C).\\n\\n**In short: The temperature reading on the dial is just a *guess* until you confirm it with a physical thermometer.**\\n\\n***\\n\\n**If you can tell me what you are baking (e.g., \\\"I'm baking a loaf of sourdough,\\\" or \\\"I'm baking a chocolate cake\\\"), I can give you a much more precise \\\"dependable setting\\\" recommendation!**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-baking-F-new-r0-t02"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"oven\", \"relation\": \"depends_on\", \"to\": \"dial\", \"source\": \"s0\", \"evidence\": \"oven thermometer reads 220 degrees Celsius when the dial\"}, {\"from\": \"temperature discrepancy\", \"relation\": \"causes\", \"to\": \"oven inaccuracy\", \"source\": \"s1\", \"evidence\": \"oven inaccuracy.\\\"\\n\\nHere is how that temperature discrepancy\"}], \"episode_id\": \"main-baking-F-new-r0-t02\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "controls",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "549594b9f7438a9d42376f40c9feaead4b924b03c41cdbd295346e6f31dd3a85",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 59,
+              "start": 3
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "dial",
+            "object_span": {
+              "end": 59,
+              "start": 55
+            },
+            "relation": "depends_on",
+            "score": 0.6419625878334045,
+            "source_slot": "s0",
+            "subject": "oven",
+            "subject_span": {
+              "end": 7,
+              "start": 3
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 195,
+              "start": 136
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "oven inaccuracy",
+            "object_span": {
+              "end": 151,
+              "start": 136
+            },
+            "relation": "affects",
+            "score": 0.385348379611969,
+            "source_slot": "s1",
+            "subject": "temperature discrepancy",
+            "subject_span": {
+              "end": 195,
+              "start": 172
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 195,
+              "start": 136
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "oven inaccuracy",
+            "object_span": {
+              "end": 151,
+              "start": 136
+            },
+            "relation": "causes",
+            "score": 0.47971129417419434,
+            "source_slot": "s1",
+            "subject": "temperature discrepancy",
+            "subject_span": {
+              "end": 195,
+              "start": 172
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 217,
+              "start": 172
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "diagnosis",
+            "object_span": {
+              "end": 217,
+              "start": 208
+            },
+            "relation": "affects",
+            "score": 0.8773720860481262,
+            "source_slot": "s1",
+            "subject": "temperature discrepancy",
+            "subject_span": {
+              "end": 195,
+              "start": 172
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 217,
+              "start": 172
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "diagnosis",
+            "object_span": {
+              "end": 217,
+              "start": 208
+            },
+            "relation": "changes",
+            "score": 0.9459559917449951,
+            "source_slot": "s1",
+            "subject": "temperature discrepancy",
+            "subject_span": {
+              "end": 195,
+              "start": 172
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 217,
+              "start": 172
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "diagnosis",
+            "object_span": {
+              "end": 217,
+              "start": 208
+            },
+            "relation": "influences",
+            "score": 0.8619961142539978,
+            "source_slot": "s1",
+            "subject": "temperature discrepancy",
+            "subject_span": {
+              "end": 195,
+              "start": 172
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 367,
+              "start": 284
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "oven",
+            "object_span": {
+              "end": 367,
+              "start": 363
+            },
+            "relation": "controls",
+            "score": 0.7116348743438721,
+            "source_slot": "s1",
+            "subject": "oven",
+            "subject_span": {
+              "end": 288,
+              "start": 284
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 439,
+              "start": 401
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "200°C",
+            "object_span": {
+              "end": 439,
+              "start": 434
+            },
+            "relation": "increases",
+            "score": 0.7568256258964539,
+            "source_slot": "s1",
+            "subject": "actual temperature",
+            "subject_span": {
+              "end": 419,
+              "start": 401
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 630,
+              "start": 521
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "\"dark outside\" problem",
+            "object_span": {
+              "end": 630,
+              "start": 608
+            },
+            "relation": "leads_to",
+            "score": 0.5864167213439941,
+            "source_slot": "s1",
+            "subject": "actual temperature",
+            "subject_span": {
+              "end": 539,
+              "start": 521
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 883,
+              "start": 670
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "external thermometer",
+            "object_span": {
+              "end": 883,
+              "start": 863
+            },
+            "relation": "uses",
+            "score": 0.41662484407424927,
+            "source_slot": "s1",
+            "subject": "Work Out",
+            "subject_span": {
+              "end": 678,
+              "start": 670
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 909,
+              "start": 670
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "probe thermometer",
+            "object_span": {
+              "end": 909,
+              "start": 892
+            },
+            "relation": "uses",
+            "score": 0.40076783299446106,
+            "source_slot": "s1",
+            "subject": "Work Out",
+            "subject_span": {
+              "end": 678,
+              "start": 670
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "ceeb7fbee4f83fcf89dd2a3ba4e57ee3fe74c6361d8ccad6c10a75000381460e",
+          "s1": "5fbf5b4409bf43518b52e408b35c24a9303168b1b9a7a80b3fdb3bc8dab91738"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.385348379611969,
+                  "end": 325,
+                  "start": 302,
+                  "text": "temperature discrepancy"
+                },
+                "tail": {
+                  "confidence": 0.385348379611969,
+                  "end": 281,
+                  "start": 266,
+                  "text": "oven inaccuracy"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8773720860481262,
+                  "end": 325,
+                  "start": 302,
+                  "text": "temperature discrepancy"
+                },
+                "tail": {
+                  "confidence": 0.8773720860481262,
+                  "end": 347,
+                  "start": 338,
+                  "text": "diagnosis"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.47971129417419434,
+                  "end": 325,
+                  "start": 302,
+                  "text": "temperature discrepancy"
+                },
+                "tail": {
+                  "confidence": 0.47971129417419434,
+                  "end": 281,
+                  "start": 266,
+                  "text": "oven inaccuracy"
+                }
+              }
+            ],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.9459559917449951,
+                  "end": 325,
+                  "start": 302,
+                  "text": "temperature discrepancy"
+                },
+                "tail": {
+                  "confidence": 0.9459559917449951,
+                  "end": 347,
+                  "start": 338,
+                  "text": "diagnosis"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [
+              {
+                "head": {
+                  "confidence": 0.7116348743438721,
+                  "end": 418,
+                  "start": 414,
+                  "text": "oven"
+                },
+                "tail": {
+                  "confidence": 0.7116348743438721,
+                  "end": 497,
+                  "start": 493,
+                  "text": "oven"
+                }
+              }
+            ],
+            "depends_on": [
+              {
+                "head": {
+                  "confidence": 0.6419625878334045,
+                  "end": 7,
+                  "start": 3,
+                  "text": "oven"
+                },
+                "tail": {
+                  "confidence": 0.6419625878334045,
+                  "end": 59,
+                  "start": 55,
+                  "text": "dial"
+                }
+              }
+            ],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.7568256258964539,
+                  "end": 549,
+                  "start": 531,
+                  "text": "actual temperature"
+                },
+                "tail": {
+                  "confidence": 0.7568256258964539,
+                  "end": 569,
+                  "start": 564,
+                  "text": "200°C"
+                }
+              }
+            ],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.8619961142539978,
+                  "end": 325,
+                  "start": 302,
+                  "text": "temperature discrepancy"
+                },
+                "tail": {
+                  "confidence": 0.8619961142539978,
+                  "end": 347,
+                  "start": 338,
+                  "text": "diagnosis"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [
+              {
+                "head": {
+                  "confidence": 0.5864167213439941,
+                  "end": 669,
+                  "start": 651,
+                  "text": "actual temperature"
+                },
+                "tail": {
+                  "confidence": 0.5864167213439941,
+                  "end": 760,
+                  "start": 738,
+                  "text": "\"dark outside\" problem"
+                }
+              }
+            ],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.41662484407424927,
+                  "end": 808,
+                  "start": 800,
+                  "text": "Work Out"
+                },
+                "tail": {
+                  "confidence": 0.41662484407424927,
+                  "end": 1013,
+                  "start": 993,
+                  "text": "external thermometer"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.40076783299446106,
+                  "end": 808,
+                  "start": 800,
+                  "text": "Work Out"
+                },
+                "tail": {
+                  "confidence": 0.40076783299446106,
+                  "end": 1039,
+                  "start": 1022,
+                  "text": "probe thermometer"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:11:22.703474+00:00",
+  "status": "RETURNED"
+}

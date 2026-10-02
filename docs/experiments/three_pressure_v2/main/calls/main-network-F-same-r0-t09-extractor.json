@@ -1,0 +1,634 @@
+{
+  "completed_utc": "2026-10-02T19:03:23.193225+00:00",
+  "elapsed_seconds": 0.8691721989307553,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"Back at the closer Wi-Fi position with the shorter power cable, the sensor resets 0 times and the dashboard misses 0 updates in 240 minutes. Ask what has now been checked.\", \"s1\": \"It seems like you are describing a specific technical scenario involving a **\\\"reset\\\" or \\\"reboot\\\"** occurring every 120 minutes, and you are asking what this \\\"reversal\\\" (reboot/reset) establishes or what the \\\"reversal\\\" means in this context.\\n\\n**To give you a precise answer, I need more context:**\\n*   **What is the \\\"reversal\\\" you are referring to?** (e.g., a system rollback, a data reversal, or a physical reversal?)\\n*   **What is the \\\"closer Wi-Fi position\\\" referring to?** (Is it a specific physical location, or a specific Wi-Fi signal strength?)\\n\\n**If you can clarify what \\\"reversal\\\" means in your technical context, I can provide a more specific answer.**\\n\\n**If you are asking what the \\\"reversal\\\" (the 120-minute cycle) establishes:**\\n*   **The \\\"reversal\\\" (reset/reset) establishes a \\\"failure\\\" or \\\"reset\\\" state.** The system is failing to maintain a stable connection or state.\\n\\n**Please clarify what \\\"reversal\\\" means in your specific context so I can help you better.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-F-same-r0-t09"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"reversal\", \"relation\": \"causes\", \"to\": \"reset\", \"source\": \"s1\", \"evidence\": \"reversal\\\" (reboot/reset\"}, {\"from\": \"closer Wi-Fi position\", \"relation\": \"related\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"closer Wi-Fi position\\\" referring to?** (Is it a specific physical location, or a specific Wi-Fi signal strength?)\\n\\n**If you can clarify what \\\"reversal\\\" means in your technical context, I can provide a more specific answer.**\\n\\n**If you are asking what the \\\"reversal\\\" (the 120-minute cycle) establishes:**\\n*   **The \\\"reversal\\\" (reset/reset) establishes a \\\"failure\\\" or \\\"reset\\\" state.** The system\"}, {\"from\": \"reversal\", \"relation\": \"part_of\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"reversal\\\" (reset/reset) establishes a \\\"failure\\\" or \\\"reset\\\" state.** The system\"}, {\"from\": \"reset\", \"relation\": \"causes\", \"to\": \"reset\", \"source\": \"s1\", \"evidence\": \"reset/reset) establishes a \\\"failure\\\" or \\\"reset\"}], \"episode_id\": \"main-network-F-same-r0-t09\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "helps",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "maintains",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 9,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "maintains",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "3177f1caeabc18b8fafc768b445663777dc57b41d3803451c0dd62c327515a9a",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 74,
+              "start": 43
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "shorter power cable",
+            "object_span": {
+              "end": 62,
+              "start": 43
+            },
+            "relation": "uses",
+            "score": 0.788499116897583,
+            "source_slot": "s0",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 74,
+              "start": 68
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 181,
+              "start": 158
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "reset",
+            "object_span": {
+              "end": 181,
+              "start": 176
+            },
+            "relation": "causes",
+            "score": 0.35958772897720337,
+            "source_slot": "s1",
+            "subject": "reversal",
+            "subject_span": {
+              "end": 166,
+              "start": 158
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 329,
+              "start": 274
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "you",
+            "object_span": {
+              "end": 329,
+              "start": 326
+            },
+            "relation": "helps",
+            "score": 0.5766674876213074,
+            "source_slot": "s1",
+            "subject": "I",
+            "subject_span": {
+              "end": 275,
+              "start": 274
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 830,
+              "start": 437
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 830,
+              "start": 824
+            },
+            "relation": "related",
+            "score": 0.5353314280509949,
+            "source_slot": "s1",
+            "subject": "closer Wi-Fi position",
+            "subject_span": {
+              "end": 458,
+              "start": 437
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 658,
+              "start": 557
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "specific answer",
+            "object_span": {
+              "end": 658,
+              "start": 643
+            },
+            "relation": "provides",
+            "score": 0.46544668078422546,
+            "source_slot": "s1",
+            "subject": "you",
+            "subject_span": {
+              "end": 560,
+              "start": 557
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 882,
+              "start": 557
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "stable connection or state",
+            "object_span": {
+              "end": 882,
+              "start": 856
+            },
+            "relation": "maintains",
+            "score": 0.39449676871299744,
+            "source_slot": "s1",
+            "subject": "you",
+            "subject_span": {
+              "end": 560,
+              "start": 557
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 658,
+              "start": 622
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "specific answer",
+            "object_span": {
+              "end": 658,
+              "start": 643
+            },
+            "relation": "provides",
+            "score": 0.7053248286247253,
+            "source_slot": "s1",
+            "subject": "I",
+            "subject_span": {
+              "end": 623,
+              "start": 622
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 830,
+              "start": 752
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 830,
+              "start": 824
+            },
+            "relation": "associated_with",
+            "score": 0.3929079473018646,
+            "source_slot": "s1",
+            "subject": "reversal",
+            "subject_span": {
+              "end": 760,
+              "start": 752
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 830,
+              "start": 752
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 830,
+              "start": 824
+            },
+            "relation": "part_of",
+            "score": 0.6385052800178528,
+            "source_slot": "s1",
+            "subject": "reversal",
+            "subject_span": {
+              "end": 760,
+              "start": 752
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 809,
+              "start": 763
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "reset",
+            "object_span": {
+              "end": 809,
+              "start": 804
+            },
+            "relation": "causes",
+            "score": 0.3654201030731201,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 768,
+              "start": 763
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 882,
+              "start": 824
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "stable connection or state",
+            "object_span": {
+              "end": 882,
+              "start": 856
+            },
+            "relation": "maintains",
+            "score": 0.6541795134544373,
+            "source_slot": "s1",
+            "subject": "system",
+            "subject_span": {
+              "end": 830,
+              "start": 824
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "7d2f02ef8404cabdbe1990a278aa363915747fbb84a92ac84f4bafb74802f20d",
+          "s1": "699a9c69a47987484ab58c1cec8f85734ac6068e602bfebc1058e989d8818db7"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.3929079473018646,
+                  "end": 932,
+                  "start": 924,
+                  "text": "reversal"
+                },
+                "tail": {
+                  "confidence": 0.3929079473018646,
+                  "end": 1002,
+                  "start": 996,
+                  "text": "system"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.35958772897720337,
+                  "end": 338,
+                  "start": 330,
+                  "text": "reversal"
+                },
+                "tail": {
+                  "confidence": 0.35958772897720337,
+                  "end": 353,
+                  "start": 348,
+                  "text": "reset"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.3654201030731201,
+                  "end": 940,
+                  "start": 935,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.3654201030731201,
+                  "end": 981,
+                  "start": 976,
+                  "text": "reset"
+                }
+              }
+            ],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [
+              {
+                "head": {
+                  "confidence": 0.5766674876213074,
+                  "end": 447,
+                  "start": 446,
+                  "text": "I"
+                },
+                "tail": {
+                  "confidence": 0.5766674876213074,
+                  "end": 501,
+                  "start": 498,
+                  "text": "you"
+                }
+              }
+            ],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [
+              {
+                "head": {
+                  "confidence": 0.39449676871299744,
+                  "end": 732,
+                  "start": 729,
+                  "text": "you"
+                },
+                "tail": {
+                  "confidence": 0.39449676871299744,
+                  "end": 1054,
+                  "start": 1028,
+                  "text": "stable connection or state"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6541795134544373,
+                  "end": 1002,
+                  "start": 996,
+                  "text": "system"
+                },
+                "tail": {
+                  "confidence": 0.6541795134544373,
+                  "end": 1054,
+                  "start": 1028,
+                  "text": "stable connection or state"
+                }
+              }
+            ],
+            "manages": [],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.6385052800178528,
+                  "end": 932,
+                  "start": 924,
+                  "text": "reversal"
+                },
+                "tail": {
+                  "confidence": 0.6385052800178528,
+                  "end": 1002,
+                  "start": 996,
+                  "text": "system"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [],
+            "provides": [
+              {
+                "head": {
+                  "confidence": 0.46544668078422546,
+                  "end": 732,
+                  "start": 729,
+                  "text": "you"
+                },
+                "tail": {
+                  "confidence": 0.46544668078422546,
+                  "end": 830,
+                  "start": 815,
+                  "text": "specific answer"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7053248286247253,
+                  "end": 795,
+                  "start": 794,
+                  "text": "I"
+                },
+                "tail": {
+                  "confidence": 0.7053248286247253,
+                  "end": 830,
+                  "start": 815,
+                  "text": "specific answer"
+                }
+              }
+            ],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.5353314280509949,
+                  "end": 630,
+                  "start": 609,
+                  "text": "closer Wi-Fi position"
+                },
+                "tail": {
+                  "confidence": 0.5353314280509949,
+                  "end": 1002,
+                  "start": 996,
+                  "text": "system"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [
+              {
+                "head": {
+                  "confidence": 0.7019250988960266,
+                  "end": 74,
+                  "start": 68,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.7019250988960266,
+                  "end": 255,
+                  "start": 250,
+                  "text": "reset"
+                }
+              }
+            ],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.788499116897583,
+                  "end": 74,
+                  "start": 68,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.788499116897583,
+                  "end": 62,
+                  "start": 43,
+                  "text": "shorter power cable"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.7019250988960266,
+              "end": 74,
+              "start": 68,
+              "text": "sensor"
+            },
+            "tail": {
+              "confidence": 0.7019250988960266,
+              "end": 255,
+              "start": 250,
+              "text": "reset"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:03:22.321975+00:00",
+  "status": "RETURNED"
+}

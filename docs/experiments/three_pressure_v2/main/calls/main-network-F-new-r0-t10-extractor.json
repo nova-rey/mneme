@@ -1,0 +1,1440 @@
+{
+  "completed_utc": "2026-10-02T19:01:40.092763+00:00",
+  "elapsed_seconds": 1.6397366230376065,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"During a second eight-hour trial with the fan running, there are still no resets or missed updates. Ask for a bounded conclusion and monitoring plan.\", \"s1\": \"This is a continuation of the previous scenario, focusing on the *next* phase of testing after the initial successful 8-hour trial.\\n\\nSince the previous trial was successful (no resets, no missed updates), the next logical step is to **\\\"Test the Limits\\\"** and **\\\"Monitor\\\"** the system under stress.\\n\\nHere is the interpretation of the \\\"Monitoring Plan\\\" and the \\\"Conclusion\\\":\\n\\n### 1. What this \\\"Supports\\\" (The Conclusion):\\n\\nThe fact that the system ran for eight hours without failure means the **\\\"Baseline Stability\\\"** is confirmed. The system is stable under the current load.\\n\\n### 2. What is \\\"Still Untested\\\" (The Remaining Risks):**\\n\\nThe \\\"Untested\\\" areas are the **Stress Tests** and **Security Vulnerabilities.**\\n\\n*   **The \\\"Untested\\\" Areas are:**\\n    *   **Extreme Load:** How does it handle a sudden, massive spike in data?\\n    *   **Security/Security:** How does it handle external security threats (hacking/DDoS)?\\n    *   **Long-Term Degradation:** How does it perform after 24, 48, or 72 hours of continuous operation?\\n\\n### 3. The \\\"Monitoring Plan\\\" (The Plan):**\\n\\nSince the system is stable, the plan is to **\\\"Monitor\\\"** the system under increasing stress:\\n\\n*   **Monitoring Plan:**\\n    *   **Load Testing:** Increase the \\\"traffic\\\" or \\\"data volume\\\" to see if the system breaks under high-load scenarios.\\n    *   **Security Audit:** Run a \\\"Penetration Test\\\" to see if external threats can bypass the system.\\n    *   **Stress Testing:** Run the system at 150% capacity to see where the \\\"breaking point\\\" is.\\n\\n---\\n\\n### Summary of the \\\"Conclusion\\\" (The \\\"Test\\\"):\\n\\n**The Conclusion (The \\\"Test\\\"):**\\nThe \\\"Test\\\" is to **\\\"Check the Signal Quality\\\"** (the data flow).\\n\\n**The \\\"Monitoring Plan\\\" is to check the \\\"Signal Quality\\\" (the data flow).**\\n\\n**The \\\"Test\\\" is to check the \\\"Signal Quality\\\" (the data flow).**\\n\\n**The \\\"Monitoring Plan\\\" is to check the \\\"Signal Quality\\\" (the data flow).**\\n\\n**In plain language, the plan is to \\\"Monitor the Data Flow.\\\"**\\n\\n***\\n\\n**If you are asking for a \\\"Bounded Conclusion\\\" (A final conclusion based on the 8-hour trial):**\\n\\n*   **Conclusion:** The system is **Stable.** It is ready for the next phase of testing.\\n\\n**If you are asking \\\"What is still untested?\\\" (The remaining risks):**\\n*   **The remaining risk is the \\\"Extreme Load\\\" and \\\"Security Vulnerabilities.\\\"**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-F-new-r0-t10"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"Monitoring Plan\", \"relation\": \"retains\", \"to\": \"Baseline Stability\", \"source\": \"s1\", \"evidence\": \"Monitoring Plan\\\" and the \\\"Conclusion\\\":\\n\\n### 1. What this \\\"Supports\\\" (The Conclusion):\\n\\nThe fact that the system ran for eight hours without failure means the **\\\"Baseline Stability\"}, {\"from\": \"Monitoring Plan\", \"relation\": \"supports\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"Monitoring Plan\\\" and the \\\"Conclusion\\\":\\n\\n### 1. What this \\\"Supports\\\" (The Conclusion):\\n\\nThe fact that the system ran for eight hours without failure means the **\\\"Baseline Stability\\\"** is confirmed. The system\"}, {\"from\": \"Long-Term Degradation\", \"relation\": \"part_of\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"Long-Term Degradation:** How does it perform after 24, 48, or 72 hours of continuous operation?\\n\\n### 3. The \\\"Monitoring Plan\\\" (The Plan):**\\n\\nSince the system\"}, {\"from\": \"Long-Term Degradation\", \"relation\": \"related\", \"to\": \"Security Vulnerabilities\", \"source\": \"s1\", \"evidence\": \"Long-Term Degradation:** How does it perform after 24, 48, or 72 hours of continuous operation?\\n\\n### 3. The \\\"Monitoring Plan\\\" (The Plan):**\\n\\nSince the system is stable, the plan is to **\\\"Monitor\\\"** the system under increasing stress:\\n\\n*   **Monitoring Plan:**\\n    *   **Load Testing:** Increase the \\\"traffic\\\" or \\\"data volume\\\" to see if the system breaks under high-load scenarios.\\n    *   **Security Audit:** Run a \\\"Penetration Test\\\" to see if external threats can bypass the system.\\n    *   **Stress Testing:** Run the system at 150% capacity to see where the \\\"breaking point\\\" is.\\n\\n---\\n\\n### Summary of the \\\"Conclusion\\\" (The \\\"Test\\\"):\\n\\n**The Conclusion (The \\\"Test\\\"):**\\nThe \\\"Test\\\" is to **\\\"Check the Signal Quality\\\"** (the data flow).\\n\\n**The \\\"Monitoring Plan\\\" is to check the \\\"Signal Quality\\\" (the data flow).**\\n\\n**The \\\"Test\\\" is to check the \\\"Signal Quality\\\" (the data flow).**\\n\\n**The \\\"Monitoring Plan\\\" is to check the \\\"Signal Quality\\\" (the data flow).**\\n\\n**In plain language, the plan is to \\\"Monitor the Data Flow.\\\"**\\n\\n***\\n\\n**If you are asking for a \\\"Bounded Conclusion\\\" (A final conclusion based on the 8-hour trial):**\\n\\n*   **Conclusion:** The system is **Stable.** It is ready for the next phase of testing.\\n\\n**If you are asking \\\"What is still untested?\\\" (The remaining risks):**\\n*   **The remaining risk is the \\\"Extreme Load\\\" and \\\"Security Vulnerabilities\"}, {\"from\": \"Monitoring Plan\", \"relation\": \"part_of\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"Monitoring Plan\\\" (The Plan):**\\n\\nSince the system\"}, {\"from\": \"Monitoring Plan\", \"relation\": \"constrains\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"Monitoring Plan\\\" (The Plan):**\\n\\nSince the system is stable, the plan is to **\\\"Monitor\\\"** the system under increasing stress:\\n\\n*   **Monitoring Plan:**\\n    *   **Load Testing:** Increase the \\\"traffic\\\" or \\\"data volume\\\" to see if the system\"}, {\"from\": \"Stress Testing\", \"relation\": \"part_of\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"Stress Testing:** Run the system\"}, {\"from\": \"Security Vulnerabilities\", \"relation\": \"part_of\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"system is **Stable.** It is ready for the next phase of testing.\\n\\n**If you are asking \\\"What is still untested?\\\" (The remaining risks):**\\n*   **The remaining risk is the \\\"Extreme Load\\\" and \\\"Security Vulnerabilities\"}], \"episode_id\": \"main-network-F-new-r0-t10\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "holds",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "keeps",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "maintains",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "specialist_observation",
+          "relation": "retains",
+          "status": "forwarded"
+        },
+        {
+          "index": 5,
+          "kind": "specialist_observation",
+          "relation": "supports",
+          "status": "forwarded"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 8,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 9,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "protects",
+          "status": "rejected"
+        },
+        {
+          "index": 11,
+          "kind": "specialist_observation",
+          "relation": "constrains",
+          "status": "forwarded"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "controls",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 14,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 15,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 16,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 17,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 18,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 19,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 20,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 21,
+          "kind": "unsupported_specialist_relation",
+          "relation": "helps",
+          "status": "rejected"
+        },
+        {
+          "index": 22,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 23,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 24,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 25,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 26,
+          "kind": "unsupported_specialist_relation",
+          "relation": "helps",
+          "status": "rejected"
+        },
+        {
+          "index": 27,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 28,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 29,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        }
+      ],
+      "specialist": {
+        "content_digest": "9abcf45b59b2d336d9549db070a2347f3e9093d0dc9a22e2f6f8e0f2e993617e",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 513,
+              "start": 334
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Baseline Stability",
+            "object_span": {
+              "end": 513,
+              "start": 495
+            },
+            "relation": "holds",
+            "score": 0.6144701838493347,
+            "source_slot": "s1",
+            "subject": "Monitoring Plan",
+            "subject_span": {
+              "end": 349,
+              "start": 334
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 513,
+              "start": 334
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Baseline Stability",
+            "object_span": {
+              "end": 513,
+              "start": 495
+            },
+            "relation": "keeps",
+            "score": 0.5975768566131592,
+            "source_slot": "s1",
+            "subject": "Monitoring Plan",
+            "subject_span": {
+              "end": 349,
+              "start": 334
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 513,
+              "start": 334
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Baseline Stability",
+            "object_span": {
+              "end": 513,
+              "start": 495
+            },
+            "relation": "maintains",
+            "score": 0.6012033820152283,
+            "source_slot": "s1",
+            "subject": "Monitoring Plan",
+            "subject_span": {
+              "end": 349,
+              "start": 334
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 513,
+              "start": 334
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Baseline Stability",
+            "object_span": {
+              "end": 513,
+              "start": 495
+            },
+            "relation": "provides",
+            "score": 0.49319303035736084,
+            "source_slot": "s1",
+            "subject": "Monitoring Plan",
+            "subject_span": {
+              "end": 349,
+              "start": 334
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 513,
+              "start": 334
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Baseline Stability",
+            "object_span": {
+              "end": 513,
+              "start": 495
+            },
+            "relation": "retains",
+            "score": 0.5651221871376038,
+            "source_slot": "s1",
+            "subject": "Monitoring Plan",
+            "subject_span": {
+              "end": 349,
+              "start": 334
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 541,
+              "start": 334
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 541,
+              "start": 535
+            },
+            "relation": "supports",
+            "score": 0.7669227123260498,
+            "source_slot": "s1",
+            "subject": "Monitoring Plan",
+            "subject_span": {
+              "end": 349,
+              "start": 334
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1087,
+              "start": 930
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 1087,
+              "start": 1081
+            },
+            "relation": "associated_with",
+            "score": 0.8734163641929626,
+            "source_slot": "s1",
+            "subject": "Long-Term Degradation",
+            "subject_span": {
+              "end": 951,
+              "start": 930
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1087,
+              "start": 930
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 1087,
+              "start": 1081
+            },
+            "relation": "part_of",
+            "score": 0.7902969717979431,
+            "source_slot": "s1",
+            "subject": "Long-Term Degradation",
+            "subject_span": {
+              "end": 951,
+              "start": 930
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 2288,
+              "start": 930
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Security Vulnerabilities",
+            "object_span": {
+              "end": 2288,
+              "start": 2264
+            },
+            "relation": "related",
+            "score": 0.4841352701187134,
+            "source_slot": "s1",
+            "subject": "Long-Term Degradation",
+            "subject_span": {
+              "end": 951,
+              "start": 930
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1087,
+              "start": 1039
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 1087,
+              "start": 1081
+            },
+            "relation": "part_of",
+            "score": 0.7282572984695435,
+            "source_slot": "s1",
+            "subject": "Monitoring Plan",
+            "subject_span": {
+              "end": 1054,
+              "start": 1039
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1087,
+              "start": 1039
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 1087,
+              "start": 1081
+            },
+            "relation": "protects",
+            "score": 0.8718309998512268,
+            "source_slot": "s1",
+            "subject": "Monitoring Plan",
+            "subject_span": {
+              "end": 1054,
+              "start": 1039
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1276,
+              "start": 1039
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 1276,
+              "start": 1270
+            },
+            "relation": "constrains",
+            "score": 0.7115182876586914,
+            "source_slot": "s1",
+            "subject": "Monitoring Plan",
+            "subject_span": {
+              "end": 1054,
+              "start": 1039
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1276,
+              "start": 1039
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 1276,
+              "start": 1270
+            },
+            "relation": "controls",
+            "score": 0.49044185876846313,
+            "source_slot": "s1",
+            "subject": "Monitoring Plan",
+            "subject_span": {
+              "end": 1054,
+              "start": 1039
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1237,
+              "start": 1200
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "traffic",
+            "object_span": {
+              "end": 1237,
+              "start": 1230
+            },
+            "relation": "changes",
+            "score": 0.5576481819152832,
+            "source_slot": "s1",
+            "subject": "Load Testing",
+            "subject_span": {
+              "end": 1212,
+              "start": 1200
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1237,
+              "start": 1200
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "traffic",
+            "object_span": {
+              "end": 1237,
+              "start": 1230
+            },
+            "relation": "increases",
+            "score": 0.7356935739517212,
+            "source_slot": "s1",
+            "subject": "Load Testing",
+            "subject_span": {
+              "end": 1212,
+              "start": 1200
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1254,
+              "start": 1200
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "data volume",
+            "object_span": {
+              "end": 1254,
+              "start": 1243
+            },
+            "relation": "changes",
+            "score": 0.5281778573989868,
+            "source_slot": "s1",
+            "subject": "Load Testing",
+            "subject_span": {
+              "end": 1212,
+              "start": 1200
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1254,
+              "start": 1200
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "data volume",
+            "object_span": {
+              "end": 1254,
+              "start": 1243
+            },
+            "relation": "increases",
+            "score": 0.7046382427215576,
+            "source_slot": "s1",
+            "subject": "Load Testing",
+            "subject_span": {
+              "end": 1212,
+              "start": 1200
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1276,
+              "start": 1200
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 1276,
+              "start": 1270
+            },
+            "relation": "affects",
+            "score": 0.8057563304901123,
+            "source_slot": "s1",
+            "subject": "Load Testing",
+            "subject_span": {
+              "end": 1212,
+              "start": 1200
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1362,
+              "start": 1230
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "traffic",
+            "object_span": {
+              "end": 1237,
+              "start": 1230
+            },
+            "relation": "changes",
+            "score": 0.5500789284706116,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 1362,
+              "start": 1358
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1362,
+              "start": 1243
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "data volume",
+            "object_span": {
+              "end": 1254,
+              "start": 1243
+            },
+            "relation": "changes",
+            "score": 0.5397406816482544,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 1362,
+              "start": 1358
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1412,
+              "start": 1358
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 1412,
+              "start": 1406
+            },
+            "relation": "affects",
+            "score": 0.5926244258880615,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 1362,
+              "start": 1358
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1412,
+              "start": 1358
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 1412,
+              "start": 1406
+            },
+            "relation": "helps",
+            "score": 0.4477684199810028,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 1362,
+              "start": 1358
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1438,
+              "start": 1230
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "traffic",
+            "object_span": {
+              "end": 1237,
+              "start": 1230
+            },
+            "relation": "increases",
+            "score": 0.5165956616401672,
+            "source_slot": "s1",
+            "subject": "Stress Testing",
+            "subject_span": {
+              "end": 1438,
+              "start": 1424
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1438,
+              "start": 1243
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "data volume",
+            "object_span": {
+              "end": 1254,
+              "start": 1243
+            },
+            "relation": "increases",
+            "score": 0.47093135118484497,
+            "source_slot": "s1",
+            "subject": "Stress Testing",
+            "subject_span": {
+              "end": 1438,
+              "start": 1424
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1456,
+              "start": 1424
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 1456,
+              "start": 1450
+            },
+            "relation": "affects",
+            "score": 0.7617027759552002,
+            "source_slot": "s1",
+            "subject": "Stress Testing",
+            "subject_span": {
+              "end": 1438,
+              "start": 1424
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1456,
+              "start": 1424
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 1456,
+              "start": 1450
+            },
+            "relation": "part_of",
+            "score": 0.6834285259246826,
+            "source_slot": "s1",
+            "subject": "Stress Testing",
+            "subject_span": {
+              "end": 1438,
+              "start": 1424
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 2138,
+              "start": 1748
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "next phase of testing",
+            "object_span": {
+              "end": 2138,
+              "start": 2117
+            },
+            "relation": "helps",
+            "score": 0.3567615747451782,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 1752,
+              "start": 1748
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 2257,
+              "start": 2075
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 2081,
+              "start": 2075
+            },
+            "relation": "associated_with",
+            "score": 0.9160485863685608,
+            "source_slot": "s1",
+            "subject": "Extreme Load",
+            "subject_span": {
+              "end": 2257,
+              "start": 2245
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 2288,
+              "start": 2075
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 2081,
+              "start": 2075
+            },
+            "relation": "associated_with",
+            "score": 0.8868098855018616,
+            "source_slot": "s1",
+            "subject": "Security Vulnerabilities",
+            "subject_span": {
+              "end": 2288,
+              "start": 2264
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 2288,
+              "start": 2075
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 2081,
+              "start": 2075
+            },
+            "relation": "part_of",
+            "score": 0.7103263139724731,
+            "source_slot": "s1",
+            "subject": "Security Vulnerabilities",
+            "subject_span": {
+              "end": 2288,
+              "start": 2264
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "1bec8d77eb896042231b8382944f34313e2e65ffb8bd9b49778c871c131676fc",
+          "s1": "a9b125e33b77a5d8481beaf41e8a2deeeaa76ff8000edfe75a2e2c94bbe9a44b"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.8057563304901123,
+                  "end": 1362,
+                  "start": 1350,
+                  "text": "Load Testing"
+                },
+                "tail": {
+                  "confidence": 0.8057563304901123,
+                  "end": 1426,
+                  "start": 1420,
+                  "text": "system"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5926244258880615,
+                  "end": 1512,
+                  "start": 1508,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.5926244258880615,
+                  "end": 1562,
+                  "start": 1556,
+                  "text": "system"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7617027759552002,
+                  "end": 1588,
+                  "start": 1574,
+                  "text": "Stress Testing"
+                },
+                "tail": {
+                  "confidence": 0.7617027759552002,
+                  "end": 1606,
+                  "start": 1600,
+                  "text": "system"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.8734163641929626,
+                  "end": 1101,
+                  "start": 1080,
+                  "text": "Long-Term Degradation"
+                },
+                "tail": {
+                  "confidence": 0.8734163641929626,
+                  "end": 1237,
+                  "start": 1231,
+                  "text": "system"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.9160485863685608,
+                  "end": 2407,
+                  "start": 2395,
+                  "text": "Extreme Load"
+                },
+                "tail": {
+                  "confidence": 0.9160485863685608,
+                  "end": 2231,
+                  "start": 2225,
+                  "text": "system"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8868098855018616,
+                  "end": 2438,
+                  "start": 2414,
+                  "text": "Security Vulnerabilities"
+                },
+                "tail": {
+                  "confidence": 0.8868098855018616,
+                  "end": 2231,
+                  "start": 2225,
+                  "text": "system"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.5576481819152832,
+                  "end": 1362,
+                  "start": 1350,
+                  "text": "Load Testing"
+                },
+                "tail": {
+                  "confidence": 0.5576481819152832,
+                  "end": 1387,
+                  "start": 1380,
+                  "text": "traffic"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5281778573989868,
+                  "end": 1362,
+                  "start": 1350,
+                  "text": "Load Testing"
+                },
+                "tail": {
+                  "confidence": 0.5281778573989868,
+                  "end": 1404,
+                  "start": 1393,
+                  "text": "data volume"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5500789284706116,
+                  "end": 1512,
+                  "start": 1508,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.5500789284706116,
+                  "end": 1387,
+                  "start": 1380,
+                  "text": "traffic"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5397406816482544,
+                  "end": 1512,
+                  "start": 1508,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.5397406816482544,
+                  "end": 1404,
+                  "start": 1393,
+                  "text": "data volume"
+                }
+              }
+            ],
+            "constrains": [
+              {
+                "head": {
+                  "confidence": 0.7115182876586914,
+                  "end": 1204,
+                  "start": 1189,
+                  "text": "Monitoring Plan"
+                },
+                "tail": {
+                  "confidence": 0.7115182876586914,
+                  "end": 1426,
+                  "start": 1420,
+                  "text": "system"
+                }
+              }
+            ],
+            "contains": [],
+            "controls": [
+              {
+                "head": {
+                  "confidence": 0.49044185876846313,
+                  "end": 1204,
+                  "start": 1189,
+                  "text": "Monitoring Plan"
+                },
+                "tail": {
+                  "confidence": 0.49044185876846313,
+                  "end": 1426,
+                  "start": 1420,
+                  "text": "system"
+                }
+              }
+            ],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [
+              {
+                "head": {
+                  "confidence": 0.4477684199810028,
+                  "end": 1512,
+                  "start": 1508,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.4477684199810028,
+                  "end": 1562,
+                  "start": 1556,
+                  "text": "system"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.3567615747451782,
+                  "end": 1902,
+                  "start": 1898,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.3567615747451782,
+                  "end": 2288,
+                  "start": 2267,
+                  "text": "next phase of testing"
+                }
+              }
+            ],
+            "holds": [
+              {
+                "head": {
+                  "confidence": 0.6144701838493347,
+                  "end": 499,
+                  "start": 484,
+                  "text": "Monitoring Plan"
+                },
+                "tail": {
+                  "confidence": 0.6144701838493347,
+                  "end": 663,
+                  "start": 645,
+                  "text": "Baseline Stability"
+                }
+              }
+            ],
+            "improves": [],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.7356935739517212,
+                  "end": 1362,
+                  "start": 1350,
+                  "text": "Load Testing"
+                },
+                "tail": {
+                  "confidence": 0.7356935739517212,
+                  "end": 1387,
+                  "start": 1380,
+                  "text": "traffic"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7046382427215576,
+                  "end": 1362,
+                  "start": 1350,
+                  "text": "Load Testing"
+                },
+                "tail": {
+                  "confidence": 0.7046382427215576,
+                  "end": 1404,
+                  "start": 1393,
+                  "text": "data volume"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5165956616401672,
+                  "end": 1588,
+                  "start": 1574,
+                  "text": "Stress Testing"
+                },
+                "tail": {
+                  "confidence": 0.5165956616401672,
+                  "end": 1387,
+                  "start": 1380,
+                  "text": "traffic"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.47093135118484497,
+                  "end": 1588,
+                  "start": 1574,
+                  "text": "Stress Testing"
+                },
+                "tail": {
+                  "confidence": 0.47093135118484497,
+                  "end": 1404,
+                  "start": 1393,
+                  "text": "data volume"
+                }
+              }
+            ],
+            "influences": [],
+            "keeps": [
+              {
+                "head": {
+                  "confidence": 0.5975768566131592,
+                  "end": 499,
+                  "start": 484,
+                  "text": "Monitoring Plan"
+                },
+                "tail": {
+                  "confidence": 0.5975768566131592,
+                  "end": 663,
+                  "start": 645,
+                  "text": "Baseline Stability"
+                }
+              }
+            ],
+            "leads_to": [],
+            "maintains": [
+              {
+                "head": {
+                  "confidence": 0.6012033820152283,
+                  "end": 499,
+                  "start": 484,
+                  "text": "Monitoring Plan"
+                },
+                "tail": {
+                  "confidence": 0.6012033820152283,
+                  "end": 663,
+                  "start": 645,
+                  "text": "Baseline Stability"
+                }
+              }
+            ],
+            "manages": [],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.7902969717979431,
+                  "end": 1101,
+                  "start": 1080,
+                  "text": "Long-Term Degradation"
+                },
+                "tail": {
+                  "confidence": 0.7902969717979431,
+                  "end": 1237,
+                  "start": 1231,
+                  "text": "system"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7282572984695435,
+                  "end": 1204,
+                  "start": 1189,
+                  "text": "Monitoring Plan"
+                },
+                "tail": {
+                  "confidence": 0.7282572984695435,
+                  "end": 1237,
+                  "start": 1231,
+                  "text": "system"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6834285259246826,
+                  "end": 1588,
+                  "start": 1574,
+                  "text": "Stress Testing"
+                },
+                "tail": {
+                  "confidence": 0.6834285259246826,
+                  "end": 1606,
+                  "start": 1600,
+                  "text": "system"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7103263139724731,
+                  "end": 2438,
+                  "start": 2414,
+                  "text": "Security Vulnerabilities"
+                },
+                "tail": {
+                  "confidence": 0.7103263139724731,
+                  "end": 2231,
+                  "start": 2225,
+                  "text": "system"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [
+              {
+                "head": {
+                  "confidence": 0.8718309998512268,
+                  "end": 1204,
+                  "start": 1189,
+                  "text": "Monitoring Plan"
+                },
+                "tail": {
+                  "confidence": 0.8718309998512268,
+                  "end": 1237,
+                  "start": 1231,
+                  "text": "system"
+                }
+              }
+            ],
+            "provides": [
+              {
+                "head": {
+                  "confidence": 0.49319303035736084,
+                  "end": 499,
+                  "start": 484,
+                  "text": "Monitoring Plan"
+                },
+                "tail": {
+                  "confidence": 0.49319303035736084,
+                  "end": 663,
+                  "start": 645,
+                  "text": "Baseline Stability"
+                }
+              }
+            ],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.4841352701187134,
+                  "end": 1101,
+                  "start": 1080,
+                  "text": "Long-Term Degradation"
+                },
+                "tail": {
+                  "confidence": 0.4841352701187134,
+                  "end": 2438,
+                  "start": 2414,
+                  "text": "Security Vulnerabilities"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [
+              {
+                "head": {
+                  "confidence": 0.5651221871376038,
+                  "end": 499,
+                  "start": 484,
+                  "text": "Monitoring Plan"
+                },
+                "tail": {
+                  "confidence": 0.5651221871376038,
+                  "end": 663,
+                  "start": 645,
+                  "text": "Baseline Stability"
+                }
+              }
+            ],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [
+              {
+                "head": {
+                  "confidence": 0.7669227123260498,
+                  "end": 499,
+                  "start": 484,
+                  "text": "Monitoring Plan"
+                },
+                "tail": {
+                  "confidence": 0.7669227123260498,
+                  "end": 691,
+                  "start": 685,
+                  "text": "system"
+                }
+              }
+            ],
+            "used_for": [],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.3757496774196625,
+                  "end": 2288,
+                  "start": 2267,
+                  "text": "next phase of testing"
+                },
+                "tail": {
+                  "confidence": 0.3757496774196625,
+                  "end": 45,
+                  "start": 42,
+                  "text": "fan"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.3757496774196625,
+              "end": 2288,
+              "start": 2267,
+              "text": "next phase of testing"
+            },
+            "tail": {
+              "confidence": 0.3757496774196625,
+              "end": 45,
+              "start": 42,
+              "text": "fan"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:01:38.451406+00:00",
+  "status": "RETURNED"
+}

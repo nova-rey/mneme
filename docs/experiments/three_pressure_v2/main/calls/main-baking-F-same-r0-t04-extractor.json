@@ -1,0 +1,379 @@
+{
+  "completed_utc": "2026-10-02T19:13:35.134064+00:00",
+  "elapsed_seconds": 1.370042216964066,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"At 190 degrees Celsius for 40 minutes, the bread is dark outside and less wet in the middle. How does changing the time affect the outcome?\", \"s1\": \"This is a classic \\\"balancing act\\\" scenario in baking!\\n\\nWhen you change the time from 30 minutes to 40 minutes, you are essentially **increasing the exposure to heat.**\\n\\nHere is how that change affects the outcome:\\n\\n### \\ud83c\\udf5e The \\\"Dependable\\\" Effect:\\n*   **Increased Time = Deeper Penetration:** By increasing the time from 30 minutes to 40 minutes, you are giving the heat more time to move from the surface into the center.\\n*   **The Outcome:** The \\\"wet in the middle\\\" issue should start to resolve. The extra 10 minutes allows the heat to \\\"cook\\\" the center fully.\\n\\n### \\u2696\\ufe0f The Comparison:\\n*   **The \\\"Dark Outside\\\" Problem:** If the outside is \\\"dark\\\" (meaning it's getting a brown crust), it means the heat is too high or the time is too long.\\n*   **The \\\"Wet Middle\\\" Problem:** If it's still wet in the middle, it means the heat hasn't fully penetrated the center yet.\\n\\n**The change in time (from 30 to 40 minutes) is the direct solution to the \\\"wet middle\\\" problem.**\\n\\n**In short: Increasing the time is the direct solution to the \\\"wet middle\\\" problem.**\\n\\n---\\n\\n**If you want to keep the outside from getting too dark, you might need to:**\\n\\n1.  **Lower the Temperature:** If 190\\u00b0C is too high, try dropping it to 170\\u00b0C (338\\u00b0F).\\n2.  **Use a \\\"Damp\\\" Method:** If the bread is too \\\"wet,\\\" it means the structure is still too soft.\\n\\n**The \\\"Dependable\\\" Frame:**\\n*   **If the outside is dark:** The heat is too high for the current time.\\n*   **If the middle is wet:** The time is too short for the heat to reach the center.\\n\\n**The \\\"Dependable\\\" Frame:**\\n*   **If the outside is dark:** You need to lower the temperature or increase the time.\\n*   **If the middle is wet:** You need to increase the time.\\n\\n**Let me know what you are baking (e.g., a loaf, a cake, a pastry), and I can give you a more specific \\\"dependable\\\" temperature/time recommendation!**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-baking-F-same-r0-t04"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"time\", \"relation\": \"supports\", \"to\": \"bread\", \"source\": \"s0\", \"evidence\": \"bread is dark outside and less wet in the middle. How does changing the time\"}], \"episode_id\": \"main-baking-F-same-r0-t04\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "protects",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "specialist_observation",
+          "relation": "supports",
+          "status": "forwarded"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "8a4e77aa8ef999b1f1453e68c6da42ad545306fd4689ae396b1c7887c55bdda0",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 119,
+              "start": 43
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bread",
+            "object_span": {
+              "end": 48,
+              "start": 43
+            },
+            "relation": "protects",
+            "score": 0.7643193602561951,
+            "source_slot": "s0",
+            "subject": "time",
+            "subject_span": {
+              "end": 119,
+              "start": 115
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 119,
+              "start": 43
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bread",
+            "object_span": {
+              "end": 48,
+              "start": 43
+            },
+            "relation": "supports",
+            "score": 0.7120969295501709,
+            "source_slot": "s0",
+            "subject": "time",
+            "subject_span": {
+              "end": 119,
+              "start": 115
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 313,
+              "start": 262
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Time",
+            "object_span": {
+              "end": 266,
+              "start": 262
+            },
+            "relation": "changes",
+            "score": 0.8963574767112732,
+            "source_slot": "s1",
+            "subject": "time",
+            "subject_span": {
+              "end": 313,
+              "start": 309
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 313,
+              "start": 262
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Time",
+            "object_span": {
+              "end": 266,
+              "start": 262
+            },
+            "relation": "increases",
+            "score": 0.6854059100151062,
+            "source_slot": "s1",
+            "subject": "time",
+            "subject_span": {
+              "end": 313,
+              "start": 309
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1818,
+              "start": 1595
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 1818,
+              "start": 1807
+            },
+            "relation": "reduces",
+            "score": 0.7966358065605164,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 1606,
+              "start": 1595
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "1e0dd7acf8e533754948acbd11afc2f2612646c26324a6d417e43b20e08aee41",
+          "s1": "9a3c519f1394022203a05f795a8ca8e5dfd0237a8843ea86f5012f30b4c56176"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.8963574767112732,
+                  "end": 453,
+                  "start": 449,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.8963574767112732,
+                  "end": 406,
+                  "start": 402,
+                  "text": "Time"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.6854059100151062,
+                  "end": 453,
+                  "start": 449,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.6854059100151062,
+                  "end": 406,
+                  "start": 402,
+                  "text": "Time"
+                }
+              }
+            ],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [
+              {
+                "head": {
+                  "confidence": 0.7643193602561951,
+                  "end": 119,
+                  "start": 115,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.7643193602561951,
+                  "end": 48,
+                  "start": 43,
+                  "text": "bread"
+                }
+              }
+            ],
+            "provides": [],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.7966358065605164,
+                  "end": 1746,
+                  "start": 1735,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.7966358065605164,
+                  "end": 1958,
+                  "start": 1947,
+                  "text": "temperature"
+                }
+              }
+            ],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.35489290952682495,
+                  "end": 119,
+                  "start": 115,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.35489290952682495,
+                  "end": 508,
+                  "start": 504,
+                  "text": "heat"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [
+              {
+                "head": {
+                  "confidence": 0.7120969295501709,
+                  "end": 119,
+                  "start": 115,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.7120969295501709,
+                  "end": 48,
+                  "start": 43,
+                  "text": "bread"
+                }
+              }
+            ],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.35489290952682495,
+              "end": 119,
+              "start": 115,
+              "text": "time"
+            },
+            "tail": {
+              "confidence": 0.35489290952682495,
+              "end": 508,
+              "start": 504,
+              "text": "heat"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:13:33.761863+00:00",
+  "status": "RETURNED"
+}

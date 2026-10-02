@@ -1,0 +1,511 @@
+{
+  "completed_utc": "2026-10-02T19:20:11.591368+00:00",
+  "elapsed_seconds": 1.0383343189023435,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"Back at the closer Wi-Fi position with the shorter power cable, the sensor resets 0 times and the dashboard misses 0 updates in 240 minutes. What has now been checked?\", \"s1\": \"This new scenario establishes a **\\\"Data Gap\\\"** or a **\\\"Total Data Loss\\\"** state.\\n\\nHere is the breakdown of what this reversal establishes:\\n\\n**1. The \\\"Reversal\\\" Established:**\\nThe system has moved from a state of **\\\"constant, small errors\\\"** (the previous \\\"flicker\\\") to a state of **\\\"complete data loss.\\\"**\\n\\n**2. The \\\"Change\\\" is:**\\nThe system has moved from **\\\"Instability\\\"** to **\\\"Silence.\\\"**\\n\\n**In simpler terms:**\\nThe system has moved from a state of **\\\"Constant, small errors\\\"** to a state of **\\\"Complete Data Loss.\\\"**\\n\\n**The \\\"Reversal\\\" established by this comparison is:**\\nThe system has moved from **\\\"Instability\\\"** to **\\\"Silence.\\\"**\\n\\n**The \\\"Change\\\" is:**\\nThe system has moved from **\\\"constant, small errors\\\"** to a state of **\\\"Complete Data Loss.\\\"**\\n\\n**The \\\"Reversal\\\" established by this comparison is:**\\nThe system has moved from **\\\"Instability\\\"** to **\\\"Silence.\\\"**\\n\\n**In short:**\\nThe system has moved from **\\\"Constant, small errors\\\"** to a state of **\\\"Complete Data Loss.\\\"**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-F-same-r2-t09"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"Reversal\", \"relation\": \"caused_by\", \"to\": \"Instability\", \"source\": \"s1\", \"evidence\": \"Reversal\\\" established by this comparison is:**\\nThe system has moved from **\\\"Instability\"}, {\"from\": \"Change\", \"relation\": \"caused_by\", \"to\": \"Instability\", \"source\": \"s1\", \"evidence\": \"Instability\\\"** to **\\\"Silence.\\\"**\\n\\n**The \\\"Change\"}, {\"from\": \"Reversal\", \"relation\": \"causes\", \"to\": \"Complete Data Loss\", \"source\": \"s1\", \"evidence\": \"Complete Data Loss.\\\"**\\n\\n**The \\\"Reversal\"}], \"episode_id\": \"main-network-F-same-r2-t09\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "specialist_observation",
+          "relation": "caused_by",
+          "status": "forwarded"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "stabilizes",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "specialist_observation",
+          "relation": "caused_by",
+          "status": "forwarded"
+        },
+        {
+          "index": 6,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "8e902e10cf988d4c9759410d43e2200abb819a9e4ffafee6ccd2632268d322f4",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 323,
+              "start": 283
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "complete data loss",
+            "object_span": {
+              "end": 301,
+              "start": 283
+            },
+            "relation": "changes",
+            "score": 0.5692529082298279,
+            "source_slot": "s1",
+            "subject": "Change",
+            "subject_span": {
+              "end": 323,
+              "start": 317
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 538,
+              "start": 499
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Complete Data Loss",
+            "object_span": {
+              "end": 517,
+              "start": 499
+            },
+            "relation": "changes",
+            "score": 0.5059742331504822,
+            "source_slot": "s1",
+            "subject": "Reversal",
+            "subject_span": {
+              "end": 538,
+              "start": 530
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 617,
+              "start": 530
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Instability",
+            "object_span": {
+              "end": 617,
+              "start": 606
+            },
+            "relation": "caused_by",
+            "score": 0.8284325003623962,
+            "source_slot": "s1",
+            "subject": "Reversal",
+            "subject_span": {
+              "end": 538,
+              "start": 530
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 634,
+              "start": 530
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Silence",
+            "object_span": {
+              "end": 634,
+              "start": 627
+            },
+            "relation": "leads_to",
+            "score": 0.7974745631217957,
+            "source_slot": "s1",
+            "subject": "Reversal",
+            "subject_span": {
+              "end": 538,
+              "start": 530
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 634,
+              "start": 530
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Silence",
+            "object_span": {
+              "end": 634,
+              "start": 627
+            },
+            "relation": "stabilizes",
+            "score": 0.38813263177871704,
+            "source_slot": "s1",
+            "subject": "Reversal",
+            "subject_span": {
+              "end": 538,
+              "start": 530
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 653,
+              "start": 606
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Instability",
+            "object_span": {
+              "end": 617,
+              "start": 606
+            },
+            "relation": "caused_by",
+            "score": 0.44019925594329834,
+            "source_slot": "s1",
+            "subject": "Change",
+            "subject_span": {
+              "end": 653,
+              "start": 647
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 772,
+              "start": 733
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Complete Data Loss",
+            "object_span": {
+              "end": 751,
+              "start": 733
+            },
+            "relation": "causes",
+            "score": 0.9120914340019226,
+            "source_slot": "s1",
+            "subject": "Reversal",
+            "subject_span": {
+              "end": 772,
+              "start": 764
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 772,
+              "start": 733
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Complete Data Loss",
+            "object_span": {
+              "end": 751,
+              "start": 733
+            },
+            "relation": "leads_to",
+            "score": 0.719042181968689,
+            "source_slot": "s1",
+            "subject": "Reversal",
+            "subject_span": {
+              "end": 772,
+              "start": 764
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 851,
+              "start": 764
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Instability",
+            "object_span": {
+              "end": 851,
+              "start": 840
+            },
+            "relation": "influences",
+            "score": 0.49879947304725647,
+            "source_slot": "s1",
+            "subject": "Reversal",
+            "subject_span": {
+              "end": 772,
+              "start": 764
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "9f450d4f71eefe5db9d2dbbf3c2ffed93340bf3092a90e0e2065ba0d1ee7ed44",
+          "s1": "1f19716a02d10f6bf99158a8392d522c1d20deb78e7fbeb9414c4e087e56bae3"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [
+              {
+                "head": {
+                  "confidence": 0.8284325003623962,
+                  "end": 706,
+                  "start": 698,
+                  "text": "Reversal"
+                },
+                "tail": {
+                  "confidence": 0.8284325003623962,
+                  "end": 785,
+                  "start": 774,
+                  "text": "Instability"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.44019925594329834,
+                  "end": 821,
+                  "start": 815,
+                  "text": "Change"
+                },
+                "tail": {
+                  "confidence": 0.44019925594329834,
+                  "end": 785,
+                  "start": 774,
+                  "text": "Instability"
+                }
+              }
+            ],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.9120914340019226,
+                  "end": 940,
+                  "start": 932,
+                  "text": "Reversal"
+                },
+                "tail": {
+                  "confidence": 0.9120914340019226,
+                  "end": 919,
+                  "start": 901,
+                  "text": "Complete Data Loss"
+                }
+              }
+            ],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.5692529082298279,
+                  "end": 491,
+                  "start": 485,
+                  "text": "Change"
+                },
+                "tail": {
+                  "confidence": 0.5692529082298279,
+                  "end": 469,
+                  "start": 451,
+                  "text": "complete data loss"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5059742331504822,
+                  "end": 706,
+                  "start": 698,
+                  "text": "Reversal"
+                },
+                "tail": {
+                  "confidence": 0.5059742331504822,
+                  "end": 685,
+                  "start": 667,
+                  "text": "Complete Data Loss"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.49879947304725647,
+                  "end": 940,
+                  "start": 932,
+                  "text": "Reversal"
+                },
+                "tail": {
+                  "confidence": 0.49879947304725647,
+                  "end": 1019,
+                  "start": 1008,
+                  "text": "Instability"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [
+              {
+                "head": {
+                  "confidence": 0.7974745631217957,
+                  "end": 706,
+                  "start": 698,
+                  "text": "Reversal"
+                },
+                "tail": {
+                  "confidence": 0.7974745631217957,
+                  "end": 802,
+                  "start": 795,
+                  "text": "Silence"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.719042181968689,
+                  "end": 940,
+                  "start": 932,
+                  "text": "Reversal"
+                },
+                "tail": {
+                  "confidence": 0.719042181968689,
+                  "end": 919,
+                  "start": 901,
+                  "text": "Complete Data Loss"
+                }
+              }
+            ],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [
+              {
+                "head": {
+                  "confidence": 0.38813263177871704,
+                  "end": 706,
+                  "start": 698,
+                  "text": "Reversal"
+                },
+                "tail": {
+                  "confidence": 0.38813263177871704,
+                  "end": 802,
+                  "start": 795,
+                  "text": "Silence"
+                }
+              }
+            ],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:20:10.549727+00:00",
+  "status": "RETURNED"
+}

@@ -1,0 +1,46 @@
+{
+  "base_sha": "7a74a92cbd0c084d420a7da9444bd1258d660b4c",
+  "checks": [
+    {
+      "command": "PYTHONPATH=src:. python -m pytest -q --basetemp=/dev/shm/mneme-meter2-full",
+      "result": "PASS",
+      "seconds": 4.89,
+      "tests": 688
+    },
+    {
+      "command": "ruff check .",
+      "result": "PASS"
+    },
+    {
+      "command": "python -m mypy --cache-dir=/dev/shm/mneme-meter2-mypy src/mneme",
+      "result": "PASS",
+      "source_files": 70,
+      "strict": true
+    },
+    {
+      "command": "MYPYPATH=src python -m mypy --strict --follow-imports=silent --cache-dir=/dev/shm/mneme-meter2-tools-mypy tools/run_three_pressure_v2.py tools/report_pressure_meters.py tools/compare_pressure_histories.py",
+      "result": "PASS",
+      "source_files": 3
+    },
+    {
+      "check": "full experiment report and second-state history replay",
+      "receipt": "replay_validation.json",
+      "result": "PASS"
+    }
+  ],
+  "ci": "Final integrated commit checked on GitHub after push; exact run and SHA reported in final handoff.",
+  "earlier_nonpassing_invocations": [
+    "Pre-live broad test invocation exhausted filesystem; inconclusive environment result. Only task-created failed test temp and regenerable uv cache removed; full suite subsequently passed in /dev/shm.",
+    "Direct .venv/bin/mypy entrypoint had a stale interpreter shebang; python -m mypy used successfully.",
+    "Supplemental combined package/tools mypy followed unmodified historical tools/run_p23_cross_thread.py and exposed existing no-any-return at line335. Standard strict package check passes; explicit new-tool check suppresses imported-module diagnostics only via follow-imports=silent. No historical runner or persistence architecture changed."
+  ],
+  "fetched_origin_main": "7a74a92cbd0c084d420a7da9444bd1258d660b4c",
+  "production_boundary_audit": {
+    "historical_evidence_edits": false,
+    "new_live_runner": "CompactStore(read_only=True) and CompactRuntime",
+    "production_source_edits": false,
+    "saa_policy_edits": false,
+    "secondary_history": "SQLiteStore(read_only=True), observe prepare only, FakeHost never generated"
+  },
+  "reconciliation": "Already based on fetched promoted main; no source conflicts or persistence changes."
+}

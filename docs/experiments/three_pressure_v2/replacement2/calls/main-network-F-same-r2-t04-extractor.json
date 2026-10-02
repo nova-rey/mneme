@@ -1,0 +1,1014 @@
+{
+  "completed_utc": "2026-10-02T19:19:17.120712+00:00",
+  "elapsed_seconds": 1.4259269169997424,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"With the original power cable again, the sensor resets 5 times in 60 minutes. The Wi-Fi position is unchanged. How does this reversal change confidence?\", \"s1\": \"It sounds like you are describing a **\\\"flicker\\\"** or **\\\"flicker\\\"** issue\\u2014a consistent, recurring failure pattern.\\n\\nIf the sensor is resetting 5 times in a 60-minute window, this confirms a **\\\"flicker\\\"** or **\\\"instability\\\"** in the connection.\\n\\nSince you've confirmed the Wi-Fi position is stable and unchanged, the \\\"reset\\\" is likely a **Power/Hardware issue** or a **Signal Interference issue.**\\n\\nHere is how this \\\"reset\\\" (flicker) changes your confidence:\\n\\n### 1. What the \\\"Reset\\\" Tells Us (The \\\"Baseline\\\"):\\n\\n*   **The \\\"Baseline\\\" is Instability:** The fact that it's resetting 5 times in 60 minutes means the system is **not stable**. It is \\\"flickering.\\\"\\n*   **The \\\"Power-Versus-Wi-Fi\\\" Question:** The \\\"reset\\\" is a direct result of the sensor failing to maintain a stable connection to the network.\\n\\n### 2. The \\\"Flicker\\\" Analysis (The \\\"Why\\\"):**\\n\\nSince the Wi-Fi position is unchanged, we must look at the **physical environment** or the **power source.**\\n\\n**The \\\"Baseline\\\" is that the sensor is unstable.**\\n\\n**The \\\"Baseline\\\" comparison:**\\nThe baseline is that the sensor is **unreliable**. It is not reliable.\\n\\n**Actionable Next Steps:**\\n\\n1.  **Check the Power Source:** If the sensor is battery-powered, the battery is likely dying or the power source is failing.\\n2.  **Check the Signal:** If the Wi-Fi position is unchanged, the problem is likely **signal interference** or **interference** from another device.\\n\\n**In summary:** The \\\"reset\\\" is a sign of **instability**. The \\\"baseline\\\" is that the sensor is failing to maintain a stable connection.**\\n\\n**To summarize the \\\"change\\\":**\\nThe \\\"reset\\\" is a **\\\"flicker\\\"**\\u2014a constant, recurring failure.\\n\\n**If you want to know *why* it's resetting, you need to check the power source or the signal strength.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-F-same-r2-t04"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"reset\", \"relation\": \"part_of\", \"to\": \"sensor\", \"source\": \"s1\", \"evidence\": \"reset\\\" is a direct result of the sensor\"}, {\"from\": \"reset\", \"relation\": \"causes\", \"to\": \"Flicker\", \"source\": \"s1\", \"evidence\": \"reset\\\" is a direct result of the sensor failing to maintain a stable connection to the network.\\n\\n### 2. The \\\"Flicker\"}, {\"from\": \"Baseline\", \"relation\": \"causes\", \"to\": \"Flicker\", \"source\": \"s1\", \"evidence\": \"Flicker\\\" Analysis (The \\\"Why\\\"):**\\n\\nSince the Wi-Fi position is unchanged, we must look at the **physical environment** or the **power source.**\\n\\n**The \\\"Baseline\"}, {\"from\": \"Baseline\", \"relation\": \"constrains\", \"to\": \"Wi-Fi position\", \"source\": \"s1\", \"evidence\": \"Wi-Fi position is unchanged, we must look at the **physical environment** or the **power source.**\\n\\n**The \\\"Baseline\"}, {\"from\": \"Baseline\", \"relation\": \"causes\", \"to\": \"instability\", \"source\": \"s1\", \"evidence\": \"Baseline\\\" comparison:**\\nThe baseline is that the sensor is **unreliable**. It is not reliable.\\n\\n**Actionable Next Steps:**\\n\\n1.  **Check the Power Source:** If the sensor is battery-powered, the battery is likely dying or the power source is failing.\\n2.  **Check the Signal:** If the Wi-Fi position is unchanged, the problem is likely **signal interference** or **interference** from another device.\\n\\n**In summary:** The \\\"reset\\\" is a sign of **instability\"}, {\"from\": \"sensor\", \"relation\": \"part_of\", \"to\": \"sensor\", \"source\": \"s1\", \"evidence\": \"sensor is unstable.**\\n\\n**The \\\"Baseline\\\" comparison:**\\nThe baseline is that the sensor\"}, {\"from\": \"reset\", \"relation\": \"caused_by\", \"to\": \"instability\", \"source\": \"s1\", \"evidence\": \"reset\\\" is a sign of **instability\"}, {\"from\": \"reset\", \"relation\": \"causes\", \"to\": \"instability\", \"source\": \"s1\", \"evidence\": \"reset\\\" is a sign of **instability\"}], \"episode_id\": \"main-network-F-same-r2-t04\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 11,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 14,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 15,
+          "kind": "specialist_observation",
+          "relation": "constrains",
+          "status": "forwarded"
+        },
+        {
+          "index": 16,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 17,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 18,
+          "kind": "specialist_observation",
+          "relation": "caused_by",
+          "status": "forwarded"
+        },
+        {
+          "index": 19,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        }
+      ],
+      "specialist": {
+        "content_digest": "d2f79517b74bfff75cb4ce239208ad884194cfaeddae30b15c7df9a4e37247e6",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 47,
+              "start": 18
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "power cable",
+            "object_span": {
+              "end": 29,
+              "start": 18
+            },
+            "relation": "uses",
+            "score": 0.9915481209754944,
+            "source_slot": "s0",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 47,
+              "start": 41
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 151,
+              "start": 125
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "confidence",
+            "object_span": {
+              "end": 151,
+              "start": 141
+            },
+            "relation": "changes",
+            "score": 0.8444949388504028,
+            "source_slot": "s0",
+            "subject": "reversal",
+            "subject_span": {
+              "end": 133,
+              "start": 125
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 151,
+              "start": 125
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "confidence",
+            "object_span": {
+              "end": 151,
+              "start": 141
+            },
+            "relation": "improves",
+            "score": 0.8691080808639526,
+            "source_slot": "s0",
+            "subject": "reversal",
+            "subject_span": {
+              "end": 133,
+              "start": 125
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 151,
+              "start": 125
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "confidence",
+            "object_span": {
+              "end": 151,
+              "start": 141
+            },
+            "relation": "increases",
+            "score": 0.8240765929222107,
+            "source_slot": "s0",
+            "subject": "reversal",
+            "subject_span": {
+              "end": 133,
+              "start": 125
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 151,
+              "start": 125
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "confidence",
+            "object_span": {
+              "end": 151,
+              "start": 141
+            },
+            "relation": "influences",
+            "score": 0.80340975522995,
+            "source_slot": "s0",
+            "subject": "reversal",
+            "subject_span": {
+              "end": 133,
+              "start": 125
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 455,
+              "start": 415
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "confidence",
+            "object_span": {
+              "end": 455,
+              "start": 445
+            },
+            "relation": "increases",
+            "score": 0.9840661287307739,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 420,
+              "start": 415
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 480,
+              "start": 445
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "confidence",
+            "object_span": {
+              "end": 455,
+              "start": 445
+            },
+            "relation": "changes",
+            "score": 0.9967318773269653,
+            "source_slot": "s1",
+            "subject": "Reset",
+            "subject_span": {
+              "end": 480,
+              "start": 475
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 480,
+              "start": 445
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "confidence",
+            "object_span": {
+              "end": 455,
+              "start": 445
+            },
+            "relation": "influences",
+            "score": 0.9899905920028687,
+            "source_slot": "s1",
+            "subject": "Reset",
+            "subject_span": {
+              "end": 480,
+              "start": 475
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 743,
+              "start": 704
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sensor",
+            "object_span": {
+              "end": 743,
+              "start": 737
+            },
+            "relation": "affects",
+            "score": 0.9583765864372253,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 709,
+              "start": 704
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 743,
+              "start": 704
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sensor",
+            "object_span": {
+              "end": 743,
+              "start": 737
+            },
+            "relation": "associated_with",
+            "score": 0.9148818254470825,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 709,
+              "start": 704
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 743,
+              "start": 704
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sensor",
+            "object_span": {
+              "end": 743,
+              "start": 737
+            },
+            "relation": "part_of",
+            "score": 0.7176570296287537,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 709,
+              "start": 704
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 820,
+              "start": 704
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Flicker",
+            "object_span": {
+              "end": 820,
+              "start": 813
+            },
+            "relation": "causes",
+            "score": 0.8475129008293152,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 709,
+              "start": 704
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 820,
+              "start": 737
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sensor",
+            "object_span": {
+              "end": 743,
+              "start": 737
+            },
+            "relation": "associated_with",
+            "score": 0.7711830139160156,
+            "source_slot": "s1",
+            "subject": "Flicker",
+            "subject_span": {
+              "end": 820,
+              "start": 813
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 972,
+              "start": 445
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "confidence",
+            "object_span": {
+              "end": 455,
+              "start": 445
+            },
+            "relation": "influences",
+            "score": 0.9700832962989807,
+            "source_slot": "s1",
+            "subject": "Baseline",
+            "subject_span": {
+              "end": 972,
+              "start": 964
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 972,
+              "start": 813
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Flicker",
+            "object_span": {
+              "end": 820,
+              "start": 813
+            },
+            "relation": "causes",
+            "score": 0.6971483826637268,
+            "source_slot": "s1",
+            "subject": "Baseline",
+            "subject_span": {
+              "end": 972,
+              "start": 964
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 972,
+              "start": 857
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi position",
+            "object_span": {
+              "end": 871,
+              "start": 857
+            },
+            "relation": "constrains",
+            "score": 0.6337116360664368,
+            "source_slot": "s1",
+            "subject": "Baseline",
+            "subject_span": {
+              "end": 972,
+              "start": 964
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1470,
+              "start": 1016
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "instability",
+            "object_span": {
+              "end": 1470,
+              "start": 1459
+            },
+            "relation": "causes",
+            "score": 0.8943669199943542,
+            "source_slot": "s1",
+            "subject": "Baseline",
+            "subject_span": {
+              "end": 1024,
+              "start": 1016
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1071,
+              "start": 986
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sensor",
+            "object_span": {
+              "end": 992,
+              "start": 986
+            },
+            "relation": "part_of",
+            "score": 0.44942545890808105,
+            "source_slot": "s1",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 1071,
+              "start": 1065
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1470,
+              "start": 1437
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "instability",
+            "object_span": {
+              "end": 1470,
+              "start": 1459
+            },
+            "relation": "caused_by",
+            "score": 0.837445080280304,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 1442,
+              "start": 1437
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1470,
+              "start": 1437
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "instability",
+            "object_span": {
+              "end": 1470,
+              "start": 1459
+            },
+            "relation": "causes",
+            "score": 0.9214723706245422,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 1442,
+              "start": 1437
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "18ec2c9c213db5426eaceddfe6d8097c71f9894926bb8e8389a4de37a6748081",
+          "s1": "7d882bd805ee1f6b4949cb1e7badfdecccbdc2b24dca2524cecbb90d97098786"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.9583765864372253,
+                  "end": 862,
+                  "start": 857,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.9583765864372253,
+                  "end": 896,
+                  "start": 890,
+                  "text": "sensor"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.9148818254470825,
+                  "end": 862,
+                  "start": 857,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.9148818254470825,
+                  "end": 896,
+                  "start": 890,
+                  "text": "sensor"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7711830139160156,
+                  "end": 973,
+                  "start": 966,
+                  "text": "Flicker"
+                },
+                "tail": {
+                  "confidence": 0.7711830139160156,
+                  "end": 896,
+                  "start": 890,
+                  "text": "sensor"
+                }
+              }
+            ],
+            "caused_by": [
+              {
+                "head": {
+                  "confidence": 0.837445080280304,
+                  "end": 1595,
+                  "start": 1590,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.837445080280304,
+                  "end": 1623,
+                  "start": 1612,
+                  "text": "instability"
+                }
+              }
+            ],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.8475129008293152,
+                  "end": 862,
+                  "start": 857,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.8475129008293152,
+                  "end": 973,
+                  "start": 966,
+                  "text": "Flicker"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6971483826637268,
+                  "end": 1125,
+                  "start": 1117,
+                  "text": "Baseline"
+                },
+                "tail": {
+                  "confidence": 0.6971483826637268,
+                  "end": 973,
+                  "start": 966,
+                  "text": "Flicker"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8943669199943542,
+                  "end": 1177,
+                  "start": 1169,
+                  "text": "Baseline"
+                },
+                "tail": {
+                  "confidence": 0.8943669199943542,
+                  "end": 1623,
+                  "start": 1612,
+                  "text": "instability"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.9214723706245422,
+                  "end": 1595,
+                  "start": 1590,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.9214723706245422,
+                  "end": 1623,
+                  "start": 1612,
+                  "text": "instability"
+                }
+              }
+            ],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.8444949388504028,
+                  "end": 133,
+                  "start": 125,
+                  "text": "reversal"
+                },
+                "tail": {
+                  "confidence": 0.8444949388504028,
+                  "end": 151,
+                  "start": 141,
+                  "text": "confidence"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.9967318773269653,
+                  "end": 633,
+                  "start": 628,
+                  "text": "Reset"
+                },
+                "tail": {
+                  "confidence": 0.9967318773269653,
+                  "end": 608,
+                  "start": 598,
+                  "text": "confidence"
+                }
+              }
+            ],
+            "constrains": [
+              {
+                "head": {
+                  "confidence": 0.4338935613632202,
+                  "end": 438,
+                  "start": 424,
+                  "text": "Wi-Fi position"
+                },
+                "tail": {
+                  "confidence": 0.4338935613632202,
+                  "end": 96,
+                  "start": 82,
+                  "text": "Wi-Fi position"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6337116360664368,
+                  "end": 1125,
+                  "start": 1117,
+                  "text": "Baseline"
+                },
+                "tail": {
+                  "confidence": 0.6337116360664368,
+                  "end": 1024,
+                  "start": 1010,
+                  "text": "Wi-Fi position"
+                }
+              }
+            ],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.8691080808639526,
+                  "end": 133,
+                  "start": 125,
+                  "text": "reversal"
+                },
+                "tail": {
+                  "confidence": 0.8691080808639526,
+                  "end": 151,
+                  "start": 141,
+                  "text": "confidence"
+                }
+              }
+            ],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.8240765929222107,
+                  "end": 133,
+                  "start": 125,
+                  "text": "reversal"
+                },
+                "tail": {
+                  "confidence": 0.8240765929222107,
+                  "end": 151,
+                  "start": 141,
+                  "text": "confidence"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.9840661287307739,
+                  "end": 573,
+                  "start": 568,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.9840661287307739,
+                  "end": 608,
+                  "start": 598,
+                  "text": "confidence"
+                }
+              }
+            ],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.80340975522995,
+                  "end": 133,
+                  "start": 125,
+                  "text": "reversal"
+                },
+                "tail": {
+                  "confidence": 0.80340975522995,
+                  "end": 151,
+                  "start": 141,
+                  "text": "confidence"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.9899905920028687,
+                  "end": 633,
+                  "start": 628,
+                  "text": "Reset"
+                },
+                "tail": {
+                  "confidence": 0.9899905920028687,
+                  "end": 608,
+                  "start": 598,
+                  "text": "confidence"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.9700832962989807,
+                  "end": 1125,
+                  "start": 1117,
+                  "text": "Baseline"
+                },
+                "tail": {
+                  "confidence": 0.9700832962989807,
+                  "end": 608,
+                  "start": 598,
+                  "text": "confidence"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.7176570296287537,
+                  "end": 862,
+                  "start": 857,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.7176570296287537,
+                  "end": 896,
+                  "start": 890,
+                  "text": "sensor"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.44942545890808105,
+                  "end": 1224,
+                  "start": 1218,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.44942545890808105,
+                  "end": 1145,
+                  "start": 1139,
+                  "text": "sensor"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.9915481209754944,
+                  "end": 47,
+                  "start": 41,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.9915481209754944,
+                  "end": 29,
+                  "start": 18,
+                  "text": "power cable"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.4338935613632202,
+              "end": 438,
+              "start": 424,
+              "text": "Wi-Fi position"
+            },
+            "tail": {
+              "confidence": 0.4338935613632202,
+              "end": 96,
+              "start": 82,
+              "text": "Wi-Fi position"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:19:15.691785+00:00",
+  "status": "RETURNED"
+}

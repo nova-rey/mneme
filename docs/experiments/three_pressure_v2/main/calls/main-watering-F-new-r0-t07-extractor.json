@@ -1,0 +1,675 @@
+{
+  "completed_utc": "2026-10-02T19:06:31.401045+00:00",
+  "elapsed_seconds": 1.1692302350420505,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"Algae appears in the sunlit reservoir, while the shaded reservoir stays clear. What does the shading comparison add?\", \"s1\": \"This sounds like a question about **photosynthesis, light absorption, and biological processes.**\\n\\nWhen you say \\\"Algae appears in the sunlit reservoir, while the shaded reservoir stays clear,\\\" you are describing a contrast between two different environments (one in the sun, one in the shade).\\n\\n**What the \\\"shading\\\" (the lack of light) adds is usually related to the *rate* or *type* of biological process that occurs there.**\\n\\nHere is how the \\\"shading\\\" (lack of light) affects the two areas:\\n\\n1.  **In the Sunlit Reservoir (Sunlit):**\\n    *   **Algae appears:** Light is abundant, so the algae can photosynthesize and grow rapidly.\\n    *   **Result:** The algae will likely be **more active, more dense, and potentially more visible** because it has the energy source (light) it needs to thrive.\\n\\n2.  **In the Shaded Reservoir (Shaded):**\\n    *   **Clear stays clear:** This suggests the algae are either absent, dormant, or perhaps the conditions are not favorable for growth.\\n    *   **Result:** The \\\"clear\\\" state means the algae are not thriving or are not present in that specific area.\\n\\n**The \\\"shading comparison\\\" adds:**\\n\\n*   **A comparison of growth rates:** The sunlit area will have much higher growth/activity than the shaded area.\\n*   **A difference in biological activity:** The sunlit area is likely \\\"active,\\\" while the shaded area is \\\"dormant\\\" or \\\"clear.\\\"\\n\\n**In summary, the shading adds a \\\"contrast\\\" or \\\"contrast\\\" in biological activity.**\\n\\n**If you are asking about the *effect* of the shading:**\\nThe shading (lack of light) causes a **reduction in biological activity or growth rate** compared to the sunlit area.\\n\\n**If you can clarify what \\\"delivery\\\" means in your original context, I can give you a more specific answer!**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-watering-F-new-r0-t07"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"shading\", \"relation\": \"related\", \"to\": \"rate\", \"source\": \"s1\", \"evidence\": \"shading\\\" (the lack of light) adds is usually related to the *rate\"}, {\"from\": \"shading\", \"relation\": \"causes\", \"to\": \"reduction in biological activity or growth rate\", \"source\": \"s1\", \"evidence\": \"shading (lack of light) causes a **reduction in biological activity or growth rate\"}], \"episode_id\": \"main-watering-F-new-r0-t07\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "contains",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "has",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "contains",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "has",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "shades",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        },
+        {
+          "index": 11,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        }
+      ],
+      "specialist": {
+        "content_digest": "b2675cd3fbec2b6daaba371eb78637928df037a448dfd1b23d3f0390358fdc13",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 372,
+              "start": 307
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "rate",
+            "object_span": {
+              "end": 372,
+              "start": 368
+            },
+            "relation": "related",
+            "score": 0.9228875041007996,
+            "source_slot": "s1",
+            "subject": "shading",
+            "subject_span": {
+              "end": 314,
+              "start": 307
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 768,
+              "start": 445
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "energy source",
+            "object_span": {
+              "end": 768,
+              "start": 755
+            },
+            "relation": "provides",
+            "score": 0.9218444228172302,
+            "source_slot": "s1",
+            "subject": "shading",
+            "subject_span": {
+              "end": 452,
+              "start": 445
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 551,
+              "start": 463
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "light",
+            "object_span": {
+              "end": 468,
+              "start": 463
+            },
+            "relation": "uses",
+            "score": 0.6749728918075562,
+            "source_slot": "s1",
+            "subject": "Algae",
+            "subject_span": {
+              "end": 551,
+              "start": 546
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 568,
+              "start": 463
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "light",
+            "object_span": {
+              "end": 468,
+              "start": 463
+            },
+            "relation": "provides",
+            "score": 0.5099855065345764,
+            "source_slot": "s1",
+            "subject": "Light",
+            "subject_span": {
+              "end": 568,
+              "start": 563
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 768,
+              "start": 563
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "energy source",
+            "object_span": {
+              "end": 768,
+              "start": 755
+            },
+            "relation": "provides",
+            "score": 0.7430052757263184,
+            "source_slot": "s1",
+            "subject": "Light",
+            "subject_span": {
+              "end": 568,
+              "start": 563
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 768,
+              "start": 657
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "energy source",
+            "object_span": {
+              "end": 768,
+              "start": 755
+            },
+            "relation": "contains",
+            "score": 0.9253876209259033,
+            "source_slot": "s1",
+            "subject": "algae",
+            "subject_span": {
+              "end": 662,
+              "start": 657
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 768,
+              "start": 657
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "energy source",
+            "object_span": {
+              "end": 768,
+              "start": 755
+            },
+            "relation": "has",
+            "score": 0.9417162537574768,
+            "source_slot": "s1",
+            "subject": "algae",
+            "subject_span": {
+              "end": 662,
+              "start": 657
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1540,
+              "start": 1027
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "light",
+            "object_span": {
+              "end": 1540,
+              "start": 1535
+            },
+            "relation": "contains",
+            "score": 0.724085807800293,
+            "source_slot": "s1",
+            "subject": "algae",
+            "subject_span": {
+              "end": 1032,
+              "start": 1027
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1540,
+              "start": 1027
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "light",
+            "object_span": {
+              "end": 1540,
+              "start": 1535
+            },
+            "relation": "has",
+            "score": 0.800093412399292,
+            "source_slot": "s1",
+            "subject": "algae",
+            "subject_span": {
+              "end": 1032,
+              "start": 1027
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1107,
+              "start": 1027
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "algae",
+            "object_span": {
+              "end": 1032,
+              "start": 1027
+            },
+            "relation": "shades",
+            "score": 0.7844120860099792,
+            "source_slot": "s1",
+            "subject": "shading",
+            "subject_span": {
+              "end": 1107,
+              "start": 1100
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1540,
+              "start": 1518
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "light",
+            "object_span": {
+              "end": 1540,
+              "start": 1535
+            },
+            "relation": "provides",
+            "score": 0.7655311226844788,
+            "source_slot": "s1",
+            "subject": "shading",
+            "subject_span": {
+              "end": 1525,
+              "start": 1518
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1600,
+              "start": 1518
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "reduction in biological activity or growth rate",
+            "object_span": {
+              "end": 1600,
+              "start": 1553
+            },
+            "relation": "causes",
+            "score": 0.60843425989151,
+            "source_slot": "s1",
+            "subject": "shading",
+            "subject_span": {
+              "end": 1525,
+              "start": 1518
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "9a9f9e3ab3ca3aa842622428578b7ba8fbf8a8bddbd0d71c94dd3d5f92bdc6e4",
+          "s1": "607e450a5baa7d74a152c0b6b442426846d85978759c83c457da7e4840c6d41e"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.60843425989151,
+                  "end": 1642,
+                  "start": 1635,
+                  "text": "shading"
+                },
+                "tail": {
+                  "confidence": 0.60843425989151,
+                  "end": 1717,
+                  "start": 1670,
+                  "text": "reduction in biological activity or growth rate"
+                }
+              }
+            ],
+            "changes": [],
+            "constrains": [],
+            "contains": [
+              {
+                "head": {
+                  "confidence": 0.9253876209259033,
+                  "end": 779,
+                  "start": 774,
+                  "text": "algae"
+                },
+                "tail": {
+                  "confidence": 0.9253876209259033,
+                  "end": 885,
+                  "start": 872,
+                  "text": "energy source"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.724085807800293,
+                  "end": 1149,
+                  "start": 1144,
+                  "text": "algae"
+                },
+                "tail": {
+                  "confidence": 0.724085807800293,
+                  "end": 1657,
+                  "start": 1652,
+                  "text": "light"
+                }
+              }
+            ],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [
+              {
+                "head": {
+                  "confidence": 0.9417162537574768,
+                  "end": 779,
+                  "start": 774,
+                  "text": "algae"
+                },
+                "tail": {
+                  "confidence": 0.9417162537574768,
+                  "end": 885,
+                  "start": 872,
+                  "text": "energy source"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.800093412399292,
+                  "end": 1149,
+                  "start": 1144,
+                  "text": "algae"
+                },
+                "tail": {
+                  "confidence": 0.800093412399292,
+                  "end": 1657,
+                  "start": 1652,
+                  "text": "light"
+                }
+              }
+            ],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [
+              {
+                "head": {
+                  "confidence": 0.9218444228172302,
+                  "end": 569,
+                  "start": 562,
+                  "text": "shading"
+                },
+                "tail": {
+                  "confidence": 0.9218444228172302,
+                  "end": 885,
+                  "start": 872,
+                  "text": "energy source"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5099855065345764,
+                  "end": 685,
+                  "start": 680,
+                  "text": "Light"
+                },
+                "tail": {
+                  "confidence": 0.5099855065345764,
+                  "end": 585,
+                  "start": 580,
+                  "text": "light"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7430052757263184,
+                  "end": 685,
+                  "start": 680,
+                  "text": "Light"
+                },
+                "tail": {
+                  "confidence": 0.7430052757263184,
+                  "end": 885,
+                  "start": 872,
+                  "text": "energy source"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7655311226844788,
+                  "end": 1642,
+                  "start": 1635,
+                  "text": "shading"
+                },
+                "tail": {
+                  "confidence": 0.7655311226844788,
+                  "end": 1657,
+                  "start": 1652,
+                  "text": "light"
+                }
+              }
+            ],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.9228875041007996,
+                  "end": 431,
+                  "start": 424,
+                  "text": "shading"
+                },
+                "tail": {
+                  "confidence": 0.9228875041007996,
+                  "end": 489,
+                  "start": 485,
+                  "text": "rate"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [
+              {
+                "head": {
+                  "confidence": 0.7844120860099792,
+                  "end": 1224,
+                  "start": 1217,
+                  "text": "shading"
+                },
+                "tail": {
+                  "confidence": 0.7844120860099792,
+                  "end": 1149,
+                  "start": 1144,
+                  "text": "algae"
+                }
+              }
+            ],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [
+              {
+                "head": {
+                  "confidence": 0.358938604593277,
+                  "end": 111,
+                  "start": 93,
+                  "text": "shading comparison"
+                },
+                "tail": {
+                  "confidence": 0.358938604593277,
+                  "end": 167,
+                  "start": 153,
+                  "text": "photosynthesis"
+                }
+              }
+            ],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.6749728918075562,
+                  "end": 668,
+                  "start": 663,
+                  "text": "Algae"
+                },
+                "tail": {
+                  "confidence": 0.6749728918075562,
+                  "end": 585,
+                  "start": 580,
+                  "text": "light"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.358938604593277,
+              "end": 111,
+              "start": 93,
+              "text": "shading comparison"
+            },
+            "tail": {
+              "confidence": 0.358938604593277,
+              "end": 167,
+              "start": 153,
+              "text": "photosynthesis"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:06:30.230531+00:00",
+  "status": "RETURNED"
+}

@@ -1,0 +1,933 @@
+{
+  "completed_utc": "2026-10-02T19:08:51.146002+00:00",
+  "elapsed_seconds": 0.9944815221242607,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"At the same 2-centimeter height with three cotton wicks, the pot gains 4 grams in 48 hours. Ask what the longer trial adds.\", \"s1\": \"This new data point\\u2014**\\\"3 grams in 48 hours\\\"**\\u2014is a significant refinement to the previous data point (which was 35g in 24 hours).\\n\\n**The \\\"Refinement\\\" is the shift in the *rate* of the system.**\\n\\n**How this \\\"refinement\\\" affects the balance:**\\n\\n1.  **The Rate Has Slowed Down:** The rate of gain has slowed down from 12.5g/day to 3g/day.\\n2.  **The \\\"Balance\\\" is now more stable:** The system is moving from a state of rapid, high-intensity consumption (35g/day) to a slower, more measured consumption (3g/day).\\n\\n**The \\\"Refinement\\\" is the shift from a \\\"High-Intensity\\\" state to a \\\"Steady-State\\\" state.**\\n\\n**The \\\"Refinement\\\" is that the system is no longer in a state of rapid loss, but in a state of steady, controlled gain.**\\n\\n**In terms of the \\\"Target\\\":**\\n\\n*   **The \\\"Closeness\\\" is now defined by the *consistency* of the 3g/day rate.** If your original target was a specific, fixed weight, the system is now moving toward a \\\"steady state\\\" rather than a \\\"peak state.\\\"\\n\\n**In summary, the refinement is that the system is moving from a state of \\\"High Consumption\\\" to a state of \\\"Measured, Steady Growth.\\\"**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-watering-F-same-r0-t09"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"refinement\", \"relation\": \"causes\", \"to\": \"rate\", \"source\": \"s1\", \"evidence\": \"refinement\\\" affects the balance:**\\n\\n1.  **The Rate Has Slowed Down:** The rate\"}, {\"from\": \"rate\", \"relation\": \"part_of\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"rate.** If your original target was a specific, fixed weight, the system\"}, {\"from\": \"target\", \"relation\": \"part_of\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"target was a specific, fixed weight, the system\"}, {\"from\": \"refinement\", \"relation\": \"part_of\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"refinement is that the system\"}], \"episode_id\": \"main-watering-F-same-r0-t09\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "controls",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "stabilizes",
+          "status": "rejected"
+        },
+        {
+          "index": 11,
+          "kind": "unsupported_specialist_relation",
+          "relation": "stabilizes",
+          "status": "rejected"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 14,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 15,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 16,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 17,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        }
+      ],
+      "specialist": {
+        "content_digest": "f5fa10a2dcade880b24844161d6129de596107013b6d1f2ddf446cf8db5129e5",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 64,
+              "start": 43
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "cotton wicks",
+            "object_span": {
+              "end": 55,
+              "start": 43
+            },
+            "relation": "uses",
+            "score": 0.8081658482551575,
+            "source_slot": "s0",
+            "subject": "pot",
+            "subject_span": {
+              "end": 64,
+              "start": 61
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 90,
+              "start": 61
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "4 grams in 48 hours",
+            "object_span": {
+              "end": 90,
+              "start": 71
+            },
+            "relation": "increases",
+            "score": 0.6905208826065063,
+            "source_slot": "s0",
+            "subject": "pot",
+            "subject_span": {
+              "end": 64,
+              "start": 61
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 190,
+              "start": 90
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 190,
+              "start": 184
+            },
+            "relation": "associated_with",
+            "score": 0.5768715143203735,
+            "source_slot": "s1",
+            "subject": "data point",
+            "subject_span": {
+              "end": 100,
+              "start": 90
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 175,
+              "start": 138
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "rate",
+            "object_span": {
+              "end": 175,
+              "start": 171
+            },
+            "relation": "changes",
+            "score": 0.9383963346481323,
+            "source_slot": "s1",
+            "subject": "Refinement",
+            "subject_span": {
+              "end": 148,
+              "start": 138
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 175,
+              "start": 138
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "rate",
+            "object_span": {
+              "end": 175,
+              "start": 171
+            },
+            "relation": "reduces",
+            "score": 0.919647216796875,
+            "source_slot": "s1",
+            "subject": "Refinement",
+            "subject_span": {
+              "end": 148,
+              "start": 138
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 238,
+              "start": 207
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "balance",
+            "object_span": {
+              "end": 238,
+              "start": 231
+            },
+            "relation": "affects",
+            "score": 0.9875594973564148,
+            "source_slot": "s1",
+            "subject": "refinement",
+            "subject_span": {
+              "end": 217,
+              "start": 207
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 238,
+              "start": 207
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "balance",
+            "object_span": {
+              "end": 238,
+              "start": 231
+            },
+            "relation": "controls",
+            "score": 0.8535119295120239,
+            "source_slot": "s1",
+            "subject": "refinement",
+            "subject_span": {
+              "end": 217,
+              "start": 207
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 238,
+              "start": 207
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "balance",
+            "object_span": {
+              "end": 238,
+              "start": 231
+            },
+            "relation": "improves",
+            "score": 0.9701658487319946,
+            "source_slot": "s1",
+            "subject": "refinement",
+            "subject_span": {
+              "end": 217,
+              "start": 207
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 238,
+              "start": 207
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "balance",
+            "object_span": {
+              "end": 238,
+              "start": 231
+            },
+            "relation": "influences",
+            "score": 0.9583261013031006,
+            "source_slot": "s1",
+            "subject": "refinement",
+            "subject_span": {
+              "end": 217,
+              "start": 207
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 285,
+              "start": 207
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "rate",
+            "object_span": {
+              "end": 285,
+              "start": 281
+            },
+            "relation": "causes",
+            "score": 0.7551330924034119,
+            "source_slot": "s1",
+            "subject": "refinement",
+            "subject_span": {
+              "end": 217,
+              "start": 207
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 354,
+              "start": 231
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "balance",
+            "object_span": {
+              "end": 238,
+              "start": 231
+            },
+            "relation": "stabilizes",
+            "score": 0.47006136178970337,
+            "source_slot": "s1",
+            "subject": "Balance",
+            "subject_span": {
+              "end": 354,
+              "start": 347
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 936,
+              "start": 347
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "steady state",
+            "object_span": {
+              "end": 936,
+              "start": 924
+            },
+            "relation": "stabilizes",
+            "score": 0.41105660796165466,
+            "source_slot": "s1",
+            "subject": "Balance",
+            "subject_span": {
+              "end": 354,
+              "start": 347
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 526,
+              "start": 477
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "measured consumption",
+            "object_span": {
+              "end": 497,
+              "start": 477
+            },
+            "relation": "leads_to",
+            "score": 0.3565516471862793,
+            "source_slot": "s1",
+            "subject": "Refinement",
+            "subject_span": {
+              "end": 526,
+              "start": 516
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 618,
+              "start": 577
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Steady-State",
+            "object_span": {
+              "end": 589,
+              "start": 577
+            },
+            "relation": "leads_to",
+            "score": 0.6341346502304077,
+            "source_slot": "s1",
+            "subject": "Refinement",
+            "subject_span": {
+              "end": 618,
+              "start": 608
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 899,
+              "start": 827
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 899,
+              "start": 893
+            },
+            "relation": "part_of",
+            "score": 0.5321465730667114,
+            "source_slot": "s1",
+            "subject": "rate",
+            "subject_span": {
+              "end": 831,
+              "start": 827
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 899,
+              "start": 852
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 899,
+              "start": 893
+            },
+            "relation": "part_of",
+            "score": 0.8151437640190125,
+            "source_slot": "s1",
+            "subject": "target",
+            "subject_span": {
+              "end": 858,
+              "start": 852
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 995,
+              "start": 924
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "steady state",
+            "object_span": {
+              "end": 936,
+              "start": 924
+            },
+            "relation": "leads_to",
+            "score": 0.6862722635269165,
+            "source_slot": "s1",
+            "subject": "refinement",
+            "subject_span": {
+              "end": 995,
+              "start": 985
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1014,
+              "start": 985
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 1014,
+              "start": 1008
+            },
+            "relation": "part_of",
+            "score": 0.8203104734420776,
+            "source_slot": "s1",
+            "subject": "refinement",
+            "subject_span": {
+              "end": 995,
+              "start": 985
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "a15ceda3f0990bb402cf37d36e00578eb3c8df04d0d2d510251e5dd88f81ffe4",
+          "s1": "eba10917414e2cf1df6b8b236d108dd839969e92abb9a2bfa3fa513410b656c9"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.9875594973564148,
+                  "end": 341,
+                  "start": 331,
+                  "text": "refinement"
+                },
+                "tail": {
+                  "confidence": 0.9875594973564148,
+                  "end": 362,
+                  "start": 355,
+                  "text": "balance"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.5768715143203735,
+                  "end": 224,
+                  "start": 214,
+                  "text": "data point"
+                },
+                "tail": {
+                  "confidence": 0.5768715143203735,
+                  "end": 314,
+                  "start": 308,
+                  "text": "system"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.7551330924034119,
+                  "end": 341,
+                  "start": 331,
+                  "text": "refinement"
+                },
+                "tail": {
+                  "confidence": 0.7551330924034119,
+                  "end": 409,
+                  "start": 405,
+                  "text": "rate"
+                }
+              }
+            ],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.9383963346481323,
+                  "end": 272,
+                  "start": 262,
+                  "text": "Refinement"
+                },
+                "tail": {
+                  "confidence": 0.9383963346481323,
+                  "end": 299,
+                  "start": 295,
+                  "text": "rate"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [
+              {
+                "head": {
+                  "confidence": 0.8535119295120239,
+                  "end": 341,
+                  "start": 331,
+                  "text": "refinement"
+                },
+                "tail": {
+                  "confidence": 0.8535119295120239,
+                  "end": 362,
+                  "start": 355,
+                  "text": "balance"
+                }
+              }
+            ],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.9701658487319946,
+                  "end": 341,
+                  "start": 331,
+                  "text": "refinement"
+                },
+                "tail": {
+                  "confidence": 0.9701658487319946,
+                  "end": 362,
+                  "start": 355,
+                  "text": "balance"
+                }
+              }
+            ],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.6905208826065063,
+                  "end": 64,
+                  "start": 61,
+                  "text": "pot"
+                },
+                "tail": {
+                  "confidence": 0.6905208826065063,
+                  "end": 90,
+                  "start": 71,
+                  "text": "4 grams in 48 hours"
+                }
+              }
+            ],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.9583261013031006,
+                  "end": 341,
+                  "start": 331,
+                  "text": "refinement"
+                },
+                "tail": {
+                  "confidence": 0.9583261013031006,
+                  "end": 362,
+                  "start": 355,
+                  "text": "balance"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [
+              {
+                "head": {
+                  "confidence": 0.3565516471862793,
+                  "end": 650,
+                  "start": 640,
+                  "text": "Refinement"
+                },
+                "tail": {
+                  "confidence": 0.3565516471862793,
+                  "end": 621,
+                  "start": 601,
+                  "text": "measured consumption"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6341346502304077,
+                  "end": 742,
+                  "start": 732,
+                  "text": "Refinement"
+                },
+                "tail": {
+                  "confidence": 0.6341346502304077,
+                  "end": 713,
+                  "start": 701,
+                  "text": "Steady-State"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6862722635269165,
+                  "end": 1119,
+                  "start": 1109,
+                  "text": "refinement"
+                },
+                "tail": {
+                  "confidence": 0.6862722635269165,
+                  "end": 1060,
+                  "start": 1048,
+                  "text": "steady state"
+                }
+              }
+            ],
+            "maintains": [],
+            "manages": [],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.5321465730667114,
+                  "end": 955,
+                  "start": 951,
+                  "text": "rate"
+                },
+                "tail": {
+                  "confidence": 0.5321465730667114,
+                  "end": 1023,
+                  "start": 1017,
+                  "text": "system"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8151437640190125,
+                  "end": 982,
+                  "start": 976,
+                  "text": "target"
+                },
+                "tail": {
+                  "confidence": 0.8151437640190125,
+                  "end": 1023,
+                  "start": 1017,
+                  "text": "system"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8203104734420776,
+                  "end": 1119,
+                  "start": 1109,
+                  "text": "refinement"
+                },
+                "tail": {
+                  "confidence": 0.8203104734420776,
+                  "end": 1138,
+                  "start": 1132,
+                  "text": "system"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.919647216796875,
+                  "end": 272,
+                  "start": 262,
+                  "text": "Refinement"
+                },
+                "tail": {
+                  "confidence": 0.919647216796875,
+                  "end": 299,
+                  "start": 295,
+                  "text": "rate"
+                }
+              }
+            ],
+            "related": [],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [
+              {
+                "head": {
+                  "confidence": 0.47006136178970337,
+                  "end": 478,
+                  "start": 471,
+                  "text": "Balance"
+                },
+                "tail": {
+                  "confidence": 0.47006136178970337,
+                  "end": 362,
+                  "start": 355,
+                  "text": "balance"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.41105660796165466,
+                  "end": 478,
+                  "start": 471,
+                  "text": "Balance"
+                },
+                "tail": {
+                  "confidence": 0.41105660796165466,
+                  "end": 1060,
+                  "start": 1048,
+                  "text": "steady state"
+                }
+              }
+            ],
+            "supports": [],
+            "used_for": [
+              {
+                "head": {
+                  "confidence": 0.41887688636779785,
+                  "end": 55,
+                  "start": 43,
+                  "text": "cotton wicks"
+                },
+                "tail": {
+                  "confidence": 0.41887688636779785,
+                  "end": 143,
+                  "start": 133,
+                  "text": "data point"
+                }
+              }
+            ],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.8081658482551575,
+                  "end": 64,
+                  "start": 61,
+                  "text": "pot"
+                },
+                "tail": {
+                  "confidence": 0.8081658482551575,
+                  "end": 55,
+                  "start": 43,
+                  "text": "cotton wicks"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.41887688636779785,
+              "end": 55,
+              "start": 43,
+              "text": "cotton wicks"
+            },
+            "tail": {
+              "confidence": 0.41887688636779785,
+              "end": 143,
+              "start": 133,
+              "text": "data point"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:08:50.149929+00:00",
+  "status": "RETURNED"
+}

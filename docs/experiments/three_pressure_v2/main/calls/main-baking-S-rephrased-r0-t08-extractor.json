@@ -1,0 +1,510 @@
+{
+  "completed_utc": "2026-10-02T19:15:58.235709+00:00",
+  "elapsed_seconds": 1.10157017596066,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"I have not changed either setting. I still do not feel sure how to avoid both a dark crust and a wet middle. What if I try adjusting the oven temperature partway through?\", \"s1\": \"It sounds like you are trying to solve a complex problem: **How to get a perfect texture without the outside burning or the inside being too raw.**\\n\\nIf you are worried about the **\\\"dark crust\\\"** (burning outside) and the **\\\"wet middle\\\"** (raw inside), you are dealing with a classic \\\"over-baking\\\" vs. \\\"under-baking\\\" problem.\\n\\nSince you are worried about the *outside* being too dark (burning) and the *inside* being too wet (raw), here is the \\\"no-guess\\\" strategy:\\n\\n**1. The \\\"Temperature Adjustment\\\" Strategy:**\\n*   **If the outside is getting too dark (burning):** You need to **lower the temperature** immediately.\\n*   **If the middle is too wet (raw):** You need to **increase the time** or **increase the heat** slightly.\\n\\n**2. The \\\"No-Guessing\\\" Strategy (The \\\"Test\\\"):**\\nSince you are worried about the \\\"guess,\\\" the best way to avoid guessing is to use a **thermometer**.\\n\\n*   **For Meat/Baking:** Use a digital probe to check the internal temperature.\\n*   **For Baking/Roasting:** Use a visual \\\"doneness\\\" check (e.g., a toothpick test).\\n\\n**If you can tell me what you are trying to cook (e.g., \\\"a cake,\\\" \\\"a roast,\\\" \\\"a pizza\\\"), I can give you a specific, tested temperature and time.**\\n\\n**If you can tell me what you are trying to make, I can give you the exact settings you need.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-baking-S-rephrased-r0-t08"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [], \"episode_id\": \"main-baking-S-rephrased-r0-t08\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "used_for",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "used_for",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "used_for",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "b46571cee78fbe4e43236079559905551fa2fb304365d93ccdf6ce0104345add",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 600,
+              "start": 475
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 600,
+              "start": 589
+            },
+            "relation": "reduces",
+            "score": 0.8435587286949158,
+            "source_slot": "s1",
+            "subject": "Temperature Adjustment",
+            "subject_span": {
+              "end": 497,
+              "start": 475
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 897,
+              "start": 860
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Meat/Baking",
+            "object_span": {
+              "end": 897,
+              "start": 886
+            },
+            "relation": "used_for",
+            "score": 0.41590699553489685,
+            "source_slot": "s1",
+            "subject": "thermometer",
+            "subject_span": {
+              "end": 871,
+              "start": 860
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 920,
+              "start": 886
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "digital probe",
+            "object_span": {
+              "end": 920,
+              "start": 907
+            },
+            "relation": "uses",
+            "score": 0.4770679473876953,
+            "source_slot": "s1",
+            "subject": "Meat/Baking",
+            "subject_span": {
+              "end": 897,
+              "start": 886
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 920,
+              "start": 886
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Meat/Baking",
+            "object_span": {
+              "end": 897,
+              "start": 886
+            },
+            "relation": "used_for",
+            "score": 0.41495969891548157,
+            "source_slot": "s1",
+            "subject": "digital probe",
+            "subject_span": {
+              "end": 920,
+              "start": 907
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 981,
+              "start": 907
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Baking/Roasting",
+            "object_span": {
+              "end": 981,
+              "start": 966
+            },
+            "relation": "used_for",
+            "score": 0.4080464839935303,
+            "source_slot": "s1",
+            "subject": "digital probe",
+            "subject_span": {
+              "end": 920,
+              "start": 907
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1038,
+              "start": 708
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "heat",
+            "object_span": {
+              "end": 712,
+              "start": 708
+            },
+            "relation": "increases",
+            "score": 0.37395811080932617,
+            "source_slot": "s1",
+            "subject": "test",
+            "subject_span": {
+              "end": 1038,
+              "start": 1034
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1185,
+              "start": 1034
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 1185,
+              "start": 1181
+            },
+            "relation": "increases",
+            "score": 0.5941870212554932,
+            "source_slot": "s1",
+            "subject": "test",
+            "subject_span": {
+              "end": 1038,
+              "start": 1034
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1185,
+              "start": 1034
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 1185,
+              "start": 1181
+            },
+            "relation": "provides",
+            "score": 0.3959731161594391,
+            "source_slot": "s1",
+            "subject": "test",
+            "subject_span": {
+              "end": 1038,
+              "start": 1034
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1185,
+              "start": 1131
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 1185,
+              "start": 1181
+            },
+            "relation": "provides",
+            "score": 0.5721224546432495,
+            "source_slot": "s1",
+            "subject": "I",
+            "subject_span": {
+              "end": 1132,
+              "start": 1131
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "6711bf966d9fca8c5e51ad45d39653cc186e6f0ff78bbe9a7abf78fa413da2dc",
+          "s1": "8861207557957d716dd1b18e0211391297e18d5eb9412b8d253fef6ceff2a26b"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.37395811080932617,
+                  "end": 1209,
+                  "start": 1205,
+                  "text": "test"
+                },
+                "tail": {
+                  "confidence": 0.37395811080932617,
+                  "end": 883,
+                  "start": 879,
+                  "text": "heat"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5941870212554932,
+                  "end": 1209,
+                  "start": 1205,
+                  "text": "test"
+                },
+                "tail": {
+                  "confidence": 0.5941870212554932,
+                  "end": 1356,
+                  "start": 1352,
+                  "text": "time"
+                }
+              }
+            ],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [
+              {
+                "head": {
+                  "confidence": 0.3959731161594391,
+                  "end": 1209,
+                  "start": 1205,
+                  "text": "test"
+                },
+                "tail": {
+                  "confidence": 0.3959731161594391,
+                  "end": 1356,
+                  "start": 1352,
+                  "text": "time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5721224546432495,
+                  "end": 1303,
+                  "start": 1302,
+                  "text": "I"
+                },
+                "tail": {
+                  "confidence": 0.5721224546432495,
+                  "end": 1356,
+                  "start": 1352,
+                  "text": "time"
+                }
+              }
+            ],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.8435587286949158,
+                  "end": 668,
+                  "start": 646,
+                  "text": "Temperature Adjustment"
+                },
+                "tail": {
+                  "confidence": 0.8435587286949158,
+                  "end": 771,
+                  "start": 760,
+                  "text": "temperature"
+                }
+              }
+            ],
+            "related": [],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [
+              {
+                "head": {
+                  "confidence": 0.41590699553489685,
+                  "end": 1042,
+                  "start": 1031,
+                  "text": "thermometer"
+                },
+                "tail": {
+                  "confidence": 0.41590699553489685,
+                  "end": 1068,
+                  "start": 1057,
+                  "text": "Meat/Baking"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.41495969891548157,
+                  "end": 1091,
+                  "start": 1078,
+                  "text": "digital probe"
+                },
+                "tail": {
+                  "confidence": 0.41495969891548157,
+                  "end": 1068,
+                  "start": 1057,
+                  "text": "Meat/Baking"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4080464839935303,
+                  "end": 1091,
+                  "start": 1078,
+                  "text": "digital probe"
+                },
+                "tail": {
+                  "confidence": 0.4080464839935303,
+                  "end": 1152,
+                  "start": 1137,
+                  "text": "Baking/Roasting"
+                }
+              }
+            ],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.4770679473876953,
+                  "end": 1068,
+                  "start": 1057,
+                  "text": "Meat/Baking"
+                },
+                "tail": {
+                  "confidence": 0.4770679473876953,
+                  "end": 1091,
+                  "start": 1078,
+                  "text": "digital probe"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:15:57.131742+00:00",
+  "status": "RETURNED"
+}

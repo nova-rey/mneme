@@ -1,0 +1,549 @@
+{
+  "completed_utc": "2026-10-02T19:10:00.091323+00:00",
+  "elapsed_seconds": 1.1998262868728489,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"I have not measured anything. I still cannot picture the soil staying between too wet and too dry. What if the plant is something in between, like a tomato?\", \"s1\": \"It sounds like you are worried about the **\\\"Goldilocks Zone\\\"**\\u2014where the plant is neither too dry nor too wet.\\n\\nIf you are growing a **tomato plant**, you are dealing with a plant that needs consistent, moderate moisture, but it also needs sunlight and good air circulation.\\n\\nSince you haven't measured anything yet, I recommend you **start with a very simple, low-maintenance system** to see what works best for your specific plant.\\n\\n**To answer your question directly:**\\n\\n*   **If your plant is a Tomato (or similar vegetable):** It needs **consistent, moderate moisture.**\\n*   **If you are unsure if the plant will get too much or too little:** You need a system that provides **slow, steady water**, not a sudden flood.\\n\\n### How to manage this uncertainty:\\n\\nSince you don't want to risk the plant dying, you need a **\\\"Safety Net\\\" system.**\\n\\n**My advice is this:**\\n\\n1.  **The \\\"Drip\\\" Method:** If you have a slow drip system, it is usually better than a full flood.\\n2.  **The \\\"Check-In\\\" Method:** If you can't check on it, use a **timer** or a **slow-release water reservoir** (like a slow-release water bottle placed near the pot).\\n\\n**If you are worried about \\\"Too Wet\\\" vs. \\\"Too Dry,\\\" the best solution is a \\\"Wick\\\" or \\\"Slow-Release\\\" system.**\\n\\n**If you can tell me what kind of plant it is (like a tomato, a succulent, or a flower), I can give you a much more specific answer on the \\\"dependability\\\" of your current setup.**\\n\\n**Without knowing the plant, I cannot say if your current arrangement is dependable.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-watering-S-rephrased-r0-t05"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"Safety Net\", \"relation\": \"supports\", \"to\": \"plant\", \"source\": \"s1\", \"evidence\": \"plant.\\n\\n**To answer your question directly:**\\n\\n*   **If your plant is a Tomato (or similar vegetable):** It needs **consistent, moderate moisture.**\\n*   **If you are unsure if the plant will get too much or too little:** You need a system that provides **slow, steady water**, not a sudden flood.\\n\\n### How to manage this uncertainty:\\n\\nSince you don't want to risk the plant dying, you need a **\\\"Safety Net\"}], \"episode_id\": \"main-watering-S-rephrased-r0-t05\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "protects",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "specialist_observation",
+          "relation": "supports",
+          "status": "forwarded"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "manages",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "87b912d1fc5ade0d2e95baf650ed80766f5c0be2e0e9f5094f1590f5da27f36a",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 147,
+              "start": 44
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "tomato plant",
+            "object_span": {
+              "end": 147,
+              "start": 135
+            },
+            "relation": "associated_with",
+            "score": 0.5517632365226746,
+            "source_slot": "s1",
+            "subject": "Goldilocks Zone",
+            "subject_span": {
+              "end": 59,
+              "start": 44
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 248,
+              "start": 174
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sunlight",
+            "object_span": {
+              "end": 248,
+              "start": 240
+            },
+            "relation": "requires",
+            "score": 0.8949389457702637,
+            "source_slot": "s1",
+            "subject": "plant",
+            "subject_span": {
+              "end": 179,
+              "start": 174
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 273,
+              "start": 174
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "good air circulation",
+            "object_span": {
+              "end": 273,
+              "start": 253
+            },
+            "relation": "requires",
+            "score": 0.8431820869445801,
+            "source_slot": "s1",
+            "subject": "plant",
+            "subject_span": {
+              "end": 179,
+              "start": 174
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 700,
+              "start": 659
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "slow, steady water",
+            "object_span": {
+              "end": 700,
+              "start": 682
+            },
+            "relation": "provides",
+            "score": 0.9844132661819458,
+            "source_slot": "s1",
+            "subject": "system",
+            "subject_span": {
+              "end": 665,
+              "start": 659
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 832,
+              "start": 427
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "plant",
+            "object_span": {
+              "end": 432,
+              "start": 427
+            },
+            "relation": "protects",
+            "score": 0.6629306674003601,
+            "source_slot": "s1",
+            "subject": "Safety Net",
+            "subject_span": {
+              "end": 832,
+              "start": 822
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 832,
+              "start": 427
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "plant",
+            "object_span": {
+              "end": 432,
+              "start": 427
+            },
+            "relation": "supports",
+            "score": 0.3549930453300476,
+            "source_slot": "s1",
+            "subject": "Safety Net",
+            "subject_span": {
+              "end": 832,
+              "start": 822
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 832,
+              "start": 748
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "uncertainty",
+            "object_span": {
+              "end": 759,
+              "start": 748
+            },
+            "relation": "manages",
+            "score": 0.35851436853408813,
+            "source_slot": "s1",
+            "subject": "Safety Net",
+            "subject_span": {
+              "end": 832,
+              "start": 822
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1038,
+              "start": 979
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "timer",
+            "object_span": {
+              "end": 1038,
+              "start": 1033
+            },
+            "relation": "uses",
+            "score": 0.43781450390815735,
+            "source_slot": "s1",
+            "subject": "Check-In",
+            "subject_span": {
+              "end": 987,
+              "start": 979
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1076,
+              "start": 979
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "slow-release water reservoir",
+            "object_span": {
+              "end": 1076,
+              "start": 1048
+            },
+            "relation": "uses",
+            "score": 0.36481085419654846,
+            "source_slot": "s1",
+            "subject": "Check-In",
+            "subject_span": {
+              "end": 987,
+              "start": 979
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "20a37eb36479cabe53b0d496baedf5607a072bf0377589d7425166f0e8cd1fdb",
+          "s1": "bbecc00df64676a06b4b1e4b0e2ea872f76ee30409a9f875fc2f32496b861b33"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.5517632365226746,
+                  "end": 216,
+                  "start": 201,
+                  "text": "Goldilocks Zone"
+                },
+                "tail": {
+                  "confidence": 0.5517632365226746,
+                  "end": 304,
+                  "start": 292,
+                  "text": "tomato plant"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [
+              {
+                "head": {
+                  "confidence": 0.35851436853408813,
+                  "end": 989,
+                  "start": 979,
+                  "text": "Safety Net"
+                },
+                "tail": {
+                  "confidence": 0.35851436853408813,
+                  "end": 916,
+                  "start": 905,
+                  "text": "uncertainty"
+                }
+              }
+            ],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.3794704079627991,
+                  "end": 61,
+                  "start": 57,
+                  "text": "soil"
+                },
+                "tail": {
+                  "confidence": 0.3794704079627991,
+                  "end": 540,
+                  "start": 534,
+                  "text": "system"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [
+              {
+                "head": {
+                  "confidence": 0.6629306674003601,
+                  "end": 989,
+                  "start": 979,
+                  "text": "Safety Net"
+                },
+                "tail": {
+                  "confidence": 0.6629306674003601,
+                  "end": 589,
+                  "start": 584,
+                  "text": "plant"
+                }
+              }
+            ],
+            "provides": [
+              {
+                "head": {
+                  "confidence": 0.9844132661819458,
+                  "end": 822,
+                  "start": 816,
+                  "text": "system"
+                },
+                "tail": {
+                  "confidence": 0.9844132661819458,
+                  "end": 857,
+                  "start": 839,
+                  "text": "slow, steady water"
+                }
+              }
+            ],
+            "reduces": [],
+            "related": [],
+            "requires": [
+              {
+                "head": {
+                  "confidence": 0.8949389457702637,
+                  "end": 336,
+                  "start": 331,
+                  "text": "plant"
+                },
+                "tail": {
+                  "confidence": 0.8949389457702637,
+                  "end": 405,
+                  "start": 397,
+                  "text": "sunlight"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8431820869445801,
+                  "end": 336,
+                  "start": 331,
+                  "text": "plant"
+                },
+                "tail": {
+                  "confidence": 0.8431820869445801,
+                  "end": 430,
+                  "start": 410,
+                  "text": "good air circulation"
+                }
+              }
+            ],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [
+              {
+                "head": {
+                  "confidence": 0.3549930453300476,
+                  "end": 989,
+                  "start": 979,
+                  "text": "Safety Net"
+                },
+                "tail": {
+                  "confidence": 0.3549930453300476,
+                  "end": 589,
+                  "start": 584,
+                  "text": "plant"
+                }
+              }
+            ],
+            "used_for": [],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.43781450390815735,
+                  "end": 1144,
+                  "start": 1136,
+                  "text": "Check-In"
+                },
+                "tail": {
+                  "confidence": 0.43781450390815735,
+                  "end": 1195,
+                  "start": 1190,
+                  "text": "timer"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.36481085419654846,
+                  "end": 1144,
+                  "start": 1136,
+                  "text": "Check-In"
+                },
+                "tail": {
+                  "confidence": 0.36481085419654846,
+                  "end": 1233,
+                  "start": 1205,
+                  "text": "slow-release water reservoir"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.3794704079627991,
+              "end": 61,
+              "start": 57,
+              "text": "soil"
+            },
+            "tail": {
+              "confidence": 0.3794704079627991,
+              "end": 540,
+              "start": 534,
+              "text": "system"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:09:58.889782+00:00",
+  "status": "RETURNED"
+}

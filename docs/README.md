@@ -13,6 +13,12 @@ explicit `--legacy-research-store` compatibility choice.
 
 The documents are preserved in their supplied form and are intentionally not merged.
 
+* [Three-pressure meters: second investigation](experiments/three_pressure_v2/report.md)
+  separates contextual continuity, historical accessibility and stagnation
+  candidates. It preserves frozen definitions, source-separated matrices,
+  pre-score fidelity decisions and read-only CompactStore evidence; SAA behavior
+  remains unchanged.
+
 * [Passive arc movement investigation](experiments/arc_measurements/report.md)
   documents additive, model-free measurements of focused versus circling
   conversations. It does not authorize or implement SAA exploration modulation.

@@ -1,0 +1,1177 @@
+{
+  "completed_utc": "2026-10-02T19:04:31.113570+00:00",
+  "elapsed_seconds": 1.0573909380473197,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"I have not tried the suggested checks. An absent dashboard entry still leaves me unsure about power and Wi-Fi.\", \"s1\": \"It sounds like you are in a state of **\\\"No Data\\\"**\\u2014you have a problem, but no data to confirm the cause.\\n\\nSince you have no new observations, we must look at the structure of the problem itself.\\n\\n**The core problem is that you are trying to diagnose a \\\"black box\\\" (the device) without any initial data points.**\\n\\nSince you have no data, you cannot guess. You must **test the variables one by one** until you see a change.\\n\\n**The only way to proceed is to test the variables in isolation:**\\n\\n1.  **Test the Power Source:** If the device is a battery-powered sensor, replace the battery with a known-good, fresh battery. If the device works, the \\\"Power\\\" variable was the issue.\\n2.  **Test the Wi-Fi:** If the device is a network device, try moving it physically closer to the router/access point. If it works when moved closer, the \\\"Wi-Fi\\\" variable was the issue.\\n\\n**If you cannot make a guess, you must test the variables one at a time.**\\n\\n**To move forward, you must choose one variable to test first:**\\n\\n*   **Test 1 (Power):** Replace the power source (e.g., change the battery or the outlet).\\n*   **Test 2 (Connection):** Move the device closer to the router/access point.\\n\\n**The \\\"No Assumption\\\" Path:**\\nSince you have no observations, you must test the variables sequentially. **You cannot know the cause until you test both variables separately.**\\n\\n**If you must choose one to test first, test the Power Source.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-S-rephrased-r0-t05"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"power\", \"relation\": \"related\", \"to\": \"Wi-Fi\", \"source\": \"s0\", \"evidence\": \"power and Wi-Fi\"}, {\"from\": \"variables\", \"relation\": \"related\", \"to\": \"Power\", \"source\": \"s1\", \"evidence\": \"variables in isolation:**\\n\\n1.  **Test the Power Source:** If the device is a battery-powered sensor, replace the battery with a known-good, fresh battery. If the device works, the \\\"Power\"}, {\"from\": \"Power\", \"relation\": \"related\", \"to\": \"Power\", \"source\": \"s1\", \"evidence\": \"Power Source:** If the device is a battery-powered sensor, replace the battery with a known-good, fresh battery. If the device works, the \\\"Power\"}, {\"from\": \"Power\", \"relation\": \"causes\", \"to\": \"issue\", \"source\": \"s1\", \"evidence\": \"Power\\\" variable was the issue\"}, {\"from\": \"variables\", \"relation\": \"related\", \"to\": \"Wi-Fi\", \"source\": \"s1\", \"evidence\": \"Wi-Fi\\\" variable was the issue.\\n\\n**If you cannot make a guess, you must test the variables\"}, {\"from\": \"Test\", \"relation\": \"prevents\", \"to\": \"issue\", \"source\": \"s1\", \"evidence\": \"issue.\\n\\n**If you cannot make a guess, you must test the variables one at a time.**\\n\\n**To move forward, you must choose one variable to test first:**\\n\\n*   **Test\"}], \"episode_id\": \"main-network-S-rephrased-r0-t05\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 1,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 2,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 11,
+          "kind": "unsupported_specialist_relation",
+          "relation": "helps",
+          "status": "rejected"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "solves",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 14,
+          "kind": "specialist_observation",
+          "relation": "prevents",
+          "status": "forwarded"
+        },
+        {
+          "index": 15,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 16,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 17,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 18,
+          "kind": "unsupported_specialist_relation",
+          "relation": "used_for",
+          "status": "rejected"
+        },
+        {
+          "index": 19,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 20,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 21,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 22,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "07f2ff85da6db00b88167411a71aea0e50631d66442256aa0375860e397850b2",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 109,
+              "start": 94
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi",
+            "object_span": {
+              "end": 109,
+              "start": 104
+            },
+            "relation": "related",
+            "score": 0.7213261723518372,
+            "source_slot": "s0",
+            "subject": "power",
+            "subject_span": {
+              "end": 99,
+              "start": 94
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 650,
+              "start": 464
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Power",
+            "object_span": {
+              "end": 650,
+              "start": 645
+            },
+            "relation": "related",
+            "score": 0.7617704272270203,
+            "source_slot": "s1",
+            "subject": "variables",
+            "subject_span": {
+              "end": 473,
+              "start": 464
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 650,
+              "start": 506
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Power",
+            "object_span": {
+              "end": 650,
+              "start": 645
+            },
+            "relation": "related",
+            "score": 0.7832727432250977,
+            "source_slot": "s1",
+            "subject": "Power",
+            "subject_span": {
+              "end": 511,
+              "start": 506
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 632,
+              "start": 610
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "device",
+            "object_span": {
+              "end": 632,
+              "start": 626
+            },
+            "relation": "associated_with",
+            "score": 0.3662075102329254,
+            "source_slot": "s1",
+            "subject": "battery",
+            "subject_span": {
+              "end": 617,
+              "start": 610
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 650,
+              "start": 506
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Power",
+            "object_span": {
+              "end": 511,
+              "start": 506
+            },
+            "relation": "influences",
+            "score": 0.47543200850486755,
+            "source_slot": "s1",
+            "subject": "Power",
+            "subject_span": {
+              "end": 650,
+              "start": 645
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 650,
+              "start": 626
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "device",
+            "object_span": {
+              "end": 632,
+              "start": 626
+            },
+            "relation": "associated_with",
+            "score": 0.5449583530426025,
+            "source_slot": "s1",
+            "subject": "Power",
+            "subject_span": {
+              "end": 650,
+              "start": 645
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 674,
+              "start": 645
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "issue",
+            "object_span": {
+              "end": 674,
+              "start": 669
+            },
+            "relation": "causes",
+            "score": 0.6677533388137817,
+            "source_slot": "s1",
+            "subject": "Power",
+            "subject_span": {
+              "end": 650,
+              "start": 645
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 836,
+              "start": 645
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Power",
+            "object_span": {
+              "end": 650,
+              "start": 645
+            },
+            "relation": "influences",
+            "score": 0.3557443618774414,
+            "source_slot": "s1",
+            "subject": "Wi-Fi",
+            "subject_span": {
+              "end": 836,
+              "start": 831
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 836,
+              "start": 727
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "device",
+            "object_span": {
+              "end": 733,
+              "start": 727
+            },
+            "relation": "associated_with",
+            "score": 0.4856724143028259,
+            "source_slot": "s1",
+            "subject": "Wi-Fi",
+            "subject_span": {
+              "end": 836,
+              "start": 831
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 920,
+              "start": 831
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "variables",
+            "object_span": {
+              "end": 920,
+              "start": 911
+            },
+            "relation": "influences",
+            "score": 0.5591309070587158,
+            "source_slot": "s1",
+            "subject": "Wi-Fi",
+            "subject_span": {
+              "end": 836,
+              "start": 831
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 920,
+              "start": 831
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi",
+            "object_span": {
+              "end": 836,
+              "start": 831
+            },
+            "relation": "related",
+            "score": 0.8526267409324646,
+            "source_slot": "s1",
+            "subject": "variables",
+            "subject_span": {
+              "end": 920,
+              "start": 911
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1015,
+              "start": 207
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "problem",
+            "object_span": {
+              "end": 214,
+              "start": 207
+            },
+            "relation": "helps",
+            "score": 0.7160620093345642,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 1015,
+              "start": 1011
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1015,
+              "start": 207
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "problem",
+            "object_span": {
+              "end": 214,
+              "start": 207
+            },
+            "relation": "solves",
+            "score": 0.786195695400238,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 1015,
+              "start": 1011
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1015,
+              "start": 506
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Power",
+            "object_span": {
+              "end": 511,
+              "start": 506
+            },
+            "relation": "improves",
+            "score": 0.5481646656990051,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 1015,
+              "start": 1011
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1015,
+              "start": 855
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "issue",
+            "object_span": {
+              "end": 860,
+              "start": 855
+            },
+            "relation": "prevents",
+            "score": 0.6720438003540039,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 1015,
+              "start": 1011
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1015,
+              "start": 911
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "variables",
+            "object_span": {
+              "end": 920,
+              "start": 911
+            },
+            "relation": "improves",
+            "score": 0.7779867649078369,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 1015,
+              "start": 1011
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1024,
+              "start": 1011
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Power",
+            "object_span": {
+              "end": 1024,
+              "start": 1019
+            },
+            "relation": "reduces",
+            "score": 0.7555819153785706,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 1015,
+              "start": 1011
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1106,
+              "start": 1072
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "battery",
+            "object_span": {
+              "end": 1079,
+              "start": 1072
+            },
+            "relation": "reduces",
+            "score": 0.5999781489372253,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 1106,
+              "start": 1102
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1338,
+              "start": 1102
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "variables",
+            "object_span": {
+              "end": 1338,
+              "start": 1329
+            },
+            "relation": "used_for",
+            "score": 0.4185490906238556,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 1106,
+              "start": 1102
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1408,
+              "start": 1102
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Power",
+            "object_span": {
+              "end": 1408,
+              "start": 1403
+            },
+            "relation": "increases",
+            "score": 0.4813050627708435,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 1106,
+              "start": 1102
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1408,
+              "start": 1019
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Power",
+            "object_span": {
+              "end": 1024,
+              "start": 1019
+            },
+            "relation": "affects",
+            "score": 0.6366235017776489,
+            "source_slot": "s1",
+            "subject": "Power",
+            "subject_span": {
+              "end": 1408,
+              "start": 1403
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1408,
+              "start": 1329
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "variables",
+            "object_span": {
+              "end": 1338,
+              "start": 1329
+            },
+            "relation": "affects",
+            "score": 0.7009109258651733,
+            "source_slot": "s1",
+            "subject": "Power",
+            "subject_span": {
+              "end": 1408,
+              "start": 1403
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1408,
+              "start": 1329
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "variables",
+            "object_span": {
+              "end": 1338,
+              "start": 1329
+            },
+            "relation": "influences",
+            "score": 0.6240571737289429,
+            "source_slot": "s1",
+            "subject": "Power",
+            "subject_span": {
+              "end": 1408,
+              "start": 1403
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "59a5f3013e64044c5176418fa60c5b95049ea0aa34f3f5baa19f4d8b0e2df9b3",
+          "s1": "fc22af7e73c9dbc65df2b896f21e699c07f37fc36b73c2529b24ca8d2d461112"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.6366235017776489,
+                  "end": 1519,
+                  "start": 1514,
+                  "text": "Power"
+                },
+                "tail": {
+                  "confidence": 0.6366235017776489,
+                  "end": 1135,
+                  "start": 1130,
+                  "text": "Power"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7009109258651733,
+                  "end": 1519,
+                  "start": 1514,
+                  "text": "Power"
+                },
+                "tail": {
+                  "confidence": 0.7009109258651733,
+                  "end": 1449,
+                  "start": 1440,
+                  "text": "variables"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.3662075102329254,
+                  "end": 728,
+                  "start": 721,
+                  "text": "battery"
+                },
+                "tail": {
+                  "confidence": 0.3662075102329254,
+                  "end": 743,
+                  "start": 737,
+                  "text": "device"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5449583530426025,
+                  "end": 761,
+                  "start": 756,
+                  "text": "Power"
+                },
+                "tail": {
+                  "confidence": 0.5449583530426025,
+                  "end": 743,
+                  "start": 737,
+                  "text": "device"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4856724143028259,
+                  "end": 947,
+                  "start": 942,
+                  "text": "Wi-Fi"
+                },
+                "tail": {
+                  "confidence": 0.4856724143028259,
+                  "end": 844,
+                  "start": 838,
+                  "text": "device"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.6677533388137817,
+                  "end": 761,
+                  "start": 756,
+                  "text": "Power"
+                },
+                "tail": {
+                  "confidence": 0.6677533388137817,
+                  "end": 785,
+                  "start": 780,
+                  "text": "issue"
+                }
+              }
+            ],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [
+              {
+                "head": {
+                  "confidence": 0.7160620093345642,
+                  "end": 1126,
+                  "start": 1122,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.7160620093345642,
+                  "end": 325,
+                  "start": 318,
+                  "text": "problem"
+                }
+              }
+            ],
+            "holds": [],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.5481646656990051,
+                  "end": 1126,
+                  "start": 1122,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.5481646656990051,
+                  "end": 622,
+                  "start": 617,
+                  "text": "Power"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7779867649078369,
+                  "end": 1126,
+                  "start": 1122,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.7779867649078369,
+                  "end": 1031,
+                  "start": 1022,
+                  "text": "variables"
+                }
+              }
+            ],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.4813050627708435,
+                  "end": 1217,
+                  "start": 1213,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.4813050627708435,
+                  "end": 1519,
+                  "start": 1514,
+                  "text": "Power"
+                }
+              }
+            ],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.47543200850486755,
+                  "end": 761,
+                  "start": 756,
+                  "text": "Power"
+                },
+                "tail": {
+                  "confidence": 0.47543200850486755,
+                  "end": 622,
+                  "start": 617,
+                  "text": "Power"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.3614530563354492,
+                  "end": 947,
+                  "start": 942,
+                  "text": "Wi-Fi"
+                },
+                "tail": {
+                  "confidence": 0.3614530563354492,
+                  "end": 109,
+                  "start": 104,
+                  "text": "Wi-Fi"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.3557443618774414,
+                  "end": 947,
+                  "start": 942,
+                  "text": "Wi-Fi"
+                },
+                "tail": {
+                  "confidence": 0.3557443618774414,
+                  "end": 761,
+                  "start": 756,
+                  "text": "Power"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5591309070587158,
+                  "end": 947,
+                  "start": 942,
+                  "text": "Wi-Fi"
+                },
+                "tail": {
+                  "confidence": 0.5591309070587158,
+                  "end": 1031,
+                  "start": 1022,
+                  "text": "variables"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6240571737289429,
+                  "end": 1519,
+                  "start": 1514,
+                  "text": "Power"
+                },
+                "tail": {
+                  "confidence": 0.6240571737289429,
+                  "end": 1449,
+                  "start": 1440,
+                  "text": "variables"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.7277342081069946,
+                  "end": 109,
+                  "start": 104,
+                  "text": "Wi-Fi"
+                },
+                "tail": {
+                  "confidence": 0.7277342081069946,
+                  "end": 180,
+                  "start": 173,
+                  "text": "problem"
+                }
+              }
+            ],
+            "prevents": [
+              {
+                "head": {
+                  "confidence": 0.6720438003540039,
+                  "end": 1126,
+                  "start": 1122,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.6720438003540039,
+                  "end": 971,
+                  "start": 966,
+                  "text": "issue"
+                }
+              }
+            ],
+            "protects": [],
+            "provides": [],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.7555819153785706,
+                  "end": 1126,
+                  "start": 1122,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.7555819153785706,
+                  "end": 1135,
+                  "start": 1130,
+                  "text": "Power"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5999781489372253,
+                  "end": 1217,
+                  "start": 1213,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.5999781489372253,
+                  "end": 1190,
+                  "start": 1183,
+                  "text": "battery"
+                }
+              }
+            ],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.7213261723518372,
+                  "end": 99,
+                  "start": 94,
+                  "text": "power"
+                },
+                "tail": {
+                  "confidence": 0.7213261723518372,
+                  "end": 109,
+                  "start": 104,
+                  "text": "Wi-Fi"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7617704272270203,
+                  "end": 584,
+                  "start": 575,
+                  "text": "variables"
+                },
+                "tail": {
+                  "confidence": 0.7617704272270203,
+                  "end": 761,
+                  "start": 756,
+                  "text": "Power"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7832727432250977,
+                  "end": 622,
+                  "start": 617,
+                  "text": "Power"
+                },
+                "tail": {
+                  "confidence": 0.7832727432250977,
+                  "end": 761,
+                  "start": 756,
+                  "text": "Power"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8526267409324646,
+                  "end": 1031,
+                  "start": 1022,
+                  "text": "variables"
+                },
+                "tail": {
+                  "confidence": 0.8526267409324646,
+                  "end": 947,
+                  "start": 942,
+                  "text": "Wi-Fi"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [
+              {
+                "head": {
+                  "confidence": 0.786195695400238,
+                  "end": 1126,
+                  "start": 1122,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.786195695400238,
+                  "end": 325,
+                  "start": 318,
+                  "text": "problem"
+                }
+              }
+            ],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [
+              {
+                "head": {
+                  "confidence": 0.4185490906238556,
+                  "end": 1217,
+                  "start": 1213,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.4185490906238556,
+                  "end": 1449,
+                  "start": 1440,
+                  "text": "variables"
+                }
+              }
+            ],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.7277342081069946,
+              "end": 109,
+              "start": 104,
+              "text": "Wi-Fi"
+            },
+            "tail": {
+              "confidence": 0.7277342081069946,
+              "end": 180,
+              "start": 173,
+              "text": "problem"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.3614530563354492,
+              "end": 947,
+              "start": 942,
+              "text": "Wi-Fi"
+            },
+            "tail": {
+              "confidence": 0.3614530563354492,
+              "end": 109,
+              "start": 104,
+              "text": "Wi-Fi"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:04:30.055115+00:00",
+  "status": "RETURNED"
+}

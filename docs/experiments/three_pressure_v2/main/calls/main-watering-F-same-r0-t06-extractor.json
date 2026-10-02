@@ -1,0 +1,636 @@
+{
+  "completed_utc": "2026-10-02T19:08:20.275717+00:00",
+  "elapsed_seconds": 1.0291206289548427,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"Back to three cotton wicks, the pot loses 12 grams in 24 hours. The reservoir height is unchanged. What does the repeated setting establish?\", \"s1\": \"This is a very specific question that requires context, as \\\"the repeated setting\\\" could refer to a specific physical or chemical process.\\n\\nSince you are referring to a \\\"repeated setting\\\" (a repeated action or a recurring condition), I will interpret this as a **recurring pattern or a recurring state.**\\n\\nHere is how I interpret your question:\\n\\n**\\\"What does the repeated setting establish?\\\"**\\n\\nBased on the context of the previous messages, you are tracking a **water loss rate** (or a specific consumption rate).\\n\\n**If the plant is \\\"repeatedly\\\" losing 12 grams per 24 hours:**\\n\\n1.  **The \\\"Repeated Setting\\\" establishes a \\\"Stable Baseline\\\":** The fact that you are now tracking a *specific, consistent loss rate* (12g/day) establishes a **stable, predictable consumption rate** for that specific plant/system.\\n\\n**What this \\\"repeated setting\\\" establishes is a \\\"Stable Operational Baseline.\\\"**\\n\\n**The \\\"Choice\\\" or \\\"Bound\\\" is:**\\n\\n*   **If the plant is a Succulent:** 12g/day is a *low* consumption rate. This suggests the plant is either in a dormant state or is very healthy and not actively growing.\\n*   **The \\\"Bound\\\" is the \\\"Stability of the System\\\":** The repeated setting establishes a **consistent, unchanging state of consumption.**\\n\\n**In summary:** The repeated setting establishes a **predictable, stable consumption rate.**\\n\\n**If you are asking what the \\\"repeated setting\\\" establishes, it establishes a \\\"stable and predictable consumption rate.\\\"**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-watering-F-same-r0-t06"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"question\", \"relation\": \"depends_on\", \"to\": \"context\", \"source\": \"s1\", \"evidence\": \"question that requires context\"}, {\"from\": \"repeated setting\", \"relation\": \"causes\", \"to\": \"consumption rate\", \"source\": \"s1\", \"evidence\": \"consumption rate** for that specific plant/system.\\n\\n**What this \\\"repeated setting\"}, {\"from\": \"repeated setting\", \"relation\": \"prevents\", \"to\": \"consumption rate\", \"source\": \"s1\", \"evidence\": \"consumption rate** for that specific plant/system.\\n\\n**What this \\\"repeated setting\"}, {\"from\": \"Bound\", \"relation\": \"constrains\", \"to\": \"Stability of the System\", \"source\": \"s1\", \"evidence\": \"Bound\\\" is the \\\"Stability of the System\"}], \"episode_id\": \"main-watering-F-same-r0-t06\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "wicks",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 7,
+          "kind": "specialist_observation",
+          "relation": "prevents",
+          "status": "forwarded"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "protects",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "stabilizes",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "specialist_observation",
+          "relation": "constrains",
+          "status": "forwarded"
+        }
+      ],
+      "specialist": {
+        "content_digest": "9f180957be341e733b3e365c0287fd85d3dda55261d20cdd1267c8412f752566",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 50,
+              "start": 14
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "12 grams",
+            "object_span": {
+              "end": 50,
+              "start": 42
+            },
+            "relation": "wicks",
+            "score": 0.6958329677581787,
+            "source_slot": "s0",
+            "subject": "cotton",
+            "subject_span": {
+              "end": 20,
+              "start": 14
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 54,
+              "start": 24
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "context",
+            "object_span": {
+              "end": 54,
+              "start": 47
+            },
+            "relation": "depends_on",
+            "score": 0.8591834306716919,
+            "source_slot": "s1",
+            "subject": "question",
+            "subject_span": {
+              "end": 32,
+              "start": 24
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 54,
+              "start": 24
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "context",
+            "object_span": {
+              "end": 54,
+              "start": 47
+            },
+            "relation": "requires",
+            "score": 0.9893649816513062,
+            "source_slot": "s1",
+            "subject": "question",
+            "subject_span": {
+              "end": 32,
+              "start": 24
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 775,
+              "start": 334
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "consumption rate",
+            "object_span": {
+              "end": 775,
+              "start": 759
+            },
+            "relation": "improves",
+            "score": 0.7016543745994568,
+            "source_slot": "s1",
+            "subject": "question",
+            "subject_span": {
+              "end": 342,
+              "start": 334
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 511,
+              "start": 362
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "consumption rate",
+            "object_span": {
+              "end": 511,
+              "start": 495
+            },
+            "relation": "influences",
+            "score": 0.6214728355407715,
+            "source_slot": "s1",
+            "subject": "repeated setting",
+            "subject_span": {
+              "end": 378,
+              "start": 362
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 840,
+              "start": 759
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "consumption rate",
+            "object_span": {
+              "end": 775,
+              "start": 759
+            },
+            "relation": "affects",
+            "score": 0.5984638929367065,
+            "source_slot": "s1",
+            "subject": "repeated setting",
+            "subject_span": {
+              "end": 840,
+              "start": 824
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 840,
+              "start": 759
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "consumption rate",
+            "object_span": {
+              "end": 775,
+              "start": 759
+            },
+            "relation": "causes",
+            "score": 0.7042281031608582,
+            "source_slot": "s1",
+            "subject": "repeated setting",
+            "subject_span": {
+              "end": 840,
+              "start": 824
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 840,
+              "start": 759
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "consumption rate",
+            "object_span": {
+              "end": 775,
+              "start": 759
+            },
+            "relation": "prevents",
+            "score": 0.6992307305335999,
+            "source_slot": "s1",
+            "subject": "repeated setting",
+            "subject_span": {
+              "end": 840,
+              "start": 824
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 840,
+              "start": 796
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "plant",
+            "object_span": {
+              "end": 801,
+              "start": 796
+            },
+            "relation": "protects",
+            "score": 0.6049990057945251,
+            "source_slot": "s1",
+            "subject": "repeated setting",
+            "subject_span": {
+              "end": 840,
+              "start": 824
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 887,
+              "start": 824
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Stable Operational Baseline",
+            "object_span": {
+              "end": 887,
+              "start": 860
+            },
+            "relation": "stabilizes",
+            "score": 0.5446944236755371,
+            "source_slot": "s1",
+            "subject": "repeated setting",
+            "subject_span": {
+              "end": 840,
+              "start": 824
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1147,
+              "start": 1109
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Stability of the System",
+            "object_span": {
+              "end": 1147,
+              "start": 1124
+            },
+            "relation": "constrains",
+            "score": 0.4083178639411926,
+            "source_slot": "s1",
+            "subject": "Bound",
+            "subject_span": {
+              "end": 1114,
+              "start": 1109
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "aa67fc2263db697c30700dacf9d07295fd88a5e6b384e873fe6f05144067b3ce",
+          "s1": "118d6314216d9f0101a77cbd8519454cffd50534685c4b11aa4743309dc30bdd"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.5984638929367065,
+                  "end": 981,
+                  "start": 965,
+                  "text": "repeated setting"
+                },
+                "tail": {
+                  "confidence": 0.5984638929367065,
+                  "end": 916,
+                  "start": 900,
+                  "text": "consumption rate"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.7042281031608582,
+                  "end": 981,
+                  "start": 965,
+                  "text": "repeated setting"
+                },
+                "tail": {
+                  "confidence": 0.7042281031608582,
+                  "end": 916,
+                  "start": 900,
+                  "text": "consumption rate"
+                }
+              }
+            ],
+            "changes": [],
+            "constrains": [
+              {
+                "head": {
+                  "confidence": 0.4083178639411926,
+                  "end": 1255,
+                  "start": 1250,
+                  "text": "Bound"
+                },
+                "tail": {
+                  "confidence": 0.4083178639411926,
+                  "end": 1288,
+                  "start": 1265,
+                  "text": "Stability of the System"
+                }
+              }
+            ],
+            "contains": [],
+            "controls": [],
+            "depends_on": [
+              {
+                "head": {
+                  "confidence": 0.8591834306716919,
+                  "end": 173,
+                  "start": 165,
+                  "text": "question"
+                },
+                "tail": {
+                  "confidence": 0.8591834306716919,
+                  "end": 195,
+                  "start": 188,
+                  "text": "context"
+                }
+              }
+            ],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.551530122756958,
+                  "end": 129,
+                  "start": 113,
+                  "text": "repeated setting"
+                },
+                "tail": {
+                  "confidence": 0.551530122756958,
+                  "end": 916,
+                  "start": 900,
+                  "text": "consumption rate"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7016543745994568,
+                  "end": 483,
+                  "start": 475,
+                  "text": "question"
+                },
+                "tail": {
+                  "confidence": 0.7016543745994568,
+                  "end": 916,
+                  "start": 900,
+                  "text": "consumption rate"
+                }
+              }
+            ],
+            "increases": [],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.6214728355407715,
+                  "end": 519,
+                  "start": 503,
+                  "text": "repeated setting"
+                },
+                "tail": {
+                  "confidence": 0.6214728355407715,
+                  "end": 652,
+                  "start": 636,
+                  "text": "consumption rate"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [
+              {
+                "head": {
+                  "confidence": 0.6992307305335999,
+                  "end": 981,
+                  "start": 965,
+                  "text": "repeated setting"
+                },
+                "tail": {
+                  "confidence": 0.6992307305335999,
+                  "end": 916,
+                  "start": 900,
+                  "text": "consumption rate"
+                }
+              }
+            ],
+            "protects": [
+              {
+                "head": {
+                  "confidence": 0.6049990057945251,
+                  "end": 981,
+                  "start": 965,
+                  "text": "repeated setting"
+                },
+                "tail": {
+                  "confidence": 0.6049990057945251,
+                  "end": 942,
+                  "start": 937,
+                  "text": "plant"
+                }
+              }
+            ],
+            "provides": [],
+            "reduces": [],
+            "related": [],
+            "requires": [
+              {
+                "head": {
+                  "confidence": 0.9893649816513062,
+                  "end": 173,
+                  "start": 165,
+                  "text": "question"
+                },
+                "tail": {
+                  "confidence": 0.9893649816513062,
+                  "end": 195,
+                  "start": 188,
+                  "text": "context"
+                }
+              }
+            ],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [
+              {
+                "head": {
+                  "confidence": 0.5446944236755371,
+                  "end": 981,
+                  "start": 965,
+                  "text": "repeated setting"
+                },
+                "tail": {
+                  "confidence": 0.5446944236755371,
+                  "end": 1028,
+                  "start": 1001,
+                  "text": "Stable Operational Baseline"
+                }
+              }
+            ],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [
+              {
+                "head": {
+                  "confidence": 0.6958329677581787,
+                  "end": 20,
+                  "start": 14,
+                  "text": "cotton"
+                },
+                "tail": {
+                  "confidence": 0.6958329677581787,
+                  "end": 50,
+                  "start": 42,
+                  "text": "12 grams"
+                }
+              }
+            ],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.551530122756958,
+              "end": 129,
+              "start": 113,
+              "text": "repeated setting"
+            },
+            "tail": {
+              "confidence": 0.551530122756958,
+              "end": 916,
+              "start": 900,
+              "text": "consumption rate"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:08:19.243170+00:00",
+  "status": "RETURNED"
+}

@@ -1,0 +1,255 @@
+{
+  "completed_utc": "2026-10-02T19:02:33.834787+00:00",
+  "elapsed_seconds": 1.5142540619708598,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"With the original power cable again, the sensor resets 5 times in 60 minutes. The Wi-Fi position is unchanged. How does this reversal change confidence?\", \"s1\": \"It seems like you are describing a **\\\"reset\\\" or \\\"reboot\\\" event happening every 60 minutes**, which is a very specific pattern.\\n\\nIf the sensor is resetting every 60 minutes, this is a **Power/Hardware** problem, not necessarily a Wi-Fi problem.\\n\\nHere is the breakdown of how this \\\"reset\\\" affects the \\\"Power vs. Wi-Fi\\\" relationship:\\n\\n### 1. Power vs. Wi-Fi Relationship\\n\\n*   **Power (Power Cable):** The \\\"Power\\\" side is the *hardware* stability. If the sensor is resetting every 60 minutes, it suggests the **power source** is unstable or the internal components are failing.\\n*   **Wi-Fi (Wi-Fi Position):** The \\\"Wi-Fi\\\" side is the *connection* stability.\\n\\n### How the \\\"Reset\\\" (The 60-minute cycle) relates to the Wi-Fi:\\n\\n**The \\\"reset\\\" (the 60-minute cycle) is likely related to the power source, not the Wi-Fi connection.**\\n\\n*   **The Power Issue:** If the sensor is resetting every 60 minutes, the **power supply** is likely failing or being interrupted.\\n*   **The Wi-Fi Issue:** If the Wi-Fi position is \\\"unchanged,\\\" it means the *location* of the sensor is fine, but the *connection* is failing.\\n\\n### The \\\"Reset\\\" (The 60-Minute Cycle):\\n\\nIf the sensor is \\\"resetting\\\" every 60 minutes, the \\\"Wi-Fi position\\\" is likely *not* the primary problem; the **power source** is the problem.\\n\\n**If you are asking how this \\\"reset\\\" affects the Wi-Fi connection:**\\n\\n**The 60-minute reset is likely a symptom of a \\\"power cycle\\\" or \\\"hardware failure,\\\" not a Wi-Fi failure.**\\n\\n**The \\\"Power\\\" (Power Cable) vs. \\\"Wi-Fi\\\" (Wi-Fi) Relationship:**\\n\\n*   **Power (Power Cable):** The sensor is likely failing to maintain a stable power state every hour.\\n*   **Wi-Fi (Wi-Fi):** The Wi-Fi connection is likely stable (unchanged), but the *power* is the problem.\\n\\n**In summary:**\\nThe fact that the sensor resets every 60 minutes strongly suggests a **power/hardware failure**, not a Wi-Fi failure.\\n\\n**If you can clarify what \\\"reset\\\" means in your context, I can give a more precise answer.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-F-same-r0-t04"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"sensor\", \"relation\": \"depends_on\", \"to\": \"power source\", \"source\": \"s1\", \"evidence\": \"sensor is \\\"resetting\\\" every 60 minutes, the \\\"Wi-Fi position\\\" is likely *not* the primary problem; the **power source\"}, {\"from\": \"reset\", \"relation\": \"depends_on\", \"to\": \"power source\", \"source\": \"s1\", \"evidence\": \"power source** is the problem.\\n\\n**If you are asking how this \\\"reset\"}, {\"from\": \"reset\", \"relation\": \"related\", \"to\": \"power source\", \"source\": \"s1\", \"evidence\": \"power source** is the problem.\\n\\n**If you are asking how this \\\"reset\"}], \"episode_id\": \"main-network-F-same-r0-t04\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 1,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 2,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        }
+      ],
+      "specialist": {
+        "content_digest": "00f4eefc9c7f4614f5c821268ae8c966cd725c2af3b5a70d65e0b819b784f5f9",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1262,
+              "start": 1146
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "power source",
+            "object_span": {
+              "end": 1262,
+              "start": 1250
+            },
+            "relation": "depends_on",
+            "score": 0.6427989602088928,
+            "source_slot": "s1",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 1152,
+              "start": 1146
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1317,
+              "start": 1250
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "power source",
+            "object_span": {
+              "end": 1262,
+              "start": 1250
+            },
+            "relation": "depends_on",
+            "score": 0.6525923013687134,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 1317,
+              "start": 1312
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1317,
+              "start": 1250
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "power source",
+            "object_span": {
+              "end": 1262,
+              "start": 1250
+            },
+            "relation": "related",
+            "score": 0.9236370325088501,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 1317,
+              "start": 1312
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "18ec2c9c213db5426eaceddfe6d8097c71f9894926bb8e8389a4de37a6748081",
+          "s1": "163963ce9a11b68fc924435a65d8de9a7b5e51c29ca68dc2bd8cf3a6c9d55efb"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [
+              {
+                "head": {
+                  "confidence": 0.6427989602088928,
+                  "end": 1305,
+                  "start": 1299,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.6427989602088928,
+                  "end": 1415,
+                  "start": 1403,
+                  "text": "power source"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6525923013687134,
+                  "end": 1470,
+                  "start": 1465,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.6525923013687134,
+                  "end": 1415,
+                  "start": 1403,
+                  "text": "power source"
+                }
+              }
+            ],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.9236370325088501,
+                  "end": 1470,
+                  "start": 1465,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.9236370325088501,
+                  "end": 1415,
+                  "start": 1403,
+                  "text": "power source"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:02:32.318686+00:00",
+  "status": "RETURNED"
+}

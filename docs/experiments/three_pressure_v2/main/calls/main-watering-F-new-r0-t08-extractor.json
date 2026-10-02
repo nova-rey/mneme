@@ -1,0 +1,1050 @@
+{
+  "completed_utc": "2026-10-02T19:06:38.304170+00:00",
+  "elapsed_seconds": 0.7289412480313331,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"The two pots together use 400 milliliters per day, and the reservoir holds 1500 milliliters. How to budget for a three-day absence?\", \"s1\": \"It sounds like you are trying to calculate how much liquid is needed for a specific period (3 days).\\n\\nHere is the calculation:\\n\\n1.  **Daily consumption:** 400 milliliters per day.\\n2.  **Total days:** 3 days.\\n3.  **Calculation:** $400 \\\\text{ ml/day} \\\\times 3 \\\\text{ days} = 1200 \\\\text{ ml}$.\\n\\n**Answer:** You will need **1200 milliliters** of liquid for a three-day absence.\\n\\n*(Note: The information about the \\\"reservoir holding 1500 ml\\\" is likely the total capacity, which is more than enough to cover the 3-day period, so you have a surplus of 300 ml.)*\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-watering-F-new-r0-t08"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"reservoir\", \"relation\": \"retains\", \"to\": \"surplus\", \"source\": \"s1\", \"evidence\": \"reservoir holding 1500 ml\\\" is likely the total capacity, which is more than enough to cover the 3-day period, so you have a surplus\"}], \"episode_id\": \"main-watering-F-new-r0-t08\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "contains",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "holds",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "manages",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "manages",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 11,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "contains",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "unsupported_specialist_relation",
+          "relation": "holds",
+          "status": "rejected"
+        },
+        {
+          "index": 14,
+          "kind": "specialist_observation",
+          "relation": "retains",
+          "status": "forwarded"
+        }
+      ],
+      "specialist": {
+        "content_digest": "70561a27bce07b2069175eb7838ca76b66f0f280714293e57c400df3aa9c9ac2",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 49,
+              "start": 4
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "400 milliliters per day",
+            "object_span": {
+              "end": 49,
+              "start": 26
+            },
+            "relation": "uses",
+            "score": 0.7484741806983948,
+            "source_slot": "s0",
+            "subject": "two pots",
+            "subject_span": {
+              "end": 12,
+              "start": 4
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 91,
+              "start": 59
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "1500 milliliters",
+            "object_span": {
+              "end": 91,
+              "start": 75
+            },
+            "relation": "contains",
+            "score": 0.9099134802818298,
+            "source_slot": "s0",
+            "subject": "reservoir",
+            "subject_span": {
+              "end": 68,
+              "start": 59
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 91,
+              "start": 59
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "1500 milliliters",
+            "object_span": {
+              "end": 91,
+              "start": 75
+            },
+            "relation": "holds",
+            "score": 0.9110913276672363,
+            "source_slot": "s0",
+            "subject": "reservoir",
+            "subject_span": {
+              "end": 68,
+              "start": 59
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 58,
+              "start": 33
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "liquid",
+            "object_span": {
+              "end": 58,
+              "start": 52
+            },
+            "relation": "increases",
+            "score": 0.7433255910873413,
+            "source_slot": "s1",
+            "subject": "calculate",
+            "subject_span": {
+              "end": 42,
+              "start": 33
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 58,
+              "start": 33
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "liquid",
+            "object_span": {
+              "end": 58,
+              "start": 52
+            },
+            "relation": "manages",
+            "score": 0.6622450947761536,
+            "source_slot": "s1",
+            "subject": "calculate",
+            "subject_span": {
+              "end": 42,
+              "start": 33
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 58,
+              "start": 33
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "liquid",
+            "object_span": {
+              "end": 58,
+              "start": 52
+            },
+            "relation": "requires",
+            "score": 0.8456225395202637,
+            "source_slot": "s1",
+            "subject": "calculate",
+            "subject_span": {
+              "end": 42,
+              "start": 33
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 125,
+              "start": 52
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "liquid",
+            "object_span": {
+              "end": 58,
+              "start": 52
+            },
+            "relation": "increases",
+            "score": 0.8364447951316833,
+            "source_slot": "s1",
+            "subject": "calculation",
+            "subject_span": {
+              "end": 125,
+              "start": 114
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 125,
+              "start": 52
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "liquid",
+            "object_span": {
+              "end": 58,
+              "start": 52
+            },
+            "relation": "manages",
+            "score": 0.769142210483551,
+            "source_slot": "s1",
+            "subject": "calculation",
+            "subject_span": {
+              "end": 125,
+              "start": 114
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 125,
+              "start": 52
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "liquid",
+            "object_span": {
+              "end": 58,
+              "start": 52
+            },
+            "relation": "provides",
+            "score": 0.8715606331825256,
+            "source_slot": "s1",
+            "subject": "calculation",
+            "subject_span": {
+              "end": 125,
+              "start": 114
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 125,
+              "start": 52
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "liquid",
+            "object_span": {
+              "end": 58,
+              "start": 52
+            },
+            "relation": "requires",
+            "score": 0.9119634032249451,
+            "source_slot": "s1",
+            "subject": "calculation",
+            "subject_span": {
+              "end": 125,
+              "start": 114
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 151,
+              "start": 52
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "liquid",
+            "object_span": {
+              "end": 58,
+              "start": 52
+            },
+            "relation": "requires",
+            "score": 0.6974966526031494,
+            "source_slot": "s1",
+            "subject": "Daily consumption",
+            "subject_span": {
+              "end": 151,
+              "start": 134
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 419,
+              "start": 342
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "liquid",
+            "object_span": {
+              "end": 348,
+              "start": 342
+            },
+            "relation": "provides",
+            "score": 0.8126106262207031,
+            "source_slot": "s1",
+            "subject": "reservoir",
+            "subject_span": {
+              "end": 419,
+              "start": 410
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 435,
+              "start": 410
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "1500 ml",
+            "object_span": {
+              "end": 435,
+              "start": 428
+            },
+            "relation": "contains",
+            "score": 0.8210633397102356,
+            "source_slot": "s1",
+            "subject": "reservoir",
+            "subject_span": {
+              "end": 419,
+              "start": 410
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 435,
+              "start": 410
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "1500 ml",
+            "object_span": {
+              "end": 435,
+              "start": 428
+            },
+            "relation": "holds",
+            "score": 0.8140491247177124,
+            "source_slot": "s1",
+            "subject": "reservoir",
+            "subject_span": {
+              "end": 419,
+              "start": 410
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 541,
+              "start": 410
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "surplus",
+            "object_span": {
+              "end": 541,
+              "start": 534
+            },
+            "relation": "retains",
+            "score": 0.8798067569732666,
+            "source_slot": "s1",
+            "subject": "reservoir",
+            "subject_span": {
+              "end": 419,
+              "start": 410
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "6610822853e0ef6c6de0c4bf394fd613f5d42402c9c91791119121de7a13a392",
+          "s1": "16a417b787a7056947effa7773e6a271eecc0e7a4a22bc31fa76dc164668c87a"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [],
+            "changes": [],
+            "constrains": [],
+            "contains": [
+              {
+                "head": {
+                  "confidence": 0.9099134802818298,
+                  "end": 68,
+                  "start": 59,
+                  "text": "reservoir"
+                },
+                "tail": {
+                  "confidence": 0.9099134802818298,
+                  "end": 91,
+                  "start": 75,
+                  "text": "1500 milliliters"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8210633397102356,
+                  "end": 551,
+                  "start": 542,
+                  "text": "reservoir"
+                },
+                "tail": {
+                  "confidence": 0.8210633397102356,
+                  "end": 567,
+                  "start": 560,
+                  "text": "1500 ml"
+                }
+              }
+            ],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [
+              {
+                "head": {
+                  "confidence": 0.5105017423629761,
+                  "end": 174,
+                  "start": 165,
+                  "text": "calculate"
+                },
+                "tail": {
+                  "confidence": 0.5105017423629761,
+                  "end": 130,
+                  "start": 113,
+                  "text": "three-day absence"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6469155550003052,
+                  "end": 257,
+                  "start": 246,
+                  "text": "calculation"
+                },
+                "tail": {
+                  "confidence": 0.6469155550003052,
+                  "end": 130,
+                  "start": 113,
+                  "text": "three-day absence"
+                }
+              }
+            ],
+            "holds": [
+              {
+                "head": {
+                  "confidence": 0.9110913276672363,
+                  "end": 68,
+                  "start": 59,
+                  "text": "reservoir"
+                },
+                "tail": {
+                  "confidence": 0.9110913276672363,
+                  "end": 91,
+                  "start": 75,
+                  "text": "1500 milliliters"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8140491247177124,
+                  "end": 551,
+                  "start": 542,
+                  "text": "reservoir"
+                },
+                "tail": {
+                  "confidence": 0.8140491247177124,
+                  "end": 567,
+                  "start": 560,
+                  "text": "1500 ml"
+                }
+              }
+            ],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.6768431067466736,
+                  "end": 174,
+                  "start": 165,
+                  "text": "calculate"
+                },
+                "tail": {
+                  "confidence": 0.6768431067466736,
+                  "end": 130,
+                  "start": 113,
+                  "text": "three-day absence"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7777074575424194,
+                  "end": 257,
+                  "start": 246,
+                  "text": "calculation"
+                },
+                "tail": {
+                  "confidence": 0.7777074575424194,
+                  "end": 130,
+                  "start": 113,
+                  "text": "three-day absence"
+                }
+              }
+            ],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.7433255910873413,
+                  "end": 174,
+                  "start": 165,
+                  "text": "calculate"
+                },
+                "tail": {
+                  "confidence": 0.7433255910873413,
+                  "end": 190,
+                  "start": 184,
+                  "text": "liquid"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8364447951316833,
+                  "end": 257,
+                  "start": 246,
+                  "text": "calculation"
+                },
+                "tail": {
+                  "confidence": 0.8364447951316833,
+                  "end": 190,
+                  "start": 184,
+                  "text": "liquid"
+                }
+              }
+            ],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [
+              {
+                "head": {
+                  "confidence": 0.7593143582344055,
+                  "end": 174,
+                  "start": 165,
+                  "text": "calculate"
+                },
+                "tail": {
+                  "confidence": 0.7593143582344055,
+                  "end": 130,
+                  "start": 113,
+                  "text": "three-day absence"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8675273656845093,
+                  "end": 257,
+                  "start": 246,
+                  "text": "calculation"
+                },
+                "tail": {
+                  "confidence": 0.8675273656845093,
+                  "end": 130,
+                  "start": 113,
+                  "text": "three-day absence"
+                }
+              }
+            ],
+            "maintains": [],
+            "manages": [
+              {
+                "head": {
+                  "confidence": 0.6622450947761536,
+                  "end": 174,
+                  "start": 165,
+                  "text": "calculate"
+                },
+                "tail": {
+                  "confidence": 0.6622450947761536,
+                  "end": 190,
+                  "start": 184,
+                  "text": "liquid"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.769142210483551,
+                  "end": 257,
+                  "start": 246,
+                  "text": "calculation"
+                },
+                "tail": {
+                  "confidence": 0.769142210483551,
+                  "end": 190,
+                  "start": 184,
+                  "text": "liquid"
+                }
+              }
+            ],
+            "part_of": [],
+            "prevents": [
+              {
+                "head": {
+                  "confidence": 0.7817981839179993,
+                  "end": 174,
+                  "start": 165,
+                  "text": "calculate"
+                },
+                "tail": {
+                  "confidence": 0.7817981839179993,
+                  "end": 130,
+                  "start": 113,
+                  "text": "three-day absence"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8737034201622009,
+                  "end": 257,
+                  "start": 246,
+                  "text": "calculation"
+                },
+                "tail": {
+                  "confidence": 0.8737034201622009,
+                  "end": 130,
+                  "start": 113,
+                  "text": "three-day absence"
+                }
+              }
+            ],
+            "protects": [],
+            "provides": [
+              {
+                "head": {
+                  "confidence": 0.8715606331825256,
+                  "end": 257,
+                  "start": 246,
+                  "text": "calculation"
+                },
+                "tail": {
+                  "confidence": 0.8715606331825256,
+                  "end": 190,
+                  "start": 184,
+                  "text": "liquid"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8126106262207031,
+                  "end": 551,
+                  "start": 542,
+                  "text": "reservoir"
+                },
+                "tail": {
+                  "confidence": 0.8126106262207031,
+                  "end": 480,
+                  "start": 474,
+                  "text": "liquid"
+                }
+              }
+            ],
+            "reduces": [],
+            "related": [],
+            "requires": [
+              {
+                "head": {
+                  "confidence": 0.8456225395202637,
+                  "end": 174,
+                  "start": 165,
+                  "text": "calculate"
+                },
+                "tail": {
+                  "confidence": 0.8456225395202637,
+                  "end": 190,
+                  "start": 184,
+                  "text": "liquid"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.9119634032249451,
+                  "end": 257,
+                  "start": 246,
+                  "text": "calculation"
+                },
+                "tail": {
+                  "confidence": 0.9119634032249451,
+                  "end": 190,
+                  "start": 184,
+                  "text": "liquid"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6974966526031494,
+                  "end": 283,
+                  "start": 266,
+                  "text": "Daily consumption"
+                },
+                "tail": {
+                  "confidence": 0.6974966526031494,
+                  "end": 190,
+                  "start": 184,
+                  "text": "liquid"
+                }
+              }
+            ],
+            "retains": [
+              {
+                "head": {
+                  "confidence": 0.8798067569732666,
+                  "end": 551,
+                  "start": 542,
+                  "text": "reservoir"
+                },
+                "tail": {
+                  "confidence": 0.8798067569732666,
+                  "end": 673,
+                  "start": 666,
+                  "text": "surplus"
+                }
+              }
+            ],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.7484741806983948,
+                  "end": 12,
+                  "start": 4,
+                  "text": "two pots"
+                },
+                "tail": {
+                  "confidence": 0.7484741806983948,
+                  "end": 49,
+                  "start": 26,
+                  "text": "400 milliliters per day"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.7817981839179993,
+              "end": 174,
+              "start": 165,
+              "text": "calculate"
+            },
+            "tail": {
+              "confidence": 0.7817981839179993,
+              "end": 130,
+              "start": 113,
+              "text": "three-day absence"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.8737034201622009,
+              "end": 257,
+              "start": 246,
+              "text": "calculation"
+            },
+            "tail": {
+              "confidence": 0.8737034201622009,
+              "end": 130,
+              "start": 113,
+              "text": "three-day absence"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.6768431067466736,
+              "end": 174,
+              "start": 165,
+              "text": "calculate"
+            },
+            "tail": {
+              "confidence": 0.6768431067466736,
+              "end": 130,
+              "start": 113,
+              "text": "three-day absence"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.7777074575424194,
+              "end": 257,
+              "start": 246,
+              "text": "calculation"
+            },
+            "tail": {
+              "confidence": 0.7777074575424194,
+              "end": 130,
+              "start": 113,
+              "text": "three-day absence"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.5105017423629761,
+              "end": 174,
+              "start": 165,
+              "text": "calculate"
+            },
+            "tail": {
+              "confidence": 0.5105017423629761,
+              "end": 130,
+              "start": 113,
+              "text": "three-day absence"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.6469155550003052,
+              "end": 257,
+              "start": 246,
+              "text": "calculation"
+            },
+            "tail": {
+              "confidence": 0.6469155550003052,
+              "end": 130,
+              "start": 113,
+              "text": "three-day absence"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.7593143582344055,
+              "end": 174,
+              "start": 165,
+              "text": "calculate"
+            },
+            "tail": {
+              "confidence": 0.7593143582344055,
+              "end": 130,
+              "start": 113,
+              "text": "three-day absence"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.8675273656845093,
+              "end": 257,
+              "start": 246,
+              "text": "calculation"
+            },
+            "tail": {
+              "confidence": 0.8675273656845093,
+              "end": 130,
+              "start": 113,
+              "text": "three-day absence"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:06:37.572194+00:00",
+  "status": "RETURNED"
+}

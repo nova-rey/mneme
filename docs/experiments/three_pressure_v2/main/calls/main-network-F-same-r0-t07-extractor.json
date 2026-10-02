@@ -1,0 +1,966 @@
+{
+  "completed_utc": "2026-10-02T19:03:05.886163+00:00",
+  "elapsed_seconds": 1.0123174670152366,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"With the same shorter power cable and a closer Wi-Fi position, the sensor resets 0 times and the dashboard misses 0 updates in 120 minutes. Ask how this comparison narrows the remaining cause.\", \"s1\": \"It appears you are describing a scenario where a **\\\"reset\\\" or \\\"reboot\\\" event** is happening every 120 minutes, and you are asking how this constant \\\"reset\\\" (the 120-minute cycle) affects the stability of the Wi-Fi connection.\\n\\nSince you are asking how this \\\"reset\\\" (the 120-minute cycle) affects the Wi-Fi connection, I need to clarify what you mean by \\\"the two counts\\\" and what \\\"remaining cause\\\" you are referring to.\\n\\n**To give you a precise answer, I need clarification on:**\\n1.  **What are the \\\"two counts\\\" you are referring to?** (e.g., two different data points, two different sensors, or two different connection states?)\\n2.  **What is the \\\"remaining cause\\\" you want to identify?** (e.g., Is the Wi-Fi signal weak? Is the device overheating?)\\n\\n**If you are asking how the \\\"reset\\\" affects the Wi-Fi connection:**\\n\\n*   **The \\\"reset\\\" (the 120-minute cycle) is the problem.**\\n*   **The Wi-Fi position is stable:** This means the *location* of the Wi-Fi signal is fine, but the *device* is failing to maintain a stable connection.\\n\\n**In summary:** The \\\"reset\\\" (the 120-minute cycle) is the symptom of a hardware/power issue, not a Wi-Fi issue.\\n\\n**If you can clarify what the \\\"two counts\\\" are, I can provide a specific diagnostic answer.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-F-same-r0-t07"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"answer\", \"relation\": \"enables\", \"to\": \"diagnostic answer\", \"source\": \"s1\", \"evidence\": \"answer, I need clarification on:**\\n1.  **What are the \\\"two counts\\\" you are referring to?** (e.g., two different data points, two different sensors, or two different connection states?)\\n2.  **What is the \\\"remaining cause\\\" you want to identify?** (e.g., Is the Wi-Fi signal weak? Is the device overheating?)\\n\\n**If you are asking how the \\\"reset\\\" affects the Wi-Fi connection:**\\n\\n*   **The \\\"reset\\\" (the 120-minute cycle) is the problem.**\\n*   **The Wi-Fi position is stable:** This means the *location* of the Wi-Fi signal is fine, but the *device* is failing to maintain a stable connection.\\n\\n**In summary:** The \\\"reset\\\" (the 120-minute cycle) is the symptom of a hardware/power issue, not a Wi-Fi issue.\\n\\n**If you can clarify what the \\\"two counts\\\" are, I can provide a specific diagnostic answer\"}, {\"from\": \"reset\", \"relation\": \"part_of\", \"to\": \"Wi-Fi connection\", \"source\": \"s1\", \"evidence\": \"reset\\\" affects the Wi-Fi connection\"}, {\"from\": \"reset\", \"relation\": \"related\", \"to\": \"Wi-Fi connection\", \"source\": \"s1\", \"evidence\": \"reset\\\" affects the Wi-Fi connection\"}, {\"from\": \"reset\", \"relation\": \"caused_by\", \"to\": \"hardware/power issue\", \"source\": \"s1\", \"evidence\": \"reset\\\" (the 120-minute cycle) is the symptom of a hardware/power issue\"}, {\"from\": \"reset\", \"relation\": \"causes\", \"to\": \"hardware/power issue\", \"source\": \"s1\", \"evidence\": \"reset\\\" (the 120-minute cycle) is the symptom of a hardware/power issue\"}], \"episode_id\": \"main-network-F-same-r0-t07\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "manages",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "allows",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "specialist_observation",
+          "relation": "enables",
+          "status": "forwarded"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "manages",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 11,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "protects",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "unsupported_specialist_relation",
+          "relation": "stabilizes",
+          "status": "rejected"
+        },
+        {
+          "index": 14,
+          "kind": "unsupported_specialist_relation",
+          "relation": "maintains",
+          "status": "rejected"
+        },
+        {
+          "index": 15,
+          "kind": "specialist_observation",
+          "relation": "caused_by",
+          "status": "forwarded"
+        },
+        {
+          "index": 16,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        }
+      ],
+      "specialist": {
+        "content_digest": "869131c0cbf4726969855f802bf1e6185fbdab8f83cc02082250ba0774490fdf",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 73,
+              "start": 14
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "shorter power cable",
+            "object_span": {
+              "end": 33,
+              "start": 14
+            },
+            "relation": "requires",
+            "score": 0.7872165441513062,
+            "source_slot": "s0",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 73,
+              "start": 67
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 73,
+              "start": 14
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "shorter power cable",
+            "object_span": {
+              "end": 33,
+              "start": 14
+            },
+            "relation": "uses",
+            "score": 0.8791840672492981,
+            "source_slot": "s0",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 73,
+              "start": 67
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 450,
+              "start": 300
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi connection",
+            "object_span": {
+              "end": 316,
+              "start": 300
+            },
+            "relation": "manages",
+            "score": 0.43711188435554504,
+            "source_slot": "s1",
+            "subject": "answer",
+            "subject_span": {
+              "end": 450,
+              "start": 444
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1237,
+              "start": 444
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "diagnostic answer",
+            "object_span": {
+              "end": 1237,
+              "start": 1220
+            },
+            "relation": "allows",
+            "score": 0.6757702827453613,
+            "source_slot": "s1",
+            "subject": "answer",
+            "subject_span": {
+              "end": 450,
+              "start": 444
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1237,
+              "start": 444
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "diagnostic answer",
+            "object_span": {
+              "end": 1237,
+              "start": 1220
+            },
+            "relation": "enables",
+            "score": 0.6524392366409302,
+            "source_slot": "s1",
+            "subject": "answer",
+            "subject_span": {
+              "end": 450,
+              "start": 444
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1237,
+              "start": 444
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "specific diagnostic answer",
+            "object_span": {
+              "end": 1237,
+              "start": 1211
+            },
+            "relation": "provides",
+            "score": 0.9046270251274109,
+            "source_slot": "s1",
+            "subject": "answer, I",
+            "subject_span": {
+              "end": 453,
+              "start": 444
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 453,
+              "start": 300
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi connection",
+            "object_span": {
+              "end": 316,
+              "start": 300
+            },
+            "relation": "manages",
+            "score": 0.4043267071247101,
+            "source_slot": "s1",
+            "subject": "I",
+            "subject_span": {
+              "end": 453,
+              "start": 452
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 815,
+              "start": 780
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi connection",
+            "object_span": {
+              "end": 815,
+              "start": 799
+            },
+            "relation": "affects",
+            "score": 0.937270998954773,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 785,
+              "start": 780
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 815,
+              "start": 780
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi connection",
+            "object_span": {
+              "end": 815,
+              "start": 799
+            },
+            "relation": "associated_with",
+            "score": 0.8486911654472351,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 785,
+              "start": 780
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 815,
+              "start": 780
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi connection",
+            "object_span": {
+              "end": 815,
+              "start": 799
+            },
+            "relation": "influences",
+            "score": 0.912589430809021,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 785,
+              "start": 780
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 815,
+              "start": 780
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi connection",
+            "object_span": {
+              "end": 815,
+              "start": 799
+            },
+            "relation": "part_of",
+            "score": 0.8107820153236389,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 785,
+              "start": 780
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 815,
+              "start": 780
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi connection",
+            "object_span": {
+              "end": 815,
+              "start": 799
+            },
+            "relation": "related",
+            "score": 0.6571567058563232,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 785,
+              "start": 780
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 903,
+              "start": 799
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi connection",
+            "object_span": {
+              "end": 815,
+              "start": 799
+            },
+            "relation": "protects",
+            "score": 0.4169333577156067,
+            "source_slot": "s1",
+            "subject": "Wi-Fi position",
+            "subject_span": {
+              "end": 903,
+              "start": 889
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 903,
+              "start": 799
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi connection",
+            "object_span": {
+              "end": 815,
+              "start": 799
+            },
+            "relation": "stabilizes",
+            "score": 0.5759256482124329,
+            "source_slot": "s1",
+            "subject": "Wi-Fi position",
+            "subject_span": {
+              "end": 903,
+              "start": 889
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1031,
+              "start": 981
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "stable connection",
+            "object_span": {
+              "end": 1031,
+              "start": 1014
+            },
+            "relation": "maintains",
+            "score": 0.5221522450447083,
+            "source_slot": "s1",
+            "subject": "device",
+            "subject_span": {
+              "end": 987,
+              "start": 981
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1125,
+              "start": 1055
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "hardware/power issue",
+            "object_span": {
+              "end": 1125,
+              "start": 1105
+            },
+            "relation": "caused_by",
+            "score": 0.9786465764045715,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 1060,
+              "start": 1055
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1125,
+              "start": 1055
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "hardware/power issue",
+            "object_span": {
+              "end": 1125,
+              "start": 1105
+            },
+            "relation": "causes",
+            "score": 0.9046918749809265,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 1060,
+              "start": 1055
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "d1661e113d01009a7e264acc5ca69c253a4e06363fcc9ba6bcca9c36adbc1baa",
+          "s1": "6a2a7d3071be3617ee824cd247f73bd61297ed3e9ad8a04fbf3a5fe104393c0c"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.937270998954773,
+                  "end": 978,
+                  "start": 973,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.937270998954773,
+                  "end": 1008,
+                  "start": 992,
+                  "text": "Wi-Fi connection"
+                }
+              }
+            ],
+            "allows": [
+              {
+                "head": {
+                  "confidence": 0.6757702827453613,
+                  "end": 643,
+                  "start": 637,
+                  "text": "answer"
+                },
+                "tail": {
+                  "confidence": 0.6757702827453613,
+                  "end": 1430,
+                  "start": 1413,
+                  "text": "diagnostic answer"
+                }
+              }
+            ],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.8486911654472351,
+                  "end": 978,
+                  "start": 973,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.8486911654472351,
+                  "end": 1008,
+                  "start": 992,
+                  "text": "Wi-Fi connection"
+                }
+              }
+            ],
+            "caused_by": [
+              {
+                "head": {
+                  "confidence": 0.9786465764045715,
+                  "end": 1253,
+                  "start": 1248,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.9786465764045715,
+                  "end": 1318,
+                  "start": 1298,
+                  "text": "hardware/power issue"
+                }
+              }
+            ],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.9046918749809265,
+                  "end": 1253,
+                  "start": 1248,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.9046918749809265,
+                  "end": 1318,
+                  "start": 1298,
+                  "text": "hardware/power issue"
+                }
+              }
+            ],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [
+              {
+                "head": {
+                  "confidence": 0.4294355511665344,
+                  "end": 163,
+                  "start": 153,
+                  "text": "comparison"
+                },
+                "tail": {
+                  "confidence": 0.4294355511665344,
+                  "end": 417,
+                  "start": 401,
+                  "text": "Wi-Fi connection"
+                }
+              }
+            ],
+            "depends_on": [],
+            "dries": [],
+            "enables": [
+              {
+                "head": {
+                  "confidence": 0.6524392366409302,
+                  "end": 643,
+                  "start": 637,
+                  "text": "answer"
+                },
+                "tail": {
+                  "confidence": 0.6524392366409302,
+                  "end": 1430,
+                  "start": 1413,
+                  "text": "diagnostic answer"
+                }
+              }
+            ],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.912589430809021,
+                  "end": 978,
+                  "start": 973,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.912589430809021,
+                  "end": 1008,
+                  "start": 992,
+                  "text": "Wi-Fi connection"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [
+              {
+                "head": {
+                  "confidence": 0.5221522450447083,
+                  "end": 1180,
+                  "start": 1174,
+                  "text": "device"
+                },
+                "tail": {
+                  "confidence": 0.5221522450447083,
+                  "end": 1224,
+                  "start": 1207,
+                  "text": "stable connection"
+                }
+              }
+            ],
+            "manages": [
+              {
+                "head": {
+                  "confidence": 0.43711188435554504,
+                  "end": 643,
+                  "start": 637,
+                  "text": "answer"
+                },
+                "tail": {
+                  "confidence": 0.43711188435554504,
+                  "end": 509,
+                  "start": 493,
+                  "text": "Wi-Fi connection"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4043267071247101,
+                  "end": 646,
+                  "start": 645,
+                  "text": "I"
+                },
+                "tail": {
+                  "confidence": 0.4043267071247101,
+                  "end": 509,
+                  "start": 493,
+                  "text": "Wi-Fi connection"
+                }
+              }
+            ],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.8107820153236389,
+                  "end": 978,
+                  "start": 973,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.8107820153236389,
+                  "end": 1008,
+                  "start": 992,
+                  "text": "Wi-Fi connection"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [
+              {
+                "head": {
+                  "confidence": 0.4169333577156067,
+                  "end": 1096,
+                  "start": 1082,
+                  "text": "Wi-Fi position"
+                },
+                "tail": {
+                  "confidence": 0.4169333577156067,
+                  "end": 1008,
+                  "start": 992,
+                  "text": "Wi-Fi connection"
+                }
+              }
+            ],
+            "provides": [
+              {
+                "head": {
+                  "confidence": 0.9046270251274109,
+                  "end": 646,
+                  "start": 637,
+                  "text": "answer, I"
+                },
+                "tail": {
+                  "confidence": 0.9046270251274109,
+                  "end": 1430,
+                  "start": 1404,
+                  "text": "specific diagnostic answer"
+                }
+              }
+            ],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.6571567058563232,
+                  "end": 978,
+                  "start": 973,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.6571567058563232,
+                  "end": 1008,
+                  "start": 992,
+                  "text": "Wi-Fi connection"
+                }
+              }
+            ],
+            "requires": [
+              {
+                "head": {
+                  "confidence": 0.7872165441513062,
+                  "end": 73,
+                  "start": 67,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.7872165441513062,
+                  "end": 33,
+                  "start": 14,
+                  "text": "shorter power cable"
+                }
+              }
+            ],
+            "retains": [],
+            "shades": [],
+            "solves": [
+              {
+                "head": {
+                  "confidence": 0.37626686692237854,
+                  "end": 1430,
+                  "start": 1413,
+                  "text": "diagnostic answer"
+                },
+                "tail": {
+                  "confidence": 0.37626686692237854,
+                  "end": 191,
+                  "start": 176,
+                  "text": "remaining cause"
+                }
+              }
+            ],
+            "stabilizes": [
+              {
+                "head": {
+                  "confidence": 0.5759256482124329,
+                  "end": 1096,
+                  "start": 1082,
+                  "text": "Wi-Fi position"
+                },
+                "tail": {
+                  "confidence": 0.5759256482124329,
+                  "end": 1008,
+                  "start": 992,
+                  "text": "Wi-Fi connection"
+                }
+              }
+            ],
+            "supports": [
+              {
+                "head": {
+                  "confidence": 0.3712787330150604,
+                  "end": 61,
+                  "start": 47,
+                  "text": "Wi-Fi position"
+                },
+                "tail": {
+                  "confidence": 0.3712787330150604,
+                  "end": 417,
+                  "start": 401,
+                  "text": "Wi-Fi connection"
+                }
+              }
+            ],
+            "used_for": [],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.8791840672492981,
+                  "end": 73,
+                  "start": 67,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.8791840672492981,
+                  "end": 33,
+                  "start": 14,
+                  "text": "shorter power cable"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.3712787330150604,
+              "end": 61,
+              "start": 47,
+              "text": "Wi-Fi position"
+            },
+            "tail": {
+              "confidence": 0.3712787330150604,
+              "end": 417,
+              "start": 401,
+              "text": "Wi-Fi connection"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.4294355511665344,
+              "end": 163,
+              "start": 153,
+              "text": "comparison"
+            },
+            "tail": {
+              "confidence": 0.4294355511665344,
+              "end": 417,
+              "start": 401,
+              "text": "Wi-Fi connection"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.37626686692237854,
+              "end": 1430,
+              "start": 1413,
+              "text": "diagnostic answer"
+            },
+            "tail": {
+              "confidence": 0.37626686692237854,
+              "end": 191,
+              "start": 176,
+              "text": "remaining cause"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:03:04.871872+00:00",
+  "status": "RETURNED"
+}

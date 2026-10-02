@@ -1,0 +1,761 @@
+{
+  "completed_utc": "2026-10-02T19:05:14.106564+00:00",
+  "elapsed_seconds": 1.0799359080847353,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"The situation is unchanged, and I have not attempted the checks. I still do not know which of the same two causes to start with. What should I do if testing the power source doesn't resolve the issue?\", \"s1\": \"Since you are still in a state of \\\"no results\\\" and you are unsure whether the issue is **Power (Supply)** or **Connection (Wi-Fi)**, you need a systematic way to isolate the problem.\\n\\nSince you haven't tested anything yet, you need to start with the \\\"least complex\\\" test first.\\n\\n**The best next step is to test the most basic, non-complex variable first.**\\n\\n**Try this sequence:**\\n\\n1.  **Test the Power Source (The \\\"Supply\\\"):**\\n    *   If the power source is the problem, the device won't function at all.\\n    *   **Action:** Check the battery/power source first. Is it plugged in? Is the battery charged? Is the power switch on?\\n\\n2.  **If the Power Source is confirmed OK, then test the Connection:**\\n    *   If the power is fine, the problem must be the connection.\\n    *   **Action:** Test the Wi-Fi connection. Can the device \\\"see\\\" the network?\\n\\n**Why this sequence?**\\nIt is much easier to check if the device is \\\"alive\\\" (Power) before trying to see *where* it is trying to connect (Wi-Fi).\\n\\n**If you are still stuck, you must choose one variable to test first.**\\n\\n**Which one should you test first?**\\n**Test the Power Source (Supply) first.**\\n\\n**If the power source is confirmed to be \\\"OK,\\\" then you can then move to test the connection.**\\n\\n**If you still have no results, you must move to the next step.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-S-rephrased-r0-t10"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"issue\", \"relation\": \"depends_on\", \"to\": \"power source\", \"source\": \"s1\", \"evidence\": \"issue is **Power (Supply)** or **Connection (Wi-Fi)**, you need a systematic way to isolate the problem.\\n\\nSince you haven't tested anything yet, you need to start with the \\\"least complex\\\" test first.\\n\\n**The best next step is to test the most basic, non-complex variable first.**\\n\\n**Try this sequence:**\\n\\n1.  **Test the Power Source (The \\\"Supply\\\"):**\\n    *   If the power source\"}, {\"from\": \"problem\", \"relation\": \"depends_on\", \"to\": \"power source\", \"source\": \"s1\", \"evidence\": \"problem.\\n\\nSince you haven't tested anything yet, you need to start with the \\\"least complex\\\" test first.\\n\\n**The best next step is to test the most basic, non-complex variable first.**\\n\\n**Try this sequence:**\\n\\n1.  **Test the Power Source (The \\\"Supply\\\"):**\\n    *   If the power source\"}, {\"from\": \"power source\", \"relation\": \"causes\", \"to\": \"the problem\", \"source\": \"s1\", \"evidence\": \"power source first. Is it plugged in? Is the battery charged? Is the power switch on?\\n\\n2.  **If the Power Source is confirmed OK, then test the Connection:**\\n    *   If the power is fine, the problem\"}, {\"from\": \"power source\", \"relation\": \"related\", \"to\": \"Wi-Fi connection\", \"source\": \"s1\", \"evidence\": \"power source first. Is it plugged in? Is the battery charged? Is the power switch on?\\n\\n2.  **If the Power Source is confirmed OK, then test the Connection:**\\n    *   If the power is fine, the problem must be the connection.\\n    *   **Action:** Test the Wi-Fi connection\"}], \"episode_id\": \"main-network-S-rephrased-r0-t10\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 2,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "helps",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "solves",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 11,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "b49e6e13a16569d1b4c081feca47cff2253074b652723cc2b788dbe5bb82a9f8",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 199,
+              "start": 161
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "issue",
+            "object_span": {
+              "end": 199,
+              "start": 194
+            },
+            "relation": "affects",
+            "score": 0.7154529094696045,
+            "source_slot": "s0",
+            "subject": "power source",
+            "subject_span": {
+              "end": 173,
+              "start": 161
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 455,
+              "start": 78
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "power source",
+            "object_span": {
+              "end": 455,
+              "start": 443
+            },
+            "relation": "depends_on",
+            "score": 0.5625410079956055,
+            "source_slot": "s1",
+            "subject": "issue",
+            "subject_span": {
+              "end": 83,
+              "start": 78
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 455,
+              "start": 174
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "power source",
+            "object_span": {
+              "end": 455,
+              "start": 443
+            },
+            "relation": "depends_on",
+            "score": 0.4731885492801666,
+            "source_slot": "s1",
+            "subject": "problem",
+            "subject_span": {
+              "end": 181,
+              "start": 174
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 270,
+              "start": 78
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "issue",
+            "object_span": {
+              "end": 83,
+              "start": 78
+            },
+            "relation": "helps",
+            "score": 0.5367140769958496,
+            "source_slot": "s1",
+            "subject": "test",
+            "subject_span": {
+              "end": 270,
+              "start": 266
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 270,
+              "start": 78
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "issue",
+            "object_span": {
+              "end": 83,
+              "start": 78
+            },
+            "relation": "improves",
+            "score": 0.5523746013641357,
+            "source_slot": "s1",
+            "subject": "test",
+            "subject_span": {
+              "end": 270,
+              "start": 266
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 270,
+              "start": 174
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "problem",
+            "object_span": {
+              "end": 181,
+              "start": 174
+            },
+            "relation": "improves",
+            "score": 0.5395677089691162,
+            "source_slot": "s1",
+            "subject": "test",
+            "subject_span": {
+              "end": 270,
+              "start": 266
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 270,
+              "start": 174
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "problem",
+            "object_span": {
+              "end": 181,
+              "start": 174
+            },
+            "relation": "solves",
+            "score": 0.5723100900650024,
+            "source_slot": "s1",
+            "subject": "test",
+            "subject_span": {
+              "end": 270,
+              "start": 266
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 470,
+              "start": 443
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "problem",
+            "object_span": {
+              "end": 470,
+              "start": 463
+            },
+            "relation": "affects",
+            "score": 0.45646941661834717,
+            "source_slot": "s1",
+            "subject": "power source",
+            "subject_span": {
+              "end": 455,
+              "start": 443
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 470,
+              "start": 443
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "problem",
+            "object_span": {
+              "end": 470,
+              "start": 463
+            },
+            "relation": "influences",
+            "score": 0.40036264061927795,
+            "source_slot": "s1",
+            "subject": "power source",
+            "subject_span": {
+              "end": 455,
+              "start": 443
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 531,
+              "start": 443
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "power source",
+            "object_span": {
+              "end": 455,
+              "start": 443
+            },
+            "relation": "reduces",
+            "score": 0.390489399433136,
+            "source_slot": "s1",
+            "subject": "Check",
+            "subject_span": {
+              "end": 531,
+              "start": 526
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 743,
+              "start": 544
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "the problem",
+            "object_span": {
+              "end": 743,
+              "start": 732
+            },
+            "relation": "causes",
+            "score": 0.5460640788078308,
+            "source_slot": "s1",
+            "subject": "power source",
+            "subject_span": {
+              "end": 556,
+              "start": 544
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 813,
+              "start": 544
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi connection",
+            "object_span": {
+              "end": 813,
+              "start": 797
+            },
+            "relation": "related",
+            "score": 0.4012545645236969,
+            "source_slot": "s1",
+            "subject": "power source",
+            "subject_span": {
+              "end": 556,
+              "start": 544
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 813,
+              "start": 788
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Test the Wi-Fi connection",
+            "object_span": {
+              "end": 813,
+              "start": 788
+            },
+            "relation": "leads_to",
+            "score": 0.4625217020511627,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 792,
+              "start": 788
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1129,
+              "start": 443
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "power source",
+            "object_span": {
+              "end": 455,
+              "start": 443
+            },
+            "relation": "reduces",
+            "score": 0.5232715010643005,
+            "source_slot": "s1",
+            "subject": "Test the Power Source",
+            "subject_span": {
+              "end": 1129,
+              "start": 1108
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "17fa83643b7bbbc796f63474c2c0acdca9a2cc430883434f14c304b105bc91bd",
+          "s1": "f81786b18c936cd929b7e6984dc1ecc6e63b10ddbd520ac46d3f7402e7e46ff2"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.7154529094696045,
+                  "end": 173,
+                  "start": 161,
+                  "text": "power source"
+                },
+                "tail": {
+                  "confidence": 0.7154529094696045,
+                  "end": 199,
+                  "start": 194,
+                  "text": "issue"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.45646941661834717,
+                  "end": 656,
+                  "start": 644,
+                  "text": "power source"
+                },
+                "tail": {
+                  "confidence": 0.45646941661834717,
+                  "end": 671,
+                  "start": 664,
+                  "text": "problem"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.5460640788078308,
+                  "end": 757,
+                  "start": 745,
+                  "text": "power source"
+                },
+                "tail": {
+                  "confidence": 0.5460640788078308,
+                  "end": 944,
+                  "start": 933,
+                  "text": "the problem"
+                }
+              }
+            ],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [
+              {
+                "head": {
+                  "confidence": 0.5625410079956055,
+                  "end": 284,
+                  "start": 279,
+                  "text": "issue"
+                },
+                "tail": {
+                  "confidence": 0.5625410079956055,
+                  "end": 656,
+                  "start": 644,
+                  "text": "power source"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4731885492801666,
+                  "end": 382,
+                  "start": 375,
+                  "text": "problem"
+                },
+                "tail": {
+                  "confidence": 0.4731885492801666,
+                  "end": 656,
+                  "start": 644,
+                  "text": "power source"
+                }
+              }
+            ],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [
+              {
+                "head": {
+                  "confidence": 0.5367140769958496,
+                  "end": 471,
+                  "start": 467,
+                  "text": "test"
+                },
+                "tail": {
+                  "confidence": 0.5367140769958496,
+                  "end": 284,
+                  "start": 279,
+                  "text": "issue"
+                }
+              }
+            ],
+            "holds": [],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.5523746013641357,
+                  "end": 471,
+                  "start": 467,
+                  "text": "test"
+                },
+                "tail": {
+                  "confidence": 0.5523746013641357,
+                  "end": 284,
+                  "start": 279,
+                  "text": "issue"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5395677089691162,
+                  "end": 471,
+                  "start": 467,
+                  "text": "test"
+                },
+                "tail": {
+                  "confidence": 0.5395677089691162,
+                  "end": 382,
+                  "start": 375,
+                  "text": "problem"
+                }
+              }
+            ],
+            "increases": [],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.40036264061927795,
+                  "end": 656,
+                  "start": 644,
+                  "text": "power source"
+                },
+                "tail": {
+                  "confidence": 0.40036264061927795,
+                  "end": 671,
+                  "start": 664,
+                  "text": "problem"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [
+              {
+                "head": {
+                  "confidence": 0.4625217020511627,
+                  "end": 993,
+                  "start": 989,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.4625217020511627,
+                  "end": 1014,
+                  "start": 989,
+                  "text": "Test the Wi-Fi connection"
+                }
+              }
+            ],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.390489399433136,
+                  "end": 732,
+                  "start": 727,
+                  "text": "Check"
+                },
+                "tail": {
+                  "confidence": 0.390489399433136,
+                  "end": 656,
+                  "start": 644,
+                  "text": "power source"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5232715010643005,
+                  "end": 1330,
+                  "start": 1309,
+                  "text": "Test the Power Source"
+                },
+                "tail": {
+                  "confidence": 0.5232715010643005,
+                  "end": 656,
+                  "start": 644,
+                  "text": "power source"
+                }
+              }
+            ],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.4012545645236969,
+                  "end": 757,
+                  "start": 745,
+                  "text": "power source"
+                },
+                "tail": {
+                  "confidence": 0.4012545645236969,
+                  "end": 1014,
+                  "start": 998,
+                  "text": "Wi-Fi connection"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [
+              {
+                "head": {
+                  "confidence": 0.4898937940597534,
+                  "end": 471,
+                  "start": 467,
+                  "text": "test"
+                },
+                "tail": {
+                  "confidence": 0.4898937940597534,
+                  "end": 199,
+                  "start": 194,
+                  "text": "issue"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5723100900650024,
+                  "end": 471,
+                  "start": 467,
+                  "text": "test"
+                },
+                "tail": {
+                  "confidence": 0.5723100900650024,
+                  "end": 382,
+                  "start": 375,
+                  "text": "problem"
+                }
+              }
+            ],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.4898937940597534,
+              "end": 471,
+              "start": 467,
+              "text": "test"
+            },
+            "tail": {
+              "confidence": 0.4898937940597534,
+              "end": 199,
+              "start": 194,
+              "text": "issue"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:05:13.025442+00:00",
+  "status": "RETURNED"
+}

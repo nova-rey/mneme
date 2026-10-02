@@ -2588,6 +2588,227 @@
       },
       "waiting_on": [],
       "workstream": "arc-measurement"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "7a74a92cbd0c084d420a7da9444bd1258d660b4c",
+      "campaign": "mneme-phase-two",
+      "candidate": {
+        "artifact": "src/mneme/development/field.py",
+        "base_sha": "7a74a92cbd0c084d420a7da9444bd1258d660b4c",
+        "returned_at": "2026-10-02T18:34:27.505846Z",
+        "returned_by": "runtime_map_v2",
+        "sha": null
+      },
+      "completion_criterion": "Specification-compliant output with limitations and retained verification",
+      "created_at": "2026-10-02T18:32:54.977139Z",
+      "dependencies": [],
+      "domain": "software",
+      "edit_boundaries": [
+        "read-only source map"
+      ],
+      "evidence_refs": [
+        "docs/experiments/three_pressure_v2/specification.md"
+      ],
+      "id": "METER2-MAP",
+      "notes": "",
+      "owner": null,
+      "priority": 10,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "three-pressure-v2-specification"
+      ],
+      "resource_requirements": [],
+      "scope": "Inspect actual runtime strengths provenance and promoted persistence",
+      "session_ids": [],
+      "status": "DONE",
+      "title": "Inspect actual runtime strengths provenance and promoted persistence",
+      "updated_at": "2026-10-02T18:34:27.642718Z",
+      "validation": {
+        "required": [
+          "evidence"
+        ],
+        "results": {
+          "evidence": {
+            "receipt": "Current field strength/distribution and CompactStore persistence inspected; detailed library packet retained in source-map document at integration",
+            "recorded_at": "2026-10-02T18:34:27.595795Z",
+            "status": "PASS"
+          }
+        }
+      },
+      "waiting_on": [],
+      "workstream": "three-pressure-v2"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "7a74a92cbd0c084d420a7da9444bd1258d660b4c",
+      "campaign": "mneme-phase-two",
+      "candidate": {
+        "artifact": "src/mneme/experiments/pressure_meters.py",
+        "base_sha": "7a74a92cbd0c084d420a7da9444bd1258d660b4c",
+        "returned_at": "2026-10-02T19:07:50.379001Z",
+        "returned_by": "meters_v2",
+        "sha": null
+      },
+      "completion_criterion": "Specification-compliant output with limitations and retained verification",
+      "created_at": "2026-10-02T18:32:55.035695Z",
+      "dependencies": [
+        "package:METER2-MAP"
+      ],
+      "domain": "software",
+      "edit_boundaries": [
+        "src/mneme/experiments/pressure_meters.py",
+        "tests/test_pressure_meters.py",
+        "docs/experiments/three_pressure_v2/formulas.json"
+      ],
+      "evidence_refs": [
+        "docs/experiments/three_pressure_v2/formulas.json"
+      ],
+      "id": "METER2-METERS",
+      "notes": "",
+      "owner": null,
+      "priority": 10,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "three-pressure-v2-specification"
+      ],
+      "resource_requirements": [],
+      "scope": "Implement frozen passive three-axis candidates and tests",
+      "session_ids": [],
+      "status": "DONE",
+      "title": "Implement frozen passive three-axis candidates and tests",
+      "updated_at": "2026-10-02T19:08:17.300078Z",
+      "validation": {
+        "required": [
+          "evidence"
+        ],
+        "results": {
+          "evidence": {
+            "receipt": "Root source review; 75 meter/runner/history/baseline tests plus 11 report tests passed; frozen formulas 42611164905d84c7a76b94d66d88ed14a101f4cba950c2de750a9d1c2160ff18; full integrated validation still required by METER2-INTEGRATE",
+            "recorded_at": "2026-10-02T19:08:17.195029Z",
+            "status": "PASS"
+          }
+        }
+      },
+      "waiting_on": [],
+      "workstream": "three-pressure-v2"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "7a74a92cbd0c084d420a7da9444bd1258d660b4c",
+      "campaign": "mneme-phase-two",
+      "candidate": {
+        "artifact": "docs/experiments/three_pressure_v2/evidence_validation.json",
+        "base_sha": "7a74a92cbd0c084d420a7da9444bd1258d660b4c",
+        "returned_at": "2026-10-02T19:23:56.212004Z",
+        "returned_by": "evidence_v2",
+        "sha": null
+      },
+      "completion_criterion": "Specification-compliant output with limitations and retained verification",
+      "created_at": "2026-10-02T18:32:55.083121Z",
+      "dependencies": [
+        "package:METER2-MAP"
+      ],
+      "domain": "software",
+      "edit_boundaries": [
+        "tools/run_three_pressure_v2.py",
+        "tests/test_three_pressure_runner.py",
+        "docs/experiments/three_pressure_v2/construction and raw evidence"
+      ],
+      "evidence_refs": [
+        "docs/experiments/three_pressure_v2/evidence_index.md"
+      ],
+      "id": "METER2-EVIDENCE",
+      "notes": "",
+      "owner": null,
+      "priority": 10,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "three-pressure-v2-specification"
+      ],
+      "resource_requirements": [],
+      "scope": "Construction preflight and fidelity-gated 90-turn evidence",
+      "session_ids": [],
+      "status": "DONE",
+      "title": "Construction preflight and fidelity-gated 90-turn evidence",
+      "updated_at": "2026-10-02T19:23:56.535522Z",
+      "validation": {
+        "required": [
+          "evidence"
+        ],
+        "results": {
+          "evidence": {
+            "receipt": "docs/experiments/three_pressure_v2/evidence_validation.json and fidelity_review.json; execution evidence complete, scientific construction failures explicitly retained",
+            "recorded_at": "2026-10-02T19:23:56.436261Z",
+            "status": "PASS"
+          }
+        }
+      },
+      "waiting_on": [],
+      "workstream": "three-pressure-v2"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "7a74a92cbd0c084d420a7da9444bd1258d660b4c",
+      "campaign": "mneme-phase-two",
+      "candidate": {
+        "artifact": "docs/experiments/three_pressure_v2/report.md",
+        "base_sha": "7a74a92cbd0c084d420a7da9444bd1258d660b4c",
+        "returned_at": "2026-10-02T19:32:40.932543Z",
+        "returned_by": "root",
+        "sha": null
+      },
+      "completion_criterion": "Specification-compliant output with limitations and retained verification",
+      "created_at": "2026-10-02T18:32:55.127299Z",
+      "dependencies": [
+        "package:METER2-METERS",
+        "package:METER2-EVIDENCE"
+      ],
+      "domain": "software",
+      "edit_boundaries": [
+        "report matrices receipts and canonical integration"
+      ],
+      "evidence_refs": [],
+      "id": "METER2-INTEGRATE",
+      "notes": "",
+      "owner": "root",
+      "priority": 10,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "three-pressure-v2-specification"
+      ],
+      "resource_requirements": [],
+      "scope": "Transcript fidelity review, score analysis, regression and serialized integration",
+      "session_ids": [
+        "three-pressure-v2"
+      ],
+      "status": "VALIDATING",
+      "title": "Transcript fidelity review, score analysis, regression and serialized integration",
+      "updated_at": "2026-10-02T19:32:41.035978Z",
+      "validation": {
+        "required": [
+          "evidence"
+        ],
+        "results": {}
+      },
+      "waiting_on": [],
+      "workstream": "three-pressure-v2"
     }
   ],
   "project": "nova-rey/mneme",
@@ -2602,5 +2823,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-10-02T17:47:03.613292Z"
+  "updated_at": "2026-10-02T19:32:41.036114Z"
 }

@@ -1,0 +1,592 @@
+{
+  "completed_utc": "2026-10-02T19:08:41.495911+00:00",
+  "elapsed_seconds": 1.0201334729790688,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"With three cotton wicks and the reservoir 2 centimeters higher, the pot gains 3 grams in 24 hours. How close is the setup now to the measured target?\", \"s1\": \"This is a shift in the data points, moving from a **loss** (12g) to a **gain** (3g).\\n\\n**The \\\"Refinement\\\" of the Balance:**\\n\\nThe \\\"refinement\\\" here is that the system is moving from a state of **net loss/consumption** to a state of **net gain/accumulation.**\\n\\n**How close is the setup to the measured target?**\\n\\nSince you have provided a new, specific data point (3g gain in 24 hours), the \\\"refinement\\\" is that the **system has successfully transitioned from a state of loss/consumption to a state of gain/accumulation.**\\n\\n**The \\\"Refinement\\\" is the shift from a negative balance to a positive balance.**\\n\\n**In terms of \\\"Closeness to the Target\\\":**\\n\\n1.  **If the \\\"Target\\\" is a specific, known goal (e.g., a specific weight or volume):** The current data point (3g gain) is a *new* data point that defines the current state.\\n2.  **The \\\"Closeness\\\" is now defined by the *rate of change*.** The system is now \\\"closer\\\" to a positive, growing state than it was before.\\n\\n**Conclusion:**\\n\\nThe system has moved from a state of **\\\"Consumption/Loss\\\"** to a state of **\\\"Gain/Accumulation.\\\"**\\n\\n**The \\\"refinement\\\" is that the system has successfully transitioned from a deficit to a surplus.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-watering-F-same-r0-t08"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"Refinement\", \"relation\": \"causes\", \"to\": \"gain\", \"source\": \"s1\", \"evidence\": \"gain** (3g).\\n\\n**The \\\"Refinement\"}, {\"from\": \"refinement\", \"relation\": \"part_of\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"refinement\\\" is that the system\"}], \"episode_id\": \"main-watering-F-same-r0-t08\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "protects",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "protects",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        }
+      ],
+      "specialist": {
+        "content_digest": "e501a6f4fce0770dc727df8ad14a8544dd6e3ece3de15061006136aa33edf4ae",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 71,
+              "start": 32
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "reservoir",
+            "object_span": {
+              "end": 41,
+              "start": 32
+            },
+            "relation": "uses",
+            "score": 0.727496862411499,
+            "source_slot": "s0",
+            "subject": "pot",
+            "subject_span": {
+              "end": 71,
+              "start": 68
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 85,
+              "start": 68
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "3 grams",
+            "object_span": {
+              "end": 85,
+              "start": 78
+            },
+            "relation": "increases",
+            "score": 0.7533957958221436,
+            "source_slot": "s0",
+            "subject": "pot",
+            "subject_span": {
+              "end": 71,
+              "start": 68
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 148,
+              "start": 116
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "measured target",
+            "object_span": {
+              "end": 148,
+              "start": 133
+            },
+            "relation": "protects",
+            "score": 0.47609013319015503,
+            "source_slot": "s0",
+            "subject": "setup",
+            "subject_span": {
+              "end": 121,
+              "start": 116
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 103,
+              "start": 72
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "gain",
+            "object_span": {
+              "end": 76,
+              "start": 72
+            },
+            "relation": "causes",
+            "score": 0.5866901278495789,
+            "source_slot": "s1",
+            "subject": "Refinement",
+            "subject_span": {
+              "end": 103,
+              "start": 93
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 103,
+              "start": 72
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "gain",
+            "object_span": {
+              "end": 76,
+              "start": 72
+            },
+            "relation": "changes",
+            "score": 0.4259656071662903,
+            "source_slot": "s1",
+            "subject": "Refinement",
+            "subject_span": {
+              "end": 103,
+              "start": 93
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 360,
+              "start": 316
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "data point",
+            "object_span": {
+              "end": 360,
+              "start": 350
+            },
+            "relation": "provides",
+            "score": 0.7355282306671143,
+            "source_slot": "s1",
+            "subject": "you",
+            "subject_span": {
+              "end": 319,
+              "start": 316
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 421,
+              "start": 365
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 421,
+              "start": 415
+            },
+            "relation": "associated_with",
+            "score": 0.4633106291294098,
+            "source_slot": "s1",
+            "subject": "gain",
+            "subject_span": {
+              "end": 369,
+              "start": 365
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 399,
+              "start": 290
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "measured target",
+            "object_span": {
+              "end": 305,
+              "start": 290
+            },
+            "relation": "protects",
+            "score": 0.6583014726638794,
+            "source_slot": "s1",
+            "subject": "refinement",
+            "subject_span": {
+              "end": 399,
+              "start": 389
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 895,
+              "start": 778
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 895,
+              "start": 889
+            },
+            "relation": "associated_with",
+            "score": 0.43672236800193787,
+            "source_slot": "s1",
+            "subject": "data point",
+            "subject_span": {
+              "end": 788,
+              "start": 778
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1116,
+              "start": 1086
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 1116,
+              "start": 1110
+            },
+            "relation": "part_of",
+            "score": 0.9238712787628174,
+            "source_slot": "s1",
+            "subject": "refinement",
+            "subject_span": {
+              "end": 1096,
+              "start": 1086
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "f19a251983da7c7cfefbe6017559a194c0547800c148d12fea028053fee0c48d",
+          "s1": "31aa2bdf8f4f156a338b0b03f831b9b41b27b24e91684d2d9f5222afb28a0998"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.4633106291294098,
+                  "end": 519,
+                  "start": 515,
+                  "text": "gain"
+                },
+                "tail": {
+                  "confidence": 0.4633106291294098,
+                  "end": 571,
+                  "start": 565,
+                  "text": "system"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.43672236800193787,
+                  "end": 938,
+                  "start": 928,
+                  "text": "data point"
+                },
+                "tail": {
+                  "confidence": 0.43672236800193787,
+                  "end": 1045,
+                  "start": 1039,
+                  "text": "system"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.5866901278495789,
+                  "end": 253,
+                  "start": 243,
+                  "text": "Refinement"
+                },
+                "tail": {
+                  "confidence": 0.5866901278495789,
+                  "end": 226,
+                  "start": 222,
+                  "text": "gain"
+                }
+              }
+            ],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.4259656071662903,
+                  "end": 253,
+                  "start": 243,
+                  "text": "Refinement"
+                },
+                "tail": {
+                  "confidence": 0.4259656071662903,
+                  "end": 226,
+                  "start": 222,
+                  "text": "gain"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.7533957958221436,
+                  "end": 71,
+                  "start": 68,
+                  "text": "pot"
+                },
+                "tail": {
+                  "confidence": 0.7533957958221436,
+                  "end": 85,
+                  "start": 78,
+                  "text": "3 grams"
+                }
+              }
+            ],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.9238712787628174,
+                  "end": 1246,
+                  "start": 1236,
+                  "text": "refinement"
+                },
+                "tail": {
+                  "confidence": 0.9238712787628174,
+                  "end": 1266,
+                  "start": 1260,
+                  "text": "system"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [
+              {
+                "head": {
+                  "confidence": 0.47609013319015503,
+                  "end": 121,
+                  "start": 116,
+                  "text": "setup"
+                },
+                "tail": {
+                  "confidence": 0.47609013319015503,
+                  "end": 148,
+                  "start": 133,
+                  "text": "measured target"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6583014726638794,
+                  "end": 549,
+                  "start": 539,
+                  "text": "refinement"
+                },
+                "tail": {
+                  "confidence": 0.6583014726638794,
+                  "end": 455,
+                  "start": 440,
+                  "text": "measured target"
+                }
+              }
+            ],
+            "provides": [
+              {
+                "head": {
+                  "confidence": 0.7355282306671143,
+                  "end": 469,
+                  "start": 466,
+                  "text": "you"
+                },
+                "tail": {
+                  "confidence": 0.7355282306671143,
+                  "end": 510,
+                  "start": 500,
+                  "text": "data point"
+                }
+              }
+            ],
+            "reduces": [],
+            "related": [],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [
+              {
+                "head": {
+                  "confidence": 0.6697041392326355,
+                  "end": 253,
+                  "start": 243,
+                  "text": "Refinement"
+                },
+                "tail": {
+                  "confidence": 0.6697041392326355,
+                  "end": 148,
+                  "start": 133,
+                  "text": "measured target"
+                }
+              }
+            ],
+            "used_for": [],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.727496862411499,
+                  "end": 71,
+                  "start": 68,
+                  "text": "pot"
+                },
+                "tail": {
+                  "confidence": 0.727496862411499,
+                  "end": 41,
+                  "start": 32,
+                  "text": "reservoir"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.6697041392326355,
+              "end": 253,
+              "start": 243,
+              "text": "Refinement"
+            },
+            "tail": {
+              "confidence": 0.6697041392326355,
+              "end": 148,
+              "start": 133,
+              "text": "measured target"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:08:40.474122+00:00",
+  "status": "RETURNED"
+}

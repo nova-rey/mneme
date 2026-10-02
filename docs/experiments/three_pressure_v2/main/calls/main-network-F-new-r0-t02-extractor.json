@@ -1,0 +1,764 @@
+{
+  "completed_utc": "2026-10-02T18:59:55.261312+00:00",
+  "elapsed_seconds": 1.115063264966011,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"The sensor uptime resets after an outage, while the neighboring sensor stays online. Ask what a reset distinguishes from a lost dashboard entry.\", \"s1\": \"That's a very specific and useful distinction! When a sensor \\\"disappears\\\" or \\\"resets,\\\" it usually means the connection was lost, and then it's trying to re-establish the connection.\\n\\nHere is how you can distinguish between a **\\\"reset\\\"** (a clean, intentional restart) and a **\\\"lost connection\\\"** (a failure to maintain the connection):\\n\\n### 1. The \\\"Reset\\\" (Intentional Restart)\\nA **\\\"reset\\\"** usually implies a deliberate action:\\n*   **Manual Reset:** You or the system initiated a \\\"reboot\\\" or \\\"re-sync.\\\" This is a planned, controlled action.\\n*   **The \\\"Lost Connection\\\":** If the sensor is \\\"lost,\\\" it means the connection was broken, and the device is now trying to reconnect.\\n\\n### 2. The \\\"Lost Connection\\\" (The Disappearance)\\nA **\\\"lost connection\\\"** means the sensor is trying to find a stable connection again.\\n\\n**How to distinguish them:**\\n\\n*   **If the sensor *re-appears* after a brief pause:** This is a **Reset/Re-sync**. The system recognized the \\\"lost\\\" state and is now re-establishing the connection.\\n*   **If the sensor *never* reappears:** This is a **Lost Connection**. The device failed to reconnect entirely.\\n\\n**To help you narrow it down, I need a little more context:**\\n\\n*   **What is the \\\"sensor\\\" doing?** (e.g., Is it a temperature sensor, a motion sensor, or a specific data logging device?)\\n*   **What is the \\\"dashboard\\\"?** (e.g., Is it a specific app, a web portal, or a specific software platform?)\\n\\n**If you can tell me what the sensor is (e.g., a temperature sensor, a motion sensor, etc.), I can give you a much more precise troubleshooting path!**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-F-new-r0-t02"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"reset\", \"relation\": \"causes\", \"to\": \"lost connection\", \"source\": \"s1\", \"evidence\": \"reset\\\"** (a clean, intentional restart) and a **\\\"lost connection\"}, {\"from\": \"reset\", \"relation\": \"prevents\", \"to\": \"lost connection\", \"source\": \"s1\", \"evidence\": \"reset\\\"** (a clean, intentional restart) and a **\\\"lost connection\"}, {\"from\": \"Reset\", \"relation\": \"related\", \"to\": \"connection\", \"source\": \"s1\", \"evidence\": \"connection):\\n\\n### 1. The \\\"Reset\"}, {\"from\": \"sensor\", \"relation\": \"related\", \"to\": \"connection\", \"source\": \"s1\", \"evidence\": \"sensor is trying to find a stable connection\"}], \"episode_id\": \"main-network-F-new-r0-t02\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "specialist_observation",
+          "relation": "prevents",
+          "status": "forwarded"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "stabilizes",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "stabilizes",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "maintains",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 11,
+          "kind": "unsupported_specialist_relation",
+          "relation": "controls",
+          "status": "rejected"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "manages",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "93004b7c348b829d78b2e6f0b9483354b9e69e165f3c626a7eacf434887d49fa",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 292,
+              "start": 228
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "lost connection",
+            "object_span": {
+              "end": 292,
+              "start": 277
+            },
+            "relation": "affects",
+            "score": 0.9115251302719116,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 233,
+              "start": 228
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 292,
+              "start": 228
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "lost connection",
+            "object_span": {
+              "end": 292,
+              "start": 277
+            },
+            "relation": "causes",
+            "score": 0.9518765211105347,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 233,
+              "start": 228
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 292,
+              "start": 228
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "lost connection",
+            "object_span": {
+              "end": 292,
+              "start": 277
+            },
+            "relation": "changes",
+            "score": 0.8427177667617798,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 233,
+              "start": 228
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 292,
+              "start": 228
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "lost connection",
+            "object_span": {
+              "end": 292,
+              "start": 277
+            },
+            "relation": "leads_to",
+            "score": 0.7947531342506409,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 233,
+              "start": 228
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 292,
+              "start": 228
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "lost connection",
+            "object_span": {
+              "end": 292,
+              "start": 277
+            },
+            "relation": "prevents",
+            "score": 0.9310223460197449,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 233,
+              "start": 228
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 292,
+              "start": 228
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "lost connection",
+            "object_span": {
+              "end": 292,
+              "start": 277
+            },
+            "relation": "reduces",
+            "score": 0.8854248523712158,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 233,
+              "start": 228
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 292,
+              "start": 228
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "lost connection",
+            "object_span": {
+              "end": 292,
+              "start": 277
+            },
+            "relation": "stabilizes",
+            "score": 0.7392016649246216,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 233,
+              "start": 228
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 333,
+              "start": 277
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "lost connection",
+            "object_span": {
+              "end": 292,
+              "start": 277
+            },
+            "relation": "stabilizes",
+            "score": 0.48497068881988525,
+            "source_slot": "s1",
+            "subject": "connection",
+            "subject_span": {
+              "end": 333,
+              "start": 323
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 354,
+              "start": 323
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "connection",
+            "object_span": {
+              "end": 333,
+              "start": 323
+            },
+            "relation": "related",
+            "score": 0.38612625002861023,
+            "source_slot": "s1",
+            "subject": "Reset",
+            "subject_span": {
+              "end": 354,
+              "start": 349
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 568,
+              "start": 462
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Lost Connection",
+            "object_span": {
+              "end": 568,
+              "start": 553
+            },
+            "relation": "maintains",
+            "score": 0.8664501309394836,
+            "source_slot": "s1",
+            "subject": "system",
+            "subject_span": {
+              "end": 468,
+              "start": 462
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 805,
+              "start": 761
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "connection",
+            "object_span": {
+              "end": 805,
+              "start": 795
+            },
+            "relation": "related",
+            "score": 0.37314683198928833,
+            "source_slot": "s1",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 767,
+              "start": 761
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1009,
+              "start": 933
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "connection",
+            "object_span": {
+              "end": 1009,
+              "start": 999
+            },
+            "relation": "controls",
+            "score": 0.6743850111961365,
+            "source_slot": "s1",
+            "subject": "system",
+            "subject_span": {
+              "end": 939,
+              "start": 933
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1009,
+              "start": 933
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "connection",
+            "object_span": {
+              "end": 1009,
+              "start": 999
+            },
+            "relation": "manages",
+            "score": 0.7594118714332581,
+            "source_slot": "s1",
+            "subject": "system",
+            "subject_span": {
+              "end": 939,
+              "start": 933
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1274,
+              "start": 1251
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sensor",
+            "object_span": {
+              "end": 1257,
+              "start": 1251
+            },
+            "relation": "associated_with",
+            "score": 0.6562873721122742,
+            "source_slot": "s1",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 1274,
+              "start": 1268
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "2430844fc3d726cc9e94ad25985aee3e2cb16470948279327f85ea8c9764d579",
+          "s1": "b556300c9c0269d37d25b837d4f516bb55c1a869cf0c75e9419a6022f2a244c8"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.9115251302719116,
+                  "end": 378,
+                  "start": 373,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.9115251302719116,
+                  "end": 437,
+                  "start": 422,
+                  "text": "lost connection"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.6562873721122742,
+                  "end": 1419,
+                  "start": 1413,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.6562873721122742,
+                  "end": 1402,
+                  "start": 1396,
+                  "text": "sensor"
+                }
+              }
+            ],
+            "caused_by": [
+              {
+                "head": {
+                  "confidence": 0.6077395081520081,
+                  "end": 437,
+                  "start": 422,
+                  "text": "lost connection"
+                },
+                "tail": {
+                  "confidence": 0.6077395081520081,
+                  "end": 40,
+                  "start": 34,
+                  "text": "outage"
+                }
+              }
+            ],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.9518765211105347,
+                  "end": 378,
+                  "start": 373,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.9518765211105347,
+                  "end": 437,
+                  "start": 422,
+                  "text": "lost connection"
+                }
+              }
+            ],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.8427177667617798,
+                  "end": 378,
+                  "start": 373,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.8427177667617798,
+                  "end": 437,
+                  "start": 422,
+                  "text": "lost connection"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [
+              {
+                "head": {
+                  "confidence": 0.6743850111961365,
+                  "end": 1084,
+                  "start": 1078,
+                  "text": "system"
+                },
+                "tail": {
+                  "confidence": 0.6743850111961365,
+                  "end": 1154,
+                  "start": 1144,
+                  "text": "connection"
+                }
+              }
+            ],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [
+              {
+                "head": {
+                  "confidence": 0.7947531342506409,
+                  "end": 378,
+                  "start": 373,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.7947531342506409,
+                  "end": 437,
+                  "start": 422,
+                  "text": "lost connection"
+                }
+              }
+            ],
+            "maintains": [
+              {
+                "head": {
+                  "confidence": 0.8664501309394836,
+                  "end": 613,
+                  "start": 607,
+                  "text": "system"
+                },
+                "tail": {
+                  "confidence": 0.8664501309394836,
+                  "end": 713,
+                  "start": 698,
+                  "text": "Lost Connection"
+                }
+              }
+            ],
+            "manages": [
+              {
+                "head": {
+                  "confidence": 0.7594118714332581,
+                  "end": 1084,
+                  "start": 1078,
+                  "text": "system"
+                },
+                "tail": {
+                  "confidence": 0.7594118714332581,
+                  "end": 1154,
+                  "start": 1144,
+                  "text": "connection"
+                }
+              }
+            ],
+            "part_of": [],
+            "prevents": [
+              {
+                "head": {
+                  "confidence": 0.9310223460197449,
+                  "end": 378,
+                  "start": 373,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.9310223460197449,
+                  "end": 437,
+                  "start": 422,
+                  "text": "lost connection"
+                }
+              }
+            ],
+            "protects": [],
+            "provides": [],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.8854248523712158,
+                  "end": 378,
+                  "start": 373,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.8854248523712158,
+                  "end": 437,
+                  "start": 422,
+                  "text": "lost connection"
+                }
+              }
+            ],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.38612625002861023,
+                  "end": 499,
+                  "start": 494,
+                  "text": "Reset"
+                },
+                "tail": {
+                  "confidence": 0.38612625002861023,
+                  "end": 478,
+                  "start": 468,
+                  "text": "connection"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.37314683198928833,
+                  "end": 912,
+                  "start": 906,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.37314683198928833,
+                  "end": 950,
+                  "start": 940,
+                  "text": "connection"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [
+              {
+                "head": {
+                  "confidence": 0.7392016649246216,
+                  "end": 378,
+                  "start": 373,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.7392016649246216,
+                  "end": 437,
+                  "start": 422,
+                  "text": "lost connection"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.48497068881988525,
+                  "end": 478,
+                  "start": 468,
+                  "text": "connection"
+                },
+                "tail": {
+                  "confidence": 0.48497068881988525,
+                  "end": 437,
+                  "start": 422,
+                  "text": "lost connection"
+                }
+              }
+            ],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.6077395081520081,
+              "end": 437,
+              "start": 422,
+              "text": "lost connection"
+            },
+            "tail": {
+              "confidence": 0.6077395081520081,
+              "end": 40,
+              "start": 34,
+              "text": "outage"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T18:59:54.145714+00:00",
+  "status": "RETURNED"
+}

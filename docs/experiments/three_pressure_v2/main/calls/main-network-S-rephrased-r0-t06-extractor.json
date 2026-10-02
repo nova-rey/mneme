@@ -1,0 +1,250 @@
+{
+  "completed_utc": "2026-10-02T19:04:39.627467+00:00",
+  "elapsed_seconds": 1.0044810560066253,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"There are no measurements yet; I remain undecided between the supply and the connection. Where do I begin?\", \"s1\": \"Since you have no initial data, you are in a state of **\\\"No Observation.\\\"** You are trying to find the root cause of a failure, but you have no baseline data to compare against.\\n\\n**The only way forward is to test the variables sequentially.**\\n\\nSince you are unsure whether the problem is the **\\\"Power\\\"** (the supply/battery) or the **\\\"Connection\\\"** (the Wi-Fi/signal), you must test them one at a time.\\n\\n**How to proceed:**\\n\\n1.  **Test the Power (Supply):** Replace the battery/power source. If the device works after the change, the \\\"Power\\\" was the issue.\\n2.  **Test the Connection (Wi-Fi):** Move the device physically closer to the router/access point. If it works when moved closer, the \\\"Connection\\\" was the issue.\\n\\n**You cannot know the answer until you test both variables separately.**\\n\\n**If you must choose a starting point, start with the most obvious physical failure point: the Power source.**\\n\\n**Recommendation:**\\n**Test the Power Source first.**\\n\\n*   **If the device works after changing the power source, the \\\"Power\\\" was the problem.**\\n*   **If the device still fails, the \\\"Connection\\\" (Wi-Fi) is the problem.**\\n\\n**Which test should you do first?**\\n**Test the Power Source (Power/Battery) first.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-S-rephrased-r0-t06"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [], \"episode_id\": \"main-network-S-rephrased-r0-t06\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "7273813ef4989f52a6386ca4bb638a391185ac3ced735f9f489023a4ccbddb66",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 505,
+              "start": 478
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "power source",
+            "object_span": {
+              "end": 490,
+              "start": 478
+            },
+            "relation": "changes",
+            "score": 0.6968317031860352,
+            "source_slot": "s1",
+            "subject": "device",
+            "subject_span": {
+              "end": 505,
+              "start": 499
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 582,
+              "start": 535
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Connection",
+            "object_span": {
+              "end": 582,
+              "start": 572
+            },
+            "relation": "associated_with",
+            "score": 0.40905117988586426,
+            "source_slot": "s1",
+            "subject": "Power",
+            "subject_span": {
+              "end": 540,
+              "start": 535
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "f352204ceb63b0b60ece34c1b6b6052288f0bed2946de26499b71082020cf74a",
+          "s1": "0e98aba0b120665ea8f8d9dbcca275d65e68c1981a35647c52fa1418b20a03b0"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.40905117988586426,
+                  "end": 647,
+                  "start": 642,
+                  "text": "Power"
+                },
+                "tail": {
+                  "confidence": 0.40905117988586426,
+                  "end": 689,
+                  "start": 679,
+                  "text": "Connection"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.6968317031860352,
+                  "end": 612,
+                  "start": 606,
+                  "text": "device"
+                },
+                "tail": {
+                  "confidence": 0.6968317031860352,
+                  "end": 597,
+                  "start": 585,
+                  "text": "power source"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.4624495804309845,
+                  "end": 87,
+                  "start": 77,
+                  "text": "connection"
+                },
+                "tail": {
+                  "confidence": 0.4624495804309845,
+                  "end": 233,
+                  "start": 226,
+                  "text": "failure"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.4624495804309845,
+              "end": 87,
+              "start": 77,
+              "text": "connection"
+            },
+            "tail": {
+              "confidence": 0.4624495804309845,
+              "end": 233,
+              "start": 226,
+              "text": "failure"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:04:38.621489+00:00",
+  "status": "RETURNED"
+}

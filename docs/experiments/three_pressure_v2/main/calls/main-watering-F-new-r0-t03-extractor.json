@@ -1,0 +1,385 @@
+{
+  "completed_utc": "2026-10-02T19:05:49.718550+00:00",
+  "elapsed_seconds": 0.9558377268258482,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"A matching pot without a wick loses 120 grams during the same afternoon. Ask how the control changes the delivery target.\", \"s1\": \"It sounds like you are describing a scenario where a specific amount of water (120 grams) is being lost or \\\"lost\\\" from the system over a period of time.\\n\\nSince you are asking how this change in weight (120 grams) affects the \\\"control\\\" or the *delivery target*, I need a bit more context to give you a precise answer.\\n\\n**Could you clarify what you mean by \\\"control\\\"?**\\n\\nAre you referring to:\\n1.  **A control group in an experiment?** (e.g., comparing two different plants?)\\n2.  **A control variable in a specific experiment?**\\n3.  **A \\\"control\\\" or \\\"target\\\" in a specific project or process?**\\n\\nIf you can clarify what \\\"control\\\" means in your context, I can give you a much more specific answer!\\n\\n**However, based on the 120g loss, here is a general interpretation:**\\n\\n*   **If you are talking about a \\\"Control Group\\\" in a scientific experiment:** The 120g loss is the **\\\"Control\\\"**\\u2014the baseline measurement against which you are comparing your test group.\\n*   **If you are talking about a \\\"Target\\\" or goal:** The 120g loss is the **\\\"Target\\\"**\\u2014the goal you are trying to achieve.\\n\\n**Please tell me what \\\"control\\\" refers to so I can help you better!**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-watering-F-new-r0-t03"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"Control\", \"relation\": \"related\", \"to\": \"test group\", \"source\": \"s1\", \"evidence\": \"Control Group\\\" in a scientific experiment:** The 120g loss is the **\\\"Control\\\"**\\u2014the baseline measurement against which you are comparing your test group\"}], \"episode_id\": \"main-watering-F-new-r0-t03\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "controls",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "manages",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        }
+      ],
+      "specialist": {
+        "content_digest": "e16b63d70570447779ed48f734cc96bece5919cad1884cbf698125bc04a2746a",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 258,
+              "start": 184
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "delivery target",
+            "object_span": {
+              "end": 258,
+              "start": 243
+            },
+            "relation": "affects",
+            "score": 0.3569539487361908,
+            "source_slot": "s1",
+            "subject": "change in weight",
+            "subject_span": {
+              "end": 200,
+              "start": 184
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 258,
+              "start": 226
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "delivery target",
+            "object_span": {
+              "end": 258,
+              "start": 243
+            },
+            "relation": "changes",
+            "score": 0.8956851363182068,
+            "source_slot": "s1",
+            "subject": "control",
+            "subject_span": {
+              "end": 233,
+              "start": 226
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 258,
+              "start": 226
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "delivery target",
+            "object_span": {
+              "end": 258,
+              "start": 243
+            },
+            "relation": "controls",
+            "score": 0.8049871325492859,
+            "source_slot": "s1",
+            "subject": "control",
+            "subject_span": {
+              "end": 233,
+              "start": 226
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 258,
+              "start": 226
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "delivery target",
+            "object_span": {
+              "end": 258,
+              "start": 243
+            },
+            "relation": "influences",
+            "score": 0.8669576048851013,
+            "source_slot": "s1",
+            "subject": "control",
+            "subject_span": {
+              "end": 233,
+              "start": 226
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 406,
+              "start": 243
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "delivery target",
+            "object_span": {
+              "end": 258,
+              "start": 243
+            },
+            "relation": "manages",
+            "score": 0.3545299172401428,
+            "source_slot": "s1",
+            "subject": "control",
+            "subject_span": {
+              "end": 406,
+              "start": 399
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 953,
+              "start": 801
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "test group",
+            "object_span": {
+              "end": 953,
+              "start": 943
+            },
+            "relation": "related",
+            "score": 0.36142203211784363,
+            "source_slot": "s1",
+            "subject": "Control",
+            "subject_span": {
+              "end": 808,
+              "start": 801
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "6090cb6c75eac03b5a0064e4401c9ebba604fabee852f6687b26850f777a6548",
+          "s1": "84338d1e2d7ccf45823eb00bd713fccd6887b0004cc795a12620fcf60191c124"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.3569539487361908,
+                  "end": 322,
+                  "start": 306,
+                  "text": "change in weight"
+                },
+                "tail": {
+                  "confidence": 0.3569539487361908,
+                  "end": 380,
+                  "start": 365,
+                  "text": "delivery target"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.8956851363182068,
+                  "end": 355,
+                  "start": 348,
+                  "text": "control"
+                },
+                "tail": {
+                  "confidence": 0.8956851363182068,
+                  "end": 380,
+                  "start": 365,
+                  "text": "delivery target"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [
+              {
+                "head": {
+                  "confidence": 0.8049871325492859,
+                  "end": 355,
+                  "start": 348,
+                  "text": "control"
+                },
+                "tail": {
+                  "confidence": 0.8049871325492859,
+                  "end": 380,
+                  "start": 365,
+                  "text": "delivery target"
+                }
+              }
+            ],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.8669576048851013,
+                  "end": 355,
+                  "start": 348,
+                  "text": "control"
+                },
+                "tail": {
+                  "confidence": 0.8669576048851013,
+                  "end": 380,
+                  "start": 365,
+                  "text": "delivery target"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [
+              {
+                "head": {
+                  "confidence": 0.3545299172401428,
+                  "end": 528,
+                  "start": 521,
+                  "text": "control"
+                },
+                "tail": {
+                  "confidence": 0.3545299172401428,
+                  "end": 380,
+                  "start": 365,
+                  "text": "delivery target"
+                }
+              }
+            ],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.36142203211784363,
+                  "end": 930,
+                  "start": 923,
+                  "text": "Control"
+                },
+                "tail": {
+                  "confidence": 0.36142203211784363,
+                  "end": 1075,
+                  "start": 1065,
+                  "text": "test group"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:05:48.761488+00:00",
+  "status": "RETURNED"
+}

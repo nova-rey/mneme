@@ -1,0 +1,541 @@
+{
+  "completed_utc": "2026-10-02T19:17:35.500166+00:00",
+  "elapsed_seconds": 1.4587368750944734,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"The local log records publish acknowledgment timeouts during each stale interval. How do we determine which connection evidence now matters?\", \"s1\": \"This is a classic \\\"network latency\\\" or \\\"connection stability\\\" problem.\\n\\nWhen you see **\\\"acknowledgment timeouts\\\"** during a **\\\"stale\\\"** state, it means the system is *trying* to send data, but the receiving end isn't responding in time.\\n\\nHere is how to determine which connection evidence matters:\\n\\n### 1. Identify the \\\"Stale\\\" State (The Problem)\\nThe \\\"stale\\\" state means the data is being collected, but the *confirmation* (the acknowledgment) is failing.\\n\\n### 2. The \\\"Evidence\\\" (The Evidence)\\nThe \\\"evidence\\\" that matters is the **Network Path**.\\n\\n*   **If the connection is \\\"stale,\\\"** it means the data is being generated but not successfully *received* or *confirmed* by the receiving end.\\n\\n### 3. How to Determine the \\\"Connection Evidence\\\":**\\n\\nTo determine which \\\"connection evidence\\\" matters, you need to check the **\\\"Handshake\\\"** or **\\\"Handshake\\\"** between the sender and the receiver.\\n\\n**The evidence that matters is the *Protocol*:**\\n\\n*   **If the \\\"stale\\\" state is a \\\"timeout,\\\"** the evidence is that the **network path** is broken or too slow.\\n*   **If the \\\"stale\\\" state is a \\\"stale\\\" data point,** the evidence is that the *data* itself is failing to be sent correctly.\\n\\n**The evidence that matters is the *Communication Protocol*:**\\n\\n*   **If the system is \\\"stale,\\\"** the evidence is that the **network connection** is failing.\\n*   **The \\\"Evidence\\\" is the \\\"Network Latency\\\":** The \\\"stale\\\" state is the symptom, and the \\\"evidence\\\" is the **network path** (the cable, the router, or the server).\\n\\n**In summary:** You need to check the **Network Path**.\\n\\n**Actionable Steps:**\\n\\n1.  **Check the \\\"Handshake\\\" (The Protocol):** Is the data being sent correctly?\\n2.  **Check the \\\"Path\\\" (The Connection):** Is the physical connection between the sender and receiver stable?\\n3.  **Check the \\\"Timeout\\\":** Why is it timing out? Is it a firewall, a firewall block, or a slow server?\\n\\n**The \\\"Evidence\\\" that matters is the *Network Path* itself.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-F-new-r1-t06"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"acknowledgment timeouts\", \"relation\": \"causes\", \"to\": \"stale\", \"source\": \"s0\", \"evidence\": \"acknowledgment timeouts during each stale\"}, {\"from\": \"Handshake\", \"relation\": \"causes\", \"to\": \"stale\", \"source\": \"s1\", \"evidence\": \"Handshake\\\"** between the sender and the receiver.\\n\\n**The evidence that matters is the *Protocol*:**\\n\\n*   **If the \\\"stale\"}], \"episode_id\": \"main-network-F-new-r1-t06\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "441af2eadab71eaf213693d05ef556258ac77920f66c0b4470c2e2d38b79b0da",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 71,
+              "start": 30
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "stale",
+            "object_span": {
+              "end": 71,
+              "start": 66
+            },
+            "relation": "causes",
+            "score": 0.8568747639656067,
+            "source_slot": "s0",
+            "subject": "acknowledgment timeouts",
+            "subject_span": {
+              "end": 53,
+              "start": 30
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 71,
+              "start": 30
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "stale",
+            "object_span": {
+              "end": 71,
+              "start": 66
+            },
+            "relation": "changes",
+            "score": 0.5553823113441467,
+            "source_slot": "s0",
+            "subject": "acknowledgment timeouts",
+            "subject_span": {
+              "end": 53,
+              "start": 30
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 71,
+              "start": 30
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "stale",
+            "object_span": {
+              "end": 71,
+              "start": 66
+            },
+            "relation": "leads_to",
+            "score": 0.7293990850448608,
+            "source_slot": "s0",
+            "subject": "acknowledgment timeouts",
+            "subject_span": {
+              "end": 53,
+              "start": 30
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 831,
+              "start": 599
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "data",
+            "object_span": {
+              "end": 603,
+              "start": 599
+            },
+            "relation": "affects",
+            "score": 0.5411322712898254,
+            "source_slot": "s1",
+            "subject": "Handshake",
+            "subject_span": {
+              "end": 831,
+              "start": 822
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 831,
+              "start": 722
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Connection",
+            "object_span": {
+              "end": 732,
+              "start": 722
+            },
+            "relation": "affects",
+            "score": 0.6210298538208008,
+            "source_slot": "s1",
+            "subject": "Handshake",
+            "subject_span": {
+              "end": 831,
+              "start": 822
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 961,
+              "start": 841
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "stale",
+            "object_span": {
+              "end": 961,
+              "start": 956
+            },
+            "relation": "causes",
+            "score": 0.828192949295044,
+            "source_slot": "s1",
+            "subject": "Handshake",
+            "subject_span": {
+              "end": 850,
+              "start": 841
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1702,
+              "start": 1601
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Connection",
+            "object_span": {
+              "end": 1702,
+              "start": 1692
+            },
+            "relation": "associated_with",
+            "score": 0.6077215671539307,
+            "source_slot": "s1",
+            "subject": "Handshake",
+            "subject_span": {
+              "end": 1610,
+              "start": 1601
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1702,
+              "start": 1601
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Connection",
+            "object_span": {
+              "end": 1702,
+              "start": 1692
+            },
+            "relation": "influences",
+            "score": 0.5557286739349365,
+            "source_slot": "s1",
+            "subject": "Handshake",
+            "subject_span": {
+              "end": 1610,
+              "start": 1601
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "1a215cd04e6ec9d37e286f728e5f5ae856ee312d4089d0ab5d6803be3efe5571",
+          "s1": "206c3c01b4f6b374f84903ba6a1d7656e14d8a58beca308f8537f0f7648cc89a"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.5411322712898254,
+                  "end": 972,
+                  "start": 963,
+                  "text": "Handshake"
+                },
+                "tail": {
+                  "confidence": 0.5411322712898254,
+                  "end": 744,
+                  "start": 740,
+                  "text": "data"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6210298538208008,
+                  "end": 972,
+                  "start": 963,
+                  "text": "Handshake"
+                },
+                "tail": {
+                  "confidence": 0.6210298538208008,
+                  "end": 873,
+                  "start": 863,
+                  "text": "Connection"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.41457825899124146,
+                  "end": 252,
+                  "start": 229,
+                  "text": "acknowledgment timeouts"
+                },
+                "tail": {
+                  "confidence": 0.41457825899124146,
+                  "end": 118,
+                  "start": 108,
+                  "text": "connection"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6077215671539307,
+                  "end": 1751,
+                  "start": 1742,
+                  "text": "Handshake"
+                },
+                "tail": {
+                  "confidence": 0.6077215671539307,
+                  "end": 1843,
+                  "start": 1833,
+                  "text": "Connection"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.8568747639656067,
+                  "end": 53,
+                  "start": 30,
+                  "text": "acknowledgment timeouts"
+                },
+                "tail": {
+                  "confidence": 0.8568747639656067,
+                  "end": 71,
+                  "start": 66,
+                  "text": "stale"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.828192949295044,
+                  "end": 991,
+                  "start": 982,
+                  "text": "Handshake"
+                },
+                "tail": {
+                  "confidence": 0.828192949295044,
+                  "end": 1102,
+                  "start": 1097,
+                  "text": "stale"
+                }
+              }
+            ],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.5553823113441467,
+                  "end": 53,
+                  "start": 30,
+                  "text": "acknowledgment timeouts"
+                },
+                "tail": {
+                  "confidence": 0.5553823113441467,
+                  "end": 71,
+                  "start": 66,
+                  "text": "stale"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.5557286739349365,
+                  "end": 1751,
+                  "start": 1742,
+                  "text": "Handshake"
+                },
+                "tail": {
+                  "confidence": 0.5557286739349365,
+                  "end": 1843,
+                  "start": 1833,
+                  "text": "Connection"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [
+              {
+                "head": {
+                  "confidence": 0.7293990850448608,
+                  "end": 53,
+                  "start": 30,
+                  "text": "acknowledgment timeouts"
+                },
+                "tail": {
+                  "confidence": 0.7293990850448608,
+                  "end": 71,
+                  "start": 66,
+                  "text": "stale"
+                }
+              }
+            ],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.4745631515979767,
+                  "end": 127,
+                  "start": 108,
+                  "text": "connection evidence"
+                },
+                "tail": {
+                  "confidence": 0.4745631515979767,
+                  "end": 1167,
+                  "start": 1155,
+                  "text": "network path"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.41457825899124146,
+              "end": 252,
+              "start": 229,
+              "text": "acknowledgment timeouts"
+            },
+            "tail": {
+              "confidence": 0.41457825899124146,
+              "end": 118,
+              "start": 108,
+              "text": "connection"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.4745631515979767,
+              "end": 127,
+              "start": 108,
+              "text": "connection evidence"
+            },
+            "tail": {
+              "confidence": 0.4745631515979767,
+              "end": 1167,
+              "start": 1155,
+              "text": "network path"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:17:34.038694+00:00",
+  "status": "RETURNED"
+}

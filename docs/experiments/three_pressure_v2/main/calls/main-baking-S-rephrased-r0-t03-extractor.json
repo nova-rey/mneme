@@ -1,0 +1,850 @@
+{
+  "completed_utc": "2026-10-02T19:14:54.988997+00:00",
+  "elapsed_seconds": 1.1984625700861216,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"There are no new results. I still worry that changing either setting will leave the outside or middle wrong. What's another way to think about this problem?\", \"s1\": \"It sounds like you are in a frustrating loop where the \\\"correct\\\" setting keeps failing. When a simple time/temp adjustment doesn't work, it usually means the **physics of the heat transfer** is the issue, not just the settings.\\n\\nSince you are worried about the outside being too dark *or* the middle being raw, here are two more advanced ways to approach the problem:\\n\\n### 1. The \\\"Heat Shield\\\" Approach (The \\\"Buffer\\\" Method)\\nInstead of just adjusting the temperature or time, try **\\\"baking in stages.\\\"**\\n\\n*   **Phase 1 (The Slow Bake):** Bake at a *lower* temperature than you normally would, but for a *longer* time. This prevents the outside from burning too fast.\\n*   **Phase 2 (The Finish):** Once the initial heat has done its job, turn the oven to a higher temperature for a final 5-10 minutes to \\\"set\\\" the center.\\n\\n### 2. The \\\"Heat Distribution\\\" Check\\nIf the oven is old or poorly maintained, the heat might be uneven. If you have a **convection setting**, try turning it *off* and just using the standard \\\"Bake\\\" setting to see if the heat is more consistent.\\n\\n**If you can tell me what you are baking (e.g., bread, cake, etc.), I can give you a more specific, \\\"dependable\\\" set of instructions.**\\n\\n---\\n\\n**If you want a \\\"dependable\\\" setting, you need to know the specific item.**\\n\\n**For example:**\\n*   **If it's a cake:** You might need a lower temperature and a longer time.\\n*   **If it's a loaf of bread:** You might need to move the pan to a different rack position (e.g., from the middle rack to the lower rack).\\n\\n**What are you baking?** If you tell me the item, I can give you the exact \\\"dependable\\\" steps!\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-baking-S-rephrased-r0-t03"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [], \"episode_id\": \"main-baking-S-rephrased-r0-t03\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "solves",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "solves",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "helps",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "solves",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 11,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 14,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 15,
+          "kind": "unsupported_specialist_relation",
+          "relation": "has",
+          "status": "rejected"
+        },
+        {
+          "index": 16,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "ff106636b44baa13dcf7cb2ef1de819374a05a7e4c3ab0c7a5c8460d78a976ea",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 392,
+              "start": 359
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "problem",
+            "object_span": {
+              "end": 366,
+              "start": 359
+            },
+            "relation": "solves",
+            "score": 0.5421625375747681,
+            "source_slot": "s1",
+            "subject": "Heat Shield",
+            "subject_span": {
+              "end": 392,
+              "start": 381
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 960,
+              "start": 483
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "convection setting",
+            "object_span": {
+              "end": 960,
+              "start": 942
+            },
+            "relation": "uses",
+            "score": 0.3569031357765198,
+            "source_slot": "s1",
+            "subject": "baking",
+            "subject_span": {
+              "end": 489,
+              "start": 483
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 499,
+              "start": 359
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "problem",
+            "object_span": {
+              "end": 366,
+              "start": 359
+            },
+            "relation": "solves",
+            "score": 0.7689205408096313,
+            "source_slot": "s1",
+            "subject": "baking in stages",
+            "subject_span": {
+              "end": 499,
+              "start": 483
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 499,
+              "start": 483
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "baking",
+            "object_span": {
+              "end": 489,
+              "start": 483
+            },
+            "relation": "helps",
+            "score": 0.560798704624176,
+            "source_slot": "s1",
+            "subject": "baking in stages",
+            "subject_span": {
+              "end": 499,
+              "start": 483
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 499,
+              "start": 483
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "baking",
+            "object_span": {
+              "end": 489,
+              "start": 483
+            },
+            "relation": "improves",
+            "score": 0.4868120551109314,
+            "source_slot": "s1",
+            "subject": "baking in stages",
+            "subject_span": {
+              "end": 499,
+              "start": 483
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 499,
+              "start": 483
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "baking",
+            "object_span": {
+              "end": 489,
+              "start": 483
+            },
+            "relation": "solves",
+            "score": 0.5444416403770447,
+            "source_slot": "s1",
+            "subject": "baking in stages",
+            "subject_span": {
+              "end": 499,
+              "start": 483
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1282,
+              "start": 483
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "specific item",
+            "object_span": {
+              "end": 1282,
+              "start": 1269
+            },
+            "relation": "requires",
+            "score": 0.7038945555686951,
+            "source_slot": "s1",
+            "subject": "baking in stages",
+            "subject_span": {
+              "end": 499,
+              "start": 483
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 567,
+              "start": 511
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 567,
+              "start": 556
+            },
+            "relation": "increases",
+            "score": 0.7318305373191833,
+            "source_slot": "s1",
+            "subject": "Phase 1",
+            "subject_span": {
+              "end": 518,
+              "start": 511
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 567,
+              "start": 511
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 567,
+              "start": 556
+            },
+            "relation": "reduces",
+            "score": 0.7385503053665161,
+            "source_slot": "s1",
+            "subject": "Phase 1",
+            "subject_span": {
+              "end": 518,
+              "start": 511
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 960,
+              "start": 511
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "convection setting",
+            "object_span": {
+              "end": 960,
+              "start": 942
+            },
+            "relation": "uses",
+            "score": 0.35831981897354126,
+            "source_slot": "s1",
+            "subject": "Phase 1",
+            "subject_span": {
+              "end": 518,
+              "start": 511
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 567,
+              "start": 529
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 567,
+              "start": 556
+            },
+            "relation": "reduces",
+            "score": 0.5202888250350952,
+            "source_slot": "s1",
+            "subject": "Bake",
+            "subject_span": {
+              "end": 533,
+              "start": 529
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 567,
+              "start": 538
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 567,
+              "start": 556
+            },
+            "relation": "increases",
+            "score": 0.5153582096099854,
+            "source_slot": "s1",
+            "subject": "Bake",
+            "subject_span": {
+              "end": 542,
+              "start": 538
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 774,
+              "start": 673
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 774,
+              "start": 763
+            },
+            "relation": "increases",
+            "score": 0.6142653822898865,
+            "source_slot": "s1",
+            "subject": "Phase 2",
+            "subject_span": {
+              "end": 680,
+              "start": 673
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 774,
+              "start": 673
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 774,
+              "start": 763
+            },
+            "relation": "reduces",
+            "score": 0.5655099749565125,
+            "source_slot": "s1",
+            "subject": "Phase 2",
+            "subject_span": {
+              "end": 680,
+              "start": 673
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 960,
+              "start": 673
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "convection setting",
+            "object_span": {
+              "end": 960,
+              "start": 942
+            },
+            "relation": "uses",
+            "score": 0.3550862967967987,
+            "source_slot": "s1",
+            "subject": "Phase 2",
+            "subject_span": {
+              "end": 680,
+              "start": 673
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 960,
+              "start": 866
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "convection setting",
+            "object_span": {
+              "end": 960,
+              "start": 942
+            },
+            "relation": "has",
+            "score": 0.8742120862007141,
+            "source_slot": "s1",
+            "subject": "oven",
+            "subject_span": {
+              "end": 870,
+              "start": 866
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1018,
+              "start": 636
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "outside",
+            "object_span": {
+              "end": 643,
+              "start": 636
+            },
+            "relation": "affects",
+            "score": 0.4252221882343292,
+            "source_slot": "s1",
+            "subject": "Bake",
+            "subject_span": {
+              "end": 1018,
+              "start": 1014
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "04882571c38e8dccbbec4053463590b491f356a059eb50b172b12688fd420c00",
+          "s1": "6fa4515254a9b0e643ced971de9e517989fee81118ceab3dcfdc79080eedd72c"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.4252221882343292,
+                  "end": 1175,
+                  "start": 1171,
+                  "text": "Bake"
+                },
+                "tail": {
+                  "confidence": 0.4252221882343292,
+                  "end": 800,
+                  "start": 793,
+                  "text": "outside"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [
+              {
+                "head": {
+                  "confidence": 0.8742120862007141,
+                  "end": 1027,
+                  "start": 1023,
+                  "text": "oven"
+                },
+                "tail": {
+                  "confidence": 0.8742120862007141,
+                  "end": 1117,
+                  "start": 1099,
+                  "text": "convection setting"
+                }
+              }
+            ],
+            "helps": [
+              {
+                "head": {
+                  "confidence": 0.560798704624176,
+                  "end": 656,
+                  "start": 640,
+                  "text": "baking in stages"
+                },
+                "tail": {
+                  "confidence": 0.560798704624176,
+                  "end": 646,
+                  "start": 640,
+                  "text": "baking"
+                }
+              }
+            ],
+            "holds": [],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.4868120551109314,
+                  "end": 656,
+                  "start": 640,
+                  "text": "baking in stages"
+                },
+                "tail": {
+                  "confidence": 0.4868120551109314,
+                  "end": 646,
+                  "start": 640,
+                  "text": "baking"
+                }
+              }
+            ],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.7318305373191833,
+                  "end": 675,
+                  "start": 668,
+                  "text": "Phase 1"
+                },
+                "tail": {
+                  "confidence": 0.7318305373191833,
+                  "end": 724,
+                  "start": 713,
+                  "text": "temperature"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5153582096099854,
+                  "end": 699,
+                  "start": 695,
+                  "text": "Bake"
+                },
+                "tail": {
+                  "confidence": 0.5153582096099854,
+                  "end": 724,
+                  "start": 713,
+                  "text": "temperature"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6142653822898865,
+                  "end": 837,
+                  "start": 830,
+                  "text": "Phase 2"
+                },
+                "tail": {
+                  "confidence": 0.6142653822898865,
+                  "end": 931,
+                  "start": 920,
+                  "text": "temperature"
+                }
+              }
+            ],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.7385503053665161,
+                  "end": 675,
+                  "start": 668,
+                  "text": "Phase 1"
+                },
+                "tail": {
+                  "confidence": 0.7385503053665161,
+                  "end": 724,
+                  "start": 713,
+                  "text": "temperature"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5202888250350952,
+                  "end": 690,
+                  "start": 686,
+                  "text": "Bake"
+                },
+                "tail": {
+                  "confidence": 0.5202888250350952,
+                  "end": 724,
+                  "start": 713,
+                  "text": "temperature"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5655099749565125,
+                  "end": 837,
+                  "start": 830,
+                  "text": "Phase 2"
+                },
+                "tail": {
+                  "confidence": 0.5655099749565125,
+                  "end": 931,
+                  "start": 920,
+                  "text": "temperature"
+                }
+              }
+            ],
+            "related": [],
+            "requires": [
+              {
+                "head": {
+                  "confidence": 0.7038945555686951,
+                  "end": 656,
+                  "start": 640,
+                  "text": "baking in stages"
+                },
+                "tail": {
+                  "confidence": 0.7038945555686951,
+                  "end": 1439,
+                  "start": 1426,
+                  "text": "specific item"
+                }
+              }
+            ],
+            "retains": [],
+            "shades": [],
+            "solves": [
+              {
+                "head": {
+                  "confidence": 0.5421625375747681,
+                  "end": 549,
+                  "start": 538,
+                  "text": "Heat Shield"
+                },
+                "tail": {
+                  "confidence": 0.5421625375747681,
+                  "end": 523,
+                  "start": 516,
+                  "text": "problem"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7689205408096313,
+                  "end": 656,
+                  "start": 640,
+                  "text": "baking in stages"
+                },
+                "tail": {
+                  "confidence": 0.7689205408096313,
+                  "end": 523,
+                  "start": 516,
+                  "text": "problem"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5444416403770447,
+                  "end": 656,
+                  "start": 640,
+                  "text": "baking in stages"
+                },
+                "tail": {
+                  "confidence": 0.5444416403770447,
+                  "end": 646,
+                  "start": 640,
+                  "text": "baking"
+                }
+              }
+            ],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.3569031357765198,
+                  "end": 646,
+                  "start": 640,
+                  "text": "baking"
+                },
+                "tail": {
+                  "confidence": 0.3569031357765198,
+                  "end": 1117,
+                  "start": 1099,
+                  "text": "convection setting"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.35831981897354126,
+                  "end": 675,
+                  "start": 668,
+                  "text": "Phase 1"
+                },
+                "tail": {
+                  "confidence": 0.35831981897354126,
+                  "end": 1117,
+                  "start": 1099,
+                  "text": "convection setting"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.3550862967967987,
+                  "end": 837,
+                  "start": 830,
+                  "text": "Phase 2"
+                },
+                "tail": {
+                  "confidence": 0.3550862967967987,
+                  "end": 1117,
+                  "start": 1099,
+                  "text": "convection setting"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:14:53.788264+00:00",
+  "status": "RETURNED"
+}

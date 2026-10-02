@@ -1,0 +1,767 @@
+{
+  "completed_utc": "2026-10-02T19:17:23.811933+00:00",
+  "elapsed_seconds": 1.4517332299146801,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"The dashboard still goes stale even though the local sample counter continues advancing. How do we separate sampling from reporting?\", \"s1\": \"This is a classic \\\"data integrity\\\" problem. If the **Local Sample Counter** is advancing (meaning the *hardware* is working and collecting data), but the **Dashboard** is \\\"stale\\\" (meaning the *display/reporting* is failing), you have a **Communication/Transmission Problem**, not a hardware failure.\\n\\nHere is how to separate the \\\"sampling\\\" from the \\\"reporting\\\":\\n\\n### 1. The \\\"Sampling\\\" (Data Collection) vs. \\\"Reporting\\\" (Transmission)\\n\\n*   **Sampling (Data Collection):** This is the hardware function. The sensor is successfully reading the environment (e.g., the temperature sensor is reading 25\\u00b0C).\\n*   **Reporting (Transmission):** This is the communication function. The data is being collected, but it's not successfully reaching the final destination (the dashboard).\\n\\n### 2. How to Separate them (The \\\"Separation\\\")\\n\\nYou need to isolate the **Data Collection** from the **Data Transmission**:\\n\\n*   **If the data is \\\"stale,\\\"** it means the data is being collected but *not* being sent out.\\n*   **The \\\"Stale\\\" state:** The system is likely stuck in a \\\"waiting\\\" state, or the transmission protocol is failing.\\n\\n**Diagnostic Steps:**\\n\\n1.  **Check the Transmission Protocol:** Is the network connection stable? Is the \\\"Reporting\\\" protocol (Wi-Fi/Ethernet) stable?\\n2.  **Check the \\\"Reporting\\\" Layer:** If the data is being collected but not appearing, the \\\"Reporting\\\" layer is the bottleneck.\\n3.  **Check the \\\"Stale\\\" State:** If the \\\"stale\\\" state is the *result* of the data not being sent, you need to check the **Transmission Protocol** (e.g., a firewall, a firewall block, or a network congestion issue).\\n\\n### 3. How to Fix the \\\"Stale\\\" State:**\\n\\n*   **If the data is being collected but not \\\"reporting,\\\"** you need to check the **Transmission Layer**.\\n*   **Action:** Check the network connection, the IP address, or the specific API endpoint that receives the data.\\n\\n**In short: The problem is likely in the \\\"Reporting\\\" layer, not the \\\"Sampling\\\" layer.**\\n\\n**If you need to fix the \\\"stale\\\" state, you need to check the communication pathway between the sensor and the dashboard.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-F-new-r1-t05"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"Dashboard\", \"relation\": \"related\", \"to\": \"reporting\", \"source\": \"s1\", \"evidence\": \"Dashboard** is \\\"stale\\\" (meaning the *display/reporting\"}, {\"from\": \"Sampling\", \"relation\": \"causes\", \"to\": \"stale\", \"source\": \"s1\", \"evidence\": \"Sampling\\\" layer.**\\n\\n**If you need to fix the \\\"stale\"}], \"episode_id\": \"main-network-F-new-r1-t05\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "keeps",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "stabilizes",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "used_for",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "used_for",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "used_for",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "used_for",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 11,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 14,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "b2c74a37989aa953d1f128bc4e6cfde349faeb5c990848e24b6be44688890ae9",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 67,
+              "start": 25
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "stale",
+            "object_span": {
+              "end": 30,
+              "start": 25
+            },
+            "relation": "keeps",
+            "score": 0.7062049508094788,
+            "source_slot": "s0",
+            "subject": "local sample counter",
+            "subject_span": {
+              "end": 67,
+              "start": 47
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 116,
+              "start": 47
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "local sample counter",
+            "object_span": {
+              "end": 67,
+              "start": 47
+            },
+            "relation": "uses",
+            "score": 0.8662102818489075,
+            "source_slot": "s0",
+            "subject": "sampling",
+            "subject_span": {
+              "end": 116,
+              "start": 108
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 131,
+              "start": 108
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "reporting",
+            "object_span": {
+              "end": 131,
+              "start": 122
+            },
+            "relation": "affects",
+            "score": 0.6432133913040161,
+            "source_slot": "s0",
+            "subject": "sampling",
+            "subject_span": {
+              "end": 116,
+              "start": 108
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 177,
+              "start": 156
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "stale",
+            "object_span": {
+              "end": 177,
+              "start": 172
+            },
+            "relation": "stabilizes",
+            "score": 0.42732319235801697,
+            "source_slot": "s1",
+            "subject": "Dashboard",
+            "subject_span": {
+              "end": 165,
+              "start": 156
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 210,
+              "start": 156
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "reporting",
+            "object_span": {
+              "end": 210,
+              "start": 201
+            },
+            "relation": "related",
+            "score": 0.47951629757881165,
+            "source_slot": "s1",
+            "subject": "Dashboard",
+            "subject_span": {
+              "end": 165,
+              "start": 156
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 383,
+              "start": 330
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Sampling",
+            "object_span": {
+              "end": 383,
+              "start": 375
+            },
+            "relation": "used_for",
+            "score": 0.8182488083839417,
+            "source_slot": "s1",
+            "subject": "sampling",
+            "subject_span": {
+              "end": 338,
+              "start": 330
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 401,
+              "start": 53
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Local Sample Counter",
+            "object_span": {
+              "end": 73,
+              "start": 53
+            },
+            "relation": "uses",
+            "score": 0.7333489060401917,
+            "source_slot": "s1",
+            "subject": "Data Collection",
+            "subject_span": {
+              "end": 401,
+              "start": 386
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 466,
+              "start": 441
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Data Collection",
+            "object_span": {
+              "end": 466,
+              "start": 451
+            },
+            "relation": "used_for",
+            "score": 0.7893663644790649,
+            "source_slot": "s1",
+            "subject": "Sampling",
+            "subject_span": {
+              "end": 449,
+              "start": 441
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 466,
+              "start": 386
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Data Collection",
+            "object_span": {
+              "end": 401,
+              "start": 386
+            },
+            "relation": "used_for",
+            "score": 0.8193155527114868,
+            "source_slot": "s1",
+            "subject": "Data Collection",
+            "subject_span": {
+              "end": 466,
+              "start": 451
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 466,
+              "start": 441
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Sampling",
+            "object_span": {
+              "end": 449,
+              "start": 441
+            },
+            "relation": "used_for",
+            "score": 0.6616399884223938,
+            "source_slot": "s1",
+            "subject": "Data Collection",
+            "subject_span": {
+              "end": 466,
+              "start": 451
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 927,
+              "start": 849
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "stale",
+            "object_span": {
+              "end": 927,
+              "start": 922
+            },
+            "relation": "leads_to",
+            "score": 0.7803704142570496,
+            "source_slot": "s1",
+            "subject": "Data Collection",
+            "subject_span": {
+              "end": 864,
+              "start": 849
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1990,
+              "start": 1939
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "stale",
+            "object_span": {
+              "end": 1990,
+              "start": 1985
+            },
+            "relation": "causes",
+            "score": 0.8468544483184814,
+            "source_slot": "s1",
+            "subject": "Sampling",
+            "subject_span": {
+              "end": 1947,
+              "start": 1939
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1990,
+              "start": 1939
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "stale",
+            "object_span": {
+              "end": 1990,
+              "start": 1985
+            },
+            "relation": "changes",
+            "score": 0.8491252660751343,
+            "source_slot": "s1",
+            "subject": "Sampling",
+            "subject_span": {
+              "end": 1947,
+              "start": 1939
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1990,
+              "start": 1939
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "stale",
+            "object_span": {
+              "end": 1990,
+              "start": 1985
+            },
+            "relation": "leads_to",
+            "score": 0.7556053996086121,
+            "source_slot": "s1",
+            "subject": "Sampling",
+            "subject_span": {
+              "end": 1947,
+              "start": 1939
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1990,
+              "start": 1939
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "stale",
+            "object_span": {
+              "end": 1990,
+              "start": 1985
+            },
+            "relation": "reduces",
+            "score": 0.8455854058265686,
+            "source_slot": "s1",
+            "subject": "Sampling",
+            "subject_span": {
+              "end": 1947,
+              "start": 1939
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "ee18a3ee3fb928ae204e41fbf5e5d861e1086bca47145c23c173a49ec752c74c",
+          "s1": "1f763db50910778d0c1de5dbe260c34d215cf8010a8c7b2d17d508c2728953c8"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.6432133913040161,
+                  "end": 116,
+                  "start": 108,
+                  "text": "sampling"
+                },
+                "tail": {
+                  "confidence": 0.6432133913040161,
+                  "end": 131,
+                  "start": 122,
+                  "text": "reporting"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.8468544483184814,
+                  "end": 2080,
+                  "start": 2072,
+                  "text": "Sampling"
+                },
+                "tail": {
+                  "confidence": 0.8468544483184814,
+                  "end": 2123,
+                  "start": 2118,
+                  "text": "stale"
+                }
+              }
+            ],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.8491252660751343,
+                  "end": 2080,
+                  "start": 2072,
+                  "text": "Sampling"
+                },
+                "tail": {
+                  "confidence": 0.8491252660751343,
+                  "end": 2123,
+                  "start": 2118,
+                  "text": "stale"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [],
+            "keeps": [
+              {
+                "head": {
+                  "confidence": 0.7062049508094788,
+                  "end": 67,
+                  "start": 47,
+                  "text": "local sample counter"
+                },
+                "tail": {
+                  "confidence": 0.7062049508094788,
+                  "end": 30,
+                  "start": 25,
+                  "text": "stale"
+                }
+              }
+            ],
+            "leads_to": [
+              {
+                "head": {
+                  "confidence": 0.7803704142570496,
+                  "end": 997,
+                  "start": 982,
+                  "text": "Data Collection"
+                },
+                "tail": {
+                  "confidence": 0.7803704142570496,
+                  "end": 1060,
+                  "start": 1055,
+                  "text": "stale"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7556053996086121,
+                  "end": 2080,
+                  "start": 2072,
+                  "text": "Sampling"
+                },
+                "tail": {
+                  "confidence": 0.7556053996086121,
+                  "end": 2123,
+                  "start": 2118,
+                  "text": "stale"
+                }
+              }
+            ],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.8455854058265686,
+                  "end": 2080,
+                  "start": 2072,
+                  "text": "Sampling"
+                },
+                "tail": {
+                  "confidence": 0.8455854058265686,
+                  "end": 2123,
+                  "start": 2118,
+                  "text": "stale"
+                }
+              }
+            ],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.47951629757881165,
+                  "end": 298,
+                  "start": 289,
+                  "text": "Dashboard"
+                },
+                "tail": {
+                  "confidence": 0.47951629757881165,
+                  "end": 343,
+                  "start": 334,
+                  "text": "reporting"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [
+              {
+                "head": {
+                  "confidence": 0.42732319235801697,
+                  "end": 298,
+                  "start": 289,
+                  "text": "Dashboard"
+                },
+                "tail": {
+                  "confidence": 0.42732319235801697,
+                  "end": 310,
+                  "start": 305,
+                  "text": "stale"
+                }
+              }
+            ],
+            "supports": [],
+            "used_for": [
+              {
+                "head": {
+                  "confidence": 0.8182488083839417,
+                  "end": 471,
+                  "start": 463,
+                  "text": "sampling"
+                },
+                "tail": {
+                  "confidence": 0.8182488083839417,
+                  "end": 516,
+                  "start": 508,
+                  "text": "Sampling"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7893663644790649,
+                  "end": 582,
+                  "start": 574,
+                  "text": "Sampling"
+                },
+                "tail": {
+                  "confidence": 0.7893663644790649,
+                  "end": 599,
+                  "start": 584,
+                  "text": "Data Collection"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8193155527114868,
+                  "end": 599,
+                  "start": 584,
+                  "text": "Data Collection"
+                },
+                "tail": {
+                  "confidence": 0.8193155527114868,
+                  "end": 534,
+                  "start": 519,
+                  "text": "Data Collection"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6616399884223938,
+                  "end": 599,
+                  "start": 584,
+                  "text": "Data Collection"
+                },
+                "tail": {
+                  "confidence": 0.6616399884223938,
+                  "end": 582,
+                  "start": 574,
+                  "text": "Sampling"
+                }
+              }
+            ],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.8662102818489075,
+                  "end": 116,
+                  "start": 108,
+                  "text": "sampling"
+                },
+                "tail": {
+                  "confidence": 0.8662102818489075,
+                  "end": 67,
+                  "start": 47,
+                  "text": "local sample counter"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7333489060401917,
+                  "end": 534,
+                  "start": 519,
+                  "text": "Data Collection"
+                },
+                "tail": {
+                  "confidence": 0.7333489060401917,
+                  "end": 206,
+                  "start": 186,
+                  "text": "Local Sample Counter"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:17:22.357219+00:00",
+  "status": "RETURNED"
+}

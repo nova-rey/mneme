@@ -1,0 +1,48 @@
+{
+  "version": "three-pressure-meters-v2-frozen-1",
+  "status": "frozen before live scores; no coefficient fitting",
+  "windows": [
+    3,
+    5
+  ],
+  "source_views": [
+    "participant",
+    "gemma",
+    "combined"
+  ],
+  "input_boundary": "Whitelist only conversation/turn/ordinal/accepted_turn_id/arc_id/opening_task/participant_text/gemma_text/residue/sources/source_roles/extraction_coverage/field/historical_strengths/accessibility_adjustments. No labels, schedules, fidelity flags, future membership, store or provider handles.",
+  "arc_contract": "Age counts observed accepted records in the current existing arc_id. Reset on arc change. Incomplete unrecorded prefixes cannot be inferred. Baseline adapter builds only observed prefix membership and recomputes the final row.",
+  "semantic_identity": "Existing normalize_lookup_label and relationship aliases; relationship identity is normalized source label, canonical relation, normalized target label. Changing request-local keys does not add structure.",
+  "source_contract": "sources maps extraction slot to exact text; source_roles maps slots to participant/gemma/context. Only selected current source roles count; context is excluded. Each selected source requires extraction_coverage true and text equal to corresponding accepted text. A concept belongs to a view when its valid source_spans include that view OR it is an endpoint of a validated edge with source_spans in that view. A relationship requires its own source span in the view. This preserves endpoint provenance when minimal conversion retained only the first concept mention across slots. All unsupported or malformed provenance invalidates affected semantic view; partial extraction is unavailable, not zero.",
+  "meters": {
+    "contextual": {
+      "inputs": "Pre-response field.active_concepts contextual_activation and current accepted source text; opening_task and prior participant text/concept/relationship sets.",
+      "formulas": "context_activation_total=sum nonnegative activations; context_positive_coverage=positive count / recorded active concepts; context_positive_mean=total / positive count; context_hhi=sum positive normalized activation squared. opening_text_jaccard=token-set Jaccard(current source, opening task); recent_participant_text_jaccard=Jaccard(current source, union previous W participant texts in same arc); semantic continuity Jaccard current source concepts/relationships versus first observed participant extraction and union previous W participant extractions.",
+      "coverage": "Activation coverage is among recorded active concepts, not the full graph vocabulary. Empty union or absent/incomplete inputs yields null. Recent continuity requires at least one prior accepted turn; recent window completeness is separately reported.",
+      "limitations": "Vocabulary overlap is not relevance judgment, progress or semantic synonym matching. Opening semantic anchor is first participant extraction, not a new extraction of opening text. Source semantic coverage is required. Sparse graph may match excellent conversation poorly.",
+      "timing": "Field activation pre-response; participant text pre-response; Gemma/combined text post-response; all extracted semantics post-response extraction. Current semantic scores cannot regulate their own already-produced answer."
+    },
+    "historical": {
+      "inputs": "historical_strengths mapping eligible candidate to existing _strength=max(accessibility,support), restrained by negative consequence; field.accessibility_distribution same exact candidate identities; accessibility_adjustments retained separately.",
+      "formulas": "Normalize nonnegative strengths to p, actual field weights to q. Entropy=-sum p log p; effective count=exp(entropy); HHI=sum p squared; top mass=max p. TV=0.5 sum abs(p-q). Rank uses average ranks for exact ties; mean normalized absolute rank displacement=sum abs(rank_p-rank_q)/(N*max(1,N-1)). Return inspectable candidate probabilities and rank changes. Report q entropy/HHI/top mass independently. Adjustment mapping is not folded into earned baseline.",
+      "coverage": "Positive total and complete matching candidate identities required; zero total, mismatched identities, duplicates or malformed numbers produce unavailable distributions. Empty candidate set is unavailable.",
+      "limitations": "Describes reshaping of historical preference, not causal influence on prose or additive pressure percentages. Introspection adjustment can contribute to differences; report it separately. Constant unchanged-state reading is expected.",
+      "timing": "Pre-response if captured before generation."
+    },
+    "movement": {
+      "inputs": "Source-isolated validated residue labels/edges; accepted source text; validated source spans for generic evidence atoms.",
+      "formulas": "Use existing baseline current-set novelty relative to union previous up-to-W turns, adjacent 1-Jaccard, rolling W-turn saturation=1-union_size/sum_sizes, rolling mean novelty requiring W defined fractions. Whole-arc new counts and rolling new-per-turn retained. New concept+relationship counts and counts per 100 source words reported. Word3-shingle and character5-gram Jaccard current versus previous turn and maximum similarity against previous W completed turns. Evidence atoms: number with optional adjacent unit token; fixed generic negation, conditional and outcome marker tokens with up to two neighboring tokens each side; deduplicate atoms from validated evidence spans. Evidence novelty/recurrence/new counts and rolling saturation use same set formulas. No atom means unavailable evidence progression, not stagnation.",
+      "coverage": "Semantic windows require complete valid source coverage. Missing extraction invalidates affected windows. Empty concepts/edges yield count zero but undefined fractional novelty. Evidence progression unavailable when no supported atoms. Short text with no 3-shingle or 5-gram yields null. Text repetition remains available independently of extraction coverage.",
+      "limitations": "Changed numbers/markers need not be true, useful or outcomes; omission is not no-progress. Quotes are inspectable. Text overlap is surface repetition and set deduplication resists padding inflation but cannot understand paraphrase. Per-word ratios are sensitive to verbosity.",
+      "timing": "Text metrics after corresponding accepted source; semantic/evidence after extraction."
+    },
+    "composites": {
+      "inputs": "Primitive rolling novelty, evidence novelty, text repetition and accepted arc age.",
+      "formulas": "Retain old C1=maturity*(1-concept rolling novelty), C2=maturity*(1-(concept+relationship rolling novelty)/2), C3=C2*context HHI. New structure_repeat_raw=1-(concept+relationship rolling novelty)/2; evidence_aware_repeat_raw=structure_repeat_raw*(1-evidence rolling novelty); surface_repeat_raw=(word3 recent maximum Jaccard+char5 recent maximum Jaccard)/2. Each raw composite also has age_conditioned=maturity*raw; maturity=min(1,(age-1)/5). Missing any required operand gives null.",
+      "coverage": "No imputation, thresholds, fitted coefficients or automatic intervention.",
+      "limitations": "Transparent unvalidated operational proxies. Concise resolution and repeated valid checks can score repetitive; evidence-aware variant cannot establish actual advancement. Axes remain distinct and do not sum to one.",
+      "timing": "Latest required primitive timing; generally post-response/extraction."
+    }
+  },
+  "engineering_controls": "Model-free literal repetition, topic pivot, concise resolution, repeated-text padding, same-label changed numeric evidence, and synthetic balanced/concentrated historical states. These are engineering controls, never live experimental results."
+}

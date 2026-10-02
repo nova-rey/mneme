@@ -1,0 +1,898 @@
+{
+  "completed_utc": "2026-10-02T19:00:15.475263+00:00",
+  "elapsed_seconds": 1.009803766850382,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"With a shorter USB cable, the supply stays at 5.0 volts and the uptime does not reset. Ask what the controlled cable substitution establishes.\", \"s1\": \"It sounds like you are trying to find a **reliable, stable connection** for your data transmission.\\n\\nIf the original 5.0V to 3.9V drop was caused by a **power fluctuation**, and now you are using a **\\\"shorter USB cable,\\\"** you are essentially trying to **shorten the transmission path** or **reduce the signal loss** to stabilize the signal.\\n\\nHere is what that \\\"controlled cable substitution\\\" implies:\\n\\n### 1. What the \\\"Controlled Cable Substitution\\\" Establishes:\\n*   **Reduced Signal Loss:** A shorter cable means less resistance and less \\\"noise\\\" (interference) in the signal path.\\n*   **Increased Stability:** By shortening the path, you are likely reducing the \\\"latency\\\" or the distance the signal has to travel, making the connection more stable.\\n\\n### 2. The Diagnostic Check:\\nThe fact that the \\\"uptime does not reset\\\" (meaning the connection stays active) suggests that the **\\\"controlled cable substitution\\\"** (the shorter cable) is successfully stabilizing the connection.\\n\\n**In plain terms:** You are moving from a long, potentially unstable connection to a shorter, more direct, and more reliable connection.\\n\\n**The \\\"Diagnostic Check\\\" is:**\\n*   **If the original 5.0V was the baseline, the 3.9V drop was the \\\"failure.\\\"**\\n*   **The new 5.0V stability confirms that the system is now running at its intended, stable power level.**\\n\\n**If you are asking what the \\\"controlled cable substitution\\\" *establishes*, it establishes a \\\"stable, low-latency connection\\\" that prevents the data from dropping out during transmission.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-F-new-r0-t04"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"5.0V to 3.9V drop\", \"relation\": \"caused_by\", \"to\": \"power fluctuation\", \"source\": \"s1\", \"evidence\": \"5.0V to 3.9V drop was caused by a **power fluctuation\"}, {\"from\": \"power fluctuation\", \"relation\": \"causes\", \"to\": \"5.0V to 3.9V drop\", \"source\": \"s1\", \"evidence\": \"5.0V to 3.9V drop was caused by a **power fluctuation\"}, {\"from\": \"signal\", \"relation\": \"part_of\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"signal has to travel, making the connection more stable.\\n\\n### 2. The Diagnostic Check:\\nThe fact that the \\\"uptime does not reset\\\" (meaning the connection stays active) suggests that the **\\\"controlled cable substitution\\\"** (the shorter cable) is successfully stabilizing the connection.\\n\\n**In plain terms:** You are moving from a long, potentially unstable connection to a shorter, more direct, and more reliable connection.\\n\\n**The \\\"Diagnostic Check\\\" is:**\\n*   **If the original 5.0V was the baseline, the 3.9V drop was the \\\"failure.\\\"**\\n*   **The new 5.0V stability confirms that the system\"}, {\"from\": \"Diagnostic Check\", \"relation\": \"related\", \"to\": \"signal\", \"source\": \"s1\", \"evidence\": \"signal has to travel, making the connection more stable.\\n\\n### 2. The Diagnostic Check\"}, {\"from\": \"controlled cable substitution\", \"relation\": \"constrains\", \"to\": \"connection\", \"source\": \"s1\", \"evidence\": \"connection stays active) suggests that the **\\\"controlled cable substitution\"}], \"episode_id\": \"main-network-F-new-r0-t04\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "specialist_observation",
+          "relation": "caused_by",
+          "status": "forwarded"
+        },
+        {
+          "index": 3,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "solves",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 11,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 12,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 13,
+          "kind": "specialist_observation",
+          "relation": "constrains",
+          "status": "forwarded"
+        },
+        {
+          "index": 14,
+          "kind": "unsupported_specialist_relation",
+          "relation": "helps",
+          "status": "rejected"
+        },
+        {
+          "index": 15,
+          "kind": "unsupported_specialist_relation",
+          "relation": "protects",
+          "status": "rejected"
+        },
+        {
+          "index": 16,
+          "kind": "unsupported_specialist_relation",
+          "relation": "stabilizes",
+          "status": "rejected"
+        },
+        {
+          "index": 17,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "5bed5756b536612c5e32ab09035977a4480cf5839026b75b5773b2d1d977d5cc",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 36,
+              "start": 7
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "supply",
+            "object_span": {
+              "end": 36,
+              "start": 30
+            },
+            "relation": "provides",
+            "score": 0.4909299910068512,
+            "source_slot": "s0",
+            "subject": "shorter USB cable",
+            "subject_span": {
+              "end": 24,
+              "start": 7
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 129,
+              "start": 30
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "supply",
+            "object_span": {
+              "end": 36,
+              "start": 30
+            },
+            "relation": "provides",
+            "score": 0.5152440667152405,
+            "source_slot": "s0",
+            "subject": "controlled cable substitution",
+            "subject_span": {
+              "end": 129,
+              "start": 100
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 170,
+              "start": 117
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "power fluctuation",
+            "object_span": {
+              "end": 170,
+              "start": 153
+            },
+            "relation": "caused_by",
+            "score": 0.6167155504226685,
+            "source_slot": "s1",
+            "subject": "5.0V to 3.9V drop",
+            "subject_span": {
+              "end": 134,
+              "start": 117
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 170,
+              "start": 117
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "5.0V to 3.9V drop",
+            "object_span": {
+              "end": 134,
+              "start": 117
+            },
+            "relation": "causes",
+            "score": 0.5636830925941467,
+            "source_slot": "s1",
+            "subject": "power fluctuation",
+            "subject_span": {
+              "end": 170,
+              "start": 153
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 391,
+              "start": 334
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "signal",
+            "object_span": {
+              "end": 340,
+              "start": 334
+            },
+            "relation": "influences",
+            "score": 0.4809803366661072,
+            "source_slot": "s1",
+            "subject": "controlled cable substitution",
+            "subject_span": {
+              "end": 391,
+              "start": 362
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 489,
+              "start": 420
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Signal Loss",
+            "object_span": {
+              "end": 489,
+              "start": 478
+            },
+            "relation": "affects",
+            "score": 0.537658154964447,
+            "source_slot": "s1",
+            "subject": "Controlled Cable Substitution",
+            "subject_span": {
+              "end": 449,
+              "start": 420
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 489,
+              "start": 420
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Signal Loss",
+            "object_span": {
+              "end": 489,
+              "start": 478
+            },
+            "relation": "changes",
+            "score": 0.46691614389419556,
+            "source_slot": "s1",
+            "subject": "Controlled Cable Substitution",
+            "subject_span": {
+              "end": 449,
+              "start": 420
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 489,
+              "start": 420
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Signal Loss",
+            "object_span": {
+              "end": 489,
+              "start": 478
+            },
+            "relation": "improves",
+            "score": 0.5329827666282654,
+            "source_slot": "s1",
+            "subject": "Controlled Cable Substitution",
+            "subject_span": {
+              "end": 449,
+              "start": 420
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 489,
+              "start": 420
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Signal Loss",
+            "object_span": {
+              "end": 489,
+              "start": 478
+            },
+            "relation": "reduces",
+            "score": 0.8335991501808167,
+            "source_slot": "s1",
+            "subject": "Controlled Cable Substitution",
+            "subject_span": {
+              "end": 449,
+              "start": 420
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 489,
+              "start": 420
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Signal Loss",
+            "object_span": {
+              "end": 489,
+              "start": 478
+            },
+            "relation": "solves",
+            "score": 0.6418680548667908,
+            "source_slot": "s1",
+            "subject": "Controlled Cable Substitution",
+            "subject_span": {
+              "end": 449,
+              "start": 420
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1282,
+              "start": 694
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 1282,
+              "start": 1276
+            },
+            "relation": "part_of",
+            "score": 0.4490155875682831,
+            "source_slot": "s1",
+            "subject": "signal",
+            "subject_span": {
+              "end": 700,
+              "start": 694
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 779,
+              "start": 694
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "signal",
+            "object_span": {
+              "end": 700,
+              "start": 694
+            },
+            "relation": "influences",
+            "score": 0.5484997630119324,
+            "source_slot": "s1",
+            "subject": "Diagnostic Check",
+            "subject_span": {
+              "end": 779,
+              "start": 763
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 779,
+              "start": 694
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "signal",
+            "object_span": {
+              "end": 700,
+              "start": 694
+            },
+            "relation": "related",
+            "score": 0.5207677483558655,
+            "source_slot": "s1",
+            "subject": "Diagnostic Check",
+            "subject_span": {
+              "end": 779,
+              "start": 763
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 911,
+              "start": 836
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "connection",
+            "object_span": {
+              "end": 846,
+              "start": 836
+            },
+            "relation": "constrains",
+            "score": 0.6725818514823914,
+            "source_slot": "s1",
+            "subject": "controlled cable substitution",
+            "subject_span": {
+              "end": 911,
+              "start": 882
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 911,
+              "start": 836
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "connection",
+            "object_span": {
+              "end": 846,
+              "start": 836
+            },
+            "relation": "helps",
+            "score": 0.8244302868843079,
+            "source_slot": "s1",
+            "subject": "controlled cable substitution",
+            "subject_span": {
+              "end": 911,
+              "start": 882
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 911,
+              "start": 836
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "connection",
+            "object_span": {
+              "end": 846,
+              "start": 836
+            },
+            "relation": "protects",
+            "score": 0.6315667033195496,
+            "source_slot": "s1",
+            "subject": "controlled cable substitution",
+            "subject_span": {
+              "end": 911,
+              "start": 882
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 911,
+              "start": 836
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "connection",
+            "object_span": {
+              "end": 846,
+              "start": 836
+            },
+            "relation": "stabilizes",
+            "score": 0.9454767107963562,
+            "source_slot": "s1",
+            "subject": "controlled cable substitution",
+            "subject_span": {
+              "end": 911,
+              "start": 882
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1141,
+              "start": 478
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Signal Loss",
+            "object_span": {
+              "end": 489,
+              "start": 478
+            },
+            "relation": "affects",
+            "score": 0.35654568672180176,
+            "source_slot": "s1",
+            "subject": "Diagnostic Check",
+            "subject_span": {
+              "end": 1141,
+              "start": 1125
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "810e3afbd67ec576ef46241a8d0b337f4e818257b26f413558f2067cf1d36ada",
+          "s1": "5b55bf4a944dc0fd392ae8f8d1ba37726b06636801de680ac92664269704b741"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.537658154964447,
+                  "end": 592,
+                  "start": 563,
+                  "text": "Controlled Cable Substitution"
+                },
+                "tail": {
+                  "confidence": 0.537658154964447,
+                  "end": 632,
+                  "start": 621,
+                  "text": "Signal Loss"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.35654568672180176,
+                  "end": 1284,
+                  "start": 1268,
+                  "text": "Diagnostic Check"
+                },
+                "tail": {
+                  "confidence": 0.35654568672180176,
+                  "end": 632,
+                  "start": 621,
+                  "text": "Signal Loss"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [
+              {
+                "head": {
+                  "confidence": 0.6167155504226685,
+                  "end": 277,
+                  "start": 260,
+                  "text": "5.0V to 3.9V drop"
+                },
+                "tail": {
+                  "confidence": 0.6167155504226685,
+                  "end": 313,
+                  "start": 296,
+                  "text": "power fluctuation"
+                }
+              }
+            ],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.5636830925941467,
+                  "end": 313,
+                  "start": 296,
+                  "text": "power fluctuation"
+                },
+                "tail": {
+                  "confidence": 0.5636830925941467,
+                  "end": 277,
+                  "start": 260,
+                  "text": "5.0V to 3.9V drop"
+                }
+              }
+            ],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.46691614389419556,
+                  "end": 592,
+                  "start": 563,
+                  "text": "Controlled Cable Substitution"
+                },
+                "tail": {
+                  "confidence": 0.46691614389419556,
+                  "end": 632,
+                  "start": 621,
+                  "text": "Signal Loss"
+                }
+              }
+            ],
+            "constrains": [
+              {
+                "head": {
+                  "confidence": 0.6725818514823914,
+                  "end": 1054,
+                  "start": 1025,
+                  "text": "controlled cable substitution"
+                },
+                "tail": {
+                  "confidence": 0.6725818514823914,
+                  "end": 989,
+                  "start": 979,
+                  "text": "connection"
+                }
+              }
+            ],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [
+              {
+                "head": {
+                  "confidence": 0.8244302868843079,
+                  "end": 1054,
+                  "start": 1025,
+                  "text": "controlled cable substitution"
+                },
+                "tail": {
+                  "confidence": 0.8244302868843079,
+                  "end": 989,
+                  "start": 979,
+                  "text": "connection"
+                }
+              }
+            ],
+            "holds": [],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.5329827666282654,
+                  "end": 592,
+                  "start": 563,
+                  "text": "Controlled Cable Substitution"
+                },
+                "tail": {
+                  "confidence": 0.5329827666282654,
+                  "end": 632,
+                  "start": 621,
+                  "text": "Signal Loss"
+                }
+              }
+            ],
+            "increases": [],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.4809803366661072,
+                  "end": 534,
+                  "start": 505,
+                  "text": "controlled cable substitution"
+                },
+                "tail": {
+                  "confidence": 0.4809803366661072,
+                  "end": 483,
+                  "start": 477,
+                  "text": "signal"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5484997630119324,
+                  "end": 922,
+                  "start": 906,
+                  "text": "Diagnostic Check"
+                },
+                "tail": {
+                  "confidence": 0.5484997630119324,
+                  "end": 843,
+                  "start": 837,
+                  "text": "signal"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.4490155875682831,
+                  "end": 843,
+                  "start": 837,
+                  "text": "signal"
+                },
+                "tail": {
+                  "confidence": 0.4490155875682831,
+                  "end": 1425,
+                  "start": 1419,
+                  "text": "system"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [
+              {
+                "head": {
+                  "confidence": 0.6315667033195496,
+                  "end": 1054,
+                  "start": 1025,
+                  "text": "controlled cable substitution"
+                },
+                "tail": {
+                  "confidence": 0.6315667033195496,
+                  "end": 989,
+                  "start": 979,
+                  "text": "connection"
+                }
+              }
+            ],
+            "provides": [
+              {
+                "head": {
+                  "confidence": 0.4909299910068512,
+                  "end": 24,
+                  "start": 7,
+                  "text": "shorter USB cable"
+                },
+                "tail": {
+                  "confidence": 0.4909299910068512,
+                  "end": 36,
+                  "start": 30,
+                  "text": "supply"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5152440667152405,
+                  "end": 129,
+                  "start": 100,
+                  "text": "controlled cable substitution"
+                },
+                "tail": {
+                  "confidence": 0.5152440667152405,
+                  "end": 36,
+                  "start": 30,
+                  "text": "supply"
+                }
+              }
+            ],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.8335991501808167,
+                  "end": 592,
+                  "start": 563,
+                  "text": "Controlled Cable Substitution"
+                },
+                "tail": {
+                  "confidence": 0.8335991501808167,
+                  "end": 632,
+                  "start": 621,
+                  "text": "Signal Loss"
+                }
+              }
+            ],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.5207677483558655,
+                  "end": 922,
+                  "start": 906,
+                  "text": "Diagnostic Check"
+                },
+                "tail": {
+                  "confidence": 0.5207677483558655,
+                  "end": 843,
+                  "start": 837,
+                  "text": "signal"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [
+              {
+                "head": {
+                  "confidence": 0.6418680548667908,
+                  "end": 592,
+                  "start": 563,
+                  "text": "Controlled Cable Substitution"
+                },
+                "tail": {
+                  "confidence": 0.6418680548667908,
+                  "end": 632,
+                  "start": 621,
+                  "text": "Signal Loss"
+                }
+              }
+            ],
+            "stabilizes": [
+              {
+                "head": {
+                  "confidence": 0.9454767107963562,
+                  "end": 1054,
+                  "start": 1025,
+                  "text": "controlled cable substitution"
+                },
+                "tail": {
+                  "confidence": 0.9454767107963562,
+                  "end": 989,
+                  "start": 979,
+                  "text": "connection"
+                }
+              }
+            ],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:00:14.464810+00:00",
+  "status": "RETURNED"
+}

@@ -1,0 +1,256 @@
+{
+  "completed_utc": "2026-10-02T19:15:23.994888+00:00",
+  "elapsed_seconds": 1.4000981680583209,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"Nothing has changed in the oven or recipe. I keep wavering between less heat and more time. Is there a way to adjust without starting over?\", \"s1\": \"It sounds like you are in a classic \\\"too much heat\\\" vs. \\\"not enough heat\\\" dilemma. You are trying to find the \\\"sweet spot\\\" where the outside doesn't burn, but the inside isn't raw.\\n\\nSince you are stuck between \\\"less heat\\\" and \\\"more time,\\\" here is how we can approach this without starting completely over:\\n\\n### 1. The \\\"Staged\\\" Approach (The 2-Stage Process)\\n\\nInstead of trying to get the perfect result in one go, let's break the process into two distinct phases:\\n\\n**Phase 1: The Initial Heat (The \\\"Setting\\\" Phase)**\\n*   **Action:** Set the temperature to a **lower, steady heat** (e.g., if you were at 350\\u00b0F, try 300\\u00b0F).\\n*   **Goal:** This initial lower heat allows the *structure* (the outside/crust) to set without burning. This prevents the \\\"outside\\\" from getting too dark too fast.\\n\\n**Phase 2: The \\\"Finishing\\\" Phase (The \\\"Baking\\\" Phase)**\\n*   **Action:** Once the initial structure is set, you turn the heat up to the *full* temperature you originally intended.\\n*   **Goal:** This final, higher heat \\\"sets\\\" the middle to ensure the inside is cooked through.\\n\\n**Why this works:** This prevents the \\\"outside\\\" from being too dark while the \\\"middle\\\" is still raw.\\n\\n### 2. The \\\"No Guessing\\\" Method (The Visual Check)\\n\\nIf you are worried about \\\"guessing,\\\" you need to look at the **visual cues** of the item you are baking:\\n\\n*   **If it's a cake/bread:** Look for the \\\"spring back.\\\" If you gently press the center, does it spring back? If it sinks, it's raw. If it stays down, it's done.\\n*   **If it's a meat/meat:** Look for the internal temperature.\\n\\n**If you can tell me *what* you are trying to cook (e.g., \\\"a chicken breast,\\\" \\\"a loaf of bread,\\\" \\\"a cake\\\"), I can give you the exact temperature and time.**\\n\\n**If you can't tell me what you are baking, I cannot give you a specific \\\"dependable\\\" instruction.**\\n\\n**If you can tell me what you are baking, I can give you a precise \\\"dependable\\\" instruction.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-baking-S-rephrased-r0-t05"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"Phase 1\", \"relation\": \"part_of\", \"to\": \"process\", \"source\": \"s1\", \"evidence\": \"process into two distinct phases:\\n\\n**Phase 1\"}], \"episode_id\": \"main-baking-S-rephrased-r0-t05\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "wicks",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "a29c49207707a0ae935d979542293bb650b938c4a6508a616c41a4f846d145aa",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 76,
+              "start": 27
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "less heat",
+            "object_span": {
+              "end": 76,
+              "start": 67
+            },
+            "relation": "wicks",
+            "score": 0.3912051320075989,
+            "source_slot": "s0",
+            "subject": "oven",
+            "subject_span": {
+              "end": 31,
+              "start": 27
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 474,
+              "start": 430
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "process",
+            "object_span": {
+              "end": 437,
+              "start": 430
+            },
+            "relation": "part_of",
+            "score": 0.7506023645401001,
+            "source_slot": "s1",
+            "subject": "Phase 1",
+            "subject_span": {
+              "end": 474,
+              "start": 467
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 552,
+              "start": 533
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 552,
+              "start": 541
+            },
+            "relation": "reduces",
+            "score": 0.39500656723976135,
+            "source_slot": "s1",
+            "subject": "Set the temperature",
+            "subject_span": {
+              "end": 552,
+              "start": 533
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "7fce05b143888ebd598d7a8050af2cb1e1ee1f230ba26c2525856e4efffc3aee",
+          "s1": "6d51f4cdd22a0f6ce1f873c08d0e333caa4aa3ba123bdc6dc58b6345103a829f"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.7506023645401001,
+                  "end": 614,
+                  "start": 607,
+                  "text": "Phase 1"
+                },
+                "tail": {
+                  "confidence": 0.7506023645401001,
+                  "end": 577,
+                  "start": 570,
+                  "text": "process"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.39500656723976135,
+                  "end": 692,
+                  "start": 673,
+                  "text": "Set the temperature"
+                },
+                "tail": {
+                  "confidence": 0.39500656723976135,
+                  "end": 692,
+                  "start": 681,
+                  "text": "temperature"
+                }
+              }
+            ],
+            "related": [],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [
+              {
+                "head": {
+                  "confidence": 0.3912051320075989,
+                  "end": 31,
+                  "start": 27,
+                  "text": "oven"
+                },
+                "tail": {
+                  "confidence": 0.3912051320075989,
+                  "end": 76,
+                  "start": 67,
+                  "text": "less heat"
+                }
+              }
+            ],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:15:22.592374+00:00",
+  "status": "RETURNED"
+}

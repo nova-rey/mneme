@@ -1,0 +1,299 @@
+{
+  "completed_utc": "2026-10-02T19:00:40.235884+00:00",
+  "elapsed_seconds": 1.4872446851804852,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"The local log records publish acknowledgment timeouts during each stale interval. Ask which connection evidence now matters.\", \"s1\": \"This sounds like a classic **\\\"Time-out\\\" or \\\"Timeout\\\" error** in a distributed system. When a \\\"local log records publish acknowledgment\\\" fails, it means the system is failing to confirm receipt of the data.\\n\\nSince you are asking what the **\\\"connection evidence\\\"** means in this context, we need to look at the **\\\"connection\\\"** between the data source and the reporting/storage system.\\n\\nHere is what the \\\"connection evidence\\\" likely means in this context:\\n\\n### 1. The \\\"Connection Evidence\\\" (The Connection Itself)\\nThe \\\"connection evidence\\\" is the **proof that the data transmission was successful.**\\n\\n*   **If the connection is failing:** The \\\"evidence\\\" is the **failure to receive a confirmation (ACK)**.\\n*   **If the connection is successful:** The \\\"evidence\\\" is the **successful receipt of the data packet.**\\n\\n### 2. What the \\\"Connection Evidence\\\" Means:\\nIn technical terms, the \\\"connection evidence\\\" is the **confirmation of successful data transfer.**\\n\\n*   **If you are getting a timeout:** The connection is *not* successful. The \\\"evidence\\\" is the **timeout error.**\\n*   **If you are getting a successful connection:** The evidence is the **successful data transfer.**\\n\\n### 3. How to \\\"Separate\\\" the Data Generation from Reporting (Revisiting the previous prompt):**\\n\\nSince you mentioned the \\\"stale\\\" dashboard, the \\\"connection evidence\\\" is likely that the **reporting mechanism itself is broken.**\\n\\n**To fix the \\\"stale\\\" dashboard:**\\n1.  **Check the \\\"Stale\\\" Data:** The \\\"stale\\\" data is the *result* of the connection failure.\\n2.  **The \\\"Connection Evidence\\\" is the \\\"Timeout\\\" error.**\\n\\n**In summary:** The \\\"connection evidence\\\" is the **error log** that shows *why* the data isn't being reported correctly.\\n\\n**If you are asking \\\"what connection evidence matters,\\\" it means:**\\n*   **The \\\"Evidence\\\" is the Log/Error Message.**\\n*   **The \\\"Connection\\\" is the successful data transfer.**\\n\\n**If you are asking for the specific \\\"evidence\\\" of the connection:**\\n*   **The evidence is the \\\"Timeout\\\" or \\\"Error Log.\\\"**\\n\\n**To fix the stale dashboard, you need to:**\\n1.  **Check the \\\"Timeout\\\" logs.**\\n2.  **Implement a \\\"Retry\\\" or \\\"Retry\\\" mechanism.**\\n\\n**If you can provide the specific error message or the context of the \\\"stale\\\" data, I can give a much more precise answer.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-F-new-r0-t06"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"connection\", \"relation\": \"depends_on\", \"to\": \"reporting/storage system\", \"source\": \"s1\", \"evidence\": \"connection\\\"** between the data source and the reporting/storage system\"}, {\"from\": \"connection\", \"relation\": \"part_of\", \"to\": \"reporting/storage system\", \"source\": \"s1\", \"evidence\": \"connection\\\"** between the data source and the reporting/storage system\"}, {\"from\": \"connection evidence\", \"relation\": \"related\", \"to\": \"reporting/storage system\", \"source\": \"s1\", \"evidence\": \"reporting/storage system.\\n\\nHere is what the \\\"connection evidence\"}], \"episode_id\": \"main-network-F-new-r0-t06\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 1,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 2,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "5b08d5c9e1faa2f3d2f8ae581d4cf189125e3751e018aa06b931171e3078ecab",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 382,
+              "start": 312
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "reporting/storage system",
+            "object_span": {
+              "end": 382,
+              "start": 358
+            },
+            "relation": "depends_on",
+            "score": 0.6849547624588013,
+            "source_slot": "s1",
+            "subject": "connection",
+            "subject_span": {
+              "end": 322,
+              "start": 312
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 382,
+              "start": 312
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "reporting/storage system",
+            "object_span": {
+              "end": 382,
+              "start": 358
+            },
+            "relation": "part_of",
+            "score": 0.352951318025589,
+            "source_slot": "s1",
+            "subject": "connection",
+            "subject_span": {
+              "end": 322,
+              "start": 312
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 422,
+              "start": 358
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "reporting/storage system",
+            "object_span": {
+              "end": 382,
+              "start": 358
+            },
+            "relation": "related",
+            "score": 0.39111340045928955,
+            "source_slot": "s1",
+            "subject": "connection evidence",
+            "subject_span": {
+              "end": 422,
+              "start": 403
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 503,
+              "start": 403
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Connection",
+            "object_span": {
+              "end": 503,
+              "start": 493
+            },
+            "relation": "associated_with",
+            "score": 0.7255217432975769,
+            "source_slot": "s1",
+            "subject": "connection evidence",
+            "subject_span": {
+              "end": 422,
+              "start": 403
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "0874869d69828263c3971f11548093da45c1e710cfe821164129d5001d5b532b",
+          "s1": "48d4a9deefc8a2bc4e661f8838fae691fa9b3fc8cab6b8242f42905bcea3e843"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.7255217432975769,
+                  "end": 547,
+                  "start": 528,
+                  "text": "connection evidence"
+                },
+                "tail": {
+                  "confidence": 0.7255217432975769,
+                  "end": 628,
+                  "start": 618,
+                  "text": "Connection"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [
+              {
+                "head": {
+                  "confidence": 0.6849547624588013,
+                  "end": 447,
+                  "start": 437,
+                  "text": "connection"
+                },
+                "tail": {
+                  "confidence": 0.6849547624588013,
+                  "end": 507,
+                  "start": 483,
+                  "text": "reporting/storage system"
+                }
+              }
+            ],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.352951318025589,
+                  "end": 447,
+                  "start": 437,
+                  "text": "connection"
+                },
+                "tail": {
+                  "confidence": 0.352951318025589,
+                  "end": 507,
+                  "start": 483,
+                  "text": "reporting/storage system"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.39111340045928955,
+                  "end": 547,
+                  "start": 528,
+                  "text": "connection evidence"
+                },
+                "tail": {
+                  "confidence": 0.39111340045928955,
+                  "end": 507,
+                  "start": 483,
+                  "text": "reporting/storage system"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:00:38.747930+00:00",
+  "status": "RETURNED"
+}

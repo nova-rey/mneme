@@ -1,0 +1,607 @@
+{
+  "artifact_policy": {
+    "compression": "deterministic gzip for heavy records and raw calls; lossless offline decompression; no snapshot archives",
+    "maximum_experiment_working_bytes": 83886080,
+    "minimum_free_bytes_before_inference": 67108864
+  },
+  "base_commit": "7a74a92",
+  "budget": {
+    "counts": {
+      "extractor": 116,
+      "gemma": 116,
+      "quinn": 103
+    },
+    "main_turns": 90,
+    "max_calls": 335,
+    "note": "extractor max_new_tokens is recorded contract ceiling although specialist is nonautoregressive; no score/judge calls",
+    "preflight_turns": 6,
+    "replacement_trajectories": 2,
+    "replacement_turns": 20,
+    "requested_output_tokens_ceiling": 366208
+  },
+  "context_policy": {
+    "max_complete_prior_pairs": 2,
+    "method": "native /apply-template and /tokenize; discard oldest complete pair until fit; record every omission; never clip individual text",
+    "output_ceiling": 2048,
+    "prompt_token_limit": 1792,
+    "safety_tokens": 256
+  },
+  "development_domains": [
+    "network",
+    "watering"
+  ],
+  "domains": {
+    "baking": {
+      "F-new": [
+        {
+          "action": "Ask how actual temperature changes the diagnosis.",
+          "required_facts": [
+            "An oven thermometer reads 220 degrees Celsius when the dial is set to 200."
+          ]
+        },
+        {
+          "action": "Ask what this separates from the original symptom.",
+          "required_facts": [
+            "At a measured 190 degrees Celsius the crust browns more slowly, but the middle is still gummy."
+          ]
+        },
+        {
+          "action": "Ask what center temperature contributes to the decision.",
+          "required_facts": [
+            "The loaf center reaches only 82 degrees Celsius when the crust is already dark."
+          ]
+        },
+        {
+          "action": "Ask how that isolates surface heating from internal baking.",
+          "required_facts": [
+            "A loose foil cover prevents further darkening while the center temperature rises."
+          ]
+        },
+        {
+          "action": "Ask what loaf size adds to the explanation.",
+          "required_facts": [
+            "A smaller loaf reaches the same center temperature 15 minutes sooner."
+          ]
+        },
+        {
+          "action": "Ask how to separate the base from the top crust.",
+          "required_facts": [
+            "The dark pan makes the base much darker than the light pan under the same conditions."
+          ]
+        },
+        {
+          "action": "Ask what remains to be controlled.",
+          "required_facts": [
+            "On the middle rack in the light pan, the base no longer burns."
+          ]
+        },
+        {
+          "action": "Ask what cooling changes about judging the result.",
+          "required_facts": [
+            "After cooling for two hours, the covered loaf slices cleanly instead of seeming gummy."
+          ]
+        },
+        {
+          "action": "Ask for a bounded repeatable process and remaining uncertainty.",
+          "required_facts": [
+            "A repeat bake with the same size, measured temperature, foil, and cooling time gives the same clean slice."
+          ]
+        }
+      ],
+      "F-same": [
+        {
+          "action": "Ask how this baseline frames the comparison.",
+          "required_facts": [
+            "At 200 degrees Celsius for 30 minutes, the bread is dark outside and wet in the middle."
+          ]
+        },
+        {
+          "action": "Ask what changing only temperature establishes.",
+          "required_facts": [
+            "At 190 degrees Celsius for 30 minutes, the bread is lighter outside but still wet in the middle."
+          ]
+        },
+        {
+          "action": "Ask how the time change narrows the problem.",
+          "required_facts": [
+            "At 190 degrees Celsius for 40 minutes, the bread is dark outside and less wet in the middle."
+          ]
+        },
+        {
+          "action": "Ask what that comparison suggests testing next.",
+          "required_facts": [
+            "At 180 degrees Celsius for 40 minutes, the bread is brown outside but still slightly wet in the middle."
+          ]
+        },
+        {
+          "action": "Ask what this first satisfactory result establishes.",
+          "required_facts": [
+            "At 180 degrees Celsius for 45 minutes, the bread is brown outside and no longer wet in the middle."
+          ]
+        },
+        {
+          "action": "Ask how the overshoot bounds the time choice.",
+          "required_facts": [
+            "At 180 degrees Celsius for 50 minutes, the bread is dark outside and dry in the middle."
+          ]
+        },
+        {
+          "action": "Ask what the repeated setting adds.",
+          "required_facts": [
+            "Back at 180 degrees Celsius for 45 minutes, the bread is brown outside and not wet or dry in the middle."
+          ]
+        },
+        {
+          "action": "Ask how the repeat affects confidence.",
+          "required_facts": [
+            "In another bake at 180 degrees Celsius for 45 minutes, the bread is again brown outside and not wet or dry in the middle."
+          ]
+        },
+        {
+          "action": "Ask for a cautious conclusion about the tested setting.",
+          "required_facts": [
+            "In the third repeat at 180 degrees Celsius for 45 minutes, the bread is brown outside and not wet or dry in the middle."
+          ]
+        }
+      ],
+      "S-rephrased": [
+        {
+          "action": "Revisit the same choice without adding constraints.",
+          "required_facts": [
+            "I have not tried another bake. I still cannot choose between changing the temperature and changing the time."
+          ]
+        },
+        {
+          "action": "Rephrase the same concern.",
+          "required_facts": [
+            "There are no new results. I still worry that changing either setting will leave the outside or middle wrong."
+          ]
+        },
+        {
+          "action": "Circle back to the same uncertainty.",
+          "required_facts": [
+            "I have not tested a different setting. The dark outside and underbaked middle still make me unsure where to start."
+          ]
+        },
+        {
+          "action": "Ask again about the same unresolved tradeoff.",
+          "required_facts": [
+            "Nothing has changed in the oven or recipe. I keep wavering between less heat and more time."
+          ]
+        },
+        {
+          "action": "Repeat the objection without inventing results.",
+          "required_facts": [
+            "I have no new bake to compare. I am still afraid that fixing the middle will make the outside worse."
+          ]
+        },
+        {
+          "action": "Reconsider the same choice with varied wording.",
+          "required_facts": [
+            "The suggestions remain untested. Temperature and time both still seem like possible causes to me."
+          ]
+        },
+        {
+          "action": "Return to the same practical worry.",
+          "required_facts": [
+            "I have not changed either setting. I still do not feel sure how to avoid both a dark crust and a wet middle."
+          ]
+        },
+        {
+          "action": "Rephrase the same uncertainty without adopting a plan.",
+          "required_facts": [
+            "There is no new evidence. I remain hesitant about choosing a cooler oven or a longer bake."
+          ]
+        },
+        {
+          "action": "Circle once more without claiming progress or resolution.",
+          "required_facts": [
+            "I still have not baked another loaf. The same temperature-versus-time decision remains unresolved for me."
+          ]
+        }
+      ],
+      "opening": "The outside of my bread gets too dark before the middle is baked. I am unsure whether to change the oven temperature or baking time. How can I work out a dependable setting?",
+      "split": "heldout"
+    },
+    "network": {
+      "F-new": [
+        {
+          "action": "Ask what a reset distinguishes from a lost dashboard entry.",
+          "required_facts": [
+            "The sensor uptime resets after an outage, while the neighboring sensor stays online."
+          ]
+        },
+        {
+          "action": "Ask how this changes the next diagnostic check.",
+          "required_facts": [
+            "The supply drops from 5.0 volts to 3.9 volts during transmission."
+          ]
+        },
+        {
+          "action": "Ask what the controlled cable substitution establishes.",
+          "required_facts": [
+            "With a shorter USB cable, the supply stays at 5.0 volts and the uptime does not reset."
+          ]
+        },
+        {
+          "action": "Ask how to separate sampling from reporting.",
+          "required_facts": [
+            "The dashboard still goes stale even though the local sample counter continues advancing."
+          ]
+        },
+        {
+          "action": "Ask which connection evidence now matters.",
+          "required_facts": [
+            "The local log records publish acknowledgment timeouts during each stale interval."
+          ]
+        },
+        {
+          "action": "Ask how to test that without changing the power setup.",
+          "required_facts": [
+            "The access point reports weak signal behind the metal cabinet."
+          ]
+        },
+        {
+          "action": "Ask how to interpret the placement comparison.",
+          "required_facts": [
+            "Above the cabinet, retransmissions fall from 30 percent to 2 percent."
+          ]
+        },
+        {
+          "action": "Ask what this supports and what is still untested.",
+          "required_facts": [
+            "During an eight-hour trial in the new position, there are no resets and no missed updates."
+          ]
+        },
+        {
+          "action": "Ask for a bounded conclusion and monitoring plan.",
+          "required_facts": [
+            "During a second eight-hour trial with the fan running, there are still no resets or missed updates."
+          ]
+        }
+      ],
+      "F-same": [
+        {
+          "action": "Ask what this baseline permits comparing.",
+          "required_facts": [
+            "With the original power cable, the sensor resets 6 times in 60 minutes. I have not changed the Wi-Fi position."
+          ]
+        },
+        {
+          "action": "Ask how the matched result updates the power-versus-Wi-Fi question.",
+          "required_facts": [
+            "With the shorter power cable, the sensor resets 0 times in 60 minutes. The Wi-Fi position is unchanged."
+          ]
+        },
+        {
+          "action": "Ask how the reversal changes confidence.",
+          "required_facts": [
+            "With the original power cable again, the sensor resets 5 times in 60 minutes. The Wi-Fi position is unchanged."
+          ]
+        },
+        {
+          "action": "Ask what the longer repeat adds.",
+          "required_facts": [
+            "With the shorter power cable again, the sensor resets 0 times in 120 minutes. The Wi-Fi position is unchanged."
+          ]
+        },
+        {
+          "action": "Ask how the two counts distinguish the remaining symptom.",
+          "required_facts": [
+            "With the shorter power cable, the sensor resets 0 times but the dashboard misses 4 updates in 120 minutes."
+          ]
+        },
+        {
+          "action": "Ask how this comparison narrows the remaining cause.",
+          "required_facts": [
+            "With the same shorter power cable and a closer Wi-Fi position, the sensor resets 0 times and the dashboard misses 0 updates in 120 minutes."
+          ]
+        },
+        {
+          "action": "Ask what the reversal establishes.",
+          "required_facts": [
+            "Back at the original Wi-Fi position with the shorter power cable, the sensor resets 0 times and the dashboard misses 3 updates in 120 minutes."
+          ]
+        },
+        {
+          "action": "Ask what has now been checked.",
+          "required_facts": [
+            "Back at the closer Wi-Fi position with the shorter power cable, the sensor resets 0 times and the dashboard misses 0 updates in 240 minutes."
+          ]
+        },
+        {
+          "action": "Ask for a cautious conclusion from the accumulated comparisons.",
+          "required_facts": [
+            "At the closer Wi-Fi position with the shorter power cable, the sensor resets 0 times and the dashboard misses 0 updates in 480 minutes."
+          ]
+        }
+      ],
+      "S-rephrased": [
+        {
+          "action": "Revisit which possibility to suspect first without new constraints.",
+          "required_facts": [
+            "I have not run any checks; I still cannot choose between power and Wi-Fi."
+          ]
+        },
+        {
+          "action": "Express the same hesitation in a new way.",
+          "required_facts": [
+            "Nothing has been tested, and I still worry that either the connection or the supply could explain it."
+          ]
+        },
+        {
+          "action": "Reconsider the same power-versus-radio choice.",
+          "required_facts": [
+            "I have no new observations. Replacing either part still feels like guessing."
+          ]
+        },
+        {
+          "action": "Return to the same uncertainty without an excuse that prevents testing.",
+          "required_facts": [
+            "I have not tried the suggested checks. An absent dashboard entry still leaves me unsure about power and Wi-Fi."
+          ]
+        },
+        {
+          "action": "Ask again where to begin, without adopting a plan.",
+          "required_facts": [
+            "There are no measurements yet; I remain undecided between the supply and the connection."
+          ]
+        },
+        {
+          "action": "Rephrase the same doubt naturally.",
+          "required_facts": [
+            "I have made no changes and collected no evidence. Either power or Wi-Fi still seems possible to me."
+          ]
+        },
+        {
+          "action": "Revisit reluctance about random replacement.",
+          "required_facts": [
+            "I still have not tested anything. Swapping the supply or the radio both seem arbitrary."
+          ]
+        },
+        {
+          "action": "Question the same choice without adding facts.",
+          "required_facts": [
+            "There is no new result to report. I keep hesitating over whether this is a power issue or a connection issue."
+          ]
+        },
+        {
+          "action": "Circle back once more without claiming resolution.",
+          "required_facts": [
+            "The situation is unchanged, and I have not attempted the checks. I still do not know which of the same two causes to start with."
+          ]
+        }
+      ],
+      "opening": "A workshop sensor sometimes disappears from the Wi-Fi dashboard. I do not know whether power or Wi-Fi is responsible. How can I narrow it down without replacing parts at random?",
+      "split": "development"
+    },
+    "watering": {
+      "F-new": [
+        {
+          "action": "Ask how surface appearance differs from delivered water.",
+          "required_facts": [
+            "After a four-hour wick trial the soil surface looks dry, but the pot weighs 40 grams more."
+          ]
+        },
+        {
+          "action": "Ask how the control changes the delivery target.",
+          "required_facts": [
+            "A matching pot without a wick loses 120 grams during the same afternoon."
+          ]
+        },
+        {
+          "action": "Ask how to isolate reservoir height.",
+          "required_facts": [
+            "Delivery slows when the reservoir level falls below the pot."
+          ]
+        },
+        {
+          "action": "Ask how width changes the design choice.",
+          "required_facts": [
+            "A wider cotton strip doubles delivery at the same reservoir height."
+          ]
+        },
+        {
+          "action": "Ask how to separate the two pots rather than overgeneralize.",
+          "required_facts": [
+            "A smaller pot with denser soil remains wet overnight under the same arrangement."
+          ]
+        },
+        {
+          "action": "Ask what the shading comparison adds.",
+          "required_facts": [
+            "Algae appears in the sunlit reservoir, while the shaded reservoir stays clear."
+          ]
+        },
+        {
+          "action": "Ask how to budget for a three-day absence.",
+          "required_facts": [
+            "The two pots together use 400 milliliters per day, and the reservoir holds 1500 milliliters."
+          ]
+        },
+        {
+          "action": "Ask how to address mechanical reliability.",
+          "required_facts": [
+            "The wick slips out of the larger pot once during a full-day trial."
+          ]
+        },
+        {
+          "action": "Ask what the rehearsal establishes and what still depends on weather.",
+          "required_facts": [
+            "After securing the wick, a three-day rehearsal ends with both pots moist and 300 milliliters left."
+          ]
+        }
+      ],
+      "F-same": [
+        {
+          "action": "Ask how to use this as a baseline.",
+          "required_facts": [
+            "With one cotton wick, the pot loses 120 grams in 24 hours. The reservoir is at the same height as the pot."
+          ]
+        },
+        {
+          "action": "Ask how this measured change informs the next comparison.",
+          "required_facts": [
+            "With two cotton wicks, the pot loses 60 grams in 24 hours. The reservoir height is unchanged."
+          ]
+        },
+        {
+          "action": "Ask whether the trend suggests a workable balance.",
+          "required_facts": [
+            "With three cotton wicks, the pot loses 10 grams in 24 hours. The reservoir height is unchanged."
+          ]
+        },
+        {
+          "action": "Ask how the change of direction bounds the choice.",
+          "required_facts": [
+            "With four cotton wicks, the pot gains 80 grams in 24 hours. The reservoir height is unchanged."
+          ]
+        },
+        {
+          "action": "Ask what the repeated setting establishes.",
+          "required_facts": [
+            "Back to three cotton wicks, the pot loses 12 grams in 24 hours. The reservoir height is unchanged."
+          ]
+        },
+        {
+          "action": "Ask how the height result refines the balance.",
+          "required_facts": [
+            "With three cotton wicks and the reservoir 5 centimeters higher, the pot gains 35 grams in 24 hours."
+          ]
+        },
+        {
+          "action": "Ask how close the setup now is to the measured target.",
+          "required_facts": [
+            "With three cotton wicks and the reservoir 2 centimeters higher, the pot gains 3 grams in 24 hours."
+          ]
+        },
+        {
+          "action": "Ask what the longer trial adds.",
+          "required_facts": [
+            "At the same 2-centimeter height with three cotton wicks, the pot gains 4 grams in 48 hours."
+          ]
+        },
+        {
+          "action": "Ask for a bounded conclusion about this measured arrangement.",
+          "required_facts": [
+            "At the same 2-centimeter height with three cotton wicks, the pot gains 5 grams in 72 hours. The reservoir does not empty."
+          ]
+        }
+      ],
+      "S-rephrased": [
+        {
+          "action": "Return to the same uncertainty without new constraints.",
+          "required_facts": [
+            "I have not tried the wick. I still worry the soil could end up either soaked or dry."
+          ]
+        },
+        {
+          "action": "Rephrase the same concern naturally.",
+          "required_facts": [
+            "There are no test results. The reservoir sounds useful, but I still do not trust the wet-versus-dry balance."
+          ]
+        },
+        {
+          "action": "Ask again whether the same arrangement is dependable.",
+          "required_facts": [
+            "I have made no changes. Cotton carrying water still leaves me unsure whether the pot will get too much or too little."
+          ]
+        },
+        {
+          "action": "Revisit the same objection without new evidence.",
+          "required_facts": [
+            "I have not measured anything. I still cannot picture the soil staying between too wet and too dry."
+          ]
+        },
+        {
+          "action": "Express the same doubt with changed wording.",
+          "required_facts": [
+            "Nothing has been tested yet. I remain uneasy about trusting the wick and reservoir for the weekend."
+          ]
+        },
+        {
+          "action": "Circle within the same practical concern.",
+          "required_facts": [
+            "There is no new observation to report. I keep wondering whether the wick will flood the pot or leave it thirsty."
+          ]
+        },
+        {
+          "action": "Revisit the same balance without introducing an obstacle to testing.",
+          "required_facts": [
+            "I have not tried the suggested test. Too much water and too little water still worry me equally."
+          ]
+        },
+        {
+          "action": "Ask the same underlying question in a different way.",
+          "required_facts": [
+            "The setup is unchanged and untested. I still hesitate about depending on cotton to supply the right amount."
+          ]
+        },
+        {
+          "action": "Keep the same unresolved concern without asking for creative analogies.",
+          "required_facts": [
+            "I have no measurements or results. I am still stuck choosing whether to trust the reservoir and wick."
+          ]
+        }
+      ],
+      "opening": "My balcony pot needs water while I am away for a weekend. I am considering a cotton wick and reservoir, but I worry about the soil getting either too wet or too dry. How should I work through that?",
+      "split": "development"
+    }
+  },
+  "fidelity": {
+    "post_run": "Root reads exchanges and writes fidelity judgment before score access; invented outcomes or missing facts invalidate trajectory",
+    "pre_gemma": "all required factual sentences exact and in order; reject extra numeric literals not in required facts or inherited opening; reject private labels/divergence/blank; retain all failures, never repair/splice"
+  },
+  "heldout_domain": "baking",
+  "ledger_privacy": "condition, schedule, facts, action, validity excluded from meter whitelist",
+  "patterns": [
+    "F-new",
+    "F-same",
+    "S-rephrased"
+  ],
+  "preflight": [
+    {
+      "domain": "network",
+      "pattern": "F-same",
+      "turns": 3
+    },
+    {
+      "domain": "watering",
+      "pattern": "S-rephrased",
+      "turns": 3
+    }
+  ],
+  "replacement_policy": "at most two entire trajectories, in schedule order among invalid trajectories; no within-trajectory retries; freeze before main",
+  "seed_rule": {
+    "domain_stride": 100,
+    "field_base": 184000,
+    "gemma_base": 174000,
+    "quinn": "host advertises no verified seed control; record exact messages and result, no false determinism claim",
+    "replacement_offsets": [
+      10000,
+      20000
+    ],
+    "turn_offset": "accepted turn 1..10; identical across patterns"
+  },
+  "settings": {
+    "extractor": {
+      "max_len": 4096,
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "gemma": {
+      "max_new_tokens": 2048,
+      "temperature": 0.35,
+      "top_p": 0.9
+    },
+    "quinn": {
+      "max_new_tokens": 384,
+      "reasoning_effort": "none",
+      "temperature": 0.7,
+      "top_p": 0.9
+    }
+  },
+  "state": "CompactStore read_only True; no publish, learner update, introspection, graph additions, or metadata writes",
+  "turns": 10,
+  "version": "three-pressure-construction-v2-preflight-frozen"
+}

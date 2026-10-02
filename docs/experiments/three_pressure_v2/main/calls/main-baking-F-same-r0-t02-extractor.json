@@ -1,0 +1,810 @@
+{
+  "completed_utc": "2026-10-02T19:13:10.846493+00:00",
+  "elapsed_seconds": 1.1123335019219667,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"At 200 degrees Celsius for 30 minutes, the bread is dark outside and wet in the middle. How does this baseline frame the comparison?\", \"s1\": \"That's a very common issue when baking! It sounds like you're dealing with **\\\"over-baking\\\"** or **\\\"too much heat\\\"** rather than just a time issue.\\n\\nSince you are getting a dark exterior but a wet, undercooked middle, it means the heat is too intense or the heat is being applied too quickly to the surface.\\n\\nHere is how to frame the comparison:\\n\\n### 1. The \\\"Too Hot\\\" Problem (The Cause)\\nThe fact that the outside is dark and the middle is wet suggests your oven is likely **too hot** or the **heat is too concentrated.**\\n\\n### 2. How to Adjust the \\\"Baseline\\\" (The Solution)\\nIf you are using 200\\u00b0C (392\\u00b0F), that is a standard, relatively high temperature for many types of bread.\\n\\n**To fix the \\\"dark outside, wet middle\\\" problem, you should try one of these two things:**\\n\\n*   **Lower the Temperature:** Try dropping the temperature to **170\\u00b0C (338\\u00b0F)**. This will slow the reaction down so the middle has time to cook before the outside burns.\\n*   **Increase the Time:** Instead of 30 minutes, try increasing the time to **40\\u201345 minutes** at that same temperature.\\n\\n**In short: You need to \\\"slow down\\\" the heat application.**\\n\\n### 3. The \\\"Dependable\\\" Settings:**\\n*   **If the bread is too dark:** You need to **lower the temperature.**\\n*   **If the middle is wet:** You need to **increase the time.**\\n\\n**If you tell me what you are baking (e.g., sourdough, a cake, a pastry), I can give you a much more specific \\\"dependable\\\" setting!**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-baking-F-same-r0-t02"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"baseline\", \"relation\": \"supports\", \"to\": \"bread\", \"source\": \"s0\", \"evidence\": \"bread is dark outside and wet in the middle. How does this baseline\"}, {\"from\": \"comparison\", \"relation\": \"related\", \"to\": \"oven\", \"source\": \"s1\", \"evidence\": \"comparison:\\n\\n### 1. The \\\"Too Hot\\\" Problem (The Cause)\\nThe fact that the outside is dark and the middle is wet suggests your oven\"}, {\"from\": \"middle\", \"relation\": \"part_of\", \"to\": \"oven\", \"source\": \"s1\", \"evidence\": \"middle is wet suggests your oven\"}, {\"from\": \"Baseline\", \"relation\": \"constrains\", \"to\": \"middle\", \"source\": \"s1\", \"evidence\": \"Baseline\\\" (The Solution)\\nIf you are using 200\\u00b0C (392\\u00b0F), that is a standard, relatively high temperature for many types of bread.\\n\\n**To fix the \\\"dark outside, wet middle\"}, {\"from\": \"Baseline\", \"relation\": \"supports\", \"to\": \"middle\", \"source\": \"s1\", \"evidence\": \"Baseline\\\" (The Solution)\\nIf you are using 200\\u00b0C (392\\u00b0F), that is a standard, relatively high temperature for many types of bread.\\n\\n**To fix the \\\"dark outside, wet middle\"}, {\"from\": \"middle\", \"relation\": \"depends_on\", \"to\": \"200\\u00b0C (392\\u00b0F)\", \"source\": \"s1\", \"evidence\": \"200\\u00b0C (392\\u00b0F), that is a standard, relatively high temperature for many types of bread.\\n\\n**To fix the \\\"dark outside, wet middle\"}], \"episode_id\": \"main-baking-F-same-r0-t02\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "protects",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "specialist_observation",
+          "relation": "supports",
+          "status": "forwarded"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "protects",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "stabilizes",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "specialist_observation",
+          "relation": "constrains",
+          "status": "forwarded"
+        },
+        {
+          "index": 10,
+          "kind": "specialist_observation",
+          "relation": "supports",
+          "status": "forwarded"
+        },
+        {
+          "index": 11,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 14,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 15,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "158bbc91384858173c3818255250ac1bd01f6fc73fc4b47c84f235c4b89adb05",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 110,
+              "start": 43
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bread",
+            "object_span": {
+              "end": 48,
+              "start": 43
+            },
+            "relation": "protects",
+            "score": 0.7600870728492737,
+            "source_slot": "s0",
+            "subject": "baseline",
+            "subject_span": {
+              "end": 110,
+              "start": 102
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 110,
+              "start": 43
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bread",
+            "object_span": {
+              "end": 48,
+              "start": 43
+            },
+            "relation": "supports",
+            "score": 0.7537095546722412,
+            "source_slot": "s0",
+            "subject": "baseline",
+            "subject_span": {
+              "end": 110,
+              "start": 102
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 110,
+              "start": 80
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "middle",
+            "object_span": {
+              "end": 86,
+              "start": 80
+            },
+            "relation": "protects",
+            "score": 0.6311265826225281,
+            "source_slot": "s0",
+            "subject": "baseline",
+            "subject_span": {
+              "end": 110,
+              "start": 102
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 110,
+              "start": 80
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "middle",
+            "object_span": {
+              "end": 86,
+              "start": 80
+            },
+            "relation": "stabilizes",
+            "score": 0.629902184009552,
+            "source_slot": "s0",
+            "subject": "baseline",
+            "subject_span": {
+              "end": 110,
+              "start": 102
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 461,
+              "start": 333
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "oven",
+            "object_span": {
+              "end": 461,
+              "start": 457
+            },
+            "relation": "related",
+            "score": 0.5857535600662231,
+            "source_slot": "s1",
+            "subject": "comparison",
+            "subject_span": {
+              "end": 343,
+              "start": 333
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 603,
+              "start": 333
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "200°C (392°F)",
+            "object_span": {
+              "end": 603,
+              "start": 590
+            },
+            "relation": "uses",
+            "score": 0.7932311296463013,
+            "source_slot": "s1",
+            "subject": "comparison",
+            "subject_span": {
+              "end": 343,
+              "start": 333
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 461,
+              "start": 429
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "oven",
+            "object_span": {
+              "end": 461,
+              "start": 457
+            },
+            "relation": "part_of",
+            "score": 0.5455425977706909,
+            "source_slot": "s1",
+            "subject": "middle",
+            "subject_span": {
+              "end": 435,
+              "start": 429
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 461,
+              "start": 135
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 139,
+              "start": 135
+            },
+            "relation": "influences",
+            "score": 0.6563923954963684,
+            "source_slot": "s1",
+            "subject": "oven",
+            "subject_span": {
+              "end": 461,
+              "start": 457
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 603,
+              "start": 548
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "200°C (392°F)",
+            "object_span": {
+              "end": 603,
+              "start": 590
+            },
+            "relation": "uses",
+            "score": 0.6835135221481323,
+            "source_slot": "s1",
+            "subject": "Baseline",
+            "subject_span": {
+              "end": 556,
+              "start": 548
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 717,
+              "start": 548
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "middle",
+            "object_span": {
+              "end": 717,
+              "start": 711
+            },
+            "relation": "constrains",
+            "score": 0.48283588886260986,
+            "source_slot": "s1",
+            "subject": "Baseline",
+            "subject_span": {
+              "end": 556,
+              "start": 548
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 717,
+              "start": 548
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "middle",
+            "object_span": {
+              "end": 717,
+              "start": 711
+            },
+            "relation": "supports",
+            "score": 0.6656893491744995,
+            "source_slot": "s1",
+            "subject": "Baseline",
+            "subject_span": {
+              "end": 556,
+              "start": 548
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 717,
+              "start": 590
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "200°C (392°F)",
+            "object_span": {
+              "end": 603,
+              "start": 590
+            },
+            "relation": "depends_on",
+            "score": 0.40624749660491943,
+            "source_slot": "s1",
+            "subject": "middle",
+            "subject_span": {
+              "end": 717,
+              "start": 711
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 798,
+              "start": 777
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Temperature",
+            "object_span": {
+              "end": 798,
+              "start": 787
+            },
+            "relation": "reduces",
+            "score": 0.6355265378952026,
+            "source_slot": "s1",
+            "subject": "Lower the Temperature",
+            "subject_span": {
+              "end": 798,
+              "start": 777
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 830,
+              "start": 806
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 830,
+              "start": 819
+            },
+            "relation": "reduces",
+            "score": 0.4826072156429291,
+            "source_slot": "s1",
+            "subject": "dropping the temperature",
+            "subject_span": {
+              "end": 830,
+              "start": 806
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1016,
+              "start": 962
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 1016,
+              "start": 1012
+            },
+            "relation": "increases",
+            "score": 0.5940179824829102,
+            "source_slot": "s1",
+            "subject": "Time",
+            "subject_span": {
+              "end": 966,
+              "start": 962
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1337,
+              "start": 590
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "200°C (392°F)",
+            "object_span": {
+              "end": 603,
+              "start": 590
+            },
+            "relation": "uses",
+            "score": 0.4125588536262512,
+            "source_slot": "s1",
+            "subject": "baking",
+            "subject_span": {
+              "end": 1337,
+              "start": 1331
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "0055dbe2873aa34d250ae8fb1bc5883bd19f45a65e695ace7f0e38e36483efa9",
+          "s1": "69683cf1d6eb4a40a4683443ec60b1074f43cfba5a282d043aa6f85b6dd9c6ec"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [],
+            "changes": [],
+            "constrains": [
+              {
+                "head": {
+                  "confidence": 0.48283588886260986,
+                  "end": 689,
+                  "start": 681,
+                  "text": "Baseline"
+                },
+                "tail": {
+                  "confidence": 0.48283588886260986,
+                  "end": 850,
+                  "start": 844,
+                  "text": "middle"
+                }
+              }
+            ],
+            "contains": [],
+            "controls": [],
+            "depends_on": [
+              {
+                "head": {
+                  "confidence": 0.40624749660491943,
+                  "end": 850,
+                  "start": 844,
+                  "text": "middle"
+                },
+                "tail": {
+                  "confidence": 0.40624749660491943,
+                  "end": 736,
+                  "start": 723,
+                  "text": "200°C (392°F)"
+                }
+              }
+            ],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.5940179824829102,
+                  "end": 1099,
+                  "start": 1095,
+                  "text": "Time"
+                },
+                "tail": {
+                  "confidence": 0.5940179824829102,
+                  "end": 1149,
+                  "start": 1145,
+                  "text": "time"
+                }
+              }
+            ],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.6563923954963684,
+                  "end": 594,
+                  "start": 590,
+                  "text": "oven"
+                },
+                "tail": {
+                  "confidence": 0.6563923954963684,
+                  "end": 272,
+                  "start": 268,
+                  "text": "time"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.5455425977706909,
+                  "end": 568,
+                  "start": 562,
+                  "text": "middle"
+                },
+                "tail": {
+                  "confidence": 0.5455425977706909,
+                  "end": 594,
+                  "start": 590,
+                  "text": "oven"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [
+              {
+                "head": {
+                  "confidence": 0.7600870728492737,
+                  "end": 110,
+                  "start": 102,
+                  "text": "baseline"
+                },
+                "tail": {
+                  "confidence": 0.7600870728492737,
+                  "end": 48,
+                  "start": 43,
+                  "text": "bread"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6311265826225281,
+                  "end": 110,
+                  "start": 102,
+                  "text": "baseline"
+                },
+                "tail": {
+                  "confidence": 0.6311265826225281,
+                  "end": 86,
+                  "start": 80,
+                  "text": "middle"
+                }
+              }
+            ],
+            "provides": [],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.6355265378952026,
+                  "end": 931,
+                  "start": 910,
+                  "text": "Lower the Temperature"
+                },
+                "tail": {
+                  "confidence": 0.6355265378952026,
+                  "end": 931,
+                  "start": 920,
+                  "text": "Temperature"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4826072156429291,
+                  "end": 963,
+                  "start": 939,
+                  "text": "dropping the temperature"
+                },
+                "tail": {
+                  "confidence": 0.4826072156429291,
+                  "end": 963,
+                  "start": 952,
+                  "text": "temperature"
+                }
+              }
+            ],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.5857535600662231,
+                  "end": 476,
+                  "start": 466,
+                  "text": "comparison"
+                },
+                "tail": {
+                  "confidence": 0.5857535600662231,
+                  "end": 594,
+                  "start": 590,
+                  "text": "oven"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [
+              {
+                "head": {
+                  "confidence": 0.629902184009552,
+                  "end": 110,
+                  "start": 102,
+                  "text": "baseline"
+                },
+                "tail": {
+                  "confidence": 0.629902184009552,
+                  "end": 86,
+                  "start": 80,
+                  "text": "middle"
+                }
+              }
+            ],
+            "supports": [
+              {
+                "head": {
+                  "confidence": 0.7537095546722412,
+                  "end": 110,
+                  "start": 102,
+                  "text": "baseline"
+                },
+                "tail": {
+                  "confidence": 0.7537095546722412,
+                  "end": 48,
+                  "start": 43,
+                  "text": "bread"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6656893491744995,
+                  "end": 689,
+                  "start": 681,
+                  "text": "Baseline"
+                },
+                "tail": {
+                  "confidence": 0.6656893491744995,
+                  "end": 850,
+                  "start": 844,
+                  "text": "middle"
+                }
+              }
+            ],
+            "used_for": [],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.7932311296463013,
+                  "end": 476,
+                  "start": 466,
+                  "text": "comparison"
+                },
+                "tail": {
+                  "confidence": 0.7932311296463013,
+                  "end": 736,
+                  "start": 723,
+                  "text": "200°C (392°F)"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6835135221481323,
+                  "end": 689,
+                  "start": 681,
+                  "text": "Baseline"
+                },
+                "tail": {
+                  "confidence": 0.6835135221481323,
+                  "end": 736,
+                  "start": 723,
+                  "text": "200°C (392°F)"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4125588536262512,
+                  "end": 1470,
+                  "start": 1464,
+                  "text": "baking"
+                },
+                "tail": {
+                  "confidence": 0.4125588536262512,
+                  "end": 736,
+                  "start": 723,
+                  "text": "200°C (392°F)"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:13:09.731739+00:00",
+  "status": "RETURNED"
+}

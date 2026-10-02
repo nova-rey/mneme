@@ -1,0 +1,2013 @@
+{
+  "actual_output_tokens_known": {
+    "gemma": 50076,
+    "quinn": 3343
+  },
+  "all_checks_pass": true,
+  "base_commit": "7a74a92",
+  "call_total": 328,
+  "checks": [
+    {
+      "check": "preflight:same_frozen_schedule_settings",
+      "passed": true
+    },
+    {
+      "check": "preflight:source_state_unchanged",
+      "passed": true
+    },
+    {
+      "check": "preflight:meter_whitelist_and_record_count",
+      "passed": true
+    },
+    {
+      "bad_paths": [],
+      "check": "preflight:no_explicit_private_condition_or_schedule_strings_in_meter_inputs",
+      "passed": true
+    },
+    {
+      "check": "preflight:preflight-network-F-same-r0-t01-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "preflight:preflight-network-F-same-r0-t01-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "preflight:preflight-network-F-same-r0-t02-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "preflight:preflight-network-F-same-r0-t02-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "preflight:preflight-network-F-same-r0-t02-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "preflight:preflight-network-F-same-r0-t03-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "preflight:preflight-network-F-same-r0-t03-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "preflight:preflight-network-F-same-r0-t03-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "preflight:preflight-watering-S-rephrased-r0-t01-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "preflight:preflight-watering-S-rephrased-r0-t01-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "preflight:preflight-watering-S-rephrased-r0-t02-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "preflight:preflight-watering-S-rephrased-r0-t02-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "preflight:preflight-watering-S-rephrased-r0-t02-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "preflight:preflight-watering-S-rephrased-r0-t03-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "preflight:preflight-watering-S-rephrased-r0-t03-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "preflight:preflight-watering-S-rephrased-r0-t03-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "preflight:all_attempted_calls_returned",
+      "passed": true
+    },
+    {
+      "check": "preflight:c101:turn:1:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "preflight:c101:turn:2:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "preflight:c101:turn:3:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "preflight:c102:turn:1:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "preflight:c102:turn:2:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "preflight:c102:turn:3:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:same_frozen_schedule_settings",
+      "passed": true
+    },
+    {
+      "check": "main:source_state_unchanged",
+      "passed": true
+    },
+    {
+      "check": "main:meter_whitelist_and_record_count",
+      "passed": true
+    },
+    {
+      "bad_paths": [],
+      "check": "main:no_explicit_private_condition_or_schedule_strings_in_meter_inputs",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t01-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t01-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t02-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t02-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t02-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t03-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t03-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t03-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t04-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t04-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t04-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t05-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t05-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t05-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t06-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t06-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t06-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t07-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t07-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t07-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t08-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t08-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t08-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t09-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t09-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t09-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-new-r0-t10-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t01-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t01-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t02-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t02-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t02-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t03-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t03-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t03-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t04-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t04-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t04-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t05-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t05-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t05-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t06-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t06-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t06-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t07-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t07-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t07-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t08-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t08-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t08-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-F-same-r0-t09-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t01-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t01-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t02-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t02-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t02-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t03-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t03-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t03-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t04-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t04-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t04-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t05-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t05-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t05-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t06-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t06-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t06-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t07-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t07-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t07-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t08-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t08-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t08-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t09-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t09-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t09-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t10-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t10-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-baking-S-rephrased-r0-t10-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t01-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t01-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t02-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t02-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t02-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t03-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t03-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t03-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t04-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t04-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t04-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t05-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t05-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t05-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t06-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t06-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t06-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t07-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t07-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t07-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t08-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t08-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t08-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t09-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t09-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t09-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t10-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t10-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-new-r0-t10-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t01-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t01-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t02-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t02-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t02-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t03-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t03-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t03-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t04-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t04-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t04-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t05-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t05-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t05-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t06-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t06-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t06-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t07-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t07-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t07-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t08-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t08-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t08-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t09-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t09-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t09-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t10-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t10-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-F-same-r0-t10-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t01-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t01-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t02-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t02-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t02-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t03-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t03-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t03-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t04-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t04-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t04-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t05-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t05-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t05-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t06-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t06-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t06-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t07-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t07-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t07-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t08-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t08-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t08-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t09-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t09-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t09-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t10-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t10-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-network-S-rephrased-r0-t10-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t01-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t01-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t02-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t02-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t02-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t03-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t03-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t03-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t04-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t04-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t04-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t05-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t05-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t05-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t06-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t06-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t06-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t07-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t07-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t07-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t08-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t08-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t08-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t09-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t09-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t09-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t10-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t10-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-new-r0-t10-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t01-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t01-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t02-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t02-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t02-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t03-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t03-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t03-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t04-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t04-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t04-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t05-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t05-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t05-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t06-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t06-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t06-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t07-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t07-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t07-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t08-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t08-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t08-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t09-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t09-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t09-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t10-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t10-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-F-same-r0-t10-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t01-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t01-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t02-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t02-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t02-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t03-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t03-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t03-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t04-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t04-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t04-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t05-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t05-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t05-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t06-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t06-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t06-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t07-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t07-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t07-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t08-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t08-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t08-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t09-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t09-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t09-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t10-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t10-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:main-watering-S-rephrased-r0-t10-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "main:all_attempted_calls_returned",
+      "passed": true
+    },
+    {
+      "check": "main:c001:turn:1:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c001:turn:2:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c001:turn:3:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c001:turn:4:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c001:turn:5:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c001:turn:6:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c001:turn:7:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c001:turn:8:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c001:turn:9:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c001:turn:10:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c002:turn:1:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c002:turn:2:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c002:turn:3:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c002:turn:4:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c002:turn:5:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c002:turn:6:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c002:turn:7:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c002:turn:8:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c002:turn:9:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c002:turn:10:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c003:turn:1:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c003:turn:2:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c003:turn:3:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c003:turn:4:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c003:turn:5:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c003:turn:6:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c003:turn:7:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c003:turn:8:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c003:turn:9:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c003:turn:10:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c004:turn:1:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c004:turn:2:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c004:turn:3:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c004:turn:4:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c004:turn:5:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c004:turn:6:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c004:turn:7:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c004:turn:8:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c004:turn:9:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c004:turn:10:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c005:turn:1:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c005:turn:2:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c005:turn:3:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c005:turn:4:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c005:turn:5:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c005:turn:6:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c005:turn:7:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c005:turn:8:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c005:turn:9:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c005:turn:10:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c006:turn:1:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c006:turn:2:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c006:turn:3:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c006:turn:4:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c006:turn:5:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c006:turn:6:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c006:turn:7:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c006:turn:8:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c006:turn:9:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c006:turn:10:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c007:turn:1:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c007:turn:2:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c007:turn:3:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c007:turn:4:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c007:turn:5:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c007:turn:6:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c007:turn:7:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c007:turn:8:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c007:turn:9:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c008:turn:1:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c008:turn:2:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c008:turn:3:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c008:turn:4:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c008:turn:5:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c008:turn:6:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c008:turn:7:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c008:turn:8:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c009:turn:1:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c009:turn:2:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c009:turn:3:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c009:turn:4:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c009:turn:5:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c009:turn:6:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c009:turn:7:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c009:turn:8:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c009:turn:9:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "main:c009:turn:10:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "replacement1:same_frozen_schedule_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:source_state_unchanged",
+      "passed": true
+    },
+    {
+      "check": "replacement1:meter_whitelist_and_record_count",
+      "passed": true
+    },
+    {
+      "bad_paths": [],
+      "check": "replacement1:no_explicit_private_condition_or_schedule_strings_in_meter_inputs",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t01-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t01-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t02-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t02-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t02-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t03-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t03-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t03-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t04-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t04-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t04-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t05-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t05-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t05-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t06-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t06-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t06-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t07-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t07-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t07-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t08-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t08-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t08-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t09-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t09-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t09-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t10-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t10-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:main-network-F-new-r1-t10-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement1:all_attempted_calls_returned",
+      "passed": true
+    },
+    {
+      "check": "replacement1:c201:turn:1:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "replacement1:c201:turn:2:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "replacement1:c201:turn:3:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "replacement1:c201:turn:4:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "replacement1:c201:turn:5:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "replacement1:c201:turn:6:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "replacement1:c201:turn:7:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "replacement1:c201:turn:8:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "replacement1:c201:turn:9:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "replacement1:c201:turn:10:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "replacement2:same_frozen_schedule_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:source_state_unchanged",
+      "passed": true
+    },
+    {
+      "check": "replacement2:meter_whitelist_and_record_count",
+      "passed": true
+    },
+    {
+      "bad_paths": [],
+      "check": "replacement2:no_explicit_private_condition_or_schedule_strings_in_meter_inputs",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t01-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t01-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t02-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t02-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t02-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t03-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t03-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t03-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t04-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t04-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t04-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t05-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t05-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t05-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t06-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t06-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t06-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t07-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t07-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t07-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t08-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t08-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t08-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t09-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t09-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t09-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t10-extractor.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t10-gemma.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:main-network-F-same-r2-t10-quinn.json:unchanged_request_settings",
+      "passed": true
+    },
+    {
+      "check": "replacement2:all_attempted_calls_returned",
+      "passed": true
+    },
+    {
+      "check": "replacement2:c202:turn:1:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "replacement2:c202:turn:2:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "replacement2:c202:turn:3:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "replacement2:c202:turn:4:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "replacement2:c202:turn:5:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "replacement2:c202:turn:6:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "replacement2:c202:turn:7:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "replacement2:c202:turn:8:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "replacement2:c202:turn:9:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "replacement2:c202:turn:10:frozen_field_seed",
+      "passed": true
+    },
+    {
+      "check": "budget_ledger_matches_raw_calls",
+      "passed": true
+    },
+    {
+      "check": "within_frozen_call_token_budget",
+      "passed": true
+    },
+    {
+      "check": "exactly_two_replacement_runs",
+      "passed": true
+    },
+    {
+      "check": "source_file_hash_after_all_stages",
+      "passed": true
+    }
+  ],
+  "construction_sha256": "2800bbee151319b0c10c08a14f72473c807f3544f02b9cdf3eef66571c4a4769",
+  "extractor_actual_token_usage": "unavailable specialist nonautoregressive",
+  "formulas_sha256": "42611164905d84c7a76b94d66d88ed14a101f4cba950c2de750a9d1c2160ff18",
+  "limitation": "Recording integrity and passive boundaries do not establish authored conversation fidelity. Root judgments are separate and precede scores.",
+  "meter_scores_computed_by_evidence_package": false,
+  "normal_calls": {
+    "extractor": 113,
+    "gemma": 113,
+    "quinn": 102
+  },
+  "requested_output_tokens_reserved": 357376,
+  "runner_sha256": "a0f09cb82d17c495ba3e6b211628c999775513f0b9cb830ce166a67f17a2d09a",
+  "stages": [
+    {
+      "accepted_by_conversation": {
+        "c101": 3,
+        "c102": 3
+      },
+      "accepted_turns": 6,
+      "actual_output_tokens_known": {
+        "gemma": 3347,
+        "quinn": 140
+      },
+      "capped_answers": 0,
+      "headroom_pairs_removed": 0,
+      "normal_calls": {
+        "extractor": 6,
+        "gemma": 6,
+        "quinn": 4
+      },
+      "rejections": [],
+      "source_full_semantic_coverage": {
+        "s0": 2,
+        "s1": 0
+      },
+      "stage": "preflight",
+      "text_input_complete": 6
+    },
+    {
+      "accepted_by_conversation": {
+        "c001": 10,
+        "c002": 10,
+        "c003": 10,
+        "c004": 10,
+        "c005": 10,
+        "c006": 10,
+        "c007": 9,
+        "c008": 8,
+        "c009": 10
+      },
+      "accepted_turns": 87,
+      "actual_output_tokens_known": {
+        "gemma": 36893,
+        "quinn": 2610
+      },
+      "capped_answers": 0,
+      "headroom_pairs_removed": 0,
+      "normal_calls": {
+        "extractor": 87,
+        "gemma": 87,
+        "quinn": 80
+      },
+      "rejections": [
+        {
+          "conversation": "c007",
+          "coordinate": "main-baking-F-new-r0-t10",
+          "participant_text": "Based on the consistent feedback, I'll need to adjust the baking process. Since a repeat bake with the same size, measured temperature, foil, and cooling time gives the same clean slice, what's the next step to address the gummy base?",
+          "reasons": [
+            "required factual sentences absent, repeated, or out of order"
+          ],
+          "turn": 10
+        },
+        {
+          "conversation": "c008",
+          "coordinate": "main-baking-F-same-r0-t09",
+          "participant_text": "How does repeating the same temperature and time affect the overall confidence in the recipe?",
+          "reasons": [
+            "required factual sentences absent, repeated, or out of order"
+          ],
+          "turn": 9
+        }
+      ],
+      "source_full_semantic_coverage": {
+        "s0": 34,
+        "s1": 1
+      },
+      "stage": "main",
+      "text_input_complete": 87
+    },
+    {
+      "accepted_by_conversation": {
+        "c201": 10
+      },
+      "accepted_turns": 10,
+      "actual_output_tokens_known": {
+        "gemma": 4940,
+        "quinn": 246
+      },
+      "capped_answers": 0,
+      "headroom_pairs_removed": 0,
+      "normal_calls": {
+        "extractor": 10,
+        "gemma": 10,
+        "quinn": 9
+      },
+      "rejections": [],
+      "source_full_semantic_coverage": {
+        "s0": 4,
+        "s1": 0
+      },
+      "stage": "replacement1",
+      "text_input_complete": 10
+    },
+    {
+      "accepted_by_conversation": {
+        "c202": 10
+      },
+      "accepted_turns": 10,
+      "actual_output_tokens_known": {
+        "gemma": 4896,
+        "quinn": 347
+      },
+      "capped_answers": 0,
+      "headroom_pairs_removed": 0,
+      "normal_calls": {
+        "extractor": 10,
+        "gemma": 10,
+        "quinn": 9
+      },
+      "rejections": [],
+      "source_full_semantic_coverage": {
+        "s0": 5,
+        "s1": 0
+      },
+      "stage": "replacement2",
+      "text_input_complete": 10
+    }
+  ]
+}

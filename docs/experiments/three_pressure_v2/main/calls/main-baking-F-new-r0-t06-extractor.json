@@ -1,0 +1,437 @@
+{
+  "completed_utc": "2026-10-02T19:12:09.800056+00:00",
+  "elapsed_seconds": 1.003753534052521,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"A smaller loaf reaches the same center temperature 15 minutes sooner. Ask what loaf size adds to the explanation.\", \"s1\": \"It sounds like you are asking how the **size of the loaf** affects the time it takes to reach that specific internal temperature (82\\u00b0C).\\n\\nIn baking, the **size (volume/mass)** of the loaf is directly related to how long it takes to reach a specific internal temperature.\\n\\nHere is the breakdown of how size affects the time:\\n\\n### 1. The Relationship Between Size and Time\\n*   **Larger Loaf = More Time:** A larger loaf (more volume/mass) has more material for the heat to travel through. Therefore, it takes **longer** to reach the target temperature (82\\u00b0C).\\n*   **Smaller Loaf = Less Time:** A smaller loaf has less mass, so it reaches the target temperature **faster**.\\n\\n### 2. The \\\"Symptom\\\" (The 15-Minute Difference)\\nIf your current process takes 15 minutes longer than expected, it means the **size** of the loaf is the primary factor:\\n\\n*   **If the loaf is larger:** It needs more time to heat through the entire mass.\\n*   **If the loaf is smaller:** It will reach the target temperature faster.\\n\\n**In short:** The \\\"size\\\" (volume) is the variable that determines the time.\\n\\n**If you can tell me what you are baking (e.g., \\\"A small cake,\\\" \\\"A large bread loaf,\\\" etc.), I can give you a more precise timing recommendation!**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-baking-F-new-r0-t06"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"loaf\", \"relation\": \"depends_on\", \"to\": \"size\", \"source\": \"s0\", \"evidence\": \"loaf size\"}], \"episode_id\": \"main-baking-F-new-r0-t06\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "00235aada90e52dfaf44d38db921509d9bb831c1c1c11be928648975d7f219ce",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 88,
+              "start": 79
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "size",
+            "object_span": {
+              "end": 88,
+              "start": 84
+            },
+            "relation": "depends_on",
+            "score": 0.3889557421207428,
+            "source_slot": "s0",
+            "subject": "loaf",
+            "subject_span": {
+              "end": 83,
+              "start": 79
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 88,
+              "start": 79
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "loaf",
+            "object_span": {
+              "end": 83,
+              "start": 79
+            },
+            "relation": "associated_with",
+            "score": 0.780025839805603,
+            "source_slot": "s0",
+            "subject": "size",
+            "subject_span": {
+              "end": 88,
+              "start": 84
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1223,
+              "start": 1072
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 1076,
+              "start": 1072
+            },
+            "relation": "improves",
+            "score": 0.5519375801086426,
+            "source_slot": "s1",
+            "subject": "timing recommendation",
+            "subject_span": {
+              "end": 1223,
+              "start": 1202
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "9c822328acb12396144d91f24e57b031e65d242b96988a12c3a4dd7047a679a0",
+          "s1": "58ebb73495a7d41e24ed6dffc7b3e72755ba52e916b3f950efc7e62d73cd6555"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.982319176197052,
+                  "end": 88,
+                  "start": 79,
+                  "text": "loaf size"
+                },
+                "tail": {
+                  "confidence": 0.982319176197052,
+                  "end": 189,
+                  "start": 185,
+                  "text": "time"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.780025839805603,
+                  "end": 88,
+                  "start": 84,
+                  "text": "size"
+                },
+                "tail": {
+                  "confidence": 0.780025839805603,
+                  "end": 83,
+                  "start": 79,
+                  "text": "loaf"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.8790397644042969,
+                  "end": 88,
+                  "start": 79,
+                  "text": "loaf size"
+                },
+                "tail": {
+                  "confidence": 0.8790397644042969,
+                  "end": 189,
+                  "start": 185,
+                  "text": "time"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [
+              {
+                "head": {
+                  "confidence": 0.3889557421207428,
+                  "end": 83,
+                  "start": 79,
+                  "text": "loaf"
+                },
+                "tail": {
+                  "confidence": 0.3889557421207428,
+                  "end": 88,
+                  "start": 84,
+                  "text": "size"
+                }
+              }
+            ],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.5519375801086426,
+                  "end": 1337,
+                  "start": 1316,
+                  "text": "timing recommendation"
+                },
+                "tail": {
+                  "confidence": 0.5519375801086426,
+                  "end": 1190,
+                  "start": 1186,
+                  "text": "time"
+                }
+              }
+            ],
+            "increases": [],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.9711928367614746,
+                  "end": 88,
+                  "start": 79,
+                  "text": "loaf size"
+                },
+                "tail": {
+                  "confidence": 0.9711928367614746,
+                  "end": 189,
+                  "start": 185,
+                  "text": "time"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.6900745034217834,
+                  "end": 88,
+                  "start": 79,
+                  "text": "loaf size"
+                },
+                "tail": {
+                  "confidence": 0.6900745034217834,
+                  "end": 261,
+                  "start": 255,
+                  "text": "baking"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.9352337121963501,
+                  "end": 88,
+                  "start": 79,
+                  "text": "loaf size"
+                },
+                "tail": {
+                  "confidence": 0.9352337121963501,
+                  "end": 189,
+                  "start": 185,
+                  "text": "time"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.9352337121963501,
+              "end": 88,
+              "start": 79,
+              "text": "loaf size"
+            },
+            "tail": {
+              "confidence": 0.9352337121963501,
+              "end": 189,
+              "start": 185,
+              "text": "time"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.6900745034217834,
+              "end": 88,
+              "start": 79,
+              "text": "loaf size"
+            },
+            "tail": {
+              "confidence": 0.6900745034217834,
+              "end": 261,
+              "start": 255,
+              "text": "baking"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.982319176197052,
+              "end": 88,
+              "start": 79,
+              "text": "loaf size"
+            },
+            "tail": {
+              "confidence": 0.982319176197052,
+              "end": 189,
+              "start": 185,
+              "text": "time"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.8790397644042969,
+              "end": 88,
+              "start": 79,
+              "text": "loaf size"
+            },
+            "tail": {
+              "confidence": 0.8790397644042969,
+              "end": 189,
+              "start": 185,
+              "text": "time"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.9711928367614746,
+              "end": 88,
+              "start": 79,
+              "text": "loaf size"
+            },
+            "tail": {
+              "confidence": 0.9711928367614746,
+              "end": 189,
+              "start": 185,
+              "text": "time"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:12:08.794375+00:00",
+  "status": "RETURNED"
+}

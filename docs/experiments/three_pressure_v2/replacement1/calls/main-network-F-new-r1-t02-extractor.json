@@ -1,0 +1,682 @@
+{
+  "completed_utc": "2026-10-02T19:16:50.820312+00:00",
+  "elapsed_seconds": 1.744487744057551,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"The sensor uptime resets after an outage, while the neighboring sensor stays online. What a reset distinguishes from a lost dashboard entry?\", \"s1\": \"That's a very specific and useful distinction to make! It sounds like you are trying to differentiate between a **temporary connection failure** (a \\\"lost\\\" state) versus a **permanent hardware failure** (a \\\"reset\\\" state).\\n\\nHere is how to interpret that difference:\\n\\n### 1. \\\"Lost\\\" vs. \\\"Reset\\\"\\n\\n*   **Lost (Temporary Disconnect):** This usually means the device is still powered on, but its connection to the network/dashboard is broken. It's like a temporary \\\"lost connection.\\\"\\n*   **Reset (Permanent Failure):** This means the device has completely lost its ability to function or communicate.\\n\\n### 2. How to distinguish them:\\n\\nSince you are asking how to distinguish a **\\\"lost\\\" entry** from a **\\\"reset\\\"** entry, here is the practical difference:\\n\\n| Scenario | What it means | What to check |\\n| :--- | :--- | :--- |\\n| **Lost (Temporary)** | The device is powered on, but the data transmission failed (e.g., a temporary Wi-Fi drop). | **Check the Router:** Is the router overloaded? Is the signal weak? |\\n| **Reset (Permanent)** | The device has a fundamental hardware/power failure. | **Check Power/Wiring:** Is the power source stable? Is the sensor physically damaged? |\\n\\n**In your case:**\\nIf the sensor *resets* (restarts and starts over), it suggests a **Reset/Crash** (a software/power issue).\\nIf the sensor *disappears* (stops reporting data entirely), it suggests a **Lost Connection** (a network/Wi-Fi issue).\\n\\n**To narrow it down, you need to check the \\\"Why\\\":**\\n\\n*   **If it's a \\\"Lost\\\" event:** The sensor is still *on*, but the communication link is broken.\\n*   **If it's a \\\"Reset\\\" event:** The sensor itself has failed or lost power.\\n\\n**Which one is it?**\\nIf the sensor \\\"disappears\\\" entirely, it's likely a **Lost Connection** (Wi-Fi/Power). If it \\\"resets,\\\" it's a **Hardware/Power** issue.\\n\\n**How to test this:**\\n1.  **Check the power source:** Is the power supply to the sensor stable?\\n2.  **Check the network:** Is the Wi-Fi signal strong where the sensor is located?\\n3.  **Check the logs:** If you can access the logs, look for \\\"Connection Timeout\\\" errors.\\n\\n**If you can provide more context on *what* is disappearing (e.g., a specific data point, or the entire sensor itself), I can give you a more precise diagnosis!**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-F-new-r1-t02"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"reset\", \"relation\": \"causes\", \"to\": \"Reset\", \"source\": \"s1\", \"evidence\": \"reset\\\" state).\\n\\nHere is how to interpret that difference:\\n\\n### 1. \\\"Lost\\\" vs. \\\"Reset\"}, {\"from\": \"sensor\", \"relation\": \"part_of\", \"to\": \"device\", \"source\": \"s1\", \"evidence\": \"device has a fundamental hardware/power failure. | **Check Power/Wiring:** Is the power source stable? Is the sensor physically damaged? |\\n\\n**In your case:**\\nIf the sensor\"}, {\"from\": \"Reset\", \"relation\": \"causes\", \"to\": \"Reset/Crash\", \"source\": \"s1\", \"evidence\": \"Reset/Crash\"}, {\"from\": \"sensor\", \"relation\": \"causes\", \"to\": \"Reset/Crash\", \"source\": \"s1\", \"evidence\": \"Reset/Crash** (a software/power issue).\\nIf the sensor\"}, {\"from\": \"sensor\", \"relation\": \"causes\", \"to\": \"Reset\", \"source\": \"s1\", \"evidence\": \"sensor *disappears* (stops reporting data entirely), it suggests a **Lost Connection** (a network/Wi-Fi issue).\\n\\n**To narrow it down, you need to check the \\\"Why\\\":**\\n\\n*   **If it's a \\\"Lost\\\" event:** The sensor is still *on*, but the communication link is broken.\\n*   **If it's a \\\"Reset\"}, {\"from\": \"Reset\", \"relation\": \"caused_by\", \"to\": \"disappears\", \"source\": \"s1\", \"evidence\": \"Reset\\\" event:** The sensor itself has failed or lost power.\\n\\n**Which one is it?**\\nIf the sensor \\\"disappears\"}], \"episode_id\": \"main-network-F-new-r1-t02\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "has",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 7,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 10,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 11,
+          "kind": "specialist_observation",
+          "relation": "caused_by",
+          "status": "forwarded"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "aece376977ad44d8b5991d8496dbab34e26fe5968b07a3c5fb2b095add6cc943",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 97,
+              "start": 64
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sensor",
+            "object_span": {
+              "end": 70,
+              "start": 64
+            },
+            "relation": "affects",
+            "score": 0.8269153237342834,
+            "source_slot": "s0",
+            "subject": "reset",
+            "subject_span": {
+              "end": 97,
+              "start": 92
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 97,
+              "start": 64
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sensor",
+            "object_span": {
+              "end": 70,
+              "start": 64
+            },
+            "relation": "associated_with",
+            "score": 0.7007104158401489,
+            "source_slot": "s0",
+            "subject": "reset",
+            "subject_span": {
+              "end": 97,
+              "start": 92
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 289,
+              "start": 206
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Reset",
+            "object_span": {
+              "end": 289,
+              "start": 284
+            },
+            "relation": "causes",
+            "score": 0.5556930899620056,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 211,
+              "start": 206
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 289,
+              "start": 206
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Reset",
+            "object_span": {
+              "end": 289,
+              "start": 284
+            },
+            "relation": "influences",
+            "score": 0.492272287607193,
+            "source_slot": "s1",
+            "subject": "reset",
+            "subject_span": {
+              "end": 211,
+              "start": 206
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 532,
+              "start": 482
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "device",
+            "object_span": {
+              "end": 532,
+              "start": 526
+            },
+            "relation": "associated_with",
+            "score": 0.8974367380142212,
+            "source_slot": "s1",
+            "subject": "Reset",
+            "subject_span": {
+              "end": 487,
+              "start": 482
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1080,
+              "start": 1033
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "device has a fundamental hardware/power failure",
+            "object_span": {
+              "end": 1080,
+              "start": 1033
+            },
+            "relation": "has",
+            "score": 0.8765414953231812,
+            "source_slot": "s1",
+            "subject": "device",
+            "subject_span": {
+              "end": 1039,
+              "start": 1033
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1204,
+              "start": 1033
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "device",
+            "object_span": {
+              "end": 1039,
+              "start": 1033
+            },
+            "relation": "part_of",
+            "score": 0.8679594993591309,
+            "source_slot": "s1",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 1204,
+              "start": 1198
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1269,
+              "start": 1258
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Reset/Crash",
+            "object_span": {
+              "end": 1269,
+              "start": 1258
+            },
+            "relation": "causes",
+            "score": 0.5376954078674316,
+            "source_slot": "s1",
+            "subject": "Reset",
+            "subject_span": {
+              "end": 1263,
+              "start": 1258
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1269,
+              "start": 1258
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Reset/Crash",
+            "object_span": {
+              "end": 1269,
+              "start": 1258
+            },
+            "relation": "leads_to",
+            "score": 0.5426539778709412,
+            "source_slot": "s1",
+            "subject": "Reset",
+            "subject_span": {
+              "end": 1263,
+              "start": 1258
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1311,
+              "start": 1258
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Reset/Crash",
+            "object_span": {
+              "end": 1269,
+              "start": 1258
+            },
+            "relation": "causes",
+            "score": 0.5174800753593445,
+            "source_slot": "s1",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 1311,
+              "start": 1305
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1589,
+              "start": 1305
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Reset",
+            "object_span": {
+              "end": 1589,
+              "start": 1584
+            },
+            "relation": "causes",
+            "score": 0.5362951159477234,
+            "source_slot": "s1",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 1311,
+              "start": 1305
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1691,
+              "start": 1584
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "disappears",
+            "object_span": {
+              "end": 1691,
+              "start": 1681
+            },
+            "relation": "caused_by",
+            "score": 0.4824347496032715,
+            "source_slot": "s1",
+            "subject": "Reset",
+            "subject_span": {
+              "end": 1589,
+              "start": 1584
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 2105,
+              "start": 2027
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "context",
+            "object_span": {
+              "end": 2105,
+              "start": 2098
+            },
+            "relation": "provides",
+            "score": 0.5278102159500122,
+            "source_slot": "s1",
+            "subject": "logs",
+            "subject_span": {
+              "end": 2031,
+              "start": 2027
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "b2b7f5992ac0c034ba622ae33911d44e5659a75a6edb96ccae58c7541d6e4284",
+          "s1": "bef01552bec01754d18df432033f5ef70b7c34f5f8cc2f7f3dde386ab56e566b"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.8269153237342834,
+                  "end": 97,
+                  "start": 92,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.8269153237342834,
+                  "end": 70,
+                  "start": 64,
+                  "text": "sensor"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.7007104158401489,
+                  "end": 97,
+                  "start": 92,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.7007104158401489,
+                  "end": 70,
+                  "start": 64,
+                  "text": "sensor"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8974367380142212,
+                  "end": 628,
+                  "start": 623,
+                  "text": "Reset"
+                },
+                "tail": {
+                  "confidence": 0.8974367380142212,
+                  "end": 673,
+                  "start": 667,
+                  "text": "device"
+                }
+              }
+            ],
+            "caused_by": [
+              {
+                "head": {
+                  "confidence": 0.4824347496032715,
+                  "end": 1730,
+                  "start": 1725,
+                  "text": "Reset"
+                },
+                "tail": {
+                  "confidence": 0.4824347496032715,
+                  "end": 1832,
+                  "start": 1822,
+                  "text": "disappears"
+                }
+              }
+            ],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.5556930899620056,
+                  "end": 352,
+                  "start": 347,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.5556930899620056,
+                  "end": 430,
+                  "start": 425,
+                  "text": "Reset"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5376954078674316,
+                  "end": 1404,
+                  "start": 1399,
+                  "text": "Reset"
+                },
+                "tail": {
+                  "confidence": 0.5376954078674316,
+                  "end": 1410,
+                  "start": 1399,
+                  "text": "Reset/Crash"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5174800753593445,
+                  "end": 1452,
+                  "start": 1446,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.5174800753593445,
+                  "end": 1410,
+                  "start": 1399,
+                  "text": "Reset/Crash"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5362951159477234,
+                  "end": 1452,
+                  "start": 1446,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.5362951159477234,
+                  "end": 1730,
+                  "start": 1725,
+                  "text": "Reset"
+                }
+              }
+            ],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [
+              {
+                "head": {
+                  "confidence": 0.8765414953231812,
+                  "end": 1180,
+                  "start": 1174,
+                  "text": "device"
+                },
+                "tail": {
+                  "confidence": 0.8765414953231812,
+                  "end": 1221,
+                  "start": 1174,
+                  "text": "device has a fundamental hardware/power failure"
+                }
+              }
+            ],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.492272287607193,
+                  "end": 352,
+                  "start": 347,
+                  "text": "reset"
+                },
+                "tail": {
+                  "confidence": 0.492272287607193,
+                  "end": 430,
+                  "start": 425,
+                  "text": "Reset"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [
+              {
+                "head": {
+                  "confidence": 0.5426539778709412,
+                  "end": 1404,
+                  "start": 1399,
+                  "text": "Reset"
+                },
+                "tail": {
+                  "confidence": 0.5426539778709412,
+                  "end": 1410,
+                  "start": 1399,
+                  "text": "Reset/Crash"
+                }
+              }
+            ],
+            "maintains": [],
+            "manages": [],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.8679594993591309,
+                  "end": 1345,
+                  "start": 1339,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.8679594993591309,
+                  "end": 1180,
+                  "start": 1174,
+                  "text": "device"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [],
+            "provides": [
+              {
+                "head": {
+                  "confidence": 0.5278102159500122,
+                  "end": 2172,
+                  "start": 2168,
+                  "text": "logs"
+                },
+                "tail": {
+                  "confidence": 0.5278102159500122,
+                  "end": 2246,
+                  "start": 2239,
+                  "text": "context"
+                }
+              }
+            ],
+            "reduces": [],
+            "related": [],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:16:49.073249+00:00",
+  "status": "RETURNED"
+}

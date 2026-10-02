@@ -1,0 +1,427 @@
+{
+  "completed_utc": "2026-10-02T19:13:46.028589+00:00",
+  "elapsed_seconds": 0.9933270569890738,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"At 180 degrees Celsius for 40 minutes, the bread is brown outside but still slightly wet in the middle. What does that comparison suggest testing next?\", \"s1\": \"It sounds like you are dealing with a **\\\"heat penetration\\\"** issue. The outside is cooked (brown), but the inside isn't fully cooked.\\n\\nWhen you say the bread is \\\"brown outside but still wet in the middle,\\\" it means the heat is not reaching the center effectively.\\n\\n**What this suggests you need to test next is:**\\n\\n### 1. Increase the Time (The \\\"Time\\\" Factor)\\nSince the outside is dark/brown, but the middle is still wet, the heat is not moving fast enough.\\n\\n*   **Action:** Increase the time. Instead of 40 minutes, try **50 minutes** or even **55 minutes**.\\n\\n### 2. Increase the Temperature (The \\\"Heat\\\" Factor)\\nIf the temperature is too low, the heat isn't penetrating the center fast enough.\\n\\n*   **Action:** Increase the temperature slightly. Try moving from **180\\u00b0C to 190\\u00b0C** (or 364\\u00b0F).\\n\\n### \\ud83d\\udca1 The \\\"Dependable\\\" Test:\\nThe best way to test the next step is to **increase the temperature slightly.**\\n\\n**Recommendation:**\\n*   **Try increasing the temperature to 190\\u00b0C (374\\u00b0F).** This will push the heat deeper into the center.\\n*   **If that fails, increase the time to 50 minutes.**\\n\\n**In summary:** The \\\"wet middle\\\" means the heat is not reaching the center. You need more time or more heat.\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-baking-F-same-r0-t05"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"Temperature\", \"relation\": \"causes\", \"to\": \"heat penetration\", \"source\": \"s1\", \"evidence\": \"heat penetration\\\"** issue. The outside is cooked (brown), but the inside isn't fully cooked.\\n\\nWhen you say the bread is \\\"brown outside but still wet in the middle,\\\" it means the heat is not reaching the center effectively.\\n\\n**What this suggests you need to test next is:**\\n\\n### 1. Increase the Time (The \\\"Time\\\" Factor)\\nSince the outside is dark/brown, but the middle is still wet, the heat is not moving fast enough.\\n\\n*   **Action:** Increase the time. Instead of 40 minutes, try **50 minutes** or even **55 minutes**.\\n\\n### 2. Increase the Temperature\"}], \"episode_id\": \"main-baking-F-same-r0-t05\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "dries",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "f65302a22c83cf655dc4c1c6bda3b322e59b2d5fd4ab1061d86533fcb1b20950",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 65,
+              "start": 43
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "brown outside",
+            "object_span": {
+              "end": 65,
+              "start": 52
+            },
+            "relation": "dries",
+            "score": 0.49777182936668396,
+            "source_slot": "s0",
+            "subject": "bread",
+            "subject_span": {
+              "end": 48,
+              "start": 43
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 492,
+              "start": 335
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 492,
+              "start": 488
+            },
+            "relation": "improves",
+            "score": 0.45556262135505676,
+            "source_slot": "s1",
+            "subject": "Time",
+            "subject_span": {
+              "end": 339,
+              "start": 335
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 592,
+              "start": 41
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "heat penetration",
+            "object_span": {
+              "end": 57,
+              "start": 41
+            },
+            "relation": "causes",
+            "score": 0.5558012127876282,
+            "source_slot": "s1",
+            "subject": "Temperature",
+            "subject_span": {
+              "end": 592,
+              "start": 581
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 592,
+              "start": 41
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "heat penetration",
+            "object_span": {
+              "end": 57,
+              "start": 41
+            },
+            "relation": "influences",
+            "score": 0.8300390839576721,
+            "source_slot": "s1",
+            "subject": "Temperature",
+            "subject_span": {
+              "end": 592,
+              "start": 581
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 592,
+              "start": 152
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bread",
+            "object_span": {
+              "end": 157,
+              "start": 152
+            },
+            "relation": "affects",
+            "score": 0.7340779304504395,
+            "source_slot": "s1",
+            "subject": "Temperature",
+            "subject_span": {
+              "end": 592,
+              "start": 581
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1194,
+              "start": 840
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "more time or more heat",
+            "object_span": {
+              "end": 1194,
+              "start": 1172
+            },
+            "relation": "requires",
+            "score": 0.5161974430084229,
+            "source_slot": "s1",
+            "subject": "test",
+            "subject_span": {
+              "end": 844,
+              "start": 840
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1068,
+              "start": 950
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 1068,
+              "start": 1064
+            },
+            "relation": "influences",
+            "score": 0.6086480021476746,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 961,
+              "start": 950
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "b886815f10a457744cf22272d531df2a7e27c9bacc4d48176bd5f1f826e4debc",
+          "s1": "5941a684d052f091fe1c89b03e7815362e60e7d88111688005e8124b8b22558e"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.7340779304504395,
+                  "end": 744,
+                  "start": 733,
+                  "text": "Temperature"
+                },
+                "tail": {
+                  "confidence": 0.7340779304504395,
+                  "end": 309,
+                  "start": 304,
+                  "text": "bread"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.5558012127876282,
+                  "end": 744,
+                  "start": 733,
+                  "text": "Temperature"
+                },
+                "tail": {
+                  "confidence": 0.5558012127876282,
+                  "end": 209,
+                  "start": 193,
+                  "text": "heat penetration"
+                }
+              }
+            ],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [
+              {
+                "head": {
+                  "confidence": 0.49777182936668396,
+                  "end": 48,
+                  "start": 43,
+                  "text": "bread"
+                },
+                "tail": {
+                  "confidence": 0.49777182936668396,
+                  "end": 65,
+                  "start": 52,
+                  "text": "brown outside"
+                }
+              }
+            ],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.45556262135505676,
+                  "end": 491,
+                  "start": 487,
+                  "text": "Time"
+                },
+                "tail": {
+                  "confidence": 0.45556262135505676,
+                  "end": 644,
+                  "start": 640,
+                  "text": "time"
+                }
+              }
+            ],
+            "increases": [],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.8300390839576721,
+                  "end": 744,
+                  "start": 733,
+                  "text": "Temperature"
+                },
+                "tail": {
+                  "confidence": 0.8300390839576721,
+                  "end": 209,
+                  "start": 193,
+                  "text": "heat penetration"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6086480021476746,
+                  "end": 1113,
+                  "start": 1102,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.6086480021476746,
+                  "end": 1220,
+                  "start": 1216,
+                  "text": "time"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [],
+            "requires": [
+              {
+                "head": {
+                  "confidence": 0.5161974430084229,
+                  "end": 996,
+                  "start": 992,
+                  "text": "test"
+                },
+                "tail": {
+                  "confidence": 0.5161974430084229,
+                  "end": 1346,
+                  "start": 1324,
+                  "text": "more time or more heat"
+                }
+              }
+            ],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:13:45.033115+00:00",
+  "status": "RETURNED"
+}

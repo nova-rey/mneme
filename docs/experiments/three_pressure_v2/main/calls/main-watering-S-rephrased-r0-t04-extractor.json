@@ -1,0 +1,749 @@
+{
+  "completed_utc": "2026-10-02T19:09:49.045018+00:00",
+  "elapsed_seconds": 0.8385330229066312,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"I have made no changes. Cotton carrying water still leaves me unsure whether the pot will get too much or too little. Ask again whether the same arrangement is dependable.\", \"s1\": \"It sounds like you are worried about the **reliability** of the system you have set up. You want to know if the \\\"wick\\\" or the \\\"drip\\\" system you are using is actually reliable enough to keep the plant alive while you are away.\\n\\nSince you are asking if the *same arrangement* is dependable, I need to know **what kind of plant** you are trying to keep alive.\\n\\n**The \\\"dependability\\\" of a system depends entirely on the plant:**\\n\\n1.  **Is it a Succulent (like a cactus)?** (These are usually very dry and can handle a long dry spell.)\\n2.  **Is it a leafy plant (like a fern or a houseplant)?** (These need consistent, consistent moisture.)\\n\\n**Please tell me what kind of plant you are trying to keep alive.**\\n\\nOnce I know the plant, I can give you a much more specific \\\"yes/no\\\" answer on whether your current setup is reliable.\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-watering-S-rephrased-r0-t04"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"drip\", \"relation\": \"part_of\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"drip\\\" system\"}, {\"from\": \"arrangement\", \"relation\": \"supports\", \"to\": \"plant\", \"source\": \"s1\", \"evidence\": \"arrangement* is dependable, I need to know **what kind of plant\"}, {\"from\": \"dependability\", \"relation\": \"depends_on\", \"to\": \"plant\", \"source\": \"s1\", \"evidence\": \"dependability\\\" of a system depends entirely on the plant\"}], \"episode_id\": \"main-watering-S-rephrased-r0-t04\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "shades",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "wicks",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "keeps",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "specialist_observation",
+          "relation": "supports",
+          "status": "forwarded"
+        },
+        {
+          "index": 9,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 11,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "e59d8677f44bd94b6bd5269247230167a2064c3cf9fef977c34385fcc3ecc64c",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 45,
+              "start": 0
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Cotton carrying water",
+            "object_span": {
+              "end": 45,
+              "start": 24
+            },
+            "relation": "changes",
+            "score": 0.5904371738433838,
+            "source_slot": "s0",
+            "subject": "I",
+            "subject_span": {
+              "end": 1,
+              "start": 0
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 84,
+              "start": 0
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "pot",
+            "object_span": {
+              "end": 84,
+              "start": 81
+            },
+            "relation": "changes",
+            "score": 0.6316090226173401,
+            "source_slot": "s0",
+            "subject": "I",
+            "subject_span": {
+              "end": 1,
+              "start": 0
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 45,
+              "start": 24
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Cotton carrying water",
+            "object_span": {
+              "end": 45,
+              "start": 24
+            },
+            "relation": "changes",
+            "score": 0.6625813245773315,
+            "source_slot": "s0",
+            "subject": "Cotton carrying water",
+            "subject_span": {
+              "end": 45,
+              "start": 24
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 84,
+              "start": 24
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "pot",
+            "object_span": {
+              "end": 84,
+              "start": 81
+            },
+            "relation": "changes",
+            "score": 0.7909451127052307,
+            "source_slot": "s0",
+            "subject": "Cotton carrying water",
+            "subject_span": {
+              "end": 45,
+              "start": 24
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 84,
+              "start": 24
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "pot",
+            "object_span": {
+              "end": 84,
+              "start": 81
+            },
+            "relation": "shades",
+            "score": 0.7010868787765503,
+            "source_slot": "s0",
+            "subject": "Cotton carrying water",
+            "subject_span": {
+              "end": 45,
+              "start": 24
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 84,
+              "start": 24
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "pot",
+            "object_span": {
+              "end": 84,
+              "start": 81
+            },
+            "relation": "wicks",
+            "score": 0.7486584782600403,
+            "source_slot": "s0",
+            "subject": "Cotton carrying water",
+            "subject_span": {
+              "end": 45,
+              "start": 24
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 139,
+              "start": 127
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 139,
+              "start": 133
+            },
+            "relation": "part_of",
+            "score": 0.5794284343719482,
+            "source_slot": "s1",
+            "subject": "drip",
+            "subject_span": {
+              "end": 131,
+              "start": 127
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 272,
+              "start": 194
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "plant alive",
+            "object_span": {
+              "end": 205,
+              "start": 194
+            },
+            "relation": "keeps",
+            "score": 0.35303443670272827,
+            "source_slot": "s1",
+            "subject": "arrangement",
+            "subject_span": {
+              "end": 272,
+              "start": 261
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 324,
+              "start": 261
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "plant",
+            "object_span": {
+              "end": 324,
+              "start": 319
+            },
+            "relation": "supports",
+            "score": 0.6668511033058167,
+            "source_slot": "s1",
+            "subject": "arrangement",
+            "subject_span": {
+              "end": 272,
+              "start": 261
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 421,
+              "start": 365
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "plant",
+            "object_span": {
+              "end": 421,
+              "start": 416
+            },
+            "relation": "depends_on",
+            "score": 0.9328243732452393,
+            "source_slot": "s1",
+            "subject": "dependability",
+            "subject_span": {
+              "end": 378,
+              "start": 365
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 727,
+              "start": 440
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "plant",
+            "object_span": {
+              "end": 727,
+              "start": 722
+            },
+            "relation": "associated_with",
+            "score": 0.3759728670120239,
+            "source_slot": "s1",
+            "subject": "Succulent",
+            "subject_span": {
+              "end": 449,
+              "start": 440
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 633,
+              "start": 545
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "consistent, consistent moisture",
+            "object_span": {
+              "end": 633,
+              "start": 602
+            },
+            "relation": "requires",
+            "score": 0.8362560868263245,
+            "source_slot": "s1",
+            "subject": "leafy plant",
+            "subject_span": {
+              "end": 556,
+              "start": 545
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "a5f87c63b95cae44061db3ec6cf3f912d76d5d536d2e060cfb458cc7daa02c01",
+          "s1": "8813acd77e4eddc56d565b043a11378470d723cada72caca0196c3a1509ffc94"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.7299345135688782,
+                  "end": 45,
+                  "start": 24,
+                  "text": "Cotton carrying water"
+                },
+                "tail": {
+                  "confidence": 0.7299345135688782,
+                  "end": 371,
+                  "start": 366,
+                  "text": "plant"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.3759728670120239,
+                  "end": 621,
+                  "start": 612,
+                  "text": "Succulent"
+                },
+                "tail": {
+                  "confidence": 0.3759728670120239,
+                  "end": 899,
+                  "start": 894,
+                  "text": "plant"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.5904371738433838,
+                  "end": 1,
+                  "start": 0,
+                  "text": "I"
+                },
+                "tail": {
+                  "confidence": 0.5904371738433838,
+                  "end": 45,
+                  "start": 24,
+                  "text": "Cotton carrying water"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6316090226173401,
+                  "end": 1,
+                  "start": 0,
+                  "text": "I"
+                },
+                "tail": {
+                  "confidence": 0.6316090226173401,
+                  "end": 84,
+                  "start": 81,
+                  "text": "pot"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6625813245773315,
+                  "end": 45,
+                  "start": 24,
+                  "text": "Cotton carrying water"
+                },
+                "tail": {
+                  "confidence": 0.6625813245773315,
+                  "end": 45,
+                  "start": 24,
+                  "text": "Cotton carrying water"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7909451127052307,
+                  "end": 45,
+                  "start": 24,
+                  "text": "Cotton carrying water"
+                },
+                "tail": {
+                  "confidence": 0.7909451127052307,
+                  "end": 84,
+                  "start": 81,
+                  "text": "pot"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [
+              {
+                "head": {
+                  "confidence": 0.9328243732452393,
+                  "end": 550,
+                  "start": 537,
+                  "text": "dependability"
+                },
+                "tail": {
+                  "confidence": 0.9328243732452393,
+                  "end": 593,
+                  "start": 588,
+                  "text": "plant"
+                }
+              }
+            ],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [
+              {
+                "head": {
+                  "confidence": 0.5446776151657104,
+                  "end": 84,
+                  "start": 81,
+                  "text": "pot"
+                },
+                "tail": {
+                  "confidence": 0.5446776151657104,
+                  "end": 728,
+                  "start": 717,
+                  "text": "leafy plant"
+                }
+              }
+            ],
+            "improves": [],
+            "increases": [],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.6525359749794006,
+                  "end": 45,
+                  "start": 24,
+                  "text": "Cotton carrying water"
+                },
+                "tail": {
+                  "confidence": 0.6525359749794006,
+                  "end": 496,
+                  "start": 491,
+                  "text": "plant"
+                }
+              }
+            ],
+            "keeps": [
+              {
+                "head": {
+                  "confidence": 0.35303443670272827,
+                  "end": 444,
+                  "start": 433,
+                  "text": "arrangement"
+                },
+                "tail": {
+                  "confidence": 0.35303443670272827,
+                  "end": 377,
+                  "start": 366,
+                  "text": "plant alive"
+                }
+              }
+            ],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.5794284343719482,
+                  "end": 303,
+                  "start": 299,
+                  "text": "drip"
+                },
+                "tail": {
+                  "confidence": 0.5794284343719482,
+                  "end": 311,
+                  "start": 305,
+                  "text": "system"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [],
+            "requires": [
+              {
+                "head": {
+                  "confidence": 0.8362560868263245,
+                  "end": 728,
+                  "start": 717,
+                  "text": "leafy plant"
+                },
+                "tail": {
+                  "confidence": 0.8362560868263245,
+                  "end": 805,
+                  "start": 774,
+                  "text": "consistent, consistent moisture"
+                }
+              }
+            ],
+            "retains": [],
+            "shades": [
+              {
+                "head": {
+                  "confidence": 0.7010868787765503,
+                  "end": 45,
+                  "start": 24,
+                  "text": "Cotton carrying water"
+                },
+                "tail": {
+                  "confidence": 0.7010868787765503,
+                  "end": 84,
+                  "start": 81,
+                  "text": "pot"
+                }
+              }
+            ],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [
+              {
+                "head": {
+                  "confidence": 0.6668511033058167,
+                  "end": 444,
+                  "start": 433,
+                  "text": "arrangement"
+                },
+                "tail": {
+                  "confidence": 0.6668511033058167,
+                  "end": 496,
+                  "start": 491,
+                  "text": "plant"
+                }
+              }
+            ],
+            "used_for": [],
+            "uses": [],
+            "wicks": [
+              {
+                "head": {
+                  "confidence": 0.7486584782600403,
+                  "end": 45,
+                  "start": 24,
+                  "text": "Cotton carrying water"
+                },
+                "tail": {
+                  "confidence": 0.7486584782600403,
+                  "end": 84,
+                  "start": 81,
+                  "text": "pot"
+                }
+              }
+            ],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.7299345135688782,
+              "end": 45,
+              "start": 24,
+              "text": "Cotton carrying water"
+            },
+            "tail": {
+              "confidence": 0.7299345135688782,
+              "end": 371,
+              "start": 366,
+              "text": "plant"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.5446776151657104,
+              "end": 84,
+              "start": 81,
+              "text": "pot"
+            },
+            "tail": {
+              "confidence": 0.5446776151657104,
+              "end": 728,
+              "start": 717,
+              "text": "leafy plant"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.6525359749794006,
+              "end": 45,
+              "start": 24,
+              "text": "Cotton carrying water"
+            },
+            "tail": {
+              "confidence": 0.6525359749794006,
+              "end": 496,
+              "start": 491,
+              "text": "plant"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:09:48.204749+00:00",
+  "status": "RETURNED"
+}

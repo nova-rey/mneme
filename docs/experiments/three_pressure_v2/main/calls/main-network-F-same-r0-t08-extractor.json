@@ -1,0 +1,772 @@
+{
+  "completed_utc": "2026-10-02T19:03:15.726822+00:00",
+  "elapsed_seconds": 1.0842333100736141,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"Back at the original Wi-Fi position with the shorter power cable, the sensor resets 0 times and the dashboard misses 3 updates in 120 minutes. Ask what the reversal establishes.\", \"s1\": \"It seems like you are describing a specific technical scenario involving a \\\"reset\\\" or \\\"reboot\\\" event happening every 120 minutes, which is causing the system to fail to send updates to the dashboard.\\n\\nSince you are asking **\\\"what the reversal establishes,\\\"** I need to know what specific \\\"reversal\\\" or \\\"reversal\\\" you are referring to.\\n\\n**To give you a useful answer, could you clarify what you mean by \\\"the reversal\\\"?**\\n\\nHowever, based on the context of the previous messages, here is an analysis of the situation:\\n\\n**The \\\"Reversal\\\" (The 120-minute cycle):**\\n*   **The 120-minute cycle is the problem:** The system is failing to maintain a stable connection or state.\\n\\n**If you are asking what the \\\"reversal\\\" (reversal/reboot) establishes:**\\n*   **The \\\"reversal\\\" (reset) is the symptom:** The system is repeatedly resetting or \\\"rebooting\\\" every 120 minutes.\\n\\n**If you are asking what the \\\"reversal\\\" establishes:**\\n*   **The \\\"reversal\\\" establishes a *failure*:** The system is failing to maintain a stable connection.\\n\\n**Please clarify:**\\n1.  **What is the \\\"reversal\\\" you are referring to?** (Is it a software reversal, a physical reversal, or a data reversal?)\\n2.  **What is the \\\"two counts\\\" you mentioned in your previous message?**\\n\\n**If you are asking for a \\\"reversal\\\" (reboot):**\\n*   **The reversal establishes a \\\"Reboot\\\" state.**\\n\\n**If you can clarify what \\\"reversal\\\" means in your context, I can give you a much clearer answer.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-F-same-r0-t08"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"reversal\", \"relation\": \"prevents\", \"to\": \"fail to send updates\", \"source\": \"s1\", \"evidence\": \"fail to send updates to the dashboard.\\n\\nSince you are asking **\\\"what the reversal\"}, {\"from\": \"reversal\", \"relation\": \"constrains\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"reversal\\\" (reset) is the symptom:** The system\"}, {\"from\": \"reversal\", \"relation\": \"part_of\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"reversal\\\" (reset) is the symptom:** The system\"}, {\"from\": \"reversal\", \"relation\": \"related\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"reversal\\\" (reset) is the symptom:** The system\"}, {\"from\": \"reversal\", \"relation\": \"supports\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"reversal\\\" (reset) is the symptom:** The system\"}], \"episode_id\": \"main-network-F-same-r0-t08\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "specialist_observation",
+          "relation": "prevents",
+          "status": "forwarded"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "maintains",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "specialist_observation",
+          "relation": "constrains",
+          "status": "forwarded"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "controls",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "manages",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 11,
+          "kind": "unsupported_specialist_relation",
+          "relation": "protects",
+          "status": "rejected"
+        },
+        {
+          "index": 12,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 13,
+          "kind": "specialist_observation",
+          "relation": "supports",
+          "status": "forwarded"
+        },
+        {
+          "index": 14,
+          "kind": "unsupported_specialist_relation",
+          "relation": "helps",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "3b649479f9e5b7b43bbb1ee4626f2883af89250a67605f129259c7beb936cb02",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 76,
+              "start": 45
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "shorter power cable",
+            "object_span": {
+              "end": 64,
+              "start": 45
+            },
+            "relation": "uses",
+            "score": 0.8268327713012695,
+            "source_slot": "s0",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 76,
+              "start": 70
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 164,
+              "start": 45
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "shorter power cable",
+            "object_span": {
+              "end": 64,
+              "start": 45
+            },
+            "relation": "requires",
+            "score": 0.5016999244689941,
+            "source_slot": "s0",
+            "subject": "reversal",
+            "subject_span": {
+              "end": 164,
+              "start": 156
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 242,
+              "start": 161
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "fail to send updates",
+            "object_span": {
+              "end": 181,
+              "start": 161
+            },
+            "relation": "prevents",
+            "score": 0.5254337787628174,
+            "source_slot": "s1",
+            "subject": "reversal",
+            "subject_span": {
+              "end": 242,
+              "start": 234
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 242,
+              "start": 189
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "dashboard",
+            "object_span": {
+              "end": 198,
+              "start": 189
+            },
+            "relation": "affects",
+            "score": 0.7962471842765808,
+            "source_slot": "s1",
+            "subject": "reversal",
+            "subject_span": {
+              "end": 242,
+              "start": 234
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 242,
+              "start": 189
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "dashboard",
+            "object_span": {
+              "end": 198,
+              "start": 189
+            },
+            "relation": "changes",
+            "score": 0.7872305512428284,
+            "source_slot": "s1",
+            "subject": "reversal",
+            "subject_span": {
+              "end": 242,
+              "start": 234
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 666,
+              "start": 608
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "stable connection or state",
+            "object_span": {
+              "end": 666,
+              "start": 640
+            },
+            "relation": "maintains",
+            "score": 0.6808893084526062,
+            "source_slot": "s1",
+            "subject": "system",
+            "subject_span": {
+              "end": 614,
+              "start": 608
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 799,
+              "start": 753
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 799,
+              "start": 793
+            },
+            "relation": "associated_with",
+            "score": 0.5643628835678101,
+            "source_slot": "s1",
+            "subject": "reversal",
+            "subject_span": {
+              "end": 761,
+              "start": 753
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 799,
+              "start": 753
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 799,
+              "start": 793
+            },
+            "relation": "constrains",
+            "score": 0.8386228680610657,
+            "source_slot": "s1",
+            "subject": "reversal",
+            "subject_span": {
+              "end": 761,
+              "start": 753
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 799,
+              "start": 753
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 799,
+              "start": 793
+            },
+            "relation": "controls",
+            "score": 0.6826356649398804,
+            "source_slot": "s1",
+            "subject": "reversal",
+            "subject_span": {
+              "end": 761,
+              "start": 753
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 799,
+              "start": 753
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 799,
+              "start": 793
+            },
+            "relation": "manages",
+            "score": 0.4788946509361267,
+            "source_slot": "s1",
+            "subject": "reversal",
+            "subject_span": {
+              "end": 761,
+              "start": 753
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 799,
+              "start": 753
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 799,
+              "start": 793
+            },
+            "relation": "part_of",
+            "score": 0.5864339470863342,
+            "source_slot": "s1",
+            "subject": "reversal",
+            "subject_span": {
+              "end": 761,
+              "start": 753
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 799,
+              "start": 753
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 799,
+              "start": 793
+            },
+            "relation": "protects",
+            "score": 0.7160839438438416,
+            "source_slot": "s1",
+            "subject": "reversal",
+            "subject_span": {
+              "end": 761,
+              "start": 753
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 799,
+              "start": 753
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 799,
+              "start": 793
+            },
+            "relation": "related",
+            "score": 0.5901448726654053,
+            "source_slot": "s1",
+            "subject": "reversal",
+            "subject_span": {
+              "end": 761,
+              "start": 753
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 799,
+              "start": 753
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 799,
+              "start": 793
+            },
+            "relation": "supports",
+            "score": 0.6897889375686646,
+            "source_slot": "s1",
+            "subject": "reversal",
+            "subject_span": {
+              "end": 761,
+              "start": 753
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 972,
+              "start": 925
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 972,
+              "start": 966
+            },
+            "relation": "helps",
+            "score": 0.5563851594924927,
+            "source_slot": "s1",
+            "subject": "reversal",
+            "subject_span": {
+              "end": 933,
+              "start": 925
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "1afd3b7deb847374af50f7f50e910c25a731f1ef1c0c12bbbf303a51fdaf73d9",
+          "s1": "a80e2a5f2cbd5a014e30271149d3356b52dc3f9620b3aa60603f2e917fda2978"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.7962471842765808,
+                  "end": 420,
+                  "start": 412,
+                  "text": "reversal"
+                },
+                "tail": {
+                  "confidence": 0.7962471842765808,
+                  "end": 376,
+                  "start": 367,
+                  "text": "dashboard"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.5643628835678101,
+                  "end": 939,
+                  "start": 931,
+                  "text": "reversal"
+                },
+                "tail": {
+                  "confidence": 0.5643628835678101,
+                  "end": 977,
+                  "start": 971,
+                  "text": "system"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.7872305512428284,
+                  "end": 420,
+                  "start": 412,
+                  "text": "reversal"
+                },
+                "tail": {
+                  "confidence": 0.7872305512428284,
+                  "end": 376,
+                  "start": 367,
+                  "text": "dashboard"
+                }
+              }
+            ],
+            "constrains": [
+              {
+                "head": {
+                  "confidence": 0.8386228680610657,
+                  "end": 939,
+                  "start": 931,
+                  "text": "reversal"
+                },
+                "tail": {
+                  "confidence": 0.8386228680610657,
+                  "end": 977,
+                  "start": 971,
+                  "text": "system"
+                }
+              }
+            ],
+            "contains": [],
+            "controls": [
+              {
+                "head": {
+                  "confidence": 0.6826356649398804,
+                  "end": 939,
+                  "start": 931,
+                  "text": "reversal"
+                },
+                "tail": {
+                  "confidence": 0.6826356649398804,
+                  "end": 977,
+                  "start": 971,
+                  "text": "system"
+                }
+              }
+            ],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [
+              {
+                "head": {
+                  "confidence": 0.5563851594924927,
+                  "end": 1111,
+                  "start": 1103,
+                  "text": "reversal"
+                },
+                "tail": {
+                  "confidence": 0.5563851594924927,
+                  "end": 1150,
+                  "start": 1144,
+                  "text": "system"
+                }
+              }
+            ],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [
+              {
+                "head": {
+                  "confidence": 0.6808893084526062,
+                  "end": 792,
+                  "start": 786,
+                  "text": "system"
+                },
+                "tail": {
+                  "confidence": 0.6808893084526062,
+                  "end": 844,
+                  "start": 818,
+                  "text": "stable connection or state"
+                }
+              }
+            ],
+            "manages": [
+              {
+                "head": {
+                  "confidence": 0.4788946509361267,
+                  "end": 939,
+                  "start": 931,
+                  "text": "reversal"
+                },
+                "tail": {
+                  "confidence": 0.4788946509361267,
+                  "end": 977,
+                  "start": 971,
+                  "text": "system"
+                }
+              }
+            ],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.5864339470863342,
+                  "end": 939,
+                  "start": 931,
+                  "text": "reversal"
+                },
+                "tail": {
+                  "confidence": 0.5864339470863342,
+                  "end": 977,
+                  "start": 971,
+                  "text": "system"
+                }
+              }
+            ],
+            "prevents": [
+              {
+                "head": {
+                  "confidence": 0.5254337787628174,
+                  "end": 420,
+                  "start": 412,
+                  "text": "reversal"
+                },
+                "tail": {
+                  "confidence": 0.5254337787628174,
+                  "end": 359,
+                  "start": 339,
+                  "text": "fail to send updates"
+                }
+              }
+            ],
+            "protects": [
+              {
+                "head": {
+                  "confidence": 0.7160839438438416,
+                  "end": 939,
+                  "start": 931,
+                  "text": "reversal"
+                },
+                "tail": {
+                  "confidence": 0.7160839438438416,
+                  "end": 977,
+                  "start": 971,
+                  "text": "system"
+                }
+              }
+            ],
+            "provides": [],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.5901448726654053,
+                  "end": 939,
+                  "start": 931,
+                  "text": "reversal"
+                },
+                "tail": {
+                  "confidence": 0.5901448726654053,
+                  "end": 977,
+                  "start": 971,
+                  "text": "system"
+                }
+              }
+            ],
+            "requires": [
+              {
+                "head": {
+                  "confidence": 0.5016999244689941,
+                  "end": 164,
+                  "start": 156,
+                  "text": "reversal"
+                },
+                "tail": {
+                  "confidence": 0.5016999244689941,
+                  "end": 64,
+                  "start": 45,
+                  "text": "shorter power cable"
+                }
+              }
+            ],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [
+              {
+                "head": {
+                  "confidence": 0.6897889375686646,
+                  "end": 939,
+                  "start": 931,
+                  "text": "reversal"
+                },
+                "tail": {
+                  "confidence": 0.6897889375686646,
+                  "end": 977,
+                  "start": 971,
+                  "text": "system"
+                }
+              }
+            ],
+            "used_for": [],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.8268327713012695,
+                  "end": 76,
+                  "start": 70,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.8268327713012695,
+                  "end": 64,
+                  "start": 45,
+                  "text": "shorter power cable"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:03:14.640545+00:00",
+  "status": "RETURNED"
+}

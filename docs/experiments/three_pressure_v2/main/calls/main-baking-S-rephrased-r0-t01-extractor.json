@@ -1,0 +1,376 @@
+{
+  "completed_utc": "2026-10-02T19:14:30.855146+00:00",
+  "elapsed_seconds": 1.0345323418732733,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"The outside of my bread gets too dark before the middle is baked. I am unsure whether to change the oven temperature or baking time. How can I work out a dependable setting?\", \"s1\": \"That sounds frustrating! Dealing with uneven baking can definitely be tricky.\\n\\nSince the outside is getting dark too quickly while the middle is still undercooked, it sounds like a **temperature/heat distribution issue** rather than just a time issue.\\n\\nHere are a few things you could try to fix this:\\n\\n1.  **Lower the Temperature:** If the outside is getting dark too fast, the heat might be too high. Try lowering your oven temperature by 15\\u201325 degrees and see if that helps slow down the surface reaction.\\n2.  **Use a Baking Stone/Steel:** If you are using a standard oven, sometimes the heat distribution isn't perfectly even. A baking stone or steel placed on a rack can help distribute the heat more evenly and prevent the edges from burning.\\n3.  **Check Your Oven:** If you have a convection setting, try turning it *off* and just using the standard \\\"bake\\\" setting, as convection can sometimes be too intense for a delicate bake.\\n4.  **Baking Time:** If you are using a specific recipe, try to see if there is a \\\"maximum\\\" time listed. If the recipe says \\\"bake for 30 minutes,\\\" try 25 minutes, just to see if you can get it to the right texture before it burns.\\n\\n**To give you the most \\\"dependable\\\" setting, I'd need to know what you are baking (e.g., bread, cake, etc.)!**\\n\\nBut generally, if the outside is dark too fast, **lower the heat.**\\n\\nWhat are you baking? Knowing the item might help me give you a more specific recommendation! \\ud83d\\ude0a\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-baking-S-rephrased-r0-t01"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"Baking Time\", \"relation\": \"related\", \"to\": \"recipe\", \"source\": \"s1\", \"evidence\": \"Baking Time:** If you are using a specific recipe\"}], \"episode_id\": \"main-baking-S-rephrased-r0-t01\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        }
+      ],
+      "specialist": {
+        "content_digest": "9d66ecb30ba5f4704fc926fe16c4cd6cc00fffbfa5fd6defa19580b0fe8f2c69",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 116,
+              "start": 100
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "oven temperature",
+            "object_span": {
+              "end": 116,
+              "start": 100
+            },
+            "relation": "changes",
+            "score": 0.5337346792221069,
+            "source_slot": "s0",
+            "subject": "oven temperature",
+            "subject_span": {
+              "end": 116,
+              "start": 100
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 131,
+              "start": 100
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "baking time",
+            "object_span": {
+              "end": 131,
+              "start": 120
+            },
+            "relation": "changes",
+            "score": 0.6978374123573303,
+            "source_slot": "s0",
+            "subject": "oven temperature",
+            "subject_span": {
+              "end": 116,
+              "start": 100
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 437,
+              "start": 407
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "oven temperature",
+            "object_span": {
+              "end": 437,
+              "start": 421
+            },
+            "relation": "changes",
+            "score": 0.5551724433898926,
+            "source_slot": "s1",
+            "subject": "lowering your oven",
+            "subject_span": {
+              "end": 425,
+              "start": 407
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 437,
+              "start": 407
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "oven temperature",
+            "object_span": {
+              "end": 437,
+              "start": 421
+            },
+            "relation": "reduces",
+            "score": 0.4283449351787567,
+            "source_slot": "s1",
+            "subject": "lowering your oven temperature",
+            "subject_span": {
+              "end": 437,
+              "start": 407
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 992,
+              "start": 943
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "recipe",
+            "object_span": {
+              "end": 992,
+              "start": 986
+            },
+            "relation": "related",
+            "score": 0.45844969153404236,
+            "source_slot": "s1",
+            "subject": "Baking Time",
+            "subject_span": {
+              "end": 954,
+              "start": 943
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "9342f19921976e401e4b5901b906107ec14edefdecc4f1bbfec29c8a2b6917ea",
+          "s1": "41ae8668df194178340fcab01abea69d270e0a0ebacfff4e44159551dd2aae84"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.5337346792221069,
+                  "end": 116,
+                  "start": 100,
+                  "text": "oven temperature"
+                },
+                "tail": {
+                  "confidence": 0.5337346792221069,
+                  "end": 116,
+                  "start": 100,
+                  "text": "oven temperature"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6978374123573303,
+                  "end": 116,
+                  "start": 100,
+                  "text": "oven temperature"
+                },
+                "tail": {
+                  "confidence": 0.6978374123573303,
+                  "end": 131,
+                  "start": 120,
+                  "text": "baking time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6836808323860168,
+                  "end": 599,
+                  "start": 581,
+                  "text": "lowering your oven"
+                },
+                "tail": {
+                  "confidence": 0.6836808323860168,
+                  "end": 131,
+                  "start": 120,
+                  "text": "baking time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5551724433898926,
+                  "end": 599,
+                  "start": 581,
+                  "text": "lowering your oven"
+                },
+                "tail": {
+                  "confidence": 0.5551724433898926,
+                  "end": 611,
+                  "start": 595,
+                  "text": "oven temperature"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.4283449351787567,
+                  "end": 611,
+                  "start": 581,
+                  "text": "lowering your oven temperature"
+                },
+                "tail": {
+                  "confidence": 0.4283449351787567,
+                  "end": 611,
+                  "start": 595,
+                  "text": "oven temperature"
+                }
+              }
+            ],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.45844969153404236,
+                  "end": 1128,
+                  "start": 1117,
+                  "text": "Baking Time"
+                },
+                "tail": {
+                  "confidence": 0.45844969153404236,
+                  "end": 1166,
+                  "start": 1160,
+                  "text": "recipe"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.6836808323860168,
+              "end": 599,
+              "start": 581,
+              "text": "lowering your oven"
+            },
+            "tail": {
+              "confidence": 0.6836808323860168,
+              "end": 131,
+              "start": 120,
+              "text": "baking time"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:14:29.817918+00:00",
+  "status": "RETURNED"
+}

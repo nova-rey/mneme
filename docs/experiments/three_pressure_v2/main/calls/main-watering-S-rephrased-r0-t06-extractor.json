@@ -1,0 +1,721 @@
+{
+  "completed_utc": "2026-10-02T19:10:10.144354+00:00",
+  "elapsed_seconds": 1.0340155740268528,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"Nothing has been tested yet. I remain uneasy about trusting the wick and reservoir for the weekend. What if the system doesn't hold up?\", \"s1\": \"It sounds like you are worried about the **reliability** of your current setup, especially since you haven't \\\"tested\\\" it yet.\\n\\nSince you are worried about the *entire system* failing (the \\\"wick and reservoir\\\"), you are looking for a \\\"fail-safe\\\" or a \\\"reliable\\\" system.\\n\\n**If you are worried about the system failing (the \\\"wick and reservoir\\\" failing), here is the advice:**\\n\\n1.  **The \\\"Test Run\\\" (The \\\"Test\\\"):** Before you commit to the full setup, **test the system on a small, less-valuable plant.** Set up a small, simple test system first. If that small test works, then you can trust the larger, more complex system.\\n2.  **The \\\"Safety Net\\\" (The Backup Plan):** If the primary system fails, you need a backup plan.\\n    *   **The \\\"Manual Check\\\":** If the automated system (the \\\"wick\\\") fails, you must be ready to manually check the plant every 2-3 days.\\n    *   **The \\\"Fail-Safe\\\" Check:** If you are worried about the system failing, you must check it *before* you leave.\\n\\n**In short: If you are worried about it failing, you must check it manually. No automated system is 100% reliable.**\\n\\nIf you can tell me **what kind of plant** you are trying to keep alive, I can give you a specific recommendation on how to make the system \\\"dependable\\\" (reliable).\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-watering-S-rephrased-r0-t06"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"wick and reservoir\", \"relation\": \"part_of\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"system failing (the \\\"wick and reservoir\"}, {\"from\": \"Test Run\", \"relation\": \"constrains\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"system failing (the \\\"wick and reservoir\\\" failing), here is the advice:**\\n\\n1.  **The \\\"Test Run\"}], \"episode_id\": \"main-watering-S-rephrased-r0-t06\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 1,
+          "kind": "specialist_observation",
+          "relation": "constrains",
+          "status": "forwarded"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "used_for",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "controls",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "used_for",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "protects",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "stabilizes",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 11,
+          "kind": "unsupported_specialist_relation",
+          "relation": "manages",
+          "status": "rejected"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "0fed828f2e60fc99b3d24b6870200523d549ee77a3d32bb18cf86ba09e7757c2",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 340,
+              "start": 301
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 307,
+              "start": 301
+            },
+            "relation": "part_of",
+            "score": 0.805247962474823,
+            "source_slot": "s1",
+            "subject": "wick and reservoir",
+            "subject_span": {
+              "end": 340,
+              "start": 322
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 394,
+              "start": 301
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 307,
+              "start": 301
+            },
+            "relation": "constrains",
+            "score": 0.44376102089881897,
+            "source_slot": "s1",
+            "subject": "Test Run",
+            "subject_span": {
+              "end": 394,
+              "start": 386
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 466,
+              "start": 386
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 466,
+              "start": 460
+            },
+            "relation": "affects",
+            "score": 0.44769221544265747,
+            "source_slot": "s1",
+            "subject": "Test Run",
+            "subject_span": {
+              "end": 394,
+              "start": 386
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 536,
+              "start": 386
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "small, simple test system",
+            "object_span": {
+              "end": 536,
+              "start": 511
+            },
+            "relation": "used_for",
+            "score": 0.41216880083084106,
+            "source_slot": "s1",
+            "subject": "Test Run",
+            "subject_span": {
+              "end": 394,
+              "start": 386
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 536,
+              "start": 322
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "wick and reservoir",
+            "object_span": {
+              "end": 340,
+              "start": 322
+            },
+            "relation": "uses",
+            "score": 0.43259197473526,
+            "source_slot": "s1",
+            "subject": "test system",
+            "subject_span": {
+              "end": 536,
+              "start": 525
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 536,
+              "start": 460
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 466,
+              "start": 460
+            },
+            "relation": "controls",
+            "score": 0.5219217538833618,
+            "source_slot": "s1",
+            "subject": "test system",
+            "subject_span": {
+              "end": 536,
+              "start": 525
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 536,
+              "start": 511
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "small, simple test system",
+            "object_span": {
+              "end": 536,
+              "start": 511
+            },
+            "relation": "used_for",
+            "score": 0.4963647425174713,
+            "source_slot": "s1",
+            "subject": "test system",
+            "subject_span": {
+              "end": 536,
+              "start": 525
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 774,
+              "start": 558
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "automated system",
+            "object_span": {
+              "end": 774,
+              "start": 758
+            },
+            "relation": "influences",
+            "score": 0.351136177778244,
+            "source_slot": "s1",
+            "subject": "test",
+            "subject_span": {
+              "end": 562,
+              "start": 558
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 927,
+              "start": 650
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 927,
+              "start": 921
+            },
+            "relation": "protects",
+            "score": 0.4078807532787323,
+            "source_slot": "s1",
+            "subject": "Backup Plan",
+            "subject_span": {
+              "end": 661,
+              "start": 650
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 927,
+              "start": 734
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 927,
+              "start": 921
+            },
+            "relation": "stabilizes",
+            "score": 0.37427860498428345,
+            "source_slot": "s1",
+            "subject": "Manual Check",
+            "subject_span": {
+              "end": 746,
+              "start": 734
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1206,
+              "start": 706
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "backup plan",
+            "object_span": {
+              "end": 717,
+              "start": 706
+            },
+            "relation": "requires",
+            "score": 0.4521080553531647,
+            "source_slot": "s1",
+            "subject": "recommendation",
+            "subject_span": {
+              "end": 1206,
+              "start": 1192
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1206,
+              "start": 921
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 927,
+              "start": 921
+            },
+            "relation": "manages",
+            "score": 0.36142051219940186,
+            "source_slot": "s1",
+            "subject": "recommendation",
+            "subject_span": {
+              "end": 1206,
+              "start": 1192
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1232,
+              "start": 1192
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 1232,
+              "start": 1226
+            },
+            "relation": "improves",
+            "score": 0.4464542269706726,
+            "source_slot": "s1",
+            "subject": "recommendation",
+            "subject_span": {
+              "end": 1206,
+              "start": 1192
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "d55413a32928c175454a9d4024fce4b5478b5b483aed95591d1890b4e05317fd",
+          "s1": "447126936b818ece6f6916531c25a7ea82102fe268b4ca938753369aa4ca9060"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.44769221544265747,
+                  "end": 530,
+                  "start": 522,
+                  "text": "Test Run"
+                },
+                "tail": {
+                  "confidence": 0.44769221544265747,
+                  "end": 602,
+                  "start": 596,
+                  "text": "system"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [],
+            "changes": [],
+            "constrains": [
+              {
+                "head": {
+                  "confidence": 0.44376102089881897,
+                  "end": 530,
+                  "start": 522,
+                  "text": "Test Run"
+                },
+                "tail": {
+                  "confidence": 0.44376102089881897,
+                  "end": 443,
+                  "start": 437,
+                  "text": "system"
+                }
+              }
+            ],
+            "contains": [],
+            "controls": [
+              {
+                "head": {
+                  "confidence": 0.5219217538833618,
+                  "end": 672,
+                  "start": 661,
+                  "text": "test system"
+                },
+                "tail": {
+                  "confidence": 0.5219217538833618,
+                  "end": 602,
+                  "start": 596,
+                  "text": "system"
+                }
+              }
+            ],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.4464542269706726,
+                  "end": 1342,
+                  "start": 1328,
+                  "text": "recommendation"
+                },
+                "tail": {
+                  "confidence": 0.4464542269706726,
+                  "end": 1368,
+                  "start": 1362,
+                  "text": "system"
+                }
+              }
+            ],
+            "increases": [],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.351136177778244,
+                  "end": 698,
+                  "start": 694,
+                  "text": "test"
+                },
+                "tail": {
+                  "confidence": 0.351136177778244,
+                  "end": 910,
+                  "start": 894,
+                  "text": "automated system"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [
+              {
+                "head": {
+                  "confidence": 0.36142051219940186,
+                  "end": 1342,
+                  "start": 1328,
+                  "text": "recommendation"
+                },
+                "tail": {
+                  "confidence": 0.36142051219940186,
+                  "end": 1063,
+                  "start": 1057,
+                  "text": "system"
+                }
+              }
+            ],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.805247962474823,
+                  "end": 476,
+                  "start": 458,
+                  "text": "wick and reservoir"
+                },
+                "tail": {
+                  "confidence": 0.805247962474823,
+                  "end": 443,
+                  "start": 437,
+                  "text": "system"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [
+              {
+                "head": {
+                  "confidence": 0.4078807532787323,
+                  "end": 797,
+                  "start": 786,
+                  "text": "Backup Plan"
+                },
+                "tail": {
+                  "confidence": 0.4078807532787323,
+                  "end": 1063,
+                  "start": 1057,
+                  "text": "system"
+                }
+              }
+            ],
+            "provides": [],
+            "reduces": [],
+            "related": [],
+            "requires": [
+              {
+                "head": {
+                  "confidence": 0.4521080553531647,
+                  "end": 1342,
+                  "start": 1328,
+                  "text": "recommendation"
+                },
+                "tail": {
+                  "confidence": 0.4521080553531647,
+                  "end": 853,
+                  "start": 842,
+                  "text": "backup plan"
+                }
+              }
+            ],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [
+              {
+                "head": {
+                  "confidence": 0.37427860498428345,
+                  "end": 882,
+                  "start": 870,
+                  "text": "Manual Check"
+                },
+                "tail": {
+                  "confidence": 0.37427860498428345,
+                  "end": 1063,
+                  "start": 1057,
+                  "text": "system"
+                }
+              }
+            ],
+            "supports": [],
+            "used_for": [
+              {
+                "head": {
+                  "confidence": 0.41216880083084106,
+                  "end": 530,
+                  "start": 522,
+                  "text": "Test Run"
+                },
+                "tail": {
+                  "confidence": 0.41216880083084106,
+                  "end": 672,
+                  "start": 647,
+                  "text": "small, simple test system"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4963647425174713,
+                  "end": 672,
+                  "start": 661,
+                  "text": "test system"
+                },
+                "tail": {
+                  "confidence": 0.4963647425174713,
+                  "end": 672,
+                  "start": 647,
+                  "text": "small, simple test system"
+                }
+              }
+            ],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.4007411301136017,
+                  "end": 530,
+                  "start": 522,
+                  "text": "Test Run"
+                },
+                "tail": {
+                  "confidence": 0.4007411301136017,
+                  "end": 82,
+                  "start": 64,
+                  "text": "wick and reservoir"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.43259197473526,
+                  "end": 672,
+                  "start": 661,
+                  "text": "test system"
+                },
+                "tail": {
+                  "confidence": 0.43259197473526,
+                  "end": 476,
+                  "start": 458,
+                  "text": "wick and reservoir"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.4007411301136017,
+              "end": 530,
+              "start": 522,
+              "text": "Test Run"
+            },
+            "tail": {
+              "confidence": 0.4007411301136017,
+              "end": 82,
+              "start": 64,
+              "text": "wick and reservoir"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:10:09.108579+00:00",
+  "status": "RETURNED"
+}

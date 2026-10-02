@@ -1,0 +1,213 @@
+{
+  "completed_utc": "2026-10-02T19:18:35.830026+00:00",
+  "elapsed_seconds": 1.989234410924837,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"A workshop sensor sometimes disappears from the Wi-Fi dashboard. I do not know whether power or Wi-Fi is responsible. How can I narrow it down without replacing parts at random?\", \"s1\": \"That sounds frustrating! Dealing with a sensor that keeps dropping off the network can be a real headache.\\n\\nSince you want to narrow down the cause without just swapping parts randomly, here are a few logical steps you can take to systematically isolate the issue:\\n\\n### 1. Isolate the \\\"Power\\\" vs. \\\"Wi-Fi\\\" Issue\\n\\nThe first step is to figure out if the issue is a **power/hardware problem** or a **network/connectivity problem.**\\n\\n*   **Test the Power:** Does the sensor *always* disappear, or does it only disappear when you are doing something specific (like a large data transfer or a network spike)?\\n*   **Test the Network:** Can you check the sensor's connection status *before* it disappears? Does it show a \\\"disconnected\\\" status, or does it just fail to respond?\\n\\n### 2. Systematic Troubleshooting Steps\\n\\nHere\\u2019s a structured way to narrow it down:\\n\\n**A. Test the Power/Hardware:**\\n*   **Check the Power Source:** If the sensor is battery-powered, check the battery level. A low battery can cause intermittent power hiccups that look like a \\\"disconnection.\\\"\\n*   **Check the Power Supply:** If it's plugged in, check the power adapter/outlet. Is the power source stable?\\n\\n**B. Test the Network/Wi-Fi:**\\n*   **Test a different device:** Can another device (like a phone or another sensor) connect to the same Wi-Fi network without issue? If other devices are fine, the problem is likely with the sensor's connection to the router.\\n*   **Check for Interference:** Are there any other large electronics (microwaves, large motors) running near the sensor when it drops?\\n\\n### 3. The \\\"Narrowing Down\\\" Strategy (The 3-Step Test)\\n\\nTo narrow it down without random replacement, try this sequence:\\n\\n1.  **Test the \\\"Local\\\" Connection:** If you can, try to connect the sensor directly to a different, known-good Wi-Fi network (if possible) to see if the issue follows the *sensor* or the *network*.\\n2.  **Test the \\\"Network\\\" Connection:** If the sensor is *always* connected but just \\\"disappears,\\\" the issue is likely a network/router issue. If it *only* disappears when the network is busy, it\\u2019s a bandwidth/congestion issue.\\n3.  **Test the \\\"Hardware\\\":** If you have a spare sensor, try swapping the sensor itself. If a *different* sensor works fine, the original sensor is the problem. If the *same* sensor works on a different network, the network is the problem.\\n\\n**In summary:**\\n*   **If it's a power issue:** Check the battery/power source.\\n*   **If it's a network issue:** Check the router/router stability.\\n*   **If it's a hardware issue:** The sensor itself is likely faulty.\\n\\nLet me know what kind of sensor this is (e.g., temperature, motion, etc.), and I might be able to give you a more specific \\\"next step\\\" test!\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-F-same-r2-t01"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"issue\", \"relation\": \"depends_on\", \"to\": \"power\", \"source\": \"s1\", \"evidence\": \"issue is a **power\"}], \"episode_id\": \"main-network-F-same-r2-t01\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "7bf221f841671e029c639e072c8b05e80cc64837d6d56b3166713c2c61d32e86",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 369,
+              "start": 351
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "power",
+            "object_span": {
+              "end": 369,
+              "start": 364
+            },
+            "relation": "depends_on",
+            "score": 0.682379424571991,
+            "source_slot": "s1",
+            "subject": "issue",
+            "subject_span": {
+              "end": 356,
+              "start": 351
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 2172,
+              "start": 2110
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sensor",
+            "object_span": {
+              "end": 2172,
+              "start": 2166
+            },
+            "relation": "associated_with",
+            "score": 0.5883938670158386,
+            "source_slot": "s1",
+            "subject": "issue",
+            "subject_span": {
+              "end": 2115,
+              "start": 2110
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "e6724fca54b6d88f494567faefcbf51a9aeece9c9cfac353c3edd2d3cda5c440",
+          "s1": "8958403a98be2c15b4a072c8f7bbd043daee4792d5b6aa84a3906bf82ec31146"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.5883938670158386,
+                  "end": 2293,
+                  "start": 2288,
+                  "text": "issue"
+                },
+                "tail": {
+                  "confidence": 0.5883938670158386,
+                  "end": 2350,
+                  "start": 2344,
+                  "text": "sensor"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [
+              {
+                "head": {
+                  "confidence": 0.682379424571991,
+                  "end": 534,
+                  "start": 529,
+                  "text": "issue"
+                },
+                "tail": {
+                  "confidence": 0.682379424571991,
+                  "end": 547,
+                  "start": 542,
+                  "text": "power"
+                }
+              }
+            ],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:18:33.837276+00:00",
+  "status": "RETURNED"
+}

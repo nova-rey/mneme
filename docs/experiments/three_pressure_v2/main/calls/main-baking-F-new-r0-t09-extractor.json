@@ -1,0 +1,486 @@
+{
+  "completed_utc": "2026-10-02T19:12:45.869097+00:00",
+  "elapsed_seconds": 1.1751899609807879,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"After cooling for two hours, the covered loaf slices cleanly instead of seeming gummy. What does this suggest about the baking process?\", \"s1\": \"If the loaf is **\\\"slices cleanly\\\"** (meaning the structure is solid, not crumbly, and the internal structure is holding up well), but the **base** is still \\\"gummy\\\" (meaning it is dense, sticky, or perhaps undercooked/too wet), this suggests a **problem with the moisture or the temperature profile.**\\n\\nHere is what this suggests about the process:\\n\\n### 1. The \\\"Gummy\\\" Base Suggestion:\\nThe \\\"gummy\\\" feeling usually means the **internal moisture content is too high** relative to the structure, or the **heat wasn't applied long enough** to fully set the structure.\\n\\n### 2. What this suggests about the process:\\n*   **Insufficient Heat/Time:** The heat source (oven) might not be hot enough, or the time spent in the oven was too short.\\n*   **Too Much Moisture:** If the base is gummy, it means the \\\"structure\\\" (the crumb) hasn't fully set or \\\"baked out\\\" yet.\\n\\n### 3. What to Control/Fix:\\n*   **Increase the Temperature:** If the base is gummy, the oven temperature is likely too low. Increase the temperature by 10\\u201320 degrees.\\n*   **Increase the Time:** If the temperature is correct, the process needs more time.\\n\\n**In short, the \\\"gummy\\\" base suggests the internal structure needs more time to fully set and dry out.**\\n\\n**To fix the \\\"Gummy\\\" Base:**\\n*   **Increase the temperature slightly** (e.g., move from 300\\u00b0F to 325\\u00b0F).\\n*   **Increase the time:** Allow the product to remain in the oven longer.\\n\\n**In summary:** The \\\"gummy\\\" base means the structure is not fully set. You need to **increase the heat intensity or the duration of the bake.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-baking-F-new-r0-t09"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"Base\", \"relation\": \"related\", \"to\": \"structure\", \"source\": \"s1\", \"evidence\": \"Base Suggestion:\\nThe \\\"gummy\\\" feeling usually means the **internal moisture content is too high** relative to the structure, or the **heat wasn't applied long enough** to fully set the structure\"}], \"episode_id\": \"main-baking-F-new-r0-t09\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "has",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "ba04e3ecfd76639ab3368d4b6d5b1c157b0df0c1bd0c8d5f2c354490d706f33f",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 85,
+              "start": 41
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "gummy",
+            "object_span": {
+              "end": 85,
+              "start": 80
+            },
+            "relation": "has",
+            "score": 0.823874294757843,
+            "source_slot": "s0",
+            "subject": "loaf",
+            "subject_span": {
+              "end": 45,
+              "start": 41
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 561,
+              "start": 368
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "structure",
+            "object_span": {
+              "end": 561,
+              "start": 552
+            },
+            "relation": "related",
+            "score": 0.5262409448623657,
+            "source_slot": "s1",
+            "subject": "Base",
+            "subject_span": {
+              "end": 372,
+              "start": 368
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1006,
+              "start": 905
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 1006,
+              "start": 995
+            },
+            "relation": "changes",
+            "score": 0.8384361267089844,
+            "source_slot": "s1",
+            "subject": "Temperature",
+            "subject_span": {
+              "end": 916,
+              "start": 905
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1006,
+              "start": 905
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 1006,
+              "start": 995
+            },
+            "relation": "increases",
+            "score": 0.7772229313850403,
+            "source_slot": "s1",
+            "subject": "Temperature",
+            "subject_span": {
+              "end": 916,
+              "start": 905
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1048,
+              "start": 995
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Time",
+            "object_span": {
+              "end": 1048,
+              "start": 1044
+            },
+            "relation": "increases",
+            "score": 0.8039243221282959,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 1006,
+              "start": 995
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "2a0e160e3e9d9ccbab2ceaa7b94afdce8c8dcd3e336380b7500ff47f4f46576e",
+          "s1": "4da3b309ad2cb69da79f21fc32ec5968d07e5ebe7559be50d08fadf69422ea0b"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.8384361267089844,
+                  "end": 1052,
+                  "start": 1041,
+                  "text": "Temperature"
+                },
+                "tail": {
+                  "confidence": 0.8384361267089844,
+                  "end": 1142,
+                  "start": 1131,
+                  "text": "temperature"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [
+              {
+                "head": {
+                  "confidence": 0.823874294757843,
+                  "end": 45,
+                  "start": 41,
+                  "text": "loaf"
+                },
+                "tail": {
+                  "confidence": 0.823874294757843,
+                  "end": 85,
+                  "start": 80,
+                  "text": "gummy"
+                }
+              }
+            ],
+            "helps": [
+              {
+                "head": {
+                  "confidence": 0.6131463050842285,
+                  "end": 1052,
+                  "start": 1041,
+                  "text": "Temperature"
+                },
+                "tail": {
+                  "confidence": 0.6131463050842285,
+                  "end": 134,
+                  "start": 120,
+                  "text": "baking process"
+                }
+              }
+            ],
+            "holds": [],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.7463892698287964,
+                  "end": 1052,
+                  "start": 1041,
+                  "text": "Temperature"
+                },
+                "tail": {
+                  "confidence": 0.7463892698287964,
+                  "end": 134,
+                  "start": 120,
+                  "text": "baking process"
+                }
+              }
+            ],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.7772229313850403,
+                  "end": 1052,
+                  "start": 1041,
+                  "text": "Temperature"
+                },
+                "tail": {
+                  "confidence": 0.7772229313850403,
+                  "end": 1142,
+                  "start": 1131,
+                  "text": "temperature"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8039243221282959,
+                  "end": 1142,
+                  "start": 1131,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.8039243221282959,
+                  "end": 1184,
+                  "start": 1180,
+                  "text": "Time"
+                }
+              }
+            ],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.5262409448623657,
+                  "end": 508,
+                  "start": 504,
+                  "text": "Base"
+                },
+                "tail": {
+                  "confidence": 0.5262409448623657,
+                  "end": 697,
+                  "start": 688,
+                  "text": "structure"
+                }
+              }
+            ],
+            "requires": [
+              {
+                "head": {
+                  "confidence": 0.6137951612472534,
+                  "end": 134,
+                  "start": 120,
+                  "text": "baking process"
+                },
+                "tail": {
+                  "confidence": 0.6137951612472534,
+                  "end": 836,
+                  "start": 832,
+                  "text": "time"
+                }
+              }
+            ],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [
+              {
+                "head": {
+                  "confidence": 0.8278427720069885,
+                  "end": 147,
+                  "start": 143,
+                  "text": "loaf"
+                },
+                "tail": {
+                  "confidence": 0.8278427720069885,
+                  "end": 134,
+                  "start": 120,
+                  "text": "baking process"
+                }
+              }
+            ],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.6137951612472534,
+              "end": 134,
+              "start": 120,
+              "text": "baking process"
+            },
+            "tail": {
+              "confidence": 0.6137951612472534,
+              "end": 836,
+              "start": 832,
+              "text": "time"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.7463892698287964,
+              "end": 1052,
+              "start": 1041,
+              "text": "Temperature"
+            },
+            "tail": {
+              "confidence": 0.7463892698287964,
+              "end": 134,
+              "start": 120,
+              "text": "baking process"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.6131463050842285,
+              "end": 1052,
+              "start": 1041,
+              "text": "Temperature"
+            },
+            "tail": {
+              "confidence": 0.6131463050842285,
+              "end": 134,
+              "start": 120,
+              "text": "baking process"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.8278427720069885,
+              "end": 147,
+              "start": 143,
+              "text": "loaf"
+            },
+            "tail": {
+              "confidence": 0.8278427720069885,
+              "end": 134,
+              "start": 120,
+              "text": "baking process"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:12:44.691828+00:00",
+  "status": "RETURNED"
+}

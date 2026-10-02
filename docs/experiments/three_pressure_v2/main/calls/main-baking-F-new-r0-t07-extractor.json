@@ -1,0 +1,470 @@
+{
+  "completed_utc": "2026-10-02T19:12:22.297679+00:00",
+  "elapsed_seconds": 1.2548889219760895,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"The dark pan makes the base much darker than the light pan under the same conditions. Ask how to separate the base from the top crust.\", \"s1\": \"It sounds like you are experiencing a **\\\"browning\\\" or \\\"charring\\\" issue** where the bottom of your baking vessel is getting too dark (or \\\"darker\\\") than the top surface, even though you are using the same heat source.\\n\\nThis is a classic **heat distribution problem.**\\n\\nHere is how to address the \\\"dark base\\\" vs. \\\"light top\\\" issue:\\n\\n### 1. The \\\"Dark Base\\\" Problem (The Bottom is Too Hot)\\nIf the bottom is darker/more \\\"dark\\\" than the top, it means the **heat is being applied too intensely from below**, or the heat is being trapped in a way that concentrates it on the bottom.\\n\\n### 2. How to \\\"Separate\\\" the Base from the Top:\\n\\nTo separate the \\\"base\\\" (the bottom) from the \\\"top crust,\\\" you need to **change the heat source or the container:**\\n\\n*   **If you are using an oven:**\\n    *   **Use a \\\"Lower Temperature, Longer Time\\\" approach:** Instead of a high-heat, short-time approach, try a lower temperature setting for a longer duration. This allows the heat to penetrate the center more evenly.\\n    *   **Use a \\\"Baking Stone\\\":** If you are baking in a pan, place a **baking stone** or a **heating element** on the bottom of the oven. This distributes the heat more evenly across the entire surface, rather than just focusing the heat on the bottom.\\n\\n*   **If you are using a specific appliance (like a convection oven):**\\n    *   **Check the \\\"Fan\\\" setting:** If the fan is on high, it can create \\\"hot spots\\\" in the oven. Turning the fan off (or using a \\\"convection-free\\\" setting) might help stabilize the heat.\\n\\n**In short:** If the base is darker than the top, the heat is being concentrated too heavily at the bottom. You need to **reduce the intensity of the heat source** or **increase the distance between the heat source and the food.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-baking-F-new-r0-t07"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"dark base\", \"relation\": \"related\", \"to\": \"heat\", \"source\": \"s1\", \"evidence\": \"heat distribution problem.**\\n\\nHere is how to address the \\\"dark base\"}, {\"from\": \"lower temperature setting\", \"relation\": \"enables\", \"to\": \"heat to penetrate the center\", \"source\": \"s1\", \"evidence\": \"lower temperature setting for a longer duration. This allows the heat to penetrate the center\"}], \"episode_id\": \"main-baking-F-new-r0-t07\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "stabilizes",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "allows",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "specialist_observation",
+          "relation": "enables",
+          "status": "forwarded"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "605740ab2d5e6f049a9a5ceb5383d3f172451c918de24e6eeb1a6d5376a472f7",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 304,
+              "start": 237
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "heat",
+            "object_span": {
+              "end": 241,
+              "start": 237
+            },
+            "relation": "related",
+            "score": 0.44007954001426697,
+            "source_slot": "s1",
+            "subject": "dark base",
+            "subject_span": {
+              "end": 304,
+              "start": 295
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 955,
+              "start": 886
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "heat",
+            "object_span": {
+              "end": 955,
+              "start": 951
+            },
+            "relation": "improves",
+            "score": 0.4329074025154114,
+            "source_slot": "s1",
+            "subject": "lower temperature setting",
+            "subject_span": {
+              "end": 911,
+              "start": 886
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 955,
+              "start": 886
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "heat",
+            "object_span": {
+              "end": 955,
+              "start": 951
+            },
+            "relation": "stabilizes",
+            "score": 0.5317365527153015,
+            "source_slot": "s1",
+            "subject": "lower temperature setting",
+            "subject_span": {
+              "end": 911,
+              "start": 886
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 979,
+              "start": 886
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "heat to penetrate the center",
+            "object_span": {
+              "end": 979,
+              "start": 951
+            },
+            "relation": "allows",
+            "score": 0.4818957448005676,
+            "source_slot": "s1",
+            "subject": "lower temperature setting",
+            "subject_span": {
+              "end": 911,
+              "start": 886
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 979,
+              "start": 886
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "heat to penetrate the center",
+            "object_span": {
+              "end": 979,
+              "start": 951
+            },
+            "relation": "enables",
+            "score": 0.47175219655036926,
+            "source_slot": "s1",
+            "subject": "lower temperature setting",
+            "subject_span": {
+              "end": 911,
+              "start": 886
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1367,
+              "start": 1239
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "bottom",
+            "object_span": {
+              "end": 1245,
+              "start": 1239
+            },
+            "relation": "affects",
+            "score": 0.7543774843215942,
+            "source_slot": "s1",
+            "subject": "fan",
+            "subject_span": {
+              "end": 1367,
+              "start": 1364
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1671,
+              "start": 1364
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "heat source",
+            "object_span": {
+              "end": 1671,
+              "start": 1660
+            },
+            "relation": "influences",
+            "score": 0.6742172241210938,
+            "source_slot": "s1",
+            "subject": "fan",
+            "subject_span": {
+              "end": 1367,
+              "start": 1364
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1724,
+              "start": 1503
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "heat",
+            "object_span": {
+              "end": 1507,
+              "start": 1503
+            },
+            "relation": "influences",
+            "score": 0.6032719016075134,
+            "source_slot": "s1",
+            "subject": "heat source",
+            "subject_span": {
+              "end": 1724,
+              "start": 1713
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "532eb2315fc4d36e34d4f30d313bfa15c2a34e6343eb87783ab6f215fd40a60f",
+          "s1": "ad2b056fb403bff37be989d646401ad6714522e82e08677e8d2eb43123181377"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.7543774843215942,
+                  "end": 1502,
+                  "start": 1499,
+                  "text": "fan"
+                },
+                "tail": {
+                  "confidence": 0.7543774843215942,
+                  "end": 1380,
+                  "start": 1374,
+                  "text": "bottom"
+                }
+              }
+            ],
+            "allows": [
+              {
+                "head": {
+                  "confidence": 0.4818957448005676,
+                  "end": 1046,
+                  "start": 1021,
+                  "text": "lower temperature setting"
+                },
+                "tail": {
+                  "confidence": 0.4818957448005676,
+                  "end": 1114,
+                  "start": 1086,
+                  "text": "heat to penetrate the center"
+                }
+              }
+            ],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [
+              {
+                "head": {
+                  "confidence": 0.47175219655036926,
+                  "end": 1046,
+                  "start": 1021,
+                  "text": "lower temperature setting"
+                },
+                "tail": {
+                  "confidence": 0.47175219655036926,
+                  "end": 1114,
+                  "start": 1086,
+                  "text": "heat to penetrate the center"
+                }
+              }
+            ],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.4329074025154114,
+                  "end": 1046,
+                  "start": 1021,
+                  "text": "lower temperature setting"
+                },
+                "tail": {
+                  "confidence": 0.4329074025154114,
+                  "end": 1090,
+                  "start": 1086,
+                  "text": "heat"
+                }
+              }
+            ],
+            "increases": [],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.6742172241210938,
+                  "end": 1502,
+                  "start": 1499,
+                  "text": "fan"
+                },
+                "tail": {
+                  "confidence": 0.6742172241210938,
+                  "end": 1806,
+                  "start": 1795,
+                  "text": "heat source"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6032719016075134,
+                  "end": 1859,
+                  "start": 1848,
+                  "text": "heat source"
+                },
+                "tail": {
+                  "confidence": 0.6032719016075134,
+                  "end": 1642,
+                  "start": 1638,
+                  "text": "heat"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.44007954001426697,
+                  "end": 439,
+                  "start": 430,
+                  "text": "dark base"
+                },
+                "tail": {
+                  "confidence": 0.44007954001426697,
+                  "end": 376,
+                  "start": 372,
+                  "text": "heat"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [
+              {
+                "head": {
+                  "confidence": 0.5317365527153015,
+                  "end": 1046,
+                  "start": 1021,
+                  "text": "lower temperature setting"
+                },
+                "tail": {
+                  "confidence": 0.5317365527153015,
+                  "end": 1090,
+                  "start": 1086,
+                  "text": "heat"
+                }
+              }
+            ],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:12:21.040524+00:00",
+  "status": "RETURNED"
+}

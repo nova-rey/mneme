@@ -1,0 +1,555 @@
+{
+  "completed_utc": "2026-10-02T19:16:10.460241+00:00",
+  "elapsed_seconds": 1.1630655429325998,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"There is no new evidence. I remain hesitant about choosing a cooler oven or a longer bake. What if I can't tell when it's done without guessing?\", \"s1\": \"It sounds like you are in a very tricky situation where you don't want to risk ruining the final product by guessing the timing.\\n\\nSince you are worried about the outcome being \\\"too dark\\\" (burnt outside) or \\\"too wet\\\" (raw inside), you are essentially asking: **\\\"How do I know when it's done without guessing?\\\"**\\n\\nHere is the most practical advice for when you don't know the final result:\\n\\n### 1. The \\\"No-Guess\\\" Method (The Safety Net):\\n\\nIf you cannot guess, you must use the **\\\"Test and Check\\\"** method:\\n\\n*   **If it's a solid item (like meat or a dense cake):** Use a **thermometer**. This is the only way to know for sure.\\n*   **If it's a liquid/soft item (like a sauce or a thin batter):** Use the **\\\"Visual Check\\\"** method (e.g., does it look set? Does it hold its shape?).\\n\\n### 2. The \\\"Adjusting the Process\\\" Strategy:**\\n\\nIf you are worried about the *process* being wrong, you should **adjust the environment, not the recipe.**\\n\\n*   **If the outside is too dark (burning):** Lower the temperature immediately.\\n*   **If the middle is too wet (raw):** Increase the time/heat slightly.\\n\\n**Since you cannot \\\"guess\\\" the final result, you must rely on the tools available to you:**\\n\\n*   **If you have a thermometer:** Use it.\\n*   **If you don't have a thermometer:** You must rely on the visual cues (color, texture).\\n\\n**If you can tell me exactly *what* you are trying to cook, I can give you the specific, tested temperature and time.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-baking-S-rephrased-r0-t09"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"practical advice\", \"relation\": \"depends_on\", \"to\": \"tools\", \"source\": \"s1\", \"evidence\": \"practical advice for when you don't know the final result:\\n\\n### 1. The \\\"No-Guess\\\" Method (The Safety Net):\\n\\nIf you cannot guess, you must use the **\\\"Test and Check\\\"** method:\\n\\n*   **If it's a solid item (like meat or a dense cake):** Use a **thermometer**. This is the only way to know for sure.\\n*   **If it's a liquid/soft item (like a sauce or a thin batter):** Use the **\\\"Visual Check\\\"** method (e.g., does it look set? Does it hold its shape?).\\n\\n### 2. The \\\"Adjusting the Process\\\" Strategy:**\\n\\nIf you are worried about the *process* being wrong, you should **adjust the environment, not the recipe.**\\n\\n*   **If the outside is too dark (burning):** Lower the temperature immediately.\\n*   **If the middle is too wet (raw):** Increase the time/heat slightly.\\n\\n**Since you cannot \\\"guess\\\" the final result, you must rely on the tools\"}, {\"from\": \"process\", \"relation\": \"related\", \"to\": \"recipe\", \"source\": \"s1\", \"evidence\": \"process* being wrong, you should **adjust the environment, not the recipe\"}], \"episode_id\": \"main-baking-S-rephrased-r0-t09\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "holds",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "helps",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        }
+      ],
+      "specialist": {
+        "content_digest": "037ea3a0e55b16d5df1db87e3fba8e9d9e8b7748b25cef4f1b030ca3b3b86403",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1161,
+              "start": 329
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "tools",
+            "object_span": {
+              "end": 1161,
+              "start": 1156
+            },
+            "relation": "depends_on",
+            "score": 0.5364100337028503,
+            "source_slot": "s1",
+            "subject": "practical advice",
+            "subject_span": {
+              "end": 345,
+              "start": 329
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1161,
+              "start": 329
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "tools",
+            "object_span": {
+              "end": 1161,
+              "start": 1156
+            },
+            "relation": "requires",
+            "score": 0.45026707649230957,
+            "source_slot": "s1",
+            "subject": "practical advice",
+            "subject_span": {
+              "end": 345,
+              "start": 329
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1002,
+              "start": 478
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 1002,
+              "start": 991
+            },
+            "relation": "reduces",
+            "score": 0.5804542303085327,
+            "source_slot": "s1",
+            "subject": "Test and Check",
+            "subject_span": {
+              "end": 492,
+              "start": 478
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 774,
+              "start": 571
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "shape",
+            "object_span": {
+              "end": 774,
+              "start": 769
+            },
+            "relation": "holds",
+            "score": 0.6850512623786926,
+            "source_slot": "s1",
+            "subject": "thermometer",
+            "subject_span": {
+              "end": 582,
+              "start": 571
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 812,
+              "start": 374
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "final result",
+            "object_span": {
+              "end": 386,
+              "start": 374
+            },
+            "relation": "changes",
+            "score": 0.4277309477329254,
+            "source_slot": "s1",
+            "subject": "Adjusting the Process",
+            "subject_span": {
+              "end": 812,
+              "start": 791
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 864,
+              "start": 791
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "process",
+            "object_span": {
+              "end": 864,
+              "start": 857
+            },
+            "relation": "improves",
+            "score": 0.5035507678985596,
+            "source_slot": "s1",
+            "subject": "Adjusting the Process",
+            "subject_span": {
+              "end": 812,
+              "start": 791
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1133,
+              "start": 791
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "final result",
+            "object_span": {
+              "end": 1133,
+              "start": 1121
+            },
+            "relation": "helps",
+            "score": 0.41831550002098083,
+            "source_slot": "s1",
+            "subject": "Adjusting the Process",
+            "subject_span": {
+              "end": 812,
+              "start": 791
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1133,
+              "start": 791
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "final result",
+            "object_span": {
+              "end": 1133,
+              "start": 1121
+            },
+            "relation": "improves",
+            "score": 0.39490222930908203,
+            "source_slot": "s1",
+            "subject": "Adjusting the Process",
+            "subject_span": {
+              "end": 812,
+              "start": 791
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1161,
+              "start": 791
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "tools",
+            "object_span": {
+              "end": 1161,
+              "start": 1156
+            },
+            "relation": "requires",
+            "score": 0.47734907269477844,
+            "source_slot": "s1",
+            "subject": "Adjusting the Process",
+            "subject_span": {
+              "end": 812,
+              "start": 791
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 930,
+              "start": 857
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "recipe",
+            "object_span": {
+              "end": 930,
+              "start": 924
+            },
+            "relation": "related",
+            "score": 0.7457332015037537,
+            "source_slot": "s1",
+            "subject": "process",
+            "subject_span": {
+              "end": 864,
+              "start": 857
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "e313105bf53c1d12500c79ee735cb62f9d420373a922df8cd54df1d8518395f7",
+          "s1": "e7a9f28e67c505c4502eb97fffabb2d948cba9e526762bfab8597e76201e2f75"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.4277309477329254,
+                  "end": 957,
+                  "start": 936,
+                  "text": "Adjusting the Process"
+                },
+                "tail": {
+                  "confidence": 0.4277309477329254,
+                  "end": 531,
+                  "start": 519,
+                  "text": "final result"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [
+              {
+                "head": {
+                  "confidence": 0.5364100337028503,
+                  "end": 490,
+                  "start": 474,
+                  "text": "practical advice"
+                },
+                "tail": {
+                  "confidence": 0.5364100337028503,
+                  "end": 1306,
+                  "start": 1301,
+                  "text": "tools"
+                }
+              }
+            ],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [
+              {
+                "head": {
+                  "confidence": 0.41831550002098083,
+                  "end": 957,
+                  "start": 936,
+                  "text": "Adjusting the Process"
+                },
+                "tail": {
+                  "confidence": 0.41831550002098083,
+                  "end": 1278,
+                  "start": 1266,
+                  "text": "final result"
+                }
+              }
+            ],
+            "holds": [
+              {
+                "head": {
+                  "confidence": 0.6850512623786926,
+                  "end": 727,
+                  "start": 716,
+                  "text": "thermometer"
+                },
+                "tail": {
+                  "confidence": 0.6850512623786926,
+                  "end": 919,
+                  "start": 914,
+                  "text": "shape"
+                }
+              }
+            ],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.5035507678985596,
+                  "end": 957,
+                  "start": 936,
+                  "text": "Adjusting the Process"
+                },
+                "tail": {
+                  "confidence": 0.5035507678985596,
+                  "end": 1009,
+                  "start": 1002,
+                  "text": "process"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.39490222930908203,
+                  "end": 957,
+                  "start": 936,
+                  "text": "Adjusting the Process"
+                },
+                "tail": {
+                  "confidence": 0.39490222930908203,
+                  "end": 1278,
+                  "start": 1266,
+                  "text": "final result"
+                }
+              }
+            ],
+            "increases": [],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.5804542303085327,
+                  "end": 637,
+                  "start": 623,
+                  "text": "Test and Check"
+                },
+                "tail": {
+                  "confidence": 0.5804542303085327,
+                  "end": 1147,
+                  "start": 1136,
+                  "text": "temperature"
+                }
+              }
+            ],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.7457332015037537,
+                  "end": 1009,
+                  "start": 1002,
+                  "text": "process"
+                },
+                "tail": {
+                  "confidence": 0.7457332015037537,
+                  "end": 1075,
+                  "start": 1069,
+                  "text": "recipe"
+                }
+              }
+            ],
+            "requires": [
+              {
+                "head": {
+                  "confidence": 0.45026707649230957,
+                  "end": 490,
+                  "start": 474,
+                  "text": "practical advice"
+                },
+                "tail": {
+                  "confidence": 0.45026707649230957,
+                  "end": 1306,
+                  "start": 1301,
+                  "text": "tools"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.47734907269477844,
+                  "end": 957,
+                  "start": 936,
+                  "text": "Adjusting the Process"
+                },
+                "tail": {
+                  "confidence": 0.47734907269477844,
+                  "end": 1306,
+                  "start": 1301,
+                  "text": "tools"
+                }
+              }
+            ],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:16:09.294455+00:00",
+  "status": "RETURNED"
+}

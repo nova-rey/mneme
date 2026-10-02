@@ -1,0 +1,762 @@
+{
+  "completed_utc": "2026-10-02T19:08:31.786021+00:00",
+  "elapsed_seconds": 1.1624340878333896,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"With three cotton wicks and the reservoir 5 centimeters higher, the pot gains 35 grams in 24 hours. How does this result refine the balance between absorption and evaporation?\", \"s1\": \"This new data point (35 grams gained in 24 hours) is a **significant increase** from the previous 12-gram loss.\\n\\nWhen you ask how this \\\"result refines the balance between absorption and evaporation,\\\" you are asking how this new consumption rate (35g) affects the overall system balance.\\n\\n**The \\\"Refinement\\\" is this:**\\n\\n1.  **Increased Demand/Consumption:** The plant is now consuming **significantly more water** (35g vs. the previous 12g). This means the \\\"balance\\\" has shifted from a low-consumption state to a high-consumption state.\\n2.  **The \\\"Balance\\\" is now skewed toward \\\"Loss\\\":** The system is no longer in a steady state; it is now in a state of **high-demand consumption.**\\n\\n**How this \\\"refines the balance\\\":**\\n\\n*   **If the plant is a Succulent:** This 35g/day is a **major increase in water demand.** The plant is either growing rapidly or the environment has become much hotter/drier.\\n*   **The \\\"Refinement\\\":** The balance is now \\\"refined\\\" to a **high-consumption state.** The system is no longer stable; it is now in a state of **\\\"High Demand.\\\"**\\n\\n**What this \\\"Refinement\\\" means:**\\n\\n*   **The balance is no longer balanced:** The system is no longer \\\"stable.\\\" It has moved from a \\\"low-demand\\\" state (12g) to a \\\"high-demand\\\" state (35g).\\n*   **The \\\"Choice\\\" is now to manage the 35g loss.**\\n\\n**In practical terms, this refinement means the system is no longer \\\"balanced\\\" in the old way; it is now in a state of active, high-intensity consumption.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-watering-F-same-r0-t07"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"balance\", \"relation\": \"part_of\", \"to\": \"system balance\", \"source\": \"s1\", \"evidence\": \"balance between absorption and evaporation,\\\" you are asking how this new consumption rate (35g) affects the overall system balance\"}, {\"from\": \"consumption rate\", \"relation\": \"caused_by\", \"to\": \"plant\", \"source\": \"s1\", \"evidence\": \"consumption rate (35g) affects the overall system balance.\\n\\n**The \\\"Refinement\\\" is this:**\\n\\n1.  **Increased Demand/Consumption:** The plant\"}, {\"from\": \"consumption rate\", \"relation\": \"caused_by\", \"to\": \"12g\", \"source\": \"s1\", \"evidence\": \"consumption rate (35g) affects the overall system balance.\\n\\n**The \\\"Refinement\\\" is this:**\\n\\n1.  **Increased Demand/Consumption:** The plant is now consuming **significantly more water** (35g vs. the previous 12g\"}, {\"from\": \"system balance\", \"relation\": \"part_of\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"system balance.\\n\\n**The \\\"Refinement\\\" is this:**\\n\\n1.  **Increased Demand/Consumption:** The plant is now consuming **significantly more water** (35g vs. the previous 12g). This means the \\\"balance\\\" has shifted from a low-consumption state to a high-consumption state.\\n2.  **The \\\"Balance\\\" is now skewed toward \\\"Loss\\\":** The system\"}, {\"from\": \"Balance\", \"relation\": \"related\", \"to\": \"balance\", \"source\": \"s1\", \"evidence\": \"Balance\\\" is now skewed toward \\\"Loss\\\":** The system is no longer in a steady state; it is now in a state of **high-demand consumption.**\\n\\n**How this \\\"refines the balance\"}], \"episode_id\": \"main-watering-F-same-r0-t07\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "solves",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "specialist_observation",
+          "relation": "caused_by",
+          "status": "forwarded"
+        },
+        {
+          "index": 6,
+          "kind": "specialist_observation",
+          "relation": "caused_by",
+          "status": "forwarded"
+        },
+        {
+          "index": 7,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "stabilizes",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "controls",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 11,
+          "kind": "unsupported_specialist_relation",
+          "relation": "wilts",
+          "status": "rejected"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "manages",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "unsupported_specialist_relation",
+          "relation": "stabilizes",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "41133c6808625c5efd316cbf46688a6ad7377d6362afa16c5daf9e341fe27745",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 139,
+              "start": 114
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "balance",
+            "object_span": {
+              "end": 139,
+              "start": 132
+            },
+            "relation": "solves",
+            "score": 0.9101850986480713,
+            "source_slot": "s0",
+            "subject": "result",
+            "subject_span": {
+              "end": 120,
+              "start": 114
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 285,
+              "start": 136
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "overall system balance",
+            "object_span": {
+              "end": 285,
+              "start": 263
+            },
+            "relation": "improves",
+            "score": 0.9008630514144897,
+            "source_slot": "s1",
+            "subject": "result",
+            "subject_span": {
+              "end": 142,
+              "start": 136
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 285,
+              "start": 155
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system balance",
+            "object_span": {
+              "end": 285,
+              "start": 271
+            },
+            "relation": "part_of",
+            "score": 0.4804479777812958,
+            "source_slot": "s1",
+            "subject": "balance",
+            "subject_span": {
+              "end": 162,
+              "start": 155
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 285,
+              "start": 228
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "overall system balance",
+            "object_span": {
+              "end": 285,
+              "start": 263
+            },
+            "relation": "affects",
+            "score": 0.5646462440490723,
+            "source_slot": "s1",
+            "subject": "consumption rate",
+            "subject_span": {
+              "end": 244,
+              "start": 228
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 285,
+              "start": 228
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system balance",
+            "object_span": {
+              "end": 285,
+              "start": 271
+            },
+            "relation": "associated_with",
+            "score": 0.4605153203010559,
+            "source_slot": "s1",
+            "subject": "consumption rate",
+            "subject_span": {
+              "end": 244,
+              "start": 228
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 366,
+              "start": 228
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "plant",
+            "object_span": {
+              "end": 366,
+              "start": 361
+            },
+            "relation": "caused_by",
+            "score": 0.4701153337955475,
+            "source_slot": "s1",
+            "subject": "consumption rate",
+            "subject_span": {
+              "end": 244,
+              "start": 228
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 438,
+              "start": 228
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "12g",
+            "object_span": {
+              "end": 438,
+              "start": 435
+            },
+            "relation": "caused_by",
+            "score": 0.3518579304218292,
+            "source_slot": "s1",
+            "subject": "consumption rate",
+            "subject_span": {
+              "end": 244,
+              "start": 228
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 597,
+              "start": 271
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 597,
+              "start": 591
+            },
+            "relation": "part_of",
+            "score": 0.7789348363876343,
+            "source_slot": "s1",
+            "subject": "system balance",
+            "subject_span": {
+              "end": 285,
+              "start": 271
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 597,
+              "start": 271
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 597,
+              "start": 591
+            },
+            "relation": "stabilizes",
+            "score": 0.49735957384109497,
+            "source_slot": "s1",
+            "subject": "system balance",
+            "subject_span": {
+              "end": 285,
+              "start": 271
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 305,
+              "start": 271
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system balance",
+            "object_span": {
+              "end": 285,
+              "start": 271
+            },
+            "relation": "controls",
+            "score": 0.5415568351745605,
+            "source_slot": "s1",
+            "subject": "Refinement",
+            "subject_span": {
+              "end": 305,
+              "start": 295
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 715,
+              "start": 547
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "balance",
+            "object_span": {
+              "end": 715,
+              "start": 708
+            },
+            "relation": "related",
+            "score": 0.5855444669723511,
+            "source_slot": "s1",
+            "subject": "Balance",
+            "subject_span": {
+              "end": 554,
+              "start": 547
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 821,
+              "start": 734
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "plant",
+            "object_span": {
+              "end": 821,
+              "start": 816
+            },
+            "relation": "wilts",
+            "score": 0.36766499280929565,
+            "source_slot": "s1",
+            "subject": "plant",
+            "subject_span": {
+              "end": 739,
+              "start": 734
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1298,
+              "start": 1261
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "35g loss",
+            "object_span": {
+              "end": 1298,
+              "start": 1290
+            },
+            "relation": "manages",
+            "score": 0.5688602924346924,
+            "source_slot": "s1",
+            "subject": "Choice",
+            "subject_span": {
+              "end": 1267,
+              "start": 1261
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1357,
+              "start": 1330
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 1357,
+              "start": 1351
+            },
+            "relation": "stabilizes",
+            "score": 0.7087376117706299,
+            "source_slot": "s1",
+            "subject": "refinement",
+            "subject_span": {
+              "end": 1340,
+              "start": 1330
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "e11075569f2065a22605b5342b47fdded8c65cd4d59e162ca8ac38306e197a4f",
+          "s1": "fc677f8240edbe2ee90b7e686d97f27bde8feca30a4756e7aa3ff8ee7cfba4a3"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.5646462440490723,
+                  "end": 420,
+                  "start": 404,
+                  "text": "consumption rate"
+                },
+                "tail": {
+                  "confidence": 0.5646462440490723,
+                  "end": 461,
+                  "start": 439,
+                  "text": "overall system balance"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.4605153203010559,
+                  "end": 420,
+                  "start": 404,
+                  "text": "consumption rate"
+                },
+                "tail": {
+                  "confidence": 0.4605153203010559,
+                  "end": 461,
+                  "start": 447,
+                  "text": "system balance"
+                }
+              }
+            ],
+            "caused_by": [
+              {
+                "head": {
+                  "confidence": 0.4701153337955475,
+                  "end": 420,
+                  "start": 404,
+                  "text": "consumption rate"
+                },
+                "tail": {
+                  "confidence": 0.4701153337955475,
+                  "end": 542,
+                  "start": 537,
+                  "text": "plant"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.3518579304218292,
+                  "end": 420,
+                  "start": 404,
+                  "text": "consumption rate"
+                },
+                "tail": {
+                  "confidence": 0.3518579304218292,
+                  "end": 614,
+                  "start": 611,
+                  "text": "12g"
+                }
+              }
+            ],
+            "causes": [],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [
+              {
+                "head": {
+                  "confidence": 0.5415568351745605,
+                  "end": 481,
+                  "start": 471,
+                  "text": "Refinement"
+                },
+                "tail": {
+                  "confidence": 0.5415568351745605,
+                  "end": 461,
+                  "start": 447,
+                  "text": "system balance"
+                }
+              }
+            ],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.9008630514144897,
+                  "end": 318,
+                  "start": 312,
+                  "text": "result"
+                },
+                "tail": {
+                  "confidence": 0.9008630514144897,
+                  "end": 461,
+                  "start": 439,
+                  "text": "overall system balance"
+                }
+              }
+            ],
+            "increases": [],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [
+              {
+                "head": {
+                  "confidence": 0.5688602924346924,
+                  "end": 1443,
+                  "start": 1437,
+                  "text": "Choice"
+                },
+                "tail": {
+                  "confidence": 0.5688602924346924,
+                  "end": 1474,
+                  "start": 1466,
+                  "text": "35g loss"
+                }
+              }
+            ],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.4804479777812958,
+                  "end": 338,
+                  "start": 331,
+                  "text": "balance"
+                },
+                "tail": {
+                  "confidence": 0.4804479777812958,
+                  "end": 461,
+                  "start": 447,
+                  "text": "system balance"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7789348363876343,
+                  "end": 461,
+                  "start": 447,
+                  "text": "system balance"
+                },
+                "tail": {
+                  "confidence": 0.7789348363876343,
+                  "end": 773,
+                  "start": 767,
+                  "text": "system"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.5855444669723511,
+                  "end": 730,
+                  "start": 723,
+                  "text": "Balance"
+                },
+                "tail": {
+                  "confidence": 0.5855444669723511,
+                  "end": 891,
+                  "start": 884,
+                  "text": "balance"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [
+              {
+                "head": {
+                  "confidence": 0.9101850986480713,
+                  "end": 120,
+                  "start": 114,
+                  "text": "result"
+                },
+                "tail": {
+                  "confidence": 0.9101850986480713,
+                  "end": 139,
+                  "start": 132,
+                  "text": "balance"
+                }
+              }
+            ],
+            "stabilizes": [
+              {
+                "head": {
+                  "confidence": 0.49735957384109497,
+                  "end": 461,
+                  "start": 447,
+                  "text": "system balance"
+                },
+                "tail": {
+                  "confidence": 0.49735957384109497,
+                  "end": 773,
+                  "start": 767,
+                  "text": "system"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.3662966787815094,
+                  "end": 730,
+                  "start": 723,
+                  "text": "Balance"
+                },
+                "tail": {
+                  "confidence": 0.3662966787815094,
+                  "end": 139,
+                  "start": 132,
+                  "text": "balance"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7087376117706299,
+                  "end": 1516,
+                  "start": 1506,
+                  "text": "refinement"
+                },
+                "tail": {
+                  "confidence": 0.7087376117706299,
+                  "end": 1533,
+                  "start": 1527,
+                  "text": "system"
+                }
+              }
+            ],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": [
+              {
+                "head": {
+                  "confidence": 0.36766499280929565,
+                  "end": 915,
+                  "start": 910,
+                  "text": "plant"
+                },
+                "tail": {
+                  "confidence": 0.36766499280929565,
+                  "end": 997,
+                  "start": 992,
+                  "text": "plant"
+                }
+              }
+            ]
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.3662966787815094,
+              "end": 730,
+              "start": 723,
+              "text": "Balance"
+            },
+            "tail": {
+              "confidence": 0.3662966787815094,
+              "end": 139,
+              "start": 132,
+              "text": "balance"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:08:30.621894+00:00",
+  "status": "RETURNED"
+}

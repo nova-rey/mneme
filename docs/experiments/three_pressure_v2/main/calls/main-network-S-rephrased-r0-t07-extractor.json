@@ -1,0 +1,632 @@
+{
+  "completed_utc": "2026-10-02T19:04:47.704977+00:00",
+  "elapsed_seconds": 0.9505255499389023,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"I have made no changes and collected no evidence. Either power or Wi-Fi still seems possible to me. What\\u2019s the best way to approach this without assuming anything?\", \"s1\": \"Since you have no data, you are in a state of **\\\"Zero Information.\\\"** You cannot solve this without a baseline.\\n\\n**The best way to approach this is to isolate the variables.**\\n\\nSince you are unsure whether the issue is the *supply* (power) or the *connection* (Wi-Fi), you must test them one at a time.\\n\\n**The best way to proceed is to test the \\\"Power\\\" variable first.**\\n\\n**Step 1: Test the Power Source (The Supply)**\\n*   **Action:** Replace the battery/power source with a known-good, fresh, tested source.\\n*   **Observation:** If the device works after the change, the **Power** was the issue.\\n\\n**Step 2: Test the Connection (The Wi-Fi)**\\n*   **Action:** Move the device closer to the router or access point.\\n*   **Observation:** If it works when moved closer, the **Connection** was the issue.\\n\\n**If you must choose one to start with, start with the Power Source (Power/Battery).**\\n\\n**Why?** Because a dead battery or a bad connection is a more fundamental, physical failure than a signal issue.\\n\\n**In summary: Test the Power Source first.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-network-S-rephrased-r0-t07"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"power\", \"relation\": \"related\", \"to\": \"Wi-Fi\", \"source\": \"s0\", \"evidence\": \"power or Wi-Fi\"}, {\"from\": \"connection\", \"relation\": \"related\", \"to\": \"Wi-Fi\", \"source\": \"s1\", \"evidence\": \"connection* (Wi-Fi\"}, {\"from\": \"Wi-Fi\", \"relation\": \"causes\", \"to\": \"issue\", \"source\": \"s1\", \"evidence\": \"issue is the *supply* (power) or the *connection* (Wi-Fi\"}, {\"from\": \"power\", \"relation\": \"causes\", \"to\": \"issue\", \"source\": \"s1\", \"evidence\": \"power source with a known-good, fresh, tested source.\\n*   **Observation:** If the device works after the change, the **Power** was the issue\"}, {\"from\": \"Connection\", \"relation\": \"related\", \"to\": \"Connection\", \"source\": \"s1\", \"evidence\": \"Connection (The Wi-Fi)**\\n*   **Action:** Move the device closer to the router or access point.\\n*   **Observation:** If it works when moved closer, the **Connection\"}], \"episode_id\": \"main-network-S-rephrased-r0-t07\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 4,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "498f1b8c3e925bfdd0c7c4fa1621d84d87d9b1682ba8c9d488b6868583774fdb",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 71,
+              "start": 57
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi",
+            "object_span": {
+              "end": 71,
+              "start": 66
+            },
+            "relation": "related",
+            "score": 0.4301130175590515,
+            "source_slot": "s0",
+            "subject": "power",
+            "subject_span": {
+              "end": 62,
+              "start": 57
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 110,
+              "start": 81
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "baseline",
+            "object_span": {
+              "end": 110,
+              "start": 102
+            },
+            "relation": "requires",
+            "score": 0.4745764136314392,
+            "source_slot": "s1",
+            "subject": "solve this",
+            "subject_span": {
+              "end": 91,
+              "start": 81
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 266,
+              "start": 248
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi",
+            "object_span": {
+              "end": 266,
+              "start": 261
+            },
+            "relation": "associated_with",
+            "score": 0.5071732997894287,
+            "source_slot": "s1",
+            "subject": "connection",
+            "subject_span": {
+              "end": 258,
+              "start": 248
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 266,
+              "start": 248
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi",
+            "object_span": {
+              "end": 266,
+              "start": 261
+            },
+            "relation": "related",
+            "score": 0.4447924792766571,
+            "source_slot": "s1",
+            "subject": "connection",
+            "subject_span": {
+              "end": 258,
+              "start": 248
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 266,
+              "start": 210
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "issue",
+            "object_span": {
+              "end": 215,
+              "start": 210
+            },
+            "relation": "causes",
+            "score": 0.4176733195781708,
+            "source_slot": "s1",
+            "subject": "Wi-Fi",
+            "subject_span": {
+              "end": 266,
+              "start": 261
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 266,
+              "start": 210
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "issue",
+            "object_span": {
+              "end": 215,
+              "start": 210
+            },
+            "relation": "influences",
+            "score": 0.40814653038978577,
+            "source_slot": "s1",
+            "subject": "Wi-Fi",
+            "subject_span": {
+              "end": 266,
+              "start": 261
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 595,
+              "start": 455
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "issue",
+            "object_span": {
+              "end": 595,
+              "start": 590
+            },
+            "relation": "affects",
+            "score": 0.5207996964454651,
+            "source_slot": "s1",
+            "subject": "power",
+            "subject_span": {
+              "end": 460,
+              "start": 455
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 595,
+              "start": 455
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "issue",
+            "object_span": {
+              "end": 595,
+              "start": 590
+            },
+            "relation": "causes",
+            "score": 0.5675290822982788,
+            "source_slot": "s1",
+            "subject": "power",
+            "subject_span": {
+              "end": 460,
+              "start": 455
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 595,
+              "start": 455
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "issue",
+            "object_span": {
+              "end": 595,
+              "start": 590
+            },
+            "relation": "influences",
+            "score": 0.4062870144844055,
+            "source_slot": "s1",
+            "subject": "power",
+            "subject_span": {
+              "end": 460,
+              "start": 455
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 780,
+              "start": 617
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Connection",
+            "object_span": {
+              "end": 780,
+              "start": 770
+            },
+            "relation": "related",
+            "score": 0.37157607078552246,
+            "source_slot": "s1",
+            "subject": "Connection",
+            "subject_span": {
+              "end": 627,
+              "start": 617
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 680,
+              "start": 455
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "power source",
+            "object_span": {
+              "end": 467,
+              "start": 455
+            },
+            "relation": "reduces",
+            "score": 0.353229284286499,
+            "source_slot": "s1",
+            "subject": "Move the device closer",
+            "subject_span": {
+              "end": 680,
+              "start": 658
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "d4cdaba642f712a073df0e27392aea18d7e95c6dc58b3bd9327e997301670793",
+          "s1": "913783beb707b263727c8cceeecfe4570d94d5637217596dabe72dbd1b6fa7f2"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.5207996964454651,
+                  "end": 624,
+                  "start": 619,
+                  "text": "power"
+                },
+                "tail": {
+                  "confidence": 0.5207996964454651,
+                  "end": 759,
+                  "start": 754,
+                  "text": "issue"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.5071732997894287,
+                  "end": 422,
+                  "start": 412,
+                  "text": "connection"
+                },
+                "tail": {
+                  "confidence": 0.5071732997894287,
+                  "end": 430,
+                  "start": 425,
+                  "text": "Wi-Fi"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.3519075810909271,
+                  "end": 960,
+                  "start": 955,
+                  "text": "issue"
+                },
+                "tail": {
+                  "confidence": 0.3519075810909271,
+                  "end": 71,
+                  "start": 66,
+                  "text": "Wi-Fi"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.4176733195781708,
+                  "end": 430,
+                  "start": 425,
+                  "text": "Wi-Fi"
+                },
+                "tail": {
+                  "confidence": 0.4176733195781708,
+                  "end": 379,
+                  "start": 374,
+                  "text": "issue"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5675290822982788,
+                  "end": 624,
+                  "start": 619,
+                  "text": "power"
+                },
+                "tail": {
+                  "confidence": 0.5675290822982788,
+                  "end": 759,
+                  "start": 754,
+                  "text": "issue"
+                }
+              }
+            ],
+            "changes": [],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.40814653038978577,
+                  "end": 430,
+                  "start": 425,
+                  "text": "Wi-Fi"
+                },
+                "tail": {
+                  "confidence": 0.40814653038978577,
+                  "end": 379,
+                  "start": 374,
+                  "text": "issue"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4062870144844055,
+                  "end": 624,
+                  "start": 619,
+                  "text": "power"
+                },
+                "tail": {
+                  "confidence": 0.4062870144844055,
+                  "end": 759,
+                  "start": 754,
+                  "text": "issue"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.353229284286499,
+                  "end": 844,
+                  "start": 822,
+                  "text": "Move the device closer"
+                },
+                "tail": {
+                  "confidence": 0.353229284286499,
+                  "end": 631,
+                  "start": 619,
+                  "text": "power source"
+                }
+              }
+            ],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.4301130175590515,
+                  "end": 62,
+                  "start": 57,
+                  "text": "power"
+                },
+                "tail": {
+                  "confidence": 0.4301130175590515,
+                  "end": 71,
+                  "start": 66,
+                  "text": "Wi-Fi"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4447924792766571,
+                  "end": 422,
+                  "start": 412,
+                  "text": "connection"
+                },
+                "tail": {
+                  "confidence": 0.4447924792766571,
+                  "end": 430,
+                  "start": 425,
+                  "text": "Wi-Fi"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.37157607078552246,
+                  "end": 791,
+                  "start": 781,
+                  "text": "Connection"
+                },
+                "tail": {
+                  "confidence": 0.37157607078552246,
+                  "end": 944,
+                  "start": 934,
+                  "text": "Connection"
+                }
+              }
+            ],
+            "requires": [
+              {
+                "head": {
+                  "confidence": 0.4745764136314392,
+                  "end": 255,
+                  "start": 245,
+                  "text": "solve this"
+                },
+                "tail": {
+                  "confidence": 0.4745764136314392,
+                  "end": 274,
+                  "start": 266,
+                  "text": "baseline"
+                }
+              }
+            ],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.3519075810909271,
+              "end": 960,
+              "start": 955,
+              "text": "issue"
+            },
+            "tail": {
+              "confidence": 0.3519075810909271,
+              "end": 71,
+              "start": 66,
+              "text": "Wi-Fi"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:04:46.753327+00:00",
+  "status": "RETURNED"
+}

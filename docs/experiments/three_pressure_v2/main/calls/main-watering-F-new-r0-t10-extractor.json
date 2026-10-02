@@ -1,0 +1,840 @@
+{
+  "completed_utc": "2026-10-02T19:07:00.850116+00:00",
+  "elapsed_seconds": 1.1102029581088573,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"After securing the wick, a three-day rehearsal ends with both pots moist and 300 milliliters left. What does the rehearsal establish, and what still depends on weather?\", \"s1\": \"It sounds like you are describing a **\\\"trial\\\" or \\\"test\\\"** that has concluded, and you are asking what the *outcome* of that trial means, and how the *weather* affects the outcome.\\n\\nSince the \\\"rehearsal\\\" (trial) has ended, here is the interpretation:\\n\\n**1. What does the rehearsal establish?**\\n\\n*   **The \\\"Rehearsal\\\" establishes a baseline or a benchmark.** In a technical or scientific context, a \\\"trial\\\" establishes a **baseline measurement** or a **new standard.**\\n    *   *Example:* If this was a test of a new system, the \\\"trial\\\" establishes how well the system performs under specific conditions.\\n*   **The \\\"300 milliliters left\\\"** likely represents the **remaining capacity** or the **final remaining volume** after the test.\\n\\n**2. What still depends on the weather?**\\n\\n*   **The final state (the \\\"300 milliliters left\\\")** is dependent on the conditions that were set up during the trial.\\n*   **The Weather:** If the \\\"rehearsal\\\" was a weather-related test (like a water test), the final 300ml remaining is a direct result of how the weather (temperature, humidity, etc.) affected the initial conditions.\\n\\n**To give you a precise answer, I need a little more context:**\\n\\n*   **What is the \\\"Pot\\\" or \\\"System\\\" you are referring to?** (e.g., Is this a water tank, a chemical reaction, or a specific piece of machinery?)\\n\\n**If you can clarify what the \\\"Pot\\\" is, I can give you a much more specific answer!**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "main-watering-F-new-r0-t10"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"weather\", \"relation\": \"causes\", \"to\": \"outcome\", \"source\": \"s1\", \"evidence\": \"weather* affects the outcome\"}], \"episode_id\": \"main-watering-F-new-r0-t10\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "wicks",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "used_for",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "solves",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "helps",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "solves",
+          "status": "rejected"
+        },
+        {
+          "index": 11,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 14,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "3a676f434a4c1729d5f0933614ecbc2b2f79dfb5e529b17239990b07d31a9256",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 122,
+              "start": 77
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "300 milliliters left",
+            "object_span": {
+              "end": 97,
+              "start": 77
+            },
+            "relation": "wicks",
+            "score": 0.6497761607170105,
+            "source_slot": "s0",
+            "subject": "rehearsal",
+            "subject_span": {
+              "end": 122,
+              "start": 113
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 54,
+              "start": 39
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "test",
+            "object_span": {
+              "end": 54,
+              "start": 50
+            },
+            "relation": "used_for",
+            "score": 0.5852497220039368,
+            "source_slot": "s1",
+            "subject": "trial",
+            "subject_span": {
+              "end": 44,
+              "start": 39
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 129,
+              "start": 107
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "outcome",
+            "object_span": {
+              "end": 114,
+              "start": 107
+            },
+            "relation": "improves",
+            "score": 0.7665613889694214,
+            "source_slot": "s1",
+            "subject": "trial",
+            "subject_span": {
+              "end": 129,
+              "start": 124
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 129,
+              "start": 107
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "outcome",
+            "object_span": {
+              "end": 114,
+              "start": 107
+            },
+            "relation": "leads_to",
+            "score": 0.8388112187385559,
+            "source_slot": "s1",
+            "subject": "trial",
+            "subject_span": {
+              "end": 129,
+              "start": 124
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 129,
+              "start": 107
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "outcome",
+            "object_span": {
+              "end": 114,
+              "start": 107
+            },
+            "relation": "solves",
+            "score": 0.6742562055587769,
+            "source_slot": "s1",
+            "subject": "trial",
+            "subject_span": {
+              "end": 129,
+              "start": 124
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 178,
+              "start": 150
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "outcome",
+            "object_span": {
+              "end": 178,
+              "start": 171
+            },
+            "relation": "affects",
+            "score": 0.9766585230827332,
+            "source_slot": "s1",
+            "subject": "weather",
+            "subject_span": {
+              "end": 157,
+              "start": 150
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 178,
+              "start": 150
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "outcome",
+            "object_span": {
+              "end": 178,
+              "start": 171
+            },
+            "relation": "causes",
+            "score": 0.9407006502151489,
+            "source_slot": "s1",
+            "subject": "weather",
+            "subject_span": {
+              "end": 157,
+              "start": 150
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 201,
+              "start": 171
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "outcome",
+            "object_span": {
+              "end": 178,
+              "start": 171
+            },
+            "relation": "helps",
+            "score": 0.863408088684082,
+            "source_slot": "s1",
+            "subject": "rehearsal",
+            "subject_span": {
+              "end": 201,
+              "start": 192
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 201,
+              "start": 171
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "outcome",
+            "object_span": {
+              "end": 178,
+              "start": 171
+            },
+            "relation": "improves",
+            "score": 0.905768871307373,
+            "source_slot": "s1",
+            "subject": "rehearsal",
+            "subject_span": {
+              "end": 201,
+              "start": 192
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 201,
+              "start": 171
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "outcome",
+            "object_span": {
+              "end": 178,
+              "start": 171
+            },
+            "relation": "leads_to",
+            "score": 0.8595691919326782,
+            "source_slot": "s1",
+            "subject": "rehearsal",
+            "subject_span": {
+              "end": 201,
+              "start": 192
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 201,
+              "start": 171
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "outcome",
+            "object_span": {
+              "end": 178,
+              "start": 171
+            },
+            "relation": "solves",
+            "score": 0.751042366027832,
+            "source_slot": "s1",
+            "subject": "rehearsal",
+            "subject_span": {
+              "end": 201,
+              "start": 192
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 893,
+              "start": 849
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "conditions",
+            "object_span": {
+              "end": 859,
+              "start": 849
+            },
+            "relation": "requires",
+            "score": 0.8363716006278992,
+            "source_slot": "s1",
+            "subject": "trial",
+            "subject_span": {
+              "end": 893,
+              "start": 888
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 933,
+              "start": 849
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "conditions",
+            "object_span": {
+              "end": 859,
+              "start": 849
+            },
+            "relation": "requires",
+            "score": 0.8649938106536865,
+            "source_slot": "s1",
+            "subject": "rehearsal",
+            "subject_span": {
+              "end": 933,
+              "start": 924
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1108,
+              "start": 1039
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "initial conditions",
+            "object_span": {
+              "end": 1108,
+              "start": 1090
+            },
+            "relation": "changes",
+            "score": 0.6821846961975098,
+            "source_slot": "s1",
+            "subject": "weather",
+            "subject_span": {
+              "end": 1046,
+              "start": 1039
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1108,
+              "start": 1039
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "initial conditions",
+            "object_span": {
+              "end": 1108,
+              "start": 1090
+            },
+            "relation": "influences",
+            "score": 0.7995790243148804,
+            "source_slot": "s1",
+            "subject": "weather",
+            "subject_span": {
+              "end": 1046,
+              "start": 1039
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "9df21178de34c05a3f64a88c347994ef38b7970d35774dca9a87df8e34424395",
+          "s1": "53857b7a215cc8e91cce60ecb7f7d5826dd8087e727674abe47fe6bc195a6fe9"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.9766585230827332,
+                  "end": 326,
+                  "start": 319,
+                  "text": "weather"
+                },
+                "tail": {
+                  "confidence": 0.9766585230827332,
+                  "end": 347,
+                  "start": 340,
+                  "text": "outcome"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.3684728443622589,
+                  "end": 167,
+                  "start": 160,
+                  "text": "weather"
+                },
+                "tail": {
+                  "confidence": 0.3684728443622589,
+                  "end": 223,
+                  "start": 219,
+                  "text": "test"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.9407006502151489,
+                  "end": 326,
+                  "start": 319,
+                  "text": "weather"
+                },
+                "tail": {
+                  "confidence": 0.9407006502151489,
+                  "end": 347,
+                  "start": 340,
+                  "text": "outcome"
+                }
+              }
+            ],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.6821846961975098,
+                  "end": 1215,
+                  "start": 1208,
+                  "text": "weather"
+                },
+                "tail": {
+                  "confidence": 0.6821846961975098,
+                  "end": 1277,
+                  "start": 1259,
+                  "text": "initial conditions"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [
+              {
+                "head": {
+                  "confidence": 0.863408088684082,
+                  "end": 370,
+                  "start": 361,
+                  "text": "rehearsal"
+                },
+                "tail": {
+                  "confidence": 0.863408088684082,
+                  "end": 347,
+                  "start": 340,
+                  "text": "outcome"
+                }
+              }
+            ],
+            "holds": [],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.7665613889694214,
+                  "end": 298,
+                  "start": 293,
+                  "text": "trial"
+                },
+                "tail": {
+                  "confidence": 0.7665613889694214,
+                  "end": 283,
+                  "start": 276,
+                  "text": "outcome"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.905768871307373,
+                  "end": 370,
+                  "start": 361,
+                  "text": "rehearsal"
+                },
+                "tail": {
+                  "confidence": 0.905768871307373,
+                  "end": 347,
+                  "start": 340,
+                  "text": "outcome"
+                }
+              }
+            ],
+            "increases": [],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.7995790243148804,
+                  "end": 1215,
+                  "start": 1208,
+                  "text": "weather"
+                },
+                "tail": {
+                  "confidence": 0.7995790243148804,
+                  "end": 1277,
+                  "start": 1259,
+                  "text": "initial conditions"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [
+              {
+                "head": {
+                  "confidence": 0.8388112187385559,
+                  "end": 298,
+                  "start": 293,
+                  "text": "trial"
+                },
+                "tail": {
+                  "confidence": 0.8388112187385559,
+                  "end": 283,
+                  "start": 276,
+                  "text": "outcome"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8595691919326782,
+                  "end": 370,
+                  "start": 361,
+                  "text": "rehearsal"
+                },
+                "tail": {
+                  "confidence": 0.8595691919326782,
+                  "end": 347,
+                  "start": 340,
+                  "text": "outcome"
+                }
+              }
+            ],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [],
+            "requires": [
+              {
+                "head": {
+                  "confidence": 0.8363716006278992,
+                  "end": 1062,
+                  "start": 1057,
+                  "text": "trial"
+                },
+                "tail": {
+                  "confidence": 0.8363716006278992,
+                  "end": 1028,
+                  "start": 1018,
+                  "text": "conditions"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8649938106536865,
+                  "end": 1102,
+                  "start": 1093,
+                  "text": "rehearsal"
+                },
+                "tail": {
+                  "confidence": 0.8649938106536865,
+                  "end": 1028,
+                  "start": 1018,
+                  "text": "conditions"
+                }
+              }
+            ],
+            "retains": [],
+            "shades": [],
+            "solves": [
+              {
+                "head": {
+                  "confidence": 0.6742562055587769,
+                  "end": 298,
+                  "start": 293,
+                  "text": "trial"
+                },
+                "tail": {
+                  "confidence": 0.6742562055587769,
+                  "end": 283,
+                  "start": 276,
+                  "text": "outcome"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.751042366027832,
+                  "end": 370,
+                  "start": 361,
+                  "text": "rehearsal"
+                },
+                "tail": {
+                  "confidence": 0.751042366027832,
+                  "end": 347,
+                  "start": 340,
+                  "text": "outcome"
+                }
+              }
+            ],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [
+              {
+                "head": {
+                  "confidence": 0.5996400713920593,
+                  "end": 122,
+                  "start": 113,
+                  "text": "rehearsal"
+                },
+                "tail": {
+                  "confidence": 0.5996400713920593,
+                  "end": 223,
+                  "start": 219,
+                  "text": "test"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5852497220039368,
+                  "end": 213,
+                  "start": 208,
+                  "text": "trial"
+                },
+                "tail": {
+                  "confidence": 0.5852497220039368,
+                  "end": 223,
+                  "start": 219,
+                  "text": "test"
+                }
+              }
+            ],
+            "uses": [],
+            "wicks": [
+              {
+                "head": {
+                  "confidence": 0.6497761607170105,
+                  "end": 122,
+                  "start": 113,
+                  "text": "rehearsal"
+                },
+                "tail": {
+                  "confidence": 0.6497761607170105,
+                  "end": 97,
+                  "start": 77,
+                  "text": "300 milliliters left"
+                }
+              }
+            ],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.3684728443622589,
+              "end": 167,
+              "start": 160,
+              "text": "weather"
+            },
+            "tail": {
+              "confidence": 0.3684728443622589,
+              "end": 223,
+              "start": 219,
+              "text": "test"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.5996400713920593,
+              "end": 122,
+              "start": 113,
+              "text": "rehearsal"
+            },
+            "tail": {
+              "confidence": 0.5996400713920593,
+              "end": 223,
+              "start": 219,
+              "text": "test"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T19:06:59.737758+00:00",
+  "status": "RETURNED"
+}
