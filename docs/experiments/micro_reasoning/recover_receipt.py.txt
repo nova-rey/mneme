@@ -1,0 +1,42 @@
+"""One-shot receipt reconstruction from a complete durably saved response; no transport."""
+import hashlib
+import json
+from pathlib import Path
+from tools.run_micro_reasoning import read_gzip, reading, validate_reading, write_gzip
+from tools.run_micro_stagnation import encode
+
+root = Path('docs/experiments/micro_reasoning')
+run = root / 'run'
+identity = 'a-q12-binary_a-r1'
+directory = run / 'calls' / identity
+manifest = json.loads(Path('docs/experiments/micro_stagnation/phase_a_manifest.json').read_text())
+call = next(c for c in manifest['calls'] if c['id'] == identity)
+request, response, context, pending = (read_gzip(directory / (k + '.json.gz'))
+                                        for k in ('request', 'response', 'context', 'pending'))
+assert not (directory / 'receipt.json.gz').exists()
+sha = hashlib.sha256(encode(request)).hexdigest()
+assert sha == pending['request_sha256']
+frozen = read_gzip(run / 'frozen_execution.json.gz')
+assert next(r['payload'] for r in frozen['requests'] if r['id'] == identity) == request
+rows = read_gzip(run / 'readings.json.gz')
+assert len(rows) == 88 and rows[-1]['id'] == 'a-q11-ternary_b-r2'
+row = {k: v for k, v in call.items() if k not in ('system', 'exchanges')}
+row.update(reading(response, call['allowed_values'], 0.0))
+# Volatile clocks were lost before receipt publication. Never invent durations.
+row.update(request_sha256=sha, native_prompt_tokens=context['prompt_tokens'],
+           model_called=True, wall_seconds=None, observation_wall_seconds=None,
+           preprocessing_seconds=None, timing_unavailable_reason='receipt write failed after durable raw response; process-local clocks lost',
+           receipt_recovered_from_durable_response=True)
+validate_reading(row, rows[-1])
+write_gzip(directory / 'receipt.json.gz', row)
+write_gzip(run / 'readings.json.gz', rows + [row])
+receipt = {'event': 'ENOSPC writing derived receipt after raw response fsync/rename',
+           'call_id': identity, 'completed_prior_receipts': 88,
+           'response_sha256': hashlib.sha256((directory / 'response.json.gz').read_bytes()).hexdigest(),
+           'request_sha256': sha, 'raw_response_valid_and_complete': True,
+           'inference_repeated': False, 'discarded_evidence': False,
+           'unavailable': ['wall_seconds', 'observation_wall_seconds', 'preprocessing_seconds'],
+           'recovery': 'reconstructed only derived receipt from retained raw response; next inference is original second duplicate coordinate',
+           'cleanup': 'regenerable mypy/Ruff/pytest caches only; no experiment evidence removed'}
+(root / 'storage_recovery.json').write_text(json.dumps(receipt, indent=2) + '\n')
+print('Recovered receipt 89 without inference; wall durations unavailable')
