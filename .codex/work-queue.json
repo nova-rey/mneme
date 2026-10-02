@@ -2936,7 +2936,13 @@
       },
       "base_sha": "7926cc1b245ab17b5d482003da0bebeae527fb9a",
       "campaign": "mneme-phase-two",
-      "candidate": null,
+      "candidate": {
+        "artifact": "docs/experiments/meter_closure/closure_receipt.json",
+        "base_sha": "7926cc1b245ab17b5d482003da0bebeae527fb9a",
+        "returned_at": "2026-10-02T21:34:23.482773Z",
+        "returned_by": "root",
+        "sha": null
+      },
       "completion_criterion": "Bounded additive evidence with corrected Quinn-only validity; no policy changes",
       "created_at": "2026-10-02T21:08:16.921629Z",
       "dependencies": [
@@ -2948,10 +2954,12 @@
         "docs/experiments/meter_closure/report and review",
         "canonical integration"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "docs/experiments/meter_closure/closure_receipt.json"
+      ],
       "id": "MC-CLOSE",
       "notes": "",
-      "owner": "root",
+      "owner": null,
       "priority": 10,
       "project": "nova-rey/mneme",
       "required": true,
@@ -2960,17 +2968,21 @@
       ],
       "resource_requirements": [],
       "scope": "Corrected V2 environment review, analysis and canonical closure",
-      "session_ids": [
-        "meter-closure"
-      ],
-      "status": "RUNNING",
+      "session_ids": [],
+      "status": "DONE",
       "title": "Corrected V2 environment review, analysis and canonical closure",
-      "updated_at": "2026-10-02T21:28:17.483998Z",
+      "updated_at": "2026-10-02T21:34:23.776282Z",
       "validation": {
         "required": [
           "evidence"
         ],
-        "results": {}
+        "results": {
+          "evidence": {
+            "receipt": "docs/experiments/meter_closure/closure_receipt.json",
+            "recorded_at": "2026-10-02T21:34:23.680395Z",
+            "status": "PASS"
+          }
+        }
       },
       "waiting_on": [],
       "workstream": "meter-closure"
@@ -2988,5 +3000,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-10-02T21:28:17.484238Z"
+  "updated_at": "2026-10-02T21:34:23.776433Z"
 }

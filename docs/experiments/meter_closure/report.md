@@ -306,3 +306,5 @@ historical distribution rows also replayed exactly. Validation and integration
 receipts accompany this report. The current main descendant retains the promoted
 CompactStore boundary; no historical source, production SAA, learner or persistence
 implementation is changed.
+
+Implementation `491975eb3cb989a917d8412577cb679076f11dc0` was fast-forwarded onto current main and passed [GitHub CI](https://github.com/nova-rey/mneme/actions/runs/37067485516). Canonical validation repeated all 716 tests, Ruff and strict package typing successfully. [Closure receipt](closure_receipt.json) records preservation, the incomplete prospective outcome and the hard stop.

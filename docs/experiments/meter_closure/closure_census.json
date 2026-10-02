@@ -1,0 +1,25 @@
+{
+  "campaign_complete": false,
+  "can_idle": true,
+  "counts": {
+    "DONE": 30,
+    "READY": 0,
+    "RUNNING": 0,
+    "VALIDATING": 0,
+    "WAITING": 2
+  },
+  "hard_blocked": true,
+  "unfinished_required": [
+    "P3-INTROSPECT-RUN",
+    "P3-RELEASE"
+  ],
+  "waiting_dependencies": {
+    "P3-INTROSPECT-RUN": [
+      "superseded-by:P3-D100-INTROSPECTION-10"
+    ],
+    "P3-RELEASE": [
+      "package:P3-INTROSPECT-RUN"
+    ]
+  },
+  "scope_note": "All MC-* packages DONE. Two pre-existing superseded Phase Three packages are outside this completed meters-only task and were not resumed."
+}
