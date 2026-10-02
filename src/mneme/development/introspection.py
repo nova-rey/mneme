@@ -52,6 +52,7 @@ class FilingLevel(StrEnum):
     KEY_VALUE = "key_value"
     MINIMAL = "minimal"
     MICROCALL = "microcall"
+    MICROCALL_EXPLICIT = "microcall_explicit"
 
 
 class IntrospectionError(ValueError):
@@ -322,6 +323,11 @@ def filing_system_prompt(level: FilingLevel | str = FilingLevel.COMPACT_JSON) ->
         form = "TARGET: 1\nASSOCIATION: C\nEXPRESSION: C\nCONFIDENCE: 3"
     elif selected is FilingLevel.MINIMAL:
         form = "1 C C 3"
+    elif selected is FilingLevel.MICROCALL_EXPLICIT:
+        form = (
+            "Use one digit per question. Answer bank: 0=no/unclear, 1=yes; "
+            "confidence: 1 none through 5 very high."
+        )
     else:
         form = "Reply with one integer only for each question."
     return (
@@ -631,6 +637,58 @@ def parse_filing(
         )
 
     raise IntrospectionError("microcall filings require the staged parser")
+
+
+def parse_microcall_explicit(
+    values: Any,
+    packet: ArcPacket,
+) -> tuple[ReflectionProposal, ...]:
+    """Translate the live-qualified binary filing microcalls deterministically."""
+
+    if not isinstance(values, (list, tuple)):
+        raise IntrospectionError("explicit microcall filing must be a sequence")
+    digits: list[int] = []
+    for value in values:
+        if isinstance(value, bool) or not re.fullmatch(r"\s*[0-5]\s*", str(value)):
+            raise IntrospectionError("explicit microcall answer must be one digit")
+        digits.append(int(str(value).strip()))
+    if not digits:
+        raise IntrospectionError("explicit microcall filing is empty")
+    target = digits[0]
+    if target == 0:
+        return ()
+    if target > len(packet.targets):
+        raise IntrospectionError("explicit microcall target is outside answer bank")
+    if len(digits) != 7 or any(value not in {0, 1} for value in digits[1:6]):
+        raise IntrospectionError("explicit microcall filing has illegal values")
+    if not 1 <= digits[6] <= 5:
+        raise IntrospectionError("explicit microcall confidence is outside [1,5]")
+    clear, useful, harmful, expressed, suppressed = digits[1:6]
+    if not clear:
+        return ()
+    association = 0.0 if useful and harmful else -1.0 if harmful else 1.0 if useful else 0.0
+    expression = (
+        0.0
+        if suppressed and expressed
+        else -1.0
+        if suppressed
+        else 1.0
+        if expressed
+        else 0.0
+    )
+    target_item = packet.targets[target - 1]
+    return (
+        ReflectionProposal(
+            target_alias=target_item.alias,
+            association_effect=association,
+            expression_effect=expression,
+            confidence=(digits[6] - 1) / 4.0,
+            basis=EvidenceBasis.SELF_ONLY,
+            evidence_refs=(),
+            reason="live_microcall_explicit",
+            abstain=False,
+        ),
+    )
 
 
 def _basis_cap(basis: EvidenceBasis) -> int:

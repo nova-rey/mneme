@@ -38,7 +38,15 @@ DEFAULT_DESTINATION = Path(
     "docs/receipts/MNEME_Introspection_Round_Two_Live_Gemma_Qualification_20261002.json"
 )
 
-LEVELS = ("full_json", "compact_json", "multiple_choice_json", "key_value", "minimal", "microcall")
+LEVELS = (
+    "full_json",
+    "compact_json",
+    "multiple_choice_json",
+    "key_value",
+    "minimal",
+    "microcall",
+)
+FOLLOW_UP_LEVEL = "microcall_explicit"
 
 REFLECTION_SYSTEM = (
     "This is private internal reflection about a completed conversational arc. "
@@ -96,7 +104,9 @@ def _synthetic(
     )
     packet_targets = tuple(
         ReviewTarget(f"opaque-{i}", f"edge:{i}", c, (f"turn-{i}",))
-        for i, c in enumerate(("maintains", "supports")[:targets])
+        for i, c in enumerate(
+            ("passive arrangement / passive maintenance", "fallback support")[:targets]
+        )
     )
     return Fixture(
         name,
@@ -350,6 +360,57 @@ def parse_micro(raws: list[str], packet: ArcPacket) -> dict[str, Any]:
     }
 
 
+def parse_micro_explicit(raws: list[str], packet: ArcPacket) -> dict[str, Any]:
+    """Parse bounded binary semantic filing decisions plus confidence."""
+
+    if not raws:
+        raise ValueError("microcall explicit returned no answers")
+    values: list[int] = []
+    for raw in raws:
+        match = re.fullmatch(r"\s*([0-5])\s*", raw)
+        if match is None:
+            raise ValueError("microcall explicit answer was not one digit")
+        values.append(int(match.group(1)))
+    target = values[0]
+    if target < 0 or target > len(packet.targets):
+        raise ValueError("microcall explicit target out of range")
+    if target == 0:
+        return {
+            "target": 0,
+            "association": "C",
+            "expression": "C",
+            "confidence": 0,
+            "basis": "INSUFFICIENT",
+            "evidence_refs": [],
+        }
+    if (
+        len(values) != 7
+        or any(value not in {0, 1} for value in values[1:6])
+        or not 1 <= values[6] <= 5
+    ):
+        raise ValueError("microcall explicit filing out of range")
+    clear, useful, harmful, expressed, suppressed = values[1:6]
+    if not clear:
+        return {
+            "target": 0,
+            "association": "C",
+            "expression": "C",
+            "confidence": 0,
+            "basis": "INSUFFICIENT",
+            "evidence_refs": [],
+        }
+    association = "A" if harmful else "E" if useful else "C"
+    expression = "A" if suppressed and not expressed else "E" if expressed else "C"
+    return {
+        "target": target,
+        "association": association,
+        "expression": expression,
+        "confidence": values[6] - 1,
+        "basis": "SELF_ONLY",
+        "evidence_refs": [],
+    }
+
+
 def _semantic_consistency(reflection: str, filing: dict[str, Any]) -> str:
     text = reflection.lower()
     assoc = filing.get("association")
@@ -436,38 +497,140 @@ def evaluate_cell(
     filing_calls = []
     parsed = None
     error = None
-    if level == "microcall":
-        questions = [
-            "Which target number should be filed? Reply with one integer only (0=abstain).",
-            "Association effect? Reply 0= -2, 1= -1, 2=0, 3=+1, 4=+2.",
-            "Expression effect? Reply 0= -2, 1= -1, 2=0, 3=+1, 4=+2.",
-            "Confidence? Reply 0=none, 1=low, 2=medium, 3=high, 4=very high.",
-        ]
-        for i, question in enumerate(questions):
-            filing_calls.append(
-                _call(
-                    host,
-                    GenerationRequest(
-                        messages=(
-                            {
-                                "role": "user",
-                                "content": (
-                                    f"{_answer_bank(fixture.packet)}\n\n"
-                                    f"ROUND-ONE REFLECTION:\n{reflection[:12000]}\n\n"
-                                    f"{question}"
+    if level in {"microcall", FOLLOW_UP_LEVEL}:
+        explicit = level == FOLLOW_UP_LEVEL
+        if explicit:
+            if len(fixture.packet.targets) == 1:
+                # The answer bank has one exposed target; resolving that ordinal
+                # is deterministic clerical work, leaving Gemma to judge effects.
+                selected_index = 1
+            else:
+                target_prompts = [
+                    (
+                        f"Does the reflection make a substantive judgment about target {index}, "
+                        f"{target.context}? Reply 1 for yes or 0 for no. Reply one digit only."
+                    )
+                    for index, target in enumerate(fixture.packet.targets, start=1)
+                ]
+                target_answers: list[str] = []
+                for i, question in enumerate(target_prompts):
+                    filing_calls.append(
+                        _call(
+                            host,
+                            GenerationRequest(
+                                messages=(
+                                    {
+                                        "role": "user",
+                                        "content": (
+                                            f"TARGET {i + 1}: {fixture.packet.targets[i].context}\n"
+                                            f"ROUND-ONE REFLECTION:\n{reflection[:6000]}\n\n"
+                                            f"{question}"
+                                        ),
+                                    },
                                 ),
-                            },
-                        ),
-                        system="Answer only the requested single integer. No prose.",
-                        parameters={"temperature": 0.0, "top_p": 0.9, "max_new_tokens": 8},
-                        seed=seed + 100 + i,
+                                system="Answer only the requested single digit. No prose.",
+                                parameters={"temperature": 0.0, "top_p": 0.9, "max_new_tokens": 8},
+                                seed=seed + 100 + i,
+                            ),
+                        )
+                    )
+                    target_answers.append(str(filing_calls[-1]["content"]))
+                    if target_answers[-1].strip() == "1":
+                        break
+                selected_index = next(
+                    (
+                        index + 1
+                        for index, answer in enumerate(target_answers)
+                        if answer.strip() == "1"
                     ),
+                    0,
                 )
-            )
-        try:
-            parsed = parse_micro([str(c["content"]) for c in filing_calls], fixture.packet)
-        except Exception as exc:
-            error = f"{type(exc).__name__}: {exc}"
+            if selected_index:
+                questions = [
+                    f"Is there enough evidence for a substantive judgment about target "
+                    f"{selected_index}? "
+                    "Reply 1 for yes, 0 for no or unclear.",
+                    f"Ignoring wording or delivery, was target {selected_index} useful "
+                    "for solving or "
+                    "understanding the situation? Reply 1 for yes, 0 for no or unclear.",
+                    f"Was target {selected_index} harmful or distracting? Reply 1 for yes, "
+                    "0 for no or unclear.",
+                    f"Was expressing target {selected_index} helpful to the response? "
+                    "Reply 1 for yes, "
+                    "0 for unclear.",
+                    f"Should target {selected_index} be expressed less? Reply 1 for yes, "
+                    "0 for no or unclear.",
+                    "How confident is that judgment? Reply with one digit: 1 none, 2 low, "
+                    "3 medium, 4 high, 5 very high.",
+                ]
+                selected_context = fixture.packet.targets[selected_index - 1].context
+                for i, question in enumerate(questions, start=len(filing_calls)):
+                    filing_calls.append(
+                        _call(
+                            host,
+                            GenerationRequest(
+                                messages=(
+                                    {
+                                        "role": "user",
+                                        "content": (
+                                            f"TARGET {selected_index}: {selected_context}\n"
+                                            f"ROUND-ONE REFLECTION:\n{reflection[:6000]}\n\n"
+                                            f"SELECTED TARGET: {selected_index}\n{question}"
+                                        ),
+                                    },
+                                ),
+                                system="Answer only the requested single digit. No prose.",
+                                parameters={
+                                    "temperature": 0.0,
+                                    "top_p": 0.9,
+                                    "max_new_tokens": 8,
+                                },
+                                seed=seed + 100 + i,
+                            ),
+                        )
+                    )
+                canonical_answers = [str(selected_index)] + [
+                    str(call["content"]) for call in filing_calls[-6:]
+                ]
+            else:
+                canonical_answers = ["0"]
+            try:
+                parsed = parse_micro_explicit(canonical_answers, fixture.packet)
+            except Exception as exc:
+                error = f"{type(exc).__name__}: {exc}"
+        else:
+            questions = [
+                "Which target number should be filed? Reply with one integer only (0=abstain).",
+                "Association effect? Reply 0= -2, 1= -1, 2=0, 3=+1, 4=+2.",
+                "Expression effect? Reply 0= -2, 1= -1, 2=0, 3=+1, 4=+2.",
+                "Confidence? Reply 0=none, 1=low, 2=medium, 3=high, 4=very high.",
+            ]
+            for i, question in enumerate(questions):
+                filing_calls.append(
+                    _call(
+                        host,
+                        GenerationRequest(
+                            messages=(
+                                {
+                                    "role": "user",
+                                    "content": (
+                                        f"{_answer_bank(fixture.packet)}\n\n"
+                                        f"TARGET {i + 1}: {fixture.packet.targets[i].context}\n"
+                                        f"ROUND-ONE REFLECTION:\n{reflection[:6000]}\n\n"
+                                        f"{question}"
+                                    ),
+                                },
+                            ),
+                            system="Answer only the requested single integer. No prose.",
+                            parameters={"temperature": 0.0, "top_p": 0.9, "max_new_tokens": 8},
+                            seed=seed + 100 + i,
+                        ),
+                    )
+                )
+            try:
+                parsed = parse_micro([str(c["content"]) for c in filing_calls], fixture.packet)
+            except Exception as exc:
+                error = f"{type(exc).__name__}: {exc}"
     else:
         filing_calls.append(
             _call(
@@ -593,6 +756,21 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         ),
     )
     result["chosen_level"] = chosen
+    follow_up_rows = [
+        evaluate_cell(host, fixture, FOLLOW_UP_LEVEL, args.seed + 20_000 + i, fallback=True)
+        for i, fixture in enumerate(fixtures)
+    ]
+    result["follow_up"] = {
+        "level": FOLLOW_UP_LEVEL,
+        "summary": summarize(follow_up_rows),
+        "rows": follow_up_rows,
+        "selection_note": (
+            "Added after the initial screen because all forms were mechanically valid "
+            "but full/compact filings often contradicted the prose reflection."
+        ),
+    }
+    chosen = FOLLOW_UP_LEVEL
+    result["chosen_level"] = chosen
     torture_rows = []
     for i in range(args.torture_reviews):
         fixture = fixtures[i % len(fixtures)]
@@ -609,6 +787,14 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
             )
     result["torture"] = {"level": chosen, "summary": summarize(torture_rows), "rows": torture_rows}
+    result["selection"] = {
+        "chosen_level": chosen,
+        "reason": (
+            "The initial interfaces tied on mechanical syntax, while the live explicit "
+            "microcall preserves the semantic dimensions as bounded one-digit decisions "
+            "and keeps canonical mapping in Python."
+        ),
+    }
     result["status"] = "COMPLETE"
     args.destination.write_text(
         json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"

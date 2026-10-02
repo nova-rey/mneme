@@ -19,6 +19,7 @@ from mneme.development import (
     filing_request,
     filing_system_prompt,
     parse_filing,
+    parse_microcall_explicit,
     parse_proposals,
     reflection_request,
     reflection_system_prompt,
@@ -116,6 +117,20 @@ def test_round_two_small_forms_have_one_deterministic_parser(
     assert proposals[0].target_alias == "t1"
     assert proposals[0].association_effect == -0.5
     assert proposals[0].expression_effect == 0.5
+
+
+def test_live_microcall_explicit_maps_binary_semantics_deterministically() -> None:
+    proposals = parse_microcall_explicit(["1", "1", "1", "0", "0", "1", "5"], _packet())
+    assert len(proposals) == 1
+    assert proposals[0].target_alias == "t1"
+    assert proposals[0].association_effect == 1.0
+    assert proposals[0].expression_effect == -1.0
+    assert proposals[0].confidence == 1.0
+
+
+def test_live_microcall_explicit_abstains_on_insufficient_evidence() -> None:
+    assert parse_microcall_explicit(["1", "0", "1", "0", "0", "0", "3"], _packet()) == ()
+    assert parse_microcall_explicit(["0"], _packet()) == ()
 
 
 def test_round_two_abstention_is_safe_and_does_not_require_target_ids() -> None:

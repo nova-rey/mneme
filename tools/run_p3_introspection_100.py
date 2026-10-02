@@ -26,6 +26,7 @@ from mneme.development import (
     filing_request,
     filing_system_prompt,
     parse_filing,
+    parse_microcall_explicit,
     reflection_request,
     reflection_system_prompt,
 )
@@ -87,6 +88,9 @@ R8_CHECKPOINT = Path(
 )
 THREAD_TURNS = 8
 MAX_ARCS_PER_THREAD = 4
+# Explicit microcall filing can ask up to eight target checks plus six bounded
+# semantic fields, with one reflection and one fallback reservation.
+INTROSPECTION_MAX_CALLS_PER_ARC = 16
 CHECKPOINTS = (0, 10, 25, 50, 75, 100)
 PROBE_SEEDS = (61001, 61002, 61003)
 FIELD_SEEDS = (71001, 71004, 71007, 71010, 71013, 71016, 71019, 71022)
@@ -113,7 +117,7 @@ HARD_MAX_CALLS = (
     3  # qualification
     + THREAD_COUNT * THREAD_TURNS * 2 * 3  # I/N development, extraction, assessment
     + THREAD_COUNT * (THREAD_TURNS - 1)  # shared Interloper continuations
-    + THREAD_COUNT * MAX_ARCS_PER_THREAD * 3  # reflection + filing + one bounded fallback
+    + THREAD_COUNT * MAX_ARCS_PER_THREAD * INTROSPECTION_MAX_CALLS_PER_ARC
     + len(CHECKPOINTS) * len(PROBES) * len(PROBE_SEEDS) * 3  # I/N/V readouts
     + 3 * len(PROBES) * len(PROBE_SEEDS) * 3  # I ON/OFF/RESTORED
 )
@@ -378,6 +382,98 @@ def _arc_slices(
     return result
 
 
+def _live_microcall_filing(
+    pilot: PilotRun,
+    host: Any,
+    packet: ArcPacket,
+    reflection: str,
+    *,
+    call_id: str,
+    coordinate: Mapping[str, Any],
+    seed: int,
+) -> tuple[tuple[Any, ...], list[dict[str, Any]]]:
+    """Run the live-qualified one-digit filing contract."""
+
+    calls: list[dict[str, Any]] = []
+    selected = 1 if len(packet.targets) == 1 else 0
+    if not selected:
+        for index, target in enumerate(packet.targets, start=1):
+            question = (
+                f"Does the reflection make a substantive judgment about target {index}, "
+                f"{target.context}? Reply 1 for yes or 0 for no. Reply one digit only."
+            )
+            result = _call(
+                pilot,
+                host,
+                GenerationRequest(
+                    messages=(
+                        {
+                            "role": "user",
+                            "content": (
+                                f"TARGET {index}: {target.context}\n"
+                                f"ROUND-ONE REFLECTION:\n{reflection[:6000]}\n\n{question}"
+                            ),
+                        },
+                    ),
+                    system="Answer only the requested single digit. No prose.",
+                    parameters={"temperature": 0.0, "top_p": 0.9, "max_new_tokens": 8},
+                    seed=seed + index,
+                ),
+                call_id=f"{call_id}-target-{index}",
+                role="introspection-filing-target",
+                coordinate=coordinate,
+                max_tokens=8,
+            )
+            calls.append({"question": question, "content": result.content, "seed": result.seed})
+            if result.content.strip() == "1":
+                selected = index
+                break
+    if not selected:
+        return (), calls
+    target = packet.targets[selected - 1]
+    questions = (
+        f"Is there enough evidence for a substantive judgment about target {selected}? "
+        "Reply 1 for yes, 0 for no or unclear.",
+        f"Ignoring wording or delivery, was target {selected} useful for solving or "
+        "understanding the situation? Reply 1 for yes, 0 for no or unclear.",
+        f"Was target {selected} harmful or distracting? Reply 1 for yes, 0 for no or unclear.",
+        f"Was expressing target {selected} helpful to the response? Reply 1 for yes, "
+        "0 for unclear.",
+        f"Should target {selected} be expressed less? Reply 1 for yes, 0 for no or unclear.",
+        "How confident is that judgment? Reply with one digit: 1 none, 2 low, "
+        "3 medium, 4 high, 5 very high.",
+    )
+    answers = [str(selected)]
+    for offset, question in enumerate(questions, start=1):
+        result = _call(
+            pilot,
+            host,
+            GenerationRequest(
+                messages=(
+                    {
+                        "role": "user",
+                        "content": (
+                            f"TARGET {selected}: {target.context}\n"
+                            f"ROUND-ONE REFLECTION:\n{reflection[:6000]}\n\n"
+                            f"SELECTED TARGET: {selected}\n{question}"
+                        ),
+                    },
+                ),
+                system="Answer only the requested single digit. No prose.",
+                parameters={"temperature": 0.0, "top_p": 0.9, "max_new_tokens": 8},
+                seed=seed + 100 + offset,
+            ),
+            call_id=f"{call_id}-field-{offset}",
+            role="introspection-filing-field",
+            coordinate=coordinate,
+            max_tokens=8,
+        )
+        answers.append(result.content.strip())
+        calls.append({"question": question, "content": result.content, "seed": result.seed})
+    proposals = parse_microcall_explicit(answers, packet)
+    return proposals, calls
+
+
 def _review(
     pilot: PilotRun,
     host: Any,
@@ -420,105 +516,133 @@ def _review(
     )
     reflection = reflection_result.content[:12_000]
     level = FilingLevel(
-        os.environ.get("MNEME_INTROSPECTION_FILING_LEVEL", FilingLevel.COMPACT_JSON.value)
+        os.environ.get("MNEME_INTROSPECTION_FILING_LEVEL", FilingLevel.MICROCALL_EXPLICIT.value)
     )
-    filing_call = GenerationRequest(
-        messages=(
-            {
-                "role": "user",
-                "content": json.dumps(
-                    filing_request(packet, reflection, level=level), ensure_ascii=False
-                ),
-            },
-        ),
-        system=filing_system_prompt(level),
-        parameters={"temperature": 0.0, "top_p": 0.9, "max_new_tokens": 256},
-        seed=formatting_seed,
-    )
-    filing_result = _call(
-        pilot,
-        host,
-        filing_call,
-        call_id=f"{call_id}-filing",
-        role="introspection-filing",
-        coordinate=coordinate,
-        max_tokens=256,
-    )
-    raw = filing_result.content
-    try:
-        proposals = parse_filing(
-            _review_json(raw),
-            packet,
-            level=level,
-            valid_evidence_refs={str(item.get("turn_ref")) for item in packet.exposures},
-        )
-        return proposals, {
-            "status": "COMPLETE" if proposals else "ABSTAINED_NO_CHANGE",
-            "reflection": reflection,
-            "filing": raw,
-            "fallback": None,
-            "parsed": [item.to_dict() for item in proposals],
-            "filing_level": level.value,
-            "reflection_seed": reflection_seed,
-            "formatting_seed": formatting_seed,
-            "filing_seed": formatting_seed,
-        }
-    except Exception as first_error:
-        fallback_call = GenerationRequest(
-            messages=(
-                {
-                    "role": "user",
-                    "content": json.dumps(
-                        filing_request(packet, reflection, level=FilingLevel.MINIMAL),
-                        ensure_ascii=False,
-                    ),
-                },
-            ),
-            system=filing_system_prompt(FilingLevel.MINIMAL),
-            parameters={"temperature": 0.0, "top_p": 0.9, "max_new_tokens": 512},
-            seed=formatting_seed,
-        )
-        fallback = _call(
-            pilot,
-            host,
-            fallback_call,
-            call_id=f"{call_id}-fallback",
-            role="introspection-filing-fallback",
-            coordinate=coordinate,
-            max_tokens=64,
-        )
+    raw = ""
+    first_error: Exception = RuntimeError("filing failed")
+    if level is FilingLevel.MICROCALL_EXPLICIT:
         try:
-            proposals = parse_filing(
-                fallback.content,
+            proposals, filing_calls = _live_microcall_filing(
+                pilot,
+                host,
                 packet,
-                level=FilingLevel.MINIMAL,
-                valid_evidence_refs={str(item.get("turn_ref")) for item in packet.exposures},
+                reflection,
+                call_id=call_id,
+                coordinate=coordinate,
+                seed=formatting_seed,
             )
-        except Exception as second_error:
-            return (), {
-                "status": "INVALID_MALFORMED",
+            return proposals, {
+                "status": "COMPLETE" if proposals else "ABSTAINED_NO_CHANGE",
                 "reflection": reflection,
-                "filing": raw,
-                "fallback": fallback.content,
-                "error": f"{first_error}; {second_error}",
-                "parsed": [],
+                "filing": filing_calls,
+                "fallback": None,
+                "parsed": [item.to_dict() for item in proposals],
                 "filing_level": level.value,
                 "reflection_seed": reflection_seed,
                 "formatting_seed": formatting_seed,
                 "filing_seed": formatting_seed,
             }
-        return proposals, {
-            "status": "FALLBACK",
+        except Exception as error:
+            first_error = error
+            raw = "microcall_explicit"
+    else:
+        filing_call = GenerationRequest(
+            messages=(
+                {
+                    "role": "user",
+                    "content": json.dumps(
+                        filing_request(packet, reflection, level=level), ensure_ascii=False
+                    ),
+                },
+            ),
+            system=filing_system_prompt(level),
+            parameters={"temperature": 0.0, "top_p": 0.9, "max_new_tokens": 256},
+            seed=formatting_seed,
+        )
+        filing_result = _call(
+            pilot,
+            host,
+            filing_call,
+            call_id=f"{call_id}-filing",
+            role="introspection-filing",
+            coordinate=coordinate,
+            max_tokens=256,
+        )
+        raw = filing_result.content
+        try:
+            proposals = parse_filing(
+                _review_json(raw),
+                packet,
+                level=level,
+                valid_evidence_refs={str(item.get("turn_ref")) for item in packet.exposures},
+            )
+            return proposals, {
+                "status": "COMPLETE" if proposals else "ABSTAINED_NO_CHANGE",
+                "reflection": reflection,
+                "filing": raw,
+                "fallback": None,
+                "parsed": [item.to_dict() for item in proposals],
+                "filing_level": level.value,
+                "reflection_seed": reflection_seed,
+                "formatting_seed": formatting_seed,
+                "filing_seed": formatting_seed,
+            }
+        except Exception as error:
+            first_error = error
+    fallback_call = GenerationRequest(
+        messages=(
+            {
+                "role": "user",
+                "content": json.dumps(
+                    filing_request(packet, reflection, level=FilingLevel.MINIMAL),
+                    ensure_ascii=False,
+                ),
+            },
+        ),
+        system=filing_system_prompt(FilingLevel.MINIMAL),
+        parameters={"temperature": 0.0, "top_p": 0.9, "max_new_tokens": 512},
+        seed=formatting_seed,
+    )
+    fallback = _call(
+        pilot,
+        host,
+        fallback_call,
+        call_id=f"{call_id}-fallback",
+        role="introspection-filing-fallback",
+        coordinate=coordinate,
+        max_tokens=64,
+    )
+    try:
+        proposals = parse_filing(
+            fallback.content,
+            packet,
+            level=FilingLevel.MINIMAL,
+            valid_evidence_refs={str(item.get("turn_ref")) for item in packet.exposures},
+        )
+    except Exception as second_error:
+        return (), {
+            "status": "INVALID_MALFORMED",
             "reflection": reflection,
             "filing": raw,
             "fallback": fallback.content,
-            "parsed": [item.to_dict() for item in proposals],
+            "error": f"{first_error}; {second_error}",
+            "parsed": [],
             "filing_level": level.value,
             "reflection_seed": reflection_seed,
             "formatting_seed": formatting_seed,
             "filing_seed": formatting_seed,
         }
-
+    return proposals, {
+        "status": "FALLBACK",
+        "reflection": reflection,
+        "filing": raw,
+        "fallback": fallback.content,
+        "parsed": [item.to_dict() for item in proposals],
+        "filing_level": level.value,
+        "reflection_seed": reflection_seed,
+        "formatting_seed": formatting_seed,
+        "filing_seed": formatting_seed,
+    }
 
 def _prepare_observe(
     controller: ResponseController,
@@ -642,7 +766,7 @@ def _make_pilot(
         3
         + remaining * THREAD_TURNS * 2 * 3
         + remaining * (THREAD_TURNS - 1)
-        + remaining * MAX_ARCS_PER_THREAD * 2
+        + remaining * MAX_ARCS_PER_THREAD * INTROSPECTION_MAX_CALLS_PER_ARC
         + len(CHECKPOINTS) * len(PROBES) * len(PROBE_SEEDS) * 3
         + 3 * len(PROBES) * len(PROBE_SEEDS) * 3
     )
@@ -657,6 +781,7 @@ def _make_pilot(
         "threads": THREAD_COUNT,
         "exchanges_per_thread": THREAD_TURNS,
         "max_arcs_per_thread": MAX_ARCS_PER_THREAD,
+        "introspection_max_calls_per_arc": INTROSPECTION_MAX_CALLS_PER_ARC,
         "checkpoints": list(CHECKPOINTS),
         "probe_count": len(PROBES),
         "probe_seeds": list(PROBE_SEEDS),
