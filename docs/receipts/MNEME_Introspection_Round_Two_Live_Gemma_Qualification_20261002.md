@@ -62,7 +62,13 @@ Historical P3 receipts remain unchanged. No developmental conversation or frozen
 ## Validation
 
 - Focused introspection tests: **29 passed**
-- Full pytest, Ruff, strict mypy, wheel/fresh-install smoke, and CI are run after this implementation commit; their exact results and commit are reported with the final handoff.
+- Full pytest: **578 passed in 52.73s**
+- Ruff: passed
+- Strict mypy (`src/mneme`): passed
+- Wheel build: passed (`mneme-0.1.0-py3-none-any.whl`)
+- Fresh-install import smoke: passed (`microcall_explicit` import and enum resolution)
+- CI: passed — [run 37021411049](https://github.com/nova-rey/mneme/actions/runs/37021411049)
+- Implementation/evidence commit: `a875ce52560ad26266eeb8c4126e0a622f5b061a`
 
 ## Evidence
 
