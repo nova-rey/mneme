@@ -2,6 +2,13 @@
 
 from .policy import PermissionState, PolicyError, PolicyService
 from .storage import SCHEMA_VERSION, SQLiteStore
+from .compact import (
+    COMPACT_SCHEMA_VERSION,
+    DEFAULT_JOURNAL_RETENTION,
+    CompactStore,
+    CompactStoreError,
+    migrate_sqlite,
+)
 
 __all__ = [
     "SCHEMA_VERSION",
@@ -9,4 +16,9 @@ __all__ = [
     "PolicyError",
     "PolicyService",
     "SQLiteStore",
+    "COMPACT_SCHEMA_VERSION",
+    "DEFAULT_JOURNAL_RETENTION",
+    "CompactStore",
+    "CompactStoreError",
+    "migrate_sqlite",
 ]
