@@ -20,7 +20,7 @@ from __future__ import annotations
 import json
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from ..development.field import (
     SAA_FIELD_VERSION,
@@ -30,8 +30,10 @@ from ..development.field import (
 )
 from ..development.health import assess_saa_treatment_health
 from ..development.learner import CreditWindow, EdgeState, LearnerState, RouteState
-from ..memory.graph import GraphConcept, GraphEdge, GraphRoute
 from .compact import CompactStore
+
+if TYPE_CHECKING:
+    from ..memory.graph import GraphConcept, GraphEdge, GraphRoute
 
 
 class CompactRuntimeError(RuntimeError):
@@ -161,6 +163,11 @@ class CompactRuntime:
     def graph(self) -> CompactGraphView:
         """Reconstruct graph objects from current compact rows."""
 
+        # Import lazily: ``mneme.memory`` imports development/state contracts
+        # during package initialization, so an eager graph import here would
+        # create a circular import for otherwise unrelated host/controller use.
+        from ..memory.graph import GraphConcept, GraphEdge, GraphRoute
+
         state = self.store.graph_state()
         raw_bindings = self.store.metadata("edge_bindings", {})
         edge_bindings = (
@@ -187,7 +194,7 @@ class CompactRuntime:
                 )
             )
 
-        edges: list[GraphEdge] = []
+        edges_by_key: dict[str, GraphEdge] = {}
         for key, raw in sorted(state["edges"].items()):
             row = _mapping(raw, field=f"graph edge {key}")
             local_key = str(row.get("key", row.get("edge_key", key)))
@@ -199,18 +206,36 @@ class CompactRuntime:
             if canonical_key != local_key:
                 edge_annotations["local_key"] = local_key
                 edge_annotations["canonical_key"] = canonical_key
-            edges.append(
-                GraphEdge(
-                    canonical_key,
-                    str(row.get("source", row.get("source_key", ""))),
-                    str(row.get("target", row.get("target_key", ""))),
-                    str(row.get("relationship", "")),
-                    tuple(item for item in evidence if isinstance(item, Mapping))
-                    if isinstance(evidence, (list, tuple))
-                    else (),
-                    dict(edge_annotations),
-                )
+            candidate = GraphEdge(
+                canonical_key,
+                str(row.get("source", row.get("source_key", ""))),
+                str(row.get("target", row.get("target_key", ""))),
+                str(row.get("relationship", "")),
+                tuple(item for item in evidence if isinstance(item, Mapping))
+                if isinstance(evidence, (list, tuple))
+                else (),
+                dict(edge_annotations),
             )
+            prior = edges_by_key.get(canonical_key)
+            if prior is None:
+                edges_by_key[canonical_key] = candidate
+            else:
+                prior_evidence = list(prior.evidence)
+                seen = {json.dumps(dict(item), sort_keys=True) for item in prior_evidence}
+                for item in candidate.evidence:
+                    marker = json.dumps(dict(item), sort_keys=True)
+                    if marker not in seen:
+                        seen.add(marker)
+                        prior_evidence.append(item)
+                edges_by_key[canonical_key] = GraphEdge(
+                    prior.key,
+                    prior.source,
+                    prior.target,
+                    prior.relationship,
+                    tuple(prior_evidence),
+                    dict(prior.annotations or {}),
+                )
+        edges = list(edges_by_key.values())
 
         routes: list[GraphRoute] = []
         for key, raw in sorted(state["routes"].items()):

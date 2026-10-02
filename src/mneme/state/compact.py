@@ -627,7 +627,7 @@ def migrate_sqlite(source_path: str | Path, destination_path: str | Path, *, jou
             str(row[0]): str(row[1])
             for row in raw.execute(
                 "SELECT local_key,canonical_key FROM semantic_bindings "
-                "WHERE instance_id=? AND candidate_id IS NULL ORDER BY created_at,rowid",
+                "WHERE instance_id=? ORDER BY created_at,rowid",
                 (instance_id,),
             )
         }

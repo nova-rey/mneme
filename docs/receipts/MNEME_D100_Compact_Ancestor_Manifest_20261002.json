@@ -1,0 +1,60 @@
+{
+  "schema": "mneme.d100.compact-ancestor.manifest.v1",
+  "ancestor_name": "D100-I",
+  "normative_status": "reusable_developed_ancestor_not_normative_reference",
+  "purpose": "Convenience developed starting point; disposable descendants only; not a normative model.",
+  "source_lineage": {
+    "path": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_I_r16_compact.sqlite3",
+    "sha256": "f17959c17107c67925738f551a466bf8dda3bfb10a0125605b748daa890ac083",
+    "active_instance_id": "41de3825-4b0d-57f9-83db-f476280e04fc",
+    "revision": 315,
+    "manifest_id": "6b20b58a-e890-4856-8859-b383030872da",
+    "graph_counts": {
+      "nodes": 1531,
+      "edges": 1618,
+      "routes": 8
+    },
+    "learner_values": 1600,
+    "semantic_bindings": 844,
+    "semantic_key_bindings": 741,
+    "core_digest": "3acb45c9edf970f9f63dda6974ab4180e7fa8e2e32647bb4879f3723f04990c0",
+    "binding_digest": "a38abcb83ca954eb3abfba98f95106df000b5f242614c36de65ce187e089477e",
+    "key_binding_digest": "e915dd49812db179470477fae1e1da346834442b21586c5e1245c7aca1492243",
+    "manifest_digest": "dc71aa14b2b078a22dc8073bfd820f9b5f434431f8edaf0c26f1b94fb4b7269f"
+  },
+  "compact_artifact": {
+    "path": "/tmp/mneme-d100-migration/I100-D100.compact.sqlite3",
+    "sha256": "38277e64e1e2f1f79db686845cebd0a619d4704ee8ddf1d7006660d451132d2c",
+    "schema_version": 1,
+    "bytes": 5611520,
+    "state_digest": "3acb45c9edf970f9f63dda6974ab4180e7fa8e2e32647bb4879f3723f04990c0",
+    "graph_counts": {
+      "nodes": 1531,
+      "edges": 1618,
+      "routes": 8
+    },
+    "learner_values": 1600,
+    "semantic_bindings": 844,
+    "semantic_key_bindings": 741,
+    "semantic_key_binding_digest": "e915dd49812db179470477fae1e1da346834442b21586c5e1245c7aca1492243",
+    "verification": []
+  },
+  "equivalence": {
+    "core_state": true,
+    "semantic_bindings": true,
+    "canonical_to_materialized_key_bindings": true,
+    "canonical_to_materialized_key_binding_digest": "e915dd49812db179470477fae1e1da346834442b21586c5e1245c7aca1492243",
+    "source_immutable": true,
+    "restart_state_digest": "3acb45c9edf970f9f63dda6974ab4180e7fa8e2e32647bb4879f3723f04990c0",
+    "saa_candidate_distribution": true,
+    "seeded_landings_and_payloads": true
+  },
+  "artifact_location_contract": {
+    "historical_source": "local canonical P3 evidence location; do not mutate",
+    "compact_working_artifact": "/tmp/mneme-d100-migration/I100-D100.compact.sqlite3 (local runtime artifact; SHA-256 recorded above)",
+    "descendants": "/tmp/mneme-d100-trial/I2.compact.sqlite3 and N2.compact.sqlite3 (local runtime artifacts; hashes in trial receipt)",
+    "git_policy": "Only this manifest and compact derived receipts belong in Git; SQLite artifacts remain outside Git."
+  },
+  "regeneration": "PYTHONPATH=src python3 tools/migrate_d100_ancestor.py --source <immutable historical I-100 compact SQLite> --destination <new compact path> --manifest <manifest path> --ancestor-name D100-I",
+  "created": "2026-10-02"
+}
