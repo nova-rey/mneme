@@ -35,9 +35,12 @@ def _require_legacy_research_opt_in(enabled: bool, operation: str) -> None:
         )
 
 
-def contingent_create(lab: Path, run_id: str) -> dict[str, Any]:
+def contingent_create(
+    lab: Path, run_id: str, *, legacy_research_store: bool = False
+) -> dict[str, Any]:
     """Prepare the additive contingent-conversation study."""
 
+    _require_legacy_research_opt_in(legacy_research_store, "contingent create")
     from ..cli import _host
     from ..hosts import DeepInfraEvidenceReviewHost
     from .contingent import STUDY_ID, ContingentStudy
@@ -99,9 +102,12 @@ def contingent_execute(
     return study.execute()
 
 
-def p23_supplement_create(lab: Path, run_id: str) -> dict[str, Any]:
+def p23_supplement_create(
+    lab: Path, run_id: str, *, legacy_research_store: bool = False
+) -> dict[str, Any]:
     """Freeze the one-shot separated-support adequacy supplement."""
 
+    _require_legacy_research_opt_in(legacy_research_store, "p23 supplement create")
     from ..cli import _host
     from .p23_supplement import SUPPLEMENT_ID, P23SupplementStudy
 
@@ -601,7 +607,14 @@ def dispatch(args: Any) -> int:
                 args.repetition,
             )
         elif args.experiment_action == "contingent_create":
-            result = contingent_create(args.lab, args.run_id)
+            opt_in = getattr(args, "legacy_research_store", None)
+            result = (
+                contingent_create(args.lab, args.run_id)
+                if opt_in is None
+                else contingent_create(
+                    args.lab, args.run_id, legacy_research_store=bool(opt_in)
+                )
+            )
         elif args.experiment_action == "contingent_execute":
             opt_in = getattr(args, "legacy_research_store", None)
             result = (
@@ -612,7 +625,14 @@ def dispatch(args: Any) -> int:
                 )
             )
         elif args.experiment_action == "p23_supplement_create":
-            result = p23_supplement_create(args.lab, args.run_id)
+            opt_in = getattr(args, "legacy_research_store", None)
+            result = (
+                p23_supplement_create(args.lab, args.run_id)
+                if opt_in is None
+                else p23_supplement_create(
+                    args.lab, args.run_id, legacy_research_store=bool(opt_in)
+                )
+            )
         elif args.experiment_action == "p23_supplement_execute":
             opt_in = getattr(args, "legacy_research_store", None)
             result = (
@@ -713,6 +733,7 @@ def add_parser(sub: Any) -> None:
     create_contingent = csub.add_parser("create")
     create_contingent.add_argument("--lab", type=Path, required=True)
     create_contingent.add_argument("--run-id", required=True)
+    create_contingent.add_argument("--legacy-research-store", action="store_true", default=None)
     create_contingent.add_argument("--json", action="store_true")
     execute_contingent = csub.add_parser("execute")
     execute_contingent.add_argument("--lab", type=Path, required=True)
@@ -724,6 +745,7 @@ def add_parser(sub: Any) -> None:
     create_supplement = ssub.add_parser("create")
     create_supplement.add_argument("--lab", type=Path, required=True)
     create_supplement.add_argument("--run-id", required=True)
+    create_supplement.add_argument("--legacy-research-store", action="store_true", default=None)
     create_supplement.add_argument("--json", action="store_true")
     execute_supplement = ssub.add_parser("execute")
     execute_supplement.add_argument("--lab", type=Path, required=True)
