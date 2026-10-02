@@ -1577,3 +1577,4 @@ and dispositions remain unchanged.
 * 2026-10-02: Closed the D100 ancestor, CompactStore runtime, and ten-thread introspection trial queue packages; parked the superseded historical 100-thread dispatch so no accidental rerun can start.
 * 2026-10-02: Added the minimal tools package marker so clean CI can import the copy-only D100 migration test without relying on a local PYTHONPATH override.
 * 2026-10-02: Added the repository root to pytest pythonpath so clean CI can collect repository-level migration harness tests exactly as local validation does.
+* 2026-10-02: Added the explicit typed graph-revision boundary required by strict mypy; no CompactStore or trial behavior changed.

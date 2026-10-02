@@ -18,7 +18,7 @@ import shutil
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Protocol
+from typing import Any, Protocol, cast
 
 from ..development.field import FieldConfig, FieldResult
 from ..development.learner import (
@@ -348,11 +348,11 @@ class CompactTrialBranch:
         edges: tuple[GraphEdge, ...],
         routes: tuple[GraphRoute, ...],
     ) -> int:
-        return self.runtime.publish_state(
+        return cast(int, self.runtime.publish_state(
             CompactGraphView(concepts, edges, routes),
             self.learner,
             operation_id="graph-publication",
-        )["graph_revision"]
+        )["graph_revision"])
 
     def apply(self, transition: TransitionInput) -> TransitionResult:
         result = apply_transition(self.learner, transition)
