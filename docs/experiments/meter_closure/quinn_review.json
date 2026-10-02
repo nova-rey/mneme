@@ -1,0 +1,51 @@
+{
+  "stage": "prospective",
+  "reviewed_at_utc": "2026-10-02T21:25:40.071169+00:00",
+  "reviewer": "Root",
+  "reviewed_before_meter_scores": true,
+  "source_sha256": "5d02d7bb61f1799bd7115efe05c7a6ba986a70731bb93b42ebfbee59368aa1d1",
+  "criterion": "Only environmental fidelity: required external facts accurately delivered, no forbidden results, moving/static condition preserved, no private instructions. Gemma behavior excluded.",
+  "conversations": {
+    "p002": {
+      "environment_valid": true,
+      "complete": false,
+      "accepted_turns": 1,
+      "reason": "Valid opening prefix. Rejected turn2 preserved environmental facts but paraphrased question; overly strict action gate prevented delivery. Not environmental invalidity and no replacement authorized."
+    },
+    "p003": {
+      "environment_valid": true,
+      "complete": true,
+      "accepted_turns": 8,
+      "reason": "All required reset/report counts, cable/position changes and durations delivered exactly; no private instruction leakage."
+    },
+    "p004": {
+      "environment_valid": true,
+      "complete": true,
+      "accepted_turns": 8,
+      "reason": "Unchanged goal, no tests or results; all seven continuations preserve static environment and privacy."
+    }
+  },
+  "trajectories": [
+    {
+      "conversation": "p001",
+      "quinn_valid": null,
+      "disposition": "infrastructure loss before accepted exchange; not rerun"
+    },
+    {
+      "conversation": "p002",
+      "quinn_valid": true,
+      "disposition": "valid opening prefix; gate interrupted"
+    },
+    {
+      "conversation": "p003",
+      "quinn_valid": true,
+      "disposition": "complete moving"
+    },
+    {
+      "conversation": "p004",
+      "quinn_valid": true,
+      "disposition": "complete static"
+    }
+  ],
+  "replacement_decision": "None: no environmental-invalid trajectory. Infrastructure loss and conservative action-gate interruption do not authorize result-driven replacement."
+}

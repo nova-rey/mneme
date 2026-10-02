@@ -1,0 +1,598 @@
+{
+  "completed_utc": "2026-10-02T21:21:16.316538+00:00",
+  "elapsed_seconds": 1.491542116040364,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"A workshop sensor sometimes disappears from the Wi-Fi dashboard. I do not know whether power or Wi-Fi is responsible. How can I narrow it down without replacing parts at random?\", \"s1\": \"That sounds frustrating! When a sensor keeps dropping off the Wi-Fi, it's usually a classic \\\"either/or\\\" problem: either the power source is failing, or the connection is failing.\\n\\nSince you don't want to just start replacing parts randomly, here are a few logical steps to narrow it down without just guessing:\\n\\n### 1. Isolate the Power vs. Network Issue\\n\\n**A. Check the Power/Hardware (The \\\"Power\\\" Side):**\\n*   **Is it a specific device or all of them?** If *all* sensors are dropping, it's likely the Wi-Fi/network. If only *one* sensor is dropping, it's likely the sensor itself or its immediate power source.\\n*   **Check the Battery/Power:** If it's a battery-powered sensor, check the battery level. A low battery can cause intermittent connection drops. If it's a wired sensor, check the power supply connection.\\n\\n**B. Check the Network/Wi-Fi (The \\\"Wi-Fi\\\" Side):**\\n*   **Is the router stable?** If the router is overloaded, or if the signal strength is weak in that specific location, the sensor will drop.\\n*   **Test the signal strength:** If you can, try to move the sensor physically closer to the router to see if the connection stabilizes.\\n\\n### 2. Systematic Troubleshooting Steps (Narrowing it Down)\\n\\nSince you don't want to replace parts randomly, try this \\\"Elimination Method\\\":\\n\\n1.  **Check the Logs:** Look at the logs for the specific sensor that is dropping. Does it log a \\\"connection lost,\\\" \\\"timeout,\\\" or \\\"power failure\\\"?\\n2.  **The \\\"One-Sensor Test\\\":** If you have multiple sensors, try to isolate the problem. If Sensor A drops but Sensor B stays connected, the problem is specific to Sensor A. If *all* sensors drop, it's the network/router.\\n3.  **Test the Environment:** Is the sensor near a large metal object, or is the Wi-Fi signal weak in that specific spot?\\n\\n**In summary, to narrow it down without replacing parts:**\\n\\n*   **If it's a specific sensor:** It's likely a **power/hardware issue** (battery, internal component failure).\\n*   **If it's all sensors:** It's likely a **network/Wi-Fi issue** (router interference, signal interference, or router overload).\\n\\nDoes the sensor have a specific error code when it disappears? Knowing that code can help pinpoint the exact failure point!\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "p002-t01"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"sensor\", \"relation\": \"depends_on\", \"to\": \"power\", \"source\": \"s0\", \"evidence\": \"sensor sometimes disappears from the Wi-Fi dashboard. I do not know whether power\"}, {\"from\": \"sensor\", \"relation\": \"related\", \"to\": \"connection\", \"source\": \"s1\", \"evidence\": \"sensor keeps dropping off the Wi-Fi, it's usually a classic \\\"either/or\\\" problem: either the power source is failing, or the connection\"}, {\"from\": \"sensor\", \"relation\": \"related\", \"to\": \"Wi-Fi\", \"source\": \"s1\", \"evidence\": \"sensor, check the power supply connection.\\n\\n**B. Check the Network/Wi-Fi\"}], \"episode_id\": \"p002-t01\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "contains",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "has",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "helps",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "527f9f4d3803cf951f0a465f89269e35398cd52a265039210d30e93cb471e5ae",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 92,
+              "start": 11
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "power",
+            "object_span": {
+              "end": 92,
+              "start": 87
+            },
+            "relation": "depends_on",
+            "score": 0.919854462146759,
+            "source_slot": "s0",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 17,
+              "start": 11
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 92,
+              "start": 11
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "power",
+            "object_span": {
+              "end": 92,
+              "start": 87
+            },
+            "relation": "requires",
+            "score": 0.5559543371200562,
+            "source_slot": "s0",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 17,
+              "start": 11
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 166,
+              "start": 32
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "connection",
+            "object_span": {
+              "end": 166,
+              "start": 156
+            },
+            "relation": "related",
+            "score": 0.4797554314136505,
+            "source_slot": "s1",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 38,
+              "start": 32
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 166,
+              "start": 124
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "connection",
+            "object_span": {
+              "end": 166,
+              "start": 156
+            },
+            "relation": "influences",
+            "score": 0.6432268619537354,
+            "source_slot": "s1",
+            "subject": "power",
+            "subject_span": {
+              "end": 129,
+              "start": 124
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 848,
+              "start": 776
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi",
+            "object_span": {
+              "end": 848,
+              "start": 843
+            },
+            "relation": "related",
+            "score": 0.5501877069473267,
+            "source_slot": "s1",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 782,
+              "start": 776
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 848,
+              "start": 776
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi",
+            "object_span": {
+              "end": 848,
+              "start": 843
+            },
+            "relation": "uses",
+            "score": 0.4308215379714966,
+            "source_slot": "s1",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 782,
+              "start": 776
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 848,
+              "start": 156
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "connection",
+            "object_span": {
+              "end": 166,
+              "start": 156
+            },
+            "relation": "influences",
+            "score": 0.6213855743408203,
+            "source_slot": "s1",
+            "subject": "Wi-Fi",
+            "subject_span": {
+              "end": 848,
+              "start": 843
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 2132,
+              "start": 2099
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "error code",
+            "object_span": {
+              "end": 2132,
+              "start": 2122
+            },
+            "relation": "contains",
+            "score": 0.9501822590827942,
+            "source_slot": "s1",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 2105,
+              "start": 2099
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 2132,
+              "start": 2099
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "error code",
+            "object_span": {
+              "end": 2132,
+              "start": 2122
+            },
+            "relation": "has",
+            "score": 0.9713621735572815,
+            "source_slot": "s1",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 2105,
+              "start": 2099
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 2132,
+              "start": 2099
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sensor",
+            "object_span": {
+              "end": 2105,
+              "start": 2099
+            },
+            "relation": "associated_with",
+            "score": 0.6587400436401367,
+            "source_slot": "s1",
+            "subject": "error code",
+            "subject_span": {
+              "end": 2132,
+              "start": 2122
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 2212,
+              "start": 2122
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "pinpoint the exact failure point",
+            "object_span": {
+              "end": 2212,
+              "start": 2180
+            },
+            "relation": "helps",
+            "score": 0.815829336643219,
+            "source_slot": "s1",
+            "subject": "error code",
+            "subject_span": {
+              "end": 2132,
+              "start": 2122
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "e6724fca54b6d88f494567faefcbf51a9aeece9c9cfac353c3edd2d3cda5c440",
+          "s1": "166dfbd094611ff89125ac97c0d47fb48c5e01b785359aaa2c9bd1b31c0f167b"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.6587400436401367,
+                  "end": 2310,
+                  "start": 2300,
+                  "text": "error code"
+                },
+                "tail": {
+                  "confidence": 0.6587400436401367,
+                  "end": 2283,
+                  "start": 2277,
+                  "text": "sensor"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [],
+            "changes": [],
+            "constrains": [],
+            "contains": [
+              {
+                "head": {
+                  "confidence": 0.9501822590827942,
+                  "end": 2283,
+                  "start": 2277,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.9501822590827942,
+                  "end": 2310,
+                  "start": 2300,
+                  "text": "error code"
+                }
+              }
+            ],
+            "controls": [],
+            "depends_on": [
+              {
+                "head": {
+                  "confidence": 0.919854462146759,
+                  "end": 17,
+                  "start": 11,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.919854462146759,
+                  "end": 92,
+                  "start": 87,
+                  "text": "power"
+                }
+              }
+            ],
+            "dries": [],
+            "enables": [],
+            "has": [
+              {
+                "head": {
+                  "confidence": 0.9713621735572815,
+                  "end": 2283,
+                  "start": 2277,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.9713621735572815,
+                  "end": 2310,
+                  "start": 2300,
+                  "text": "error code"
+                }
+              }
+            ],
+            "helps": [
+              {
+                "head": {
+                  "confidence": 0.815829336643219,
+                  "end": 2310,
+                  "start": 2300,
+                  "text": "error code"
+                },
+                "tail": {
+                  "confidence": 0.815829336643219,
+                  "end": 2390,
+                  "start": 2358,
+                  "text": "pinpoint the exact failure point"
+                }
+              }
+            ],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.6432268619537354,
+                  "end": 307,
+                  "start": 302,
+                  "text": "power"
+                },
+                "tail": {
+                  "confidence": 0.6432268619537354,
+                  "end": 344,
+                  "start": 334,
+                  "text": "connection"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6213855743408203,
+                  "end": 1026,
+                  "start": 1021,
+                  "text": "Wi-Fi"
+                },
+                "tail": {
+                  "confidence": 0.6213855743408203,
+                  "end": 344,
+                  "start": 334,
+                  "text": "connection"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.4797554314136505,
+                  "end": 216,
+                  "start": 210,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.4797554314136505,
+                  "end": 344,
+                  "start": 334,
+                  "text": "connection"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5501877069473267,
+                  "end": 960,
+                  "start": 954,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.5501877069473267,
+                  "end": 1026,
+                  "start": 1021,
+                  "text": "Wi-Fi"
+                }
+              }
+            ],
+            "requires": [
+              {
+                "head": {
+                  "confidence": 0.5559543371200562,
+                  "end": 17,
+                  "start": 11,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.5559543371200562,
+                  "end": 92,
+                  "start": 87,
+                  "text": "power"
+                }
+              }
+            ],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.4308215379714966,
+                  "end": 960,
+                  "start": 954,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.4308215379714966,
+                  "end": 1026,
+                  "start": 1021,
+                  "text": "Wi-Fi"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T21:21:14.824781+00:00",
+  "status": "RETURNED"
+}

@@ -1,0 +1,845 @@
+{
+  "completed_utc": "2026-10-02T21:23:40.801267+00:00",
+  "elapsed_seconds": 2.2976393681019545,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"No comparison bake has been made. I am still aiming for a loaf browned outside and set inside. What should I consider when choosing the temperature and time?\", \"s1\": \"It sounds like you are trying to find the perfect \\\"sweet spot\\\" for your specific recipe, but since you don't have a reference point yet, we need to treat this like a **scientific experiment**.\\n\\nSince you have **no previous data**, you are essentially \\\"guessing\\\" the perfect combination.\\n\\nHere is a systematic approach to find the right combination:\\n\\n### 1. The Temperature (The Heat)\\n\\n*   **What to consider:** The temperature of your oven is the most critical variable.\\n*   **The \\\"Set\\\" Point:** For most standard breads, a temperature between **325\\u00b0F and 375\\u00b0F (160\\u00b0C to 190\\u00b0C)** is usually a good starting point.\\n*   **The Risk:** If the temperature is too high, the outside will burn before the inside is \\\"set.\\\" If it's too low, the inside will remain raw.\\n\\n### 2. The Time (The Set)\\n\\n*   **What to consider:** Time is dictated by the size and density of the loaf.\\n*   **The Test:** You must bake until the internal temperature hits the target (e.g., 200\\u00b0F / 93\\u00b0C).\\n\\n### \\ud83d\\udca1 Action Plan: The \\\"Trial and Error\\\" Method\\n\\nSince you have no previous data, follow these steps:\\n\\n1.  **Start with a safe, moderate temperature:** Set your oven to **350\\u00b0F (175\\u00b0C)**.\\n2.  **Set a Time:** Bake for **45 minutes**.\\n3.  **Check:** After 45 minutes, check the internal temperature. If it's not set, continue baking until the internal temperature hits the target.\\n\\n**In short: You must find the \\\"sweet spot\\\" by testing.**\\n\\n**If you can tell me what kind of loaf you are making (e.g., sourdough, white bread, etc.), I can give you a much more specific time estimate!**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "p004-t06"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"temperature\", \"relation\": \"causes\", \"to\": \"burn\", \"source\": \"s1\", \"evidence\": \"temperature is too high, the outside will burn\"}, {\"from\": \"temperature\", \"relation\": \"related\", \"to\": \"sourdough\", \"source\": \"s1\", \"evidence\": \"temperature hits the target (e.g., 200\\u00b0F / 93\\u00b0C).\\n\\n### \\ud83d\\udca1 Action Plan: The \\\"Trial and Error\\\" Method\\n\\nSince you have no previous data, follow these steps:\\n\\n1.  **Start with a safe, moderate temperature:** Set your oven to **350\\u00b0F (175\\u00b0C)**.\\n2.  **Set a Time:** Bake for **45 minutes**.\\n3.  **Check:** After 45 minutes, check the internal temperature. If it's not set, continue baking until the internal temperature hits the target.\\n\\n**In short: You must find the \\\"sweet spot\\\" by testing.**\\n\\n**If you can tell me what kind of loaf you are making (e.g., sourdough\"}, {\"from\": \"temperature\", \"relation\": \"related\", \"to\": \"white bread\", \"source\": \"s1\", \"evidence\": \"temperature. If it's not set, continue baking until the internal temperature hits the target.\\n\\n**In short: You must find the \\\"sweet spot\\\" by testing.**\\n\\n**If you can tell me what kind of loaf you are making (e.g., sourdough, white bread\"}, {\"from\": \"time\", \"relation\": \"related\", \"to\": \"sourdough\", \"source\": \"s1\", \"evidence\": \"sourdough, white bread, etc.), I can give you a much more specific time\"}, {\"from\": \"time\", \"relation\": \"related\", \"to\": \"white bread\", \"source\": \"s1\", \"evidence\": \"white bread, etc.), I can give you a much more specific time\"}], \"episode_id\": \"p004-t06\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "stabilizes",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 11,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 12,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 13,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 14,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 15,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        }
+      ],
+      "specialist": {
+        "content_digest": "4a888afdf752c87723e6b484327e72342547defac02fb34ab203d7461ff0503c",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 93,
+              "start": 14
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "set inside",
+            "object_span": {
+              "end": 93,
+              "start": 83
+            },
+            "relation": "leads_to",
+            "score": 0.41855543851852417,
+            "source_slot": "s0",
+            "subject": "bake",
+            "subject_span": {
+              "end": 18,
+              "start": 14
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 147,
+              "start": 87
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "inside",
+            "object_span": {
+              "end": 93,
+              "start": 87
+            },
+            "relation": "affects",
+            "score": 0.513822615146637,
+            "source_slot": "s0",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 147,
+              "start": 136
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 156,
+              "start": 87
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "inside",
+            "object_span": {
+              "end": 93,
+              "start": 87
+            },
+            "relation": "stabilizes",
+            "score": 0.48202967643737793,
+            "source_slot": "s0",
+            "subject": "time",
+            "subject_span": {
+              "end": 156,
+              "start": 152
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 426,
+              "start": 361
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Temperature",
+            "object_span": {
+              "end": 372,
+              "start": 361
+            },
+            "relation": "changes",
+            "score": 0.8703954219818115,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 426,
+              "start": 415
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 426,
+              "start": 361
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Temperature",
+            "object_span": {
+              "end": 372,
+              "start": 361
+            },
+            "relation": "influences",
+            "score": 0.9001210331916809,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 426,
+              "start": 415
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 686,
+              "start": 640
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "burn",
+            "object_span": {
+              "end": 686,
+              "start": 682
+            },
+            "relation": "causes",
+            "score": 0.3728347718715668,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 651,
+              "start": 640
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 930,
+              "start": 814
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "internal temperature",
+            "object_span": {
+              "end": 930,
+              "start": 910
+            },
+            "relation": "reduces",
+            "score": 0.6759251952171326,
+            "source_slot": "s1",
+            "subject": "Time",
+            "subject_span": {
+              "end": 818,
+              "start": 814
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 930,
+              "start": 895
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "internal temperature",
+            "object_span": {
+              "end": 930,
+              "start": 910
+            },
+            "relation": "reduces",
+            "score": 0.7883811593055725,
+            "source_slot": "s1",
+            "subject": "bake",
+            "subject_span": {
+              "end": 899,
+              "start": 895
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 930,
+              "start": 862
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "loaf",
+            "object_span": {
+              "end": 866,
+              "start": 862
+            },
+            "relation": "affects",
+            "score": 0.6222991943359375,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 930,
+              "start": 919
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1478,
+              "start": 919
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sourdough",
+            "object_span": {
+              "end": 1478,
+              "start": 1469
+            },
+            "relation": "related",
+            "score": 0.36382153630256653,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 930,
+              "start": 919
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1266,
+              "start": 1107
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 1266,
+              "start": 1255
+            },
+            "relation": "increases",
+            "score": 0.40423259139060974,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 1118,
+              "start": 1107
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1182,
+              "start": 1131
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "oven",
+            "object_span": {
+              "end": 1135,
+              "start": 1131
+            },
+            "relation": "uses",
+            "score": 0.7546498775482178,
+            "source_slot": "s1",
+            "subject": "Bake",
+            "subject_span": {
+              "end": 1182,
+              "start": 1178
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1491,
+              "start": 1255
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "white bread",
+            "object_span": {
+              "end": 1491,
+              "start": 1480
+            },
+            "relation": "related",
+            "score": 0.38516300916671753,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 1266,
+              "start": 1255
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1540,
+              "start": 1255
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 1266,
+              "start": 1255
+            },
+            "relation": "changes",
+            "score": 0.4895220100879669,
+            "source_slot": "s1",
+            "subject": "time",
+            "subject_span": {
+              "end": 1540,
+              "start": 1536
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1540,
+              "start": 1469
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sourdough",
+            "object_span": {
+              "end": 1478,
+              "start": 1469
+            },
+            "relation": "related",
+            "score": 0.5021036267280579,
+            "source_slot": "s1",
+            "subject": "time",
+            "subject_span": {
+              "end": 1540,
+              "start": 1536
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1540,
+              "start": 1480
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "white bread",
+            "object_span": {
+              "end": 1491,
+              "start": 1480
+            },
+            "relation": "related",
+            "score": 0.590355634689331,
+            "source_slot": "s1",
+            "subject": "time",
+            "subject_span": {
+              "end": 1540,
+              "start": 1536
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "7669ee08fb45130a74691e7997ef0af549cf320afb562c8d2166038175755823",
+          "s1": "e81a6477ba2b5e8614c217419242d0f1a3e75e1ca7d4e1bbfea4822fb9c1d244"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.513822615146637,
+                  "end": 147,
+                  "start": 136,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.513822615146637,
+                  "end": 93,
+                  "start": 87,
+                  "text": "inside"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6222991943359375,
+                  "end": 1088,
+                  "start": 1077,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.6222991943359375,
+                  "end": 1024,
+                  "start": 1020,
+                  "text": "loaf"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.3728347718715668,
+                  "end": 809,
+                  "start": 798,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.3728347718715668,
+                  "end": 844,
+                  "start": 840,
+                  "text": "burn"
+                }
+              }
+            ],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.8703954219818115,
+                  "end": 584,
+                  "start": 573,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.8703954219818115,
+                  "end": 530,
+                  "start": 519,
+                  "text": "Temperature"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4895220100879669,
+                  "end": 1698,
+                  "start": 1694,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.4895220100879669,
+                  "end": 1424,
+                  "start": 1413,
+                  "text": "temperature"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.40423259139060974,
+                  "end": 1276,
+                  "start": 1265,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.40423259139060974,
+                  "end": 1424,
+                  "start": 1413,
+                  "text": "temperature"
+                }
+              }
+            ],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.9001210331916809,
+                  "end": 584,
+                  "start": 573,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.9001210331916809,
+                  "end": 530,
+                  "start": 519,
+                  "text": "Temperature"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [
+              {
+                "head": {
+                  "confidence": 0.41855543851852417,
+                  "end": 18,
+                  "start": 14,
+                  "text": "bake"
+                },
+                "tail": {
+                  "confidence": 0.41855543851852417,
+                  "end": 93,
+                  "start": 83,
+                  "text": "set inside"
+                }
+              }
+            ],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.6759251952171326,
+                  "end": 976,
+                  "start": 972,
+                  "text": "Time"
+                },
+                "tail": {
+                  "confidence": 0.6759251952171326,
+                  "end": 1088,
+                  "start": 1068,
+                  "text": "internal temperature"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7883811593055725,
+                  "end": 1057,
+                  "start": 1053,
+                  "text": "bake"
+                },
+                "tail": {
+                  "confidence": 0.7883811593055725,
+                  "end": 1088,
+                  "start": 1068,
+                  "text": "internal temperature"
+                }
+              }
+            ],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.36382153630256653,
+                  "end": 1088,
+                  "start": 1077,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.36382153630256653,
+                  "end": 1636,
+                  "start": 1627,
+                  "text": "sourdough"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.38516300916671753,
+                  "end": 1424,
+                  "start": 1413,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.38516300916671753,
+                  "end": 1649,
+                  "start": 1638,
+                  "text": "white bread"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5021036267280579,
+                  "end": 1698,
+                  "start": 1694,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.5021036267280579,
+                  "end": 1636,
+                  "start": 1627,
+                  "text": "sourdough"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.590355634689331,
+                  "end": 1698,
+                  "start": 1694,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.590355634689331,
+                  "end": 1649,
+                  "start": 1638,
+                  "text": "white bread"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [
+              {
+                "head": {
+                  "confidence": 0.48202967643737793,
+                  "end": 156,
+                  "start": 152,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.48202967643737793,
+                  "end": 93,
+                  "start": 87,
+                  "text": "inside"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.37758246064186096,
+                  "end": 1088,
+                  "start": 1077,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.37758246064186096,
+                  "end": 93,
+                  "start": 87,
+                  "text": "inside"
+                }
+              }
+            ],
+            "supports": [],
+            "used_for": [],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.7546498775482178,
+                  "end": 1340,
+                  "start": 1336,
+                  "text": "Bake"
+                },
+                "tail": {
+                  "confidence": 0.7546498775482178,
+                  "end": 1293,
+                  "start": 1289,
+                  "text": "oven"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.37758246064186096,
+              "end": 1088,
+              "start": 1077,
+              "text": "temperature"
+            },
+            "tail": {
+              "confidence": 0.37758246064186096,
+              "end": 93,
+              "start": 87,
+              "text": "inside"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T21:23:38.503100+00:00",
+  "status": "RETURNED"
+}

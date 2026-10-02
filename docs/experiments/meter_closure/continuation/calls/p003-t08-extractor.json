@@ -1,0 +1,748 @@
+{
+  "completed_utc": "2026-10-02T21:22:20.020291+00:00",
+  "elapsed_seconds": 1.0326872381847352,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"With the short cable and a relocated access point, the sensor in its original position recorded 0 uptime resets and 0 missed dashboard reports in 480 minutes. What does that establish about the fault?\", \"s1\": \"This is a significant improvement!\\n\\nThe fact that you have **0 uptime resets** and **0 missed reports** over a 480-minute period (8 hours) establishes that **the system is now operating perfectly.**\\n\\n**What this establishes about the remaining \\\"fault\\\":**\\n\\n*   **The \\\"Fault\\\" is gone:** The specific, persistent error or \\\"fault\\\" that was causing the previous issues has been successfully resolved or mitigated.\\n*   **The system is now stable:** The \\\"fault\\\" you were tracking has been successfully eliminated.\\n\\n**In simpler terms:** The \\\"fault\\\" you were tracking has been successfully resolved. The system is now stable and functioning as intended.\\n\\n**What this means for the \\\"remaining fault\\\":**\\n\\n*   **The \\\"fault\\\" is no longer a technical failure; it has been resolved.** The system is now stable.\\n\\n**If you were tracking a specific, persistent error code, that code is now gone.**\\n\\n**In short: The \\\"fault\\\" has been successfully resolved.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "p003-t08"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"fault\", \"relation\": \"caused_by\", \"to\": \"specific, persistent error or \\\"fault\\\"\", \"source\": \"s1\", \"evidence\": \"specific, persistent error or \\\"fault\\\"\"}, {\"from\": \"fault\", \"relation\": \"causes\", \"to\": \"previous issues\", \"source\": \"s1\", \"evidence\": \"fault\\\" that was causing the previous issues\"}, {\"from\": \"fault\", \"relation\": \"part_of\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"system is now stable:** The \\\"fault\"}, {\"from\": \"fault\", \"relation\": \"related\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"fault\\\" you were tracking has been successfully resolved. The system\"}, {\"from\": \"error\", \"relation\": \"causes\", \"to\": \"previous issues\", \"source\": \"s1\", \"evidence\": \"previous issues has been successfully resolved or mitigated.\\n*   **The system is now stable:** The \\\"fault\\\" you were tracking has been successfully eliminated.\\n\\n**In simpler terms:** The \\\"fault\\\" you were tracking has been successfully resolved. The system is now stable and functioning as intended.\\n\\n**What this means for the \\\"remaining fault\\\":**\\n\\n*   **The \\\"fault\\\" is no longer a technical failure; it has been resolved.** The system is now stable.\\n\\n**If you were tracking a specific, persistent error\"}, {\"from\": \"error\", \"relation\": \"part_of\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"system is now stable.\\n\\n**If you were tracking a specific, persistent error\"}], \"episode_id\": \"p003-t08\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "specialist_observation",
+          "relation": "caused_by",
+          "status": "forwarded"
+        },
+        {
+          "index": 5,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 6,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 7,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "stabilizes",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 10,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 11,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "12007f4f11cd455c767f24bd29d5154ad0e1bc358f5fdaa01e65bdd826ed40d5",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 61,
+              "start": 9
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "short cable",
+            "object_span": {
+              "end": 20,
+              "start": 9
+            },
+            "relation": "uses",
+            "score": 0.5307748913764954,
+            "source_slot": "s0",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 61,
+              "start": 55
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 61,
+              "start": 37
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "access point",
+            "object_span": {
+              "end": 49,
+              "start": 37
+            },
+            "relation": "uses",
+            "score": 0.4957331418991089,
+            "source_slot": "s0",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 61,
+              "start": 55
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 142,
+              "start": 96
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "0 missed dashboard reports",
+            "object_span": {
+              "end": 142,
+              "start": 116
+            },
+            "relation": "leads_to",
+            "score": 0.35663536190986633,
+            "source_slot": "s0",
+            "subject": "0 uptime resets",
+            "subject_span": {
+              "end": 111,
+              "start": 96
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 325,
+              "start": 267
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Fault",
+            "object_span": {
+              "end": 272,
+              "start": 267
+            },
+            "relation": "affects",
+            "score": 0.4721069037914276,
+            "source_slot": "s1",
+            "subject": "fault",
+            "subject_span": {
+              "end": 325,
+              "start": 320
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 326,
+              "start": 289
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "specific, persistent error or \"fault\"",
+            "object_span": {
+              "end": 326,
+              "start": 289
+            },
+            "relation": "caused_by",
+            "score": 0.6179208755493164,
+            "source_slot": "s1",
+            "subject": "fault",
+            "subject_span": {
+              "end": 325,
+              "start": 320
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 363,
+              "start": 320
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "previous issues",
+            "object_span": {
+              "end": 363,
+              "start": 348
+            },
+            "relation": "causes",
+            "score": 0.8127247095108032,
+            "source_slot": "s1",
+            "subject": "fault",
+            "subject_span": {
+              "end": 325,
+              "start": 320
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 453,
+              "start": 419
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 425,
+              "start": 419
+            },
+            "relation": "part_of",
+            "score": 0.7527697682380676,
+            "source_slot": "s1",
+            "subject": "fault",
+            "subject_span": {
+              "end": 453,
+              "start": 448
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 602,
+              "start": 535
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 602,
+              "start": 596
+            },
+            "relation": "related",
+            "score": 0.6439505219459534,
+            "source_slot": "s1",
+            "subject": "fault",
+            "subject_span": {
+              "end": 540,
+              "start": 535
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 602,
+              "start": 419
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 425,
+              "start": 419
+            },
+            "relation": "stabilizes",
+            "score": 0.7276490330696106,
+            "source_slot": "s1",
+            "subject": "system",
+            "subject_span": {
+              "end": 602,
+              "start": 596
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 849,
+              "start": 348
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "previous issues",
+            "object_span": {
+              "end": 363,
+              "start": 348
+            },
+            "relation": "causes",
+            "score": 0.43326643109321594,
+            "source_slot": "s1",
+            "subject": "error",
+            "subject_span": {
+              "end": 849,
+              "start": 844
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 849,
+              "start": 775
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 781,
+              "start": 775
+            },
+            "relation": "part_of",
+            "score": 0.5849156975746155,
+            "source_slot": "s1",
+            "subject": "error",
+            "subject_span": {
+              "end": 849,
+              "start": 844
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 854,
+              "start": 706
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "fault",
+            "object_span": {
+              "end": 711,
+              "start": 706
+            },
+            "relation": "associated_with",
+            "score": 0.7855206727981567,
+            "source_slot": "s1",
+            "subject": "error code",
+            "subject_span": {
+              "end": 854,
+              "start": 844
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "b51feda6bbf515145b1962fd242442d1bab86ef9b0569edc547557d2ecd2d427",
+          "s1": "f3ce0ecb6190c85810ad96308705d8948c467ed90d7902edc92d1968475324e5"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.4721069037914276,
+                  "end": 526,
+                  "start": 521,
+                  "text": "fault"
+                },
+                "tail": {
+                  "confidence": 0.4721069037914276,
+                  "end": 473,
+                  "start": 468,
+                  "text": "Fault"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.7855206727981567,
+                  "end": 1055,
+                  "start": 1045,
+                  "text": "error code"
+                },
+                "tail": {
+                  "confidence": 0.7855206727981567,
+                  "end": 912,
+                  "start": 907,
+                  "text": "fault"
+                }
+              }
+            ],
+            "caused_by": [
+              {
+                "head": {
+                  "confidence": 0.6179208755493164,
+                  "end": 526,
+                  "start": 521,
+                  "text": "fault"
+                },
+                "tail": {
+                  "confidence": 0.6179208755493164,
+                  "end": 527,
+                  "start": 490,
+                  "text": "specific, persistent error or \"fault\""
+                }
+              }
+            ],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.8127247095108032,
+                  "end": 526,
+                  "start": 521,
+                  "text": "fault"
+                },
+                "tail": {
+                  "confidence": 0.8127247095108032,
+                  "end": 564,
+                  "start": 549,
+                  "text": "previous issues"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.43326643109321594,
+                  "end": 1050,
+                  "start": 1045,
+                  "text": "error"
+                },
+                "tail": {
+                  "confidence": 0.43326643109321594,
+                  "end": 564,
+                  "start": 549,
+                  "text": "previous issues"
+                }
+              }
+            ],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.5243692994117737,
+                  "end": 111,
+                  "start": 96,
+                  "text": "0 uptime resets"
+                },
+                "tail": {
+                  "confidence": 0.5243692994117737,
+                  "end": 277,
+                  "start": 262,
+                  "text": "0 uptime resets"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.5760326981544495,
+                  "end": 111,
+                  "start": 96,
+                  "text": "0 uptime resets"
+                },
+                "tail": {
+                  "confidence": 0.5760326981544495,
+                  "end": 277,
+                  "start": 262,
+                  "text": "0 uptime resets"
+                }
+              }
+            ],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [
+              {
+                "head": {
+                  "confidence": 0.35663536190986633,
+                  "end": 111,
+                  "start": 96,
+                  "text": "0 uptime resets"
+                },
+                "tail": {
+                  "confidence": 0.35663536190986633,
+                  "end": 142,
+                  "start": 116,
+                  "text": "0 missed dashboard reports"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5374038815498352,
+                  "end": 111,
+                  "start": 96,
+                  "text": "0 uptime resets"
+                },
+                "tail": {
+                  "confidence": 0.5374038815498352,
+                  "end": 277,
+                  "start": 262,
+                  "text": "0 uptime resets"
+                }
+              }
+            ],
+            "maintains": [],
+            "manages": [],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.7527697682380676,
+                  "end": 654,
+                  "start": 649,
+                  "text": "fault"
+                },
+                "tail": {
+                  "confidence": 0.7527697682380676,
+                  "end": 626,
+                  "start": 620,
+                  "text": "system"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5849156975746155,
+                  "end": 1050,
+                  "start": 1045,
+                  "text": "error"
+                },
+                "tail": {
+                  "confidence": 0.5849156975746155,
+                  "end": 982,
+                  "start": 976,
+                  "text": "system"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.6439505219459534,
+                  "end": 741,
+                  "start": 736,
+                  "text": "fault"
+                },
+                "tail": {
+                  "confidence": 0.6439505219459534,
+                  "end": 803,
+                  "start": 797,
+                  "text": "system"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [
+              {
+                "head": {
+                  "confidence": 0.7276490330696106,
+                  "end": 803,
+                  "start": 797,
+                  "text": "system"
+                },
+                "tail": {
+                  "confidence": 0.7276490330696106,
+                  "end": 626,
+                  "start": 620,
+                  "text": "system"
+                }
+              }
+            ],
+            "supports": [],
+            "used_for": [],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.5307748913764954,
+                  "end": 61,
+                  "start": 55,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.5307748913764954,
+                  "end": 20,
+                  "start": 9,
+                  "text": "short cable"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4957331418991089,
+                  "end": 61,
+                  "start": 55,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.4957331418991089,
+                  "end": 49,
+                  "start": 37,
+                  "text": "access point"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.5760326981544495,
+              "end": 111,
+              "start": 96,
+              "text": "0 uptime resets"
+            },
+            "tail": {
+              "confidence": 0.5760326981544495,
+              "end": 277,
+              "start": 262,
+              "text": "0 uptime resets"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.5374038815498352,
+              "end": 111,
+              "start": 96,
+              "text": "0 uptime resets"
+            },
+            "tail": {
+              "confidence": 0.5374038815498352,
+              "end": 277,
+              "start": 262,
+              "text": "0 uptime resets"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.5243692994117737,
+              "end": 111,
+              "start": 96,
+              "text": "0 uptime resets"
+            },
+            "tail": {
+              "confidence": 0.5243692994117737,
+              "end": 277,
+              "start": 262,
+              "text": "0 uptime resets"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T21:22:18.986868+00:00",
+  "status": "RETURNED"
+}

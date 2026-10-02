@@ -1,0 +1,25 @@
+{
+  "pytest": {
+    "passed": 716,
+    "command": "PYTHONPATH=src:. python -m pytest -q --basetemp=/dev/shm/mc-full-final -p no:cacheprovider"
+  },
+  "ruff": "ruff check . passed",
+  "strict_mypy_package": "71 source files passed",
+  "strict_mypy_new_tools": "2 source files passed; MYPYPATH=src, --strict --follow-imports=silent to bound unmodified historical tool imports",
+  "configuration_note": "Initial supplemental mypy invocation omitted MYPYPATH and resolved installed package as untyped; corrected source-path invocation passed.",
+  "replay_outputs_byte_identical": [
+    "matrix.csv",
+    "matrix.md",
+    "retained_v2_matrix.csv",
+    "retained_v2_matrix.md",
+    "retained_v2_rows.json.gz",
+    "rows.json.gz",
+    "summary.json"
+  ],
+  "measurement_provider_calls": 0,
+  "meter_formulas_controls_and_construction_frozen": true,
+  "documented_runner_infrastructure_exception_hash": "b6228f4eae0e0e2ce48036719024497beade078dc49e0ade305735382cd38ae4",
+  "V1_V2_runtime_state_paths_unchanged": true,
+  "compact_promotion_ancestor": true,
+  "fetched_origin_main": "7926cc1b245ab17b5d482003da0bebeae527fb9a"
+}

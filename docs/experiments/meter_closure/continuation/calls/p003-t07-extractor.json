@@ -1,0 +1,939 @@
+{
+  "completed_utc": "2026-10-02T21:22:13.577342+00:00",
+  "elapsed_seconds": 1.22368976008147,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"Still closer to the access point with the short cable, it recorded 0 uptime resets and 0 missed dashboard reports in 240 minutes. What does that establish about the remaining fault?\", \"s1\": \"This is a very strong indicator of **successful resolution**.\\n\\nThe fact that you have **0 uptime resets** and **0 missed reports** over a 240-minute period (4 hours) establishes the following:\\n\\n**The remaining fault is likely a \\\"False Positive\\\" or a \\\"Ghost\\\" issue.**\\n\\n**What this establishes:**\\n\\n1.  **The System is Stable:** The system is now running perfectly. The \\\"fault\\\" you were tracking has been successfully eliminated or bypassed.\\n2.  **The \\\"Fault\\\" is now likely a \\\"False Positive\\\":** If you were tracking a specific error code or a specific failure mode, that specific, persistent error has been resolved.\\n3.  **The \\\"Fault\\\" is now resolved:** The previous \\\"fault\\\" (the 3 missed reports) has been completely eliminated.\\n\\n**In short: The system is now operating at 100% efficiency.**\\n\\nIf you were tracking a specific, persistent error, that error is no longer present. The system is now stable.\\n\\n**What this means for the \\\"remaining fault\\\":**\\n\\n*   **The \\\"remaining fault\\\" is no longer a technical failure; it is likely a *misunderstanding* of the data.** If you were tracking a specific error code, that code is gone. You have successfully \\\"fixed\\\" the specific issue you were tracking.\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "p003-t07"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"0 uptime resets\", \"relation\": \"causes\", \"to\": \"remaining fault\", \"source\": \"s0\", \"evidence\": \"0 uptime resets and 0 missed dashboard reports in 240 minutes. What does that establish about the remaining fault\"}, {\"from\": \"remaining fault\", \"relation\": \"related\", \"to\": \"specific failure mode\", \"source\": \"s1\", \"evidence\": \"remaining fault is likely a \\\"False Positive\\\" or a \\\"Ghost\\\" issue.**\\n\\n**What this establishes:**\\n\\n1.  **The System is Stable:** The system is now running perfectly. The \\\"fault\\\" you were tracking has been successfully eliminated or bypassed.\\n2.  **The \\\"Fault\\\" is now likely a \\\"False Positive\\\":** If you were tracking a specific error code or a specific failure mode\"}, {\"from\": \"error\", \"relation\": \"part_of\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"error is no longer present. The system\"}, {\"from\": \"system\", \"relation\": \"retains\", \"to\": \"data\", \"source\": \"s1\", \"evidence\": \"system is now stable.\\n\\n**What this means for the \\\"remaining fault\\\":**\\n\\n*   **The \\\"remaining fault\\\" is no longer a technical failure; it is likely a *misunderstanding* of the data\"}, {\"from\": \"remaining fault\", \"relation\": \"part_of\", \"to\": \"system\", \"source\": \"s1\", \"evidence\": \"system is now stable.\\n\\n**What this means for the \\\"remaining fault\"}, {\"from\": \"remaining fault\", \"relation\": \"depends_on\", \"to\": \"data\", \"source\": \"s1\", \"evidence\": \"remaining fault\\\" is no longer a technical failure; it is likely a *misunderstanding* of the data\"}, {\"from\": \"remaining fault\", \"relation\": \"related\", \"to\": \"error code\", \"source\": \"s1\", \"evidence\": \"remaining fault\\\" is no longer a technical failure; it is likely a *misunderstanding* of the data.** If you were tracking a specific error code\"}, {\"from\": \"error\", \"relation\": \"related\", \"to\": \"error code\", \"source\": \"s1\", \"evidence\": \"error code\"}], \"episode_id\": \"p003-t07\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 5,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "stabilizes",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "contains",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "has",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "holds",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "specialist_observation",
+          "relation": "retains",
+          "status": "forwarded"
+        },
+        {
+          "index": 11,
+          "kind": "specialist_observation",
+          "relation": "part_of",
+          "status": "forwarded"
+        },
+        {
+          "index": 12,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 13,
+          "kind": "unsupported_specialist_relation",
+          "relation": "has",
+          "status": "rejected"
+        },
+        {
+          "index": 14,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 15,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 16,
+          "kind": "unsupported_specialist_relation",
+          "relation": "contains",
+          "status": "rejected"
+        },
+        {
+          "index": 17,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 18,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "98eac089749bd9cdff0ff56a860a7e56ea0397bf3ed0eee5e71b69a3ba810b74",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 180,
+              "start": 67
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "remaining fault",
+            "object_span": {
+              "end": 180,
+              "start": 165
+            },
+            "relation": "affects",
+            "score": 0.478099524974823,
+            "source_slot": "s0",
+            "subject": "0 uptime resets",
+            "subject_span": {
+              "end": 82,
+              "start": 67
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 180,
+              "start": 67
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "remaining fault",
+            "object_span": {
+              "end": 180,
+              "start": 165
+            },
+            "relation": "causes",
+            "score": 0.5590197443962097,
+            "source_slot": "s0",
+            "subject": "0 uptime resets",
+            "subject_span": {
+              "end": 82,
+              "start": 67
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 180,
+              "start": 67
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "remaining fault",
+            "object_span": {
+              "end": 180,
+              "start": 165
+            },
+            "relation": "influences",
+            "score": 0.39618775248527527,
+            "source_slot": "s0",
+            "subject": "0 uptime resets",
+            "subject_span": {
+              "end": 82,
+              "start": 67
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 103,
+              "start": 88
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "0 uptime resets",
+            "object_span": {
+              "end": 103,
+              "start": 88
+            },
+            "relation": "increases",
+            "score": 0.5061535239219666,
+            "source_slot": "s1",
+            "subject": "0 uptime resets",
+            "subject_span": {
+              "end": 103,
+              "start": 88
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 562,
+              "start": 200
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "specific failure mode",
+            "object_span": {
+              "end": 562,
+              "start": 541
+            },
+            "relation": "related",
+            "score": 0.556547999382019,
+            "source_slot": "s1",
+            "subject": "remaining fault",
+            "subject_span": {
+              "end": 215,
+              "start": 200
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 886,
+              "start": 848
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 886,
+              "start": 880
+            },
+            "relation": "part_of",
+            "score": 0.83575838804245,
+            "source_slot": "s1",
+            "subject": "error",
+            "subject_span": {
+              "end": 853,
+              "start": 848
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 945,
+              "start": 880
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "remaining fault",
+            "object_span": {
+              "end": 945,
+              "start": 930
+            },
+            "relation": "stabilizes",
+            "score": 0.4366205930709839,
+            "source_slot": "s1",
+            "subject": "system",
+            "subject_span": {
+              "end": 886,
+              "start": 880
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1058,
+              "start": 880
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "data",
+            "object_span": {
+              "end": 1058,
+              "start": 1054
+            },
+            "relation": "contains",
+            "score": 0.8560816645622253,
+            "source_slot": "s1",
+            "subject": "system",
+            "subject_span": {
+              "end": 886,
+              "start": 880
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1058,
+              "start": 880
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "data",
+            "object_span": {
+              "end": 1058,
+              "start": 1054
+            },
+            "relation": "has",
+            "score": 0.7799369096755981,
+            "source_slot": "s1",
+            "subject": "system",
+            "subject_span": {
+              "end": 886,
+              "start": 880
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1058,
+              "start": 880
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "data",
+            "object_span": {
+              "end": 1058,
+              "start": 1054
+            },
+            "relation": "holds",
+            "score": 0.865795373916626,
+            "source_slot": "s1",
+            "subject": "system",
+            "subject_span": {
+              "end": 886,
+              "start": 880
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1058,
+              "start": 880
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "data",
+            "object_span": {
+              "end": 1058,
+              "start": 1054
+            },
+            "relation": "retains",
+            "score": 0.8142659068107605,
+            "source_slot": "s1",
+            "subject": "system",
+            "subject_span": {
+              "end": 886,
+              "start": 880
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 945,
+              "start": 880
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "system",
+            "object_span": {
+              "end": 886,
+              "start": 880
+            },
+            "relation": "part_of",
+            "score": 0.898036777973175,
+            "source_slot": "s1",
+            "subject": "remaining fault",
+            "subject_span": {
+              "end": 945,
+              "start": 930
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1058,
+              "start": 962
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "data",
+            "object_span": {
+              "end": 1058,
+              "start": 1054
+            },
+            "relation": "depends_on",
+            "score": 0.6681960225105286,
+            "source_slot": "s1",
+            "subject": "remaining fault",
+            "subject_span": {
+              "end": 977,
+              "start": 962
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1058,
+              "start": 962
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "data",
+            "object_span": {
+              "end": 1058,
+              "start": 1054
+            },
+            "relation": "has",
+            "score": 0.8858434557914734,
+            "source_slot": "s1",
+            "subject": "remaining fault",
+            "subject_span": {
+              "end": 977,
+              "start": 962
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1058,
+              "start": 962
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "data",
+            "object_span": {
+              "end": 1058,
+              "start": 1054
+            },
+            "relation": "requires",
+            "score": 0.685214102268219,
+            "source_slot": "s1",
+            "subject": "remaining fault",
+            "subject_span": {
+              "end": 977,
+              "start": 962
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1104,
+              "start": 962
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "error code",
+            "object_span": {
+              "end": 1104,
+              "start": 1094
+            },
+            "relation": "related",
+            "score": 0.7360792756080627,
+            "source_slot": "s1",
+            "subject": "remaining fault",
+            "subject_span": {
+              "end": 977,
+              "start": 962
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1058,
+              "start": 972
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "data",
+            "object_span": {
+              "end": 1058,
+              "start": 1054
+            },
+            "relation": "contains",
+            "score": 0.8894762396812439,
+            "source_slot": "s1",
+            "subject": "fault",
+            "subject_span": {
+              "end": 977,
+              "start": 972
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1104,
+              "start": 1094
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "error code",
+            "object_span": {
+              "end": 1104,
+              "start": 1094
+            },
+            "relation": "related",
+            "score": 0.459709107875824,
+            "source_slot": "s1",
+            "subject": "error",
+            "subject_span": {
+              "end": 1099,
+              "start": 1094
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1104,
+              "start": 962
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "remaining fault",
+            "object_span": {
+              "end": 977,
+              "start": 962
+            },
+            "relation": "associated_with",
+            "score": 0.7571038603782654,
+            "source_slot": "s1",
+            "subject": "error code",
+            "subject_span": {
+              "end": 1104,
+              "start": 1094
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "53a0ca7e8feb2f6b52f65f3b6d4e04e35174a17b3862ece3101f7f33ec2bf9fe",
+          "s1": "d22b6c6c94cc854445a592ca74ea679e662d33a34b7dff00579ffe675102875b"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.478099524974823,
+                  "end": 82,
+                  "start": 67,
+                  "text": "0 uptime resets"
+                },
+                "tail": {
+                  "confidence": 0.478099524974823,
+                  "end": 180,
+                  "start": 165,
+                  "text": "remaining fault"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.7571038603782654,
+                  "end": 1286,
+                  "start": 1276,
+                  "text": "error code"
+                },
+                "tail": {
+                  "confidence": 0.7571038603782654,
+                  "end": 1159,
+                  "start": 1144,
+                  "text": "remaining fault"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.5590197443962097,
+                  "end": 82,
+                  "start": 67,
+                  "text": "0 uptime resets"
+                },
+                "tail": {
+                  "confidence": 0.5590197443962097,
+                  "end": 180,
+                  "start": 165,
+                  "text": "remaining fault"
+                }
+              }
+            ],
+            "changes": [],
+            "constrains": [],
+            "contains": [
+              {
+                "head": {
+                  "confidence": 0.8560816645622253,
+                  "end": 1068,
+                  "start": 1062,
+                  "text": "system"
+                },
+                "tail": {
+                  "confidence": 0.8560816645622253,
+                  "end": 1240,
+                  "start": 1236,
+                  "text": "data"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8894762396812439,
+                  "end": 1159,
+                  "start": 1154,
+                  "text": "fault"
+                },
+                "tail": {
+                  "confidence": 0.8894762396812439,
+                  "end": 1240,
+                  "start": 1236,
+                  "text": "data"
+                }
+              }
+            ],
+            "controls": [],
+            "depends_on": [
+              {
+                "head": {
+                  "confidence": 0.6681960225105286,
+                  "end": 1159,
+                  "start": 1144,
+                  "text": "remaining fault"
+                },
+                "tail": {
+                  "confidence": 0.6681960225105286,
+                  "end": 1240,
+                  "start": 1236,
+                  "text": "data"
+                }
+              }
+            ],
+            "dries": [],
+            "enables": [],
+            "has": [
+              {
+                "head": {
+                  "confidence": 0.7799369096755981,
+                  "end": 1068,
+                  "start": 1062,
+                  "text": "system"
+                },
+                "tail": {
+                  "confidence": 0.7799369096755981,
+                  "end": 1240,
+                  "start": 1236,
+                  "text": "data"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8858434557914734,
+                  "end": 1159,
+                  "start": 1144,
+                  "text": "remaining fault"
+                },
+                "tail": {
+                  "confidence": 0.8858434557914734,
+                  "end": 1240,
+                  "start": 1236,
+                  "text": "data"
+                }
+              }
+            ],
+            "helps": [],
+            "holds": [
+              {
+                "head": {
+                  "confidence": 0.865795373916626,
+                  "end": 1068,
+                  "start": 1062,
+                  "text": "system"
+                },
+                "tail": {
+                  "confidence": 0.865795373916626,
+                  "end": 1240,
+                  "start": 1236,
+                  "text": "data"
+                }
+              }
+            ],
+            "improves": [],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.5061535239219666,
+                  "end": 285,
+                  "start": 270,
+                  "text": "0 uptime resets"
+                },
+                "tail": {
+                  "confidence": 0.5061535239219666,
+                  "end": 285,
+                  "start": 270,
+                  "text": "0 uptime resets"
+                }
+              }
+            ],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.39618775248527527,
+                  "end": 82,
+                  "start": 67,
+                  "text": "0 uptime resets"
+                },
+                "tail": {
+                  "confidence": 0.39618775248527527,
+                  "end": 180,
+                  "start": 165,
+                  "text": "remaining fault"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [
+              {
+                "head": {
+                  "confidence": 0.83575838804245,
+                  "end": 1035,
+                  "start": 1030,
+                  "text": "error"
+                },
+                "tail": {
+                  "confidence": 0.83575838804245,
+                  "end": 1068,
+                  "start": 1062,
+                  "text": "system"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.898036777973175,
+                  "end": 1127,
+                  "start": 1112,
+                  "text": "remaining fault"
+                },
+                "tail": {
+                  "confidence": 0.898036777973175,
+                  "end": 1068,
+                  "start": 1062,
+                  "text": "system"
+                }
+              }
+            ],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.556547999382019,
+                  "end": 397,
+                  "start": 382,
+                  "text": "remaining fault"
+                },
+                "tail": {
+                  "confidence": 0.556547999382019,
+                  "end": 744,
+                  "start": 723,
+                  "text": "specific failure mode"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7360792756080627,
+                  "end": 1159,
+                  "start": 1144,
+                  "text": "remaining fault"
+                },
+                "tail": {
+                  "confidence": 0.7360792756080627,
+                  "end": 1286,
+                  "start": 1276,
+                  "text": "error code"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.459709107875824,
+                  "end": 1281,
+                  "start": 1276,
+                  "text": "error"
+                },
+                "tail": {
+                  "confidence": 0.459709107875824,
+                  "end": 1286,
+                  "start": 1276,
+                  "text": "error code"
+                }
+              }
+            ],
+            "requires": [
+              {
+                "head": {
+                  "confidence": 0.685214102268219,
+                  "end": 1159,
+                  "start": 1144,
+                  "text": "remaining fault"
+                },
+                "tail": {
+                  "confidence": 0.685214102268219,
+                  "end": 1240,
+                  "start": 1236,
+                  "text": "data"
+                }
+              }
+            ],
+            "retains": [
+              {
+                "head": {
+                  "confidence": 0.8142659068107605,
+                  "end": 1068,
+                  "start": 1062,
+                  "text": "system"
+                },
+                "tail": {
+                  "confidence": 0.8142659068107605,
+                  "end": 1240,
+                  "start": 1236,
+                  "text": "data"
+                }
+              }
+            ],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [
+              {
+                "head": {
+                  "confidence": 0.4366205930709839,
+                  "end": 1068,
+                  "start": 1062,
+                  "text": "system"
+                },
+                "tail": {
+                  "confidence": 0.4366205930709839,
+                  "end": 1127,
+                  "start": 1112,
+                  "text": "remaining fault"
+                }
+              }
+            ],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T21:22:12.352930+00:00",
+  "status": "RETURNED"
+}

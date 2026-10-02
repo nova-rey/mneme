@@ -1,0 +1,759 @@
+{
+  "completed_utc": "2026-10-02T21:21:26.626822+00:00",
+  "elapsed_seconds": 1.4983713570982218,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"A workshop sensor sometimes disappears from the Wi-Fi dashboard. I do not know whether power or Wi-Fi is responsible. How can I narrow it down without replacing parts at random?\", \"s1\": \"That sounds frustrating! When a sensor keeps dropping off the Wi-Fi dashboard, it's usually a communication issue rather than a hardware failure.\\n\\nSince you want to narrow it down without replacing parts randomly, here are a few structured ways to test the cause:\\n\\n### 1. Is it a Power Issue or a Network Issue?\\n\\n*   **Test the Power:** Does the sensor have a dedicated power source (like a battery) or is it plugged in? If it's battery-powered, the battery might be failing or the connection might be weak.\\n*   **Test the Network:** If it's a Wi-Fi issue, try moving the sensor closer to the router or moving the router closer to the sensor.\\n\\n### 2. Troubleshooting Steps (The \\\"Narrowing Down\\\" Process):\\n\\n*   **Check the Signal Strength:** If you have a way to check the signal strength (RSSI) on your dashboard, check that value. If it's consistently low, the signal is weak.\\n*   **Check for Interference:** Is there a new large metal object or a new appliance near the sensor that might be blocking the signal?\\n*   **Check the Logs:** Look at the logs on the dashboard. Does it show a \\\"Connection Lost\\\" error, or does it just stop reporting data? This helps determine if the *connection* is failing or the *power* is failing.\\n\\n### 3. Practical \\\"No-Replacement\\\" Tests:\\n\\n*   **Test the Wi-Fi:** If you can, try to move the sensor to a different room. If it works there, the issue is likely your *router's* coverage. If it still fails, the issue is likely the *sensor's* hardware or power source.\\n*   **Test the Power Source:** If it's a battery-powered sensor, try replacing the battery with a brand new one. If it works, the old battery was the issue.\\n\\n**In short: Start by checking the signal strength and the power source. If the signal is weak, move the sensor closer to the router.**\\n\\nDoes the sensor have a specific model or brand? Knowing that might help narrow it down even more!\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "p003-t01"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"power\", \"relation\": \"depends_on\", \"to\": \"Wi-Fi\", \"source\": \"s0\", \"evidence\": \"power or Wi-Fi\"}, {\"from\": \"power\", \"relation\": \"related\", \"to\": \"Wi-Fi\", \"source\": \"s0\", \"evidence\": \"power or Wi-Fi\"}, {\"from\": \"Wi-Fi\", \"relation\": \"causes\", \"to\": \"Power Issue\", \"source\": \"s1\", \"evidence\": \"Wi-Fi dashboard, it's usually a communication issue rather than a hardware failure.\\n\\nSince you want to narrow it down without replacing parts randomly, here are a few structured ways to test the cause:\\n\\n### 1. Is it a Power Issue\"}, {\"from\": \"Power\", \"relation\": \"depends_on\", \"to\": \"Power\", \"source\": \"s1\", \"evidence\": \"Power Issue or a Network Issue?\\n\\n*   **Test the Power\"}, {\"from\": \"Power Issue\", \"relation\": \"caused_by\", \"to\": \"Wi-Fi\", \"source\": \"s1\", \"evidence\": \"Wi-Fi dashboard, it's usually a communication issue rather than a hardware failure.\\n\\nSince you want to narrow it down without replacing parts randomly, here are a few structured ways to test the cause:\\n\\n### 1. Is it a Power Issue\"}, {\"from\": \"Power\", \"relation\": \"causes\", \"to\": \"Wi-Fi issue\", \"source\": \"s1\", \"evidence\": \"Power:** Does the sensor have a dedicated power source (like a battery) or is it plugged in? If it's battery-powered, the battery might be failing or the connection might be weak.\\n*   **Test the Network:** If it's a Wi-Fi issue\"}, {\"from\": \"Wi-Fi\", \"relation\": \"causes\", \"to\": \"Wi-Fi issue\", \"source\": \"s1\", \"evidence\": \"Wi-Fi issue\"}, {\"from\": \"Wi-Fi issue\", \"relation\": \"caused_by\", \"to\": \"Wi-Fi\", \"source\": \"s1\", \"evidence\": \"Wi-Fi issue\"}, {\"from\": \"sensor\", \"relation\": \"related\", \"to\": \"Wi-Fi\", \"source\": \"s1\", \"evidence\": \"Wi-Fi issue, try moving the sensor\"}, {\"from\": \"sensor\", \"relation\": \"related\", \"to\": \"router\", \"source\": \"s1\", \"evidence\": \"router.**\\n\\nDoes the sensor\"}], \"episode_id\": \"p003-t01\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 2,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 3,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 4,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 5,
+          "kind": "specialist_observation",
+          "relation": "caused_by",
+          "status": "forwarded"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 8,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 9,
+          "kind": "specialist_observation",
+          "relation": "caused_by",
+          "status": "forwarded"
+        },
+        {
+          "index": 10,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 11,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "contains",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "unsupported_specialist_relation",
+          "relation": "has",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "0e27df245d5d48140c4ae491b88302726e0934c1fa19c7db11aa5f8bdf16ff4a",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 92,
+              "start": 11
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "power",
+            "object_span": {
+              "end": 92,
+              "start": 87
+            },
+            "relation": "requires",
+            "score": 0.4607624113559723,
+            "source_slot": "s0",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 17,
+              "start": 11
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 101,
+              "start": 87
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi",
+            "object_span": {
+              "end": 101,
+              "start": 96
+            },
+            "relation": "depends_on",
+            "score": 0.71961909532547,
+            "source_slot": "s0",
+            "subject": "power",
+            "subject_span": {
+              "end": 92,
+              "start": 87
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 101,
+              "start": 87
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi",
+            "object_span": {
+              "end": 101,
+              "start": 96
+            },
+            "relation": "related",
+            "score": 0.3636336028575897,
+            "source_slot": "s0",
+            "subject": "power",
+            "subject_span": {
+              "end": 92,
+              "start": 87
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 291,
+              "start": 62
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Power Issue",
+            "object_span": {
+              "end": 291,
+              "start": 280
+            },
+            "relation": "causes",
+            "score": 0.383158415555954,
+            "source_slot": "s1",
+            "subject": "Wi-Fi",
+            "subject_span": {
+              "end": 67,
+              "start": 62
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 333,
+              "start": 280
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Power",
+            "object_span": {
+              "end": 333,
+              "start": 328
+            },
+            "relation": "depends_on",
+            "score": 0.5477553606033325,
+            "source_slot": "s1",
+            "subject": "Power",
+            "subject_span": {
+              "end": 285,
+              "start": 280
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 291,
+              "start": 62
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi",
+            "object_span": {
+              "end": 67,
+              "start": 62
+            },
+            "relation": "caused_by",
+            "score": 0.6620450019836426,
+            "source_slot": "s1",
+            "subject": "Power Issue",
+            "subject_span": {
+              "end": 291,
+              "start": 280
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 352,
+              "start": 328
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sensor",
+            "object_span": {
+              "end": 352,
+              "start": 346
+            },
+            "relation": "affects",
+            "score": 0.4733400344848633,
+            "source_slot": "s1",
+            "subject": "Power",
+            "subject_span": {
+              "end": 333,
+              "start": 328
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 555,
+              "start": 328
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi issue",
+            "object_span": {
+              "end": 555,
+              "start": 544
+            },
+            "relation": "causes",
+            "score": 0.40700647234916687,
+            "source_slot": "s1",
+            "subject": "Power",
+            "subject_span": {
+              "end": 333,
+              "start": 328
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 555,
+              "start": 544
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi issue",
+            "object_span": {
+              "end": 555,
+              "start": 544
+            },
+            "relation": "causes",
+            "score": 0.4541875422000885,
+            "source_slot": "s1",
+            "subject": "Wi-Fi",
+            "subject_span": {
+              "end": 549,
+              "start": 544
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 555,
+              "start": 544
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi",
+            "object_span": {
+              "end": 549,
+              "start": 544
+            },
+            "relation": "caused_by",
+            "score": 0.5951429605484009,
+            "source_slot": "s1",
+            "subject": "Wi-Fi issue",
+            "subject_span": {
+              "end": 555,
+              "start": 544
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 578,
+              "start": 544
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Wi-Fi",
+            "object_span": {
+              "end": 549,
+              "start": 544
+            },
+            "relation": "related",
+            "score": 0.3515278995037079,
+            "source_slot": "s1",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 578,
+              "start": 572
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1806,
+              "start": 1780
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "router",
+            "object_span": {
+              "end": 1786,
+              "start": 1780
+            },
+            "relation": "related",
+            "score": 0.3661012649536133,
+            "source_slot": "s1",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 1806,
+              "start": 1800
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1837,
+              "start": 1800
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "specific model or brand",
+            "object_span": {
+              "end": 1837,
+              "start": 1814
+            },
+            "relation": "contains",
+            "score": 0.8919489979743958,
+            "source_slot": "s1",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 1806,
+              "start": 1800
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1837,
+              "start": 1800
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "specific model or brand",
+            "object_span": {
+              "end": 1837,
+              "start": 1814
+            },
+            "relation": "has",
+            "score": 0.9248371720314026,
+            "source_slot": "s1",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 1806,
+              "start": 1800
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "e6724fca54b6d88f494567faefcbf51a9aeece9c9cfac353c3edd2d3cda5c440",
+          "s1": "5d7c070d8c899c0599590125aa653a60546b22a8045ea9d3d0854ad10f8836d2"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.4733400344848633,
+                  "end": 511,
+                  "start": 506,
+                  "text": "Power"
+                },
+                "tail": {
+                  "confidence": 0.4733400344848633,
+                  "end": 530,
+                  "start": 524,
+                  "text": "sensor"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [
+              {
+                "head": {
+                  "confidence": 0.6620450019836426,
+                  "end": 469,
+                  "start": 458,
+                  "text": "Power Issue"
+                },
+                "tail": {
+                  "confidence": 0.6620450019836426,
+                  "end": 245,
+                  "start": 240,
+                  "text": "Wi-Fi"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5951429605484009,
+                  "end": 733,
+                  "start": 722,
+                  "text": "Wi-Fi issue"
+                },
+                "tail": {
+                  "confidence": 0.5951429605484009,
+                  "end": 727,
+                  "start": 722,
+                  "text": "Wi-Fi"
+                }
+              }
+            ],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.406505823135376,
+                  "end": 92,
+                  "start": 87,
+                  "text": "power"
+                },
+                "tail": {
+                  "confidence": 0.406505823135376,
+                  "end": 469,
+                  "start": 458,
+                  "text": "Power Issue"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.383158415555954,
+                  "end": 245,
+                  "start": 240,
+                  "text": "Wi-Fi"
+                },
+                "tail": {
+                  "confidence": 0.383158415555954,
+                  "end": 469,
+                  "start": 458,
+                  "text": "Power Issue"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.40700647234916687,
+                  "end": 511,
+                  "start": 506,
+                  "text": "Power"
+                },
+                "tail": {
+                  "confidence": 0.40700647234916687,
+                  "end": 733,
+                  "start": 722,
+                  "text": "Wi-Fi issue"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4541875422000885,
+                  "end": 727,
+                  "start": 722,
+                  "text": "Wi-Fi"
+                },
+                "tail": {
+                  "confidence": 0.4541875422000885,
+                  "end": 733,
+                  "start": 722,
+                  "text": "Wi-Fi issue"
+                }
+              }
+            ],
+            "changes": [],
+            "constrains": [],
+            "contains": [
+              {
+                "head": {
+                  "confidence": 0.8919489979743958,
+                  "end": 1984,
+                  "start": 1978,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.8919489979743958,
+                  "end": 2015,
+                  "start": 1992,
+                  "text": "specific model or brand"
+                }
+              }
+            ],
+            "controls": [],
+            "depends_on": [
+              {
+                "head": {
+                  "confidence": 0.71961909532547,
+                  "end": 92,
+                  "start": 87,
+                  "text": "power"
+                },
+                "tail": {
+                  "confidence": 0.71961909532547,
+                  "end": 101,
+                  "start": 96,
+                  "text": "Wi-Fi"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5477553606033325,
+                  "end": 463,
+                  "start": 458,
+                  "text": "Power"
+                },
+                "tail": {
+                  "confidence": 0.5477553606033325,
+                  "end": 511,
+                  "start": 506,
+                  "text": "Power"
+                }
+              }
+            ],
+            "dries": [],
+            "enables": [],
+            "has": [
+              {
+                "head": {
+                  "confidence": 0.9248371720314026,
+                  "end": 1984,
+                  "start": 1978,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.9248371720314026,
+                  "end": 2015,
+                  "start": 1992,
+                  "text": "specific model or brand"
+                }
+              }
+            ],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.3636336028575897,
+                  "end": 92,
+                  "start": 87,
+                  "text": "power"
+                },
+                "tail": {
+                  "confidence": 0.3636336028575897,
+                  "end": 101,
+                  "start": 96,
+                  "text": "Wi-Fi"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.3515278995037079,
+                  "end": 756,
+                  "start": 750,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.3515278995037079,
+                  "end": 727,
+                  "start": 722,
+                  "text": "Wi-Fi"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.3661012649536133,
+                  "end": 1984,
+                  "start": 1978,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.3661012649536133,
+                  "end": 1964,
+                  "start": 1958,
+                  "text": "router"
+                }
+              }
+            ],
+            "requires": [
+              {
+                "head": {
+                  "confidence": 0.4607624113559723,
+                  "end": 17,
+                  "start": 11,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.4607624113559723,
+                  "end": 92,
+                  "start": 87,
+                  "text": "power"
+                }
+              }
+            ],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.406505823135376,
+              "end": 92,
+              "start": 87,
+              "text": "power"
+            },
+            "tail": {
+              "confidence": 0.406505823135376,
+              "end": 469,
+              "start": 458,
+              "text": "Power Issue"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T21:21:25.127997+00:00",
+  "status": "RETURNED"
+}

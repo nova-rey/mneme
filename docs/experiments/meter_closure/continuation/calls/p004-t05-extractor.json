@@ -1,0 +1,1556 @@
+{
+  "completed_utc": "2026-10-02T21:23:28.399794+00:00",
+  "elapsed_seconds": 2.126282865880057,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"I have no comparison results. The same aim remains: a loaf browned outside and set inside. What should I consider when choosing the temperature and time?\", \"s1\": \"Since you are starting from zero, you need to treat this like a **\\\"Trial and Error\\\" experiment.**\\n\\nSince you have no previous data, you need to establish a baseline. The best way to find your \\\"set\\\" point is to **test the environment.**\\n\\nHere is the logic you should follow:\\n\\n### 1. The \\\"Temperature\\\" (Heat)\\n\\n*   **The Goal:** You need a temperature high enough to cook the structure, but not so high that the outside burns before the inside is cooked.\\n*   **The Test:** Start with **350\\u00b0F (175\\u00b0C)**. This is a safe, standard starting point for most baking.\\n\\n### 2. The \\\"Time\\\" (The Set)\\n\\n*   **The Goal:** You need to find the time it takes for the heat to penetrate the entire volume of the loaf.\\n*   **The Test:** Bake for **45 minutes**.\\n*   **The Check:** After 45 minutes, check the internal temperature. If it's not \\\"set,\\\" keep baking until the internal temperature reaches **200\\u00b0F (93\\u00b0C)**.\\n\\n### 3. The \\\"Set Inside\\\" (The Final Check)\\n\\n*   **The Goal:** You must confirm the internal temperature is reached.\\n*   **The Check:** Use a meat thermometer. If the internal temperature hits **200\\u00b0F (93\\u00b0C)**, the loaf is \\\"set.\\\"\\n\\n### \\ud83d\\udca1 Summary of Action:\\n\\n1.  **Start at 350\\u00b0F (175\\u00b0C).**\\n2.  **Time:** Bake for **45 minutes**.\\n3.  **Check:** Use a thermometer to confirm the internal temperature has reached 200\\u00b0F.\\n\\n**If you can tell me what kind of bread you are making (e.g., sourdough, white bread, etc.), I can give you a much more precise time estimate!**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "p004-t05"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"Check\", \"relation\": \"related\", \"to\": \"sourdough\", \"source\": \"s1\", \"evidence\": \"Check:** Use a thermometer to confirm the internal temperature has reached 200\\u00b0F.\\n\\n**If you can tell me what kind of bread you are making (e.g., sourdough\"}, {\"from\": \"Check\", \"relation\": \"related\", \"to\": \"white bread\", \"source\": \"s1\", \"evidence\": \"Check:** Use a thermometer to confirm the internal temperature has reached 200\\u00b0F.\\n\\n**If you can tell me what kind of bread you are making (e.g., sourdough, white bread\"}, {\"from\": \"temperature\", \"relation\": \"related\", \"to\": \"sourdough\", \"source\": \"s1\", \"evidence\": \"temperature has reached 200\\u00b0F.\\n\\n**If you can tell me what kind of bread you are making (e.g., sourdough\"}, {\"from\": \"temperature\", \"relation\": \"related\", \"to\": \"white bread\", \"source\": \"s1\", \"evidence\": \"temperature has reached 200\\u00b0F.\\n\\n**If you can tell me what kind of bread you are making (e.g., sourdough, white bread\"}, {\"from\": \"time\", \"relation\": \"related\", \"to\": \"sourdough\", \"source\": \"s1\", \"evidence\": \"sourdough, white bread, etc.), I can give you a much more precise time\"}, {\"from\": \"time\", \"relation\": \"related\", \"to\": \"white bread\", \"source\": \"s1\", \"evidence\": \"white bread, etc.), I can give you a much more precise time\"}], \"episode_id\": \"p004-t05\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "allows",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "used_for",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "used_for",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "helps",
+          "status": "rejected"
+        },
+        {
+          "index": 11,
+          "kind": "unsupported_specialist_relation",
+          "relation": "improves",
+          "status": "rejected"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 14,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 15,
+          "kind": "unsupported_specialist_relation",
+          "relation": "reduces",
+          "status": "rejected"
+        },
+        {
+          "index": 16,
+          "kind": "unsupported_specialist_relation",
+          "relation": "allows",
+          "status": "rejected"
+        },
+        {
+          "index": 17,
+          "kind": "unsupported_specialist_relation",
+          "relation": "helps",
+          "status": "rejected"
+        },
+        {
+          "index": 18,
+          "kind": "unsupported_specialist_relation",
+          "relation": "stabilizes",
+          "status": "rejected"
+        },
+        {
+          "index": 19,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 20,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 21,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 22,
+          "kind": "unsupported_specialist_relation",
+          "relation": "allows",
+          "status": "rejected"
+        },
+        {
+          "index": 23,
+          "kind": "unsupported_specialist_relation",
+          "relation": "provides",
+          "status": "rejected"
+        },
+        {
+          "index": 24,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 25,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 26,
+          "kind": "unsupported_specialist_relation",
+          "relation": "helps",
+          "status": "rejected"
+        },
+        {
+          "index": 27,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 28,
+          "kind": "unsupported_specialist_relation",
+          "relation": "helps",
+          "status": "rejected"
+        },
+        {
+          "index": 29,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 30,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 31,
+          "kind": "unsupported_specialist_relation",
+          "relation": "allows",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "f58bcf41117d6d623dbfeb9b3f6a924e8e84f981b196ee170389dcd060590342",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 143,
+              "start": 54
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "loaf",
+            "object_span": {
+              "end": 58,
+              "start": 54
+            },
+            "relation": "affects",
+            "score": 0.9015947580337524,
+            "source_slot": "s0",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 143,
+              "start": 132
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 152,
+              "start": 79
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "set inside",
+            "object_span": {
+              "end": 89,
+              "start": 79
+            },
+            "relation": "allows",
+            "score": 0.5704479217529297,
+            "source_slot": "s0",
+            "subject": "time",
+            "subject_span": {
+              "end": 152,
+              "start": 148
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 152,
+              "start": 132
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 143,
+              "start": 132
+            },
+            "relation": "reduces",
+            "score": 0.42956113815307617,
+            "source_slot": "s0",
+            "subject": "time",
+            "subject_span": {
+              "end": 152,
+              "start": 148
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 348,
+              "start": 287
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 348,
+              "start": 337
+            },
+            "relation": "changes",
+            "score": 0.8685683608055115,
+            "source_slot": "s1",
+            "subject": "Temperature",
+            "subject_span": {
+              "end": 298,
+              "start": 287
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 348,
+              "start": 287
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 348,
+              "start": 337
+            },
+            "relation": "influences",
+            "score": 0.6859462261199951,
+            "source_slot": "s1",
+            "subject": "Temperature",
+            "subject_span": {
+              "end": 298,
+              "start": 287
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 574,
+              "start": 462
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Time",
+            "object_span": {
+              "end": 574,
+              "start": 570
+            },
+            "relation": "used_for",
+            "score": 0.6832133531570435,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 466,
+              "start": 462
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 920,
+              "start": 707
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Set Inside",
+            "object_span": {
+              "end": 920,
+              "start": 910
+            },
+            "relation": "leads_to",
+            "score": 0.41648587584495544,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 711,
+              "start": 707
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1054,
+              "start": 707
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "meat thermometer",
+            "object_span": {
+              "end": 1054,
+              "start": 1038
+            },
+            "relation": "uses",
+            "score": 0.765552818775177,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 711,
+              "start": 707
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 755,
+              "start": 570
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Time",
+            "object_span": {
+              "end": 574,
+              "start": 570
+            },
+            "relation": "improves",
+            "score": 0.6845676302909851,
+            "source_slot": "s1",
+            "subject": "Check",
+            "subject_span": {
+              "end": 755,
+              "start": 750
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 755,
+              "start": 570
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Time",
+            "object_span": {
+              "end": 574,
+              "start": 570
+            },
+            "relation": "used_for",
+            "score": 0.6815387606620789,
+            "source_slot": "s1",
+            "subject": "Check",
+            "subject_span": {
+              "end": 755,
+              "start": 750
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 755,
+              "start": 691
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "loaf",
+            "object_span": {
+              "end": 695,
+              "start": 691
+            },
+            "relation": "helps",
+            "score": 0.5954135060310364,
+            "source_slot": "s1",
+            "subject": "Check",
+            "subject_span": {
+              "end": 755,
+              "start": 750
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1000,
+              "start": 750
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 1000,
+              "start": 989
+            },
+            "relation": "improves",
+            "score": 0.403427392244339,
+            "source_slot": "s1",
+            "subject": "Check",
+            "subject_span": {
+              "end": 755,
+              "start": 750
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 807,
+              "start": 777
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 807,
+              "start": 796
+            },
+            "relation": "reduces",
+            "score": 0.6488949656486511,
+            "source_slot": "s1",
+            "subject": "check",
+            "subject_span": {
+              "end": 782,
+              "start": 777
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 920,
+              "start": 777
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Set Inside",
+            "object_span": {
+              "end": 920,
+              "start": 910
+            },
+            "relation": "leads_to",
+            "score": 0.4201850891113281,
+            "source_slot": "s1",
+            "subject": "check",
+            "subject_span": {
+              "end": 782,
+              "start": 777
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1000,
+              "start": 859
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 1000,
+              "start": 989
+            },
+            "relation": "increases",
+            "score": 0.453309029340744,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 870,
+              "start": 859
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1000,
+              "start": 859
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 1000,
+              "start": 989
+            },
+            "relation": "reduces",
+            "score": 0.5438218116760254,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 870,
+              "start": 859
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 938,
+              "start": 910
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Set Inside",
+            "object_span": {
+              "end": 920,
+              "start": 910
+            },
+            "relation": "allows",
+            "score": 0.6042614579200745,
+            "source_slot": "s1",
+            "subject": "Check",
+            "subject_span": {
+              "end": 938,
+              "start": 933
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 938,
+              "start": 910
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Set Inside",
+            "object_span": {
+              "end": 920,
+              "start": 910
+            },
+            "relation": "helps",
+            "score": 0.4153751730918884,
+            "source_slot": "s1",
+            "subject": "Check",
+            "subject_span": {
+              "end": 938,
+              "start": 933
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 938,
+              "start": 910
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Set Inside",
+            "object_span": {
+              "end": 920,
+              "start": 910
+            },
+            "relation": "stabilizes",
+            "score": 0.43054085969924927,
+            "source_slot": "s1",
+            "subject": "Check",
+            "subject_span": {
+              "end": 938,
+              "start": 933
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1054,
+              "start": 1023
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "meat thermometer",
+            "object_span": {
+              "end": 1054,
+              "start": 1038
+            },
+            "relation": "uses",
+            "score": 0.9303392171859741,
+            "source_slot": "s1",
+            "subject": "Check",
+            "subject_span": {
+              "end": 1028,
+              "start": 1023
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1384,
+              "start": 1230
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sourdough",
+            "object_span": {
+              "end": 1384,
+              "start": 1375
+            },
+            "relation": "related",
+            "score": 0.6243135929107666,
+            "source_slot": "s1",
+            "subject": "Check",
+            "subject_span": {
+              "end": 1235,
+              "start": 1230
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1397,
+              "start": 1230
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "white bread",
+            "object_span": {
+              "end": 1397,
+              "start": 1386
+            },
+            "relation": "related",
+            "score": 0.6721599698066711,
+            "source_slot": "s1",
+            "subject": "Check",
+            "subject_span": {
+              "end": 1235,
+              "start": 1230
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1454,
+              "start": 1230
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time estimate",
+            "object_span": {
+              "end": 1454,
+              "start": 1441
+            },
+            "relation": "allows",
+            "score": 0.6730028390884399,
+            "source_slot": "s1",
+            "subject": "Check",
+            "subject_span": {
+              "end": 1235,
+              "start": 1230
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1454,
+              "start": 1230
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time estimate",
+            "object_span": {
+              "end": 1454,
+              "start": 1441
+            },
+            "relation": "provides",
+            "score": 0.6998669505119324,
+            "source_slot": "s1",
+            "subject": "Check",
+            "subject_span": {
+              "end": 1235,
+              "start": 1230
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1384,
+              "start": 1281
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sourdough",
+            "object_span": {
+              "end": 1384,
+              "start": 1375
+            },
+            "relation": "related",
+            "score": 0.3620721399784088,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 1292,
+              "start": 1281
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1397,
+              "start": 1281
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "white bread",
+            "object_span": {
+              "end": 1397,
+              "start": 1386
+            },
+            "relation": "related",
+            "score": 0.45431339740753174,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 1292,
+              "start": 1281
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1445,
+              "start": 910
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Set Inside",
+            "object_span": {
+              "end": 920,
+              "start": 910
+            },
+            "relation": "helps",
+            "score": 0.3575522005558014,
+            "source_slot": "s1",
+            "subject": "time",
+            "subject_span": {
+              "end": 1445,
+              "start": 1441
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1445,
+              "start": 1038
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "meat thermometer",
+            "object_span": {
+              "end": 1054,
+              "start": 1038
+            },
+            "relation": "uses",
+            "score": 0.850933849811554,
+            "source_slot": "s1",
+            "subject": "time",
+            "subject_span": {
+              "end": 1445,
+              "start": 1441
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1445,
+              "start": 1111
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "loaf",
+            "object_span": {
+              "end": 1115,
+              "start": 1111
+            },
+            "relation": "helps",
+            "score": 0.45291855931282043,
+            "source_slot": "s1",
+            "subject": "time",
+            "subject_span": {
+              "end": 1445,
+              "start": 1441
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1445,
+              "start": 1375
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sourdough",
+            "object_span": {
+              "end": 1384,
+              "start": 1375
+            },
+            "relation": "related",
+            "score": 0.3598265051841736,
+            "source_slot": "s1",
+            "subject": "time",
+            "subject_span": {
+              "end": 1445,
+              "start": 1441
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1445,
+              "start": 1386
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "white bread",
+            "object_span": {
+              "end": 1397,
+              "start": 1386
+            },
+            "relation": "related",
+            "score": 0.46858957409858704,
+            "source_slot": "s1",
+            "subject": "time",
+            "subject_span": {
+              "end": 1445,
+              "start": 1441
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1454,
+              "start": 1441
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time estimate",
+            "object_span": {
+              "end": 1454,
+              "start": 1441
+            },
+            "relation": "allows",
+            "score": 0.5749369263648987,
+            "source_slot": "s1",
+            "subject": "time",
+            "subject_span": {
+              "end": 1445,
+              "start": 1441
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "f9b68b76d01d6fbdfa60b0ba6f62f5341bf67555d74001ab386e22d1d1c8683d",
+          "s1": "b27e6d4199c4c31fc317bd0669cf32425df2ff9c2d735a2582df83c3ce982d44"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.9015947580337524,
+                  "end": 143,
+                  "start": 132,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.9015947580337524,
+                  "end": 58,
+                  "start": 54,
+                  "text": "loaf"
+                }
+              }
+            ],
+            "allows": [
+              {
+                "head": {
+                  "confidence": 0.5704479217529297,
+                  "end": 152,
+                  "start": 148,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.5704479217529297,
+                  "end": 89,
+                  "start": 79,
+                  "text": "set inside"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6042614579200745,
+                  "end": 1092,
+                  "start": 1087,
+                  "text": "Check"
+                },
+                "tail": {
+                  "confidence": 0.6042614579200745,
+                  "end": 1074,
+                  "start": 1064,
+                  "text": "Set Inside"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6730028390884399,
+                  "end": 1389,
+                  "start": 1384,
+                  "text": "Check"
+                },
+                "tail": {
+                  "confidence": 0.6730028390884399,
+                  "end": 1608,
+                  "start": 1595,
+                  "text": "time estimate"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5749369263648987,
+                  "end": 1599,
+                  "start": 1595,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.5749369263648987,
+                  "end": 1608,
+                  "start": 1595,
+                  "text": "time estimate"
+                }
+              }
+            ],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.8685683608055115,
+                  "end": 452,
+                  "start": 441,
+                  "text": "Temperature"
+                },
+                "tail": {
+                  "confidence": 0.8685683608055115,
+                  "end": 502,
+                  "start": 491,
+                  "text": "temperature"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [
+              {
+                "head": {
+                  "confidence": 0.5954135060310364,
+                  "end": 909,
+                  "start": 904,
+                  "text": "Check"
+                },
+                "tail": {
+                  "confidence": 0.5954135060310364,
+                  "end": 849,
+                  "start": 845,
+                  "text": "loaf"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4153751730918884,
+                  "end": 1092,
+                  "start": 1087,
+                  "text": "Check"
+                },
+                "tail": {
+                  "confidence": 0.4153751730918884,
+                  "end": 1074,
+                  "start": 1064,
+                  "text": "Set Inside"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.3575522005558014,
+                  "end": 1599,
+                  "start": 1595,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.3575522005558014,
+                  "end": 1074,
+                  "start": 1064,
+                  "text": "Set Inside"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.45291855931282043,
+                  "end": 1599,
+                  "start": 1595,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.45291855931282043,
+                  "end": 1269,
+                  "start": 1265,
+                  "text": "loaf"
+                }
+              }
+            ],
+            "holds": [],
+            "improves": [
+              {
+                "head": {
+                  "confidence": 0.6089545488357544,
+                  "end": 728,
+                  "start": 724,
+                  "text": "Time"
+                },
+                "tail": {
+                  "confidence": 0.6089545488357544,
+                  "end": 152,
+                  "start": 148,
+                  "text": "time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6845676302909851,
+                  "end": 909,
+                  "start": 904,
+                  "text": "Check"
+                },
+                "tail": {
+                  "confidence": 0.6845676302909851,
+                  "end": 728,
+                  "start": 724,
+                  "text": "Time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.403427392244339,
+                  "end": 909,
+                  "start": 904,
+                  "text": "Check"
+                },
+                "tail": {
+                  "confidence": 0.403427392244339,
+                  "end": 1154,
+                  "start": 1143,
+                  "text": "temperature"
+                }
+              }
+            ],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.453309029340744,
+                  "end": 1024,
+                  "start": 1013,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.453309029340744,
+                  "end": 1154,
+                  "start": 1143,
+                  "text": "temperature"
+                }
+              }
+            ],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.6859462261199951,
+                  "end": 452,
+                  "start": 441,
+                  "text": "Temperature"
+                },
+                "tail": {
+                  "confidence": 0.6859462261199951,
+                  "end": 502,
+                  "start": 491,
+                  "text": "temperature"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [
+              {
+                "head": {
+                  "confidence": 0.41648587584495544,
+                  "end": 865,
+                  "start": 861,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.41648587584495544,
+                  "end": 1074,
+                  "start": 1064,
+                  "text": "Set Inside"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4201850891113281,
+                  "end": 936,
+                  "start": 931,
+                  "text": "check"
+                },
+                "tail": {
+                  "confidence": 0.4201850891113281,
+                  "end": 1074,
+                  "start": 1064,
+                  "text": "Set Inside"
+                }
+              }
+            ],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [
+              {
+                "head": {
+                  "confidence": 0.6998669505119324,
+                  "end": 1389,
+                  "start": 1384,
+                  "text": "Check"
+                },
+                "tail": {
+                  "confidence": 0.6998669505119324,
+                  "end": 1608,
+                  "start": 1595,
+                  "text": "time estimate"
+                }
+              }
+            ],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.42956113815307617,
+                  "end": 152,
+                  "start": 148,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.42956113815307617,
+                  "end": 143,
+                  "start": 132,
+                  "text": "temperature"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6488949656486511,
+                  "end": 936,
+                  "start": 931,
+                  "text": "check"
+                },
+                "tail": {
+                  "confidence": 0.6488949656486511,
+                  "end": 961,
+                  "start": 950,
+                  "text": "temperature"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5438218116760254,
+                  "end": 1024,
+                  "start": 1013,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.5438218116760254,
+                  "end": 1154,
+                  "start": 1143,
+                  "text": "temperature"
+                }
+              }
+            ],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.6243135929107666,
+                  "end": 1389,
+                  "start": 1384,
+                  "text": "Check"
+                },
+                "tail": {
+                  "confidence": 0.6243135929107666,
+                  "end": 1538,
+                  "start": 1529,
+                  "text": "sourdough"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6721599698066711,
+                  "end": 1389,
+                  "start": 1384,
+                  "text": "Check"
+                },
+                "tail": {
+                  "confidence": 0.6721599698066711,
+                  "end": 1551,
+                  "start": 1540,
+                  "text": "white bread"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.3620721399784088,
+                  "end": 1446,
+                  "start": 1435,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.3620721399784088,
+                  "end": 1538,
+                  "start": 1529,
+                  "text": "sourdough"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.45431339740753174,
+                  "end": 1446,
+                  "start": 1435,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.45431339740753174,
+                  "end": 1551,
+                  "start": 1540,
+                  "text": "white bread"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.3598265051841736,
+                  "end": 1599,
+                  "start": 1595,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.3598265051841736,
+                  "end": 1538,
+                  "start": 1529,
+                  "text": "sourdough"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.46858957409858704,
+                  "end": 1599,
+                  "start": 1595,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.46858957409858704,
+                  "end": 1551,
+                  "start": 1540,
+                  "text": "white bread"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [
+              {
+                "head": {
+                  "confidence": 0.43054085969924927,
+                  "end": 1092,
+                  "start": 1087,
+                  "text": "Check"
+                },
+                "tail": {
+                  "confidence": 0.43054085969924927,
+                  "end": 1074,
+                  "start": 1064,
+                  "text": "Set Inside"
+                }
+              }
+            ],
+            "supports": [],
+            "used_for": [
+              {
+                "head": {
+                  "confidence": 0.6832133531570435,
+                  "end": 620,
+                  "start": 616,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.6832133531570435,
+                  "end": 728,
+                  "start": 724,
+                  "text": "Time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5993377566337585,
+                  "end": 728,
+                  "start": 724,
+                  "text": "Time"
+                },
+                "tail": {
+                  "confidence": 0.5993377566337585,
+                  "end": 152,
+                  "start": 148,
+                  "text": "time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6815387606620789,
+                  "end": 909,
+                  "start": 904,
+                  "text": "Check"
+                },
+                "tail": {
+                  "confidence": 0.6815387606620789,
+                  "end": 728,
+                  "start": 724,
+                  "text": "Time"
+                }
+              }
+            ],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.765552818775177,
+                  "end": 865,
+                  "start": 861,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.765552818775177,
+                  "end": 1208,
+                  "start": 1192,
+                  "text": "meat thermometer"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.9303392171859741,
+                  "end": 1182,
+                  "start": 1177,
+                  "text": "Check"
+                },
+                "tail": {
+                  "confidence": 0.9303392171859741,
+                  "end": 1208,
+                  "start": 1192,
+                  "text": "meat thermometer"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.850933849811554,
+                  "end": 1599,
+                  "start": 1595,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.850933849811554,
+                  "end": 1208,
+                  "start": 1192,
+                  "text": "meat thermometer"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.6089545488357544,
+              "end": 728,
+              "start": 724,
+              "text": "Time"
+            },
+            "tail": {
+              "confidence": 0.6089545488357544,
+              "end": 152,
+              "start": 148,
+              "text": "time"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.5993377566337585,
+              "end": 728,
+              "start": 724,
+              "text": "Time"
+            },
+            "tail": {
+              "confidence": 0.5993377566337585,
+              "end": 152,
+              "start": 148,
+              "text": "time"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T21:23:26.272449+00:00",
+  "status": "RETURNED"
+}

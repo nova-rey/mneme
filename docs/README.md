@@ -13,6 +13,11 @@ explicit `--legacy-research-store` compatibility choice.
 
 The documents are preserved in their supplied form and are intentionally not merged.
 
+* [Passive meters: final bounded closure](experiments/meter_closure/report.md)
+  separates environmental changes, model surface movement and exact uptake.
+  It corrects construction validity to Quinn/environment fidelity only, preserves
+  V1/V2 receipts, and closes this meters-only design pass without SAA modulation.
+
 * [Three-pressure meters: second investigation](experiments/three_pressure_v2/report.md)
   separates contextual continuity, historical accessibility and stagnation
   candidates. It preserves frozen definitions, source-separated matrices,

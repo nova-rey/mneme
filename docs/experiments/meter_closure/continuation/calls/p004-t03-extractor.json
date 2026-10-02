@@ -1,0 +1,426 @@
+{
+  "completed_utc": "2026-10-02T21:22:58.929300+00:00",
+  "elapsed_seconds": 2.1175443921238184,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"There are no bake results to add. I still want a loaf that is browned outside and set inside. What should I consider when choosing the temperature and time?\", \"s1\": \"It sounds like you are looking for a \\\"perfect\\\" balance: **a dark, crispy crust (brown outside) and a fully cooked, stable interior (set inside).**\\n\\nSince you have no previous data, you need to treat this as an **experiment**. You are essentially trying to find the \\\"sweet spot\\\" for your specific recipe and oven.\\n\\nHere is what you should consider when choosing the temperature and time:\\n\\n### 1. The Temperature (The \\\"Set\\\" Factor)\\n\\nThe temperature you choose depends entirely on the **type of dough** you are using and the **desired outcome**.\\n\\n*   **If you want a \\\"Set Inside\\\" (Fully Cooked):** You need a higher temperature to ensure the center is cooked through.\\n*   **If you want \\\"Brown Outside\\\":** You need a high heat to achieve a deep brown color.\\n\\n**The Best Strategy:**\\n*   **Start with a \\\"Standard\\\" Temperature:** Start at **350\\u00b0F (175\\u00b0C)**. This is a safe, standard starting point for most bread types.\\n*   **Time:** Start with a moderate time frame (e.g., 45\\u201360 minutes).\\n\\n### 2. The Time (The \\\"Set\\\" Factor)\\n\\nThe time is not fixed; it depends on the size of the loaf.\\n\\n*   **Small, Dense Loaf:** Needs less time.\\n*   **Large, Airy Loaf:** Needs more time.\\n\\n### 3. How to \\\"Set\\\" the Inside\\n\\nTo get that \\\"set inside\\\" feeling, you need to monitor the **Internal Temperature**.\\n\\n*   **The Test:** You must use a meat thermometer. If the internal temperature hits **200\\u00b0F to 210\\u00b0F (93\\u00b0C to 90\\u00b0C)**, the inside is \\\"set.\\\"\\n\\n### \\ud83d\\udca1 Action Plan: The Test Bake\\n\\nSince you have no previous data, your first \\\"bake\\\" should be a **test run**:\\n\\n1.  **Set the Temperature:** Start at **350\\u00b0F (175\\u00b0C)**.\\n2.  **Time:** Bake for 45 minutes.\\n3.  **Check:** After 45 minutes, check the internal temperature.\\n4.  **Adjust:** If it's not set, keep baking until the internal temperature hits 200\\u00b0F.\\n\\n**If you are using a specific recipe, please share it!** Knowing the ingredients (e.g., sourdough, yeast, etc.) will allow me to give you a much more precise time and temperature recommendation.\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "p004-t03"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"temperature\", \"relation\": \"depends_on\", \"to\": \"type of dough\", \"source\": \"s1\", \"evidence\": \"temperature you choose depends entirely on the **type of dough\"}, {\"from\": \"time\", \"relation\": \"depends_on\", \"to\": \"type of dough\", \"source\": \"s1\", \"evidence\": \"type of dough** you are using and the **desired outcome**.\\n\\n*   **If you want a \\\"Set Inside\\\" (Fully Cooked):** You need a higher temperature to ensure the center is cooked through.\\n*   **If you want \\\"Brown Outside\\\":** You need a high heat to achieve a deep brown color.\\n\\n**The Best Strategy:**\\n*   **Start with a \\\"Standard\\\" Temperature:** Start at **350\\u00b0F (175\\u00b0C)**. This is a safe, standard starting point for most bread types.\\n*   **Time:** Start with a moderate time frame (e.g., 45\\u201360 minutes).\\n\\n### 2. The Time (The \\\"Set\\\" Factor)\\n\\nThe time is not fixed; it depends on the size of the loaf.\\n\\n*   **Small, Dense Loaf:** Needs less time.\\n*   **Large, Airy Loaf:** Needs more time.\\n\\n### 3. How to \\\"Set\\\" the Inside\\n\\nTo get that \\\"set inside\\\" feeling, you need to monitor the **Internal Temperature**.\\n\\n*   **The Test:** You must use a meat thermometer. If the internal temperature hits **200\\u00b0F to 210\\u00b0F (93\\u00b0C to 90\\u00b0C)**, the inside is \\\"set.\\\"\\n\\n### \\ud83d\\udca1 Action Plan: The Test Bake\\n\\nSince you have no previous data, your first \\\"bake\\\" should be a **test run**:\\n\\n1.  **Set the Temperature:** Start at **350\\u00b0F (175\\u00b0C)**.\\n2.  **Time:** Bake for 45 minutes.\\n3.  **Check:** After 45 minutes, check the internal temperature.\\n4.  **Adjust:** If it's not set, keep baking until the internal temperature hits 200\\u00b0F.\\n\\n**If you are using a specific recipe, please share it!** Knowing the ingredients (e.g., sourdough, yeast, etc.) will allow me to give you a much more precise time\"}], \"episode_id\": \"p004-t03\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "influences",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        }
+      ],
+      "specialist": {
+        "content_digest": "c20d0fb4b89c9a7b759830cee2460ad169c3f72de71d2b2f9dce45c1db2db53c",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 155,
+              "start": 135
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "time",
+            "object_span": {
+              "end": 155,
+              "start": 151
+            },
+            "relation": "changes",
+            "score": 0.8540108799934387,
+            "source_slot": "s0",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 146,
+              "start": 135
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 410,
+              "start": 365
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 376,
+              "start": 365
+            },
+            "relation": "influences",
+            "score": 0.9206432700157166,
+            "source_slot": "s1",
+            "subject": "Temperature",
+            "subject_span": {
+              "end": 410,
+              "start": 399
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 497,
+              "start": 435
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "type of dough",
+            "object_span": {
+              "end": 497,
+              "start": 484
+            },
+            "relation": "depends_on",
+            "score": 0.9847186207771301,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 446,
+              "start": 435
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1103,
+              "start": 613
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Loaf",
+            "object_span": {
+              "end": 1103,
+              "start": 1099
+            },
+            "relation": "affects",
+            "score": 0.6677897572517395,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 624,
+              "start": 613
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1770,
+              "start": 1682
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 1770,
+              "start": 1759
+            },
+            "relation": "changes",
+            "score": 0.6750302910804749,
+            "source_slot": "s1",
+            "subject": "temperature",
+            "subject_span": {
+              "end": 1693,
+              "start": 1682
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1864,
+              "start": 1142
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Loaf",
+            "object_span": {
+              "end": 1146,
+              "start": 1142
+            },
+            "relation": "associated_with",
+            "score": 0.4537842273712158,
+            "source_slot": "s1",
+            "subject": "ingredients",
+            "subject_span": {
+              "end": 1864,
+              "start": 1853
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1946,
+              "start": 484
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "type of dough",
+            "object_span": {
+              "end": 497,
+              "start": 484
+            },
+            "relation": "depends_on",
+            "score": 0.7561225295066833,
+            "source_slot": "s1",
+            "subject": "time",
+            "subject_span": {
+              "end": 1946,
+              "start": 1942
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "7b8d32f9f90f37d14021fdaecb83e3b96e525d6415e42ca7eea2b8acb2dd3ba3",
+          "s1": "d9442ef61266d6b5b3a6e838f0dff2f1883b281b8a7044a5ac57e213646c41d8"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.6677897572517395,
+                  "end": 781,
+                  "start": 770,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.6677897572517395,
+                  "end": 1260,
+                  "start": 1256,
+                  "text": "Loaf"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.4537842273712158,
+                  "end": 2021,
+                  "start": 2010,
+                  "text": "ingredients"
+                },
+                "tail": {
+                  "confidence": 0.4537842273712158,
+                  "end": 1303,
+                  "start": 1299,
+                  "text": "Loaf"
+                }
+              }
+            ],
+            "caused_by": [],
+            "causes": [],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.8540108799934387,
+                  "end": 146,
+                  "start": 135,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.8540108799934387,
+                  "end": 155,
+                  "start": 151,
+                  "text": "time"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.6750302910804749,
+                  "end": 1850,
+                  "start": 1839,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.6750302910804749,
+                  "end": 1927,
+                  "start": 1916,
+                  "text": "temperature"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [
+              {
+                "head": {
+                  "confidence": 0.9847186207771301,
+                  "end": 603,
+                  "start": 592,
+                  "text": "temperature"
+                },
+                "tail": {
+                  "confidence": 0.9847186207771301,
+                  "end": 654,
+                  "start": 641,
+                  "text": "type of dough"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7561225295066833,
+                  "end": 2103,
+                  "start": 2099,
+                  "text": "time"
+                },
+                "tail": {
+                  "confidence": 0.7561225295066833,
+                  "end": 654,
+                  "start": 641,
+                  "text": "type of dough"
+                }
+              }
+            ],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [],
+            "influences": [
+              {
+                "head": {
+                  "confidence": 0.9206432700157166,
+                  "end": 567,
+                  "start": 556,
+                  "text": "Temperature"
+                },
+                "tail": {
+                  "confidence": 0.9206432700157166,
+                  "end": 533,
+                  "start": 522,
+                  "text": "temperature"
+                }
+              }
+            ],
+            "keeps": [],
+            "leads_to": [],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": []
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T21:22:56.810845+00:00",
+  "status": "RETURNED"
+}

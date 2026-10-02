@@ -2815,6 +2815,165 @@
       },
       "waiting_on": [],
       "workstream": "three-pressure-v2"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "7926cc1b245ab17b5d482003da0bebeae527fb9a",
+      "campaign": "mneme-phase-two",
+      "candidate": {
+        "artifact": "docs/experiments/meter_closure/development/receipt.json",
+        "base_sha": "7926cc1b245ab17b5d482003da0bebeae527fb9a",
+        "returned_at": "2026-10-02T21:20:24.031848Z",
+        "returned_by": "closure_meters",
+        "sha": null
+      },
+      "completion_criterion": "Bounded additive evidence with corrected Quinn-only validity; no policy changes",
+      "created_at": "2026-10-02T21:08:16.804297Z",
+      "dependencies": [],
+      "domain": "software",
+      "edit_boundaries": [
+        "src/mneme/experiments/movement_meters.py",
+        "tests/test_movement_meters.py",
+        "tools/report_movement_meters.py",
+        "docs/experiments/meter_closure/formulas and controls"
+      ],
+      "evidence_refs": [
+        "docs/experiments/meter_closure/development/receipt.json"
+      ],
+      "id": "MC-METERS",
+      "notes": "",
+      "owner": null,
+      "priority": 10,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "final-meters-closure"
+      ],
+      "resource_requirements": [],
+      "scope": "Passive direct-text movement and coupling candidates",
+      "session_ids": [],
+      "status": "DONE",
+      "title": "Passive direct-text movement and coupling candidates",
+      "updated_at": "2026-10-02T21:20:24.350701Z",
+      "validation": {
+        "required": [
+          "evidence"
+        ],
+        "results": {
+          "evidence": {
+            "receipt": "docs/experiments/meter_closure/development/receipt.json",
+            "recorded_at": "2026-10-02T21:20:24.248894Z",
+            "status": "PASS"
+          }
+        }
+      },
+      "waiting_on": [],
+      "workstream": "meter-closure"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "7926cc1b245ab17b5d482003da0bebeae527fb9a",
+      "campaign": "mneme-phase-two",
+      "candidate": {
+        "artifact": "docs/experiments/meter_closure/recording_receipt.json",
+        "base_sha": "7926cc1b245ab17b5d482003da0bebeae527fb9a",
+        "returned_at": "2026-10-02T21:28:16.966227Z",
+        "returned_by": "closure_evidence",
+        "sha": null
+      },
+      "completion_criterion": "Bounded additive evidence with corrected Quinn-only validity; no policy changes",
+      "created_at": "2026-10-02T21:08:16.867083Z",
+      "dependencies": [],
+      "domain": "software",
+      "edit_boundaries": [
+        "tools/run_meter_closure.py",
+        "tests/test_meter_closure_runner.py",
+        "docs/experiments/meter_closure/construction and prospective evidence"
+      ],
+      "evidence_refs": [
+        "docs/experiments/meter_closure/recording_receipt.json"
+      ],
+      "id": "MC-EVIDENCE",
+      "notes": "",
+      "owner": null,
+      "priority": 10,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "final-meters-closure"
+      ],
+      "resource_requirements": [],
+      "scope": "Bounded four-trajectory prospective environment construction",
+      "session_ids": [],
+      "status": "DONE",
+      "title": "Bounded four-trajectory prospective environment construction",
+      "updated_at": "2026-10-02T21:28:17.354729Z",
+      "validation": {
+        "required": [
+          "evidence"
+        ],
+        "results": {
+          "evidence": {
+            "receipt": "docs/experiments/meter_closure/quinn_review.json",
+            "recorded_at": "2026-10-02T21:28:17.203936Z",
+            "status": "PASS"
+          }
+        }
+      },
+      "waiting_on": [],
+      "workstream": "meter-closure"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "7926cc1b245ab17b5d482003da0bebeae527fb9a",
+      "campaign": "mneme-phase-two",
+      "candidate": null,
+      "completion_criterion": "Bounded additive evidence with corrected Quinn-only validity; no policy changes",
+      "created_at": "2026-10-02T21:08:16.921629Z",
+      "dependencies": [
+        "package:MC-METERS",
+        "package:MC-EVIDENCE"
+      ],
+      "domain": "software",
+      "edit_boundaries": [
+        "docs/experiments/meter_closure/report and review",
+        "canonical integration"
+      ],
+      "evidence_refs": [],
+      "id": "MC-CLOSE",
+      "notes": "",
+      "owner": "root",
+      "priority": 10,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "final-meters-closure"
+      ],
+      "resource_requirements": [],
+      "scope": "Corrected V2 environment review, analysis and canonical closure",
+      "session_ids": [
+        "meter-closure"
+      ],
+      "status": "RUNNING",
+      "title": "Corrected V2 environment review, analysis and canonical closure",
+      "updated_at": "2026-10-02T21:28:17.483998Z",
+      "validation": {
+        "required": [
+          "evidence"
+        ],
+        "results": {}
+      },
+      "waiting_on": [],
+      "workstream": "meter-closure"
     }
   ],
   "project": "nova-rey/mneme",
@@ -2829,5 +2988,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-10-02T19:35:56.354973Z"
+  "updated_at": "2026-10-02T21:28:17.484238Z"
 }

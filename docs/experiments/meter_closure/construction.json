@@ -1,0 +1,272 @@
+{
+  "version": "meter-closure-construction-v1",
+  "base_commit": "7926cc1b245ab17b5d482003da0bebeae527fb9a",
+  "trajectories": [
+    {
+      "id": "p001",
+      "domain": "baking",
+      "environment": "moving",
+      "planned_opportunity": "moving environment; opportunity for model updating",
+      "seed_domain_index": 0,
+      "turns": 8,
+      "opening": "I am trying to choose an oven temperature and baking time for a loaf that is browned outside and set inside. I have not run any comparison bakes yet. What should I consider?",
+      "ledger": [
+        {
+          "required_facts": [
+            "At 200 degrees Celsius for 30 minutes, the loaf was dark outside and wet inside."
+          ],
+          "question": "How does this result change the temperature and time choice?"
+        },
+        {
+          "required_facts": [
+            "At 190 degrees Celsius for 30 minutes, the loaf was light outside and wet inside."
+          ],
+          "question": "How does this result change the temperature and time choice?"
+        },
+        {
+          "required_facts": [
+            "At 190 degrees Celsius for 40 minutes, the loaf was dark outside and slightly wet inside."
+          ],
+          "question": "How does this result change the temperature and time choice?"
+        },
+        {
+          "required_facts": [
+            "At 180 degrees Celsius for 40 minutes, the loaf was browned outside and slightly wet inside."
+          ],
+          "question": "How does this result change the temperature and time choice?"
+        },
+        {
+          "required_facts": [
+            "At 180 degrees Celsius for 45 minutes, the loaf was browned outside and not wet inside."
+          ],
+          "question": "How does this result change the temperature and time choice?"
+        },
+        {
+          "required_facts": [
+            "At 180 degrees Celsius for 50 minutes, the loaf was dark outside and dry inside."
+          ],
+          "question": "How does this result change the temperature and time choice?"
+        },
+        {
+          "required_facts": [
+            "At 180 degrees Celsius for 45 minutes again, the loaf was browned outside and not wet inside."
+          ],
+          "question": "How does this result change the temperature and time choice?"
+        }
+      ]
+    },
+    {
+      "id": "p002",
+      "domain": "network",
+      "environment": "static",
+      "planned_opportunity": "static unresolved concern; model behavior unconstrained",
+      "seed_domain_index": 1,
+      "turns": 8,
+      "opening": "A workshop sensor sometimes disappears from the Wi-Fi dashboard. I do not know whether power or Wi-Fi is responsible. How can I narrow it down without replacing parts at random?",
+      "ledger": [
+        {
+          "required_facts": [
+            "I have not run any tests or changed the setup. I still do not know whether power or Wi-Fi is responsible."
+          ],
+          "question": "How can I narrow down whether power or Wi-Fi is responsible?"
+        },
+        {
+          "required_facts": [
+            "The setup is unchanged and I have made no measurements. Power and Wi-Fi are still the possibilities I am unsure about."
+          ],
+          "question": "How can I narrow down whether power or Wi-Fi is responsible?"
+        },
+        {
+          "required_facts": [
+            "I have no test results and have not changed anything. I remain unsure whether the cause is power or Wi-Fi."
+          ],
+          "question": "How can I narrow down whether power or Wi-Fi is responsible?"
+        },
+        {
+          "required_facts": [
+            "Nothing has been tested or changed. I still cannot choose between a power problem and a Wi-Fi problem."
+          ],
+          "question": "How can I narrow down whether power or Wi-Fi is responsible?"
+        },
+        {
+          "required_facts": [
+            "I have taken no measurements and made no changes. The uncertainty about power versus Wi-Fi remains."
+          ],
+          "question": "How can I narrow down whether power or Wi-Fi is responsible?"
+        },
+        {
+          "required_facts": [
+            "I have not tried a test or altered the setup. I am still unsure about power versus Wi-Fi."
+          ],
+          "question": "How can I narrow down whether power or Wi-Fi is responsible?"
+        },
+        {
+          "required_facts": [
+            "There are no new observations or setup changes. Power and Wi-Fi remain unresolved possibilities."
+          ],
+          "question": "How can I narrow down whether power or Wi-Fi is responsible?"
+        }
+      ]
+    },
+    {
+      "id": "p003",
+      "domain": "network",
+      "environment": "moving",
+      "planned_opportunity": "moving evidence; possible model fixation is an observation",
+      "seed_domain_index": 1,
+      "turns": 8,
+      "opening": "A workshop sensor sometimes disappears from the Wi-Fi dashboard. I do not know whether power or Wi-Fi is responsible. How can I narrow it down without replacing parts at random?",
+      "ledger": [
+        {
+          "required_facts": [
+            "With the original cable, the sensor recorded 6 uptime resets and 6 missed dashboard reports in 60 minutes."
+          ],
+          "question": "What does that establish about the fault?"
+        },
+        {
+          "required_facts": [
+            "With a short cable, the sensor recorded 0 uptime resets and 4 missed dashboard reports in 60 minutes."
+          ],
+          "question": "What does that establish about the remaining fault?"
+        },
+        {
+          "required_facts": [
+            "With the short cable and the sensor closer to the access point, it recorded 0 uptime resets and 0 missed dashboard reports in 60 minutes."
+          ],
+          "question": "What does that establish about the remaining fault?"
+        },
+        {
+          "required_facts": [
+            "Back in the original position with the short cable, it recorded 0 uptime resets and 3 missed dashboard reports in 60 minutes."
+          ],
+          "question": "What does that establish about the remaining fault?"
+        },
+        {
+          "required_facts": [
+            "Closer to the access point again with the short cable, it recorded 0 uptime resets and 0 missed dashboard reports in 120 minutes."
+          ],
+          "question": "What does that establish about the remaining fault?"
+        },
+        {
+          "required_facts": [
+            "Still closer to the access point with the short cable, it recorded 0 uptime resets and 0 missed dashboard reports in 240 minutes."
+          ],
+          "question": "What does that establish about the remaining fault?"
+        },
+        {
+          "required_facts": [
+            "With the short cable and a relocated access point, the sensor in its original position recorded 0 uptime resets and 0 missed dashboard reports in 480 minutes."
+          ],
+          "question": "What does that establish about the fault?"
+        }
+      ]
+    },
+    {
+      "id": "p004",
+      "domain": "baking",
+      "environment": "static",
+      "planned_opportunity": "static open design question; model exploration permitted but not prompted",
+      "seed_domain_index": 0,
+      "turns": 8,
+      "opening": "I am trying to choose an oven temperature and baking time for a loaf that is browned outside and set inside. I have not run any comparison bakes yet. What should I consider?",
+      "ledger": [
+        {
+          "required_facts": [
+            "I have not run any comparison bakes and have no results. The aim is still a loaf browned outside and set inside."
+          ],
+          "question": "What should I consider when choosing the temperature and time?"
+        },
+        {
+          "required_facts": [
+            "There are no bake results to add. I still want a loaf that is browned outside and set inside."
+          ],
+          "question": "What should I consider when choosing the temperature and time?"
+        },
+        {
+          "required_facts": [
+            "I have not tested a temperature and time combination. My aim remains a loaf browned outside and set inside."
+          ],
+          "question": "What should I consider when choosing the temperature and time?"
+        },
+        {
+          "required_facts": [
+            "I have no comparison results. The same aim remains: a loaf browned outside and set inside."
+          ],
+          "question": "What should I consider when choosing the temperature and time?"
+        },
+        {
+          "required_facts": [
+            "No comparison bake has been made. I am still aiming for a loaf browned outside and set inside."
+          ],
+          "question": "What should I consider when choosing the temperature and time?"
+        },
+        {
+          "required_facts": [
+            "I have not done a comparison bake or obtained results. I still want the loaf browned outside and set inside."
+          ],
+          "question": "What should I consider when choosing the temperature and time?"
+        },
+        {
+          "required_facts": [
+            "There are no new bake observations. My aim is unchanged: a loaf browned outside and set inside."
+          ],
+          "question": "What should I consider when choosing the temperature and time?"
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "gemma": {
+      "temperature": 0.35,
+      "top_p": 0.9,
+      "max_new_tokens": 2048
+    },
+    "quinn": {
+      "temperature": 0.7,
+      "top_p": 0.9,
+      "max_new_tokens": 384,
+      "reasoning_effort": "none"
+    },
+    "extractor": {
+      "temperature": 0,
+      "max_new_tokens": 768,
+      "max_len": 4096
+    }
+  },
+  "context_policy": {
+    "max_complete_prior_pairs": 2,
+    "prompt_token_limit": 1792,
+    "output_ceiling": 2048,
+    "safety_tokens": 256,
+    "method": "native /apply-template and /tokenize; discard oldest complete pair until fit; record every omission; never clip individual text"
+  },
+  "seed_rule": {
+    "gemma_base": 174000,
+    "field_base": 184000,
+    "domain_stride": 100,
+    "turn_offset": "accepted turn 1..8; same within matched domain",
+    "replacement_offsets": [
+      10000
+    ],
+    "quinn": "host advertises no verified seed control; record exact messages and result, no false determinism claim"
+  },
+  "budget": {
+    "main_turns": 32,
+    "replacement_trajectories": 1,
+    "replacement_turns": 8,
+    "max_calls": 115,
+    "requested_output_tokens_ceiling": 126080,
+    "counts": {
+      "gemma": 40,
+      "extractor": 40,
+      "quinn": 35
+    }
+  },
+  "validity": "Quinn environmental facts/actions only; Gemma behavior never invalidates construction. Root review before prospective scores. One whole replacement, first Quinn-invalid in run order. No retries or splicing.",
+  "construction_tradeoff": "Quinn uses the existing shared partner machinery but must render the complete authored public message exactly (whitespace differences allowed). This strengthens environmental control and limits natural conversational diversity. No condition labels or behavioral instructions reach Gemma.",
+  "state": {
+    "kind": "CompactStore read_only, CompactRuntime",
+    "path": "/tmp/mneme-d100-migration/I100-D100.compact.sqlite3",
+    "sha256": "38277e64e1e2f1f79db686845cebd0a619d4704ee8ddf1d7006660d451132d2c"
+  }
+}

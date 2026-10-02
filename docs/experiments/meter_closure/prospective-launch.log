@@ -1,0 +1,25 @@
+{"stage": "DISPATCHED", "role": "gemma", "coordinate": "p001-t01"}
+{"stage": "RETURNED", "role": "gemma", "coordinate": "p001-t01", "elapsed_seconds": 7.362501621013507}
+Traceback (most recent call last):
+  File "/tmp/mneme-three-pressure-v2/tools/run_meter_closure.py", line 261, in run
+    write_json(output / "records.json", records, root=budget_path.parent)
+  File "/tmp/mneme-three-pressure-v2/tools/run_three_pressure_v2.py", line 125, in write_json
+    storage_guard(path, root=root, added_bytes=len(data))
+  File "/tmp/mneme-three-pressure-v2/tools/run_three_pressure_v2.py", line 103, in storage_guard
+    raise RuntimeError("disk reserve below 64 MiB; no inference/write dispatched")
+RuntimeError: disk reserve below 64 MiB; no inference/write dispatched
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/mneme-three-pressure-v2/tools/run_meter_closure.py", line 340, in <module>
+    main()
+  File "/tmp/mneme-three-pressure-v2/tools/run_meter_closure.py", line 325, in main
+    run(
+  File "/tmp/mneme-three-pressure-v2/tools/run_meter_closure.py", line 281, in run
+    write_json(output / "run_receipt.json", receipt, root=budget_path.parent)
+  File "/tmp/mneme-three-pressure-v2/tools/run_three_pressure_v2.py", line 125, in write_json
+    storage_guard(path, root=root, added_bytes=len(data))
+  File "/tmp/mneme-three-pressure-v2/tools/run_three_pressure_v2.py", line 103, in storage_guard
+    raise RuntimeError("disk reserve below 64 MiB; no inference/write dispatched")
+RuntimeError: disk reserve below 64 MiB; no inference/write dispatched

@@ -1,0 +1,910 @@
+{
+  "completed_utc": "2026-10-02T21:22:30.110772+00:00",
+  "elapsed_seconds": 1.5947685590945184,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"I am trying to choose an oven temperature and baking time for a loaf that is browned outside and set inside. I have not run any comparison bakes yet. What should I consider?\", \"s1\": \"That sounds like a fun project! Baking can be tricky because different recipes and ovens behave differently. Since you haven't run any tests yet, here are a few things you should consider to get a good result:\\n\\n**1. Oven Temperature:**\\n\\n*   **Standard Baking:** Most recipes call for a specific temperature (e.g., 350\\u00b0F / 175\\u00b0C). If your recipe doesn't specify, start with a standard, moderate temperature like **350\\u00b0F (175\\u00b0C)**.\\n*   **The \\\"Brown Outside, Set Inside\\\" Goal:** If you want a dark, crispy crust (brown outside) but a soft, cooked center (set inside), you might need to adjust the temperature or time.\\n\\n**2. Baking Time:**\\n\\n*   **The \\\"Set Inside\\\" Factor:** The time it takes to \\\"set inside\\\" depends entirely on the *size* and *density* of your loaf. A small, dense loaf will set faster than a large, airy one.\\n*   **The Test:** Since you haven't tested yet, you need to *experiment*. You'll likely need to bake a few test batches to find the \\\"sweet spot.\\\"\\n\\n**What to consider for your first test:**\\n\\n*   **Start with a \\\"Test Bake\\\":** Don't try to get it perfect on the first try. Bake a small, simple test batch first.\\n*   **Monitor the \\\"Set\\\":** You are looking for the point where the structure is firm and the internal temperature is consistent.\\n\\n**A few practical tips to consider:**\\n\\n*   **Oven Calibration:** Are you sure your oven is actually hitting the temperature it says it is? (Ovens can be inaccurate!)\\n*   **The \\\"Set\\\" Point:** When you say \\\"set inside,\\\" are you looking for a specific internal temperature (e.g., 200\\u00b0F/93\\u00b0C) or just a visual appearance?\\n\\n**What kind of loaf are you baking?** Knowing the type of bread (e.g., sourdough, quick bread, etc.) can help narrow down the ideal temperature and time!\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "p004-t01"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"Baking Time\", \"relation\": \"depends_on\", \"to\": \"size\", \"source\": \"s1\", \"evidence\": \"Baking Time:**\\n\\n*   **The \\\"Set Inside\\\" Factor:** The time it takes to \\\"set inside\\\" depends entirely on the *size\"}, {\"from\": \"Baking Time\", \"relation\": \"depends_on\", \"to\": \"density\", \"source\": \"s1\", \"evidence\": \"Baking Time:**\\n\\n*   **The \\\"Set Inside\\\" Factor:** The time it takes to \\\"set inside\\\" depends entirely on the *size* and *density\"}, {\"from\": \"Oven\", \"relation\": \"retains\", \"to\": \"size\", \"source\": \"s1\", \"evidence\": \"size* and *density* of your loaf. A small, dense loaf will set faster than a large, airy one.\\n*   **The Test:** Since you haven't tested yet, you need to *experiment*. You'll likely need to bake a few test batches to find the \\\"sweet spot.\\\"\\n\\n**What to consider for your first test:**\\n\\n*   **Start with a \\\"Test Bake\\\":** Don't try to get it perfect on the first try. Bake a small, simple test batch first.\\n*   **Monitor the \\\"Set\\\":** You are looking for the point where the structure is firm and the internal temperature is consistent.\\n\\n**A few practical tips to consider:**\\n\\n*   **Oven\"}, {\"from\": \"Oven\", \"relation\": \"retains\", \"to\": \"density\", \"source\": \"s1\", \"evidence\": \"density* of your loaf. A small, dense loaf will set faster than a large, airy one.\\n*   **The Test:** Since you haven't tested yet, you need to *experiment*. You'll likely need to bake a few test batches to find the \\\"sweet spot.\\\"\\n\\n**What to consider for your first test:**\\n\\n*   **Start with a \\\"Test Bake\\\":** Don't try to get it perfect on the first try. Bake a small, simple test batch first.\\n*   **Monitor the \\\"Set\\\":** You are looking for the point where the structure is firm and the internal temperature is consistent.\\n\\n**A few practical tips to consider:**\\n\\n*   **Oven\"}, {\"from\": \"Oven\", \"relation\": \"supports\", \"to\": \"loaf\", \"source\": \"s1\", \"evidence\": \"Oven Calibration:** Are you sure your oven is actually hitting the temperature it says it is? (Ovens can be inaccurate!)\\n*   **The \\\"Set\\\" Point:** When you say \\\"set inside,\\\" are you looking for a specific internal temperature (e.g., 200\\u00b0F/93\\u00b0C) or just a visual appearance?\\n\\n**What kind of loaf\"}], \"episode_id\": \"p004-t01\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "specialist_observation",
+          "relation": "depends_on",
+          "status": "forwarded"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "requires",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 7,
+          "kind": "unsupported_specialist_relation",
+          "relation": "holds",
+          "status": "rejected"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "maintains",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "specialist_observation",
+          "relation": "retains",
+          "status": "forwarded"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "holds",
+          "status": "rejected"
+        },
+        {
+          "index": 11,
+          "kind": "specialist_observation",
+          "relation": "retains",
+          "status": "forwarded"
+        },
+        {
+          "index": 12,
+          "kind": "unsupported_specialist_relation",
+          "relation": "protects",
+          "status": "rejected"
+        },
+        {
+          "index": 13,
+          "kind": "specialist_observation",
+          "relation": "supports",
+          "status": "forwarded"
+        },
+        {
+          "index": 14,
+          "kind": "unsupported_specialist_relation",
+          "relation": "helps",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "9eaf4224048c0abdabf73ff3b4e564429a74c17e60587d7df466edde68ae7988",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 733,
+              "start": 621
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "size",
+            "object_span": {
+              "end": 733,
+              "start": 729
+            },
+            "relation": "depends_on",
+            "score": 0.8913673162460327,
+            "source_slot": "s1",
+            "subject": "Baking Time",
+            "subject_span": {
+              "end": 632,
+              "start": 621
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 733,
+              "start": 621
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "size",
+            "object_span": {
+              "end": 733,
+              "start": 729
+            },
+            "relation": "requires",
+            "score": 0.5759462118148804,
+            "source_slot": "s1",
+            "subject": "Baking Time",
+            "subject_span": {
+              "end": 632,
+              "start": 621
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 747,
+              "start": 621
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "density",
+            "object_span": {
+              "end": 747,
+              "start": 740
+            },
+            "relation": "depends_on",
+            "score": 0.8823645710945129,
+            "source_slot": "s1",
+            "subject": "Baking Time",
+            "subject_span": {
+              "end": 632,
+              "start": 621
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 747,
+              "start": 621
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "density",
+            "object_span": {
+              "end": 747,
+              "start": 740
+            },
+            "relation": "requires",
+            "score": 0.5420829653739929,
+            "source_slot": "s1",
+            "subject": "Baking Time",
+            "subject_span": {
+              "end": 632,
+              "start": 621
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 837,
+              "start": 594
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "temperature",
+            "object_span": {
+              "end": 605,
+              "start": 594
+            },
+            "relation": "changes",
+            "score": 0.48335373401641846,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 837,
+              "start": 833
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 837,
+              "start": 621
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Baking Time",
+            "object_span": {
+              "end": 632,
+              "start": 621
+            },
+            "relation": "changes",
+            "score": 0.7036195397377014,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 837,
+              "start": 833
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 837,
+              "start": 692
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "set inside",
+            "object_span": {
+              "end": 702,
+              "start": 692
+            },
+            "relation": "leads_to",
+            "score": 0.5239071249961853,
+            "source_slot": "s1",
+            "subject": "Test",
+            "subject_span": {
+              "end": 837,
+              "start": 833
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1311,
+              "start": 729
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "size",
+            "object_span": {
+              "end": 733,
+              "start": 729
+            },
+            "relation": "holds",
+            "score": 0.6239773631095886,
+            "source_slot": "s1",
+            "subject": "Oven",
+            "subject_span": {
+              "end": 1311,
+              "start": 1307
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1311,
+              "start": 729
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "size",
+            "object_span": {
+              "end": 733,
+              "start": 729
+            },
+            "relation": "maintains",
+            "score": 0.5358558297157288,
+            "source_slot": "s1",
+            "subject": "Oven",
+            "subject_span": {
+              "end": 1311,
+              "start": 1307
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1311,
+              "start": 729
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "size",
+            "object_span": {
+              "end": 733,
+              "start": 729
+            },
+            "relation": "retains",
+            "score": 0.622166633605957,
+            "source_slot": "s1",
+            "subject": "Oven",
+            "subject_span": {
+              "end": 1311,
+              "start": 1307
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1311,
+              "start": 740
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "density",
+            "object_span": {
+              "end": 747,
+              "start": 740
+            },
+            "relation": "holds",
+            "score": 0.5669059753417969,
+            "source_slot": "s1",
+            "subject": "Oven",
+            "subject_span": {
+              "end": 1311,
+              "start": 1307
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1311,
+              "start": 740
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "density",
+            "object_span": {
+              "end": 747,
+              "start": 740
+            },
+            "relation": "retains",
+            "score": 0.5683900713920593,
+            "source_slot": "s1",
+            "subject": "Oven",
+            "subject_span": {
+              "end": 1311,
+              "start": 1307
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1600,
+              "start": 1307
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "loaf",
+            "object_span": {
+              "end": 1600,
+              "start": 1596
+            },
+            "relation": "protects",
+            "score": 0.5648930668830872,
+            "source_slot": "s1",
+            "subject": "Oven",
+            "subject_span": {
+              "end": 1311,
+              "start": 1307
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1600,
+              "start": 1307
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "loaf",
+            "object_span": {
+              "end": 1600,
+              "start": 1596
+            },
+            "relation": "supports",
+            "score": 0.5144364237785339,
+            "source_slot": "s1",
+            "subject": "Oven",
+            "subject_span": {
+              "end": 1311,
+              "start": 1307
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1733,
+              "start": 1631
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "narrow down the ideal temperature and time",
+            "object_span": {
+              "end": 1733,
+              "start": 1691
+            },
+            "relation": "helps",
+            "score": 0.6617041826248169,
+            "source_slot": "s1",
+            "subject": "type of bread",
+            "subject_span": {
+              "end": 1644,
+              "start": 1631
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "313981c77151a4a95f64c6832a25a981f4b3f7280f6132756c44942e208aef82",
+          "s1": "8f4b265a607a0a540ab901bd79d9aa17f811e4cc9cee37a66ccb1a25dea65b76"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [],
+            "allows": [],
+            "associated_with": [],
+            "caused_by": [],
+            "causes": [],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.48335373401641846,
+                  "end": 1011,
+                  "start": 1007,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.48335373401641846,
+                  "end": 779,
+                  "start": 768,
+                  "text": "temperature"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.7036195397377014,
+                  "end": 1011,
+                  "start": 1007,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.7036195397377014,
+                  "end": 806,
+                  "start": 795,
+                  "text": "Baking Time"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [
+              {
+                "head": {
+                  "confidence": 0.8913673162460327,
+                  "end": 806,
+                  "start": 795,
+                  "text": "Baking Time"
+                },
+                "tail": {
+                  "confidence": 0.8913673162460327,
+                  "end": 907,
+                  "start": 903,
+                  "text": "size"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.8823645710945129,
+                  "end": 806,
+                  "start": 795,
+                  "text": "Baking Time"
+                },
+                "tail": {
+                  "confidence": 0.8823645710945129,
+                  "end": 921,
+                  "start": 914,
+                  "text": "density"
+                }
+              }
+            ],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [
+              {
+                "head": {
+                  "confidence": 0.6617041826248169,
+                  "end": 1818,
+                  "start": 1805,
+                  "text": "type of bread"
+                },
+                "tail": {
+                  "confidence": 0.6617041826248169,
+                  "end": 1907,
+                  "start": 1865,
+                  "text": "narrow down the ideal temperature and time"
+                }
+              }
+            ],
+            "holds": [
+              {
+                "head": {
+                  "confidence": 0.6239773631095886,
+                  "end": 1485,
+                  "start": 1481,
+                  "text": "Oven"
+                },
+                "tail": {
+                  "confidence": 0.6239773631095886,
+                  "end": 907,
+                  "start": 903,
+                  "text": "size"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5669059753417969,
+                  "end": 1485,
+                  "start": 1481,
+                  "text": "Oven"
+                },
+                "tail": {
+                  "confidence": 0.5669059753417969,
+                  "end": 921,
+                  "start": 914,
+                  "text": "density"
+                }
+              }
+            ],
+            "improves": [],
+            "increases": [],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [
+              {
+                "head": {
+                  "confidence": 0.5239071249961853,
+                  "end": 1011,
+                  "start": 1007,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.5239071249961853,
+                  "end": 876,
+                  "start": 866,
+                  "text": "set inside"
+                }
+              }
+            ],
+            "maintains": [
+              {
+                "head": {
+                  "confidence": 0.5358558297157288,
+                  "end": 1485,
+                  "start": 1481,
+                  "text": "Oven"
+                },
+                "tail": {
+                  "confidence": 0.5358558297157288,
+                  "end": 907,
+                  "start": 903,
+                  "text": "size"
+                }
+              }
+            ],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [
+              {
+                "head": {
+                  "confidence": 0.5648930668830872,
+                  "end": 1485,
+                  "start": 1481,
+                  "text": "Oven"
+                },
+                "tail": {
+                  "confidence": 0.5648930668830872,
+                  "end": 1774,
+                  "start": 1770,
+                  "text": "loaf"
+                }
+              }
+            ],
+            "provides": [],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.4622005820274353,
+                  "end": 57,
+                  "start": 46,
+                  "text": "baking time"
+                },
+                "tail": {
+                  "confidence": 0.4622005820274353,
+                  "end": 262,
+                  "start": 257,
+                  "text": "ovens"
+                }
+              }
+            ],
+            "requires": [
+              {
+                "head": {
+                  "confidence": 0.49328097701072693,
+                  "end": 41,
+                  "start": 25,
+                  "text": "oven temperature"
+                },
+                "tail": {
+                  "confidence": 0.49328097701072693,
+                  "end": 907,
+                  "start": 903,
+                  "text": "size"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.44259580969810486,
+                  "end": 41,
+                  "start": 25,
+                  "text": "oven temperature"
+                },
+                "tail": {
+                  "confidence": 0.44259580969810486,
+                  "end": 921,
+                  "start": 914,
+                  "text": "density"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5759462118148804,
+                  "end": 806,
+                  "start": 795,
+                  "text": "Baking Time"
+                },
+                "tail": {
+                  "confidence": 0.5759462118148804,
+                  "end": 907,
+                  "start": 903,
+                  "text": "size"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5420829653739929,
+                  "end": 806,
+                  "start": 795,
+                  "text": "Baking Time"
+                },
+                "tail": {
+                  "confidence": 0.5420829653739929,
+                  "end": 921,
+                  "start": 914,
+                  "text": "density"
+                }
+              }
+            ],
+            "retains": [
+              {
+                "head": {
+                  "confidence": 0.622166633605957,
+                  "end": 1485,
+                  "start": 1481,
+                  "text": "Oven"
+                },
+                "tail": {
+                  "confidence": 0.622166633605957,
+                  "end": 907,
+                  "start": 903,
+                  "text": "size"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5683900713920593,
+                  "end": 1485,
+                  "start": 1481,
+                  "text": "Oven"
+                },
+                "tail": {
+                  "confidence": 0.5683900713920593,
+                  "end": 921,
+                  "start": 914,
+                  "text": "density"
+                }
+              }
+            ],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [
+              {
+                "head": {
+                  "confidence": 0.5144364237785339,
+                  "end": 1485,
+                  "start": 1481,
+                  "text": "Oven"
+                },
+                "tail": {
+                  "confidence": 0.5144364237785339,
+                  "end": 1774,
+                  "start": 1770,
+                  "text": "loaf"
+                }
+              }
+            ],
+            "used_for": [],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.3589818775653839,
+                  "end": 1011,
+                  "start": 1007,
+                  "text": "Test"
+                },
+                "tail": {
+                  "confidence": 0.3589818775653839,
+                  "end": 41,
+                  "start": 25,
+                  "text": "oven temperature"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.4622005820274353,
+              "end": 57,
+              "start": 46,
+              "text": "baking time"
+            },
+            "tail": {
+              "confidence": 0.4622005820274353,
+              "end": 262,
+              "start": 257,
+              "text": "ovens"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.49328097701072693,
+              "end": 41,
+              "start": 25,
+              "text": "oven temperature"
+            },
+            "tail": {
+              "confidence": 0.49328097701072693,
+              "end": 907,
+              "start": 903,
+              "text": "size"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.44259580969810486,
+              "end": 41,
+              "start": 25,
+              "text": "oven temperature"
+            },
+            "tail": {
+              "confidence": 0.44259580969810486,
+              "end": 921,
+              "start": 914,
+              "text": "density"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.3589818775653839,
+              "end": 1011,
+              "start": 1007,
+              "text": "Test"
+            },
+            "tail": {
+              "confidence": 0.3589818775653839,
+              "end": 41,
+              "start": 25,
+              "text": "oven temperature"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T21:22:28.515580+00:00",
+  "status": "RETURNED"
+}

@@ -1,0 +1,635 @@
+{
+  "completed_utc": "2026-10-02T21:22:05.881479+00:00",
+  "elapsed_seconds": 1.0938581281807274,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"Closer to the access point again with the short cable, it recorded 0 uptime resets and 0 missed dashboard reports in 120 minutes. What does that establish about the remaining fault?\", \"s1\": \"This is a significant improvement!\\n\\nThe fact that you have **0 uptime resets** and **0 missed reports** over a 120-minute window establishes that **the core hardware/sensor is now functioning perfectly and the communication link is stable.**\\n\\n**What this establishes about the remaining fault:**\\n\\n*   **The initial \\\"fault\\\" has been successfully resolved or bypassed.** The initial problem that caused the \\\"missed reports\\\" has been eliminated.\\n*   **The \\\"fault\\\" is likely a configuration or environmental issue, not a hardware failure.**\\n\\n**What this means for the remaining fault:**\\n\\nSince the \\\"missed reports\\\" are now zero, the *original* fault (the reason you were tracking it in the first place) has been resolved.\\n\\n**Conclusion:**\\n\\n*   **The system is now stable.** The \\\"fault\\\" that was being tracked has been successfully mitigated or resolved by moving the sensor closer to the access point.**\\n\\n**The remaining \\\"fault\\\" is likely a *misinterpretation* of the data, not a hardware failure.** If you were tracking a specific error code, that code is now gone. The system is now \\\"clean.\\\"\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "p003-t06"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"initial problem\", \"relation\": \"causes\", \"to\": \"missed reports\", \"source\": \"s1\", \"evidence\": \"initial problem that caused the \\\"missed reports\"}, {\"from\": \"missed reports\", \"relation\": \"caused_by\", \"to\": \"initial problem\", \"source\": \"s1\", \"evidence\": \"initial problem that caused the \\\"missed reports\"}], \"episode_id\": \"p003-t06\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "changes",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "increases",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 6,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 7,
+          "kind": "specialist_observation",
+          "relation": "caused_by",
+          "status": "forwarded"
+        },
+        {
+          "index": 8,
+          "kind": "unsupported_specialist_relation",
+          "relation": "contains",
+          "status": "rejected"
+        },
+        {
+          "index": 9,
+          "kind": "unsupported_specialist_relation",
+          "relation": "has",
+          "status": "rejected"
+        },
+        {
+          "index": 10,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        }
+      ],
+      "specialist": {
+        "content_digest": "7a0c218236b9f5d359ec7a6247ec0210e92e4958524a8995464c3ea3874ee1db",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 113,
+              "start": 67
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "0 missed dashboard reports",
+            "object_span": {
+              "end": 113,
+              "start": 87
+            },
+            "relation": "leads_to",
+            "score": 0.3838370442390442,
+            "source_slot": "s0",
+            "subject": "0 uptime resets",
+            "subject_span": {
+              "end": 82,
+              "start": 67
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 76,
+              "start": 61
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "0 uptime resets",
+            "object_span": {
+              "end": 76,
+              "start": 61
+            },
+            "relation": "increases",
+            "score": 0.5859439373016357,
+            "source_slot": "s1",
+            "subject": "0 uptime resets",
+            "subject_span": {
+              "end": 76,
+              "start": 61
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 76,
+              "start": 61
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "0 uptime resets",
+            "object_span": {
+              "end": 76,
+              "start": 61
+            },
+            "relation": "leads_to",
+            "score": 0.460964560508728,
+            "source_slot": "s1",
+            "subject": "0 uptime resets",
+            "subject_span": {
+              "end": 76,
+              "start": 61
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 101,
+              "start": 61
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "0 missed reports",
+            "object_span": {
+              "end": 101,
+              "start": 85
+            },
+            "relation": "changes",
+            "score": 0.4202101528644562,
+            "source_slot": "s1",
+            "subject": "0 uptime resets",
+            "subject_span": {
+              "end": 76,
+              "start": 61
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 101,
+              "start": 61
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "0 missed reports",
+            "object_span": {
+              "end": 101,
+              "start": 85
+            },
+            "relation": "increases",
+            "score": 0.4457022249698639,
+            "source_slot": "s1",
+            "subject": "0 uptime resets",
+            "subject_span": {
+              "end": 76,
+              "start": 61
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 420,
+              "start": 61
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "missed reports",
+            "object_span": {
+              "end": 420,
+              "start": 406
+            },
+            "relation": "affects",
+            "score": 0.4069211184978485,
+            "source_slot": "s1",
+            "subject": "0 uptime resets",
+            "subject_span": {
+              "end": 76,
+              "start": 61
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 420,
+              "start": 373
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "missed reports",
+            "object_span": {
+              "end": 420,
+              "start": 406
+            },
+            "relation": "causes",
+            "score": 0.6605362296104431,
+            "source_slot": "s1",
+            "subject": "initial problem",
+            "subject_span": {
+              "end": 388,
+              "start": 373
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 420,
+              "start": 373
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "initial problem",
+            "object_span": {
+              "end": 388,
+              "start": 373
+            },
+            "relation": "caused_by",
+            "score": 0.7079157829284668,
+            "source_slot": "s1",
+            "subject": "missed reports",
+            "subject_span": {
+              "end": 420,
+              "start": 406
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 968,
+              "start": 564
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "data",
+            "object_span": {
+              "end": 968,
+              "start": 964
+            },
+            "relation": "contains",
+            "score": 0.9337465167045593,
+            "source_slot": "s1",
+            "subject": "remaining fault",
+            "subject_span": {
+              "end": 579,
+              "start": 564
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 968,
+              "start": 564
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "data",
+            "object_span": {
+              "end": 968,
+              "start": 964
+            },
+            "relation": "has",
+            "score": 0.8883423805236816,
+            "source_slot": "s1",
+            "subject": "remaining fault",
+            "subject_span": {
+              "end": 579,
+              "start": 564
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 1038,
+              "start": 564
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "remaining fault",
+            "object_span": {
+              "end": 579,
+              "start": 564
+            },
+            "relation": "associated_with",
+            "score": 0.8430914282798767,
+            "source_slot": "s1",
+            "subject": "error code",
+            "subject_span": {
+              "end": 1038,
+              "start": 1028
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "8cd9518a6168573f32106fa1beb5cd0c92fe0634cf96557752ca2ed1b1164536",
+          "s1": "eca41f7c90bfa04b9b04acdbaddcefb85f31014de3232ce055191b6fd7de727f"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.4069211184978485,
+                  "end": 258,
+                  "start": 243,
+                  "text": "0 uptime resets"
+                },
+                "tail": {
+                  "confidence": 0.4069211184978485,
+                  "end": 602,
+                  "start": 588,
+                  "text": "missed reports"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.8430914282798767,
+                  "end": 1220,
+                  "start": 1210,
+                  "text": "error code"
+                },
+                "tail": {
+                  "confidence": 0.8430914282798767,
+                  "end": 761,
+                  "start": 746,
+                  "text": "remaining fault"
+                }
+              }
+            ],
+            "caused_by": [
+              {
+                "head": {
+                  "confidence": 0.7079157829284668,
+                  "end": 602,
+                  "start": 588,
+                  "text": "missed reports"
+                },
+                "tail": {
+                  "confidence": 0.7079157829284668,
+                  "end": 570,
+                  "start": 555,
+                  "text": "initial problem"
+                }
+              }
+            ],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.6605362296104431,
+                  "end": 570,
+                  "start": 555,
+                  "text": "initial problem"
+                },
+                "tail": {
+                  "confidence": 0.6605362296104431,
+                  "end": 602,
+                  "start": 588,
+                  "text": "missed reports"
+                }
+              }
+            ],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.4202101528644562,
+                  "end": 258,
+                  "start": 243,
+                  "text": "0 uptime resets"
+                },
+                "tail": {
+                  "confidence": 0.4202101528644562,
+                  "end": 283,
+                  "start": 267,
+                  "text": "0 missed reports"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [
+              {
+                "head": {
+                  "confidence": 0.9337465167045593,
+                  "end": 761,
+                  "start": 746,
+                  "text": "remaining fault"
+                },
+                "tail": {
+                  "confidence": 0.9337465167045593,
+                  "end": 1150,
+                  "start": 1146,
+                  "text": "data"
+                }
+              }
+            ],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [
+              {
+                "head": {
+                  "confidence": 0.8883423805236816,
+                  "end": 761,
+                  "start": 746,
+                  "text": "remaining fault"
+                },
+                "tail": {
+                  "confidence": 0.8883423805236816,
+                  "end": 1150,
+                  "start": 1146,
+                  "text": "data"
+                }
+              }
+            ],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.5859439373016357,
+                  "end": 258,
+                  "start": 243,
+                  "text": "0 uptime resets"
+                },
+                "tail": {
+                  "confidence": 0.5859439373016357,
+                  "end": 258,
+                  "start": 243,
+                  "text": "0 uptime resets"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.4457022249698639,
+                  "end": 258,
+                  "start": 243,
+                  "text": "0 uptime resets"
+                },
+                "tail": {
+                  "confidence": 0.4457022249698639,
+                  "end": 283,
+                  "start": 267,
+                  "text": "0 missed reports"
+                }
+              }
+            ],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [
+              {
+                "head": {
+                  "confidence": 0.3838370442390442,
+                  "end": 82,
+                  "start": 67,
+                  "text": "0 uptime resets"
+                },
+                "tail": {
+                  "confidence": 0.3838370442390442,
+                  "end": 113,
+                  "start": 87,
+                  "text": "0 missed dashboard reports"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.460964560508728,
+                  "end": 258,
+                  "start": 243,
+                  "text": "0 uptime resets"
+                },
+                "tail": {
+                  "confidence": 0.460964560508728,
+                  "end": 258,
+                  "start": 243,
+                  "text": "0 uptime resets"
+                }
+              }
+            ],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [
+              {
+                "head": {
+                  "confidence": 0.7146021723747253,
+                  "end": 258,
+                  "start": 243,
+                  "text": "0 uptime resets"
+                },
+                "tail": {
+                  "confidence": 0.7146021723747253,
+                  "end": 180,
+                  "start": 175,
+                  "text": "fault"
+                }
+              }
+            ],
+            "related": [],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.7146021723747253,
+              "end": 258,
+              "start": 243,
+              "text": "0 uptime resets"
+            },
+            "tail": {
+              "confidence": 0.7146021723747253,
+              "end": 180,
+              "start": 175,
+              "text": "fault"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s1",
+            "s0"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T21:22:04.787316+00:00",
+  "status": "RETURNED"
+}

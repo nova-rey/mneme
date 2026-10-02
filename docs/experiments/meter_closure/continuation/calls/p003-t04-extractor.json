@@ -1,0 +1,662 @@
+{
+  "completed_utc": "2026-10-02T21:21:51.666596+00:00",
+  "elapsed_seconds": 1.0220455669332296,
+  "request": {
+    "messages": [
+      {
+        "content": "{\"source_slots\": {\"s0\": \"With the short cable and the sensor closer to the access point, it recorded 0 uptime resets and 0 missed dashboard reports in 60 minutes. What does that establish about the remaining fault?\", \"s1\": \"This is a very different, and much better, result!\\n\\nIf you have **0 uptime resets** and **0 missed reports** in 60 minutes, this establishes a very strong conclusion:\\n\\n**The sensor is working perfectly, and the communication link is stable.**\\n\\n**What this establishes:**\\n\\n*   **The hardware is healthy:** The sensor is not crashing or failing internally.\\n*   **The connection is stable:** The communication pathway between the sensor and the dashboard/server is stable and reliable.\\n\\n**What this means for the \\\"fault\\\":**\\n\\n*   **The \\\"fault\\\" is likely external, not internal.** If there *was* a fault, it has now been resolved by moving the sensor closer to the access point.\\n*   **The original fault was likely a \\\"Signal Strength\\\" or \\\"Proximity\\\" issue.** The initial problem was likely a weak signal because the sensor was too far away from the router/access point.\\n\\n**In short: The fault has been resolved by physical relocation.**\\n\\n**If you are still seeing an issue, it means the \\\"fault\\\" is likely a software configuration issue or a specific data mapping error, not a hardware failure.**\"}}",
+        "role": "user"
+      }
+    ],
+    "parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "response_format": null,
+    "run_metadata": {
+      "episode_id": "p003-t04"
+    },
+    "seed": null,
+    "system": null
+  },
+  "result": {
+    "content": "{\"relationships\": [{\"from\": \"fault\", \"relation\": \"related\", \"to\": \"dashboard/server\", \"source\": \"s1\", \"evidence\": \"dashboard/server is stable and reliable.\\n\\n**What this means for the \\\"fault\"}, {\"from\": \"sensor\", \"relation\": \"related\", \"to\": \"access point\", \"source\": \"s1\", \"evidence\": \"sensor closer to the access point\"}, {\"from\": \"fault\", \"relation\": \"related\", \"to\": \"access point\", \"source\": \"s1\", \"evidence\": \"access point.\\n*   **The original fault\"}, {\"from\": \"fault\", \"relation\": \"caused_by\", \"to\": \"Signal Strength\", \"source\": \"s1\", \"evidence\": \"fault was likely a \\\"Signal Strength\"}, {\"from\": \"fault\", \"relation\": \"causes\", \"to\": \"Signal Strength\", \"source\": \"s1\", \"evidence\": \"fault was likely a \\\"Signal Strength\"}, {\"from\": \"fault\", \"relation\": \"related\", \"to\": \"router/access point\", \"source\": \"s1\", \"evidence\": \"router/access point.\\n\\n**In short: The fault\"}], \"episode_id\": \"p003-t04\"}",
+    "effective_parameters": {
+      "max_new_tokens": 768,
+      "temperature": 0
+    },
+    "finish_reason": "stop",
+    "latency_ms": 0,
+    "model_id": "fastino/gliner2.5-base-v1",
+    "provenance": {
+      "host": {
+        "capabilities": [
+          "local_weights",
+          "text_generation"
+        ],
+        "chat_template": null,
+        "execution": {
+          "max_len": 4096,
+          "script": "/home/rey/mneme-tools/gliner2_extractor.py",
+          "threshold": 0.35
+        },
+        "model_family": "GLiNER2.5 specialist extractor",
+        "model_id": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "provider": "local-msi",
+        "quantization": null,
+        "runtime": "gliner2",
+        "runtime_version": null,
+        "tokenizer_id": "fastino/gliner2.5-base-v1",
+        "tokenizer_revision": null
+      }
+    },
+    "provider": "local-msi",
+    "raw_metadata": {
+      "decisions": [
+        {
+          "index": 0,
+          "kind": "unsupported_specialist_relation",
+          "relation": "uses",
+          "status": "rejected"
+        },
+        {
+          "index": 1,
+          "kind": "unsupported_specialist_relation",
+          "relation": "leads_to",
+          "status": "rejected"
+        },
+        {
+          "index": 2,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 3,
+          "kind": "unsupported_specialist_relation",
+          "relation": "affects",
+          "status": "rejected"
+        },
+        {
+          "index": 4,
+          "kind": "unsupported_specialist_relation",
+          "relation": "associated_with",
+          "status": "rejected"
+        },
+        {
+          "index": 5,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 6,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        },
+        {
+          "index": 7,
+          "kind": "specialist_observation",
+          "relation": "caused_by",
+          "status": "forwarded"
+        },
+        {
+          "index": 8,
+          "kind": "specialist_observation",
+          "relation": "causes",
+          "status": "forwarded"
+        },
+        {
+          "index": 9,
+          "kind": "specialist_observation",
+          "relation": "related",
+          "status": "forwarded"
+        }
+      ],
+      "specialist": {
+        "content_digest": "3ea8cbe9352f31dc5f31d86ef611ace3f523294dac22cda4b48cffc8ff682dcd",
+        "coverage_complete": true,
+        "model": "fastino/gliner2.5-base-v1",
+        "model_revision": null,
+        "observations": [
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 35,
+              "start": 9
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "short cable",
+            "object_span": {
+              "end": 20,
+              "start": 9
+            },
+            "relation": "uses",
+            "score": 0.6749494075775146,
+            "source_slot": "s0",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 35,
+              "start": 29
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 122,
+              "start": 76
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "0 missed dashboard reports",
+            "object_span": {
+              "end": 122,
+              "start": 96
+            },
+            "relation": "leads_to",
+            "score": 0.4810905158519745,
+            "source_slot": "s0",
+            "subject": "0 uptime resets",
+            "subject_span": {
+              "end": 91,
+              "start": 76
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 516,
+              "start": 442
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "dashboard/server",
+            "object_span": {
+              "end": 458,
+              "start": 442
+            },
+            "relation": "related",
+            "score": 0.4697556495666504,
+            "source_slot": "s1",
+            "subject": "fault",
+            "subject_span": {
+              "end": 516,
+              "start": 511
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 538,
+              "start": 511
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "fault",
+            "object_span": {
+              "end": 516,
+              "start": 511
+            },
+            "relation": "affects",
+            "score": 0.38776224851608276,
+            "source_slot": "s1",
+            "subject": "fault",
+            "subject_span": {
+              "end": 538,
+              "start": 533
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 645,
+              "start": 593
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "sensor",
+            "object_span": {
+              "end": 645,
+              "start": 639
+            },
+            "relation": "associated_with",
+            "score": 0.550154447555542,
+            "source_slot": "s1",
+            "subject": "fault",
+            "subject_span": {
+              "end": 598,
+              "start": 593
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 672,
+              "start": 639
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "access point",
+            "object_span": {
+              "end": 672,
+              "start": 660
+            },
+            "relation": "related",
+            "score": 0.37654781341552734,
+            "source_slot": "s1",
+            "subject": "sensor",
+            "subject_span": {
+              "end": 645,
+              "start": 639
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 698,
+              "start": 660
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "access point",
+            "object_span": {
+              "end": 672,
+              "start": 660
+            },
+            "relation": "related",
+            "score": 0.5471200942993164,
+            "source_slot": "s1",
+            "subject": "fault",
+            "subject_span": {
+              "end": 698,
+              "start": 693
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 728,
+              "start": 693
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Signal Strength",
+            "object_span": {
+              "end": 728,
+              "start": 713
+            },
+            "relation": "caused_by",
+            "score": 0.7188158631324768,
+            "source_slot": "s1",
+            "subject": "fault",
+            "subject_span": {
+              "end": 698,
+              "start": 693
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 728,
+              "start": 693
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "Signal Strength",
+            "object_span": {
+              "end": 728,
+              "start": 713
+            },
+            "relation": "causes",
+            "score": 0.5044125914573669,
+            "source_slot": "s1",
+            "subject": "fault",
+            "subject_span": {
+              "end": 698,
+              "start": 693
+            }
+          },
+          {
+            "chunk_index": 0,
+            "evidence_span": {
+              "end": 887,
+              "start": 844
+            },
+            "model": "fastino/gliner2.5-base-v1",
+            "model_revision": null,
+            "object": "router/access point",
+            "object_span": {
+              "end": 863,
+              "start": 844
+            },
+            "relation": "related",
+            "score": 0.43884333968162537,
+            "source_slot": "s1",
+            "subject": "fault",
+            "subject_span": {
+              "end": 887,
+              "start": 882
+            }
+          }
+        ],
+        "omitted_reason": null,
+        "source_digests": {
+          "s0": "5a380f4bfa2cde8216fdc13fb9a0abf97b6fbe2c64c0d32531bbea488766b34d",
+          "s1": "046335cb2e2f048da4a6b5637000b8d8c5d8a6a0ac945e19229949af754aa405"
+        },
+        "version": "gliner2.5-base-v1-relations-v1"
+      },
+      "transport": {
+        "id": "episode",
+        "max_len": 4096,
+        "model": "fastino/gliner2.5-base-v1",
+        "raw": {
+          "relation_extraction": {
+            "affects": [
+              {
+                "head": {
+                  "confidence": 0.38776224851608276,
+                  "end": 728,
+                  "start": 723,
+                  "text": "fault"
+                },
+                "tail": {
+                  "confidence": 0.38776224851608276,
+                  "end": 706,
+                  "start": 701,
+                  "text": "fault"
+                }
+              }
+            ],
+            "allows": [],
+            "associated_with": [
+              {
+                "head": {
+                  "confidence": 0.550154447555542,
+                  "end": 788,
+                  "start": 783,
+                  "text": "fault"
+                },
+                "tail": {
+                  "confidence": 0.550154447555542,
+                  "end": 835,
+                  "start": 829,
+                  "text": "sensor"
+                }
+              }
+            ],
+            "caused_by": [
+              {
+                "head": {
+                  "confidence": 0.7188158631324768,
+                  "end": 888,
+                  "start": 883,
+                  "text": "fault"
+                },
+                "tail": {
+                  "confidence": 0.7188158631324768,
+                  "end": 918,
+                  "start": 903,
+                  "text": "Signal Strength"
+                }
+              }
+            ],
+            "causes": [
+              {
+                "head": {
+                  "confidence": 0.5044125914573669,
+                  "end": 888,
+                  "start": 883,
+                  "text": "fault"
+                },
+                "tail": {
+                  "confidence": 0.5044125914573669,
+                  "end": 918,
+                  "start": 903,
+                  "text": "Signal Strength"
+                }
+              }
+            ],
+            "changes": [
+              {
+                "head": {
+                  "confidence": 0.5551980137825012,
+                  "end": 91,
+                  "start": 76,
+                  "text": "0 uptime resets"
+                },
+                "tail": {
+                  "confidence": 0.5551980137825012,
+                  "end": 271,
+                  "start": 256,
+                  "text": "0 uptime resets"
+                }
+              }
+            ],
+            "constrains": [],
+            "contains": [],
+            "controls": [],
+            "depends_on": [],
+            "dries": [],
+            "enables": [],
+            "has": [],
+            "helps": [],
+            "holds": [],
+            "improves": [],
+            "increases": [
+              {
+                "head": {
+                  "confidence": 0.5730178356170654,
+                  "end": 91,
+                  "start": 76,
+                  "text": "0 uptime resets"
+                },
+                "tail": {
+                  "confidence": 0.5730178356170654,
+                  "end": 271,
+                  "start": 256,
+                  "text": "0 uptime resets"
+                }
+              }
+            ],
+            "influences": [],
+            "keeps": [],
+            "leads_to": [
+              {
+                "head": {
+                  "confidence": 0.4810905158519745,
+                  "end": 91,
+                  "start": 76,
+                  "text": "0 uptime resets"
+                },
+                "tail": {
+                  "confidence": 0.4810905158519745,
+                  "end": 122,
+                  "start": 96,
+                  "text": "0 missed dashboard reports"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.49771788716316223,
+                  "end": 91,
+                  "start": 76,
+                  "text": "0 uptime resets"
+                },
+                "tail": {
+                  "confidence": 0.49771788716316223,
+                  "end": 271,
+                  "start": 256,
+                  "text": "0 uptime resets"
+                }
+              }
+            ],
+            "maintains": [],
+            "manages": [],
+            "part_of": [],
+            "prevents": [],
+            "protects": [],
+            "provides": [],
+            "reduces": [],
+            "related": [
+              {
+                "head": {
+                  "confidence": 0.4697556495666504,
+                  "end": 706,
+                  "start": 701,
+                  "text": "fault"
+                },
+                "tail": {
+                  "confidence": 0.4697556495666504,
+                  "end": 648,
+                  "start": 632,
+                  "text": "dashboard/server"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.37654781341552734,
+                  "end": 835,
+                  "start": 829,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.37654781341552734,
+                  "end": 862,
+                  "start": 850,
+                  "text": "access point"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.5471200942993164,
+                  "end": 888,
+                  "start": 883,
+                  "text": "fault"
+                },
+                "tail": {
+                  "confidence": 0.5471200942993164,
+                  "end": 862,
+                  "start": 850,
+                  "text": "access point"
+                }
+              },
+              {
+                "head": {
+                  "confidence": 0.43884333968162537,
+                  "end": 1077,
+                  "start": 1072,
+                  "text": "fault"
+                },
+                "tail": {
+                  "confidence": 0.43884333968162537,
+                  "end": 1053,
+                  "start": 1034,
+                  "text": "router/access point"
+                }
+              }
+            ],
+            "requires": [],
+            "retains": [],
+            "shades": [],
+            "solves": [],
+            "stabilizes": [],
+            "supports": [],
+            "used_for": [],
+            "uses": [
+              {
+                "head": {
+                  "confidence": 0.6749494075775146,
+                  "end": 35,
+                  "start": 29,
+                  "text": "sensor"
+                },
+                "tail": {
+                  "confidence": 0.6749494075775146,
+                  "end": 20,
+                  "start": 9,
+                  "text": "short cable"
+                }
+              }
+            ],
+            "wicks": [],
+            "wilts": []
+          }
+        },
+        "threshold": 0.35
+      },
+      "transport_omissions": [
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.5730178356170654,
+              "end": 91,
+              "start": 76,
+              "text": "0 uptime resets"
+            },
+            "tail": {
+              "confidence": 0.5730178356170654,
+              "end": 271,
+              "start": 256,
+              "text": "0 uptime resets"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.49771788716316223,
+              "end": 91,
+              "start": 76,
+              "text": "0 uptime resets"
+            },
+            "tail": {
+              "confidence": 0.49771788716316223,
+              "end": 271,
+              "start": 256,
+              "text": "0 uptime resets"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "raw": {
+            "head": {
+              "confidence": 0.5551980137825012,
+              "end": 91,
+              "start": 76,
+              "text": "0 uptime resets"
+            },
+            "tail": {
+              "confidence": 0.5551980137825012,
+              "end": 271,
+              "start": 256,
+              "text": "0 uptime resets"
+            }
+          },
+          "reason": "unmappable or cross-slot endpoints",
+          "slots": [
+            "s0",
+            "s1"
+          ]
+        }
+      ]
+    },
+    "seed": null,
+    "token_usage": null
+  },
+  "started_utc": "2026-10-02T21:21:50.644303+00:00",
+  "status": "RETURNED"
+}
