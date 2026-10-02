@@ -1233,10 +1233,17 @@ def execute_run(
     *,
     host_name: str | None = None,
     pause_after: Mapping[int, int] | None = None,
+    legacy_research_store: bool = False,
 ) -> dict[str, Any]:
     """Public convenience wrapper for one integrated run."""
     if subjects is None or development is None:
-        return _execute_prepared(run_id, lab, host_name=host_name, resume=False)
+        return _execute_prepared(
+            run_id,
+            lab,
+            host_name=host_name,
+            resume=False,
+            legacy_research_store=legacy_research_store,
+        )
     return IntegratedRunner(run_id, lab, subjects).execute_run(
         development, evaluations, pause_after=pause_after
     )
@@ -1250,10 +1257,17 @@ def resume_run(
     evaluations: Mapping[int, Mapping[str, Any]] | None = None,
     *,
     host_name: str | None = None,
+    legacy_research_store: bool = False,
 ) -> dict[str, Any]:
     """Public convenience wrapper for restart-safe continuation."""
     if subjects is None or development is None:
-        return _execute_prepared(run_id, lab, host_name=host_name, resume=True)
+        return _execute_prepared(
+            run_id,
+            lab,
+            host_name=host_name,
+            resume=True,
+            legacy_research_store=legacy_research_store,
+        )
     return IntegratedRunner(run_id, lab, subjects).resume_run(development, evaluations)
 
 
@@ -1292,8 +1306,18 @@ def _fixture_records(
 
 
 def _execute_prepared(
-    run_id: str, lab: str | Path, *, host_name: str | None, resume: bool
+    run_id: str,
+    lab: str | Path,
+    *,
+    host_name: str | None,
+    resume: bool,
+    legacy_research_store: bool,
 ) -> dict[str, Any]:
+    if not legacy_research_store:
+        raise RunnerError(
+            "prepared integrated runs use the historical SQLiteStore path; "
+            "select a CompactRuntime runner or explicitly authorize legacy research persistence"
+        )
     artifacts = ArtifactStore(lab)
     run_path = artifacts.locate_run(run_id)
     if not artifacts.verify_run(run_path):

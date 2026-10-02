@@ -330,7 +330,15 @@ def execute_run(
             _require_legacy_research_opt_in(False, "experiment run execute")
     runner = importlib.import_module("mneme.experiments.runner")
     run_execute = cast(Callable[..., object], getattr(runner, "execute_run"))
-    result = run_execute(run_id=run_id, lab=lab, host_name=host_name)
+    if legacy_research_store:
+        result = run_execute(
+            run_id=run_id,
+            lab=lab,
+            host_name=host_name,
+            legacy_research_store=True,
+        )
+    else:
+        result = run_execute(run_id=run_id, lab=lab, host_name=host_name)
     if not isinstance(result, dict):
         raise ArtifactError("integrated runner returned a non-object result")
     return result
@@ -355,7 +363,15 @@ def resume_execution(
             _require_legacy_research_opt_in(False, "experiment run resume")
     runner = importlib.import_module("mneme.experiments.runner")
     run_resume = cast(Callable[..., object], getattr(runner, "resume_run"))
-    result = run_resume(run_id=run_id, lab=lab, host_name=host_name)
+    if legacy_research_store:
+        result = run_resume(
+            run_id=run_id,
+            lab=lab,
+            host_name=host_name,
+            legacy_research_store=True,
+        )
+    else:
+        result = run_resume(run_id=run_id, lab=lab, host_name=host_name)
     if not isinstance(result, dict):
         raise ArtifactError("integrated runner returned a non-object result")
     return result
