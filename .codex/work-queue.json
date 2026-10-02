@@ -113,6 +113,14 @@
       "reference": "Current-state audit reconciles the preserved cross-thread v6 evidence: P2.3 remains COMPLETED_INADEQUATE/INCONCLUSIVE for adequacy, and cumulative usage is 456 returned/attempted calls versus the prior 399-call contingency ceiling; explicit review remains unresolved.",
       "resolved_at": "2026-09-26T13:07:51.017151Z",
       "status": "RESOLVED"
+    },
+    "superseded-by:P3-D100-INTROSPECTION-10": {
+      "created_at": "2026-10-02T15:53:15.914568Z",
+      "kind": "other",
+      "receipt": null,
+      "reference": "docs/receipts/MNEME_D100_Compact_Ancestor_and_10_Thread_Introspection_Trial_20261002.md",
+      "resolved_at": null,
+      "status": "UNRESOLVED"
     }
   },
   "hard_problem_repo": "nova-rey/codex-config-backup",
@@ -2137,7 +2145,8 @@
       "completion_criterion": "Study reaches terminal interpretable result or a material blocker with preserved evidence; all scheduled checkpoints and readouts are accounted for.",
       "created_at": "2026-09-27T18:49:20.708730Z",
       "dependencies": [
-        "package:P3-INTROSPECT-QUAL"
+        "package:P3-INTROSPECT-QUAL",
+        "superseded-by:P3-D100-INTROSPECTION-10"
       ],
       "domain": "live-local-inference",
       "edit_boundaries": [
@@ -2170,9 +2179,9 @@
       ],
       "scope": "Fork R8 state into introspection and no-introspection lineages; run frozen 100-topic shared-interloper study, checkpoints, probes, ON/OFF/RESTORED, and report.",
       "session_ids": [],
-      "status": "READY",
+      "status": "WAITING",
       "title": "Run P3-INTROSPECT-100 two-lineage study",
-      "updated_at": "2026-10-02T15:06:52.467571Z",
+      "updated_at": "2026-10-02T15:53:15.914591Z",
       "validation": {
         "required": [
           "preflight receipt",
@@ -2181,7 +2190,9 @@
         ],
         "results": {}
       },
-      "waiting_on": [],
+      "waiting_on": [
+        "superseded-by:P3-D100-INTROSPECTION-10"
+      ],
       "workstream": "p3-introspection"
     },
     {
@@ -2256,7 +2267,13 @@
       },
       "base_sha": "157fb10e3c53cab41fa68a3facf50a2b8a448de9",
       "campaign": "mneme-phase-two",
-      "candidate": null,
+      "candidate": {
+        "artifact": "docs/receipts/MNEME_D100_Compact_Ancestor_Manifest_20261002.json",
+        "base_sha": "157fb10",
+        "returned_at": "2026-10-02T15:52:44.558286Z",
+        "returned_by": "/root/d100_migration",
+        "sha": "aaed8b4"
+      },
       "completion_criterion": "Copy-only D100 migration and equivalence/restart evidence complete; manifest published; no historical artifact changed.",
       "created_at": "2026-10-02T15:06:36.739503Z",
       "dependencies": [],
@@ -2268,10 +2285,12 @@
         "tests",
         "bible.md"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "docs/receipts/MNEME_D100_Compact_Ancestor_Manifest_20261002.json"
+      ],
       "id": "P3-D100-ANCESTOR",
       "notes": "D100 is a reusable convenience ancestor, not normative or golden.",
-      "owner": "/root/d100_migration",
+      "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -2284,12 +2303,10 @@
         }
       ],
       "scope": "Copy-only migration of historical I-100 or N-100 into CompactStore with logical equivalence, restart proof, and compact manifest; historical sources immutable.",
-      "session_ids": [
-        "d100-migration-20261002"
-      ],
-      "status": "RUNNING",
+      "session_ids": [],
+      "status": "DONE",
       "title": "Preserve and migrate reusable D100 ancestor",
-      "updated_at": "2026-10-02T15:06:44.882010Z",
+      "updated_at": "2026-10-02T15:52:44.660372Z",
       "validation": {
         "required": [],
         "results": {}
@@ -2304,7 +2321,13 @@
       },
       "base_sha": "157fb10e3c53cab41fa68a3facf50a2b8a448de9",
       "campaign": "mneme-phase-two",
-      "candidate": null,
+      "candidate": {
+        "artifact": "docs/receipts/MNEME_D100_Compact_Ancestor_and_10_Thread_Introspection_Trial_20261002.json",
+        "base_sha": "157fb10",
+        "returned_at": "2026-10-02T15:52:56.974778Z",
+        "returned_by": "/root",
+        "sha": "5dcc359"
+      },
       "completion_criterion": "Descendant runtime can develop directly on CompactStore with treatment-health checks and bounded storage metrics; targeted tests pass.",
       "created_at": "2026-10-02T15:06:36.786100Z",
       "dependencies": [
@@ -2317,7 +2340,9 @@
         "tests",
         "bible.md"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "docs/receipts/MNEME_D100_Compact_Ancestor_and_10_Thread_Introspection_Trial_20261002.json"
+      ],
       "id": "P3-D100-RUNTIME",
       "notes": "Do not fall back to historical pathological SQLite runtime for the trial.",
       "owner": null,
@@ -2334,16 +2359,14 @@
       ],
       "scope": "Integrate CompactStore into the prospective descendant developmental runtime with bounded telemetry, per-thread storage metrics, and SAA/treatment-health continuity.",
       "session_ids": [],
-      "status": "WAITING",
+      "status": "DONE",
       "title": "Wire CompactStore into descendant runtime",
-      "updated_at": "2026-10-02T15:06:36.786100Z",
+      "updated_at": "2026-10-02T15:52:57.067927Z",
       "validation": {
         "required": [],
         "results": {}
       },
-      "waiting_on": [
-        "package:P3-D100-ANCESTOR"
-      ],
+      "waiting_on": [],
       "workstream": "p3-d100"
     },
     {
@@ -2353,7 +2376,13 @@
       },
       "base_sha": "157fb10e3c53cab41fa68a3facf50a2b8a448de9",
       "campaign": "mneme-phase-two",
-      "candidate": null,
+      "candidate": {
+        "artifact": "docs/receipts/MNEME_D100_Compact_Ancestor_and_10_Thread_Introspection_Trial_20261002.json",
+        "base_sha": "157fb10",
+        "returned_at": "2026-10-02T15:53:04.508555Z",
+        "returned_by": "/root",
+        "sha": "HEAD"
+      },
       "completion_criterion": "Ten-thread I2/N2 trial reaches valid terminal result with treatment health, persistence growth, probes, removal/restoration, and readable report; no Phase Four.",
       "created_at": "2026-10-02T15:06:36.826025Z",
       "dependencies": [
@@ -2365,7 +2394,9 @@
         "docs",
         "bible.md"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "docs/receipts/MNEME_D100_Compact_Ancestor_and_10_Thread_Introspection_Trial_20261002.json"
+      ],
       "id": "P3-D100-INTROSPECTION-10",
       "notes": "Use the frozen schedule and qualified microcall_explicit contract; D100 remains untouched.",
       "owner": null,
@@ -2382,16 +2413,14 @@
       ],
       "scope": "Fork disposable I2/N2 descendants from validated compact D100, execute frozen ten-thread shared trajectory with qualified live-Gemma introspection, modest probes, removal/restoration, and readable publication.",
       "session_ids": [],
-      "status": "WAITING",
+      "status": "DONE",
       "title": "Run ten-thread mature introspection trial",
-      "updated_at": "2026-10-02T15:06:36.826025Z",
+      "updated_at": "2026-10-02T15:53:04.596670Z",
       "validation": {
         "required": [],
         "results": {}
       },
-      "waiting_on": [
-        "package:P3-D100-RUNTIME"
-      ],
+      "waiting_on": [],
       "workstream": "p3-d100"
     }
   ],
@@ -2407,5 +2436,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-10-02T15:06:52.467709Z"
+  "updated_at": "2026-10-02T15:53:15.914677Z"
 }
