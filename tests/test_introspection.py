@@ -47,6 +47,72 @@ def test_review_request_hides_admin_target_identity() -> None:
     assert "edge_key" not in json.dumps(request)
 
 
+def test_compact_review_request_uses_bounded_numbered_answer_bank() -> None:
+    packet = ArcPacket(
+        "arc-choices",
+        _packet().messages,
+        _packet().exposures,
+        (
+            ReviewTarget("opaque-1", "e1", "maintenance", ("turn-1",)),
+            ReviewTarget("opaque-2", "e2", "recovery", ("turn-1",)),
+        ),
+    )
+    request = review_request(packet, compact_targets=True)
+    assert request["targets"] == [
+        {"choice": 1, "context": "maintenance"},
+        {"choice": 2, "context": "recovery"},
+    ]
+    assert "opaque-1" not in json.dumps(request)
+    assert "edge_key" not in json.dumps(request)
+
+
+def test_parser_resolves_numbered_target_without_exposing_opaque_alias() -> None:
+    packet = ArcPacket(
+        "arc-choices",
+        _packet().messages,
+        _packet().exposures,
+        (
+            ReviewTarget("opaque-1", "e1", "maintenance", ("turn-1",)),
+            ReviewTarget("opaque-2", "e2", "recovery", ("turn-1",)),
+        ),
+    )
+    proposals = parse_proposals(
+        {
+            "assessments": [
+                {
+                    "target_choice": 2,
+                    "association_effect": -0.4,
+                    "expression_effect": 0.2,
+                    "confidence": 0.8,
+                    "basis": "EXTERNAL_REACTION",
+                    "evidence_refs": ["turn-1"],
+                    "reason": "The second exposed association was unwelcome.",
+                }
+            ]
+        },
+        packet,
+        valid_evidence_refs={"turn-1"},
+    )
+    assert proposals[0].target_alias == "opaque-2"
+    assert parse_proposals(
+        {"assessments": [{"target_alias": "T1", "basis": "INSUFFICIENT"}]},
+        packet,
+    )[0].target_alias == "opaque-1"
+
+
+def test_parser_rejects_out_of_range_numbered_target() -> None:
+    with pytest.raises(IntrospectionError):
+        parse_proposals(
+            {"assessments": [{"target_choice": 3}]},
+            ArcPacket(
+                "arc-choice",
+                _packet().messages,
+                _packet().exposures,
+                (ReviewTarget("opaque-1", "e1", "maintenance", ("turn-1",)),),
+            ),
+        )
+
+
 def test_parser_rejects_unknown_alias_and_evidence() -> None:
     packet = _packet()
     with pytest.raises(IntrospectionError):
@@ -57,6 +123,8 @@ def test_parser_rejects_unknown_alias_and_evidence() -> None:
             packet,
             valid_evidence_refs={"turn-1"},
         )
+    with pytest.raises(IntrospectionError, match="no assessments list"):
+        parse_proposals({"target_choice": 1}, packet)
 
 
 def test_self_only_is_bounded_and_external_can_be_stronger() -> None:

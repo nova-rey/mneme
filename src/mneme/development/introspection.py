@@ -13,6 +13,7 @@ import hashlib
 import json
 import math
 import os
+import re
 import tempfile
 from collections.abc import Mapping
 from dataclasses import dataclass, field
@@ -20,7 +21,11 @@ from enum import StrEnum
 from pathlib import Path
 from typing import Any, cast
 
-INTROSPECTION_VERSION = "p3-introspection-v1"
+# Version the reviewer-facing contract separately from the historical ledger
+# format.  Existing v1 ledgers remain loadable for replay; new ledgers record
+# that the compact answer-bank contract was used.
+INTROSPECTION_VERSION = "p3-introspection-v2-answer-bank"
+_SUPPORTED_LEDGER_VERSIONS = frozenset({"p3-introspection-v1", INTROSPECTION_VERSION})
 MAX_ARC_CHARS = 24_000
 MAX_TARGETS_PER_ARC = 8
 MAX_EFFECT = 1.0
@@ -183,7 +188,23 @@ def _digest(value: Any) -> str:
     ).hexdigest()
 
 
-def review_system_prompt() -> str:
+def review_system_prompt(*, compact_targets: bool = False) -> str:
+    """Return the reviewer contract.
+
+    ``compact_targets`` is the production contract for small local models.  It
+    asks the model to choose a short ordinal from a supplied answer bank.  The
+    Python boundary resolves that ordinal to the opaque target identity.  The
+    historical alias contract remains available for replay and compatibility.
+    """
+
+    target_instruction = (
+        "Each target is listed with a 1-based choice number. Set target_choice "
+        "to exactly one listed integer; Python resolves it to the association. "
+        "Do not invent aliases or identifiers. "
+        if compact_targets
+        else "Use only supplied target aliases and evidence references. "
+    )
+    target_field = '"target_choice":1' if compact_targets else '"target_alias":"supplied-alias"'
     return (
         "This is an internal review of a completed conversational arc, not a reply to the "
         "participant. Review the supplied interactions and recorded associative exposures. "
@@ -193,15 +214,16 @@ def review_system_prompt() -> str:
         "external reaction. You may form a self-only opinion when no external reaction exists, "
         "but label it as such. Do not invent feedback or claim hidden reasoning. Return exactly "
         "one JSON object and no markdown or commentary, with this shape: "
-        '{"assessments":[{"target_alias":"supplied-alias","association_effect":0.0,'
+        '{"assessments":[{' + target_field + ',"association_effect":0.0,'
         '"expression_effect":0.0,"confidence":0.0,"basis":"INSUFFICIENT",'
         '"evidence_refs":[],"reason":""}]}. '
-        "Use only supplied target aliases and evidence references. An empty assessments list "
+        + target_instruction
+        + "An empty assessments list "
         "is valid when no bounded change is justified. No change is an allowed result."
     )
 
 
-def review_request(packet: ArcPacket) -> dict[str, Any]:
+def review_request(packet: ArcPacket, *, compact_targets: bool = False) -> dict[str, Any]:
     """Return a model-visible review request with no administrative metadata."""
 
     # Exposure records are audit-rich internally.  The reviewer receives only
@@ -216,16 +238,55 @@ def review_request(packet: ArcPacket) -> dict[str, Any]:
                 if key in {"turn_ref", "payload", "context"}
             }
         )
+    if compact_targets:
+        targets: list[dict[str, Any]] = [
+            {"choice": index, "context": item.context}
+            for index, item in enumerate(packet.targets, start=1)
+        ]
+    else:
+        targets = [
+            {"target_alias": item.alias, "context": item.context}
+            for item in packet.targets
+        ]
     return {
         "arc_id": packet.arc_id,
         "messages": [dict(item) for item in packet.messages],
         "recorded_exposures": public_exposures,
-        "targets": [
-            {"target_alias": item.alias, "context": item.context}
-            for item in packet.targets
-        ],
+        "targets": targets,
         "missing_aftermath": packet.missing_aftermath,
     }
+
+
+def _resolve_target_alias(item: Mapping[str, Any], packet: ArcPacket) -> str | None:
+    """Resolve model-facing ordinal choices without exposing database IDs.
+
+    The compact contract deliberately accepts only a bounded 1-based choice
+    from the packet.  A few harmless spellings are accepted so a local model
+    can emit ``T1``/``target 1`` while still being resolved deterministically.
+    The legacy exact-alias path remains unchanged.
+    """
+
+    alias = item.get("target_alias")
+    if isinstance(alias, str):
+        if alias in {target.alias for target in packet.targets}:
+            return alias
+        normalized = alias.strip().lower().replace("_", " ")
+        match = re.fullmatch(r"(?:t(?:arget)?\s*)?(\d+)", normalized)
+        if match:
+            choice = int(match.group(1))
+            if 1 <= choice <= len(packet.targets):
+                return packet.targets[choice - 1].alias
+        return None
+
+    for key in ("target_choice", "choice", "target"):
+        choice = item.get(key)
+        if isinstance(choice, bool):
+            continue
+        if isinstance(choice, int) or (isinstance(choice, str) and choice.strip().isdigit()):
+            ordinal = int(choice)
+            if 1 <= ordinal <= len(packet.targets):
+                return packet.targets[ordinal - 1].alias
+    return None
 
 
 def parse_proposals(
@@ -243,6 +304,8 @@ def parse_proposals(
             raise IntrospectionError("reflection result is not JSON") from exc
     if not isinstance(value, Mapping):
         raise IntrospectionError("reflection result must be an object")
+    if "assessments" not in value and "proposals" not in value:
+        raise IntrospectionError("reflection result has no assessments list")
     raw = value.get("assessments", value.get("proposals", []))
     if not isinstance(raw, list) or len(raw) > MAX_TARGETS_PER_ARC:
         raise IntrospectionError("reflection assessments must be a bounded list")
@@ -252,8 +315,8 @@ def parse_proposals(
     for item in raw:
         if not isinstance(item, Mapping):
             raise IntrospectionError("reflection assessment must be an object")
-        alias = item.get("target_alias")
-        if not isinstance(alias, str) or alias not in aliases:
+        alias = _resolve_target_alias(item, packet)
+        if alias is None or alias not in aliases:
             raise IntrospectionError("reflection target alias is not supplied")
         evidence = item.get("evidence_refs", [])
         if not isinstance(evidence, list) or any(not isinstance(ref, str) for ref in evidence):
@@ -367,7 +430,7 @@ class IntrospectionLedger:
         if not destination.exists():
             return cls(destination, parent_digest=parent_digest)
         data = json.loads(destination.read_text(encoding="utf-8"))
-        if data.get("version") != INTROSPECTION_VERSION:
+        if data.get("version") not in _SUPPORTED_LEDGER_VERSIONS:
             raise IntrospectionError("unsupported introspection ledger version")
         adjustments = tuple(
             AcceptedAdjustment(

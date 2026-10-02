@@ -18,6 +18,7 @@ from mneme.contracts import GenerationRequest
 from mneme.controller import ResponseController, TurnIntent
 from mneme.development import (
     ArcPacket,
+    INTROSPECTION_VERSION,
     IntrospectionLedger,
     ReviewTarget,
     accept_proposals,
@@ -186,13 +187,53 @@ def _topics() -> list[ThreadSpec]:
 
 
 def _review_json(content: str) -> str:
+    """Extract a JSON object and close only a mechanically truncated suffix.
+
+    Local Gemma occasionally stops immediately after the final scalar while
+    the bounded object is otherwise valid.  We repair bracket closure only;
+    aliases, enums, references, and numeric fields still go through
+    ``parse_proposals`` unchanged.  Any other malformed output remains a
+    failed review and may use the separately budgeted repair call.
+    """
+
     text = content.strip()
     if text.startswith("```"):
         text = re.sub(r"^```(?:json)?\s*|\s*```$", "", text, flags=re.IGNORECASE | re.DOTALL)
     start = text.find("{")
-    end = text.rfind("}")
-    if start >= 0 and end > start:
-        return text[start : end + 1]
+    if start >= 0:
+        candidate = text[start:]
+        end = candidate.rfind("}")
+        if end > 0:
+            complete = candidate[: end + 1]
+            try:
+                json.loads(complete)
+                return complete
+            except json.JSONDecodeError:
+                candidate = complete
+        stack: list[str] = []
+        in_string = False
+        escaped = False
+        for character in candidate:
+            if in_string:
+                if escaped:
+                    escaped = False
+                elif character == "\\":
+                    escaped = True
+                elif character == '"':
+                    in_string = False
+                continue
+            if character == '"':
+                in_string = True
+            elif character in "[{":
+                stack.append("]" if character == "[" else "}")
+            elif character in "]}":
+                if stack and stack[-1] == character:
+                    stack.pop()
+                else:
+                    return candidate
+        if stack:
+            return candidate + "".join(reversed(stack))
+        return candidate
     return text
 
 
@@ -323,9 +364,9 @@ def _review(
         }
     request = GenerationRequest(
         messages=(
-            {"role": "user", "content": json.dumps(review_request(packet), ensure_ascii=False)},
+            {"role": "user", "content": json.dumps(review_request(packet, compact_targets=True), ensure_ascii=False)},
         ),
-        system=review_system_prompt(),
+        system=review_system_prompt(compact_targets=True),
         parameters={"temperature": 0.1, "top_p": 0.9, "max_new_tokens": 512},
         seed=reflection_seed,
     )
@@ -341,9 +382,9 @@ def _review(
         repair_request = GenerationRequest(
             messages=({"role": "user", "content": raw},),
             system=(
-                "Return only valid JSON with an assessments list using exactly the supplied target aliases, "
+                "Return only valid JSON with an assessments list using the supplied 1-based target_choice numbers, "
                 "numeric effects in [-1,1], confidence in [0,1], and supplied evidence references. "
-                "Do not invent an assessment."
+                "Do not invent an assessment or identifier."
             ),
             parameters={"temperature": 0.0, "top_p": 0.9, "max_new_tokens": 512},
             seed=formatting_seed,
@@ -498,7 +539,7 @@ def _make_pilot(
         "checkpoints": list(CHECKPOINTS),
         "probe_count": len(PROBES),
         "probe_seeds": list(PROBE_SEEDS),
-        "introspection_version": "p3-introspection-v2",
+        "introspection_version": INTROSPECTION_VERSION,
         "call_budget": {
             "hard_max": hard_max,
             "reservation_margin": RESERVATION_MARGIN,
@@ -536,7 +577,7 @@ def _make_pilot(
         max_output_tokens=2_000_000,
         qualification_calls=3,
         pilot_calls=planned - 3,
-        metadata={"experiment": "p3-introspect-100", "version": "p3-introspection-v2"},
+        metadata={"experiment": "p3-introspect-100", "version": INTROSPECTION_VERSION},
         role_bindings={
             "developing": host_role_binding("developing", gemma),
             "development-response": host_role_binding("development-response", gemma),
