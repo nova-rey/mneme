@@ -1576,3 +1576,4 @@ and dispositions remain unchanged.
 * 2026-10-02: Completed the D100 compact ancestor descendant trial with resident MSI local inference, shared Qwen trajectory, 10-thread I2/N2 development, live two-round introspection delivery, pre/post probes, and SAA removal/restoration; published compact readable evidence and preserved the non-normative ancestor boundary.
 * 2026-10-02: Closed the D100 ancestor, CompactStore runtime, and ten-thread introspection trial queue packages; parked the superseded historical 100-thread dispatch so no accidental rerun can start.
 * 2026-10-02: Added the minimal tools package marker so clean CI can import the copy-only D100 migration test without relying on a local PYTHONPATH override.
+* 2026-10-02: Added the repository root to pytest pythonpath so clean CI can collect repository-level migration harness tests exactly as local validation does.

@@ -29,6 +29,7 @@ packages = ["src/mneme"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["src", "."]
 markers = ["integration: requires a configured external or local model backend"]
 
 [tool.ruff]
