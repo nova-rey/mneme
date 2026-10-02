@@ -17,8 +17,8 @@ from typing import Any
 from mneme.contracts import GenerationRequest
 from mneme.controller import ResponseController, TurnIntent
 from mneme.development import (
-    ArcPacket,
     INTROSPECTION_VERSION,
+    ArcPacket,
     IntrospectionLedger,
     ReviewTarget,
     accept_proposals,

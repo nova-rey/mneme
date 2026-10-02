@@ -1563,3 +1563,4 @@ and dispositions remain unchanged.
 * 2026-10-02: Hardened CompactStore checkpoint publication against accidental destination replacement and removed an unused migration helper; no logical persistence behavior or historical evidence changed.
 * 2026-10-02: Replaced introspection's opaque target-alias contract with a deterministic numbered answer bank and lineage-compatible parser; Python now resolves canonical identities while Gemma supplies only bounded semantic judgments.
 * 2026-10-02: Published the post-P3 corrective engineering package: numbered introspection answer-bank qualification, compact persistence stress/recovery evidence, fork binding/treatment-health correction, and explicit SAA lottery provenance; no developmental rerun or historical evidence rewrite.
+* 2026-10-02: Reconciled post-correction Ruff import ordering and verified strict mypy, wheel build, and fresh-install import smoke; no runtime or historical evidence changed.

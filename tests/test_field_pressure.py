@@ -9,9 +9,9 @@ from mneme.development import (
     EdgeState,
     FieldConfig,
     LearnerState,
+    assess_saa_treatment_health,
     compute_field,
     compute_saa_field,
-    assess_saa_treatment_health,
 )
 from mneme.memory.graph import GraphConcept, GraphEdge
 
