@@ -1,0 +1,175 @@
+{
+  "schema": "mneme.post-p3.corrective-engineering.v1",
+  "date": "2026-10-01",
+  "historical_base": "ff414cd4d4c86ff418a3db16a4fdc79fae2c40d0",
+  "implementation_commits": [
+    "c6d96f9",
+    "2f89bd74a78030d121a774eb5f73493dd8a6b944",
+    "b89d596b8ec7ff471bd97b5661ad5625c5ac051b",
+    "789da76",
+    "20856ac"
+  ],
+  "historical_evidence_immutable": true,
+  "experiment_rerun": false,
+  "phase_four_started": false,
+  "introspection": {
+    "root_cause": "Gemma was required to reproduce opaque target aliases; archived reviews often invented aliases or emitted prose/fenced output that failed the exact schema.",
+    "chosen_contract": "p3-introspection-v2-answer-bank",
+    "changes": [
+      "numbered target answer bank",
+      "Python ordinal-to-canonical-target resolution",
+      "legacy v1 ledger loading retained",
+      "bounded JSON suffix repair for mechanically truncated objects"
+    ],
+    "offline_fixture_qualification": {
+      "fixtures": 8,
+      "strategies": {
+        "alias-answer-bank": {
+          "parseable_rate": 1.0,
+          "schema_valid_rate": 1.0,
+          "target_resolution_rate": 1.0,
+          "semantic_preservation_rate": 1.0,
+          "false_adjustments": 0,
+          "average_model_calls": 1.0
+        },
+        "numbered-answer-bank": {
+          "parseable_rate": 1.0,
+          "schema_valid_rate": 1.0,
+          "target_resolution_rate": 1.0,
+          "semantic_preservation_rate": 1.0,
+          "false_adjustments": 0,
+          "average_model_calls": 1.0
+        },
+        "two-stage-deterministic": {
+          "parseable_rate": 0.625,
+          "schema_valid_rate": 0.625,
+          "target_resolution_rate": 0.625,
+          "semantic_preservation_rate": 1.0,
+          "false_adjustments": 0,
+          "average_model_calls": 1.0
+        },
+        "fill-in-json": {
+          "parseable_rate": 1.0,
+          "schema_valid_rate": 1.0,
+          "target_resolution_rate": 1.0,
+          "semantic_preservation_rate": 1.0,
+          "false_adjustments": 0,
+          "average_model_calls": 1.0
+        }
+      },
+      "chosen": "numbered-answer-bank",
+      "artifact": "docs/receipts/MNEME_Post_P3_Introspection_Qualification_20261001.json",
+      "qualification_scope": "offline contract/fixture qualification; historical packets are read-only"
+    },
+    "treatment_fixtures": {
+      "positive": 1,
+      "negative": 2,
+      "neutral_or_abstain": 1,
+      "production_saa_odds_changed": true,
+      "duplicate_credit": 0
+    },
+    "live_note": "A preserved local-Gemma smoke and the prior v2 qualification are retained as evidence; the compact contract is guarded by deterministic parsing and does not claim a new 100-thread live study."
+  },
+  "persistence": {
+    "root_cause": "Research SQLite co-located repeated learner updates/values, full graph snapshots, full learner snapshots, indexes, and checkpoint copies.",
+    "new_mode": "CompactStore schema v1",
+    "representation": [
+      "one current learner value per edge/context",
+      "unchanged-value suppression",
+      "bounded delta journal",
+      "current graph plus graph revision deltas",
+      "optional research telemetry",
+      "atomic free-space-guarded checkpoints",
+      "copy-only migration"
+    ],
+    "legacy_state_mutated": false,
+    "stress": {
+      "events_10000": {
+        "checkpoint_bytes": 176128,
+        "learner_state_rows": 256,
+        "journal_rows": 256
+      },
+      "events_100000": {
+        "checkpoint_bytes": 176128,
+        "learner_state_rows": 256,
+        "journal_rows": 256
+      },
+      "events_1000000": {
+        "checkpoint_bytes": 737280,
+        "learner_state_rows": 256,
+        "journal_rows": 2560
+      },
+      "all_digest_matches": true,
+      "all_verify_passed": true,
+      "crash_recovery": "interrupted child exited 17; prior committed value recovered; verify passed"
+    },
+    "migration": {
+      "source_fixture": "P3 r8 I subject copy",
+      "nodes": 212,
+      "edges": 168,
+      "routes": 8,
+      "learner_values": 165,
+      "verification": []
+    },
+    "limitation": "CompactStore is an explicit persistence mode; existing SQLiteStore remains the historical/runtime-compatible path until a separately authorized migration."
+  },
+  "binding_and_health": {
+    "thread25_root_cause": "Forked child binding lookup was scoped to child instance while inherited semantic bindings remained parent-owned; positive learner canonical keys could not resolve to child graph edges.",
+    "fix": "Resolve semantic bindings through root-to-child ancestry, child-local rows last; no immutable binding duplication.",
+    "statuses": [
+      "cold_start",
+      "disabled",
+      "blocked",
+      "healthy",
+      "binding_mismatch",
+      "empty_distribution",
+      "missing_landing",
+      "zero_pressure",
+      "empty_payload"
+    ],
+    "thread76": "Historical cause remains unresolved; corrected health classifier will surface the same binding/distribution/landing boundary immediately in future runs. No historical rerun or relabeling.",
+    "focused_tests": 45
+  },
+  "lottery": {
+    "finding": "SAA v1 uses one seeded weighted draw over the final accessibility distribution; it does not call the auxiliary exploration-pool selector.",
+    "historical_flag_explanation": "exploration_selected was unconditionally set on SAA landing contributions, so 1459/1463 reflected trace labeling rather than exploration-pool selection.",
+    "instrumentation": [
+      "selection_mode",
+      "landing_selection",
+      "landing_component",
+      "distribution_components",
+      "candidate_component"
+    ],
+    "familiar": {
+      "distribution": {
+        "e1": 0.769231,
+        "e2": 0.230769
+      },
+      "e1_hits_2000": 1568
+    },
+    "novel": {
+      "distribution": {
+        "e1": 0.5,
+        "e2": 0.5
+      },
+      "e1_hits_2000": 1017
+    },
+    "same_seed_replay": true,
+    "exploration_off_preserves_distribution": true,
+    "algorithm_changed": false
+  },
+  "validation": {
+    "pytest_full": "562 passed",
+    "pytest_focused": "63 passed",
+    "ruff": "passed via uv run --with ruff",
+    "mypy": "passed via uvx --from mypy mypy src/mneme",
+    "build_smoke": "not rerun in this correction round",
+    "ci": "pending final publication commit/push verification"
+  },
+  "limitations": [
+    "No 100-thread rerun was performed.",
+    "No new hosted/provider experiment was run.",
+    "Live Gemma semantic reliability remains bounded by the preserved qualification/smoke artifacts; the implementation removes clerical alias burden but does not claim perfect model judgment.",
+    "CompactStore migration preserves tested current state and provenance references on copies, but is not silently installed as the historical SQLite runtime."
+  ]
+}

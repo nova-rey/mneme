@@ -273,17 +273,19 @@ def _resolve_target_alias(item: Mapping[str, Any], packet: ArcPacket) -> str | N
         normalized = alias.strip().lower().replace("_", " ")
         match = re.fullmatch(r"(?:t(?:arget)?\s*)?(\d+)", normalized)
         if match:
-            choice = int(match.group(1))
-            if 1 <= choice <= len(packet.targets):
-                return packet.targets[choice - 1].alias
+            ordinal = int(match.group(1))
+            if 1 <= ordinal <= len(packet.targets):
+                return packet.targets[ordinal - 1].alias
         return None
 
     for key in ("target_choice", "choice", "target"):
-        choice = item.get(key)
-        if isinstance(choice, bool):
+        raw_choice: Any = item.get(key)
+        if isinstance(raw_choice, bool):
             continue
-        if isinstance(choice, int) or (isinstance(choice, str) and choice.strip().isdigit()):
-            ordinal = int(choice)
+        if isinstance(raw_choice, int) or (
+            isinstance(raw_choice, str) and raw_choice.strip().isdigit()
+        ):
+            ordinal = int(raw_choice)
             if 1 <= ordinal <= len(packet.targets):
                 return packet.targets[ordinal - 1].alias
     return None
