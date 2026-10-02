@@ -412,7 +412,9 @@ def replay(records_path: Path, output: Path) -> dict[str, Any]:
         )
     )
     with (output / "matrix.csv").open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=columns, extrasaction="ignore")
+        writer = csv.DictWriter(
+            handle, fieldnames=columns, extrasaction="ignore", lineterminator="\n"
+        )
         writer.writeheader()
         writer.writerows(matrix)
     transcript = [
@@ -432,7 +434,9 @@ def replay(records_path: Path, output: Path) -> dict[str, Any]:
                 "",
             ]
         )
-    (output / "transcripts.md").write_text("\n".join(transcript))
+    # Keep raw provider whitespace in records.json; normalize the readable export.
+    rendered = "\n".join(line.rstrip() for line in "\n".join(transcript).splitlines())
+    (output / "transcripts.md").write_text(rendered + "\n")
     return {
         "status": "REPLAYED",
         "turns": len(matrix),

@@ -1,5 +1,6 @@
 {
   "base_sha": "99075e4d40e1df40d82b70422c89192cfbdacd63",
+  "export_hygiene": "CSV uses LF; readable transcript strips trailing whitespace; raw provider output preserved in calls.json/records.json",
   "live_evidence": {
     "accepted_turns": 40,
     "active_learner_value_digests_excluding_fork_metadata": {
@@ -40,18 +41,18 @@
     "docs/experiments/arc_measurements/calls.json": "0d74fd4a5c54d5ebbd3e898ff91293cc61c00d86c3f02f59c1bb70e2ee275e73",
     "docs/experiments/arc_measurements/construction.json": "24da36e1f02c6f575786c5654a6fd9659182d84a4702e83412739be862647d82",
     "docs/experiments/arc_measurements/construction.md": "2cb958d1d9082935d6ef030f6fa982bf8403778be6c44259a73a0d35ff8d119e",
-    "docs/experiments/arc_measurements/matrix.csv": "74bb545f07adda03dba576f28dbad55588fd7d61e66b6b27cfb0b2c4aeef9a87",
+    "docs/experiments/arc_measurements/matrix.csv": "8292d9cde9b3b495120a364aeba1517767c550ea85a8b444758a2f81df8eb117",
     "docs/experiments/arc_measurements/matrix.json": "5aa36142601a77666248483cf6ad72e5c55a724ab5749f5f2cae3f93c1872fd2",
     "docs/experiments/arc_measurements/matrix.md": "d722850ee06e319f7e967eb7e3c71f8d5d51659f77e35bdf67f042201eef2bf6",
     "docs/experiments/arc_measurements/records.json": "4276a89163f7275c141ff6c8142959cbbd8d8fa30e85d31cd81b0d280aee3fc3",
     "docs/experiments/arc_measurements/report.md": "0a64fd67d2b38958b04bf537525f65ec3c5f01a67fae1c806d33b3039211fd8c",
     "docs/experiments/arc_measurements/state_checks.json": "eebc973216f75f9afa96ed1e356132bf7f332e2ba409a07d92e73626822e4699",
     "docs/experiments/arc_measurements/summary.json": "c852c0183e02b36241740b245168995ed8c6a2b05c03906b6fbc9e5103670145",
-    "docs/experiments/arc_measurements/transcripts.md": "9581384411e83cdca40c37c420eb4300a623ef895b194fb3b0288634f31461e8",
+    "docs/experiments/arc_measurements/transcripts.md": "e103a898c16b73d2b6d5b101615d6b6f1fc94bda4e8e6b325facd370e9f06109",
     "src/mneme/experiments/arc_measurements.py": "3b645eebda292b8c9119b4237387bd9e5543af16645413812c7e565e455466fc",
     "tests/test_arc_measurement_runner.py": "c46f8bdd68a98c794c0d21dfbfaaa5c13f048ba6b74738f64aaae85298cc871c",
     "tests/test_arc_measurements.py": "7b40ab6b0e1f6610c11178fdddabf1121253996fb54d0e624dbb7875db3a7a36",
-    "tools/run_arc_measurements.py": "6189141e9204d94eb049a456ac498fc9df12baa71e39fdb67365bc06b36790d5"
+    "tools/run_arc_measurements.py": "50c6c4dce8b797b274d82cb5e3b290508091315ebecf11974b7ccf3721b2de96"
   },
   "tests": [
     {
@@ -72,6 +73,12 @@
     {
       "command": "git diff --check",
       "result": "PASS"
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q tests/test_arc_measurement_runner.py",
+      "passed": 5,
+      "result": "PASS",
+      "scope": "After LF CSV and readable-transcript whitespace normalization; raw inputs and matrix digest unchanged"
     }
   ],
   "validated_at": "2026-10-02T17:48:12.657953+00:00"

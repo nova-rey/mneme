@@ -142,7 +142,7 @@ Here is how that combination would likely help:
 
 **Gemma:** That's a very practical concern, because **evaporation** is the biggest enemy when trying to keep a system moist!
 
-When you introduce a "hybrid" system (like a cotton layer on top of a synthetic wick), you are essentially creating a **multi-stage filtration system**. 
+When you introduce a "hybrid" system (like a cotton layer on top of a synthetic wick), you are essentially creating a **multi-stage filtration system**.
 
 Here is how that setup handles evaporation and moisture loss:
 
