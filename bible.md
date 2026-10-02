@@ -1565,3 +1565,4 @@ and dispositions remain unchanged.
 * 2026-10-02: Published the post-P3 corrective engineering package: numbered introspection answer-bank qualification, compact persistence stress/recovery evidence, fork binding/treatment-health correction, and explicit SAA lottery provenance; no developmental rerun or historical evidence rewrite.
 * 2026-10-02: Reconciled post-correction Ruff import ordering and verified strict mypy, wheel build, and fresh-install import smoke; no runtime or historical evidence changed.
 * 2026-10-02: Recorded successful corrective wheel build and fresh-install smoke in the post-P3 report; CI remains the final remote verification boundary.
+* 2026-10-02: Verified GitHub CI run 36949414570 for the post-P3 corrective implementation; report now records the passing remote validation.

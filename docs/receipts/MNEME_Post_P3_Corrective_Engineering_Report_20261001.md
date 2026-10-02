@@ -36,6 +36,6 @@ Synthetic checks produced a familiar distribution of e1=0.769231/e2=0.230769 wit
 
 ## Validation and limits
 
-The full suite passed **562 tests**; the focused correction suite passed **63 tests**. Ruff passed through the pinned-on-demand tool invocation, and strict mypy passed via `uvx --from mypy mypy src/mneme`. Wheel build and fresh-install import smoke passed. CI is the remaining publication-bound check. No model experiment, Phase Four work, persistence redesign of the historical runtime, or historical receipt mutation is included.
+The full suite passed **562 tests**; the focused correction suite passed **63 tests**. Ruff passed through the pinned-on-demand tool invocation, and strict mypy passed via `uvx --from mypy mypy src/mneme`. Wheel build and fresh-install import smoke passed. CI passed on GitHub for the published implementation (`36949414570`, head `d4b1e13`). No model experiment, Phase Four work, persistence redesign of the historical runtime, or historical receipt mutation is included.
 
 Machine-readable counts and hashes are in [the JSON report](MNEME_Post_P3_Corrective_Engineering_Report_20261001.json).
