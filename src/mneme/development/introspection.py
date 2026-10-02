@@ -21,11 +21,18 @@ from enum import StrEnum
 from pathlib import Path
 from typing import Any, cast
 
-# Version the reviewer-facing contract separately from the historical ledger
-# format.  Existing v1 ledgers remain loadable for replay; new ledgers record
-# that the compact answer-bank contract was used.
+# Version the reviewer-facing contract separately from historical ledger
+# formats. Existing ledgers retain their v2 identifier; new two-round ledgers
+# identify the live-Gemma contract explicitly.
+INTROSPECTION_ROUND_TWO_VERSION = "p3-introspection-v3-live-round-two"
 INTROSPECTION_VERSION = "p3-introspection-v2-answer-bank"
-_SUPPORTED_LEDGER_VERSIONS = frozenset({"p3-introspection-v1", INTROSPECTION_VERSION})
+_SUPPORTED_LEDGER_VERSIONS = frozenset(
+    {
+        "p3-introspection-v1",
+        INTROSPECTION_VERSION,
+        INTROSPECTION_ROUND_TWO_VERSION,
+    }
+)
 MAX_ARC_CHARS = 24_000
 MAX_TARGETS_PER_ARC = 8
 MAX_EFFECT = 1.0
@@ -33,6 +40,18 @@ MAX_CONFIDENCE = 1.0
 SELF_ONLY_MAX_DELTA = 80_000
 EXTERNAL_MAX_DELTA = 200_000
 MAX_ARC_BUDGET = 200_000
+MAX_REFLECTION_CHARS = 12_000
+
+
+class FilingLevel(StrEnum):
+    """Bounded filing contracts qualified against the local Gemma runtime."""
+
+    FULL_JSON = "full_json"
+    COMPACT_JSON = "compact_json"
+    MULTIPLE_CHOICE_JSON = "multiple_choice_json"
+    KEY_VALUE = "key_value"
+    MINIMAL = "minimal"
+    MICROCALL = "microcall"
 
 
 class IntrospectionError(ValueError):
@@ -130,9 +149,7 @@ class ReflectionProposal:
             raise IntrospectionError("confidence is outside [0,1]")
         try:
             basis = (
-                self.basis
-                if isinstance(self.basis, EvidenceBasis)
-                else EvidenceBasis(self.basis)
+                self.basis if isinstance(self.basis, EvidenceBasis) else EvidenceBasis(self.basis)
             )
         except ValueError as exc:
             raise IntrospectionError("unsupported evidence basis") from exc
@@ -216,11 +233,132 @@ def review_system_prompt(*, compact_targets: bool = False) -> str:
         "one JSON object and no markdown or commentary, with this shape: "
         '{"assessments":[{' + target_field + ',"association_effect":0.0,'
         '"expression_effect":0.0,"confidence":0.0,"basis":"INSUFFICIENT",'
-        '"evidence_refs":[],"reason":""}]}. '
-        + target_instruction
-        + "An empty assessments list "
+        '"evidence_refs":[],"reason":""}]}. ' + target_instruction + "An empty assessments list "
         "is valid when no bounded change is justified. No change is an allowed result."
     )
+
+
+def reflection_system_prompt() -> str:
+    """Return the unconstrained first round of introspection.
+
+    This round is intentionally prose-first.  It gives the small host a
+    realistic opportunity to judge the preceding interaction before Python
+    asks it to perform the separate clerical filing step.
+    """
+
+    return (
+        "This is a private internal reflection about a completed conversational arc. "
+        "You are reviewing your own immediately preceding interaction and recorded "
+        "associative framings. Ordinary developmental learning is paused during this "
+        "review. Think naturally in concise prose: say which supplied associations "
+        "were useful, harmful, distracting, neutral, or uncertain, and whether an "
+        "association was worth expressing or better left latent. Ground yourself in "
+        "the supplied interaction and do not invent targets, feedback, outcomes, or "
+        "hidden reasoning. This is not a database form. Do not output JSON, aliases, "
+        "edge IDs, evidence-reference syntax, or database vocabulary."
+    )
+
+
+def reflection_request(packet: ArcPacket) -> dict[str, Any]:
+    """Build the model-visible prose reflection packet.
+
+    Opaque graph identity is withheld.  Target numbers are only stable handles
+    for the second round; the reflection itself is free to discuss the supplied
+    concepts in ordinary language.
+    """
+
+    exposure_rows = []
+    for index, target in enumerate(packet.targets, start=1):
+        exposure_rows.append(
+            {
+                "target_number": index,
+                "association_context": target.context,
+                "exposure_refs": list(target.exposure_refs),
+                "exposure": [
+                    {
+                        key: value
+                        for key, value in exposure.items()
+                        if key in {"turn_ref", "payload", "context"}
+                    }
+                    for exposure in packet.exposures
+                    if not target.exposure_refs
+                    or str(exposure.get("turn_ref", "")) in set(target.exposure_refs)
+                ],
+            }
+        )
+    return {
+        "arc_id": packet.arc_id,
+        "messages": [dict(item) for item in packet.messages],
+        "recorded_associations": exposure_rows,
+        "missing_aftermath": packet.missing_aftermath,
+    }
+
+
+def filing_system_prompt(level: FilingLevel | str = FilingLevel.COMPACT_JSON) -> str:
+    """Return a constrained second-round filing contract.
+
+    All legal values are presented explicitly so Python can retain canonical
+    identity, validation, and state mutation responsibilities.
+    """
+
+    selected = FilingLevel(level)
+    if selected is FilingLevel.FULL_JSON:
+        form = (
+            '{"target_choice":1,"association_effect":0.0,"expression_effect":0.0,'
+            '"confidence":0.0,"basis":"INSUFFICIENT","evidence_refs":[],'
+            '"abstain":false}'
+        )
+    elif selected is FilingLevel.COMPACT_JSON:
+        form = (
+            '{"target":1,"association":0,"expression":0,"confidence":0,'
+            '"basis":"SELF_ONLY","evidence":[]}'
+        )
+    elif selected is FilingLevel.MULTIPLE_CHOICE_JSON:
+        form = (
+            '{"target":1,"effect":"C","expression":"C","confidence":3,'
+            '"basis":"SELF_ONLY","evidence":[]}'
+        )
+    elif selected is FilingLevel.KEY_VALUE:
+        form = "TARGET: 1\nASSOCIATION: C\nEXPRESSION: C\nCONFIDENCE: 3"
+    elif selected is FilingLevel.MINIMAL:
+        form = "1 C C 3"
+    else:
+        form = "Reply with one integer only for each question."
+    return (
+        "Translate the opinion you just expressed into this filing form. "
+        "This is clerical transcription, not a new reflection. Use only the supplied "
+        "target numbers, evidence labels, and legal choices. Never invent an alias, "
+        "ID, quote, or target. A target of 0 means abstain. Association and expression "
+        "use: -2 substantially worse, -1 somewhat worse, 0 neutral, 1 somewhat better, "
+        "2 substantially better. Confidence uses 0 none, 1 low, 2 medium, 3 high, "
+        "4 very high. If evidence is insufficient, abstain. Return only the requested "
+        f"form, with no explanation. Example shape: {form}"
+    )
+
+
+def filing_request(
+    packet: ArcPacket,
+    reflection: str,
+    *,
+    level: FilingLevel | str = FilingLevel.COMPACT_JSON,
+) -> dict[str, Any]:
+    """Build a bounded Round-Two answer bank plus the preserved reflection."""
+
+    selected = FilingLevel(level)
+    choices = [
+        {"number": index, "context": target.context}
+        for index, target in enumerate(packet.targets, start=1)
+    ]
+    return {
+        "arc_id": packet.arc_id,
+        "reflection": str(reflection)[:MAX_REFLECTION_CHARS],
+        "target_answer_bank": choices,
+        "evidence_labels": sorted(
+            {str(item.get("turn_ref")) for item in packet.exposures if item.get("turn_ref")}
+        ),
+        "filing_level": selected.value,
+        "missing_aftermath": packet.missing_aftermath,
+    }
 
 
 def review_request(packet: ArcPacket, *, compact_targets: bool = False) -> dict[str, Any]:
@@ -244,10 +382,7 @@ def review_request(packet: ArcPacket, *, compact_targets: bool = False) -> dict[
             for index, item in enumerate(packet.targets, start=1)
         ]
     else:
-        targets = [
-            {"target_alias": item.alias, "context": item.context}
-            for item in packet.targets
-        ]
+        targets = [{"target_alias": item.alias, "context": item.context} for item in packet.targets]
     return {
         "arc_id": packet.arc_id,
         "messages": [dict(item) for item in packet.messages],
@@ -339,6 +474,163 @@ def parse_proposals(
             )
         )
     return tuple(result)
+
+
+_EFFECT_CODES = {
+    "A": -1.0,
+    "B": -0.5,
+    "C": 0.0,
+    "D": 0.5,
+    "E": 1.0,
+}
+_ORDINAL_EFFECTS = {-2: -1.0, -1: -0.5, 0: 0.0, 1: 0.5, 2: 1.0}
+
+
+def _number(value: Any, *, name: str) -> int:
+    if isinstance(value, bool):
+        raise IntrospectionError(f"{name} must be an integer")
+    try:
+        parsed = int(value)
+    except (TypeError, ValueError) as exc:
+        raise IntrospectionError(f"{name} must be an integer") from exc
+    if str(value).strip() not in {str(parsed), f"{parsed}.0"}:
+        raise IntrospectionError(f"{name} must be an integer")
+    return parsed
+
+
+def _filing_object(value: Any) -> Mapping[str, Any]:
+    if isinstance(value, str):
+        try:
+            value = json.loads(value)
+        except json.JSONDecodeError as exc:
+            raise IntrospectionError("filing result is not JSON") from exc
+    if not isinstance(value, Mapping):
+        raise IntrospectionError("filing result must be an object")
+    return value
+
+
+def parse_filing(
+    value: Any,
+    packet: ArcPacket,
+    *,
+    level: FilingLevel | str = FilingLevel.COMPACT_JSON,
+    valid_evidence_refs: set[str] | None = None,
+) -> tuple[ReflectionProposal, ...]:
+    """Convert the constrained filing form into canonical proposals.
+
+    This is deliberately deterministic: target choice and enum translation
+    happen in Python after the model has selected from the visible answer bank.
+    """
+
+    selected = FilingLevel(level)
+    if selected is FilingLevel.FULL_JSON:
+        obj = _filing_object(value)
+        if "assessments" not in obj:
+            if _number(obj.get("target_choice", obj.get("target", 0)), name="target") == 0:
+                return ()
+            obj = {"assessments": [dict(obj)]}
+        return parse_proposals(obj, packet, valid_evidence_refs=valid_evidence_refs)
+
+    if selected is FilingLevel.COMPACT_JSON:
+        obj = _filing_object(value)
+        target = _number(obj.get("target", obj.get("target_choice", 0)), name="target")
+        association = _number(obj.get("association", 0), name="association")
+        expression = _number(obj.get("expression", 0), name="expression")
+        confidence = _number(obj.get("confidence", 0), name="confidence")
+        if association not in _ORDINAL_EFFECTS or expression not in _ORDINAL_EFFECTS:
+            raise IntrospectionError("compact effects must be in [-2,-1,0,1,2]")
+        if not 0 <= confidence <= 4:
+            raise IntrospectionError("compact confidence must be in [0,4]")
+        if target == 0:
+            return ()
+        proposal = {
+            "target_choice": target,
+            "association_effect": _ORDINAL_EFFECTS[association],
+            "expression_effect": _ORDINAL_EFFECTS[expression],
+            "confidence": confidence / 4.0,
+            "basis": str(obj.get("basis", "SELF_ONLY")),
+            "evidence_refs": list(obj.get("evidence_refs", obj.get("evidence", []))),
+            "reason": str(obj.get("reason", "")),
+            "abstain": target == 0,
+        }
+        return parse_proposals(
+            {"assessments": [proposal]}, packet, valid_evidence_refs=valid_evidence_refs
+        )
+
+    if selected is FilingLevel.MULTIPLE_CHOICE_JSON:
+        obj = _filing_object(value)
+        target = _number(obj.get("target", 0), name="target")
+        mc_association = str(obj.get("effect", "C")).strip().upper()
+        mc_expression = str(obj.get("expression", "C")).strip().upper()
+        confidence = _number(obj.get("confidence", 0), name="confidence")
+        if mc_association not in _EFFECT_CODES or mc_expression not in _EFFECT_CODES:
+            raise IntrospectionError("multiple-choice effects must be A/B/C/D/E")
+        if not 0 <= confidence <= 4:
+            raise IntrospectionError("multiple-choice confidence must be in [0,4]")
+        if target == 0:
+            return ()
+        proposal = {
+            "target_choice": target,
+            "association_effect": _EFFECT_CODES[mc_association],
+            "expression_effect": _EFFECT_CODES[mc_expression],
+            "confidence": confidence / 4.0,
+            "basis": str(obj.get("basis", "SELF_ONLY")),
+            "evidence_refs": list(obj.get("evidence_refs", obj.get("evidence", []))),
+            "reason": str(obj.get("reason", "")),
+            "abstain": target == 0,
+        }
+        return parse_proposals(
+            {"assessments": [proposal]}, packet, valid_evidence_refs=valid_evidence_refs
+        )
+
+    if selected is FilingLevel.KEY_VALUE:
+        if not isinstance(value, str):
+            raise IntrospectionError("key/value filing must be text")
+        fields: dict[str, str] = {}
+        for line in value.splitlines():
+            if ":" not in line:
+                continue
+            key, raw = line.split(":", 1)
+            fields[key.strip().lower()] = raw.strip()
+        kv_target = fields.get("target", "0")
+        kv_association = fields.get("association", "C").upper()
+        kv_expression = fields.get("expression", "C").upper()
+        kv_confidence = fields.get("confidence", "0")
+        return parse_filing(
+            {
+                "target": kv_target,
+                "effect": kv_association,
+                "expression": kv_expression,
+                "confidence": kv_confidence,
+                "basis": fields.get("basis", "SELF_ONLY"),
+                "evidence_refs": [
+                    x.strip() for x in fields.get("evidence", "").split(",") if x.strip()
+                ],
+            },
+            packet,
+            level=FilingLevel.MULTIPLE_CHOICE_JSON,
+            valid_evidence_refs=valid_evidence_refs,
+        )
+
+    if selected is FilingLevel.MINIMAL:
+        if not isinstance(value, str):
+            raise IntrospectionError("minimal filing must be text")
+        tokens = value.strip().split()
+        if len(tokens) != 4:
+            raise IntrospectionError("minimal filing requires four tokens")
+        return parse_filing(
+            {
+                "target": tokens[0],
+                "effect": tokens[1],
+                "expression": tokens[2],
+                "confidence": tokens[3],
+            },
+            packet,
+            level=FilingLevel.MULTIPLE_CHOICE_JSON,
+            valid_evidence_refs=valid_evidence_refs,
+        )
+
+    raise IntrospectionError("microcall filings require the staged parser")
 
 
 def _basis_cap(basis: EvidenceBasis) -> int:
@@ -436,11 +728,16 @@ class IntrospectionLedger:
             raise IntrospectionError("unsupported introspection ledger version")
         adjustments = tuple(
             AcceptedAdjustment(
-                str(item["arc_id"]), str(item["target_alias"]), str(item["edge_key"]),
-                str(item["context"]), int(item["association_delta"]),
-                int(item["expression_delta"]), EvidenceBasis(item["basis"]),
+                str(item["arc_id"]),
+                str(item["target_alias"]),
+                str(item["edge_key"]),
+                str(item["context"]),
+                int(item["association_delta"]),
+                int(item["expression_delta"]),
+                EvidenceBasis(item["basis"]),
                 tuple(str(x) for x in item.get("evidence_refs", [])),
-                str(item["proposal_digest"]), str(item.get("reason", "")),
+                str(item["proposal_digest"]),
+                str(item.get("reason", "")),
             )
             for item in data.get("adjustments", [])
         )
@@ -471,17 +768,37 @@ class IntrospectionLedger:
         *,
         accepted: tuple[AcceptedAdjustment, ...],
         status: str = "COMPLETE",
+        review_metadata: Mapping[str, Any] | None = None,
     ) -> None:
-        self.reviews.append(
-            {
-                "arc_id": packet.arc_id,
-                "packet_digest": packet.digest,
-                "status": status,
-                "proposals": [item.to_dict() for item in proposals],
-                "accepted": [item.to_dict() for item in accepted],
-                "ordinary_learning": False,
-            }
-        )
+        review = {
+            "arc_id": packet.arc_id,
+            "packet_digest": packet.digest,
+            "status": status,
+            "proposals": [item.to_dict() for item in proposals],
+            "accepted": [item.to_dict() for item in accepted],
+            "ordinary_learning": False,
+        }
+        if review_metadata:
+            # Metadata is an audit sidecar, never input to model generation or
+            # learner updates.  Keep it JSON-shaped and bounded at the ledger
+            # boundary so an unexpectedly verbose reflection cannot exhaust
+            # the normal introspection store.
+            for key, value in review_metadata.items():
+                if key in {
+                    "reflection",
+                    "filing",
+                    "fallback",
+                    "reflection_seed",
+                    "filing_seed",
+                    "formatting_seed",
+                    "filing_level",
+                    "status_detail",
+                }:
+                    if isinstance(value, str):
+                        review[key] = value[:MAX_REFLECTION_CHARS]
+                    elif isinstance(value, (int, float, bool)) or value is None:
+                        review[key] = value
+        self.reviews.append(review)
         self.adjustments.extend(accepted)
         self.dedup_keys.update(item.proposal_digest for item in accepted)
 
@@ -511,13 +828,20 @@ __all__ = [
     "AcceptedAdjustment",
     "ArcPacket",
     "EvidenceBasis",
+    "FilingLevel",
     "INTROSPECTION_VERSION",
+    "INTROSPECTION_ROUND_TWO_VERSION",
     "IntrospectionError",
     "IntrospectionLedger",
     "ReflectionProposal",
     "ReviewTarget",
     "accept_proposals",
+    "filing_request",
+    "filing_system_prompt",
     "parse_proposals",
+    "parse_filing",
+    "reflection_request",
+    "reflection_system_prompt",
     "review_request",
     "review_system_prompt",
 ]

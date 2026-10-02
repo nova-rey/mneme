@@ -10,12 +10,18 @@ from mneme.controller import ResponseController, TurnIntent
 from mneme.development import (
     ArcPacket,
     EvidenceBasis,
+    FilingLevel,
     IntrospectionError,
     IntrospectionLedger,
     ReflectionProposal,
     ReviewTarget,
     accept_proposals,
+    filing_request,
+    filing_system_prompt,
+    parse_filing,
     parse_proposals,
+    reflection_request,
+    reflection_system_prompt,
     review_request,
 )
 from mneme.development.field import compute_saa_field
@@ -66,6 +72,105 @@ def test_compact_review_request_uses_bounded_numbered_answer_bank() -> None:
     assert "edge_key" not in json.dumps(request)
 
 
+def test_round_one_is_prose_reflection_and_round_two_is_clerical() -> None:
+    packet = _packet()
+    first = reflection_request(packet)
+    assert first["messages"] == [dict(item) for item in packet.messages]
+    assert "edge_key" not in json.dumps(first)
+    assert "JSON" in reflection_system_prompt()
+    second = filing_request(packet, "The passive supply was useful but its expression was neutral.")
+    assert second["reflection"].startswith("The passive supply")
+    assert second["target_answer_bank"] == [{"number": 1, "context": "maintenance"}]
+    assert "clerical" in filing_system_prompt()
+
+
+def test_compact_filing_resolves_target_and_maps_bounded_ordinals() -> None:
+    proposal = parse_filing(
+        '{"target":1,"association":2,"expression":-1,"confidence":4}',
+        _packet(),
+        level=FilingLevel.COMPACT_JSON,
+        valid_evidence_refs={"turn-1"},
+    )[0]
+    assert proposal.target_alias == "t1"
+    assert proposal.association_effect == 1.0
+    assert proposal.expression_effect == -0.5
+    assert proposal.confidence == 1.0
+
+
+@pytest.mark.parametrize(
+    ("level", "value"),
+    [
+        (
+            FilingLevel.MULTIPLE_CHOICE_JSON,
+            '{"target":1,"effect":"B","expression":"D","confidence":3}',
+        ),
+        (FilingLevel.KEY_VALUE, "TARGET: 1\nASSOCIATION: B\nEXPRESSION: D\nCONFIDENCE: 3"),
+        (FilingLevel.MINIMAL, "1 B D 3"),
+    ],
+)
+def test_round_two_small_forms_have_one_deterministic_parser(
+    level: FilingLevel, value: str
+) -> None:
+    proposals = parse_filing(value, _packet(), level=level, valid_evidence_refs={"turn-1"})
+    assert len(proposals) == 1
+    assert proposals[0].target_alias == "t1"
+    assert proposals[0].association_effect == -0.5
+    assert proposals[0].expression_effect == 0.5
+
+
+def test_round_two_abstention_is_safe_and_does_not_require_target_ids() -> None:
+    assert (
+        parse_filing(
+            '{"target":0,"association":0,"expression":0,"confidence":0}',
+            _packet(),
+            level=FilingLevel.COMPACT_JSON,
+        )
+        == ()
+    )
+
+
+def test_round_two_rejects_invented_target_and_illegal_values() -> None:
+    with pytest.raises(IntrospectionError):
+        parse_filing(
+            '{"target":2,"association":0,"expression":0,"confidence":0}',
+            _packet(),
+            level=FilingLevel.COMPACT_JSON,
+        )
+    with pytest.raises(IntrospectionError):
+        parse_filing(
+            '{"target":1,"association":9,"expression":0,"confidence":0}',
+            _packet(),
+            level=FilingLevel.COMPACT_JSON,
+        )
+
+
+@pytest.mark.parametrize(
+    ("name", "filing", "expects_adjustment"),
+    [
+        ("positive", '{"target":1,"association":2,"expression":1,"confidence":4}', True),
+        ("negative", '{"target":1,"association":-2,"expression":-1,"confidence":4}', True),
+        ("expression-only", '{"target":1,"association":0,"expression":-2,"confidence":4}', True),
+        ("neutral", '{"target":1,"association":0,"expression":0,"confidence":0}', False),
+        ("insufficient", '{"target":0,"association":0,"expression":0,"confidence":0}', False),
+    ],
+)
+def test_round_two_filing_reaches_bounded_state_mutation_cases(
+    name: str, filing: str, expects_adjustment: bool
+) -> None:
+    packet = _packet()
+    proposals = parse_filing(filing, packet, level=FilingLevel.COMPACT_JSON)
+    accepted = accept_proposals(packet, proposals)
+    assert bool(accepted) is expects_adjustment, name
+    if name == "expression-only":
+        assert accepted[0].association_delta == 0
+        assert accepted[0].expression_delta < 0
+
+
+def test_round_two_malformed_filing_abstains_safely_at_boundary() -> None:
+    with pytest.raises(IntrospectionError):
+        parse_filing("not a filing", _packet(), level=FilingLevel.COMPACT_JSON)
+
+
 def test_parser_resolves_numbered_target_without_exposing_opaque_alias() -> None:
     packet = ArcPacket(
         "arc-choices",
@@ -94,10 +199,13 @@ def test_parser_resolves_numbered_target_without_exposing_opaque_alias() -> None
         valid_evidence_refs={"turn-1"},
     )
     assert proposals[0].target_alias == "opaque-2"
-    assert parse_proposals(
-        {"assessments": [{"target_alias": "T1", "basis": "INSUFFICIENT"}]},
-        packet,
-    )[0].target_alias == "opaque-1"
+    assert (
+        parse_proposals(
+            {"assessments": [{"target_alias": "T1", "basis": "INSUFFICIENT"}]},
+            packet,
+        )[0].target_alias
+        == "opaque-1"
+    )
 
 
 def test_parser_rejects_out_of_range_numbered_target() -> None:
@@ -130,9 +238,7 @@ def test_parser_rejects_unknown_alias_and_evidence() -> None:
 def test_self_only_is_bounded_and_external_can_be_stronger() -> None:
     packet = _packet()
     self_only = ReflectionProposal("t1", 1.0, 1.0, 1.0, EvidenceBasis.SELF_ONLY, ("turn-1",))
-    external = ReflectionProposal(
-        "t1", 1.0, 1.0, 1.0, EvidenceBasis.EXTERNAL_REACTION, ("turn-1",)
-    )
+    external = ReflectionProposal("t1", 1.0, 1.0, 1.0, EvidenceBasis.EXTERNAL_REACTION, ("turn-1",))
     a = accept_proposals(packet, (self_only,))
     b = accept_proposals(packet, (external,))
     assert len(a) == len(b) == 1
@@ -154,16 +260,41 @@ def test_dedup_and_ledger_replay_are_idempotent(tmp_path) -> None:
     assert loaded.parent_digest == "parent"
 
 
+def test_ledger_preserves_two_round_review_without_enabling_ordinary_learning(tmp_path) -> None:
+    packet = _packet()
+    proposal = ReflectionProposal("t1", 0.5, 0.0, 0.8, EvidenceBasis.SELF_ONLY, ("turn-1",))
+    accepted = accept_proposals(packet, (proposal,))
+    ledger = IntrospectionLedger(tmp_path / "ledger.json")
+    ledger.record_review(
+        packet,
+        (proposal,),
+        accepted=accepted,
+        review_metadata={
+            "reflection": "The association was useful.",
+            "filing": '{"target":1,"association":1}',
+            "ordinary_learning": True,
+        },
+    )
+    ledger.save()
+    row = json.loads((tmp_path / "ledger.json").read_text())["reviews"][0]
+    assert row["reflection"] == "The association was useful."
+    assert row["filing"].startswith("{")
+    assert row["ordinary_learning"] is False
+
+
 def test_invalid_role_and_abstention_contract() -> None:
     with pytest.raises(IntrospectionError):
         ArcPacket("arc", ({"role": "system", "content": "x"},), (), ())
     packet = _packet()
     with pytest.raises(IntrospectionError):
         ReflectionProposal("t1", 0.1, 0, 0.5, EvidenceBasis.SELF_ONLY, abstain=True)
-    assert accept_proposals(
-        packet,
-        (ReflectionProposal("t1", 0, 0, 0.0, EvidenceBasis.INSUFFICIENT, abstain=True),),
-    ) == ()
+    assert (
+        accept_proposals(
+            packet,
+            (ReflectionProposal("t1", 0, 0, 0.0, EvidenceBasis.INSUFFICIENT, abstain=True),),
+        )
+        == ()
+    )
 
 
 def test_controller_loads_persisted_ledger_at_saa_boundary(tmp_path) -> None:
@@ -174,9 +305,7 @@ def test_controller_loads_persisted_ledger_at_saa_boundary(tmp_path) -> None:
     )
     ledger = IntrospectionLedger(tmp_path / "ledger.json")
     packet = _packet()
-    proposal = ReflectionProposal(
-        "t1", 0.5, 0, 0.8, EvidenceBasis.EXTERNAL_REACTION, ("turn-1",)
-    )
+    proposal = ReflectionProposal("t1", 0.5, 0, 0.8, EvidenceBasis.EXTERNAL_REACTION, ("turn-1",))
     accepted = accept_proposals(packet, (proposal,))
     ledger.record_review(packet, (proposal,), accepted=accepted)
     ledger.save()
@@ -200,12 +329,14 @@ def test_expression_adjustment_is_applied_after_accessibility_selection() -> Non
         GraphConcept("b", "soil moisture", "concept"),
     )
     edges = (GraphEdge("e1", "a", "b", "maintains"),)
-    state = LearnerState(
-        edge_states=(EdgeState("e1", accessibility=700_000, support=700_000),)
-    )
+    state = LearnerState(edge_states=(EdgeState("e1", accessibility=700_000, support=700_000),))
     baseline = compute_saa_field("passive supply", concepts, edges, state, field_seed=17)
     reduced = compute_saa_field(
-        "passive supply", concepts, edges, state, field_seed=17,
+        "passive supply",
+        concepts,
+        edges,
+        state,
+        field_seed=17,
         expression_adjustments={"e1": -500_000},
     )
     assert reduced.selected_landing == baseline.selected_landing == "e1"

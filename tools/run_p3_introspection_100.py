@@ -17,14 +17,17 @@ from typing import Any
 from mneme.contracts import GenerationRequest
 from mneme.controller import ResponseController, TurnIntent
 from mneme.development import (
-    INTROSPECTION_VERSION,
+    INTROSPECTION_ROUND_TWO_VERSION,
     ArcPacket,
+    FilingLevel,
     IntrospectionLedger,
     ReviewTarget,
     accept_proposals,
-    parse_proposals,
-    review_request,
-    review_system_prompt,
+    filing_request,
+    filing_system_prompt,
+    parse_filing,
+    reflection_request,
+    reflection_system_prompt,
 )
 from mneme.experiments.artifacts import ArtifactStore, content_digest
 from mneme.experiments.pilot import PilotRun, host_role_binding
@@ -53,14 +56,30 @@ from tools.run_p23_f0_background_shared_interloper import (
 )
 from tools.run_p23_saa_ten_thread_live import _development_request, _record_measurement_unknown
 
-ROOT = Path(os.environ.get("MNEME_P3_INTROSPECT_LAB", "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20260927"))
+ROOT = Path(
+    os.environ.get(
+        "MNEME_P3_INTROSPECT_LAB", "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20260927"
+    )
+)
 RUN_ID = os.environ.get("MNEME_P3_INTROSPECT_RUN_ID", "p3-introspect-100-20260927-r1")
-PARTIAL_SOURCE = Path(os.environ["MNEME_P3_PARTIAL_SOURCE"]) if os.environ.get("MNEME_P3_PARTIAL_SOURCE") else None
-PARTIAL_RUN_ROOT = Path(os.environ["MNEME_P3_PARTIAL_RUN_ROOT"]) if os.environ.get("MNEME_P3_PARTIAL_RUN_ROOT") else None
+PARTIAL_SOURCE = (
+    Path(os.environ["MNEME_P3_PARTIAL_SOURCE"])
+    if os.environ.get("MNEME_P3_PARTIAL_SOURCE")
+    else None
+)
+PARTIAL_RUN_ROOT = (
+    Path(os.environ["MNEME_P3_PARTIAL_RUN_ROOT"])
+    if os.environ.get("MNEME_P3_PARTIAL_RUN_ROOT")
+    else None
+)
 PARTIAL_SKIP_BRANCH = os.environ.get("MNEME_P3_PARTIAL_SKIP_BRANCH")
 PARTIAL_THREAD = int(os.environ.get("MNEME_P3_PARTIAL_THREAD", "0"))
 PARTIAL_TURN = int(os.environ.get("MNEME_P3_PARTIAL_TURN", "0"))
-POST_DEV_RUN_ROOT = Path(os.environ["MNEME_P3_POST_DEV_RUN_ROOT"]) if os.environ.get("MNEME_P3_POST_DEV_RUN_ROOT") else None
+POST_DEV_RUN_ROOT = (
+    Path(os.environ["MNEME_P3_POST_DEV_RUN_ROOT"])
+    if os.environ.get("MNEME_P3_POST_DEV_RUN_ROOT")
+    else None
+)
 POST_DEV_THREAD = int(os.environ.get("MNEME_P3_POST_DEV_THREAD", "0"))
 TOPIC_BANK = Path("docs/experiments/p3_introspection_100_topic_bank_v1.json")
 R8_CHECKPOINT = Path(
@@ -85,7 +104,8 @@ PROBES = (
 # Every provider/local-model operation is reserved through PilotRun.  This is
 # the exact frozen worst case: both developing branches perform development,
 # extraction, and one assessment per turn; Qwen supplies seven continuations
-# per thread; introspection allows one repair; then the primary and
+# per thread; introspection performs reflection + filing and may use one
+# simpler fallback; then the primary and
 # ON/OFF/RESTORED readouts are emitted.  Keep a small fixed plumbing margin,
 # rather than relying on expected sparsity of candidates.
 THREAD_COUNT = 100
@@ -93,7 +113,7 @@ HARD_MAX_CALLS = (
     3  # qualification
     + THREAD_COUNT * THREAD_TURNS * 2 * 3  # I/N development, extraction, assessment
     + THREAD_COUNT * (THREAD_TURNS - 1)  # shared Interloper continuations
-    + THREAD_COUNT * MAX_ARCS_PER_THREAD * 2  # one review plus one repair per bounded arc
+    + THREAD_COUNT * MAX_ARCS_PER_THREAD * 3  # reflection + filing + one bounded fallback
     + len(CHECKPOINTS) * len(PROBES) * len(PROBE_SEEDS) * 3  # I/N/V readouts
     + 3 * len(PROBES) * len(PROBE_SEEDS) * 3  # I ON/OFF/RESTORED
 )
@@ -129,10 +149,19 @@ def _blinded_evaluation(rows: list[dict[str, Any]]) -> dict[str, Any]:
         for pair_name in (("I", "N"), ("I", "V"), ("N", "V")):
             left, right = conditions[pair_name[0]], conditions[pair_name[1]]
             # Stable per-pair permutation, independent of treatment labels.
-            digest = content_digest({"key": key, "pair": pair_name, "outputs": [left["output"], right["output"]]})
+            digest = content_digest(
+                {"key": key, "pair": pair_name, "outputs": [left["output"], right["output"]]}
+            )
             swapped = int(digest[:2], 16) % 2 == 1
             a, b = (left, right) if not swapped else (right, left)
-            blind_key.append({"key": list(key), "pair": list(pair_name), "A": pair_name[0] if not swapped else pair_name[1], "B": pair_name[1] if not swapped else pair_name[0]})
+            blind_key.append(
+                {
+                    "key": list(key),
+                    "pair": list(pair_name),
+                    "A": pair_name[0] if not swapped else pair_name[1],
+                    "B": pair_name[1] if not swapped else pair_name[0],
+                }
+            )
             at, bt = str(a["output"]), str(b["output"])
             atokens, btokens = set(at.lower().split()), set(bt.lower().split())
             union = len(atokens | btokens)
@@ -261,7 +290,9 @@ def _is_explicit_no_change(value: Any) -> bool:
     return True
 
 
-def _packet(thread_id: str, history: list[tuple[str, str]], exposures: list[dict[str, Any]]) -> ArcPacket:
+def _packet(
+    thread_id: str, history: list[tuple[str, str]], exposures: list[dict[str, Any]]
+) -> ArcPacket:
     targets: list[ReviewTarget] = []
     refs: list[dict[str, Any]] = []
     for item in exposures:
@@ -269,7 +300,14 @@ def _packet(thread_id: str, history: list[tuple[str, str]], exposures: list[dict
         if not edge_key or any(target.edge_key == edge_key for target in targets):
             continue
         ref = str(item.get("turn_ref", ""))
-        targets.append(ReviewTarget(f"{thread_id.lower()}-{len(targets)}", edge_key, str(item.get("context", "general")), (ref,)))
+        targets.append(
+            ReviewTarget(
+                f"{thread_id.lower()}-{len(targets)}",
+                edge_key,
+                str(item.get("context", "general")),
+                (ref,),
+            )
+        )
         refs.append(item)
         if len(targets) >= 8:
             break
@@ -356,54 +394,130 @@ def _review(
         # whose only synthetic target is the administrative ``none`` marker.
         return (), {
             "status": "ABSTAINED_NO_TARGETS",
-            "raw": None,
-            "repair": None,
+            "reflection": None,
+            "filing": None,
+            "fallback": None,
             "parsed": [],
             "reflection_seed": reflection_seed,
             "formatting_seed": formatting_seed,
         }
-    request = GenerationRequest(
+    reflection_call = GenerationRequest(
         messages=(
-            {"role": "user", "content": json.dumps(review_request(packet, compact_targets=True), ensure_ascii=False)},
+            {"role": "user", "content": json.dumps(reflection_request(packet), ensure_ascii=False)},
         ),
-        system=review_system_prompt(compact_targets=True),
+        system=reflection_system_prompt(),
         parameters={"temperature": 0.1, "top_p": 0.9, "max_new_tokens": 512},
         seed=reflection_seed,
     )
-    result = _call(pilot, host, request, call_id=call_id, role="introspection", coordinate=coordinate, max_tokens=512)
-    raw = _review_json(result.content)
+    reflection_result = _call(
+        pilot,
+        host,
+        reflection_call,
+        call_id=f"{call_id}-reflection",
+        role="introspection-reflection",
+        coordinate=coordinate,
+        max_tokens=512,
+    )
+    reflection = reflection_result.content[:12_000]
+    level = FilingLevel(
+        os.environ.get("MNEME_INTROSPECTION_FILING_LEVEL", FilingLevel.COMPACT_JSON.value)
+    )
+    filing_call = GenerationRequest(
+        messages=(
+            {
+                "role": "user",
+                "content": json.dumps(
+                    filing_request(packet, reflection, level=level), ensure_ascii=False
+                ),
+            },
+        ),
+        system=filing_system_prompt(level),
+        parameters={"temperature": 0.0, "top_p": 0.9, "max_new_tokens": 256},
+        seed=formatting_seed,
+    )
+    filing_result = _call(
+        pilot,
+        host,
+        filing_call,
+        call_id=f"{call_id}-filing",
+        role="introspection-filing",
+        coordinate=coordinate,
+        max_tokens=256,
+    )
+    raw = filing_result.content
     try:
-        decoded = json.loads(raw)
-        if _is_explicit_no_change(decoded):
-            return (), {"status": "ABSTAINED_NO_CHANGE", "raw": result.content, "parsed": []}
-        proposals = parse_proposals(raw, packet, valid_evidence_refs={str(item.get("turn_ref")) for item in packet.exposures})
-        return proposals, {"status": "COMPLETE", "raw": result.content, "parsed": [item.to_dict() for item in proposals]}
+        proposals = parse_filing(
+            _review_json(raw),
+            packet,
+            level=level,
+            valid_evidence_refs={str(item.get("turn_ref")) for item in packet.exposures},
+        )
+        return proposals, {
+            "status": "COMPLETE" if proposals else "ABSTAINED_NO_CHANGE",
+            "reflection": reflection,
+            "filing": raw,
+            "fallback": None,
+            "parsed": [item.to_dict() for item in proposals],
+            "filing_level": level.value,
+            "reflection_seed": reflection_seed,
+            "formatting_seed": formatting_seed,
+            "filing_seed": formatting_seed,
+        }
     except Exception as first_error:
-        repair_request = GenerationRequest(
-            messages=({"role": "user", "content": raw},),
-            system=(
-                "Return only valid JSON with an assessments list using the supplied 1-based target_choice numbers, "
-                "numeric effects in [-1,1], confidence in [0,1], and supplied evidence references. "
-                "Do not invent an assessment or identifier."
+        fallback_call = GenerationRequest(
+            messages=(
+                {
+                    "role": "user",
+                    "content": json.dumps(
+                        filing_request(packet, reflection, level=FilingLevel.MINIMAL),
+                        ensure_ascii=False,
+                    ),
+                },
             ),
+            system=filing_system_prompt(FilingLevel.MINIMAL),
             parameters={"temperature": 0.0, "top_p": 0.9, "max_new_tokens": 512},
             seed=formatting_seed,
         )
-        repaired = _call(pilot, host, repair_request, call_id=f"{call_id}-repair", role="introspection", coordinate=coordinate, max_tokens=512)
+        fallback = _call(
+            pilot,
+            host,
+            fallback_call,
+            call_id=f"{call_id}-fallback",
+            role="introspection-filing-fallback",
+            coordinate=coordinate,
+            max_tokens=64,
+        )
         try:
-            repaired_decoded = json.loads(_review_json(repaired.content))
-            if _is_explicit_no_change(repaired_decoded):
-                return (), {"status": "ABSTAINED_NO_CHANGE", "raw": result.content, "repair": repaired.content, "parsed": []}
-            proposals = parse_proposals(_review_json(repaired.content), packet, valid_evidence_refs={str(item.get("turn_ref")) for item in packet.exposures})
+            proposals = parse_filing(
+                fallback.content,
+                packet,
+                level=FilingLevel.MINIMAL,
+                valid_evidence_refs={str(item.get("turn_ref")) for item in packet.exposures},
+            )
         except Exception as second_error:
             return (), {
                 "status": "INVALID_MALFORMED",
-                "raw": result.content,
-                "repair": repaired.content,
+                "reflection": reflection,
+                "filing": raw,
+                "fallback": fallback.content,
                 "error": f"{first_error}; {second_error}",
                 "parsed": [],
+                "filing_level": level.value,
+                "reflection_seed": reflection_seed,
+                "formatting_seed": formatting_seed,
+                "filing_seed": formatting_seed,
             }
-        return proposals, {"status": "REPAIRED", "raw": result.content, "repair": repaired.content, "parsed": [item.to_dict() for item in proposals]}
+        return proposals, {
+            "status": "FALLBACK",
+            "reflection": reflection,
+            "filing": raw,
+            "fallback": fallback.content,
+            "parsed": [item.to_dict() for item in proposals],
+            "filing_level": level.value,
+            "reflection_seed": reflection_seed,
+            "formatting_seed": formatting_seed,
+            "filing_seed": formatting_seed,
+        }
 
 
 def _prepare_observe(
@@ -461,7 +575,8 @@ def _trajectory_summary(rows: list[dict[str, Any]]) -> dict[str, Any]:
                 "checkpoint": checkpoint,
                 "condition": condition,
                 "count": len(items),
-                "mean_output_chars": sum(len(str(item.get("output", ""))) for item in items) / max(len(items), 1),
+                "mean_output_chars": sum(len(str(item.get("output", ""))) for item in items)
+                / max(len(items), 1),
                 "unique_payloads": len(payloads),
                 "unique_landings": len(landings),
                 "landings": sorted(landings),
@@ -482,10 +597,12 @@ def _write_summary_plot(path: Path, summary: Mapping[str, Any]) -> None:
     width, height = 760, 360
     max_value = max((value for values in points.values() for _, value in values), default=1.0)
     colors = {"I": "#7c3aed", "N": "#2563eb", "V": "#6b7280"}
+
     def xy(point: tuple[int, float]) -> tuple[float, float]:
         x = 60 + (point[0] / 100.0) * 650
         y = 300 - (point[1] / max_value) * 240
         return x, y
+
     lines = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
         '<rect width="100%" height="100%" fill="white"/>',
@@ -498,11 +615,15 @@ def _write_summary_plot(path: Path, summary: Mapping[str, Any]) -> None:
         if not values:
             continue
         coords = " ".join(f"{xy(point)[0]:.1f},{xy(point)[1]:.1f}" for point in values)
-        lines.append(f'<polyline points="{coords}" fill="none" stroke="{colors[condition]}" stroke-width="3"/>')
+        lines.append(
+            f'<polyline points="{coords}" fill="none" stroke="{colors[condition]}" stroke-width="3"/>'
+        )
         for point in values:
             x, y = xy(point)
             lines.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="4" fill="{colors[condition]}"/>')
-        lines.append(f'<text x="{650 + (0 if condition == "I" else 25 if condition == "N" else 50)}" y="50" fill="{colors[condition]}" font-family="sans-serif">{condition}</text>')
+        lines.append(
+            f'<text x="{650 + (0 if condition == "I" else 25 if condition == "N" else 50)}" y="50" fill="{colors[condition]}" font-family="sans-serif">{condition}</text>'
+        )
     lines.append("</svg>\n")
     path.write_text("\n".join(lines), encoding="utf-8")
 
@@ -539,7 +660,7 @@ def _make_pilot(
         "checkpoints": list(CHECKPOINTS),
         "probe_count": len(PROBES),
         "probe_seeds": list(PROBE_SEEDS),
-        "introspection_version": INTROSPECTION_VERSION,
+        "introspection_version": INTROSPECTION_ROUND_TWO_VERSION,
         "call_budget": {
             "hard_max": hard_max,
             "reservation_margin": RESERVATION_MARGIN,
@@ -577,7 +698,7 @@ def _make_pilot(
         max_output_tokens=2_000_000,
         qualification_calls=3,
         pilot_calls=planned - 3,
-        metadata={"experiment": "p3-introspect-100", "version": INTROSPECTION_VERSION},
+        metadata={"experiment": "p3-introspect-100", "version": INTROSPECTION_ROUND_TWO_VERSION},
         role_bindings={
             "developing": host_role_binding("developing", gemma),
             "development-response": host_role_binding("development-response", gemma),
@@ -627,7 +748,9 @@ def _load_partial_thread_state(
         payload = json.loads(path.read_text(encoding="utf-8"))
         content = payload.get("result", {}).get("content")
         if not isinstance(content, str) or not content.strip():
-            raise RuntimeError(f"partial source has no persisted participant for turn {turn}: {path}")
+            raise RuntimeError(
+                f"partial source has no persisted participant for turn {turn}: {path}"
+            )
         participants.append(content)
     histories: dict[str, list[tuple[str, str]]] = {"I": [], "N": []}
     prefix_rows: list[dict[str, Any]] = []
@@ -648,14 +771,27 @@ def _load_partial_thread_state(
                 "admitted": None,
                 "trace": {"source_artifact": str(path)},
             }
-        prefix_rows.append({"thread": thread.thread_id, "turn": turn, "participant": participants[turn], **branch_rows})
+        prefix_rows.append(
+            {
+                "thread": thread.thread_id,
+                "turn": turn,
+                "participant": participants[turn],
+                **branch_rows,
+            }
+        )
     recovered: dict[str, Any] = {}
     if PARTIAL_SKIP_BRANCH:
-        existing_path = run_root / "development" / f"dev-{PARTIAL_SKIP_BRANCH}-{thread.thread_id}-{through_turn}.json"
+        existing_path = (
+            run_root
+            / "development"
+            / f"dev-{PARTIAL_SKIP_BRANCH}-{thread.thread_id}-{through_turn}.json"
+        )
         existing = json.loads(existing_path.read_text(encoding="utf-8"))
         content = existing.get("result", {}).get("content")
         if not isinstance(content, str) or not content.strip():
-            raise RuntimeError(f"partial source has no completed {PARTIAL_SKIP_BRANCH} response at turn {through_turn}: {existing_path}")
+            raise RuntimeError(
+                f"partial source has no completed {PARTIAL_SKIP_BRANCH} response at turn {through_turn}: {existing_path}"
+            )
         recovered[PARTIAL_SKIP_BRANCH] = {
             "response": content,
             "seed": existing.get("request", {}).get("seed"),
@@ -684,7 +820,9 @@ def _load_post_development_thread_state(
         payload = json.loads(path.read_text(encoding="utf-8"))
         content = payload.get("result", {}).get("content")
         if not isinstance(content, str) or not content.strip():
-            raise RuntimeError(f"post-development source has no participant for turn {turn}: {path}")
+            raise RuntimeError(
+                f"post-development source has no participant for turn {turn}: {path}"
+            )
         participants.append(content)
     histories: dict[str, list[tuple[str, str]]] = {"I": [], "N": []}
     transcripts: list[dict[str, Any]] = []
@@ -696,7 +834,9 @@ def _load_post_development_thread_state(
             payload = json.loads(path.read_text(encoding="utf-8"))
             response = payload.get("result", {}).get("content")
             if not isinstance(response, str) or not response.strip():
-                raise RuntimeError(f"post-development source has no {label} response at turn {turn}: {path}")
+                raise RuntimeError(
+                    f"post-development source has no {label} response at turn {turn}: {path}"
+                )
             histories[label].append((participants[turn], response))
             branch_rows[label] = {
                 "response": response,
@@ -706,7 +846,14 @@ def _load_post_development_thread_state(
                 "admitted": None,
                 "trace": {"source_artifact": str(path)},
             }
-        transcripts.append({"thread": thread.thread_id, "turn": turn, "participant": participants[turn], **branch_rows})
+        transcripts.append(
+            {
+                "thread": thread.thread_id,
+                "turn": turn,
+                "participant": participants[turn],
+                **branch_rows,
+            }
+        )
     return histories, transcripts, exposure_rows
 
 
@@ -721,7 +868,12 @@ def main() -> int:
     parser.add_argument("--continue-from-thread", type=int, default=0)
     args = parser.parse_args()
     if not args.execute:
-        print(json.dumps({"status": "FROZEN_PLAN_ONLY", "topic_count": 100, "checkpoints": CHECKPOINTS}, indent=2))
+        print(
+            json.dumps(
+                {"status": "FROZEN_PLAN_ONLY", "topic_count": 100, "checkpoints": CHECKPOINTS},
+                indent=2,
+            )
+        )
         return 0
     ROOT.mkdir(parents=True, exist_ok=True)
     topics = _topics()
@@ -734,7 +886,9 @@ def main() -> int:
         if POST_DEV_RUN_ROOT is not None and POST_DEV_THREAD > 0:
             allowed_boundaries = (*allowed_boundaries, POST_DEV_THREAD - 1)
         if start_thread not in allowed_boundaries:
-            raise RuntimeError("continuation must start at a published or explicitly derived intact boundary")
+            raise RuntimeError(
+                "continuation must start at a published or explicitly derived intact boundary"
+            )
         if not continuation_root.is_dir():
             raise RuntimeError(f"continuation parent root is missing: {continuation_root}")
         if RUN_ID.endswith("-r1"):
@@ -752,7 +906,10 @@ def main() -> int:
     if qualification_path is None:
         raise RuntimeError("missing introspection qualification receipt")
     qualification = json.loads(qualification_path.read_text(encoding="utf-8"))
-    if qualification.get("status") != "QUALIFIED" or qualification.get("live_review_inference", {}).get("status") != "QUALIFIED":
+    if (
+        qualification.get("status") != "QUALIFIED"
+        or qualification.get("live_review_inference", {}).get("status") != "QUALIFIED"
+    ):
         raise RuntimeError("p3 introspection qualification lacks a passing live review inference")
     gemma = RemoteLlamaHost()
     extractor = RemoteGlinerHost()
@@ -779,15 +936,29 @@ def main() -> int:
     pilot.begin_qualification()
     for index in range(3):
         request = GenerationRequest(
-            ({"role": "user", "content": "Return the JSON object {\"ok\":true}."},),
+            ({"role": "user", "content": 'Return the JSON object {"ok":true}.'},),
             system="Return only the requested JSON.",
             parameters={"temperature": 0.0, "max_new_tokens": 16},
         )
-        _call(pilot, gemma, request, call_id=f"qualify-{index}", role="assessor-qualification", coordinate={"qualification": index}, max_tokens=16)
-    pilot.complete_qualification(passed=True, details={"local_gemma": "reachable", "introspection": "offline-qualified"})
+        _call(
+            pilot,
+            gemma,
+            request,
+            call_id=f"qualify-{index}",
+            role="assessor-qualification",
+            coordinate={"qualification": index},
+            max_tokens=16,
+        )
+    pilot.complete_qualification(
+        passed=True, details={"local_gemma": "reachable", "introspection": "offline-qualified"}
+    )
     pilot.begin_pilot()
 
-    branches = {"I": ROOT / "subjects" / "I.sqlite3", "N": ROOT / "subjects" / "N.sqlite3", "V": ROOT / "subjects" / "V.sqlite3"}
+    branches = {
+        "I": ROOT / "subjects" / "I.sqlite3",
+        "N": ROOT / "subjects" / "N.sqlite3",
+        "V": ROOT / "subjects" / "V.sqlite3",
+    }
     for path in branches.values():
         path.parent.mkdir(parents=True, exist_ok=True)
     if not branches["I"].exists():
@@ -798,14 +969,36 @@ def main() -> int:
             source_n = continuation_root / "snapshots" / f"N-{start_thread}.sqlite3"
             if not source_i.is_file() or not source_n.is_file():
                 raise RuntimeError("continuation parent lacks the requested frozen checkpoints")
-        fork_from_checkpoint(source_i, branches["I"], child_id=str(uuid.uuid5(uuid.NAMESPACE_URL, f"mneme:{RUN_ID}:I")))
-        fork_from_checkpoint(source_n, branches["N"], child_id=str(uuid.uuid5(uuid.NAMESPACE_URL, f"mneme:{RUN_ID}:N")))
-        fork_from_checkpoint(R8_CHECKPOINT, branches["V"], child_id=str(uuid.uuid5(uuid.NAMESPACE_URL, f"mneme:{RUN_ID}:V")))
+        fork_from_checkpoint(
+            source_i,
+            branches["I"],
+            child_id=str(uuid.uuid5(uuid.NAMESPACE_URL, f"mneme:{RUN_ID}:I")),
+        )
+        fork_from_checkpoint(
+            source_n,
+            branches["N"],
+            child_id=str(uuid.uuid5(uuid.NAMESPACE_URL, f"mneme:{RUN_ID}:N")),
+        )
+        fork_from_checkpoint(
+            R8_CHECKPOINT,
+            branches["V"],
+            child_id=str(uuid.uuid5(uuid.NAMESPACE_URL, f"mneme:{RUN_ID}:V")),
+        )
     stores = {label: SQLiteStore(path) for label, path in branches.items()}
-    subjects = {slot: RuntimeSubject(slot, stores[label], stores[label].current()["active_instance_id"], gemma) for slot, label in ((0, "I"), (1, "N"))}
+    subjects = {
+        slot: RuntimeSubject(
+            slot, stores[label], stores[label].current()["active_instance_id"], gemma
+        )
+        for slot, label in ((0, "I"), (1, "N"))
+    }
     runtime = PilotRuntime(pilot, subjects)
     adapter = ProductionAssessmentAdapter(runtime, assessor)
-    controllers = {label: ResponseController(stores[label], stores[label].current()["active_instance_id"], gemma) for label in ("I", "N")}
+    controllers = {
+        label: ResponseController(
+            stores[label], stores[label].current()["active_instance_id"], gemma
+        )
+        for label in ("I", "N")
+    }
     if continuation_root is not None:
         parent_ledger = continuation_root / "introspection" / f"I-{start_thread}.json"
         if not parent_ledger.is_file():
@@ -818,8 +1011,13 @@ def main() -> int:
         inherited_sidecar.write_text(parent_ledger.read_text(encoding="utf-8"), encoding="utf-8")
         ledgers = {
             "I": IntrospectionLedger.load(inherited_sidecar),
-            "N": IntrospectionLedger(ROOT / "introspection" / "N.json", parent_digest=content_digest({"parent": str(R8_CHECKPOINT), "label": "N"})),
+            "N": IntrospectionLedger(
+                ROOT / "introspection" / "N.json",
+                version=INTROSPECTION_ROUND_TWO_VERSION,
+                parent_digest=content_digest({"parent": str(R8_CHECKPOINT), "label": "N"}),
+            ),
         }
+        ledgers["I"].version = INTROSPECTION_ROUND_TWO_VERSION
         # Carry every already-published I/N checkpoint and I-sidecar needed by
         # the frozen 0/10/25/50/75/100 readout contract.  A continuation may
         # start after several checkpoints, so inheriting only the start point
@@ -828,7 +1026,9 @@ def main() -> int:
         for checkpoint_number in CHECKPOINTS:
             rows: dict[str, str] = {}
             for label in ("I", "N"):
-                checkpoint = continuation_root / "snapshots" / f"{label}-{checkpoint_number}.sqlite3"
+                checkpoint = (
+                    continuation_root / "snapshots" / f"{label}-{checkpoint_number}.sqlite3"
+                )
                 if checkpoint.is_file():
                     rows[label] = str(checkpoint)
             if rows:
@@ -851,7 +1051,14 @@ def main() -> int:
             "continuation_from_thread": start_thread,
         }
     else:
-        ledgers = {label: IntrospectionLedger(ROOT / "introspection" / f"{label}.json", parent_digest=content_digest({"parent": str(R8_CHECKPOINT), "label": label})) for label in ("I", "N")}
+        ledgers = {
+            label: IntrospectionLedger(
+                ROOT / "introspection" / f"{label}.json",
+                version=INTROSPECTION_ROUND_TWO_VERSION,
+                parent_digest=content_digest({"parent": str(R8_CHECKPOINT), "label": label}),
+            )
+            for label in ("I", "N")
+        }
         transcripts = []
         progress = {"threads_completed": 0, "checkpoints": {}, "introspection_reviews": 0}
     for thread_index, thread in enumerate(topics, 1):
@@ -873,11 +1080,15 @@ def main() -> int:
             turn_start = THREAD_TURNS
         if PARTIAL_SOURCE is not None and thread_index == PARTIAL_THREAD:
             if post_development_recovery:
-                raise RuntimeError("partial and post-development recovery cannot target the same thread")
+                raise RuntimeError(
+                    "partial and post-development recovery cannot target the same thread"
+                )
             if PARTIAL_TURN < 1 or PARTIAL_TURN >= THREAD_TURNS:
-                raise RuntimeError("partial continuation turn must identify a completed noninitial coordinate")
-            participants, histories, recovered_rows, recovered_rows_by_branch = _load_partial_thread_state(
-                PARTIAL_SOURCE, thread, PARTIAL_TURN
+                raise RuntimeError(
+                    "partial continuation turn must identify a completed noninitial coordinate"
+                )
+            participants, histories, recovered_rows, recovered_rows_by_branch = (
+                _load_partial_thread_state(PARTIAL_SOURCE, thread, PARTIAL_TURN)
             )
             transcripts.extend(recovered_rows)
             partial_state = {"participants": participants, "recovered": recovered_rows_by_branch}
@@ -907,25 +1118,39 @@ def main() -> int:
                 )
             branch_rows: dict[str, Any] = {}
             for slot, label in ((0, "I"), (1, "N")):
-                if partial_state is not None and turn == PARTIAL_TURN and label in partial_state["recovered"]:
+                if (
+                    partial_state is not None
+                    and turn == PARTIAL_TURN
+                    and label in partial_state["recovered"]
+                ):
                     branch_rows[label] = partial_state["recovered"][label]
                     histories[label].append((participant, str(branch_rows[label]["response"])))
                     continue
                 seed = 200000 + thread_index * 100 + turn
                 field_seed = FIELD_SEEDS[(thread_index + turn) % len(FIELD_SEEDS)] + thread_index
                 prepared, exposure = _development_request(
-                    controllers[label], participant=participant, history=histories[label], seed=seed,
-                    field_seed=field_seed, operation_id=f"dev-{label}-{thread.thread_id}-{turn}",
-                    memory="graph", selection_policy="field-saa-v1",
+                    controllers[label],
+                    participant=participant,
+                    history=histories[label],
+                    seed=seed,
+                    field_seed=field_seed,
+                    operation_id=f"dev-{label}-{thread.thread_id}-{turn}",
+                    memory="graph",
+                    selection_policy="field-saa-v1",
                 )
                 if label == "I":
                     prepared = controllers[label].prepare(
                         TurnIntent(
-                            current_input=participant, mode="develop", memory="graph",
-                            session_messages=prepared.request.messages[:-1], system=GEMMA_SYSTEM_PROMPT,
-                            parameters=prepared.request.parameters, seed=seed,
+                            current_input=participant,
+                            mode="develop",
+                            memory="graph",
+                            session_messages=prepared.request.messages[:-1],
+                            system=GEMMA_SYSTEM_PROMPT,
+                            parameters=prepared.request.parameters,
+                            seed=seed,
                             operation_id=f"dev-{label}-{thread.thread_id}-{turn}",
-                            selection_policy="field-saa-v1", field_seed=field_seed,
+                            selection_policy="field-saa-v1",
+                            field_seed=field_seed,
                             field_adjustments=ledgers["I"].accessibility_adjustments(),
                             expression_adjustments=ledgers["I"].expression_adjustments(),
                         )
@@ -933,25 +1158,46 @@ def main() -> int:
                     exposure["field_adjustments"] = ledgers["I"].accessibility_adjustments()
                     exposure["expression_adjustments"] = ledgers["I"].expression_adjustments()
                 outcome = runtime.execute_development(
-                    slot=slot, call_id=f"dev-{label}-{thread.thread_id}-{turn}",
+                    slot=slot,
+                    call_id=f"dev-{label}-{thread.thread_id}-{turn}",
                     coordinate={"thread": thread.thread_id, "turn": turn, "lineage": label},
-                    request=prepared.request, max_output_tokens=256,
+                    request=prepared.request,
+                    max_output_tokens=256,
                 )
-                response = require_nonempty_message(str(outcome.result.get("content", "")), role=f"Gemma {label}")
+                response = require_nonempty_message(
+                    str(outcome.result.get("content", "")), role=f"Gemma {label}"
+                )
                 extraction = runtime.extract(
-                    slot=slot, call_id=f"extract-{label}-{thread.thread_id}-{turn}",
+                    slot=slot,
+                    call_id=f"extract-{label}-{thread.thread_id}-{turn}",
                     coordinate={"thread": thread.thread_id, "turn": turn, "lineage": label},
-                    episode_id=outcome.operation.episode_id, extractor_host=extractor,
-                    max_output_tokens=768, extractor_version=MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION,
+                    episode_id=outcome.operation.episode_id,
+                    extractor_host=extractor,
+                    max_output_tokens=768,
+                    extractor_version=MINIMAL_RELATIONSHIP_EXTRACTOR_VERSION,
                 )
-                plan = adapter(slot, DevelopmentFixture(thread_index * 100 + turn, thread.thread_id, participant, f"p3-{thread.thread_id}-{turn}"), outcome, extraction)
+                plan = adapter(
+                    slot,
+                    DevelopmentFixture(
+                        thread_index * 100 + turn,
+                        thread.thread_id,
+                        participant,
+                        f"p3-{thread.thread_id}-{turn}",
+                    ),
+                    outcome,
+                    extraction,
+                )
                 status = "excluded"
                 admitted = 0
                 if plan.request is not None and plan.validator is not None:
                     assessed = runtime.provider_call(
-                        call_id=f"assess-{label}-{thread.thread_id}-{turn}", role="assessor",
-                        coordinate={"thread": thread.thread_id, "turn": turn, "lineage": label}, host=assessor,
-                        request=plan.request, max_output_tokens=1536, validator=plan.validator,
+                        call_id=f"assess-{label}-{thread.thread_id}-{turn}",
+                        role="assessor",
+                        coordinate={"thread": thread.thread_id, "turn": turn, "lineage": label},
+                        host=assessor,
+                        request=plan.request,
+                        max_output_tokens=1536,
+                        validator=plan.validator,
                         artifact_category="assessment",
                     )
                     if assessed.validation_error is None:
@@ -968,14 +1214,36 @@ def main() -> int:
                         )
                 else:
                     admitted = plan.publish(None)
-                row = {"response": response, "seed": seed, "exposure": exposure, "interpretation": status, "admitted": admitted, "trace": _trace(stores[label], outcome.operation.operation_id)}
+                row = {
+                    "response": response,
+                    "seed": seed,
+                    "exposure": exposure,
+                    "interpretation": status,
+                    "admitted": admitted,
+                    "trace": _trace(stores[label], outcome.operation.operation_id),
+                }
                 branch_rows[label] = row
                 histories[label].append((participant, response))
                 if label == "I":
                     field = exposure.get("field") or {}
                     for contribution in field.get("contributions", []):
-                        exposure_rows.append({"turn_ref": f"{thread.thread_id}:turn:{turn}", "edge_key": contribution.get("edge_key"), "context": contribution.get("relationship", "general"), "payload": field.get("payload", "")})
-            transcripts.append({"thread": thread.thread_id, "turn": turn, "participant": participant, "I": branch_rows["I"], "N": branch_rows["N"]})
+                        exposure_rows.append(
+                            {
+                                "turn_ref": f"{thread.thread_id}:turn:{turn}",
+                                "edge_key": contribution.get("edge_key"),
+                                "context": contribution.get("relationship", "general"),
+                                "payload": field.get("payload", ""),
+                            }
+                        )
+            transcripts.append(
+                {
+                    "thread": thread.thread_id,
+                    "turn": turn,
+                    "participant": participant,
+                    "I": branch_rows["I"],
+                    "N": branch_rows["N"],
+                }
+            )
         arc_records: list[dict[str, Any]] = []
         for arc_ordinal, (arc_id, left, right, close_reason) in enumerate(
             _arc_slices(thread.thread_id, histories["I"], exposure_rows)
@@ -999,7 +1267,13 @@ def main() -> int:
                 formatting_seed=formatting_seed,
             )
             accepted = accept_proposals(packet, proposals, existing_dedup=ledgers["I"].dedup_keys)
-            ledgers["I"].record_review(packet, proposals, accepted=accepted, status=review["status"])
+            ledgers["I"].record_review(
+                packet,
+                proposals,
+                accepted=accepted,
+                status=review["status"],
+                review_metadata=review,
+            )
             ledgers["I"].save()
             pilot.publish_artifact(
                 "introspection",
@@ -1034,20 +1308,29 @@ def main() -> int:
                 # after Thread 100.  A hardlink is therefore an exact,
                 # storage-safe final checkpoint; earlier checkpoints retain
                 # their ordinary immutable-copy policy.
-                if thread_index == 100 and os.environ.get("MNEME_P3_FINAL_CHECKPOINT_HARDLINK") == "1":
+                if (
+                    thread_index == 100
+                    and os.environ.get("MNEME_P3_FINAL_CHECKPOINT_HARDLINK") == "1"
+                ):
                     checkpoint.parent.mkdir(parents=True, exist_ok=True)
                     if checkpoint.exists():
                         checkpoint.unlink()
                     os.link(branches[label], checkpoint)
                 else:
-                    create_checkpoint(stores[label], checkpoint, checkpoint_id=f"{RUN_ID}-{label}-{thread_index}")
-                progress["checkpoints"][str(thread_index)] = progress["checkpoints"].get(str(thread_index), {}) | {label: str(checkpoint)}
+                    create_checkpoint(
+                        stores[label], checkpoint, checkpoint_id=f"{RUN_ID}-{label}-{thread_index}"
+                    )
+                progress["checkpoints"][str(thread_index)] = progress["checkpoints"].get(
+                    str(thread_index), {}
+                ) | {label: str(checkpoint)}
             # Freeze the introspection sidecar at the same boundary as the
             # learner checkpoint.  Earlier readouts must not consume reviews
             # that were generated by later arcs.
             ledger_snapshot = ROOT / "introspection" / f"I-{thread_index}.json"
             ledger_snapshot.parent.mkdir(parents=True, exist_ok=True)
-            ledger_snapshot.write_text(ledgers["I"].path.read_text(encoding="utf-8"), encoding="utf-8")
+            ledger_snapshot.write_text(
+                ledgers["I"].path.read_text(encoding="utf-8"), encoding="utf-8"
+            )
         _atomic_json(ROOT / "progress.json", progress)
         pilot.publish_artifact(
             "development",
@@ -1093,7 +1376,11 @@ def main() -> int:
     for checkpoint_number in CHECKPOINTS:
         for probe_index, prompt in enumerate(PROBES):
             for repetition, seed in enumerate(PROBE_SEEDS):
-                for label, policy, memory in (("I", "field-saa-v1", "graph"), ("N", "field-saa-v1", "graph"), ("V", "fixed-v2", "off")):
+                for label, policy, memory in (
+                    ("I", "field-saa-v1", "graph"),
+                    ("N", "field-saa-v1", "graph"),
+                    ("V", "fixed-v2", "off"),
+                ):
                     controller = readout_controllers[(label, checkpoint_number)]
                     ledger_path = (
                         ROOT / "introspection" / f"I-{checkpoint_number}.json"
@@ -1111,15 +1398,55 @@ def main() -> int:
                         ledger_path=ledger_path,
                         ledger_parent_digest=ledgers["I"].parent_digest,
                     )
-                    result = pilot.reserve_call(call_id=f"probe-{checkpoint_number}-{probe_index}-{repetition}-{label}", role="evaluation", coordinate={"checkpoint": checkpoint_number, "probe": probe_index, "repetition": repetition, "condition": label}, max_output_tokens=256)
+                    result = pilot.reserve_call(
+                        call_id=f"probe-{checkpoint_number}-{probe_index}-{repetition}-{label}",
+                        role="evaluation",
+                        coordinate={
+                            "checkpoint": checkpoint_number,
+                            "probe": probe_index,
+                            "repetition": repetition,
+                            "condition": label,
+                        },
+                        max_output_tokens=256,
+                    )
                     if result.get("status") == "RETURNED":
                         content = str(result["result"].get("content", ""))
                     else:
-                        pilot.dispatch_call(f"probe-{checkpoint_number}-{probe_index}-{repetition}-{label}", expected_host_fingerprint=gemma.fingerprint().to_dict())
+                        pilot.dispatch_call(
+                            f"probe-{checkpoint_number}-{probe_index}-{repetition}-{label}",
+                            expected_host_fingerprint=gemma.fingerprint().to_dict(),
+                        )
                         generated = gemma.generate(prepared.request)
                         content = require_nonempty_message(generated.content, role=f"Gemma {label}")
-                        pilot.return_call(f"probe-{checkpoint_number}-{probe_index}-{repetition}-{label}", result={"content": content, "model_id": generated.model_id, "provider": generated.provider, "effective_parameters": generated.effective_parameters, "seed": generated.seed, "finish_reason": generated.finish_reason, "provenance": generated.provenance}, actual_host_fingerprint=gemma.fingerprint().to_dict())
-                    readouts.append({"checkpoint": checkpoint_number, "probe": probe_index, "repetition": repetition, "condition": label, "seed": seed, "field_seed": FIELD_SEEDS[(probe_index + repetition) % len(FIELD_SEEDS)], "prompt": prompt, "output": content, "payload": prepared.request.system, "field_trace": _field_trace(prepared)})
+                        pilot.return_call(
+                            f"probe-{checkpoint_number}-{probe_index}-{repetition}-{label}",
+                            result={
+                                "content": content,
+                                "model_id": generated.model_id,
+                                "provider": generated.provider,
+                                "effective_parameters": generated.effective_parameters,
+                                "seed": generated.seed,
+                                "finish_reason": generated.finish_reason,
+                                "provenance": generated.provenance,
+                            },
+                            actual_host_fingerprint=gemma.fingerprint().to_dict(),
+                        )
+                    readouts.append(
+                        {
+                            "checkpoint": checkpoint_number,
+                            "probe": probe_index,
+                            "repetition": repetition,
+                            "condition": label,
+                            "seed": seed,
+                            "field_seed": FIELD_SEEDS[
+                                (probe_index + repetition) % len(FIELD_SEEDS)
+                            ],
+                            "prompt": prompt,
+                            "output": content,
+                            "payload": prepared.request.system,
+                            "field_trace": _field_trace(prepared),
+                        }
+                    )
     # Required removal/restoration check on the I lineage.  These are frozen,
     # read-only views of the same checkpoint and probe; only the SAA field is
     # toggled.  The primary checkpoint is never mutated by this measurement.
@@ -1164,9 +1491,13 @@ def main() -> int:
                     if reservation.get("status") == "RETURNED":
                         content = str(reservation["result"].get("content", ""))
                     else:
-                        pilot.dispatch_call(call_id, expected_host_fingerprint=gemma.fingerprint().to_dict())
+                        pilot.dispatch_call(
+                            call_id, expected_host_fingerprint=gemma.fingerprint().to_dict()
+                        )
                         generated = gemma.generate(prepared.request)
-                        content = require_nonempty_message(generated.content, role=f"Gemma {condition}")
+                        content = require_nonempty_message(
+                            generated.content, role=f"Gemma {condition}"
+                        )
                         pilot.return_call(
                             call_id,
                             result={
@@ -1195,7 +1526,10 @@ def main() -> int:
                         }
                     )
     _atomic_json(ROOT / "transcripts.json", {"rows": transcripts})
-    _atomic_json(ROOT / "readouts.json", {"rows": readouts, "probes": list(PROBES), "seeds": list(PROBE_SEEDS)})
+    _atomic_json(
+        ROOT / "readouts.json",
+        {"rows": readouts, "probes": list(PROBES), "seeds": list(PROBE_SEEDS)},
+    )
     _atomic_json(ROOT / "removal-restoration.json", {"rows": removal_restoration})
     trajectory_summary = _trajectory_summary(readouts)
     _atomic_json(ROOT / "trajectory-summary.json", trajectory_summary)
@@ -1263,13 +1597,24 @@ def main() -> int:
             "trajectory_summary": str(ROOT / "trajectory-summary.json"),
             "trajectory_plot": str(ROOT / "trajectory-summary.svg"),
         },
-        "model_stack": {"gemma": gemma.fingerprint().to_dict(), "extractor": extractor.fingerprint().to_dict(), "assessor": assessor.fingerprint().to_dict(), "interloper": interloper.fingerprint().to_dict()},
+        "model_stack": {
+            "gemma": gemma.fingerprint().to_dict(),
+            "extractor": extractor.fingerprint().to_dict(),
+            "assessor": assessor.fingerprint().to_dict(),
+            "interloper": interloper.fingerprint().to_dict(),
+        },
         "phase_four_recommendation": "planning_only_after_owner_review",
-        "limitations": ["two related adaptive lineages are not 100 independent subjects", "introspection is a bounded text-mediated review path", "no Phase Four neural backend was started"],
+        "limitations": [
+            "two related adaptive lineages are not 100 independent subjects",
+            "introspection is a bounded text-mediated review path",
+            "no Phase Four neural backend was started",
+        ],
         "accounting": pilot.reservations_report(),
     }
     pilot.publish_artifact("final", "final-report.json", report)
-    pilot.finish(summary={"status": report["status"], "threads": len(topics), "readouts": len(readouts)})
+    pilot.finish(
+        summary={"status": report["status"], "threads": len(topics), "readouts": len(readouts)}
+    )
     _atomic_json(ROOT / "terminal-report.json", report)
     print(json.dumps(report, indent=2))
     return 0
