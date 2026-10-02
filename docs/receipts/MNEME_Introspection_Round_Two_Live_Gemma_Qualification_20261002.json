@@ -1,0 +1,45 @@
+{
+  "schema": "mneme.introspection.round-two.live-gemma-qualification.v1",
+  "status": "BLOCKED_HOST_UNAVAILABLE",
+  "commit": "c915c1db5ad0a4639073f166b59a804d132ede17",
+  "historical_evidence_unchanged": true,
+  "live_calls": 0,
+  "model": {
+    "model_id": "google/gemma-4-E4B-it",
+    "host": "rey@100.115.208.48",
+    "hostname": "brokeass-msi",
+    "model_path": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+    "runtime": "/home/rey/src/llama.cpp/build-cuda/bin/llama-cli",
+    "context_size": 4096,
+    "gpu_layers": "all",
+    "reasoning": "off"
+  },
+  "host_evidence": {
+    "tailscale_online": false,
+    "ssh_probe": "timeout",
+    "model_health_probe": "not_attempted_host_unavailable"
+  },
+  "levels": [
+    "full_json",
+    "compact_json",
+    "multiple_choice_json",
+    "key_value",
+    "minimal",
+    "microcall"
+  ],
+  "screening": null,
+  "chosen_level": null,
+  "torture": null,
+  "offline_validation": {
+    "focused_introspection_tests": 27,
+    "full_pytest": 576,
+    "ruff": "passed",
+    "strict_mypy_src": "passed",
+    "wheel": "passed",
+    "fresh_install_smoke": "passed",
+    "ci_run": 37010463446,
+    "ci": "passed"
+  },
+  "resume_command": "PYTHONPATH=src python3 tools/qualify_introspection_live_round_two.py --fixtures 8 --torture-reviews 100 --seed 20026100 --destination docs/receipts/MNEME_Introspection_Round_Two_Live_Gemma_Qualification_20261002.json",
+  "note": "No synthetic outputs are reported as live qualification evidence."
+}
