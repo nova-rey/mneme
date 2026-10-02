@@ -446,6 +446,8 @@ class CompactStore:
         self._require_write()
         destination = Path(destination)
         destination.parent.mkdir(parents=True, exist_ok=True)
+        if destination.exists():
+            raise CompactStoreError(f"checkpoint destination exists: {destination}")
         self.connection.execute("PRAGMA wal_checkpoint(TRUNCATE)")
         pages = int(self.connection.execute("PRAGMA page_count").fetchone()[0])
         page_size = int(self.connection.execute("PRAGMA page_size").fetchone()[0])
@@ -499,8 +501,6 @@ def _source_graph(source: sqlite3.Connection, instance_id: str) -> tuple[dict[st
     snapshot_id = source.execute("SELECT graph_snapshot_id FROM manifests WHERE manifest_id=?", (manifest_id,)).fetchone()[0]
     if snapshot_id is None:
         return {}, {}, {}
-    def rows(sql: str, key_index: int) -> dict[str, dict[str, Any]]:
-        return {str(row[key_index]): {str(k): row[k] for k in row.keys() if k != row.keys()[key_index]} for row in source.execute(sql, (snapshot_id,))}
     # Keep the source column names and values; snapshot_id is an administrative
     # locator and is intentionally absent from the compact logical object.
     nodes = {}
