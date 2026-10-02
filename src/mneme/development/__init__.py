@@ -58,6 +58,7 @@ from .field import (
     compute_field,
     compute_saa_field,
 )
+from .health import assess_saa_treatment_health
 from .learner import (
     FIXED_SCALE,
     ConsequenceAssessment,
@@ -127,6 +128,7 @@ __all__ = [
     "PressureContribution",
     "compute_field",
     "compute_saa_field",
+    "assess_saa_treatment_health",
     "FIXED_SCALE",
     "ConsequenceAssessment",
     "ConsequenceResult",

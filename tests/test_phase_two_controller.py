@@ -7,9 +7,16 @@ import pytest
 
 from mneme.contracts import GenerationRequest
 from mneme.controller import ControllerError, ResponseController, TurnIntent, _phrase
-from mneme.development import FIELD_VERSION, ConsequenceAssessment, Observation
+from mneme.development import (
+    FIELD_VERSION,
+    ConsequenceAssessment,
+    EdgeState,
+    LearnerState,
+    Observation,
+)
 from mneme.hosts import FakeHost
 from mneme.memory import InterpretationPublisher, validate_residue
+from mneme.memory.graph import GraphConcept, GraphEdge
 from mneme.state.contracts import StoragePermissions
 from mneme.state.service import ContinuityService
 from mneme.state.storage import SQLiteStore
@@ -158,6 +165,33 @@ def test_learned_route_reachability_constructs_treatment_payload(tmp_path):
     assert prepared.applied == prepared.selected
     assert any(route.query_coverage >= 1 for route in prepared.selected)
     assert "Memory data:" in (prepared.request.system or "")
+
+
+def test_controller_fails_fast_on_saa_binding_mismatch(tmp_path, monkeypatch):
+    store, instance = _graph_store(tmp_path, learning=True)
+    controller = ResponseController(store, instance, FakeHost())
+    graph = (
+        GraphConcept("a", "drip irrigation", "concept"),
+        GraphConcept("b", "soil moisture", "concept"),
+    )
+    edges = (GraphEdge("local-edge", "a", "b", "causes", ()),)
+    monkeypatch.setattr(controller, "_field_graph", lambda _pin: (graph, edges))
+    monkeypatch.setattr(
+        controller,
+        "_learner_state",
+        lambda _pin: LearnerState(
+            edge_states=(EdgeState("edge:canonical", accessibility=800_000, support=800_000),)
+        ),
+    )
+    with pytest.raises(ControllerError, match="binding_mismatch"):
+        controller.prepare(
+            TurnIntent(
+                "unrelated context",
+                memory="graph",
+                selection_policy="field-saa-v1",
+                field_seed=17,
+            )
+        )
 
 
 def test_field_policy_builds_bounded_payload_and_trace(tmp_path):

@@ -24,6 +24,7 @@ from .development import (
     compute_saa_field,
     select_routes,
 )
+from .development.health import assess_saa_treatment_health
 from .development.learner import CreditWindow
 from .host import Host
 from .identity import IdentityService
@@ -509,11 +510,17 @@ class ResponseController:
         if policy == "field-saa-v1":
             if intent.field_seed is None:
                 raise ControllerError("field-saa-v1 requires an explicit field_seed")
-            return compute_saa_field(
+            learner = self._learner_state(pin)
+            field_enabled = (
+                intent.memory != "off"
+                and pin.recall_allowed
+                and pin.provider_reuse_allowed
+            )
+            result = compute_saa_field(
                 intent.current_input,
                 concepts,
                 edges,
-                self._learner_state(pin),
+                learner,
                 config=FieldConfig(
                     version=SAA_FIELD_VERSION,
                     max_depth=2,
@@ -529,15 +536,29 @@ class ResponseController:
                 ),
                 quarantined_edges=quarantined,
                 ineligible_edges=ineligible - quarantined,
-                field_enabled=(
-                    intent.memory != "off"
-                    and pin.recall_allowed
-                    and pin.provider_reuse_allowed
-                ),
+                field_enabled=field_enabled,
                 field_seed=intent.field_seed,
                 accessibility_adjustments=intent.field_adjustments,
                 expression_adjustments=intent.expression_adjustments,
             )
+            health = assess_saa_treatment_health(
+                result,
+                learner,
+                edges,
+                blocked_edges=ineligible,
+            )
+            if health["status"] in {
+                "binding_mismatch",
+                "empty_distribution",
+                "missing_landing",
+                "zero_pressure",
+                "empty_payload",
+            }:
+                raise ControllerError(
+                    "SAA treatment-health failure: "
+                    f"{json.dumps(health, sort_keys=True, separators=(',', ':'))}"
+                )
+            return result
         return compute_field(
             intent.current_input,
             concepts,
@@ -678,19 +699,26 @@ class ResponseController:
         not silently discard otherwise eligible routes.
         """
 
-        try:
-            rows = self.store.connection.execute(
-                "SELECT local_key,canonical_key FROM semantic_bindings "
-                "WHERE instance_id=? AND candidate_id IS NULL ORDER BY created_at,rowid",
-                (pin.instance_id,),
-            )
-        except sqlite3.OperationalError as exc:
-            if "no such table" in str(exc):
-                return {}
-            raise
         result: dict[str, str] = {}
-        for row in rows:
-            result[str(row[0])] = str(row[1])
+        # A fork receives a new administrative instance ID while its graph
+        # snapshot and learner values remain inherited.  Bindings are
+        # immutable semantic evidence, so resolve them through the complete
+        # root-to-child ancestry instead of copying every parent row into the
+        # child database.  Child-local bindings are applied last and can
+        # intentionally supersede an inherited local key.
+        for lineage_id in self.store._ancestry(pin.instance_id):
+            try:
+                rows = self.store.connection.execute(
+                    "SELECT local_key,canonical_key FROM semantic_bindings "
+                    "WHERE instance_id=? AND candidate_id IS NULL ORDER BY created_at,rowid",
+                    (lineage_id,),
+                )
+            except sqlite3.OperationalError as exc:
+                if "no such table" in str(exc):
+                    return result
+                raise
+            for row in rows:
+                result[str(row[0])] = str(row[1])
 
         # Collision-safe graph keys are an implementation detail of
         # materialization, not new learner targets.  Resolve them through the

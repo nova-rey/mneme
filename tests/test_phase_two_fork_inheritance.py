@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from mneme.contracts import GenerationRequest
+from mneme.controller import ResponseController
 from mneme.development import Observation, QuarantineService
 from mneme.development.recovery import verify_replay
 from mneme.hosts import FakeHost
@@ -82,9 +83,24 @@ def test_fork_inherits_learner_snapshot_but_uses_child_identity(tmp_path: Path) 
         assert child_store.connection.execute(
             "SELECT COUNT(*) FROM learner_values WHERE instance_id=?", (child,)
         ).fetchone()[0] == 1
+        child_controller = ResponseController(child_store, child, host)
+        child_bindings = child_controller._learner_key_map(child_controller._pin())
+        assert child_bindings["edge-ab"].startswith("edge:")
         replay = verify_replay(child_store)
         assert replay["operation_count"] == 1
         assert replay["matches_materialized"] is True
+
+    # The same ancestry lookup must survive a second fork without copying the
+    # parent's immutable binding rows into either child database.
+    child_checkpoint = tmp_path / "child-checkpoint.sqlite3"
+    with SQLiteStore(child_path) as child_store:
+        create_checkpoint(child_store, child_checkpoint)
+    nested_path = tmp_path / "nested-child.sqlite3"
+    nested = fork_from_checkpoint(child_checkpoint, nested_path)
+    with SQLiteStore(nested_path, read_only=True) as nested_store:
+        nested_controller = ResponseController(nested_store, nested, host)
+        nested_bindings = nested_controller._learner_key_map(nested_controller._pin())
+        assert nested_bindings["edge-ab"].startswith("edge:")
 
     # A quarantine immediately after the fork has no child-local development
     # operation to own a rebuilt materialization.  The inherited parent
