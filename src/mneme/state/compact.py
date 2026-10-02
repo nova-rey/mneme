@@ -31,6 +31,7 @@ from typing import Any
 
 COMPACT_SCHEMA_VERSION = 1
 DEFAULT_JOURNAL_RETENTION = 10_000
+DEFAULT_TELEMETRY_RETENTION = 10_000
 
 
 def _json(value: Any) -> str:
@@ -129,13 +130,15 @@ class CompactStore:
         read_only: bool = False,
         journal_retention: int = DEFAULT_JOURNAL_RETENTION,
         telemetry: bool = False,
+        telemetry_retention: int = DEFAULT_TELEMETRY_RETENTION,
     ) -> None:
-        if journal_retention < 0:
-            raise ValueError("journal_retention cannot be negative")
+        if journal_retention < 0 or telemetry_retention < 0:
+            raise ValueError("journal and telemetry retention cannot be negative")
         self.path = Path(path)
         self.read_only = read_only
         self.journal_retention = journal_retention
         self.telemetry = telemetry
+        self.telemetry_retention = telemetry_retention
         if read_only:
             uri = f"file:{self.path.resolve()}?mode=ro"
             self.connection = sqlite3.connect(uri, uri=True, isolation_level=None)
@@ -157,6 +160,7 @@ class CompactStore:
             self._meta_set("schema_version", str(COMPACT_SCHEMA_VERSION))
             self._meta_set("journal_retention", str(journal_retention))
             self._meta_set("telemetry_enabled", "1" if telemetry else "0")
+            self._meta_set("telemetry_retention", str(telemetry_retention))
         version = self._meta_get("schema_version")
         if version != str(COMPACT_SCHEMA_VERSION):
             self.close()
@@ -169,8 +173,14 @@ class CompactStore:
         *,
         journal_retention: int = DEFAULT_JOURNAL_RETENTION,
         telemetry: bool = False,
+        telemetry_retention: int = DEFAULT_TELEMETRY_RETENTION,
     ) -> CompactStore:
-        return cls(path, journal_retention=journal_retention, telemetry=telemetry)
+        return cls(
+            path,
+            journal_retention=journal_retention,
+            telemetry=telemetry,
+            telemetry_retention=telemetry_retention,
+        )
 
     def close(self) -> None:
         if not self.read_only:
@@ -202,6 +212,86 @@ class CompactStore:
             "ON CONFLICT(key) DO UPDATE SET value=excluded.value",
             (key, value),
         )
+
+    def set_metadata(self, key: str, value: Any) -> None:
+        """Persist one small runtime metadata value outside live state rows."""
+
+        if not key or not key.strip():
+            raise ValueError("metadata key must be non-empty")
+        self._meta_set(str(key), _json(value))
+
+    def metadata(self, key: str, default: Any = None) -> Any:
+        """Read one JSON-encoded runtime metadata value."""
+
+        raw = self._meta_get(str(key))
+        if raw is None:
+            return default
+        try:
+            return json.loads(raw)
+        except json.JSONDecodeError as exc:
+            raise CompactStoreError(f"metadata {key!r} is not valid JSON") from exc
+
+    def record_telemetry(self, kind: str, payload: Mapping[str, Any]) -> bool:
+        """Append bounded optional research telemetry.
+
+        Telemetry is deliberately separate from current state.  Disabled
+        telemetry is a no-op so production descendants do not accidentally
+        accumulate an unbounded research log.
+        """
+
+        self._require_write()
+        if not self.telemetry:
+            return False
+        self.connection.execute(
+            "INSERT INTO research_telemetry(kind,payload_json,created_at) VALUES(?,?,?)",
+            (str(kind), _json(dict(payload)), self._now()),
+        )
+        self.connection.execute(
+            "DELETE FROM research_telemetry WHERE sequence <= COALESCE((SELECT MAX(sequence) FROM research_telemetry)-?,0)",
+            (self.telemetry_retention,),
+        )
+        return True
+
+    def storage_metrics(self, *, label: str | None = None) -> dict[str, Any]:
+        """Return bounded, read-only storage metrics for a runtime receipt."""
+
+        table_counts: dict[str, int] = {}
+        for table in (
+            "graph_nodes",
+            "graph_edges",
+            "graph_routes",
+            "graph_revisions",
+            "learner_state",
+            "learner_journal",
+            "research_telemetry",
+            "provenance_refs",
+            "checkpoints",
+        ):
+            table_counts[table] = int(
+                self.connection.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+            )
+        page_count = int(self.connection.execute("PRAGMA page_count").fetchone()[0])
+        page_size = int(self.connection.execute("PRAGMA page_size").fetchone()[0])
+        freelist = int(self.connection.execute("PRAGMA freelist_count").fetchone()[0])
+        files: dict[str, int] = {}
+        for suffix in ("", "-wal", "-shm"):
+            candidate = self.path if not suffix else self.path.with_name(self.path.name + suffix)
+            if candidate.exists():
+                files[suffix or "database"] = candidate.stat().st_size
+        result: dict[str, Any] = {
+            "label": label,
+            "path": str(self.path),
+            "files": files,
+            "database_bytes": files.get("database", 0),
+            "page_count": page_count,
+            "page_size": page_size,
+            "freelist_pages": freelist,
+            "table_rows": table_counts,
+            "journal_retention": self.journal_retention,
+            "telemetry_enabled": self.telemetry,
+            "telemetry_retention": self.telemetry_retention,
+        }
+        return result
 
     @staticmethod
     def _now() -> str:
@@ -332,6 +422,10 @@ class CompactStore:
                 self.connection.execute(
                     "INSERT INTO research_telemetry(kind,payload_json,created_at) VALUES(?,?,?)",
                     ("learner_update", _json(dict(research_telemetry)), self._now()),
+                )
+                self.connection.execute(
+                    "DELETE FROM research_telemetry WHERE sequence <= COALESCE((SELECT MAX(sequence) FROM research_telemetry)-?,0)",
+                    (self.telemetry_retention,),
                 )
             if changed and self.journal_retention >= 0:
                 self.connection.execute(
@@ -529,6 +623,14 @@ def migrate_sqlite(source_path: str | Path, destination_path: str | Path, *, jou
             raise CompactStoreError("source has no current state")
         instance_id, revision = str(head[0]), int(head[1])
         nodes, edges, routes = _source_graph(raw, instance_id)
+        edge_bindings = {
+            str(row[0]): str(row[1])
+            for row in raw.execute(
+                "SELECT local_key,canonical_key FROM semantic_bindings "
+                "WHERE instance_id=? AND candidate_id IS NULL ORDER BY created_at,rowid",
+                (instance_id,),
+            )
+        }
         learner: dict[tuple[str, str], dict[str, Any]] = {}
         rows = raw.execute(
             "SELECT v.edge_key,v.context,v.accessibility,v.support,v.consequence,v.lifetime_credit,"
@@ -542,6 +644,11 @@ def migrate_sqlite(source_path: str | Path, destination_path: str | Path, *, jou
             learner[(str(row[0]), str(row[1]))] = payload
         with CompactStore.create(destination, journal_retention=journal_retention) as compact:
             compact.put_graph(nodes=nodes, edges=edges, routes=routes)
+            # Graph rows retain their local materialization keys for audit, but
+            # runtime SAA must resolve them to the canonical learner identity.
+            # Keep this as a compact mapping rather than copying the full
+            # immutable semantic-binding table into the descendant store.
+            compact.set_metadata("edge_bindings", edge_bindings)
             for (edge_key, context), value in learner.items():
                 compact.put_learner(edge_key, context, value, operation_id="migration")
             for table in ("sources", "operations", "development_observations", "outcome_assessments", "semantic_bindings"):
@@ -550,9 +657,27 @@ def migrate_sqlite(source_path: str | Path, destination_path: str | Path, *, jou
                 compact.add_provenance_ref(table, kind="research_reference", content_digest=_digest({"table": table, "count": count}), source_count=count, details={"source": str(source), "table": table})
             digest = compact.state_digest()
             verify = compact.verify()
-        return {"source": str(source), "destination": str(destination), "source_revision": revision, "nodes": len(nodes), "edges": len(edges), "routes": len(routes), "learner_values": len(learner), "state_digest": digest, "verification": verify}
+        return {
+            "source": str(source),
+            "destination": str(destination),
+            "source_revision": revision,
+            "nodes": len(nodes),
+            "edges": len(edges),
+            "routes": len(routes),
+            "edge_bindings": len(edge_bindings),
+            "learner_values": len(learner),
+            "state_digest": digest,
+            "verification": verify,
+        }
     finally:
         raw.close()
 
 
-__all__ = ["COMPACT_SCHEMA_VERSION", "DEFAULT_JOURNAL_RETENTION", "CompactStore", "CompactStoreError", "migrate_sqlite"]
+__all__ = [
+    "COMPACT_SCHEMA_VERSION",
+    "DEFAULT_JOURNAL_RETENTION",
+    "DEFAULT_TELEMETRY_RETENTION",
+    "CompactStore",
+    "CompactStoreError",
+    "migrate_sqlite",
+]
