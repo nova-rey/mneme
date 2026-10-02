@@ -1,0 +1,4181 @@
+{
+  "schema": "mneme-p3-postrun-diagnostic-audit-v1",
+  "run": "p3-introspect-100-20261001-r23",
+  "audit_mode": "read_only_no_reruns_no_fixes",
+  "source_commit": "f380f5ea8e6eadfdffe5b32560e52fee6ad2262c",
+  "evidence": {
+    "checkpoint25_readouts": "docs/receipts/frozen_readouts_checkpoint_025.json",
+    "field_traces": "docs/receipts/saa_field_trace_threads_001_025.json; ... _026_050.json; _051_075.json; _076_100.json",
+    "introspection": "docs/receipts/introspection_history.json",
+    "checkpoint_summary": "docs/receipts/checkpoint_development_summary.json",
+    "storage_recovery": "docs/receipts/MNEME_P3_Introspection_100_Thread_Storage_Recovery_20261001.md",
+    "field_implementation": "src/mneme/development/field.py",
+    "controller_implementation": "src/mneme/controller.py",
+    "introspection_implementation": "src/mneme/development/introspection.py; tools/run_p3_introspection_100.py"
+  },
+  "checkpoint25": {
+    "readout_summary": {
+      "I": {
+        "rows": 24,
+        "field_enabled": 24,
+        "distribution_nonempty": 0,
+        "landings": 0,
+        "nonzero_pressure": 0,
+        "payload_nonempty": 0,
+        "outputs": 24
+      },
+      "N": {
+        "rows": 24,
+        "field_enabled": 24,
+        "distribution_nonempty": 0,
+        "landings": 0,
+        "nonzero_pressure": 0,
+        "payload_nonempty": 0,
+        "outputs": 24
+      },
+      "V": {
+        "rows": 24,
+        "field_enabled": 0,
+        "distribution_nonempty": 0,
+        "landings": 0,
+        "nonzero_pressure": 0,
+        "payload_nonempty": 0,
+        "outputs": 24
+      }
+    },
+    "all_frozen_checkpoint_health": {
+      "0": {
+        "I": {
+          "rows": 24,
+          "field_enabled": 24,
+          "distribution_nonempty": 24,
+          "landings": 24,
+          "nonzero_pressure": 24,
+          "payload_nonempty": 24,
+          "output_count": 24
+        },
+        "N": {
+          "rows": 24,
+          "field_enabled": 24,
+          "distribution_nonempty": 24,
+          "landings": 24,
+          "nonzero_pressure": 24,
+          "payload_nonempty": 24,
+          "output_count": 24
+        },
+        "V": {
+          "rows": 24,
+          "field_enabled": 0,
+          "distribution_nonempty": 0,
+          "landings": 0,
+          "nonzero_pressure": 0,
+          "payload_nonempty": 0,
+          "output_count": 24
+        }
+      },
+      "10": {
+        "I": {
+          "rows": 24,
+          "field_enabled": 24,
+          "distribution_nonempty": 24,
+          "landings": 24,
+          "nonzero_pressure": 24,
+          "payload_nonempty": 24,
+          "output_count": 24
+        },
+        "N": {
+          "rows": 24,
+          "field_enabled": 24,
+          "distribution_nonempty": 24,
+          "landings": 24,
+          "nonzero_pressure": 24,
+          "payload_nonempty": 24,
+          "output_count": 24
+        },
+        "V": {
+          "rows": 24,
+          "field_enabled": 0,
+          "distribution_nonempty": 0,
+          "landings": 0,
+          "nonzero_pressure": 0,
+          "payload_nonempty": 0,
+          "output_count": 24
+        }
+      },
+      "25": {
+        "I": {
+          "rows": 24,
+          "field_enabled": 24,
+          "distribution_nonempty": 0,
+          "landings": 0,
+          "nonzero_pressure": 0,
+          "payload_nonempty": 0,
+          "output_count": 24
+        },
+        "N": {
+          "rows": 24,
+          "field_enabled": 24,
+          "distribution_nonempty": 0,
+          "landings": 0,
+          "nonzero_pressure": 0,
+          "payload_nonempty": 0,
+          "output_count": 24
+        },
+        "V": {
+          "rows": 24,
+          "field_enabled": 0,
+          "distribution_nonempty": 0,
+          "landings": 0,
+          "nonzero_pressure": 0,
+          "payload_nonempty": 0,
+          "output_count": 24
+        }
+      },
+      "50": {
+        "I": {
+          "rows": 24,
+          "field_enabled": 24,
+          "distribution_nonempty": 24,
+          "landings": 24,
+          "nonzero_pressure": 24,
+          "payload_nonempty": 24,
+          "output_count": 24
+        },
+        "N": {
+          "rows": 24,
+          "field_enabled": 24,
+          "distribution_nonempty": 24,
+          "landings": 24,
+          "nonzero_pressure": 24,
+          "payload_nonempty": 24,
+          "output_count": 24
+        },
+        "V": {
+          "rows": 24,
+          "field_enabled": 0,
+          "distribution_nonempty": 0,
+          "landings": 0,
+          "nonzero_pressure": 0,
+          "payload_nonempty": 0,
+          "output_count": 24
+        }
+      },
+      "75": {
+        "I": {
+          "rows": 24,
+          "field_enabled": 24,
+          "distribution_nonempty": 24,
+          "landings": 24,
+          "nonzero_pressure": 24,
+          "payload_nonempty": 24,
+          "output_count": 24
+        },
+        "N": {
+          "rows": 24,
+          "field_enabled": 24,
+          "distribution_nonempty": 24,
+          "landings": 24,
+          "nonzero_pressure": 24,
+          "payload_nonempty": 24,
+          "output_count": 24
+        },
+        "V": {
+          "rows": 24,
+          "field_enabled": 0,
+          "distribution_nonempty": 0,
+          "landings": 0,
+          "nonzero_pressure": 0,
+          "payload_nonempty": 0,
+          "output_count": 24
+        }
+      },
+      "100": {
+        "I": {
+          "rows": 24,
+          "field_enabled": 24,
+          "distribution_nonempty": 24,
+          "landings": 24,
+          "nonzero_pressure": 24,
+          "payload_nonempty": 24,
+          "output_count": 24
+        },
+        "N": {
+          "rows": 24,
+          "field_enabled": 24,
+          "distribution_nonempty": 24,
+          "landings": 24,
+          "nonzero_pressure": 24,
+          "payload_nonempty": 24,
+          "output_count": 24
+        },
+        "V": {
+          "rows": 24,
+          "field_enabled": 0,
+          "distribution_nonempty": 0,
+          "landings": 0,
+          "nonzero_pressure": 0,
+          "payload_nonempty": 0,
+          "output_count": 24
+        }
+      }
+    },
+    "binding_audit": {
+      "I": {
+        "child_instance_id": "9725f42e-a811-5086-a1a8-504992e3d270",
+        "graph_snapshot_id": "0df03e8f-dca5-4b58-b5d9-d91686ca7627",
+        "current_graph_edges": 441,
+        "child_binding_rows": 31,
+        "graph_to_learner_key_hits": 14,
+        "mapped_graph_keys_with_positive_learner_state": 0,
+        "positive_learner_keys": 53,
+        "positive_learner_keys_not_reachable_from_graph": 53,
+        "parent_binding_counts": {
+          "d2236fd0-e803-51bb-bfae-a45498b139d9": 339,
+          "f2b37441-7443-5535-b369-1664ad956a26": 709
+        }
+      },
+      "N": {
+        "child_instance_id": "31e71983-11b9-50c5-b10d-1c9bab465e42",
+        "graph_snapshot_id": "8c711a52-a119-4b3e-b6eb-26c898181385",
+        "current_graph_edges": 509,
+        "child_binding_rows": 32,
+        "graph_to_learner_key_hits": 17,
+        "mapped_graph_keys_with_positive_learner_state": 0,
+        "positive_learner_keys": 67,
+        "positive_learner_keys_not_reachable_from_graph": 67,
+        "parent_binding_counts": {
+          "9dd2614e-e188-58f5-a0c8-f1e89f04a831": 863,
+          "d2236fd0-e803-51bb-bfae-a45498b139d9": 339
+        }
+      }
+    },
+    "observed": "field_enabled=true with active concepts, but all I/N distributions, landings, pressure and payloads empty/zero; no landing ticket was drawn. Child graph edges did not resolve to positive canonical learner keys.",
+    "inferred_root_cause": "forked checkpoint child semantic_bindings were not inherited/resolved across the ancestor binding map; compute_saa_field therefore saw no eligible positive-strength candidates.",
+    "not_renderer_or_rng": "distribution was already empty and landing_ticket null; renderer and RNG were not reached.",
+    "not_cold_start": "active graph/learner state and active concepts existed."
+  },
+  "developmental_treatment_health": {
+    "rows_total": 1600,
+    "status_counts": {
+      "TRACE_PERSISTED": 1526,
+      "NO_SEPARATE_FIELD_TRACE_PERSISTED": 74
+    },
+    "thread_rows": [
+      {
+        "lineage": "I",
+        "thread": 1,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 0,
+        "selected_landings": 0,
+        "nonzero_pressure_rows": 0,
+        "nonempty_payload_rows": 0,
+        "explicit_zero_treatment_rows": 8,
+        "zero_reason": [
+          "cold_start_before_eligible_state"
+        ]
+      },
+      {
+        "lineage": "I",
+        "thread": 2,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 4,
+        "selected_landings": 4,
+        "nonzero_pressure_rows": 4,
+        "nonempty_payload_rows": 4,
+        "explicit_zero_treatment_rows": 4,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 3,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 4,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 5,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 6,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 7,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 8,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 9,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 10,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 11,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 12,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 13,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 14,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 15,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 16,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 17,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 18,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 19,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 20,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 21,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 22,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 23,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 24,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 25,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 0,
+        "selected_landings": 0,
+        "nonzero_pressure_rows": 0,
+        "nonempty_payload_rows": 0,
+        "explicit_zero_treatment_rows": 8,
+        "zero_reason": [
+          "persisted_zero_field_at_boundary; exact mechanism unresolved beyond checkpoint-25 diagnosis"
+        ]
+      },
+      {
+        "lineage": "I",
+        "thread": 26,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 4,
+        "selected_landings": 4,
+        "nonzero_pressure_rows": 4,
+        "nonempty_payload_rows": 4,
+        "explicit_zero_treatment_rows": 4,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 27,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 28,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 29,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 30,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 31,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 32,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 33,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 34,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 35,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 36,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 37,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 38,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 39,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 40,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 41,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 42,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 43,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 44,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 45,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 46,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 47,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 48,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 49,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 50,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 51,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 52,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 53,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 54,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 55,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 56,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 57,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 58,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 59,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 60,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 61,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 62,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 63,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 64,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 65,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 66,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 67,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 68,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 69,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 70,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 71,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 72,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 73,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 74,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 75,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 0,
+        "missing_trace_rows": 8,
+        "field_enabled_rows": 0,
+        "eligible_distribution_rows": 0,
+        "selected_landings": 0,
+        "nonzero_pressure_rows": 0,
+        "nonempty_payload_rows": 0,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": [
+          "no_separate_field_trace_persisted"
+        ]
+      },
+      {
+        "lineage": "I",
+        "thread": 76,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 0,
+        "selected_landings": 0,
+        "nonzero_pressure_rows": 0,
+        "nonempty_payload_rows": 0,
+        "explicit_zero_treatment_rows": 8,
+        "zero_reason": [
+          "persisted_zero_field_at_boundary; exact mechanism unresolved beyond checkpoint-25 diagnosis"
+        ]
+      },
+      {
+        "lineage": "I",
+        "thread": 77,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 78,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 79,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 80,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 81,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 82,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 83,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 84,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 85,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 86,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 87,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 4,
+        "missing_trace_rows": 4,
+        "field_enabled_rows": 4,
+        "eligible_distribution_rows": 4,
+        "selected_landings": 4,
+        "nonzero_pressure_rows": 4,
+        "nonempty_payload_rows": 4,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": [
+          "no_separate_field_trace_persisted"
+        ]
+      },
+      {
+        "lineage": "I",
+        "thread": 88,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 89,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 6,
+        "missing_trace_rows": 2,
+        "field_enabled_rows": 6,
+        "eligible_distribution_rows": 6,
+        "selected_landings": 6,
+        "nonzero_pressure_rows": 6,
+        "nonempty_payload_rows": 6,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": [
+          "no_separate_field_trace_persisted"
+        ]
+      },
+      {
+        "lineage": "I",
+        "thread": 90,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 91,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 92,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 93,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 94,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 95,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 0,
+        "missing_trace_rows": 8,
+        "field_enabled_rows": 0,
+        "eligible_distribution_rows": 0,
+        "selected_landings": 0,
+        "nonzero_pressure_rows": 0,
+        "nonempty_payload_rows": 0,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": [
+          "no_separate_field_trace_persisted"
+        ]
+      },
+      {
+        "lineage": "I",
+        "thread": 96,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 0,
+        "missing_trace_rows": 8,
+        "field_enabled_rows": 0,
+        "eligible_distribution_rows": 0,
+        "selected_landings": 0,
+        "nonzero_pressure_rows": 0,
+        "nonempty_payload_rows": 0,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": [
+          "no_separate_field_trace_persisted"
+        ]
+      },
+      {
+        "lineage": "I",
+        "thread": 97,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 98,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 99,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "I",
+        "thread": 100,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 0,
+        "missing_trace_rows": 8,
+        "field_enabled_rows": 0,
+        "eligible_distribution_rows": 0,
+        "selected_landings": 0,
+        "nonzero_pressure_rows": 0,
+        "nonempty_payload_rows": 0,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": [
+          "no_separate_field_trace_persisted"
+        ]
+      },
+      {
+        "lineage": "N",
+        "thread": 1,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 0,
+        "selected_landings": 0,
+        "nonzero_pressure_rows": 0,
+        "nonempty_payload_rows": 0,
+        "explicit_zero_treatment_rows": 8,
+        "zero_reason": [
+          "cold_start_before_eligible_state"
+        ]
+      },
+      {
+        "lineage": "N",
+        "thread": 2,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 4,
+        "selected_landings": 4,
+        "nonzero_pressure_rows": 4,
+        "nonempty_payload_rows": 4,
+        "explicit_zero_treatment_rows": 4,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 3,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 4,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 5,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 6,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 7,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 8,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 9,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 10,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 11,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 12,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 13,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 14,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 15,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 16,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 17,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 18,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 19,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 20,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 21,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 22,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 23,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 24,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 25,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 0,
+        "selected_landings": 0,
+        "nonzero_pressure_rows": 0,
+        "nonempty_payload_rows": 0,
+        "explicit_zero_treatment_rows": 8,
+        "zero_reason": [
+          "persisted_zero_field_at_boundary; exact mechanism unresolved beyond checkpoint-25 diagnosis"
+        ]
+      },
+      {
+        "lineage": "N",
+        "thread": 26,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 5,
+        "selected_landings": 5,
+        "nonzero_pressure_rows": 5,
+        "nonempty_payload_rows": 5,
+        "explicit_zero_treatment_rows": 3,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 27,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 28,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 29,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 30,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 31,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 32,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 33,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 34,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 35,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 36,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 37,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 38,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 39,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 40,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 41,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 42,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 43,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 44,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 45,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 46,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 47,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 48,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 49,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 50,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 51,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 52,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 53,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 54,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 55,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 56,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 57,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 58,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 59,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 60,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 61,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 62,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 63,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 64,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 65,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 66,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 67,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 68,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 69,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 70,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 71,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 72,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 73,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 74,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 75,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 0,
+        "missing_trace_rows": 8,
+        "field_enabled_rows": 0,
+        "eligible_distribution_rows": 0,
+        "selected_landings": 0,
+        "nonzero_pressure_rows": 0,
+        "nonempty_payload_rows": 0,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": [
+          "no_separate_field_trace_persisted"
+        ]
+      },
+      {
+        "lineage": "N",
+        "thread": 76,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 0,
+        "selected_landings": 0,
+        "nonzero_pressure_rows": 0,
+        "nonempty_payload_rows": 0,
+        "explicit_zero_treatment_rows": 8,
+        "zero_reason": [
+          "persisted_zero_field_at_boundary; exact mechanism unresolved beyond checkpoint-25 diagnosis"
+        ]
+      },
+      {
+        "lineage": "N",
+        "thread": 77,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 78,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 79,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 80,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 81,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 82,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 83,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 84,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 85,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 86,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 87,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 5,
+        "missing_trace_rows": 3,
+        "field_enabled_rows": 5,
+        "eligible_distribution_rows": 5,
+        "selected_landings": 5,
+        "nonzero_pressure_rows": 5,
+        "nonempty_payload_rows": 5,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": [
+          "no_separate_field_trace_persisted"
+        ]
+      },
+      {
+        "lineage": "N",
+        "thread": 88,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 89,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 6,
+        "missing_trace_rows": 2,
+        "field_enabled_rows": 6,
+        "eligible_distribution_rows": 6,
+        "selected_landings": 6,
+        "nonzero_pressure_rows": 6,
+        "nonempty_payload_rows": 6,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": [
+          "no_separate_field_trace_persisted"
+        ]
+      },
+      {
+        "lineage": "N",
+        "thread": 90,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 91,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 92,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 93,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 94,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 95,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 1,
+        "missing_trace_rows": 7,
+        "field_enabled_rows": 1,
+        "eligible_distribution_rows": 1,
+        "selected_landings": 1,
+        "nonzero_pressure_rows": 1,
+        "nonempty_payload_rows": 1,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": [
+          "no_separate_field_trace_persisted"
+        ]
+      },
+      {
+        "lineage": "N",
+        "thread": 96,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 0,
+        "missing_trace_rows": 8,
+        "field_enabled_rows": 0,
+        "eligible_distribution_rows": 0,
+        "selected_landings": 0,
+        "nonzero_pressure_rows": 0,
+        "nonempty_payload_rows": 0,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": [
+          "no_separate_field_trace_persisted"
+        ]
+      },
+      {
+        "lineage": "N",
+        "thread": 97,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 98,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 99,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 8,
+        "missing_trace_rows": 0,
+        "field_enabled_rows": 8,
+        "eligible_distribution_rows": 8,
+        "selected_landings": 8,
+        "nonzero_pressure_rows": 8,
+        "nonempty_payload_rows": 8,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": []
+      },
+      {
+        "lineage": "N",
+        "thread": 100,
+        "turns_attempted": 8,
+        "trace_rows_persisted": 0,
+        "missing_trace_rows": 8,
+        "field_enabled_rows": 0,
+        "eligible_distribution_rows": 0,
+        "selected_landings": 0,
+        "nonzero_pressure_rows": 0,
+        "nonempty_payload_rows": 0,
+        "explicit_zero_treatment_rows": 0,
+        "zero_reason": [
+          "no_separate_field_trace_persisted"
+        ]
+      }
+    ],
+    "longest_persisted_zero_streak": {
+      "I": 8,
+      "N": 8,
+      "coordinates": [
+        "T001",
+        "T025",
+        "T076"
+      ],
+      "qualification": "T001 cold-start is legitimate; T025 is explained by the checkpoint binding defect; T076 boundary mechanism remains unresolved. Missing trace rows are not counted as zero treatment."
+    }
+  },
+  "gating": {
+    "source": "tools/run_p23_saa_ten_thread_live.py:_measurement_field_check",
+    "observed_conditions": "checks only SAA readouts, held-out probes, and SAA_ON/SAA_RESTORED removal rows; requires field_enabled and total_pressure>0 there; explicitly excludes developmental traces and SAA_OFF",
+    "implication": "many developmental zero rows can pass; checkpoint-25 readout was not invalidated by the developmental gate because this gate is only applied by the live runner to its measurement sets, and the preserved checkpoint readout artifact itself records the zero field without a failure disposition.",
+    "earliest_recommended_invariant": "after first eligible state, check each accepted coordinate and checkpoint row for distribution/landing/pressure/payload, plus binding completeness; do not implement here."
+  },
+  "storage": {
+    "stores": {
+      "I-25": {
+        "path": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11_checkpoint75_parent/snapshots/I-25.sqlite3",
+        "file_bytes": 196771840,
+        "page_count": 48040,
+        "page_size": 4096,
+        "freelist_pages": 0,
+        "row_counts": {
+          "learner_updates": 56534,
+          "learner_values": 115100,
+          "learner_snapshots": 260,
+          "graph_snapshots": 184,
+          "graph_concepts": 50541,
+          "graph_edges": 41206,
+          "graph_routes": 1454,
+          "semantic_bindings": 1081,
+          "sources": 1428,
+          "interpretations": 258,
+          "interpretation_attempts": 272,
+          "development_observations": 441
+        },
+        "duplication": {
+          "graph_concepts": {
+            "rows": 50541,
+            "unique": 510,
+            "ratio": 99.1
+          },
+          "graph_edges": {
+            "rows": 41206,
+            "unique": 444,
+            "ratio": 92.81
+          },
+          "graph_routes": {
+            "rows": 1454,
+            "unique": 8,
+            "ratio": 181.75
+          },
+          "learner_updates": {
+            "rows": 56534,
+            "unique": 437,
+            "ratio": 129.37
+          },
+          "learner_values": {
+            "rows": 115100,
+            "unique": 437,
+            "ratio": 263.39
+          }
+        },
+        "dominant_tables": {
+          "learner_updates": {
+            "bytes": 77377536,
+            "pages": 18891
+          },
+          "learner_values": {
+            "bytes": 41152512,
+            "pages": 10047
+          },
+          "learner_snapshots": {
+            "bytes": 28364800,
+            "pages": 6925
+          },
+          "graph_edges": {
+            "bytes": 8908800,
+            "pages": 2175
+          },
+          "sqlite_autoindex_learner_values_1": {
+            "bytes": 7700480,
+            "pages": 1880
+          },
+          "graph_concepts": {
+            "bytes": 5890048,
+            "pages": 1438
+          },
+          "sqlite_autoindex_learner_updates_2": {
+            "bytes": 4759552,
+            "pages": 1162
+          },
+          "sqlite_autoindex_learner_updates_1": {
+            "bytes": 4759552,
+            "pages": 1162
+          },
+          "sqlite_autoindex_graph_concepts_1": {
+            "bytes": 4157440,
+            "pages": 1015
+          },
+          "interpretation_attempts": {
+            "bytes": 3887104,
+            "pages": 949
+          },
+          "sqlite_autoindex_graph_edges_1": {
+            "bytes": 3420160,
+            "pages": 835
+          },
+          "sources": {
+            "bytes": 954368,
+            "pages": 233
+          }
+        }
+      },
+      "N-25": {
+        "path": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11_checkpoint75_parent/snapshots/N-25.sqlite3",
+        "file_bytes": 219578368,
+        "page_count": 53608,
+        "page_size": 4096,
+        "freelist_pages": 0,
+        "row_counts": {
+          "learner_updates": 63206,
+          "learner_values": 127559,
+          "learner_snapshots": 263,
+          "graph_snapshots": 195,
+          "graph_concepts": 57916,
+          "graph_edges": 48403,
+          "graph_routes": 1542,
+          "semantic_bindings": 1236,
+          "sources": 1428,
+          "interpretations": 261,
+          "interpretation_attempts": 272,
+          "development_observations": 509
+        },
+        "duplication": {
+          "graph_concepts": {
+            "rows": 57916,
+            "unique": 579,
+            "ratio": 100.03
+          },
+          "graph_edges": {
+            "rows": 48403,
+            "unique": 515,
+            "ratio": 93.99
+          },
+          "graph_routes": {
+            "rows": 1542,
+            "unique": 8,
+            "ratio": 192.75
+          },
+          "learner_updates": {
+            "rows": 63206,
+            "unique": 503,
+            "ratio": 125.66
+          },
+          "learner_values": {
+            "rows": 127559,
+            "unique": 503,
+            "ratio": 253.6
+          }
+        },
+        "dominant_tables": {
+          "learner_updates": {
+            "bytes": 86507520,
+            "pages": 21120
+          },
+          "learner_values": {
+            "bytes": 45629440,
+            "pages": 11140
+          },
+          "learner_snapshots": {
+            "bytes": 31756288,
+            "pages": 7753
+          },
+          "graph_edges": {
+            "bytes": 10465280,
+            "pages": 2555
+          },
+          "sqlite_autoindex_learner_values_1": {
+            "bytes": 8503296,
+            "pages": 2076
+          },
+          "graph_concepts": {
+            "bytes": 6778880,
+            "pages": 1655
+          },
+          "sqlite_autoindex_learner_updates_2": {
+            "bytes": 5242880,
+            "pages": 1280
+          },
+          "sqlite_autoindex_learner_updates_1": {
+            "bytes": 5242880,
+            "pages": 1280
+          },
+          "sqlite_autoindex_graph_concepts_1": {
+            "bytes": 4722688,
+            "pages": 1153
+          },
+          "sqlite_autoindex_graph_edges_1": {
+            "bytes": 4022272,
+            "pages": 982
+          },
+          "interpretation_attempts": {
+            "bytes": 3969024,
+            "pages": 969
+          },
+          "sources": {
+            "bytes": 978944,
+            "pages": 239
+          }
+        }
+      },
+      "I-50": {
+        "path": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11_checkpoint75_parent/snapshots/I-50.sqlite3",
+        "file_bytes": 534921216,
+        "page_count": 130596,
+        "page_size": 4096,
+        "freelist_pages": 0,
+        "row_counts": {
+          "learner_updates": 173280,
+          "learner_values": 231846,
+          "learner_snapshots": 447,
+          "graph_snapshots": 312,
+          "graph_concepts": 137732,
+          "graph_edges": 120953,
+          "graph_routes": 2478,
+          "semantic_bindings": 1923,
+          "sources": 2478,
+          "interpretations": 445,
+          "interpretation_attempts": 472,
+          "development_observations": 794
+        },
+        "duplication": {
+          "graph_concepts": {
+            "rows": 137732,
+            "unique": 838,
+            "ratio": 164.36
+          },
+          "graph_edges": {
+            "rows": 120953,
+            "unique": 797,
+            "ratio": 151.76
+          },
+          "graph_routes": {
+            "rows": 2478,
+            "unique": 8,
+            "ratio": 309.75
+          },
+          "learner_updates": {
+            "rows": 173280,
+            "unique": 784,
+            "ratio": 221.02
+          },
+          "learner_values": {
+            "rows": 231846,
+            "unique": 784,
+            "ratio": 295.72
+          }
+        },
+        "dominant_tables": {
+          "learner_updates": {
+            "bytes": 237178880,
+            "pages": 57905
+          },
+          "learner_snapshots": {
+            "bytes": 85786624,
+            "pages": 20944
+          },
+          "learner_values": {
+            "bytes": 84733952,
+            "pages": 20687
+          },
+          "graph_edges": {
+            "bytes": 26144768,
+            "pages": 6383
+          },
+          "sqlite_autoindex_learner_values_1": {
+            "bytes": 17432576,
+            "pages": 4256
+          },
+          "graph_concepts": {
+            "bytes": 16097280,
+            "pages": 3930
+          },
+          "sqlite_autoindex_learner_updates_2": {
+            "bytes": 14413824,
+            "pages": 3519
+          },
+          "sqlite_autoindex_learner_updates_1": {
+            "bytes": 14413824,
+            "pages": 3519
+          },
+          "sqlite_autoindex_graph_concepts_1": {
+            "bytes": 11292672,
+            "pages": 2757
+          },
+          "sqlite_autoindex_graph_edges_1": {
+            "bytes": 9969664,
+            "pages": 2434
+          },
+          "interpretation_attempts": {
+            "bytes": 6660096,
+            "pages": 1626
+          },
+          "run_manifests": {
+            "bytes": 1650688,
+            "pages": 403
+          }
+        }
+      },
+      "N-50": {
+        "path": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11_checkpoint75_parent/snapshots/N-50.sqlite3",
+        "file_bytes": 613769216,
+        "page_count": 149846,
+        "page_size": 4096,
+        "freelist_pages": 0,
+        "row_counts": {
+          "learner_updates": 199123,
+          "learner_values": 263476,
+          "learner_snapshots": 455,
+          "graph_snapshots": 329,
+          "graph_concepts": 158108,
+          "graph_edges": 143421,
+          "graph_routes": 2614,
+          "semantic_bindings": 2140,
+          "sources": 2478,
+          "interpretations": 453,
+          "interpretation_attempts": 472,
+          "development_observations": 901
+        },
+        "duplication": {
+          "graph_concepts": {
+            "rows": 158108,
+            "unique": 904,
+            "ratio": 174.9
+          },
+          "graph_edges": {
+            "rows": 143421,
+            "unique": 907,
+            "ratio": 158.13
+          },
+          "graph_routes": {
+            "rows": 2614,
+            "unique": 8,
+            "ratio": 326.75
+          },
+          "learner_updates": {
+            "rows": 199123,
+            "unique": 890,
+            "ratio": 223.73
+          },
+          "learner_values": {
+            "rows": 263476,
+            "unique": 890,
+            "ratio": 296.04
+          }
+        },
+        "dominant_tables": {
+          "learner_updates": {
+            "bytes": 272547840,
+            "pages": 66540
+          },
+          "learner_snapshots": {
+            "bytes": 99151872,
+            "pages": 24207
+          },
+          "learner_values": {
+            "bytes": 96370688,
+            "pages": 23528
+          },
+          "graph_edges": {
+            "bytes": 31002624,
+            "pages": 7569
+          },
+          "sqlite_autoindex_learner_values_1": {
+            "bytes": 19881984,
+            "pages": 4854
+          },
+          "graph_concepts": {
+            "bytes": 18534400,
+            "pages": 4525
+          },
+          "sqlite_autoindex_learner_updates_2": {
+            "bytes": 16670720,
+            "pages": 4070
+          },
+          "sqlite_autoindex_learner_updates_1": {
+            "bytes": 16670720,
+            "pages": 4070
+          },
+          "sqlite_autoindex_graph_concepts_1": {
+            "bytes": 12959744,
+            "pages": 3164
+          },
+          "sqlite_autoindex_graph_edges_1": {
+            "bytes": 11812864,
+            "pages": 2884
+          },
+          "interpretation_attempts": {
+            "bytes": 6873088,
+            "pages": 1678
+          },
+          "sources": {
+            "bytes": 1695744,
+            "pages": 414
+          }
+        }
+      },
+      "I-75": {
+        "path": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11_checkpoint75_parent/snapshots/I-75.sqlite3",
+        "file_bytes": 165036032,
+        "page_count": 40292,
+        "page_size": 4096,
+        "freelist_pages": 0,
+        "row_counts": {
+          "learner_updates": 1804,
+          "learner_values": 1804,
+          "learner_snapshots": 3,
+          "graph_snapshots": 462,
+          "graph_concepts": 293867,
+          "graph_edges": 275179,
+          "graph_routes": 3678,
+          "semantic_bindings": 3007,
+          "sources": 3528,
+          "interpretations": 632,
+          "interpretation_attempts": 672,
+          "development_observations": 1260
+        },
+        "duplication": {
+          "graph_concepts": {
+            "rows": 293867,
+            "unique": 1240,
+            "ratio": 236.99
+          },
+          "graph_edges": {
+            "rows": 275179,
+            "unique": 1263,
+            "ratio": 217.88
+          },
+          "graph_routes": {
+            "rows": 3678,
+            "unique": 8,
+            "ratio": 459.75
+          },
+          "learner_updates": {
+            "rows": 1804,
+            "unique": 1247,
+            "ratio": 1.45
+          },
+          "learner_values": {
+            "rows": 1804,
+            "unique": 1247,
+            "ratio": 1.45
+          }
+        },
+        "dominant_tables": {
+          "graph_edges": {
+            "bytes": 59478016,
+            "pages": 14521
+          },
+          "graph_concepts": {
+            "bytes": 34471936,
+            "pages": 8416
+          },
+          "sqlite_autoindex_graph_concepts_1": {
+            "bytes": 21479424,
+            "pages": 5244
+          },
+          "sqlite_autoindex_graph_edges_1": {
+            "bytes": 20111360,
+            "pages": 4910
+          },
+          "interpretation_attempts": {
+            "bytes": 9560064,
+            "pages": 2334
+          },
+          "learner_updates": {
+            "bytes": 2478080,
+            "pages": 605
+          },
+          "sources": {
+            "bytes": 2412544,
+            "pages": 589
+          },
+          "run_manifests": {
+            "bytes": 2396160,
+            "pages": 585
+          },
+          "semantic_bindings": {
+            "bytes": 1552384,
+            "pages": 379
+          },
+          "development_observations": {
+            "bytes": 1302528,
+            "pages": 318
+          },
+          "learner_snapshots": {
+            "bytes": 897024,
+            "pages": 219
+          },
+          "manifests": {
+            "bytes": 868352,
+            "pages": 212
+          }
+        }
+      },
+      "N-75": {
+        "path": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11_checkpoint75_parent/snapshots/N-75.sqlite3",
+        "file_bytes": 183562240,
+        "page_count": 44815,
+        "page_size": 4096,
+        "freelist_pages": 0,
+        "row_counts": {
+          "learner_updates": 1990,
+          "learner_values": 1990,
+          "learner_snapshots": 3,
+          "graph_snapshots": 479,
+          "graph_concepts": 323145,
+          "graph_edges": 315038,
+          "graph_routes": 3814,
+          "semantic_bindings": 3284,
+          "sources": 3528,
+          "interpretations": 639,
+          "interpretation_attempts": 672,
+          "development_observations": 1391
+        },
+        "duplication": {
+          "graph_concepts": {
+            "rows": 323145,
+            "unique": 1308,
+            "ratio": 247.05
+          },
+          "graph_edges": {
+            "rows": 315038,
+            "unique": 1397,
+            "ratio": 225.51
+          },
+          "graph_routes": {
+            "rows": 3814,
+            "unique": 8,
+            "ratio": 476.75
+          },
+          "learner_updates": {
+            "rows": 1990,
+            "unique": 1370,
+            "ratio": 1.45
+          },
+          "learner_values": {
+            "rows": 1990,
+            "unique": 1370,
+            "ratio": 1.45
+          }
+        },
+        "dominant_tables": {
+          "graph_edges": {
+            "bytes": 68087808,
+            "pages": 16623
+          },
+          "graph_concepts": {
+            "bytes": 37998592,
+            "pages": 9277
+          },
+          "sqlite_autoindex_graph_concepts_1": {
+            "bytes": 23621632,
+            "pages": 5767
+          },
+          "sqlite_autoindex_graph_edges_1": {
+            "bytes": 23031808,
+            "pages": 5623
+          },
+          "interpretation_attempts": {
+            "bytes": 9822208,
+            "pages": 2398
+          },
+          "learner_updates": {
+            "bytes": 2732032,
+            "pages": 667
+          },
+          "sources": {
+            "bytes": 2490368,
+            "pages": 608
+          },
+          "run_manifests": {
+            "bytes": 2408448,
+            "pages": 588
+          },
+          "semantic_bindings": {
+            "bytes": 1695744,
+            "pages": 414
+          },
+          "development_observations": {
+            "bytes": 1437696,
+            "pages": 351
+          },
+          "learner_snapshots": {
+            "bytes": 991232,
+            "pages": 242
+          },
+          "manifests": {
+            "bytes": 888832,
+            "pages": 217
+          }
+        }
+      },
+      "I-100": {
+        "path": "/tmp/mneme-p3-introspect-100-r23/subjects/I.sqlite3",
+        "file_bytes": 440381440,
+        "page_count": 107515,
+        "page_size": 4096,
+        "freelist_pages": 3,
+        "row_counts": {
+          "learner_updates": 65861,
+          "learner_values": 65861,
+          "learner_snapshots": 42,
+          "graph_snapshots": 614,
+          "graph_concepts": 510727,
+          "graph_edges": 501497,
+          "graph_routes": 4894,
+          "semantic_bindings": 4057,
+          "sources": 4578,
+          "interpretations": 825,
+          "interpretation_attempts": 872,
+          "development_observations": 1704
+        },
+        "duplication": {
+          "graph_concepts": {
+            "rows": 510727,
+            "unique": 1601,
+            "ratio": 319.0
+          },
+          "graph_edges": {
+            "rows": 501497,
+            "unique": 1707,
+            "ratio": 293.79
+          },
+          "graph_routes": {
+            "rows": 4894,
+            "unique": 8,
+            "ratio": 611.75
+          },
+          "learner_updates": {
+            "rows": 65861,
+            "unique": 1685,
+            "ratio": 39.09
+          },
+          "learner_values": {
+            "rows": 65861,
+            "unique": 1685,
+            "ratio": 39.09
+          }
+        },
+        "dominant_tables": {
+          "graph_edges": {
+            "bytes": 108388352,
+            "pages": 26462
+          },
+          "learner_updates": {
+            "bytes": 90148864,
+            "pages": 22009
+          },
+          "graph_concepts": {
+            "bytes": 60104704,
+            "pages": 14674
+          },
+          "sqlite_autoindex_graph_concepts_1": {
+            "bytes": 37916672,
+            "pages": 9257
+          },
+          "sqlite_autoindex_graph_edges_1": {
+            "bytes": 37244928,
+            "pages": 9093
+          },
+          "learner_snapshots": {
+            "bytes": 32374784,
+            "pages": 7904
+          },
+          "learner_values": {
+            "bytes": 24592384,
+            "pages": 6004
+          },
+          "interpretation_attempts": {
+            "bytes": 12513280,
+            "pages": 3055
+          },
+          "sqlite_autoindex_learner_values_1": {
+            "bytes": 5492736,
+            "pages": 1341
+          },
+          "sqlite_autoindex_learner_updates_2": {
+            "bytes": 5488640,
+            "pages": 1340
+          },
+          "sqlite_autoindex_learner_updates_1": {
+            "bytes": 5488640,
+            "pages": 1340
+          },
+          "sources": {
+            "bytes": 3133440,
+            "pages": 765
+          }
+        }
+      },
+      "N-100": {
+        "path": "/tmp/mneme-p3-introspect-100-r23/subjects/N.sqlite3",
+        "file_bytes": 495190016,
+        "page_count": 120896,
+        "page_size": 4096,
+        "freelist_pages": 0,
+        "row_counts": {
+          "learner_updates": 76702,
+          "learner_values": 76702,
+          "learner_snapshots": 45,
+          "graph_snapshots": 633,
+          "graph_concepts": 552633,
+          "graph_edges": 565467,
+          "graph_routes": 5046,
+          "semantic_bindings": 4386,
+          "sources": 4578,
+          "interpretations": 828,
+          "interpretation_attempts": 872,
+          "development_observations": 1860
+        },
+        "duplication": {
+          "graph_concepts": {
+            "rows": 552633,
+            "unique": 1667,
+            "ratio": 331.51
+          },
+          "graph_edges": {
+            "rows": 565467,
+            "unique": 1866,
+            "ratio": 303.04
+          },
+          "graph_routes": {
+            "rows": 5046,
+            "unique": 8,
+            "ratio": 630.75
+          },
+          "learner_updates": {
+            "rows": 76702,
+            "unique": 1829,
+            "ratio": 41.94
+          },
+          "learner_values": {
+            "rows": 76702,
+            "unique": 1829,
+            "ratio": 41.94
+          }
+        },
+        "dominant_tables": {
+          "graph_edges": {
+            "bytes": 122216448,
+            "pages": 29838
+          },
+          "learner_updates": {
+            "bytes": 104988672,
+            "pages": 25632
+          },
+          "graph_concepts": {
+            "bytes": 65191936,
+            "pages": 15916
+          },
+          "sqlite_autoindex_graph_edges_1": {
+            "bytes": 42082304,
+            "pages": 10274
+          },
+          "sqlite_autoindex_graph_concepts_1": {
+            "bytes": 40984576,
+            "pages": 10006
+          },
+          "learner_snapshots": {
+            "bytes": 37834752,
+            "pages": 9237
+          },
+          "learner_values": {
+            "bytes": 28635136,
+            "pages": 6991
+          },
+          "interpretation_attempts": {
+            "bytes": 12824576,
+            "pages": 3131
+          },
+          "sqlite_autoindex_learner_values_1": {
+            "bytes": 6406144,
+            "pages": 1564
+          },
+          "sqlite_autoindex_learner_updates_2": {
+            "bytes": 6361088,
+            "pages": 1553
+          },
+          "sqlite_autoindex_learner_updates_1": {
+            "bytes": 6361088,
+            "pages": 1553
+          },
+          "sources": {
+            "bytes": 3211264,
+            "pages": 784
+          }
+        }
+      }
+    },
+    "pre75_receipt": {
+      "I_bytes": 1095016448,
+      "N_bytes": 1230663680,
+      "freelist_pages": 0,
+      "dominant_table_bytes": {
+        "I": {
+          "learner_updates": 498712576,
+          "learner_snapshots": 179666944,
+          "learner_values": 156057600
+        },
+        "N": {
+          "learner_updates": 561078272,
+          "learner_snapshots": 203358208,
+          "learner_values": 175058944
+        }
+      },
+      "source": "docs/receipts/MNEME_P3_Introspection_100_Thread_Storage_Recovery_20261001.md"
+    },
+    "compacted75": {
+      "I_bytes": 165036032,
+      "N_bytes": 183562240
+    },
+    "growth_after_compaction_to100": {
+      "I_bytes_added": 275345408,
+      "N_bytes_added": 311627776,
+      "I_mb_per_thread_76_100": 11.014,
+      "N_mb_per_thread_76_100": 12.465
+    },
+    "causal_accounting": {
+      "learner_updates": "append-only update rows, including 56,093/56,534 I-25 rows with reason=unchanged; each carries operation/application/opportunity/edge/context/delta/reason plus before_json and after_json. Repeated unchanged writes are historical telemetry, not current state.",
+      "learner_values": "historical materialized values per update; I-25 115,100 rows over 437 distinct edge keys and one context, so repeated values are not one current row per edge. Compaction retains latest logical values.",
+      "learner_snapshots": "full configuration_json state snapshots; I-25 260 rows and I-50 447 rows; large JSON state is repeated per opportunity, explaining 179.7/203.4MB at pre75.",
+      "graph_snapshots": "complete materialized snapshots duplicate unchanged concepts/edges/routes. I-25 has 50,541 concept rows/510 unique keys and 41,206 edge rows/444 unique keys; I-100 has 510,727/1,601 and 501,497/1,707.",
+      "checkpoint_copies": "live stores, snapshots, backups, staging and compressed archives multiply physical occupancy. The storage recovery receipt records a disk-full interruption during r23 removal after compaction; no scientific state was rerun.",
+      "sqlite_behavior": "page counts/freelists and dbstat show allocated pages, with zero freelist in compact 75 snapshots; full backup/checkpoint and staging copies add external duplication beyond each live file."
+    }
+  },
+  "introspection": {
+    "public_status_counts": {
+      "ABSTAINED_MALFORMED": 75,
+      "ABSTAINED_NO_TARGETS": 4,
+      "ABSTAINED_NO_CHANGE": 21
+    },
+    "accepted_adjustments": 0,
+    "public_adjustment_count": 0,
+    "raw_receipt_samples": {
+      "r11_review_files": 51,
+      "r11_error_counts": {
+        "reflection result is not JSON; reflection target alias is not supplied": 50,
+        "reflection result is not JSON; reflection result is not JSON": 1
+      },
+      "r11_files_with_repair": 51,
+      "r5_review_files": 16,
+      "r5_error_counts": {
+        "reflection result is not JSON; reflection target alias is not supplied": 12,
+        "<none>": 1,
+        "reflection result is not JSON; reflection result is not JSON": 1,
+        "reflection result must be an object; reflection target alias is not supplied": 2
+      }
+    },
+    "schema_contract_observed": {
+      "top_level": "assessments",
+      "required_fields": [
+        "target_alias",
+        "association_effect",
+        "expression_effect",
+        "confidence",
+        "basis",
+        "evidence_refs",
+        "reason",
+        "abstain"
+      ],
+      "target_alias_must_match_packet": true,
+      "evidence_refs_must_be_supplied": true,
+      "basis_insufficient_has_zero_cap": true
+    },
+    "representative_failure": {
+      "raw": "natural-language analysis rather than JSON object",
+      "repair": "fenced JSON using invented aliases/fields",
+      "parser_error": "reflection result is not JSON; reflection target alias is not supplied",
+      "source": "docs/receipts/MNEME_P3_Introspection_100_Thread_Run_20261001_r11/.../introspection/review-P3-070.json"
+    },
+    "later_review_evidence": {
+      "public_no_change": 21,
+      "public_no_targets": 4,
+      "r23_raw_no_target_example": "/tmp/mneme-p3-introspect-100-r23/experiments/p3-introspect-100/revisions/1/runs/p3-introspect-100-20261001-r23/introspection/review-p3-100-arc-00.json",
+      "interpretation": "Observed empty proposals/zero accepted. The compact ledger does not retain enough raw later model output to distinguish genuine no-change from a semantically empty review in every row; no actionable proposal is directly evidenced."
+    }
+  },
+  "saa_lottery_epochs": [
+    {
+      "epoch": "early_threads_001_025",
+      "threads": [
+        1,
+        25
+      ],
+      "trace_rows": 400,
+      "persisted_rows": 400,
+      "missing_trace_rows": 0,
+      "nonzero_distribution_rows": 360,
+      "selected_landing_rows": 360,
+      "nonempty_payload_rows": 360,
+      "candidate_count_mean": 18.29,
+      "candidate_count_median": 18.5,
+      "flatness_mean_fixed_scale": 769398.8194,
+      "novelty_mean_fixed_scale": 195000.0167,
+      "landing_probability_mean_fixed_scale": 211502.73,
+      "pressure_mean": 48584.1111,
+      "unique_landings": 47,
+      "top_landing_share": 0.1111,
+      "selected_flagged_exploration": 360,
+      "selected_without_matching_contributor": 0
+    },
+    {
+      "epoch": "middle_threads_026_075",
+      "threads": [
+        26,
+        75
+      ],
+      "trace_rows": 800,
+      "persisted_rows": 784,
+      "missing_trace_rows": 16,
+      "nonzero_distribution_rows": 777,
+      "selected_landing_rows": 777,
+      "nonempty_payload_rows": 777,
+      "candidate_count_mean": 45.19,
+      "candidate_count_median": 45,
+      "flatness_mean_fixed_scale": 860052.4363,
+      "novelty_mean_fixed_scale": 70173.7503,
+      "landing_probability_mean_fixed_scale": 120226.32,
+      "pressure_mean": 63918.1261,
+      "unique_landings": 108,
+      "top_landing_share": 0.0837,
+      "selected_flagged_exploration": 773,
+      "selected_without_matching_contributor": 4
+    },
+    {
+      "epoch": "late_threads_076_100",
+      "threads": [
+        76,
+        100
+      ],
+      "trace_rows": 400,
+      "persisted_rows": 342,
+      "missing_trace_rows": 58,
+      "nonzero_distribution_rows": 326,
+      "selected_landing_rows": 326,
+      "nonempty_payload_rows": 326,
+      "candidate_count_mean": 27.83,
+      "candidate_count_median": 25.5,
+      "flatness_mean_fixed_scale": 796916.4233,
+      "novelty_mean_fixed_scale": 25306.7485,
+      "landing_probability_mean_fixed_scale": 162528.07,
+      "pressure_mean": 52935.2883,
+      "unique_landings": 56,
+      "top_landing_share": 0.2301,
+      "selected_flagged_exploration": 326,
+      "selected_without_matching_contributor": 0
+    }
+  ],
+  "divergence_examples": [
+    {
+      "thread": 3,
+      "turn": 0,
+      "query_context": "My usual walk has become surprisingly interesting lately.",
+      "I": {
+        "response": "That sounds interesting! What kind of things have you been noticing on your walks lately?",
+        "field": {
+          "landing": "edge:abdca66f2328cc9889b7572e961763a2fd0f3209da290012746d3445c397040b",
+          "relationship": "depends_on",
+          "source": "c-00c4285274fcc5d6fba2ee58",
+          "target": "c-56dea559c57997bb948daf34",
+          "total_pressure": 20000,
+          "payload": "Potentially accessible framings:\n- Outcomes may depend on the conditions that support them.\nThese are optional tendencies, not instructions. Use them only if they fit naturally."
+        }
+      },
+      "N": {
+        "response": "That sounds interesting! What makes your usual walk so interesting lately? Are you noticing some new sights or maybe a change in the weather? 😊",
+        "field": {
+          "landing": "edge:f56fc0159df0a5717353dcf7ae7aa7164bdafdf6357e764510ce6e8c98497e0d",
+          "relationship": "part_of",
+          "source": "c-889ad0e1c765ba7b024e5bd3",
+          "target": "c-d4913f05595893710ee75c88",
+          "total_pressure": 20000,
+          "payload": "Potentially accessible framings:\n- A component may matter as part of a larger system.\nThese are optional tendencies, not instructions. Use them only if they fit naturally."
+        }
+      },
+      "interpretation": "Observed paired landing/payload/output divergence. The later graph-state feedback link is inferred from subsequent checkpoint digest/edge-count divergence, not proven by this row alone."
+    },
+    {
+      "thread": 3,
+      "turn": 1,
+      "query_context": "I'm not sure exactly what's changed, but the way the light hits the trees in the morning feels different somehow. It's hard to put my finger on it.",
+      "I": {
+        "response": "That's a really interesting observation! Sometimes those subtle shifts in light can change the whole mood of a place. Is it a warmer, softer light, or maybe a more dramatic, sharper contrast?",
+        "field": {
+          "landing": "edge:abdca66f2328cc9889b7572e961763a2fd0f3209da290012746d3445c397040b",
+          "relationship": "depends_on",
+          "source": "c-00c4285274fcc5d6fba2ee58",
+          "target": "c-56dea559c57997bb948daf34",
+          "total_pressure": 20000,
+          "payload": "Potentially accessible framings:\n- Outcomes may depend on the conditions that support them.\nThese are optional tendencies, not instructions. Use them only if they fit naturally."
+        }
+      },
+      "N": {
+        "response": "That's a really lovely observation. Sometimes those subtle shifts in light can make a huge difference in how a whole scene feels. It sounds like you're noticing a real change in the atmosphere!\n\nIs it more of a *feeling* change, or do you feel like the light itself is just hitting the trees differently? Sometimes those \"small\" changes in light can make a whole day feel completely different.",
+        "field": {
+          "landing": "edge:f56fc0159df0a5717353dcf7ae7aa7164bdafdf6357e764510ce6e8c98497e0d",
+          "relationship": "part_of",
+          "source": "c-889ad0e1c765ba7b024e5bd3",
+          "target": "c-d4913f05595893710ee75c88",
+          "total_pressure": 20000,
+          "payload": "Potentially accessible framings:\n- A component may matter as part of a larger system.\nThese are optional tendencies, not instructions. Use them only if they fit naturally."
+        }
+      },
+      "interpretation": "Observed paired landing/payload/output divergence. The later graph-state feedback link is inferred from subsequent checkpoint digest/edge-count divergence, not proven by this row alone."
+    },
+    {
+      "thread": 3,
+      "turn": 2,
+      "query_context": "It's both, maybe? Like the light feels warmer, but it's also casting longer shadows, almost like the day is stretching out more. I can't tell if it's the time of year or just something I'm imagining.",
+      "I": {
+        "response": "It sounds like a beautiful, almost cinematic change! When the light feels \"warmer\" and the shadows are stretching out, it often suggests a change in the angle of the sun—maybe the seasons are shifting, or maybe the atmosphere itself is just feeling different.\n\nIt's a lovely feeling when the world feels like it's \"stretching out.\" Do you feel like the air feels different, too? Like a slight shift in the air quality or the sound of the environment?",
+        "field": {
+          "landing": "edge:abdca66f2328cc9889b7572e961763a2fd0f3209da290012746d3445c397040b",
+          "relationship": "depends_on",
+          "source": "c-00c4285274fcc5d6fba2ee58",
+          "target": "c-56dea559c57997bb948daf34",
+          "total_pressure": 20000,
+          "payload": "Potentially accessible framings:\n- Outcomes may depend on the conditions that support them.\nThese are optional tendencies, not instructions. Use them only if they fit naturally."
+        }
+      },
+      "N": {
+        "response": "That's a fascinating way to describe it—a \"warmer\" light and \"longer\" shadows. It sounds like the atmosphere itself is changing, which is a big shift!\n\nIt could definitely be a combination of both—maybe the season is shifting, or maybe the angle of the sun is just changing as the year progresses.\n\nIf you're feeling that \"warmer\" light, it might be a sign that the sun is getting lower in the sky, or maybe it's just a specific time of day.\n\nDo you feel like the *quality* of the light is changing, or is it the *duration* of the light that feels different?",
+        "field": {
+          "landing": "edge:f56fc0159df0a5717353dcf7ae7aa7164bdafdf6357e764510ce6e8c98497e0d",
+          "relationship": "part_of",
+          "source": "c-889ad0e1c765ba7b024e5bd3",
+          "target": "c-d4913f05595893710ee75c88",
+          "total_pressure": 20000,
+          "payload": "Potentially accessible framings:\n- A component may matter as part of a larger system.\nThese are optional tendencies, not instructions. Use them only if they fit naturally."
+        }
+      },
+      "interpretation": "Observed paired landing/payload/output divergence. The later graph-state feedback link is inferred from subsequent checkpoint digest/edge-count divergence, not proven by this row alone."
+    }
+  ],
+  "conclusions": [
+    {
+      "class": "Observed",
+      "finding": "Checkpoint-25 I/N readouts had 24 rows each, field enabled, zero distribution/landing/pressure/payload, and identical paired outputs."
+    },
+    {
+      "class": "Observed",
+      "finding": "Across persisted developmental traces, 1,526/1,600 rows had a trace; 1,463 rows had nonzero distributions/landings/pressure/payload after excluding persisted zero rows; 74 rows lacked a separate trace."
+    },
+    {
+      "class": "Observed",
+      "finding": "No introspection adjustment was accepted: 100 reviews, 75 malformed, 4 no-targets, 21 no-change, zero accessibility/expression adjustments."
+    },
+    {
+      "class": "Inferred",
+      "finding": "I/N divergence is attributable to SAA payload/landing and subsequent adaptive graph/learner feedback rather than introspection; direct paired traces show differing payloads and outputs from the same query/seed, while checkpoint graph digests and counts diverge."
+    },
+    {
+      "class": "Unresolved",
+      "finding": "The compact evidence cannot establish the exact cause of every missing late field trace (T075/T087/T089/T095/T096/T100), nor whether every no-change review was a genuine semantic no-change rather than an unrecorded empty proposal."
+    },
+    {
+      "class": "Observed",
+      "finding": "The SAA lottery operated on most accepted developmental coordinates with candidate distributions, seeded landings, local pressure and rendered payloads; the evidence is insufficient to establish a clean familiar-versus-novel flattening causal relationship because novelty/context distributions and missing-trace intervals are confounded."
+    },
+    {
+      "class": "Observed",
+      "finding": "P3 provides no interpretable evidence for an introspection effect: accepted introspection treatment was zero. I/N divergence cannot be attributed to introspection."
+    }
+  ]
+}
