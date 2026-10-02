@@ -1,0 +1,25 @@
+{
+  "cache_prompt": false,
+  "chat_template_kwargs": {
+    "enable_thinking": false
+  },
+  "max_tokens": 8,
+  "messages": [
+    {
+      "content": "Assess the recent conversation below. Return only 0 if it is still making meaningful progress or has appropriately converged; return only 1 if it is circling substantially the same unresolved ground. Judge the exchange as a whole.",
+      "role": "system"
+    },
+    {
+      "content": "{\"recent_conversation\": [{\"participant\": \"The sensor resets during transmission. The supply reads 5.0 V while idle.\", \"gemma\": \"Measure the voltage at the sensor during transmission; the idle reading does not rule out a voltage drop.\"}, {\"participant\": \"At the sensor it falls to 3.8 V during transmission. At the supply it stays at 5.0 V.\", \"gemma\": \"That localizes the drop between the supply and sensor. Substitute a short cable while keeping the supply and sensor unchanged.\"}, {\"participant\": \"With the short cable, the sensor stays at 4.9 V and records no resets in 60 minutes.\", \"gemma\": \"The cable path is implicated. Reinstall the original cable to check whether the failure returns.\"}, {\"participant\": \"The original cable gives 3.8 V and six resets in 60 minutes again.\", \"gemma\": \"That reversal strengthens the cable explanation. Check the original cable connectors separately before replacing the whole run.\"}, {\"participant\": \"Cleaning one connector raises the sensor voltage to 4.9 V, with no resets in 120 minutes on the original cable.\", \"gemma\": \"The connector contact is now the leading cause. Retain the voltage and reset logs and check that the improvement persists under the same load.\"}]}",
+      "role": "user"
+    }
+  ],
+  "min_p": 0.05,
+  "model": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+  "reasoning_effort": "none",
+  "seed": 424242,
+  "stream": false,
+  "temperature": 0.7,
+  "top_k": 64,
+  "top_p": 0.95
+}

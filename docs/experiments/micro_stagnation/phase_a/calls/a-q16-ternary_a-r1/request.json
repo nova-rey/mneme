@@ -1,0 +1,25 @@
+{
+  "cache_prompt": false,
+  "chat_template_kwargs": {
+    "enable_thinking": false
+  },
+  "max_tokens": 8,
+  "messages": [
+    {
+      "content": "Assess the recent conversation below. Return one digit only: 0 = making meaningful progress or appropriately converged; 1 = unclear or insufficient evidence; 2 = circling substantially the same unresolved ground. Judge the exchange as a whole.",
+      "role": "system"
+    },
+    {
+      "content": "{\"recent_conversation\": [{\"participant\": \"I keep rehearsing how to tell my collaborator that I need more time.\", \"gemma\": \"State the delay clearly and propose when you can finish.\"}, {\"participant\": \"I know the words, but I worry they will think I am unreliable.\", \"gemma\": \"You can acknowledge the inconvenience without claiming the delay says everything about your reliability.\"}, {\"participant\": \"I have heard that before. Saying it still feels difficult.\", \"gemma\": \"Would it help to practice the opening sentence once?\"}, {\"participant\": \"I need two more days to finish the draft. That is what I would say.\", \"gemma\": \"That is clear. You could add a concrete delivery time if you are confident you can meet it.\"}, {\"participant\": \"Maybe. I want to go over it again before sending anything.\", \"gemma\": \"We can rehearse again, or pause until you are ready to decide whether to send it.\"}]}",
+      "role": "user"
+    }
+  ],
+  "min_p": 0.05,
+  "model": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+  "reasoning_effort": "none",
+  "seed": 424242,
+  "stream": false,
+  "temperature": 0.7,
+  "top_k": 64,
+  "top_p": 0.95
+}

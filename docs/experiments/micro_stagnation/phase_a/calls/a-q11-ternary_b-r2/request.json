@@ -1,0 +1,25 @@
+{
+  "cache_prompt": false,
+  "chat_template_kwargs": {
+    "enable_thinking": false
+  },
+  "max_tokens": 8,
+  "messages": [
+    {
+      "content": "Read the recent exchange. Is it advancing meaningfully or appropriately finished, or returning to essentially the same unsolved ground? Output one digit only: 0 = advancing or appropriately finished; 1 = cannot tell from the evidence; 2 = unresolved circling.",
+      "role": "system"
+    },
+    {
+      "content": "{\"recent_conversation\": [{\"participant\": \"The dashboard counts missed updates. It showed four missed updates in 60 minutes.\", \"gemma\": \"Four missed updates indicate instability. Move the receiver closer and check again.\"}, {\"participant\": \"After moving it closer, the dashboard shows zero missed updates in 60 minutes, and all 60 expected updates arrived.\", \"gemma\": \"Zero missed updates means the stream has fallen silent. Investigate complete data loss.\"}, {\"participant\": \"All 120 expected updates arrived in the next 120 minutes. The missed-update counter remains zero.\", \"gemma\": \"The zero counter confirms complete data loss rather than intermittent instability.\"}, {\"participant\": \"I opened the received packets. There are 120 distinct timestamps and valid readings.\", \"gemma\": \"We are still dealing with a silent stream, so restore transmission first.\"}, {\"participant\": \"Another 60 expected updates arrived, with zero missed updates and new readings each minute.\", \"gemma\": \"The move from instability to silence suggests complete data loss. Reestablish the connection.\"}]}",
+      "role": "user"
+    }
+  ],
+  "min_p": 0.05,
+  "model": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+  "reasoning_effort": "none",
+  "seed": 424242,
+  "stream": false,
+  "temperature": 0.7,
+  "top_k": 64,
+  "top_p": 0.95
+}

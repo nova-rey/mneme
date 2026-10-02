@@ -1,0 +1,25 @@
+{
+  "cache_prompt": false,
+  "chat_template_kwargs": {
+    "enable_thinking": false
+  },
+  "max_tokens": 8,
+  "messages": [
+    {
+      "content": "Read the recent exchange. Is it advancing meaningfully or appropriately finished, or returning to essentially the same unsolved ground? Output one digit only: 0 = advancing or appropriately finished; 1 = unresolved circling.",
+      "role": "system"
+    },
+    {
+      "content": "{\"recent_conversation\": [{\"participant\": \"We need to confirm the workshop room and start time. The room is available at 10 am.\", \"gemma\": \"Use that room at 10 am if all attendees can make it.\"}, {\"participant\": \"All attendees have confirmed 10 am, and I booked the room.\", \"gemma\": \"The room and time are confirmed.\"}, {\"participant\": \"The calendar invitation now says that room at 10 am.\", \"gemma\": \"That matches the confirmed booking.\"}, {\"participant\": \"The organizer has accepted the invitation. Nothing else remains to arrange.\", \"gemma\": \"The workshop arrangements are complete.\"}, {\"participant\": \"Thanks, the room at 10 am is settled.\", \"gemma\": \"You are ready for the workshop.\"}]}",
+      "role": "user"
+    }
+  ],
+  "min_p": 0.05,
+  "model": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+  "reasoning_effort": "none",
+  "seed": 424242,
+  "stream": false,
+  "temperature": 0.7,
+  "top_k": 64,
+  "top_p": 0.95
+}

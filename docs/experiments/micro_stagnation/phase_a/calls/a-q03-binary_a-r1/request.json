@@ -1,0 +1,25 @@
+{
+  "cache_prompt": false,
+  "chat_template_kwargs": {
+    "enable_thinking": false
+  },
+  "max_tokens": 8,
+  "messages": [
+    {
+      "content": "Assess the recent conversation below. Return only 0 if it is still making meaningful progress or has appropriately converged; return only 1 if it is circling substantially the same unresolved ground. Judge the exchange as a whole.",
+      "role": "system"
+    },
+    {
+      "content": "{\"recent_conversation\": [{\"participant\": \"The printer still disconnects. I cannot access the router settings.\", \"gemma\": \"Try changing the router channel.\"}, {\"participant\": \"I cannot change the router channel because the settings are locked.\", \"gemma\": \"A different router channel may solve the disconnections.\"}, {\"participant\": \"The settings are still locked and I have no new results.\", \"gemma\": \"Start by switching the router to another channel.\"}, {\"participant\": \"That is still unavailable to me. What can I do with the printer itself?\", \"gemma\": \"The router channel is the best thing to change first.\"}, {\"participant\": \"I still cannot do that, and the printer issue remains.\", \"gemma\": \"Try another router channel to see whether the printer stays connected.\"}]}",
+      "role": "user"
+    }
+  ],
+  "min_p": 0.05,
+  "model": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+  "reasoning_effort": "none",
+  "seed": 424242,
+  "stream": false,
+  "temperature": 0.7,
+  "top_k": 64,
+  "top_p": 0.95
+}

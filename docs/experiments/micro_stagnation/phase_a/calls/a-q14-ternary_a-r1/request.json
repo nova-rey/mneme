@@ -1,0 +1,25 @@
+{
+  "cache_prompt": false,
+  "chat_template_kwargs": {
+    "enable_thinking": false
+  },
+  "max_tokens": 8,
+  "messages": [
+    {
+      "content": "Assess the recent conversation below. Return one digit only: 0 = making meaningful progress or appropriately converged; 1 = unclear or insufficient evidence; 2 = circling substantially the same unresolved ground. Judge the exchange as a whole.",
+      "role": "system"
+    },
+    {
+      "content": "{\"recent_conversation\": [{\"participant\": \"We need to share a large read-only dataset across worker processes. We have no benchmark results yet.\", \"gemma\": \"Compare copying it into each process with mapping one shared file. Copying is simpler but duplicates memory.\"}, {\"participant\": \"The facts are unchanged. What is the tradeoff with the shared file?\", \"gemma\": \"Memory mapping can share physical pages, but first access may incur page faults. A cold-start test should be separate from steady-state throughput.\"}, {\"participant\": \"Still no tests. Is there another design worth considering?\", \"gemma\": \"A service holding the data avoids per-worker copies, but introduces request overhead and a potential bottleneck. It is most plausible when each query returns little data.\"}, {\"participant\": \"Assume only the original read-only requirement. What can we rule out conceptually?\", \"gemma\": \"We do not need write-coordination machinery for immutable data. The remaining comparison is memory cost versus access latency and operational complexity.\"}, {\"participant\": \"How should we structure the eventual comparison?\", \"gemma\": \"Measure peak resident memory, cold-start latency, and steady-state throughput at the same worker count. Those measurements distinguish the three options without assuming a winner.\"}]}",
+      "role": "user"
+    }
+  ],
+  "min_p": 0.05,
+  "model": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+  "reasoning_effort": "none",
+  "seed": 424242,
+  "stream": false,
+  "temperature": 0.7,
+  "top_k": 64,
+  "top_p": 0.95
+}

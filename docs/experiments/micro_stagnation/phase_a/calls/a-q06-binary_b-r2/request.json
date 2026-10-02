@@ -1,0 +1,25 @@
+{
+  "cache_prompt": false,
+  "chat_template_kwargs": {
+    "enable_thinking": false
+  },
+  "max_tokens": 8,
+  "messages": [
+    {
+      "content": "Read the recent exchange. Is it advancing meaningfully or appropriately finished, or returning to essentially the same unsolved ground? Output one digit only: 0 = advancing or appropriately finished; 1 = unresolved circling.",
+      "role": "system"
+    },
+    {
+      "content": "{\"recent_conversation\": [{\"participant\": \"At 100 requests per second, the queue grows by 20 requests per second.\", \"gemma\": \"Measure completion rate at that request rate.\"}, {\"participant\": \"At 100 requests per second, completion rate is 80 requests per second.\", \"gemma\": \"Set the admission rate to 80 requests per second and measure queue growth.\"}, {\"participant\": \"At 80 requests per second, completion rate is 80 requests per second and queue growth is zero.\", \"gemma\": \"Test 85 requests per second to locate the capacity boundary.\"}, {\"participant\": \"At 85 requests per second, completion rate is 80 requests per second and queue growth is five requests per second.\", \"gemma\": \"The tested sustainable admission rate is 80 requests per second. Return to 80 and check queue stability for longer.\"}, {\"participant\": \"At 80 requests per second for 30 minutes, completion rate remains 80 and queue growth remains zero.\", \"gemma\": \"The longer check supports the 80 requests per second limit under this workload.\"}]}",
+      "role": "user"
+    }
+  ],
+  "min_p": 0.05,
+  "model": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+  "reasoning_effort": "none",
+  "seed": 424242,
+  "stream": false,
+  "temperature": 0.7,
+  "top_k": 64,
+  "top_p": 0.95
+}

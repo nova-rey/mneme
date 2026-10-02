@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "variants": [
+    {
+      "prompt_id": "binary_a",
+      "format": "binary",
+      "prompt_text": "Assess the recent conversation below. Return only 0 if it is still making meaningful progress or has appropriately converged; return only 1 if it is circling substantially the same unresolved ground. Judge the exchange as a whole.",
+      "output_mapping": {
+        "0": "progress",
+        "1": "circling"
+      }
+    },
+    {
+      "prompt_id": "binary_b",
+      "format": "binary",
+      "prompt_text": "Read the recent exchange. Is it advancing meaningfully or appropriately finished, or returning to essentially the same unsolved ground? Output one digit only: 0 = advancing or appropriately finished; 1 = unresolved circling.",
+      "output_mapping": {
+        "0": "progress",
+        "1": "circling"
+      }
+    },
+    {
+      "prompt_id": "ternary_a",
+      "format": "ternary",
+      "prompt_text": "Assess the recent conversation below. Return one digit only: 0 = making meaningful progress or appropriately converged; 1 = unclear or insufficient evidence; 2 = circling substantially the same unresolved ground. Judge the exchange as a whole.",
+      "output_mapping": {
+        "0": "progress",
+        "1": "unclear",
+        "2": "circling"
+      }
+    },
+    {
+      "prompt_id": "ternary_b",
+      "format": "ternary",
+      "prompt_text": "Read the recent exchange. Is it advancing meaningfully or appropriately finished, or returning to essentially the same unsolved ground? Output one digit only: 0 = advancing or appropriately finished; 1 = cannot tell from the evidence; 2 = unresolved circling.",
+      "output_mapping": {
+        "0": "progress",
+        "1": "unclear",
+        "2": "circling"
+      }
+    }
+  ]
+}

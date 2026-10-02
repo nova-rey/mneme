@@ -2986,6 +2986,221 @@
       },
       "waiting_on": [],
       "workstream": "meter-closure"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "23bfd2590ab8552b282410b4cf73457c3003c4fa",
+      "campaign": "mneme-phase-two",
+      "candidate": {
+        "artifact": "docs/experiments/micro_stagnation/freeze.json",
+        "base_sha": "23bfd2590ab8552b282410b4cf73457c3003c4fa",
+        "returned_at": "2026-10-02T22:02:20.479084Z",
+        "returned_by": "micro_bank",
+        "sha": null
+      },
+      "completion_criterion": "Bounded gated evidence and passive observer only; stop later phases if qualification fails",
+      "created_at": "2026-10-02T21:52:44.706397Z",
+      "dependencies": [],
+      "domain": "software",
+      "edit_boundaries": [
+        "docs/experiments/micro_stagnation/qualification_cases.json",
+        "docs/experiments/micro_stagnation/prompts.json"
+      ],
+      "evidence_refs": [
+        "docs/experiments/micro_stagnation/freeze.json"
+      ],
+      "id": "MI-BANK",
+      "notes": "",
+      "owner": null,
+      "priority": 10,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "five-turn-micro-meter"
+      ],
+      "resource_requirements": [],
+      "scope": "Frozen micro-introspection qualification bank",
+      "session_ids": [],
+      "status": "DONE",
+      "title": "Frozen micro-introspection qualification bank",
+      "updated_at": "2026-10-02T22:02:20.811440Z",
+      "validation": {
+        "required": [
+          "evidence"
+        ],
+        "results": {
+          "evidence": {
+            "receipt": "docs/experiments/micro_stagnation/freeze.json",
+            "recorded_at": "2026-10-02T22:02:20.701386Z",
+            "status": "PASS"
+          }
+        }
+      },
+      "waiting_on": [],
+      "workstream": "micro-stagnation"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "23bfd2590ab8552b282410b4cf73457c3003c4fa",
+      "campaign": "mneme-phase-two",
+      "candidate": {
+        "artifact": "docs/experiments/micro_stagnation/instrument_validation.json",
+        "base_sha": "23bfd2590ab8552b282410b4cf73457c3003c4fa",
+        "returned_at": "2026-10-02T22:02:20.918681Z",
+        "returned_by": "micro_instrument",
+        "sha": null
+      },
+      "completion_criterion": "Bounded gated evidence and passive observer only; stop later phases if qualification fails",
+      "created_at": "2026-10-02T21:52:44.752096Z",
+      "dependencies": [],
+      "domain": "software",
+      "edit_boundaries": [
+        "src/mneme/experiments/micro_stagnation.py",
+        "tools/run_micro_stagnation.py",
+        "tests/test_micro_stagnation.py"
+      ],
+      "evidence_refs": [
+        "docs/experiments/micro_stagnation/instrument_validation.json"
+      ],
+      "id": "MI-INSTRUMENT",
+      "notes": "",
+      "owner": null,
+      "priority": 10,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "five-turn-micro-meter"
+      ],
+      "resource_requirements": [],
+      "scope": "Isolated five-turn micro-meter runner and tests",
+      "session_ids": [],
+      "status": "DONE",
+      "title": "Isolated five-turn micro-meter runner and tests",
+      "updated_at": "2026-10-02T22:02:21.250997Z",
+      "validation": {
+        "required": [
+          "evidence"
+        ],
+        "results": {
+          "evidence": {
+            "receipt": "docs/experiments/micro_stagnation/instrument_validation.json",
+            "recorded_at": "2026-10-02T22:02:21.135159Z",
+            "status": "PASS"
+          }
+        }
+      },
+      "waiting_on": [],
+      "workstream": "micro-stagnation"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "23bfd2590ab8552b282410b4cf73457c3003c4fa",
+      "campaign": "mneme-phase-two",
+      "candidate": {
+        "artifact": "docs/experiments/micro_stagnation/phase_a/execution_summary.json",
+        "base_sha": "23bfd2590ab8552b282410b4cf73457c3003c4fa",
+        "returned_at": "2026-10-02T22:08:24.267553Z",
+        "returned_by": "micro_instrument",
+        "sha": null
+      },
+      "completion_criterion": "Bounded gated evidence and passive observer only; stop later phases if qualification fails",
+      "created_at": "2026-10-02T21:52:44.802021Z",
+      "dependencies": [
+        "package:MI-BANK",
+        "package:MI-INSTRUMENT"
+      ],
+      "domain": "software",
+      "edit_boundaries": [
+        "docs/experiments/micro_stagnation/phase_a",
+        "docs/experiments/micro_stagnation/phase_b",
+        "conditional phase_c"
+      ],
+      "evidence_refs": [
+        "docs/experiments/micro_stagnation/gate_decision.json"
+      ],
+      "id": "MI-EVIDENCE",
+      "notes": "",
+      "owner": null,
+      "priority": 10,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "five-turn-micro-meter"
+      ],
+      "resource_requirements": [],
+      "scope": "Gated micro-meter experiment evidence",
+      "session_ids": [],
+      "status": "DONE",
+      "title": "Gated micro-meter experiment evidence",
+      "updated_at": "2026-10-02T22:08:24.623557Z",
+      "validation": {
+        "required": [
+          "evidence"
+        ],
+        "results": {
+          "evidence": {
+            "receipt": "docs/experiments/micro_stagnation/independence_receipt.json",
+            "recorded_at": "2026-10-02T22:08:24.508063Z",
+            "status": "PASS"
+          }
+        }
+      },
+      "waiting_on": [],
+      "workstream": "micro-stagnation"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "23bfd2590ab8552b282410b4cf73457c3003c4fa",
+      "campaign": "mneme-phase-two",
+      "candidate": null,
+      "completion_criterion": "Bounded gated evidence and passive observer only; stop later phases if qualification fails",
+      "created_at": "2026-10-02T21:52:44.843353Z",
+      "dependencies": [
+        "package:MI-EVIDENCE"
+      ],
+      "domain": "software",
+      "edit_boundaries": [
+        "docs/experiments/micro_stagnation/report",
+        "canonical integration"
+      ],
+      "evidence_refs": [],
+      "id": "MI-CLOSE",
+      "notes": "",
+      "owner": "root",
+      "priority": 10,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "five-turn-micro-meter"
+      ],
+      "resource_requirements": [],
+      "scope": "Micro-meter analysis and integration",
+      "session_ids": [
+        "micro-stagnation"
+      ],
+      "status": "RUNNING",
+      "title": "Micro-meter analysis and integration",
+      "updated_at": "2026-10-02T22:08:24.738129Z",
+      "validation": {
+        "required": [
+          "evidence"
+        ],
+        "results": {}
+      },
+      "waiting_on": [],
+      "workstream": "micro-stagnation"
     }
   ],
   "project": "nova-rey/mneme",
@@ -3000,5 +3215,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-10-02T21:34:23.776433Z"
+  "updated_at": "2026-10-02T22:08:24.738292Z"
 }

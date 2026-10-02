@@ -20,6 +20,11 @@ continue using prompt caching.
 
 The documents are preserved in their supplied form and are intentionally not merged.
 
+* [Five-turn semantic micro-meter qualification](experiments/micro_stagnation/report.md)
+  tests four frozen tiny Gemma prompts without SAA influence. Qualification failed
+  despite low latency; preserved-conversation and live Quinn phases were not run.
+  No production integration or generation policy changed.
+
 * [Passive meters: final bounded closure](experiments/meter_closure/report.md)
   separates environmental changes, model surface movement and exact uptake.
   It corrects construction validity to Quinn/environment fidelity only, preserves

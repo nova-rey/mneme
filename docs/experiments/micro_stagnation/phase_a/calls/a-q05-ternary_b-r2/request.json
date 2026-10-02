@@ -1,0 +1,25 @@
+{
+  "cache_prompt": false,
+  "chat_template_kwargs": {
+    "enable_thinking": false
+  },
+  "max_tokens": 8,
+  "messages": [
+    {
+      "content": "Read the recent exchange. Is it advancing meaningfully or appropriately finished, or returning to essentially the same unsolved ground? Output one digit only: 0 = advancing or appropriately finished; 1 = cannot tell from the evidence; 2 = unresolved circling.",
+      "role": "system"
+    },
+    {
+      "content": "{\"recent_conversation\": [{\"participant\": \"At 190 C for 30 minutes, the loaf has a pale crust and a wet center.\", \"gemma\": \"Keep 190 C and extend the time to 40 minutes to test whether time is limiting.\"}, {\"participant\": \"At 190 C for 40 minutes, the loaf has a dark crust and a wet center.\", \"gemma\": \"Lower the temperature to 180 C to slow crust darkening while the center cooks.\"}, {\"participant\": \"At 180 C for 40 minutes, the loaf has a brown crust and a slightly wet center.\", \"gemma\": \"Keep 180 C and add five minutes.\"}, {\"participant\": \"At 180 C for 45 minutes, the loaf has a brown crust and a set center.\", \"gemma\": \"Repeat 180 C for 45 minutes with the same loaf size to check consistency.\"}, {\"participant\": \"The repeat at 180 C for 45 minutes also has a brown crust and a set center.\", \"gemma\": \"Use 180 C for 45 minutes as the working setting for this loaf size; the repeat supports it.\"}]}",
+      "role": "user"
+    }
+  ],
+  "min_p": 0.05,
+  "model": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+  "reasoning_effort": "none",
+  "seed": 424242,
+  "stream": false,
+  "temperature": 0.7,
+  "top_k": 64,
+  "top_p": 0.95
+}

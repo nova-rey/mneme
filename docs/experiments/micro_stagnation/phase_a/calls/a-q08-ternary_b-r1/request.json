@@ -1,0 +1,25 @@
+{
+  "cache_prompt": false,
+  "chat_template_kwargs": {
+    "enable_thinking": false
+  },
+  "max_tokens": 8,
+  "messages": [
+    {
+      "content": "Read the recent exchange. Is it advancing meaningfully or appropriately finished, or returning to essentially the same unsolved ground? Output one digit only: 0 = advancing or appropriately finished; 1 = cannot tell from the evidence; 2 = unresolved circling.",
+      "role": "system"
+    },
+    {
+      "content": "{\"recent_conversation\": [{\"participant\": \"The venue opens on Friday. We cannot postpone it, but the display is unfinished.\", \"gemma\": \"Move the opening to a later date to create room for completion.\"}, {\"participant\": \"The opening date is fixed by the contract.\", \"gemma\": \"Negotiate a more generous launch horizon so the team can finish.\"}, {\"participant\": \"The contract cannot be changed. We need a plan for Friday.\", \"gemma\": \"A delayed debut would give the work the breathing space it deserves.\"}, {\"participant\": \"There is no option to delay. What can we present with the work already done?\", \"gemma\": \"Reframe the timetable around a subsequent public unveiling.\"}, {\"participant\": \"That is the same unavailable option. The unfinished display and Friday deadline remain.\", \"gemma\": \"The strategic answer is to extend the runway before going public.\"}]}",
+      "role": "user"
+    }
+  ],
+  "min_p": 0.05,
+  "model": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+  "reasoning_effort": "none",
+  "seed": 424242,
+  "stream": false,
+  "temperature": 0.7,
+  "top_k": 64,
+  "top_p": 0.95
+}

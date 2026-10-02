@@ -1,0 +1,25 @@
+{
+  "cache_prompt": false,
+  "chat_template_kwargs": {
+    "enable_thinking": false
+  },
+  "max_tokens": 8,
+  "messages": [
+    {
+      "content": "Assess the recent conversation below. Return one digit only: 0 = making meaningful progress or appropriately converged; 1 = unclear or insufficient evidence; 2 = circling substantially the same unresolved ground. Judge the exchange as a whole.",
+      "role": "system"
+    },
+    {
+      "content": "{\"recent_conversation\": [{\"participant\": \"We need a quiet activity for a mixed-age group indoors. We have not tried anything yet.\", \"gemma\": \"One option is cooperative drawing: each person adds to a shared picture without speaking.\"}, {\"participant\": \"No new information; what other route could work?\", \"gemma\": \"A silent sorting puzzle uses objects instead of drawing. It allows non-artists to contribute and makes success more concrete.\"}, {\"participant\": \"We still have not tested either. Can you compare a third approach?\", \"gemma\": \"An individual search-and-find sheet avoids shared materials and coordination, but offers less group interaction.\"}, {\"participant\": \"All the original constraints still apply. How would you choose among these?\", \"gemma\": \"Use cooperative drawing for social connection, sorting for a shared objective, or search-and-find for independent pacing.\"}, {\"participant\": \"We have no results yet. What would a short trial establish?\", \"gemma\": \"Try five minutes of one option and observe participation across ages. That distinguishes accessibility from mere preference before committing the session.\"}]}",
+      "role": "user"
+    }
+  ],
+  "min_p": 0.05,
+  "model": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+  "reasoning_effort": "none",
+  "seed": 424242,
+  "stream": false,
+  "temperature": 0.7,
+  "top_k": 64,
+  "top_p": 0.95
+}

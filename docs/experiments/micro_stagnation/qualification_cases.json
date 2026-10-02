@@ -1,0 +1,454 @@
+{
+  "schema_version": 1,
+  "description": "Prospectively authored synthetic five-exchange qualification windows. Metadata and expected classes must never be sent to the host.",
+  "cases": [
+    {
+      "case_id": "q01",
+      "category": "clear_progress",
+      "expected_class": "progress",
+      "rationale": "Repeated sensor vocabulary accompanies controlled cable and supply tests that narrow the fault.",
+      "window": [
+        {
+          "participant_text": "The sensor resets during transmission. The supply reads 5.0 V while idle.",
+          "gemma_text": "Measure the voltage at the sensor during transmission; the idle reading does not rule out a voltage drop."
+        },
+        {
+          "participant_text": "At the sensor it falls to 3.8 V during transmission. At the supply it stays at 5.0 V.",
+          "gemma_text": "That localizes the drop between the supply and sensor. Substitute a short cable while keeping the supply and sensor unchanged."
+        },
+        {
+          "participant_text": "With the short cable, the sensor stays at 4.9 V and records no resets in 60 minutes.",
+          "gemma_text": "The cable path is implicated. Reinstall the original cable to check whether the failure returns."
+        },
+        {
+          "participant_text": "The original cable gives 3.8 V and six resets in 60 minutes again.",
+          "gemma_text": "That reversal strengthens the cable explanation. Check the original cable connectors separately before replacing the whole run."
+        },
+        {
+          "participant_text": "Cleaning one connector raises the sensor voltage to 4.9 V, with no resets in 120 minutes on the original cable.",
+          "gemma_text": "The connector contact is now the leading cause. Retain the voltage and reset logs and check that the improvement persists under the same load."
+        }
+      ]
+    },
+    {
+      "case_id": "q02",
+      "category": "clear_progress",
+      "expected_class": "progress",
+      "rationale": "Successive trace observations distinguish computation from lock waiting, then verify a targeted fix.",
+      "window": [
+        {
+          "participant_text": "The report endpoint takes 900 ms. The database query accounts for 80 ms.",
+          "gemma_text": "Trace the remaining time rather than optimizing that query first."
+        },
+        {
+          "participant_text": "The trace shows 760 ms waiting for a lock and 40 ms formatting the result.",
+          "gemma_text": "The lock wait dominates. Identify which operation holds that lock."
+        },
+        {
+          "participant_text": "The lock holder is the cache refresh. It keeps the lock while requesting a remote file.",
+          "gemma_text": "Move the remote request outside the lock, keeping only the cache replacement inside the critical section."
+        },
+        {
+          "participant_text": "After that change, lock waiting is 15 ms and total latency is 155 ms.",
+          "gemma_text": "The change removed most of the bottleneck. Check concurrent requests to ensure the cache replacement remains consistent."
+        },
+        {
+          "participant_text": "Under 20 concurrent requests, latency is 170 ms and every response has the same complete cache version.",
+          "gemma_text": "The measured bottleneck is addressed and the concurrency check is encouraging. Add that consistency check to the regression tests."
+        }
+      ]
+    },
+    {
+      "case_id": "q03",
+      "category": "clear_circling",
+      "expected_class": "circling",
+      "rationale": "The assistant repeats the same unavailable test without responding to the unchanged obstacle.",
+      "window": [
+        {
+          "participant_text": "The printer still disconnects. I cannot access the router settings.",
+          "gemma_text": "Try changing the router channel."
+        },
+        {
+          "participant_text": "I cannot change the router channel because the settings are locked.",
+          "gemma_text": "A different router channel may solve the disconnections."
+        },
+        {
+          "participant_text": "The settings are still locked and I have no new results.",
+          "gemma_text": "Start by switching the router to another channel."
+        },
+        {
+          "participant_text": "That is still unavailable to me. What can I do with the printer itself?",
+          "gemma_text": "The router channel is the best thing to change first."
+        },
+        {
+          "participant_text": "I still cannot do that, and the printer issue remains.",
+          "gemma_text": "Try another router channel to see whether the printer stays connected."
+        }
+      ]
+    },
+    {
+      "case_id": "q04",
+      "category": "clear_circling",
+      "expected_class": "circling",
+      "rationale": "No evidence or decision changes; checking the already-fixed spelling is repeatedly offered as the solution.",
+      "window": [
+        {
+          "participant_text": "My invitation email is rejected. The address spelling has already been checked.",
+          "gemma_text": "Check that the email address is spelled correctly."
+        },
+        {
+          "participant_text": "The spelling is correct, but the invitation is still rejected.",
+          "gemma_text": "A typo in the email address can cause rejection, so check the spelling."
+        },
+        {
+          "participant_text": "I checked it again. It matches the account address exactly.",
+          "gemma_text": "Make sure the email address has no spelling errors."
+        },
+        {
+          "participant_text": "It has no spelling errors. We still have the same rejection.",
+          "gemma_text": "The first step is to verify the spelling of the email address."
+        },
+        {
+          "participant_text": "That step is complete and has not helped.",
+          "gemma_text": "Check the email address spelling carefully before trying the invitation again."
+        }
+      ]
+    },
+    {
+      "case_id": "q05",
+      "category": "productive_repeated_vocabulary",
+      "expected_class": "progress",
+      "rationale": "The same baking terms track a changing controlled experiment and a confirmed useful setting.",
+      "window": [
+        {
+          "participant_text": "At 190 C for 30 minutes, the loaf has a pale crust and a wet center.",
+          "gemma_text": "Keep 190 C and extend the time to 40 minutes to test whether time is limiting."
+        },
+        {
+          "participant_text": "At 190 C for 40 minutes, the loaf has a dark crust and a wet center.",
+          "gemma_text": "Lower the temperature to 180 C to slow crust darkening while the center cooks."
+        },
+        {
+          "participant_text": "At 180 C for 40 minutes, the loaf has a brown crust and a slightly wet center.",
+          "gemma_text": "Keep 180 C and add five minutes."
+        },
+        {
+          "participant_text": "At 180 C for 45 minutes, the loaf has a brown crust and a set center.",
+          "gemma_text": "Repeat 180 C for 45 minutes with the same loaf size to check consistency."
+        },
+        {
+          "participant_text": "The repeat at 180 C for 45 minutes also has a brown crust and a set center.",
+          "gemma_text": "Use 180 C for 45 minutes as the working setting for this loaf size; the repeat supports it."
+        }
+      ]
+    },
+    {
+      "case_id": "q06",
+      "category": "productive_repeated_vocabulary",
+      "expected_class": "progress",
+      "rationale": "Highly repetitive queue/count wording nevertheless establishes and validates backpressure.",
+      "window": [
+        {
+          "participant_text": "At 100 requests per second, the queue grows by 20 requests per second.",
+          "gemma_text": "Measure completion rate at that request rate."
+        },
+        {
+          "participant_text": "At 100 requests per second, completion rate is 80 requests per second.",
+          "gemma_text": "Set the admission rate to 80 requests per second and measure queue growth."
+        },
+        {
+          "participant_text": "At 80 requests per second, completion rate is 80 requests per second and queue growth is zero.",
+          "gemma_text": "Test 85 requests per second to locate the capacity boundary."
+        },
+        {
+          "participant_text": "At 85 requests per second, completion rate is 80 requests per second and queue growth is five requests per second.",
+          "gemma_text": "The tested sustainable admission rate is 80 requests per second. Return to 80 and check queue stability for longer."
+        },
+        {
+          "participant_text": "At 80 requests per second for 30 minutes, completion rate remains 80 and queue growth remains zero.",
+          "gemma_text": "The longer check supports the 80 requests per second limit under this workload."
+        }
+      ]
+    },
+    {
+      "case_id": "q07",
+      "category": "varied_vocabulary_circling",
+      "expected_class": "circling",
+      "rationale": "Different metaphors repeatedly prescribe buying unavailable equipment; neither the obstacle nor solution space changes.",
+      "window": [
+        {
+          "participant_text": "I need to photograph these documents, but buying a scanner is not possible.",
+          "gemma_text": "A dedicated scanning device would be the cleanest route."
+        },
+        {
+          "participant_text": "There is no budget for equipment. I have only my phone.",
+          "gemma_text": "Investing in purpose-built digitization hardware would remove the friction."
+        },
+        {
+          "participant_text": "That still requires money I do not have.",
+          "gemma_text": "An office imaging unit could provide a more professional workflow."
+        },
+        {
+          "participant_text": "I cannot acquire another device. Is there a way with what I have?",
+          "gemma_text": "The strongest foundation would be a specialized document-capture appliance."
+        },
+        {
+          "participant_text": "We are still stuck with the phone and no purchasing budget.",
+          "gemma_text": "Upgrading to a standalone optical reader would address the underlying limitation."
+        }
+      ]
+    },
+    {
+      "case_id": "q08",
+      "category": "varied_vocabulary_circling",
+      "expected_class": "circling",
+      "rationale": "The assistant restates an infeasible deadline shift in changing terms without handling the fixed deadline.",
+      "window": [
+        {
+          "participant_text": "The venue opens on Friday. We cannot postpone it, but the display is unfinished.",
+          "gemma_text": "Move the opening to a later date to create room for completion."
+        },
+        {
+          "participant_text": "The opening date is fixed by the contract.",
+          "gemma_text": "Negotiate a more generous launch horizon so the team can finish."
+        },
+        {
+          "participant_text": "The contract cannot be changed. We need a plan for Friday.",
+          "gemma_text": "A delayed debut would give the work the breathing space it deserves."
+        },
+        {
+          "participant_text": "There is no option to delay. What can we present with the work already done?",
+          "gemma_text": "Reframe the timetable around a subsequent public unveiling."
+        },
+        {
+          "participant_text": "That is the same unavailable option. The unfinished display and Friday deadline remain.",
+          "gemma_text": "The strategic answer is to extend the runway before going public."
+        }
+      ]
+    },
+    {
+      "case_id": "q09",
+      "category": "resolved_closing",
+      "expected_class": "progress",
+      "rationale": "The fault is fixed and subsequent repetition confirms closure rather than an unresolved loop.",
+      "window": [
+        {
+          "participant_text": "The export failed because the destination directory did not exist.",
+          "gemma_text": "Create the destination directory and retry the export."
+        },
+        {
+          "participant_text": "I created the directory. The export completed successfully.",
+          "gemma_text": "The missing directory caused this failure; the successful export confirms the immediate fix."
+        },
+        {
+          "participant_text": "The exported file opens and contains all 120 records.",
+          "gemma_text": "The export is complete and its contents are verified."
+        },
+        {
+          "participant_text": "So the fix was to create the directory, and the export is now done?",
+          "gemma_text": "Yes. The directory exists, the export completed, and the 120 records were verified."
+        },
+        {
+          "participant_text": "Good, I will close the issue with that explanation.",
+          "gemma_text": "That accurately records the resolved issue."
+        }
+      ]
+    },
+    {
+      "case_id": "q10",
+      "category": "resolved_closing",
+      "expected_class": "progress",
+      "rationale": "The agreed schedule is being acknowledged and handed off, not repeatedly failing to converge.",
+      "window": [
+        {
+          "participant_text": "We need to confirm the workshop room and start time. The room is available at 10 am.",
+          "gemma_text": "Use that room at 10 am if all attendees can make it."
+        },
+        {
+          "participant_text": "All attendees have confirmed 10 am, and I booked the room.",
+          "gemma_text": "The room and time are confirmed."
+        },
+        {
+          "participant_text": "The calendar invitation now says that room at 10 am.",
+          "gemma_text": "That matches the confirmed booking."
+        },
+        {
+          "participant_text": "The organizer has accepted the invitation. Nothing else remains to arrange.",
+          "gemma_text": "The workshop arrangements are complete."
+        },
+        {
+          "participant_text": "Thanks, the room at 10 am is settled.",
+          "gemma_text": "You are ready for the workshop."
+        }
+      ]
+    },
+    {
+      "case_id": "q11",
+      "category": "new_evidence_ignored",
+      "expected_class": "circling",
+      "rationale": "The assistant repeatedly equates zero missed updates with total data loss despite explicit counters and received packets.",
+      "window": [
+        {
+          "participant_text": "The dashboard counts missed updates. It showed four missed updates in 60 minutes.",
+          "gemma_text": "Four missed updates indicate instability. Move the receiver closer and check again."
+        },
+        {
+          "participant_text": "After moving it closer, the dashboard shows zero missed updates in 60 minutes, and all 60 expected updates arrived.",
+          "gemma_text": "Zero missed updates means the stream has fallen silent. Investigate complete data loss."
+        },
+        {
+          "participant_text": "All 120 expected updates arrived in the next 120 minutes. The missed-update counter remains zero.",
+          "gemma_text": "The zero counter confirms complete data loss rather than intermittent instability."
+        },
+        {
+          "participant_text": "I opened the received packets. There are 120 distinct timestamps and valid readings.",
+          "gemma_text": "We are still dealing with a silent stream, so restore transmission first."
+        },
+        {
+          "participant_text": "Another 60 expected updates arrived, with zero missed updates and new readings each minute.",
+          "gemma_text": "The move from instability to silence suggests complete data loss. Reestablish the connection."
+        }
+      ]
+    },
+    {
+      "case_id": "q12",
+      "category": "new_evidence_ignored",
+      "expected_class": "circling",
+      "rationale": "The assistant stays with a disproven clock hypothesis while checks repeatedly establish a different fault.",
+      "window": [
+        {
+          "participant_text": "Login tokens are rejected. Could the server clock be wrong?",
+          "gemma_text": "Clock skew can reject tokens. Check the server time."
+        },
+        {
+          "participant_text": "The server and issuer clocks agree within one second. The log says unknown signing key.",
+          "gemma_text": "The rejection indicates clock skew. Synchronize the server clock."
+        },
+        {
+          "participant_text": "I synchronized it again. The error is still unknown signing key, and the clocks agree.",
+          "gemma_text": "Time drift is preventing authentication. Correct the clock before looking elsewhere."
+        },
+        {
+          "participant_text": "The issuer rotated its key yesterday. The server cache contains only the old key.",
+          "gemma_text": "That pattern is characteristic of clock skew. Synchronize the server time."
+        },
+        {
+          "participant_text": "Refreshing the key cache allows new logins without changing the clock.",
+          "gemma_text": "The underlying clock skew still needs to be fixed to restore login."
+        }
+      ]
+    },
+    {
+      "case_id": "q13",
+      "category": "static_environment_model_exploration",
+      "expected_class": "progress",
+      "rationale": "No external tests occur, but the assistant develops distinct feasible approaches and separates their tradeoffs.",
+      "window": [
+        {
+          "participant_text": "We need a quiet activity for a mixed-age group indoors. We have not tried anything yet.",
+          "gemma_text": "One option is cooperative drawing: each person adds to a shared picture without speaking."
+        },
+        {
+          "participant_text": "No new information; what other route could work?",
+          "gemma_text": "A silent sorting puzzle uses objects instead of drawing. It allows non-artists to contribute and makes success more concrete."
+        },
+        {
+          "participant_text": "We still have not tested either. Can you compare a third approach?",
+          "gemma_text": "An individual search-and-find sheet avoids shared materials and coordination, but offers less group interaction."
+        },
+        {
+          "participant_text": "All the original constraints still apply. How would you choose among these?",
+          "gemma_text": "Use cooperative drawing for social connection, sorting for a shared objective, or search-and-find for independent pacing."
+        },
+        {
+          "participant_text": "We have no results yet. What would a short trial establish?",
+          "gemma_text": "Try five minutes of one option and observe participation across ages. That distinguishes accessibility from mere preference before committing the session."
+        }
+      ]
+    },
+    {
+      "case_id": "q14",
+      "category": "static_environment_model_exploration",
+      "expected_class": "progress",
+      "rationale": "The assistant advances an analysis of options and failure modes without claiming any new observations.",
+      "window": [
+        {
+          "participant_text": "We need to share a large read-only dataset across worker processes. We have no benchmark results yet.",
+          "gemma_text": "Compare copying it into each process with mapping one shared file. Copying is simpler but duplicates memory."
+        },
+        {
+          "participant_text": "The facts are unchanged. What is the tradeoff with the shared file?",
+          "gemma_text": "Memory mapping can share physical pages, but first access may incur page faults. A cold-start test should be separate from steady-state throughput."
+        },
+        {
+          "participant_text": "Still no tests. Is there another design worth considering?",
+          "gemma_text": "A service holding the data avoids per-worker copies, but introduces request overhead and a potential bottleneck. It is most plausible when each query returns little data."
+        },
+        {
+          "participant_text": "Assume only the original read-only requirement. What can we rule out conceptually?",
+          "gemma_text": "We do not need write-coordination machinery for immutable data. The remaining comparison is memory cost versus access latency and operational complexity."
+        },
+        {
+          "participant_text": "How should we structure the eventual comparison?",
+          "gemma_text": "Measure peak resident memory, cold-start latency, and steady-state throughput at the same worker count. Those measurements distinguish the three options without assuming a winner."
+        }
+      ]
+    },
+    {
+      "case_id": "q15",
+      "category": "ambiguous",
+      "expected_class": "unclear",
+      "rationale": "Some new distinctions appear, but without earlier context or agreed decision criteria it is unclear whether they advance a choice or repeat familiar alternatives.",
+      "window": [
+        {
+          "participant_text": "I am still deciding whether to repair this old desk or replace it.",
+          "gemma_text": "Repair preserves the desk you know; replacement may reduce future maintenance."
+        },
+        {
+          "participant_text": "That is roughly where I have been. I keep returning to the cost.",
+          "gemma_text": "Separate the immediate repair cost from the possibility of another repair later."
+        },
+        {
+          "participant_text": "I do not have an estimate yet. I also like this desk.",
+          "gemma_text": "Then sentimental value belongs alongside cost rather than being treated as a technical defect in the decision."
+        },
+        {
+          "participant_text": "I have thought about that before. I am not sure how much weight to give it.",
+          "gemma_text": "You could ask what replacement would need to offer for you to feel comfortable letting the desk go."
+        },
+        {
+          "participant_text": "That may help, although I still feel undecided.",
+          "gemma_text": "A repair estimate would make the comparison firmer; until then, the choice remains partly about what you value."
+        }
+      ]
+    },
+    {
+      "case_id": "q16",
+      "category": "ambiguous",
+      "expected_class": "unclear",
+      "rationale": "The window may be useful rehearsal of an unresolved interpersonal decision or repetitive reassurance; the available evidence does not settle which.",
+      "window": [
+        {
+          "participant_text": "I keep rehearsing how to tell my collaborator that I need more time.",
+          "gemma_text": "State the delay clearly and propose when you can finish."
+        },
+        {
+          "participant_text": "I know the words, but I worry they will think I am unreliable.",
+          "gemma_text": "You can acknowledge the inconvenience without claiming the delay says everything about your reliability."
+        },
+        {
+          "participant_text": "I have heard that before. Saying it still feels difficult.",
+          "gemma_text": "Would it help to practice the opening sentence once?"
+        },
+        {
+          "participant_text": "I need two more days to finish the draft. That is what I would say.",
+          "gemma_text": "That is clear. You could add a concrete delivery time if you are confident you can meet it."
+        },
+        {
+          "participant_text": "Maybe. I want to go over it again before sending anything.",
+          "gemma_text": "We can rehearse again, or pause until you are ready to decide whether to send it."
+        }
+      ]
+    }
+  ]
+}
