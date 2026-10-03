@@ -136,10 +136,12 @@
         "docs/receipts/MNEME_Clean_Slate_Reasoning_25_Thread_*",
         "bible.md"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "docs/receipts/MNEME_Clean_Slate_Reasoning_25_Thread_Comparison_20261003.md"
+      ],
       "id": "MNEME-REASONING-25-FRESH",
       "notes": "",
-      "owner": "/root",
+      "owner": null,
       "priority": 2,
       "project": "nova-rey/mneme",
       "required": true,
@@ -163,12 +165,10 @@
         }
       ],
       "scope": "Only after pilot PASS, run the fresh matched reasoning OFF/ON developmental trial through thread 25, persist every thread durably, stop, and publish comparison evidence.",
-      "session_ids": [
-        "root-reasoning25-validation-20261003"
-      ],
-      "status": "VALIDATING",
+      "session_ids": [],
+      "status": "DONE",
       "title": "Fresh clean-slate reasoning ON/OFF 25-thread trial",
-      "updated_at": "2026-10-03T19:34:00.990483Z",
+      "updated_at": "2026-10-03T19:36:48.432327Z",
       "validation": {
         "required": [
           "full-run-evidence",
@@ -178,7 +178,38 @@
           "live-specimen-reopen",
           "full-tests-ci"
         ],
-        "results": {}
+        "results": {
+          "full-run-evidence": {
+            "receipt": "docs/receipts/MNEME_Clean_Slate_Reasoning_25_Thread_Fresh_R1_20261003.json",
+            "recorded_at": "2026-10-03T19:36:48.178483Z",
+            "status": "PASS"
+          },
+          "full-tests-ci": {
+            "receipt": "docs/receipts/MNEME_Clean_Slate_Reasoning_25_Thread_Fresh_R1_20261003.json",
+            "recorded_at": "2026-10-03T19:36:48.392535Z",
+            "status": "PASS"
+          },
+          "live-specimen-reopen": {
+            "receipt": "docs/receipts/MNEME_Clean_Slate_Reasoning_25_Thread_Fresh_R1_20261003.json",
+            "recorded_at": "2026-10-03T19:36:48.351776Z",
+            "status": "PASS"
+          },
+          "removal-restoration": {
+            "receipt": "docs/receipts/MNEME_Clean_Slate_Reasoning_25_Thread_Fresh_R1_20261003.json",
+            "recorded_at": "2026-10-03T19:36:48.311829Z",
+            "status": "PASS"
+          },
+          "thread-10-health": {
+            "receipt": "docs/receipts/MNEME_Clean_Slate_Reasoning_25_Thread_Fresh_R1_20261003.json",
+            "recorded_at": "2026-10-03T19:36:48.230251Z",
+            "status": "PASS"
+          },
+          "thread-25-readout": {
+            "receipt": "docs/receipts/MNEME_Clean_Slate_Reasoning_25_Thread_Fresh_R1_20261003.json",
+            "recorded_at": "2026-10-03T19:36:48.269823Z",
+            "status": "PASS"
+          }
+        }
       },
       "waiting_on": [],
       "workstream": "mneme-reasoning-25-rerun"
@@ -196,5 +227,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-10-03T19:34:00.990536Z"
+  "updated_at": "2026-10-03T19:36:48.432389Z"
 }
