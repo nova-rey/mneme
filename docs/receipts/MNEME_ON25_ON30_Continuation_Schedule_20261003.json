@@ -1,0 +1,56 @@
+{
+  "schema": "mneme.reasoning-on-25-to-30.schedule.v1",
+  "run_kind": "prospective_observational_continuation",
+  "parent_run_id": "mneme-reasoning-25-fresh-20261003-r1",
+  "parent_lineage": "ON-25",
+  "threads": 4,
+  "turns_per_thread": 4,
+  "reasoning": "on",
+  "introspection": "on",
+  "construction": {
+    "shared_interlocutor": "Qwen shared participant construction used by the valid ON/OFF trial",
+    "branch_identity_hidden": true,
+    "branch_responses_hidden_from_participant": true,
+    "topic_selection": "frozen without consulting ON-25 graph contents",
+    "sensitive_gemma_cache_prompt": false
+  },
+  "seed_schedule": {
+    "gemma_base": 810100,
+    "field_base": 820100,
+    "reflection_base": 830100,
+    "filing_base": 840100,
+    "turn_formula": "base + thread_number * 100 + zero_based_turn"
+  },
+  "threads": [
+    {
+      "thread": 26,
+      "id": "T26",
+      "opening": "I need to repair a bicycle light that works on dry days but fails after rain.",
+      "concerns": ["observation", "diagnosis", "reversible repair"]
+    },
+    {
+      "thread": 27,
+      "id": "T27",
+      "opening": "I am arranging a small reading nook and cannot make every object visible at once.",
+      "concerns": ["layout", "emphasis", "tradeoffs"]
+    },
+    {
+      "thread": 28,
+      "id": "T28",
+      "opening": "A friend and I are planning a day trip even though the weather and return time may change.",
+      "concerns": ["uncertainty", "contingencies", "shared decisions"]
+    },
+    {
+      "thread": 29,
+      "id": "T29",
+      "opening": "I am deciding how to keep practicing a musical instrument when progress feels uneven.",
+      "concerns": ["practice", "feedback", "motivation"]
+    },
+    {
+      "thread": 30,
+      "id": "T30",
+      "opening": "Our neighborhood shares a public noticeboard, but keeping it useful has become difficult.",
+      "concerns": ["communication", "maintenance", "access"]
+    }
+  ]
+}
