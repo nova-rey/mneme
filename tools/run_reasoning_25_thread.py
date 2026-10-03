@@ -230,7 +230,14 @@ class DeterministicRemoteGemma:
             finish_reason=str(choice.get("finish_reason", "stop")),
             raw_metadata={
                 "request_sha256": digest_bytes(body_bytes),
+                # Continuation evidence requires the exact host-visible
+                # request and the reasoning signal itself.  Keep these in the
+                # result metadata so callers can persist them atomically;
+                # historical receipts remain unchanged unless rerun.
+                "request_body_utf8": body_bytes.decode("utf-8"),
+                "request_payload": json.loads(body_bytes.decode("utf-8")),
                 "reasoning": self.reasoning,
+                "reasoning_content": reasoning_content,
                 "reasoning_bytes": len(reasoning_content.encode()),
                 "reasoning_sha256": digest_bytes(reasoning_content.encode()),
                 "usage": usage,
@@ -301,8 +308,26 @@ def graph_with_observations(runtime: CompactRuntime, observations: tuple[Candida
     accepted: list[dict[str, Any]] = []
     accepted_observations: list[Observation] = []
     rejected = 0
+    candidate_details: list[dict[str, Any]] = []
     for index, (item, score) in enumerate(zip(candidate_items, scores, strict=True)):
-        if score.entailment < 0.45 or score.entailment <= max(score.contradiction, score.neutral):
+        accepted_candidate = score.entailment >= 0.45 and score.entailment > max(score.contradiction, score.neutral)
+        rejection_reason = None if accepted_candidate else (
+            "below_entailment_threshold" if score.entailment < 0.45 else "not_entailment_dominant"
+        )
+        candidate_details.append({
+            "index": index,
+            "subject": item.subject,
+            "relation": item.relation,
+            "object": item.object,
+            "source_slot": item.source_slot,
+            "evidence_start": item.evidence_start,
+            "evidence_end": item.evidence_end,
+            "evidence": source[item.evidence_start:item.evidence_end],
+            "nli": {"entailment": score.entailment, "contradiction": score.contradiction, "neutral": score.neutral},
+            "accepted": accepted_candidate,
+            "rejection_reason": rejection_reason,
+        })
+        if not accepted_candidate:
             rejected += 1
             continue
         source_key = _stable_concept_key(item.subject, "concept")
@@ -333,7 +358,12 @@ def graph_with_observations(runtime: CompactRuntime, observations: tuple[Candida
         transition = apply_transition(learner, TransitionInput(operation_id=operation, observations=tuple(accepted_observations)))
         learner = transition.state
     graph_out = CompactGraphView(tuple(concepts.values()), tuple(edges.values()), tuple(routes.values()))
-    return graph_out, learner, accepted, {"extracted": len(candidate_items), "accepted": len(accepted), "rejected": rejected}
+    return graph_out, learner, accepted, {
+        "extracted": len(candidate_items),
+        "accepted": len(accepted),
+        "rejected": rejected,
+        "candidates": candidate_details,
+    }
 
 
 def histories_to_messages(history: list[tuple[str, str]]) -> list[dict[str, str]]:
