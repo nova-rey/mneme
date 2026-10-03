@@ -159,17 +159,22 @@ def introspect_on(
     return {"thread": thread, "status": "ACCEPTED" if accepted else "NO_CHANGE", "targets": [target.to_dict() for target in targets], "reflection": reflection, "filing": filing, "answers": answers, "proposals": [item.to_dict() for item in proposals], "accepted": [item.to_dict() for item in accepted], "adjustments_after": dict(adjustments), "expression_adjustments_after": dict(expression_adjustments)}
 
 
-def run(output_root: Path) -> dict[str, Any]:
+def run(output_root: Path, *, resume: bool = False) -> dict[str, Any]:
     schedule, schedule_sha = load_schedule()
     parent = parent_check()
     output_root.mkdir(parents=True, exist_ok=True)
     live = output_root / "ON-30-live.compact.sqlite3"
-    if live.exists():
+    if live.exists() and not resume:
         raise RuntimeError(f"refusing to overwrite existing continuation: {live}")
-    shutil.copyfile(PARENT_LIVE, live)
-    with CompactStore(live, telemetry=True, telemetry_retention=128, journal_retention=256) as store:
-        store.set_metadata("continuation", {"parent_run": PARENT_RUN, "parent_state_digest": EXPECTED_PARENT_DIGEST, "schedule_sha256": schedule_sha})
-        store.set_metadata("run_id", "mneme-reasoning-on-25-to-30-20261003")
+    if not live.exists():
+        shutil.copyfile(PARENT_LIVE, live)
+        with CompactStore(live, telemetry=True, telemetry_retention=128, journal_retention=256) as store:
+            store.set_metadata("continuation", {"parent_run": PARENT_RUN, "parent_state_digest": EXPECTED_PARENT_DIGEST, "schedule_sha256": schedule_sha})
+            store.set_metadata("run_id", "mneme-reasoning-on-25-to-30-20261003")
+    if not os.environ.get("DEEPINFRA_TOKEN"):
+        token_path = Path("/home/nyx/.config/mneme/deepinfra_token")
+        if token_path.is_file() and token_path.read_text(encoding="utf-8").strip():
+            os.environ["DEEPINFRA_TOKEN"] = token_path.read_text(encoding="utf-8").strip()
     host = DeterministicRemoteGemma("Gemma-ON", 64173, "on", 8192)
     gliner = RemoteGlinerHost()
     nli = RemoteNliBackend()
@@ -183,15 +188,26 @@ def run(output_root: Path) -> dict[str, Any]:
     storage: list[dict[str, Any]] = []
     adjustments: dict[str, int] = {}
     expressions: dict[str, int] = {}
+    if resume and (output_root / "coordinate-evidence.jsonl").exists():
+        rows = [json.loads(line) for line in (output_root / "coordinate-evidence.jsonl").read_text(encoding="utf-8").splitlines() if line.strip()]
+    prior_evidence = json.loads((output_root / "development-evidence.json").read_text(encoding="utf-8")) if resume and (output_root / "development-evidence.json").exists() else {}
+    all_reviews = list(prior_evidence.get("introspection", []))
+    storage = list(prior_evidence.get("storage", []))
+    calls = list(prior_evidence.get("calls", []))
     with CompactStore(live, telemetry=True, telemetry_retention=128, journal_retention=256) as store:
         runtime = CompactRuntime(store)
+        adjustments = dict(store.metadata("field_adjustments", {}))
+        expressions = dict(store.metadata("expression_adjustments", {}))
         for item in schedule["threads"]:
             thread = int(item["thread"])
-            histories: list[tuple[str, str]] = []
-            exposures: list[dict[str, Any]] = []
-            participant = str(item["opening"])
+            prior_rows = [row for row in rows if int(row["thread"]) == thread]
+            if len(prior_rows) >= 4:
+                continue
+            histories = [(str(row["participant_input"]), str(row["gemma"]["output"])) for row in sorted(prior_rows, key=lambda row: int(row["turn"]))]
+            exposures = [{"turn_ref": f"thread-{thread}-turn-{row['turn']}", "selected_landing": row["saa"].get("selected_landing"), "payload": row["saa"].get("payload", ""), "field_seed": row["saa"].get("field_seed"), "health": row["saa_health"]} for row in prior_rows]
+            participant = str(prior_rows[-1]["participant_input"]) if prior_rows else str(item["opening"])
             thread_rows: list[dict[str, Any]] = []
-            for turn in range(4):
+            for turn in range(len(prior_rows), 4):
                 if turn > 0:
                     time.sleep(4.0)
                     shared_request = build_shared_interloper_request(thread=ThreadSpec(item["id"], item["opening"], tuple(item["concerns"])), prior_participant=participant, responses={"A": histories[-1][1], "B": histories[-1][1]}, turn=turn)
@@ -227,13 +243,15 @@ def run(output_root: Path) -> dict[str, Any]:
                 append_jsonl(coordinate_path, coord)
                 thread_rows.append(coord)
                 all_extractions.append(coord)
+                rows.append(coord)
+                atomic_json(evidence_path, {"run_id": "mneme-reasoning-on-25-to-30-20261003", "parent": parent, "schedule_sha256": schedule_sha, "completed_thread": thread - 1, "coordinates": rows, "introspection": all_reviews, "storage": storage, "calls": calls})
             review = introspect_on(host, histories, exposures, thread, calls, adjustments, expressions)
             all_reviews.append(review)
             store.set_metadata("field_adjustments", adjustments)
             store.set_metadata("expression_adjustments", expressions)
             metrics = runtime.record_thread_metrics(thread)
             storage.append({"thread": thread, "metrics": metrics, "state_digest": store.state_digest(), "coordinate_count": len(thread_rows)})
-            rows.extend(thread_rows)
+            rows.extend(row for row in thread_rows if row not in rows)
             atomic_json(evidence_path, {"run_id": "mneme-reasoning-on-25-to-30-20261003", "parent": parent, "schedule_sha256": schedule_sha, "completed_thread": thread, "coordinates": rows, "introspection": all_reviews, "storage": storage, "calls": calls})
             atomic_json(output_root / "progress.json", {"run_id": "mneme-reasoning-on-25-to-30-20261003", "completed_thread": thread, "schedule_sha256": schedule_sha, "state_digest": store.state_digest(), "coordinate_count": len(rows)})
     final = {"path": str(live), "sha256": sha256(live), "bytes": live.stat().st_size}
@@ -251,8 +269,9 @@ def run(output_root: Path) -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-root", type=Path, required=True)
+    parser.add_argument("--resume", action="store_true")
     args = parser.parse_args()
-    payload = run(args.output_root)
+    payload = run(args.output_root, resume=args.resume)
     print(json.dumps({"run_id": payload["run_id"], "thread": 30, "live": payload["live"], "checkpoint": payload["checkpoint"], "coordinates": len(payload["coordinates"])}, indent=2))
     return 0
 

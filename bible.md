@@ -1619,3 +1619,5 @@ and dispositions remain unchanged.
 * 2026-10-03: Authorized and froze a new five-thread ON-25 to ON-30 prospective SAA-observation schedule. T26-T30 are explicitly a continuation observation, not part of the original matched ON/OFF 25-thread A/B; no developmental calls have been made under this schedule.
 
 * 2026-10-03: Added the ON-25 to ON-30 continuation runner and disposable evidence-chain smoke test. The continuation path records exact model-visible request text, complete reasoning content, final response, candidate-level extraction/NLI evidence, field traces, state digests, introspection and atomic coordinate/thread evidence; no ON-25 developmental continuation has started yet.
+
+* 2026-10-03: Preserved an invalid ON-30 continuation attempt after T26 turn 0 because Qwen token initialization was omitted; no later turn ran. Added token-path initialization and disk-backed partial-coordinate resume so the corrected continuation can resume without replaying T26 turn 0 or touching ON-25.
