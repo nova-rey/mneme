@@ -118,7 +118,13 @@
       },
       "base_sha": "a8bd77aacd821d24a1b27faf632577d79e98bb5e",
       "campaign": "mneme-reasoning-25-rerun",
-      "candidate": null,
+      "candidate": {
+        "artifact": "/home/nyx/mneme_artifacts/mneme-reasoning-25-fresh-20261003-r1/development-evidence.json",
+        "base_sha": "a8bd77aacd821d24a1b27faf632577d79e98bb5e",
+        "returned_at": "2026-10-03T19:34:00.944056Z",
+        "returned_by": "/root",
+        "sha": "8cc51c56788180be2693fe6c3f347957d8832bbc6"
+      },
       "completion_criterion": "Fresh OFF and ON branches complete exactly 25 threads with durable evidence, checkpoints, matched readout and removal/restoration, and no thread 26 call.",
       "created_at": "2026-10-03T17:17:15.560610Z",
       "dependencies": [
@@ -133,7 +139,7 @@
       "evidence_refs": [],
       "id": "MNEME-REASONING-25-FRESH",
       "notes": "",
-      "owner": null,
+      "owner": "/root",
       "priority": 2,
       "project": "nova-rey/mneme",
       "required": true,
@@ -157,10 +163,12 @@
         }
       ],
       "scope": "Only after pilot PASS, run the fresh matched reasoning OFF/ON developmental trial through thread 25, persist every thread durably, stop, and publish comparison evidence.",
-      "session_ids": [],
-      "status": "READY",
+      "session_ids": [
+        "root-reasoning25-validation-20261003"
+      ],
+      "status": "VALIDATING",
       "title": "Fresh clean-slate reasoning ON/OFF 25-thread trial",
-      "updated_at": "2026-10-03T17:52:56.562240Z",
+      "updated_at": "2026-10-03T19:34:00.990483Z",
       "validation": {
         "required": [
           "full-run-evidence",
@@ -188,5 +196,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-10-03T17:52:56.562277Z"
+  "updated_at": "2026-10-03T19:34:00.990536Z"
 }
