@@ -1,0 +1,192 @@
+{
+  "campaign": "mneme-reasoning-25-rerun",
+  "created_at": "2026-10-03T17:16:53.467806Z",
+  "dependencies": {},
+  "hard_problem_repo": null,
+  "packages": [
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "a8bd77aacd821d24a1b27faf632577d79e98bb5e",
+      "campaign": "mneme-reasoning-25-rerun",
+      "candidate": {
+        "artifact": null,
+        "base_sha": "a8bd77aacd821d24a1b27faf632577d79e98bb5e",
+        "returned_at": "2026-10-03T17:52:46.698106Z",
+        "returned_by": "/root",
+        "sha": "a8bd77aacd821d24a1b27faf632577d79e98bb5e"
+      },
+      "completion_criterion": "Both disposable branches complete two threads, evidence survives restart and fresh-process report regeneration, readout/removal-restoration complete, and a durable PASS receipt exists; otherwise preserve failure and stop before the 25-thread package.",
+      "created_at": "2026-10-03T17:17:15.522371Z",
+      "dependencies": [],
+      "domain": "research-experiment",
+      "edit_boundaries": [
+        "tools/run_reasoning_25_thread.py",
+        "docs/receipts/MNEME_Clean_Slate_Reasoning_25_Thread_*",
+        "bible.md"
+      ],
+      "evidence_refs": [
+        "Pilot R3 PASS; no 25-thread run started before pilot completion."
+      ],
+      "id": "MNEME-REASONING-25-PILOT",
+      "notes": "",
+      "owner": null,
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "pilot-two-threads",
+        "durable-thread-evidence",
+        "restart-recovery",
+        "readout-removal-restoration",
+        "determinism-preflight"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": true,
+          "name": "canonical-integration",
+          "units": 1
+        },
+        {
+          "exclusive": true,
+          "name": "model-agent",
+          "units": 1
+        }
+      ],
+      "scope": "Run exactly two disposable matched newborn threads per reasoning branch, close/reopen after thread 1, verify disk-backed evidence, readout and removal/restoration without starting the 25-thread run.",
+      "session_ids": [],
+      "status": "DONE",
+      "title": "Two-thread machine-qualification pilot with restart recovery",
+      "updated_at": "2026-10-03T17:52:56.562220Z",
+      "validation": {
+        "required": [
+          "pilot-evidence-durability",
+          "pilot-restart-recovery",
+          "pilot-readout-replay",
+          "pilot-saa-health",
+          "pilot-introspection",
+          "pilot-determinism",
+          "pilot-storage"
+        ],
+        "results": {
+          "pilot-determinism": {
+            "receipt": "R3 PASS: pilot-determinism",
+            "recorded_at": "2026-10-03T17:52:56.483697Z",
+            "status": "PASS"
+          },
+          "pilot-evidence-durability": {
+            "receipt": "R3 PASS: pilot-evidence-durability",
+            "recorded_at": "2026-10-03T17:52:56.290622Z",
+            "status": "PASS"
+          },
+          "pilot-introspection": {
+            "receipt": "R3 PASS: pilot-introspection",
+            "recorded_at": "2026-10-03T17:52:56.447275Z",
+            "status": "PASS"
+          },
+          "pilot-readout-replay": {
+            "receipt": "R3 PASS: pilot-readout-replay",
+            "recorded_at": "2026-10-03T17:52:56.371521Z",
+            "status": "PASS"
+          },
+          "pilot-restart-recovery": {
+            "receipt": "R3 PASS: pilot-restart-recovery",
+            "recorded_at": "2026-10-03T17:52:56.332345Z",
+            "status": "PASS"
+          },
+          "pilot-saa-health": {
+            "receipt": "R3 PASS: pilot-saa-health",
+            "recorded_at": "2026-10-03T17:52:56.408475Z",
+            "status": "PASS"
+          },
+          "pilot-storage": {
+            "receipt": "R3 PASS: pilot-storage",
+            "recorded_at": "2026-10-03T17:52:56.523385Z",
+            "status": "PASS"
+          }
+        }
+      },
+      "waiting_on": [],
+      "workstream": "mneme-reasoning-25-rerun"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "a8bd77aacd821d24a1b27faf632577d79e98bb5e",
+      "campaign": "mneme-reasoning-25-rerun",
+      "candidate": null,
+      "completion_criterion": "Fresh OFF and ON branches complete exactly 25 threads with durable evidence, checkpoints, matched readout and removal/restoration, and no thread 26 call.",
+      "created_at": "2026-10-03T17:17:15.560610Z",
+      "dependencies": [
+        "package:MNEME-REASONING-25-PILOT"
+      ],
+      "domain": "research-experiment",
+      "edit_boundaries": [
+        "tools/run_reasoning_25_thread.py",
+        "docs/receipts/MNEME_Clean_Slate_Reasoning_25_Thread_*",
+        "bible.md"
+      ],
+      "evidence_refs": [],
+      "id": "MNEME-REASONING-25-FRESH",
+      "notes": "",
+      "owner": null,
+      "priority": 2,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "fresh-newborn-pair",
+        "reasoning-off-on",
+        "thread-25-stop",
+        "live-specimens",
+        "evaluation-checkpoints"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": true,
+          "name": "canonical-integration",
+          "units": 1
+        },
+        {
+          "exclusive": true,
+          "name": "model-agent",
+          "units": 1
+        }
+      ],
+      "scope": "Only after pilot PASS, run the fresh matched reasoning OFF/ON developmental trial through thread 25, persist every thread durably, stop, and publish comparison evidence.",
+      "session_ids": [],
+      "status": "READY",
+      "title": "Fresh clean-slate reasoning ON/OFF 25-thread trial",
+      "updated_at": "2026-10-03T17:52:56.562240Z",
+      "validation": {
+        "required": [
+          "full-run-evidence",
+          "thread-10-health",
+          "thread-25-readout",
+          "removal-restoration",
+          "live-specimen-reopen",
+          "full-tests-ci"
+        ],
+        "results": {}
+      },
+      "waiting_on": [],
+      "workstream": "mneme-reasoning-25-rerun"
+    }
+  ],
+  "project": "nova-rey/mneme",
+  "resources": {
+    "canonical-integration": {
+      "capacity": 1,
+      "exclusive": true
+    },
+    "model-agent": {
+      "capacity": 1,
+      "exclusive": true
+    }
+  },
+  "schema_version": 1,
+  "updated_at": "2026-10-03T17:52:56.562277Z"
+}

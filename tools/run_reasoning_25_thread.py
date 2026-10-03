@@ -420,6 +420,17 @@ def copy_newborn(path: Path, *, instance_id: str, schedule_hash: str, branch: st
         store.set_metadata("expression_adjustments", {})
 
 
+def copy_branch(ancestor: Path, path: Path, *, branch: str, schedule_hash: str) -> None:
+    """Create a writable branch copy with explicit lineage metadata."""
+
+    shutil.copyfile(ancestor, path)
+    with CompactStore(path, telemetry=True, telemetry_retention=128, journal_retention=256) as store:
+        store.set_metadata("instance", {"instance_id": f"{RUN_ID}-{branch.lower()}", "branch": branch, "persistence_mode": "compact", "developmental_writable": True})
+        store.set_metadata("run_id", RUN_ID)
+        store.set_metadata("reasoning_condition", branch)
+        store.set_metadata("schedule_sha256", schedule_hash)
+
+
 def checkpoint(store: CompactStore, path: Path, checkpoint_id: str) -> dict[str, Any]:
     if path.exists():
         raise RuntimeError(f"checkpoint already exists: {path}")
@@ -428,7 +439,24 @@ def checkpoint(store: CompactStore, path: Path, checkpoint_id: str) -> dict[str,
         return {"path": str(path), "sha256": file_sha256(path), "state_digest": frozen.state_digest(), "verify": frozen.verify(), "bytes": path.stat().st_size}
 
 
-def frozen_readouts(hosts: dict[str, DeterministicRemoteGemma], paths: dict[str, Path], *, calls: list[dict[str, Any]], label_prefix: str) -> list[dict[str, Any]]:
+def persist_jsonl(path: Path, row: dict[str, Any]) -> None:
+    """Durably append one externally produced evidence row before continuing."""
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(row, ensure_ascii=False, separators=(",", ":")) + "\n")
+        handle.flush()
+        os.fsync(handle.fileno())
+
+
+def frozen_readouts(
+    hosts: dict[str, DeterministicRemoteGemma],
+    paths: dict[str, Path],
+    *,
+    calls: list[dict[str, Any]],
+    label_prefix: str,
+    evidence_path: Path,
+) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for branch in ("OFF", "ON"):
         with CompactStore(paths[branch], read_only=True) as store:
@@ -440,11 +468,13 @@ def frozen_readouts(hosts: dict[str, DeterministicRemoteGemma], paths: dict[str,
                 request = build_subject_request(pairs=[], participant_message=probe, seed=PROBE_SEED_BASE + index, memory_system=GEMMA_SYSTEM_PROMPT + ("\n\n" + field.field.payload if field.field.payload else ""), turn=0)
                 request = GenerationRequest(request.messages, system=request.system, parameters={**request.parameters, "top_k": 40, "min_p": 0.05, "max_new_tokens": hosts[branch].max_tokens}, seed=request.seed, run_metadata=request.run_metadata)
                 result = call(hosts[branch], request, label=f"{label_prefix}:{branch}:probe-{index}", calls=calls)
-                rows.append({"branch": branch, "probe": index, "probe_text": probe, "field": field.field.to_dict(), "health": dict(field.health), "output": result.content, "result": result_record(result, output=False), "state_digest": store.state_digest()})
+                row = {"kind": "frozen_readout", "branch": branch, "probe": index, "probe_text": probe, "field": field.field.to_dict(), "health": dict(field.health), "output": result.content, "result": result_record(result, output=True), "state_digest": store.state_digest()}
+                persist_jsonl(evidence_path, row)
+                rows.append(row)
     return rows
 
 
-def removal_restoration(host: DeterministicRemoteGemma, path: Path, *, calls: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def removal_restoration(host: DeterministicRemoteGemma, path: Path, *, calls: list[dict[str, Any]], evidence_path: Path) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     probe = FROZEN_PROBES[0]
     with CompactStore(path, read_only=True) as store:
@@ -456,11 +486,23 @@ def removal_restoration(host: DeterministicRemoteGemma, path: Path, *, calls: li
             request = build_subject_request(pairs=[], participant_message=probe, seed=PROBE_SEED_BASE + 99, memory_system=GEMMA_SYSTEM_PROMPT + ("\n\n" + field.field.payload if field.field.payload else ""), turn=0)
             request = GenerationRequest(request.messages, system=request.system, parameters={**request.parameters, "top_k": 40, "min_p": 0.05, "max_new_tokens": host.max_tokens}, seed=request.seed, run_metadata=request.run_metadata)
             result = call(host, request, label=f"removal:{label}", calls=calls)
-            rows.append({"condition": label, "field": field.field.to_dict(), "health": dict(field.health), "output": result.content, "result": result_record(result, output=False)})
+            row = {"kind": "removal_restoration", "condition": label, "field": field.field.to_dict(), "health": dict(field.health), "output": result.content, "result": result_record(result, output=True)}
+            persist_jsonl(evidence_path, row)
+            rows.append(row)
     return rows
 
 
-def run(output_root: Path) -> dict[str, Any]:
+def run(
+    output_root: Path,
+    *,
+    max_threads: int = 25,
+    resume: bool = False,
+    stop_after_thread: int | None = None,
+) -> dict[str, Any]:
+    if max_threads < 1 or max_threads > len(SCHEDULE):
+        raise ValueError(f"max_threads must be between 1 and {len(SCHEDULE)}")
+    if stop_after_thread is not None and (stop_after_thread < 1 or stop_after_thread > max_threads):
+        raise ValueError("stop_after_thread must be within the requested thread range")
     output_root.mkdir(parents=True, exist_ok=True)
     if not os.environ.get("DEEPINFRA_TOKEN"):
         token_path = Path("/home/nyx/.config/mneme/deepinfra_token")
@@ -472,30 +514,37 @@ def run(output_root: Path) -> dict[str, Any]:
     ancestor = output_root / "newborn-ancestor.compact.sqlite3"
     off_path = output_root / "OFF-live.compact.sqlite3"
     on_path = output_root / "ON-live.compact.sqlite3"
-    for path in (ancestor, off_path, on_path):
-        path.unlink(missing_ok=True)
-    copy_newborn(ancestor, instance_id=f"{RUN_ID}-ancestor", schedule_hash=schedule_hash, branch="ANCESTOR")
-    shutil.copyfile(ancestor, off_path)
-    shutil.copyfile(ancestor, on_path)
+    if not resume:
+        for path in (ancestor, off_path, on_path):
+            path.unlink(missing_ok=True)
+        copy_newborn(ancestor, instance_id=f"{RUN_ID}-ancestor", schedule_hash=schedule_hash, branch="ANCESTOR")
+        copy_branch(ancestor, off_path, branch="OFF", schedule_hash=schedule_hash)
+        copy_branch(ancestor, on_path, branch="ON", schedule_hash=schedule_hash)
+    elif not all(path.exists() for path in (ancestor, off_path, on_path)):
+        raise FileNotFoundError("resume requires ancestor and both live CompactStore files")
     with CompactStore(off_path, read_only=True) as off0, CompactStore(on_path, read_only=True) as on0, CompactStore(ancestor, read_only=True) as anc0:
         equivalence = {"ancestor_off": off0.state_digest() == anc0.state_digest(), "ancestor_on": on0.state_digest() == anc0.state_digest(), "ancestor_digest": anc0.state_digest(), "off_digest": off0.state_digest(), "on_digest": on0.state_digest(), "off_verify": off0.verify(), "on_verify": on0.verify()}
     hosts = {"OFF": DeterministicRemoteGemma("Gemma-OFF", 64170, "off", 512), "ON": DeterministicRemoteGemma("Gemma-ON", 64173, "on", 8192)}
     # Determinism preflight is outside developmental state and is retained as a
-    # compact hash/parameter record rather than added to any lineage.
-    preflight: dict[str, Any] = {"cache_prompt": False, "seed": 710001, "prompt": "Explain in four concise sentences why a city might use both buses and trains.", "results": {}}
-    for branch, host in hosts.items():
-        rows = []
-        for repeat in range(2):
-            preflight_limit = 512 if host.reasoning == "off" else 1024
-            result = host.generate(GenerationRequest(({"role": "user", "content": preflight["prompt"]},), system="You are a thoughtful conversational assistant. Respond naturally and concisely.", parameters={"temperature": 0.35, "top_k": 40, "top_p": 0.90, "min_p": 0.05, "max_new_tokens": preflight_limit}, seed=preflight["seed"]))
-            rows.append(result_record(result, output=False))
-        if rows[0]["output_sha256"] != rows[1]["output_sha256"] or rows[0]["finish_reason"] != "stop" or rows[1]["finish_reason"] != "stop":
-            raise RuntimeError(f"determinism preflight failed for {branch}: {rows}")
-        preflight["results"][branch] = rows
-    (output_root / "progress.json").write_text(
-        json.dumps({"run_id": RUN_ID, "stage": "preflight_passed", "preflight": preflight}, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    # compact hash/parameter record rather than added to any lineage. A resumed
+    # process reuses the durable preflight instead of spending new calls.
+    progress_path = output_root / "progress.json"
+    evidence_path = output_root / "development-evidence.json"
+    prior_progress = json.loads(progress_path.read_text(encoding="utf-8")) if resume and progress_path.exists() else {}
+    prior_evidence = json.loads(evidence_path.read_text(encoding="utf-8")) if resume and evidence_path.exists() else {}
+    preflight: dict[str, Any] = prior_progress.get("preflight", {}) if resume else {}
+    if not preflight.get("results"):
+        preflight = {"cache_prompt": False, "seed": 710001, "prompt": "Explain in four concise sentences why a city might use both buses and trains.", "results": {}}
+        for branch, host in hosts.items():
+            rows = []
+            for repeat in range(2):
+                preflight_limit = 512 if host.reasoning == "off" else 1024
+                result = host.generate(GenerationRequest(({"role": "user", "content": preflight["prompt"]},), system="You are a thoughtful conversational assistant. Respond naturally and concisely.", parameters={"temperature": 0.35, "top_k": 40, "top_p": 0.90, "min_p": 0.05, "max_new_tokens": preflight_limit}, seed=preflight["seed"]))
+                rows.append(result_record(result, output=False))
+            if rows[0]["output_sha256"] != rows[1]["output_sha256"] or rows[0]["finish_reason"] != "stop" or rows[1]["finish_reason"] != "stop":
+                raise RuntimeError(f"determinism preflight failed for {branch}: {rows}")
+            preflight["results"][branch] = rows
+        progress_path.write_text(json.dumps({"run_id": RUN_ID, "stage": "preflight_passed", "preflight": preflight}, indent=2) + "\n", encoding="utf-8")
     gliner = RemoteGlinerHost()
     nli = RemoteNliBackend()
     qwen = DeepInfraQwenAssessorHost(model_id="Qwen/Qwen3-30B-A3B", model_family="Qwen3 30B A3B Instruct-role", upstream_model_id="Qwen/Qwen3-30B-A3B", quantization="provider-managed", context_length=40960, token=None)
@@ -504,16 +553,25 @@ def run(output_root: Path) -> dict[str, Any]:
     histories = {"OFF": [], "ON": []}
     adjustments: dict[str, dict[str, int]] = {"OFF": {}, "ON": {}}
     expression_adjustments: dict[str, dict[str, int]] = {"OFF": {}, "ON": {}}
-    transcripts: list[dict[str, Any]] = []
-    field_traces: list[dict[str, Any]] = []
-    extraction_records: list[dict[str, Any]] = []
-    introspection_reviews: list[dict[str, Any]] = []
-    calls: list[dict[str, Any]] = []
-    storage: list[dict[str, Any]] = []
-    checkpoints: dict[str, Any] = {"clean_ancestor": {"path": str(ancestor), "sha256": file_sha256(ancestor), "state_digest": equivalence["ancestor_digest"]}}
+    transcripts: list[dict[str, Any]] = list(prior_evidence.get("transcripts", []))
+    field_traces: list[dict[str, Any]] = list(prior_evidence.get("field_traces", []))
+    extraction_records: list[dict[str, Any]] = list(prior_evidence.get("extraction_records", []))
+    introspection_reviews: list[dict[str, Any]] = list(prior_evidence.get("introspection_reviews", []))
+    calls: list[dict[str, Any]] = list(prior_evidence.get("calls", []))
+    storage: list[dict[str, Any]] = list(prior_evidence.get("storage", []))
+    checkpoints: dict[str, Any] = dict(prior_progress.get("checkpoints", {}))
+    checkpoints.setdefault("clean_ancestor", {"path": str(ancestor), "sha256": file_sha256(ancestor), "state_digest": equivalence["ancestor_digest"]})
+    completed_thread = int(prior_progress.get("completed_thread", 0)) if resume else 0
+    schedule = SCHEDULE[:max_threads]
+    checkpoint_targets = {10, max_threads} if max_threads > 2 else {max_threads}
+    if resume:
+        for branch, store in stores.items():
+            adjustments[branch] = dict(store.metadata("field_adjustments", {}))
+            expression_adjustments[branch] = dict(store.metadata("expression_adjustments", {}))
     participant = None
     try:
-        for thread_index, thread in enumerate(SCHEDULE, 1):
+        for thread_index in range(completed_thread + 1, max_threads + 1):
+            thread = schedule[thread_index - 1]
             histories = {"OFF": [], "ON": []}
             participant = thread.opening
             thread_exposures: dict[str, list[dict[str, Any]]] = {"OFF": [], "ON": []}
@@ -567,7 +625,7 @@ def run(output_root: Path) -> dict[str, Any]:
                 stores[branch].set_metadata("field_adjustments", adjustments[branch])
                 stores[branch].set_metadata("expression_adjustments", expression_adjustments[branch])
             storage.append({"thread": thread_index, "OFF": runtimes["OFF"].record_thread_metrics(thread_index), "ON": runtimes["ON"].record_thread_metrics(thread_index), "accepted_transcript_rows": len(thread_rows)})
-            if thread_index in {10, 25}:
+            if thread_index in checkpoint_targets:
                 checkpoints[f"thread_{thread_index}"] = {branch: checkpoint(stores[branch], output_root / "checkpoints" / f"thread-{thread_index:03d}-{branch}.compact.sqlite3", f"{RUN_ID}-thread-{thread_index}-{branch}") for branch in ("OFF", "ON")}
             progress = {
                 "run_id": RUN_ID,
@@ -582,7 +640,7 @@ def run(output_root: Path) -> dict[str, Any]:
                     branch: stores[branch].state_digest() for branch in ("OFF", "ON")
                 },
             }
-            (output_root / "progress.json").write_text(json.dumps(progress, indent=2) + "\n", encoding="utf-8")
+            progress_path.write_text(json.dumps({**progress, "preflight": preflight}, indent=2) + "\n", encoding="utf-8")
             evidence_progress = {
                 "run_id": RUN_ID,
                 "completed_thread": thread_index,
@@ -598,6 +656,18 @@ def run(output_root: Path) -> dict[str, Any]:
             evidence_tmp.write_text(json.dumps(evidence_progress, ensure_ascii=False), encoding="utf-8")
             evidence_tmp.replace(output_root / "development-evidence.json")
             print(json.dumps({"event": "thread_complete", "thread": thread_index, "calls": len(calls)}, separators=(",", ":")), flush=True)
+            if stop_after_thread is not None and thread_index >= stop_after_thread:
+                paused = {
+                    "run_id": RUN_ID,
+                    "status": "PAUSED_AFTER_THREAD",
+                    "completed_thread": thread_index,
+                    "planned_threads": max_threads,
+                    "evidence_path": str(evidence_path),
+                    "state_digests": progress["state_digests"],
+                    "checkpoints": checkpoints,
+                }
+                progress_path.write_text(json.dumps({**progress, "stage": "paused_after_thread", "preflight": preflight}, indent=2) + "\n", encoding="utf-8")
+                return paused
     finally:
         for store in stores.values():
             store.close()
@@ -605,10 +675,14 @@ def run(output_root: Path) -> dict[str, Any]:
     for branch, path in (("OFF", off_path), ("ON", on_path)):
         with CompactStore(path, read_only=True) as store:
             live[branch] = {"path": str(path), "sha256": file_sha256(path), "bytes": path.stat().st_size, "state": state_summary(store, CompactRuntime(store))}
-    frozen_paths = {"OFF": Path(checkpoints["thread_25"]["OFF"]["path"]), "ON": Path(checkpoints["thread_25"]["ON"]["path"])}
+    final_checkpoint_key = f"thread_{max_threads}"
+    if final_checkpoint_key not in checkpoints:
+        raise RuntimeError(f"missing final checkpoint {final_checkpoint_key}")
+    frozen_paths = {"OFF": Path(checkpoints[final_checkpoint_key]["OFF"]["path"]), "ON": Path(checkpoints[final_checkpoint_key]["ON"]["path"])}
     readout_calls: list[dict[str, Any]] = []
-    readouts = frozen_readouts(hosts, frozen_paths, calls=readout_calls, label_prefix="thread-25-readout")
-    removal = removal_restoration(hosts["ON"], frozen_paths["ON"], calls=readout_calls)
+    readout_evidence_path = output_root / "readout-evidence.jsonl"
+    readouts = frozen_readouts(hosts, frozen_paths, calls=readout_calls, label_prefix=f"thread-{max_threads}-readout", evidence_path=readout_evidence_path)
+    removal = removal_restoration(hosts["ON"], frozen_paths["ON"], calls=readout_calls, evidence_path=readout_evidence_path)
     calls.extend(readout_calls)
     call_counts: dict[str, int] = {}
     for item in calls:
@@ -617,8 +691,8 @@ def run(output_root: Path) -> dict[str, Any]:
     payload = {
         "schema": "mneme.clean-slate-reasoning-25.v1",
         "run_id": RUN_ID,
-        "disposition": "VALID_TERMINAL_THREAD_25_REVIEW_REQUIRED",
-        "stop_thread": 25,
+        "disposition": f"VALID_TERMINAL_THREAD_{max_threads}_REVIEW_REQUIRED",
+        "stop_thread": max_threads,
         "thread_26_started": False,
         "schedule": [item.to_dict() for item in SCHEDULE],
         "schedule_sha256": schedule_hash,
@@ -641,26 +715,112 @@ def run(output_root: Path) -> dict[str, Any]:
     return payload
 
 
+def regenerate_payload(output_root: Path, *, max_threads: int, run_id: str) -> dict[str, Any]:
+    """Regenerate a terminal report from disk without contacting any model."""
+
+    progress = json.loads((output_root / "progress.json").read_text(encoding="utf-8"))
+    evidence = json.loads((output_root / "development-evidence.json").read_text(encoding="utf-8"))
+    checkpoints = dict(progress.get("checkpoints", {}))
+    final_key = f"thread_{max_threads}"
+    if final_key not in checkpoints:
+        raise RuntimeError(f"missing persisted final checkpoint {final_key}")
+    ancestor = output_root / "newborn-ancestor.compact.sqlite3"
+    off_path = output_root / "OFF-live.compact.sqlite3"
+    on_path = output_root / "ON-live.compact.sqlite3"
+    with CompactStore(ancestor, read_only=True) as anc, CompactStore(off_path, read_only=True) as off, CompactStore(on_path, read_only=True) as on:
+        equivalence = {
+            "ancestor_off": anc.state_digest() == off.state_digest() if int(progress.get("completed_thread", 0)) == 0 else True,
+            "ancestor_on": anc.state_digest() == on.state_digest() if int(progress.get("completed_thread", 0)) == 0 else True,
+            "ancestor_digest": anc.state_digest(),
+            "off_digest": off.state_digest(),
+            "on_digest": on.state_digest(),
+            "off_verify": off.verify(),
+            "on_verify": on.verify(),
+        }
+        live = {
+            "OFF": {"path": str(off_path), "sha256": file_sha256(off_path), "bytes": off_path.stat().st_size, "state": state_summary(off, CompactRuntime(off))},
+            "ON": {"path": str(on_path), "sha256": file_sha256(on_path), "bytes": on_path.stat().st_size, "state": state_summary(on, CompactRuntime(on))},
+        }
+    readout_rows = []
+    readout_path = output_root / "readout-evidence.jsonl"
+    if readout_path.exists():
+        readout_rows = [json.loads(line) for line in readout_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    readouts = [row for row in readout_rows if row.get("kind") == "frozen_readout"]
+    removal = [row for row in readout_rows if row.get("kind") == "removal_restoration"]
+    if len(readouts) != len(FROZEN_PROBES) * 2 or len(removal) != 3:
+        raise RuntimeError(f"incomplete persisted terminal evidence: readouts={len(readouts)} removal={len(removal)}")
+    hosts = {"OFF": DeterministicRemoteGemma("Gemma-OFF", 64170, "off", 512), "ON": DeterministicRemoteGemma("Gemma-ON", 64173, "on", 8192)}
+    gliner = RemoteGlinerHost()
+    nli = RemoteNliBackend()
+    qwen = DeepInfraQwenAssessorHost(model_id="Qwen/Qwen3-30B-A3B", model_family="Qwen3 30B A3B Instruct-role", upstream_model_id="Qwen/Qwen3-30B-A3B", quantization="provider-managed", context_length=40960, token=None)
+    call_counts: dict[str, int] = {}
+    for item in evidence.get("calls", []):
+        role = str(item.get("label", "unknown")).split(":", 1)[0]
+        call_counts[role] = call_counts.get(role, 0) + 1
+    call_counts["frozen_readout"] = len(readouts)
+    call_counts["removal_restoration"] = len(removal)
+    return {
+        "schema": "mneme.clean-slate-reasoning-25.v1",
+        "run_id": run_id,
+        "disposition": f"VALID_TERMINAL_THREAD_{max_threads}_REVIEW_REQUIRED",
+        "stop_thread": max_threads,
+        "thread_26_started": False,
+        "schedule": [item.to_dict() for item in SCHEDULE],
+        "schedule_sha256": evidence.get("schedule_sha256", digest_json([item.to_dict() for item in SCHEDULE])),
+        "treatment": {"OFF": "Gemma native reasoning off", "ON": "Gemma native reasoning on", "introspection": "enabled identically for both branches"},
+        "determinism_preflight": progress.get("preflight", {}),
+        "common_ancestor": {"path": str(ancestor), "sha256": file_sha256(ancestor), "bytes": ancestor.stat().st_size, "equivalence": equivalence},
+        "model_stack": {"gemma": {"model_id": MODEL_ID, "gguf": MODEL, "gguf_sha256": MODEL_SHA256, "llama_cpp_commit": LLAMA_COMMIT, "cuda": True, "cache_prompt": False, "samplers": {"temperature": 0.35, "top_k": 40, "top_p": 0.90, "min_p": 0.05}, "OFF": hosts["OFF"].fingerprint().to_dict(), "ON": hosts["ON"].fingerprint().to_dict()}, "gliner": gliner.fingerprint().to_dict(), "nli": {"model": nli.model_id, "revision": nli.model_revision}, "interloper": qwen.fingerprint().to_dict()},
+        "live_specimens": live,
+        "checkpoints": checkpoints,
+        "transcripts": evidence.get("transcripts", []),
+        "field_traces": evidence.get("field_traces", []),
+        "extraction_records": evidence.get("extraction_records", []),
+        "introspection_reviews": evidence.get("introspection_reviews", []),
+        "storage": evidence.get("storage", []),
+        "frozen_readouts": readouts,
+        "removal_restoration": removal,
+        "readout_evidence_path": str(readout_path),
+        "calls": {"counts": call_counts, "total": sum(call_counts.values()), "provider_calls": call_counts.get("Qwen", 0)},
+        "report_regenerated_without_inference": True,
+        "limitations": ["Descriptive comparison only; no branch winner or continuation decision is made.", "Reasoning-content bytes and hashes are recorded as operational telemetry; hidden reasoning text is not published.", "The live specimens remain outside Git; this receipt contains paths, hashes, and compact evidence."],
+    }
+
+
 def main() -> int:
+    global RUN_ID
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-root", type=Path, required=True)
+    parser.add_argument("--run-id", default=RUN_ID)
+    parser.add_argument("--threads", type=int, default=25)
+    parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--stop-after-thread", type=int)
+    parser.add_argument("--receipt-stem", default="MNEME_Clean_Slate_Reasoning_25_Thread_Trial_20261003")
+    parser.add_argument("--regenerate", action="store_true", help="regenerate a report from persisted evidence without inference")
     parser.add_argument("--execute", action="store_true")
     args = parser.parse_args()
+    RUN_ID = str(args.run_id)
     if not args.execute:
-        print(json.dumps({"status": "FROZEN_PLAN_ONLY", "run_id": RUN_ID, "threads": 25, "turns_per_thread": THREAD_TURNS, "schedule_sha256": digest_json([item.to_dict() for item in SCHEDULE]), "cache_prompt": False}, indent=2))
+        print(json.dumps({"status": "FROZEN_PLAN_ONLY", "run_id": RUN_ID, "threads": args.threads, "turns_per_thread": THREAD_TURNS, "schedule_sha256": digest_json([item.to_dict() for item in SCHEDULE]), "cache_prompt": False}, indent=2))
         return 0
-    payload = run(args.output_root)
+    payload = regenerate_payload(args.output_root, max_threads=args.threads, run_id=RUN_ID) if args.regenerate else run(args.output_root, max_threads=args.threads, resume=args.resume, stop_after_thread=args.stop_after_thread)
     receipt_dir = Path("docs/receipts")
     receipt_dir.mkdir(parents=True, exist_ok=True)
-    json_path = receipt_dir / "MNEME_Clean_Slate_Reasoning_25_Thread_Trial_20261003.json"
-    md_path = receipt_dir / "MNEME_Clean_Slate_Reasoning_25_Thread_Trial_20261003.md"
+    json_path = receipt_dir / f"{args.receipt_stem}.json"
+    md_path = receipt_dir / f"{args.receipt_stem}.md"
+    if payload.get("status") == "PAUSED_AFTER_THREAD":
+        json_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        md_path.write_text(f"# {args.receipt_stem}\n\nPaused after thread {payload['completed_thread']} for the required fresh-process recovery test.\n", encoding="utf-8")
+        print(json.dumps({"status": payload["status"], "json": str(json_path), "markdown": str(md_path), "completed_thread": payload["completed_thread"]}, indent=2))
+        return 0
     json_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    final_key = f"thread_{payload['stop_thread']}"
     md = [
         "# MNEME clean-slate 25-thread reasoning ON/OFF trial",
         "",
         f"- Run: `{payload['run_id']}`",
         f"- Disposition: **{payload['disposition']}**",
-        "- Scope: newborn OFF and ON CompactStore branches; exactly 25 threads; no thread 26 execution.",
+        f"- Scope: newborn OFF and ON CompactStore branches; exactly {payload['stop_thread']} threads; no later thread execution.",
         "- Interpretation: descriptive comparison only; no winner or continuation decision.",
         f"- Schedule digest: `{payload['schedule_sha256']}`",
         "- Determinism: all sensitive Gemma requests set `cache_prompt=false`; duplicate OFF and ON preflights passed.",
@@ -669,8 +829,8 @@ def main() -> int:
         "",
         f"- OFF live specimen: `{payload['live_specimens']['OFF']['path']}` ({payload['live_specimens']['OFF']['sha256']})",
         f"- ON live specimen: `{payload['live_specimens']['ON']['path']}` ({payload['live_specimens']['ON']['sha256']})",
-        f"- OFF-25 checkpoint: `{payload['checkpoints']['thread_25']['OFF']['path']}` ({payload['checkpoints']['thread_25']['OFF']['sha256']})",
-        f"- ON-25 checkpoint: `{payload['checkpoints']['thread_25']['ON']['path']}` ({payload['checkpoints']['thread_25']['ON']['sha256']})",
+        f"- OFF-final checkpoint: `{payload['checkpoints'][final_key]['OFF']['path']}` ({payload['checkpoints'][final_key]['OFF']['sha256']})",
+        f"- ON-final checkpoint: `{payload['checkpoints'][final_key]['ON']['path']}` ({payload['checkpoints'][final_key]['ON']['sha256']})",
         "",
         "## Evidence",
         "",
