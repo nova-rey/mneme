@@ -125,7 +125,7 @@ The continuation kept the encoder diagnostic separate from SAA uptake. Across T2
 
 ## Artifacts
 
-- Live ON-30: `/home/nyx/mneme_artifacts/mneme-reasoning-on-25-to-30-20261003/ON-30-live.compact.sqlite3`; SHA-256 `a587c4ffac75a029bf94b299f8a194255f2942da6c230a1578176efb20b87e6c`; state digest `489c54eb8bea05112850869a5a6821b54f53288f7c7e2bb86858dc213aa6fd9b`.
+- Live ON-30: `/home/nyx/mneme_artifacts/mneme-reasoning-on-25-to-30-20261003/ON-30-live.compact.sqlite3`; SHA-256 `cd4ded9d91b549ac2980850f659162a671fe8e79a7f1129388fe1c7dea89f3e2`; state digest `489c54eb8bea05112850869a5a6821b54f53288f7c7e2bb86858dc213aa6fd9b`.
 - Immutable checkpoint: `/home/nyx/mneme_artifacts/mneme-reasoning-on-25-to-30-20261003/checkpoints/thread-030-ON.compact.sqlite3`; SHA-256 `814ad3b9eeafc7d99c6de2a84e5f415bfb314f3c31bd9ea516b3a9473ceb1a46`.
 - Full external coordinate evidence: `/home/nyx/mneme_artifacts/mneme-reasoning-on-25-to-30-20261003/coordinate-evidence.jsonl`; SHA-256 `fe6a8515fec3a6e5148a53939eac8fa480b467648d2a0925f96f9ab120fae5f0`.
 - Full external final evidence: `/home/nyx/mneme_artifacts/mneme-reasoning-on-25-to-30-20261003/final-evidence.json`; SHA-256 `c8019716c9669d63ba5414e046fb7550e9971befec7aa69b0a4979a513d79a1d`.
