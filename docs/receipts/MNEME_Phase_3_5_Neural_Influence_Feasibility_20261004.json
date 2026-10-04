@@ -1,0 +1,358 @@
+{
+  "schema": "mneme.phase35.neural_influence_feasibility.v1",
+  "generated_at": "2026-10-04T14:32:07.719416+00:00",
+  "repository": {
+    "path": "/home/nyx/mneme",
+    "commit": "a59eb11ad98941f005e44c6daacd440e07c43842"
+  },
+  "source_audit": {
+    "llama_cpp_path": "/tmp/mneme-p35-llama",
+    "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+    "cpu_build_path": "/tmp/mneme-p35-llama-build",
+    "cpu_build_target": "llama-cvector-generator and llama-completion",
+    "cpu_build_flags": "GGML_CUDA=OFF; GGML_METAL=OFF; GGML_VULKAN=OFF; LLAMA_CURL=OFF; Release",
+    "generator_sha256": "274ff77e43d970c94a80140c8822d8f827fee1cca9baf595fb69eb3ee183f289",
+    "completion_sha256": "f134f5d777d1c77accdd74269ca0407ca6335f5f9eaca7a63789cacea8b0a188",
+    "source_files": {
+      "gemma4_model": {
+        "path": "/tmp/mneme-p35-llama/src/models/gemma4.cpp",
+        "sha256": "765ee856e30b3ddc126fa75c8252e5fbca6bae0e11abd9b71f4c21d911810ecb",
+        "exists": true
+      },
+      "adapter": {
+        "path": "/tmp/mneme-p35-llama/src/llama-adapter.cpp",
+        "sha256": "1e0edd7eb738d83502c77be0379b0c0e62bfd511a5cdc4a5ec374db8788d19a7",
+        "exists": true
+      },
+      "api_header": {
+        "path": "/tmp/mneme-p35-llama/include/llama.h",
+        "sha256": "0f166aba40183253c3b9b42c84725283d5792519027d1ba405df837abf278483",
+        "exists": true
+      },
+      "generator": {
+        "path": "/tmp/mneme-p35-llama/tools/cvector-generator/cvector-generator.cpp",
+        "sha256": "6ae000a30f6e083255ae4eaf439265d3a0bb5c71fcc2b44c9591384e5254aae0",
+        "exists": true
+      },
+      "mean": {
+        "path": "/tmp/mneme-p35-llama/tools/cvector-generator/mean.hpp",
+        "sha256": "1750dec76dcb02576845addd159b3b6439f7663664693f502202d540a09b91de",
+        "exists": true
+      },
+      "common_loader": {
+        "path": "/tmp/mneme-p35-llama/common/common.cpp",
+        "sha256": "727619fe7705a6137e82f40dc7f9003aaae9d4c957f1946d820d87ec7289eb96",
+        "exists": true
+      },
+      "server_routes": {
+        "path": "/tmp/mneme-p35-llama/tools/server/server.cpp",
+        "sha256": "7b093559250403e1f8bfbc53848ff2ffbbbf89f0637085761f858c732e9f64e5",
+        "exists": true
+      },
+      "server_control": {
+        "path": "/tmp/mneme-p35-llama/tools/server/server-context.cpp",
+        "sha256": "fdab7f863c6724d4afcf5c254e7350c64a8f6e6b39f132f675a93b41c037045e",
+        "exists": true
+      },
+      "server_readme": {
+        "path": "/tmp/mneme-p35-llama/tools/server/README.md",
+        "sha256": "b45beb0842fcc98709b7df26d22da93db5f73f88386f0a6a9d6c18eac522b024",
+        "exists": true
+      }
+    },
+    "assertions": {
+      "gemma4_builds_cvec_before_l_out": true,
+      "adapter_has_no_layer_zero_tensor": true,
+      "adapter_applies_inclusive_range": true,
+      "loader_maps_direction_N_to_offset_N_minus_1": true,
+      "server_exposes_startup_control_vector_flags": true,
+      "server_routes_do_not_offer_cvec_request_field": true,
+      "server_control_route_is_reasoning_end_only": true
+    },
+    "findings": [
+      "Gemma4 calls build_cvec(cur, il) immediately before l_out for each transformer layer.",
+      "Layer 0 has no control-vector tensor; direction.N is loaded to the layer-N slot and the API range is inclusive.",
+      "Control vectors are startup/process configuration in llama-server; the exposed /v1/chat/completions/control route accepts only reasoning_end control actions.",
+      "The cvector generator records F32 l_out tensors and exports normalized direction.N vectors; its mean reducer has no zero-norm guard, so callers must reject zero vectors.",
+      "The generator callback filters by tensor name/shape and does not independently assert the layer index; layer ordering is inherited from the model callback sequence and remains a qualification caveat."
+    ]
+  },
+  "model_free_checks": {
+    "schema": "mneme.p35.model-free-checks.v1",
+    "checks": [
+      {
+        "name": "mean_normalization_finite",
+        "pass": true,
+        "value": [
+          0.6,
+          0.8
+        ]
+      },
+      {
+        "name": "zero_norm_behavior",
+        "pass": true,
+        "value": [
+          "nan",
+          "nan"
+        ],
+        "finding": "pinned mean.hpp divides by zero for an all-zero direction; caller must reject/guard it"
+      },
+      {
+        "name": "layer_mapping_inclusive_and_layer0_noop",
+        "pass": true,
+        "value": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            3.0,
+            4.0
+          ],
+          [
+            5.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ]
+      },
+      {
+        "name": "gain_scaling",
+        "pass": true,
+        "value": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            1.5,
+            2.0
+          ],
+          [
+            2.5,
+            3.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ]
+      },
+      {
+        "name": "disable_noop",
+        "pass": true,
+        "value": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ]
+      },
+      {
+        "name": "dimension_contract",
+        "pass": true,
+        "value": {
+          "data_floats": 8,
+          "expected": 8
+        }
+      },
+      {
+        "name": "vector_serialization_roundtrip",
+        "pass": true,
+        "value": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      }
+    ],
+    "all_pass": true,
+    "reproducible_script": "tools/phase35_model_free_checks.py"
+  },
+  "previous_live_anchor": {
+    "receipt": "/tmp/mneme_isolated_gemma_prompt_experiment_20261003_compact.json",
+    "durable_copy": "/home/nyx/mneme_artifacts/phase35-neural-feasibility-20261004/anchor/isolated-gemma-association-strength.compact.json",
+    "sha256": "8115d028a58eff54b1ec9ea9b9517ab572602612a2da34c94d66cf4425bc89f6",
+    "model": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+    "model_id": "google/gemma-4-E4B-it",
+    "generation_seed": 930300,
+    "sampler": {
+      "max_tokens": 8192,
+      "temperature": 0.35,
+      "top_k": 40,
+      "top_p": 0.9,
+      "min_p": 0.05,
+      "stream": false,
+      "cache_prompt": false
+    },
+    "host": "http://100.115.208.48:64173/v1/chat/completions",
+    "preflight": {
+      "passed": true,
+      "duplicate_labels": [
+        "preflight-A-1",
+        "preflight-A-2"
+      ],
+      "reasoning_sha256": "edc9148f4ea7009b65b64111da93ced280250de4ded20e64c43e1d52bce0ca0d",
+      "final_sha256": "3d316b5ea76786f03cc1846a0e991056c3451aa1d8e667a0981da7cfbb5d7366"
+    },
+    "conditions": [
+      {
+        "label": "condition-A",
+        "condition": "A",
+        "request_sha256": "3b28355b4e2848167dcee4c4bdc7c28872bca18ae4a3fb219a0a0779ebdbb63c",
+        "response_body_sha256": "37b3a063b3af8d9609ee7b894c2709b52452d57d8253e07a2fc68a8a2068871e",
+        "reasoning_sha256": "edc9148f4ea7009b65b64111da93ced280250de4ded20e64c43e1d52bce0ca0d",
+        "final_sha256": "3d316b5ea76786f03cc1846a0e991056c3451aa1d8e667a0981da7cfbb5d7366",
+        "reasoning_bytes": 2293,
+        "final_bytes": 4363,
+        "finish_reason": "stop",
+        "usage": {
+          "completion_tokens": 1817,
+          "prompt_tokens": 130,
+          "total_tokens": 1947,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        }
+      },
+      {
+        "label": "condition-B",
+        "condition": "B",
+        "request_sha256": "6e5592ab75b5bc4774bb39e7e726c0c20e45bd9244c4c140261397616dd1cbcb",
+        "response_body_sha256": "49d6b1326c0f59757f1c6dca4e5ed428a0d28304dcb89d789cae4260107947a5",
+        "reasoning_sha256": "92668a0263558c6de1ace19b719ba7dcab5e43a285c6a6ade8806b5c62bdc5ec",
+        "final_sha256": "18b87201d1865b2303cd7bdfb57ffe2559a201facfbff44d5c54b92e19bfaaea",
+        "reasoning_bytes": 2734,
+        "final_bytes": 3635,
+        "finish_reason": "stop",
+        "usage": {
+          "completion_tokens": 1680,
+          "prompt_tokens": 156,
+          "total_tokens": 1836,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        }
+      },
+      {
+        "label": "condition-C",
+        "condition": "C",
+        "request_sha256": "2308f9c55fdb2eaf151ed9861cc1ce37005d10891059ec0954fbb95eef690410",
+        "response_body_sha256": "678a129f3d874496cd6ff78d2786d146fd8212f8116adb2da4a17f6d3d174b40",
+        "reasoning_sha256": "aa542213cef27e2c4cf52fd3c654cdb37058ba74b849340118b456d5e67e63b9",
+        "final_sha256": "792dfa97b0d9fd940c01870465dcda3de8ab26eab3aacf286ca7f9adeaaba57f",
+        "reasoning_bytes": 2667,
+        "final_bytes": 4117,
+        "finish_reason": "stop",
+        "usage": {
+          "completion_tokens": 1777,
+          "prompt_tokens": 182,
+          "total_tokens": 1959,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        }
+      }
+    ],
+    "interpretation": "Existing three-condition prompt-strength anchor only; it is not a neural control-vector result and is not counted as Stage C neural evidence."
+  },
+  "host_probe": {
+    "tailscale_ip": "100.115.208.48",
+    "ports": {
+      "64170": {
+        "http_code": "000",
+        "returncode": 7,
+        "stderr": "curl: (7) Failed to connect to 100.115.208.48 port 64170 after 139 ms: Couldn't connect to server"
+      },
+      "64173": {
+        "http_code": "000",
+        "returncode": 7,
+        "stderr": "curl: (7) Failed to connect to 100.115.208.48 port 64173 after 37 ms: Couldn't connect to server"
+      }
+    },
+    "model_path": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+    "model_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+    "llama_cpp_revision": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+    "runtime": "0.5.0-dev/4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0; CUDA; GPU layers 99; context 16384 for ON",
+    "observed": "MSI is Tailscale-reachable but both configured inference ports refused connections during this audit; SSH port is reachable but available local identities were rejected. No service restart or remote mutation was attempted."
+  },
+  "stage_status": {
+    "A_source_and_build_audit": "PASS",
+    "B_mechanical_model_completions": "BLOCKED_HOST_UNAVAILABLE",
+    "C_neural_vector_matrix": "BLOCKED_NO_MODEL_PROCESS_OR_REQUEST_API",
+    "D_frozen_gain_selection": "NOT_RUN",
+    "E_integrated_readiness": "NOT_RUN",
+    "F_safety_and_replay": "NOT_RUN"
+  },
+  "spec_audit": {
+    "no_mneme_state_loaded_or_modified": {
+      "status": "PASS",
+      "evidence": "Standalone source/build checks only; no MNEME imports or runtime state paths used."
+    },
+    "pinned_llama_source_audited": {
+      "status": "PASS",
+      "evidence": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0"
+    },
+    "exact_gemma_model_invoked_in_this_bench": {
+      "status": "BLOCKED",
+      "evidence": "Required resident host ports unavailable; no substitute model used."
+    },
+    "mechanical_neural_intervention_verified": {
+      "status": "UNRESOLVED",
+      "evidence": "Requires model process with cvec loading; llama-server request API cannot supply vectors dynamically."
+    },
+    "semantic_matrix_completed": {
+      "status": "BLOCKED",
+      "evidence": "Requires exact local Gemma and 18 prescribed neural/non-neural completions."
+    },
+    "safety_rollback_replay": {
+      "status": "NOT_RUN",
+      "evidence": "No vector-enabled model process was available."
+    },
+    "raw_model_evidence_durable": {
+      "status": "PARTIAL",
+      "evidence": "Existing A/B/C anchor copied to external artifact directory; new neural raw outputs do not exist."
+    },
+    "production_integration_untouched": {
+      "status": "PASS",
+      "evidence": "No production MNEME files or state were loaded or changed."
+    }
+  },
+  "blocker": {
+    "class": "external_host_and_capability",
+    "exact": "The required MSI Gemma runtime is not listening on ports 64170/64173, SSH authentication is unavailable, and the resident llama-server interface has no per-request control-vector injection. Completing B-F requires an authorized vector-capable local process on the MSI (or an equivalent already-authorized endpoint) without substituting another model/provider.",
+    "next_action": "Restore the configured local Gemma service or provide authorized access to launch a dedicated llama-completion/llama-server process with --control-vector and the pinned GGUF. Then rerun only the blocked bounded bench stages; do not use MNEME state."
+  }
+}
