@@ -75,7 +75,30 @@
       "Control vectors are startup/process configuration in llama-server; the exposed /v1/chat/completions/control route accepts only reasoning_end control actions.",
       "The cvector generator records F32 l_out tensors and exports normalized direction.N vectors; its mean reducer has no zero-norm guard, so callers must reject zero vectors.",
       "The generator callback filters by tensor name/shape and does not independently assert the layer index; layer ordering is inherited from the model callback sequence and remains a qualification caveat."
-    ]
+    ],
+    "project_brief": {
+      "path": "docs/research/MNEME_Phase_Four_Research_Brief_On_Demand_Neural_Influence_2026-09-27.md",
+      "sha256": "8cd6aba71c0128722446bc1eb45330d8d3ef2f059e9d09ddc55627cf111a8749",
+      "sections_inspected": [
+        "4",
+        "5",
+        "6",
+        "8",
+        "9",
+        "10",
+        "11"
+      ],
+      "finding": "The brief separates SAA selection, host-specific translation, and application; calls the static vector path an entry mechanism rather than a general graph-to-vector translator; requires reset/removal controls and held-out evaluation."
+    },
+    "historical_runtime_receipt": {
+      "path": "docs/receipts/MNEME_Local_Gemma_Determinism_Diagnostic_20261002.json",
+      "sha256": "1821aa956e0d081b9c9dfab32514bc50bde791e30e24ed01edbc021ebd256b1e",
+      "status": "historical calibration evidence, not current host inspection",
+      "known_host": "brokeass-msi",
+      "gpu": "RTX 3060 Laptop GPU, 6144 MiB",
+      "model_dimensions": "not retained in this receipt; current model process unavailable for direct inspection",
+      "reproducibility": "fresh GPU CLI 10/10 and cache-disabled resident server 5/5 identical"
+    }
   },
   "model_free_checks": {
     "schema": "mneme.p35.model-free-checks.v1",
@@ -348,11 +371,99 @@
     "production_integration_untouched": {
       "status": "PASS",
       "evidence": "No production MNEME files or state were loaded or changed."
-    }
+    },
+    "requirement_matrix": [
+      {
+        "requirement": "1 assignment: exact local runtime can apply/scale/disable/restore intervention",
+        "status": "UNRESOLVED",
+        "evidence": "Source/API and model-free arithmetic verified; no exact-model process available for actual hook/logit smoke."
+      },
+      {
+        "requirement": "1 assignment: one synthetic host-derived vector produces identifiable behavior",
+        "status": "BLOCKED",
+        "evidence": "Requires Stage B and C exact Gemma calls."
+      },
+      {
+        "requirement": "1 assignment: propose smallest future software bridge",
+        "status": "PASS_PROPOSAL_ONLY",
+        "evidence": "Report bridge proposal below; no production wiring authorized."
+      },
+      {
+        "requirement": "2 repositories/research: pinned source and project brief inspected",
+        "status": "PASS",
+        "evidence": "Pinned llama.cpp source and local Phase Four brief hashes recorded."
+      },
+      {
+        "requirement": "3 actual local conditions: model/runtime/GPU/configuration inspection",
+        "status": "PARTIAL_HISTORICAL_ONLY",
+        "evidence": "Prior determinism receipt preserves recorded values; current MSI service and model process could not be queried."
+      },
+      {
+        "requirement": "4 Stage A source mechanics/model-free dry run",
+        "status": "PASS",
+        "evidence": "Source assertions, separate CPU build and synthetic arithmetic checks."
+      },
+      {
+        "requirement": "5 Stage B mechanical Gemma smoke",
+        "status": "BLOCKED",
+        "evidence": "Ports refused; no vector-capable process."
+      },
+      {
+        "requirement": "6 Stage C synthetic harbor candidate",
+        "status": "BLOCKED",
+        "evidence": "Depends on Stage B and exact model activations."
+      },
+      {
+        "requirement": "7 18-completion comparison matrix",
+        "status": "BLOCKED",
+        "evidence": "Depends on Stage C; prior A/B/C anchor is not counted."
+      },
+      {
+        "requirement": "8 behavioral reading and controls",
+        "status": "NOT_RUN",
+        "evidence": "No neural matrix."
+      },
+      {
+        "requirement": "9 durable complete evidence",
+        "status": "PARTIAL",
+        "evidence": "Source/model-free and prior A/B/C records durable; future neural records absent because calls did not occur."
+      },
+      {
+        "requirement": "10 future MNEME bridge",
+        "status": "PASS_PROPOSAL_ONLY",
+        "evidence": "Proposal recorded below; no graph/renderer/host changes."
+      },
+      {
+        "requirement": "11 completion report/validation/stop",
+        "status": "PARTIAL_BLOCKED",
+        "evidence": "Compact report, tests and CI complete; model-dependent stages remain externally blocked."
+      }
+    ]
   },
   "blocker": {
     "class": "external_host_and_capability",
     "exact": "The required MSI Gemma runtime is not listening on ports 64170/64173, SSH authentication is unavailable, and the resident llama-server interface has no per-request control-vector injection. Completing B-F requires an authorized vector-capable local process on the MSI (or an equivalent already-authorized endpoint) without substituting another model/provider.",
     "next_action": "Restore the configured local Gemma service or provide authorized access to launch a dedicated llama-completion/llama-server process with --control-vector and the pinned GGUF. Then rerun only the blocked bounded bench stages; do not use MNEME state."
+  },
+  "bridge_proposal": {
+    "status": "proposal_only",
+    "pipeline": "SAA FieldResult -> portable active-neighborhood descriptor -> host-specific compiler -> qualified control-vector GGUF -> isolated application/reset -> frozen host response",
+    "existing_parts": [
+      "SAA selection and pressure already exist in MNEME",
+      "pinned llama.cpp static control-vector hook and loader exist"
+    ],
+    "missing_parts": [
+      "portable descriptor that preserves selected neighborhood direction without choosing a substitute",
+      "exact-model activation collection and qualification process",
+      "artifact compatibility binding to GGUF/tokenizer/template/build/site/normalization",
+      "per-request isolated application/reset path because resident HTTP lacks cvec request injection",
+      "quarantine/revocation and cache-miss policy"
+    ],
+    "smallest_next_step": "Restore authorized MSI access, launch a dedicated vector-enabled process with the pinned GGUF, complete B/C/F in isolation, then decide whether any host bridge is warranted.",
+    "non_goals": [
+      "no SAA or graph changes",
+      "no production integration",
+      "no PSR or HyperSteer implementation"
+    ]
   }
 }

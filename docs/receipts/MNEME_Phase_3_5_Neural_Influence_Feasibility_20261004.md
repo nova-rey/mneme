@@ -36,6 +36,37 @@ The earlier isolated Gemma receipt was copied to `/home/nyx/mneme_artifacts/phas
 | E. integrated readiness | NOT RUN | No neural bench results to integrate; production integration was intentionally untouched. |
 | F. safety/rollback/replay | NOT RUN | No vector-enabled process was available to exercise it. |
 
+
+## Requirement-level audit
+
+| Requirement | Status | Evidence boundary |
+|---|---|---|
+| Exact Gemma can apply/scale/disable/restore an intervention | **UNRESOLVED** | Source and arithmetic pass; exact-model hook/logit smoke requires the MSI process. |
+| Synthetic vector produces identifiable behavior | **BLOCKED** | Requires real Stage B/C completions. |
+| Pinned source and project brief inspected | **PASS** | Source commit and brief hash are in the JSON companion. |
+| Actual current model/runtime/GPU inspection | **PARTIAL, HISTORICAL ONLY** | Prior determinism receipt records the calibration values; the current process was unreachable. |
+| Stage A mechanics and model-free dry run | **PASS** | Separate CPU build and arithmetic checks pass. |
+| Stage B mechanical Gemma smoke | **BLOCKED** | No vector-capable exact-model process. |
+| Stage C construction and semantic matrix | **BLOCKED** | No exact-model activation capture or vector process. |
+| Durable neural evidence and safety replay | **NOT RUN** | No neural calls occurred. |
+
+The prior A/B/C prompt-strength experiment is retained as contextual evidence only. It does not satisfy Stage B, Stage C, or the neural comparison matrix.
+
+## Smallest future bridge proposal
+
+The bridge remains a proposal, not an implementation:
+
+```text
+SAA FieldResult
+  -> portable active-neighborhood descriptor
+  -> host-specific compiler
+  -> qualified control-vector GGUF
+  -> isolated application/reset
+  -> frozen host response
+```
+
+SAA must remain the selector. The missing descriptor must preserve the selected neighborhood’s conceptual direction without replacing it with a convenient cached topic. The compiled artifact must bind to the GGUF, tokenizer/template, llama.cpp build, extraction/application site, layer range, and normalization. The current resident HTTP server cannot supply per-request vectors, so the first safe path is a dedicated process or isolated C API context with explicit reset, removal, quarantine, and incompatible-artifact handling. PSR and HyperSteer remain separate future options; neither is needed for this bench.
+
 ## Exact external blocker
 
 At audit time Tailscale reported `brokeass-msi` online at `100.115.208.48`, but both configured inference ports refused connections. TCP/22 accepted connections, but the available local SSH identities were rejected for the tested accounts; no service restart or remote mutation was attempted. The model file and CUDA runtime are not present on this machine, so the exact local Gemma calls cannot be reproduced here. The proper next step is to restore the configured resident service or provide authorized access to launch a dedicated vector-enabled `llama-completion`/`llama-server` process using the pinned GGUF. Substituting another model/provider would violate the specification.
