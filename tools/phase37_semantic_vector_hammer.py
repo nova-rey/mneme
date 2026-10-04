@@ -183,7 +183,8 @@ def prompt(statement: str) -> str:
 def manifest(root: Path) -> dict[str, Any]:
     value = {"experiment": "mneme-phase-3-7-semantic-vector-hammer", "model": MODEL, "model_sha256": MODEL_SHA256, "layer_mapping": {"ignored_capture": "l_out layer zero", "directions": list(range(1, 42))}, "targets": [asdict(t) for t in TARGETS], "ranges": RANGES, "gains": GAINS, "screen_gain": SCREEN_GAIN, "seeds": SEEDS, "sampler": SAMPLER}
     value["sha256"] = sha(value)
-    return value
+    # Normalize tuples to the UTF-8 JSON form persisted by atomic().
+    return json.loads(canonical(value).decode("utf-8"))
 
 
 def ensure_manifest(root: Path) -> dict[str, Any]:

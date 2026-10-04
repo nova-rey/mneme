@@ -1654,3 +1654,8 @@ and dispositions remain unchanged.
 
 - After r3’s complete untreated baseline, the constructed target order is explicitly adaptive: ecological succession is first; counterpoint and defense in depth are constructed only if needed after the first bounded screen.
 - Reworked validation execution to retain all context/seed calls under each one loaded disposable vector server, reducing restart overhead without changing prompts, seeds, vectors, ranges, or sampling.
+
+## 2026-10-04 — Phase 3.7 manifest-reload correction
+
+- Baseline persistence exposed a general manifest-reload defect: Python tuples in the in-memory target corpus became JSON arrays on disk, making an unchanged frozen manifest compare unequal on later stages.
+- Canonical JSON normalization now precedes immutable manifest comparison. No vector existed; the valid r3 untreated baseline remains the authoritative pre-vector qualification.
