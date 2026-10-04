@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "experiment": "MNEME Phase 3.7 Semantic Vector Qualification Hammer Test",
+  "run_id": "phase37-semantic-vector-hammer-20261004-r3",
+  "disposition": "NO — NOT DEMONSTRATED",
+  "plain_english": "No tested bespoke exact-Q2 Gemma control vector made its intended conceptual structure recognizably accessible in unrelated prompts. The full ecological dose sweep stayed semantically indistinguishable from untreated generic advice; a matched random vector became destructive at high gain.",
+  "host": {
+    "model_id": "google/gemma-4-E4B-it",
+    "gguf": "gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+    "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+    "runtime": "llama.cpp local CUDA, isolated disposable server",
+    "reasoning": "on",
+    "cache_prompt": false,
+    "layer_contract": "ignore l_out capture zero; apply explicit directions 1 through 41"
+  },
+  "frozen_design": {
+    "manifest_sha256": "58c1fad90a456f5b784c2d4659bed00b1edcab23bb79a686a5c770091bcc2487",
+    "targets": [
+      "ecological_succession",
+      "musical_counterpoint",
+      "defense_in_depth"
+    ],
+    "contrast_pairs_per_target": 16,
+    "methods": ["balanced_mean_difference", "coordinatewise_median_of_16_pair_vectors"],
+    "screen_layer_ranges": {
+      "early_middle": [9, 18],
+      "middle": [17, 29],
+      "late_middle": [28, 38],
+      "broad": [1, 41]
+    },
+    "screen_gain": 0.6,
+    "full_ecological_gain_sweep": [0.2, 0.6, 1.0, 1.5],
+    "generation_seeds": [937100, 937101],
+    "sampler": {"temperature": 0.35, "top_k": 40, "top_p": 0.9, "min_p": 0.05}
+  },
+  "baseline_qualification": {
+    "coordinates": 12,
+    "normal_completions": 12,
+    "finding": "The replacement prompts elicited generic stages, zoning, or checklists but not the complete diagnostic structures: pioneer conditions enabling later organization; independent coherent lines with planned interaction and resolution; or distinct detection, containment, and evidence-based escalation layers.",
+    "rejected_prevector_attempts": [
+      {"artifact_root": "/home/rey/mneme_artifacts/phase37-semantic-vector-hammer-20261004-r1", "reason": "Initial software/agent prompt set already elicited target-adjacent framing; no vectors constructed."},
+      {"artifact_root": "/home/rey/mneme_artifacts/phase37-semantic-vector-hammer-20261004-r2", "reason": "Fixed-port stale-server routing risk; partial untreated baseline only; no vectors constructed."}
+    ]
+  },
+  "construction": {
+    "total_generator_runs": 51,
+    "per_target": {
+      "ecological_succession": {"contrast_sha256": "3f9bc0bd59b978d68a3bd9325248d908758037a22d03a1784ec743418b62b323", "mean_vector_sha256": "76d0755365f22137c1a0840553ef42457e61568742d9a7783f7c5bc9facf8442", "median_vector_sha256": "97d6838c395c3ce955b95536a3361d7863d9da4caa4d844ec8de98a0a9939034", "construction_seconds": 44.097},
+      "musical_counterpoint": {"contrast_sha256": "6493c192c501fac16332dea42d83bbd2fc63c39a8e5ea7ba4741a6c96c05129b", "mean_vector_sha256": "3253e1810795385f956be24ffbae71b19e7e7a6b988de87ccbdfd297644802bb", "median_vector_sha256": "9da9af3aa8fd942e670b0f4065a11b772bb00d9c8ccf233ab174c35c8114f15a", "construction_seconds": 46.65},
+      "defense_in_depth": {"contrast_sha256": "92f3c6c74f1be0d12be342ba16106e4eb1e26c6b6501c6c777f48568208caef9", "mean_vector_sha256": "30eb45455a1501b7eaffc2f91407947d441fbf72b7a1c75a6590a08ca7a9a884", "median_vector_sha256": "1ba1cf9b610ecdeb8435cbd1b98b1d7c440bde0d675a4fcc7e7fe9aa7fce80ac", "construction_seconds": 45.961}
+    }
+  },
+  "screen": {
+    "coordinates": 24,
+    "normal_completions": 24,
+    "target_specific_structural_influence": 0,
+    "pruning": "All mean/median × four-layer-range ecological, counterpoint, and defense candidates were inert at the predeclared moderate gain. No candidate passed to a full multi-target validation. Ecological succession received the one full dose/control sweep because it was first in the frozen priority order."
+  },
+  "ecological_full_controls": {
+    "coordinates": 40,
+    "candidate": {"gains": [0.2, 0.6, 1.0, 1.5], "coordinates": 16, "target_specific_structural_influence": 0, "normal_completions": 16},
+    "no_intervention": {"coordinates": 4, "normal_completions": 4},
+    "random_norm_layer_matched": {"gains": [0.2, 0.6, 1.0, 1.5], "coordinates": 16, "normal_completions": 13, "length_truncations": 3, "high_gain_observation": "At gain 1.5, three calls exhausted the token allowance in reasoning with no visible final answer; the remaining final answer was 111 bytes of vacuous text."},
+    "sign_reversal": {"gain": -0.2, "coordinates": 4, "normal_completions": 4, "target_specific_structural_influence": 0},
+    "thermal_pruning": "Further high-gain sign-reversal launches were stopped after the high-gain random control sustained 86 C GPU temperature. Every completed call and partial manifest was persisted; no result was discarded."
+  },
+  "representative_coordinate": {
+    "unrelated_prompt": "A community radio station has lost listeners after a long period of irregular programming. It has a small budget, several aging shows, and volunteers with different interests. What should its programming committee do next?",
+    "baseline": "recommended schedule consistency, identity, and engagement",
+    "median_candidate_gain_1_5": "recommended consistency, predictability, and community connection; no pioneer, enabling-condition, path-dependent succession, or maturation structure in reasoning or final answer",
+    "random_gain_1_5": "ran to length in reasoning and returned no visible final answer",
+    "interpretation": "The semantic candidate did not make the desired source framing accessible; the random vector established that stronger perturbation can damage generation without creating that framing."
+  },
+  "call_accounting": {"baseline_calls": 12, "screen_calls": 24, "full_control_calls": 40, "total_behavioral_calls": 76, "baseline_generation_seconds": 294.75, "screen_generation_seconds": 600.23, "full_control_generation_seconds": 1155.53},
+  "evidence": {
+    "external_root": "/home/rey/mneme_artifacts/phase37-semantic-vector-hammer-20261004-r3",
+    "external_footprint": "28M",
+    "manifest_sha256": "fe4a409f73978715332ac736abdba8506e82f7cd00b4e7dd5bb804c438981a53",
+    "baseline_sha256": "d62042814614cebf79531640bfa40a34221990adcb111b4a4f6e0047d1f6314a",
+    "screen_sha256": "335ca5b7429df4a08c97b446584f3fffd8a9f5601630386d429375eaedef5ffc"
+  },
+  "claim_boundary": {
+    "observed": ["The corrected exact-Q2 vector path reliably constructed and applied all 41 explicit directions.", "None of 24 target/method/layer screen coordinates showed the intended target-specific cross-domain structure.", "The ecological median vector did not show target-specific behavior at any tested positive gain or at low-gain sign reversal.", "A norm/layer-matched random vector was increasingly harmful at high gain."],
+    "inferred": ["The present balanced mean/median contrast construction does not yield trustworthy semantic vector targets for MNEME neural compilation."],
+    "unresolved": ["Whether a materially different representation, construction objective, full-precision host, or larger published-method implementation can yield semantic transfer."]
+  },
+  "recommendation": "Do not begin another open-ended vector hunt or rent an A100 to scale the same unqualified target construction. Park this control-vector substrate for MNEME unless the owner authorizes a specifically different upstream semantic-vector qualification method."
+}

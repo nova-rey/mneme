@@ -1659,3 +1659,9 @@ and dispositions remain unchanged.
 
 - Baseline persistence exposed a general manifest-reload defect: Python tuples in the in-memory target corpus became JSON arrays on disk, making an unchanged frozen manifest compare unequal on later stages.
 - Canonical JSON normalization now precedes immutable manifest comparison. No vector existed; the valid r3 untreated baseline remains the authoritative pre-vector qualification.
+
+## 2026-10-04 — Phase 3.7 semantic-vector hammer disposition
+
+- The accepted r3 screen constructed balanced mean and coordinate-wise-median exact-Q2 vectors for ecological succession, musical counterpoint, and defense in depth, then tested both methods across four frozen layer ranges. No candidate made its target’s diagnostic cross-domain structure appear.
+- A full ecological dose/control sweep likewise found no semantic effect at gains 0.2–1.5 or low-gain sign reversal. The norm/layer-matched random vector became destructive at 1.5, confirming generic perturbation is not semantic success. Further high-gain sign reversal was safely pruned after sustained 86 C GPU operation; complete durable evidence and a resumable partial manifest remain external.
+- Disposition: `NO — NOT DEMONSTRATED`. Do not rent an A100 or integrate this vector path into MNEME without a specifically different upstream semantic-vector qualification method.
