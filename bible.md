@@ -1644,3 +1644,8 @@ and dispositions remain unchanged.
 
 - The first partial untreated baseline showed the initially proposed software/legacy and autonomous-agent prompts already elicited staged replacement and independent-work-stream framing. Those prompts are preserved only as rejected qualification evidence; no vector was constructed or applied.
 - Replaced and froze a less target-native cross-domain evaluation set before any vector result: community radio and roadside public land; a mixed-use library room and civic hotline; club equipment access and nonprofit event operations.
+
+## 2026-10-04 — Phase 3.7 disposable-server port correction
+
+- Preserved the first partial replacement-baseline attempt as invalid for qualification because a stale disposable server occupied its fixed port; the request process could have reached that stale server. No vector was constructed or applied.
+- The isolated research runner now selects a fresh ephemeral localhost port for every disposable server, preventing stale-server routing. The baseline will restart cleanly from a new artifact root.

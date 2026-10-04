@@ -12,6 +12,7 @@ import hashlib
 import json
 import os
 import signal
+import socket
 import subprocess
 import sys
 import time
@@ -204,8 +205,12 @@ def post(base: str, endpoint: str, payload: dict[str, Any], timeout: int = 1800)
 
 
 def server(root: Path, *, vector: Path | None, layer_range: tuple[int, int], gain: float, fn: Any) -> Any:
-    port = 64370
-    tag = f"{vector.stem if vector else 'none'}-{layer_range[0]}-{layer_range[1]}-{gain}-{time.time_ns()}"
+    # Bind a disposable port before each isolated server. A fixed research port can
+    # accidentally route a coordinate to a stale prior server after interruption.
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as reservation:
+        reservation.bind(("127.0.0.1", 0))
+        port = int(reservation.getsockname()[1])
+    tag = f"{vector.stem if vector else 'none'}-{layer_range[0]}-{layer_range[1]}-{gain}-{port}-{time.time_ns()}"
     log = root / "server" / f"{tag}.log"
     log.parent.mkdir(parents=True, exist_ok=True)
     cmd = [SERVER, "-m", MODEL, "-ngl", "99", "-c", "8192", "--host", "127.0.0.1", "--port", str(port), "--reasoning-format", "deepseek", "--no-warmup"]
