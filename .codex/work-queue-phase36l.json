@@ -28,10 +28,12 @@
         "bible.md",
         ".codex/work-queue-phase36l.json"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "docs/receipts/MNEME_Phase_3_6L_Local_Neural_Compiler_Screen_20261004.md"
+      ],
       "id": "P36L-LOCAL-SCREEN",
       "notes": "",
-      "owner": "root",
+      "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -55,12 +57,10 @@
         }
       ],
       "scope": "A bounded local, host-specific control-vector generalization screen. No MNEME developmental state, SAA, CompactStore, ON-30, or production inference behavior may be modified.",
-      "session_ids": [
-        "phase36l-validation"
-      ],
-      "status": "VALIDATING",
+      "session_ids": [],
+      "status": "DONE",
       "title": "Run the bounded exact-Q2 local neural compiler generalization screen",
-      "updated_at": "2026-10-04T20:11:34.658141Z",
+      "updated_at": "2026-10-04T20:13:06.131544Z",
       "validation": {
         "required": [
           "frozen-corpus-hash",
@@ -74,6 +74,11 @@
           "ci"
         ],
         "results": {
+          "ci": {
+            "receipt": "https://github.com/nova-rey/mneme/actions/runs/37231178273",
+            "recorded_at": "2026-10-04T20:13:06.082281Z",
+            "status": "PASS"
+          },
           "durable-artifact-manifest": {
             "receipt": "docs/receipts/MNEME_Phase_3_6L_Local_Neural_Compiler_Screen_20261004.json",
             "recorded_at": "2026-10-04T20:11:34.504984Z",
@@ -136,5 +141,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-10-04T20:11:34.658177Z"
+  "updated_at": "2026-10-04T20:13:06.131588Z"
 }
