@@ -1649,3 +1649,8 @@ and dispositions remain unchanged.
 
 - Preserved the first partial replacement-baseline attempt as invalid for qualification because a stale disposable server occupied its fixed port; the request process could have reached that stale server. No vector was constructed or applied.
 - The isolated research runner now selects a fresh ephemeral localhost port for every disposable server, preventing stale-server routing. The baseline will restart cleanly from a new artifact root.
+
+## 2026-10-04 — Phase 3.7 adaptive construction boundary
+
+- After r3’s complete untreated baseline, the constructed target order is explicitly adaptive: ecological succession is first; counterpoint and defense in depth are constructed only if needed after the first bounded screen.
+- Reworked validation execution to retain all context/seed calls under each one loaded disposable vector server, reducing restart overhead without changing prompts, seeds, vectors, ranges, or sampling.
