@@ -1,82 +1,61 @@
-# MNEME Phase 3.5 Neural Influence Feasibility Bench
+# MNEME Phase 3.5 — Neural Influence Feasibility Bench
 
-**Disposition: BLOCKED before model-dependent stages by an external host/capability condition.**
+**Disposition: valid standalone feasibility bench; mechanical path PASS, semantic bridge INCONCLUSIVE, production integration NOT READY.**
 
-This is a standalone feasibility bench. It did not load or modify MNEME state, CompactStore, SAA, learner, introspection, developmental evidence, or production inference behavior.
+This bench was run after the MSI host recovered. It used the exact local `google/gemma-4-E4B-it` Q2 GGUF and the pinned CUDA llama.cpp revision. It did not load a MNEME instance or write CompactStore, SAA, learner, introspection, extraction, NLI, Quinn, or developmental evidence. Dedicated bench processes were stopped after the measurements.
 
-## Executive result
+The compact machine-readable receipt is [MNEME_Phase_3_5_Neural_Influence_Feasibility_20261004.json](MNEME_Phase_3_5_Neural_Influence_Feasibility_20261004.json). Raw requests, responses, complete reasoning/final text, server/generator logs, vectors, and fixed-prefix logits are retained outside Git under `/home/nyx/mneme_artifacts/phase35-neural-feasibility-20261004/`; their hashes are recorded in the JSON receipt and the external artifact manifest.
 
-The pinned llama.cpp source and model-free mechanics are auditable and pass their checks. The neural stages could not run: the resident MSI is Tailscale-reachable, but the configured Gemma service ports 64170 and 64173 refused connections; SSH authentication is unavailable. The resident server design also loads control vectors at process startup and exposes no per-request control-vector field. Therefore the exact Gemma process needed for vector-enabled completions was unavailable. No alternate model/provider was used.
+## Exact stack and frozen bench configuration
 
-The prior isolated A/B/C prompt-strength receipt is preserved as an external anchor. It is evidence about prompt framing, not evidence that a hidden-state vector affected Gemma.
+- Host: `brokeass-msi`, `100.115.208.48`; GPU: NVIDIA GeForce RTX 3060 Laptop GPU.
+- Model: `/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf`; SHA-256 `79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03`.
+- llama.cpp: `4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0`, `0.5.0-dev` build 1, CUDA, `-ngl 99`, 8 threads, parallel 1, no continuous batching.
+- Generation: reasoning ON, `cache_prompt=false`, seeds `930300` and `930301`, temperature `0.35`, top-k `40`, top-p `0.90`, min-p `0.05`, max output `2048`.
+- Control-vector range and gains were frozen before the evaluation matrix: inclusive layers `1–41`; gains `0.25`, `0.50`, `1.00`.
 
-## Source and mechanical audit
+## Stage A — source and model-free audit
 
-- Repository HEAD: `a59eb11ad98941f005e44c6daacd440e07c43842`.
-- Pinned llama.cpp: `4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0`.
-- CPU-only build: `/tmp/mneme-p35-llama-build`; `llama-cvector-generator` SHA-256 `274ff77e43d970c94a80140c8822d8f827fee1cca9baf595fb69eb3ee183f289`; `llama-completion` SHA-256 `f134f5d777d1c77accdd74269ca0407ca6335f5f9eaca7a63789cacea8b0a188`.
-- Gemma 4 calls `build_cvec(cur, il)` before each `l_out` callback. The adapter allocates no layer-0 tensor, maps `direction.N` to the layer-N slot, and accepts an inclusive layer range.
-- The generator captures F32 `l_out` tensors, differences positive/negative prompt pairs, and emits normalized `direction.N` tensors. The pinned mean reducer divides by the norm without a zero-norm guard; zero vectors must be rejected by the harness.
-- `llama-server` supports startup flags `--control-vector` and `--control-vector-layer-range`. Its `/v1/chat/completions/control` route is a reasoning-control route accepting `reasoning_end`, not hidden-state vector injection.
+Source inspection passed. In the pinned Gemma-4 implementation, control-vector construction occurs before each layer output. The public adapter applies vectors to an inclusive layer range, has no layer-zero tensor, and maps direction `N` to layer `N`. The server exposes startup control-vector flags; its control endpoint does not provide request-time cvector injection.
 
-Model-free synthetic checks from `tools/phase35_model_free_checks.py` passed (receipt mirror: `/tmp/p35-model-free-checks.json`): normalization, layer indexing/range, layer-0 no-op, gain scaling, disable/no-op, dimension validation, and F32 serialization. The pinned zero-norm behavior is recorded as a caller-side safety requirement.
+The pinned cvector generator has a Gemma-4 compatibility defect: it captured 42 `l_out` tensors where its `n_layers - 1` assertion expected 41. The original source was preserved. An isolated bench build recorded the mismatch and discarded the extra final capture, producing 41 directions (`direction.1` through `direction.41`). This was a bench workaround, not a production change. The generator itself has no `--reasoning` option; it captures hidden activations, while the evaluation completions used reasoning ON.
 
-## Existing live-model anchor
+The model-free checks passed normalization, zero-vector detection, dimension and layer mapping, gain scaling, disable/no-op behavior, and F32 serialization. The all-zero mean case remains unsafe in the pinned reducer unless the caller rejects it.
 
-The earlier isolated Gemma receipt was copied to `/home/nyx/mneme_artifacts/phase35-neural-feasibility-20261004/anchor/` and hash-recorded. It used `google/gemma-4-E4B-it`, the pinned GGUF, seed `930300`, CUDA, `cache_prompt=false`, and the three A/B/C prompt framings. Its duplicate preflight passed. A/B/C are retained as contextual prompt-strength evidence only; no neural vector was applied.
+## Stage B — mechanical application
 
-## Stage disposition against the specification
+A fixed-prefix CUDA logits probe was compiled against the pinned local libraries. With the same prompt and model, the no-vector and harbor-vector runs produced different top-token logits:
 
-| Stage | Status | Evidence |
-|---|---|---|
-| A. source audit and isolated build | PASS | Pinned source, API, Gemma hook, adapter mapping, loader, generator, and server route audited; CPU build completed. |
-| B. eight mechanical completions | BLOCKED | Required exact local Gemma process unavailable. |
-| C. neural/non-neural semantic matrix | BLOCKED | Requires the exact GGUF plus a vector-capable dedicated process; resident HTTP server cannot accept cvec per request. |
-| D. frozen gain/site selection | NOT RUN | Must occur before evaluation outputs and after C can produce real vectors. |
-| E. integrated readiness | NOT RUN | No neural bench results to integrate; production integration was intentionally untouched. |
-| F. safety/rollback/replay | NOT RUN | No vector-enabled process was available to exercise it. |
+- no vector: token 106 logit `26.7606`, token 108 `23.3700`;
+- harbor vector: token 106 `26.1778`, token 108 `23.0756`, with a different top-10 ordering.
 
+A fresh no-vector replay produced a byte-identical logits file (`807dd690...` for both replays). The vector logits file was different (`4ed6b766...`). Four short mechanical completions were also retained. Both no-vector and vector conditions returned the requested final word `MECHANICAL`; the vector condition changed the reasoning trace, showing that the hook can affect hidden deliberation without necessarily changing the final token.
 
-## Requirement-level audit
+This is direct evidence that the control vector is being applied at the model computation path. It is not evidence that the vector means the intended harbor concept.
 
-| Requirement | Status | Evidence boundary |
-|---|---|---|
-| Exact Gemma can apply/scale/disable/restore an intervention | **UNRESOLVED** | Source and arithmetic pass; exact-model hook/logit smoke requires the MSI process. |
-| Synthetic vector produces identifiable behavior | **BLOCKED** | Requires real Stage B/C completions. |
-| Pinned source and project brief inspected | **PASS** | Source commit and brief hash are in the JSON companion. |
-| Actual current model/runtime/GPU inspection | **PARTIAL, HISTORICAL ONLY** | Prior determinism receipt records the calibration values; the current process was unreachable. |
-| Stage A mechanics and model-free dry run | **PASS** | Separate CPU build and arithmetic checks pass. |
-| Stage B mechanical Gemma smoke | **BLOCKED** | No vector-capable exact-model process. |
-| Stage C construction and semantic matrix | **BLOCKED** | No exact-model activation capture or vector process. |
-| Durable neural evidence and safety replay | **NOT RUN** | No neural calls occurred. |
+## Stage C — frozen 18-cell matrix
 
-The prior A/B/C prompt-strength experiment is retained as contextual evidence only. It does not satisfy Stage B, Stage C, or the neural comparison matrix.
+The target association was: **“A harbor uses tides and docking windows to coordinate access to limited shared space.”** The matrix contained 18 completions: two seeds across text baseline, weak text framing, strong text framing, harbor-derived neural vector at three gains, and a nonsemantic random-control vector at three gains. The harbor construction used eight prompt pairs; the random control used four pairs, for 24 activation forward passes total.
 
-## Smallest future bridge proposal
+The text controls behaved as expected as a prompting-strength calibration. The strong framing caused literal harbor/tide/docking discussion in reasoning and often in the final answer. The weak framing usually did not produce literal harbor language, although ordinary scheduling vocabulary appeared and cannot be attributed to the association from lexical overlap alone.
 
-The bridge remains a proposal, not an implementation:
+The harbor-derived neural vector changed reasoning/final response hashes and response organization relative to the no-vector baseline at all tested gains. It did **not** produce defensible direct harbor/tide/docking uptake in the recorded traces. The visible changes were ordinary tool-library designs: digital inventory, check-in/check-out, reminders, availability, and sometimes enforcement. The random-control vector also changed prose and finish behavior, including some scheduling vocabulary. Therefore the present evidence supports hidden-state perturbation and output sensitivity, but not a semantic harbor bridge.
 
-```text
-SAA FieldResult
-  -> portable active-neighborhood descriptor
-  -> host-specific compiler
-  -> qualified control-vector GGUF
-  -> isolated application/reset
-  -> frozen host response
-```
+Representative observations:
 
-SAA must remain the selector. The missing descriptor must preserve the selected neighborhood’s conceptual direction without replacing it with a convenient cached topic. The compiled artifact must bind to the GGUF, tokenizer/template, llama.cpp build, extraction/application site, layer range, and normalization. The current resident HTTP server cannot supply per-request vectors, so the first safe path is a dedicated process or isolated C API context with explicit reset, removal, quarantine, and incompatible-artifact handling. PSR and HyperSteer remain separate future options; neither is needed for this bench.
+- **Strong text:** reasoning explicitly evaluated the harbor and tides, and the final answer repeated harbor/tide/docking vocabulary. This is literal prompted consideration, not neural-vector evidence.
+- **Harbor vector, gain 0.50, seed 930300:** reasoning remained focused on visibility, tracking, accountability, and low friction; the final answer used check-in/check-out and availability structure without mentioning harbor/tides. This is compatible with a transformed or silent influence, but the same task naturally elicits those structures, so classification remains ambiguous.
+- **Harbor vector, gain 1.00, seed 930301:** the final answer became longer and emphasized automated availability/scheduling, but there was no traceable harbor concept in reasoning. This is an observable response difference, not a demonstrated semantic transfer.
+- **Random vector controls:** similarly altered organization and completion length without harbor content. Their presence prevents attributing every neural-vector difference to the harbor association.
 
-## Exact external blocker
+All 18 rows, seeds, request hashes, response hashes, finish reasons, reasoning/final byte counts, and term-count diagnostics are in the compact JSON receipt. Complete model outputs are external and were not committed.
 
-At audit time Tailscale reported `brokeass-msi` online at `100.115.208.48`, but both configured inference ports refused connections. TCP/22 accepted connections, but the available local SSH identities were rejected for the tested accounts; no service restart or remote mutation was attempted. The model file and CUDA runtime are not present on this machine, so the exact local Gemma calls cannot be reproduced here. The proper next step is to restore the configured resident service or provide authorized access to launch a dedicated vector-enabled `llama-completion`/`llama-server` process using the pinned GGUF. Substituting another model/provider would violate the specification.
+## Disposition against the Phase 3.5 questions
 
-## Integrity and scope
+1. **Can a static vector be applied to this exact local Gemma stack?** Yes. Startup control-vector loading works, fixed-prefix logits change, and the no-op/replay controls behave deterministically under the frozen configuration.
+2. **Can it alter host behavior?** Yes, in this small bench: reasoning and final-response hashes/structure changed under the vector. Effects were bounded and did not require changing model weights.
+3. **Does the vector reliably express the harbor association?** Not established. Strong text framing does; the neural vector does not show direct or uniquely attributable harbor semantics in this matrix.
+4. **Is the path ready for MNEME production integration?** No. The pinned server accepts control vectors at process startup, not per request; no SAA-to-vector translator was implemented; cvector generation has a Gemma-4 layer-count defect requiring a bench-only shim; and random-vector controls show that semantic attribution needs a better qualification design.
+5. **Safety/replay:** No MNEME state was loaded or changed. The bench used `cache_prompt=false`, fixed seeds, isolated raw artifacts, and stopped all remote llama processes afterward.
 
-- No MNEME state, CompactStore, SAA, learner, introspection, developmental history, or production runtime was loaded or modified.
-- No model-dependent completions were made by this bench after the preserved A/B/C anchor.
-- Raw future neural evidence must be written externally with complete request/response bytes, vectors, configurations, and hashes; only compact derived receipts belong in Git.
-- This report does not claim neural feasibility, semantic effect, or integration readiness. Those remain unresolved pending the exact host capability.
-
-Machine-readable companion: `MNEME_Phase_3_5_Neural_Influence_Feasibility_20261004.json`.
-
+The result is a valid engineering feasibility boundary: llama.cpp can apply a static hidden-state direction to this local Gemma and the effect is measurable at logits and outputs. The experiment does not justify claiming neural influence, semantic bridging, or production SAA integration. Further work would require a separately authorized design for request-time vector selection, a corrected/qualified Gemma-4 activation capture path, and a held-out semantic test that separates association meaning from generic hidden-state perturbation.

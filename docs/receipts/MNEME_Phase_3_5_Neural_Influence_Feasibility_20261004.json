@@ -1,9 +1,9 @@
 {
   "schema": "mneme.phase35.neural_influence_feasibility.v1",
-  "generated_at": "2026-10-04T14:32:07.719416+00:00",
+  "generated_at": "2026-10-04T15:30:14.111870+00:00",
   "repository": {
     "path": "/home/nyx/mneme",
-    "commit": "a59eb11ad98941f005e44c6daacd440e07c43842"
+    "commit": "0d2bb55dd12b1898ffa143bf249c0e3788a28377"
   },
   "source_audit": {
     "llama_cpp_path": "/tmp/mneme-p35-llama",
@@ -329,15 +329,15 @@
     "model_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
     "llama_cpp_revision": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
     "runtime": "0.5.0-dev/4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0; CUDA; GPU layers 99; context 16384 for ON",
-    "observed": "MSI is Tailscale-reachable but both configured inference ports refused connections during this audit; SSH port is reachable but available local identities were rejected. No service restart or remote mutation was attempted."
+    "observed": "MSI recovered; SSH, exact GGUF, pinned CUDA llama.cpp and RTX 3060 were verified. Dedicated bench processes were started and stopped without loading MNEME state."
   },
   "stage_status": {
     "A_source_and_build_audit": "PASS",
-    "B_mechanical_model_completions": "BLOCKED_HOST_UNAVAILABLE",
-    "C_neural_vector_matrix": "BLOCKED_NO_MODEL_PROCESS_OR_REQUEST_API",
-    "D_frozen_gain_selection": "NOT_RUN",
-    "E_integrated_readiness": "NOT_RUN",
-    "F_safety_and_replay": "NOT_RUN"
+    "B_mechanical_model_completions": "PASS",
+    "C_neural_vector_matrix": "PASS_18_COMPLETIONS",
+    "D_frozen_gain_selection": "PASS",
+    "E_integrated_readiness": "NOT_READY_NO_PRODUCTION_INTEGRATION",
+    "F_safety_and_replay": "PASS"
   },
   "spec_audit": {
     "no_mneme_state_loaded_or_modified": {
@@ -440,13 +440,8 @@
       }
     ]
   },
-  "blocker": {
-    "class": "external_host_and_capability",
-    "exact": "The required MSI Gemma runtime is not listening on ports 64170/64173, SSH authentication is unavailable, and the resident llama-server interface has no per-request control-vector injection. Completing B-F requires an authorized vector-capable local process on the MSI (or an equivalent already-authorized endpoint) without substituting another model/provider.",
-    "next_action": "Restore the configured local Gemma service or provide authorized access to launch a dedicated llama-completion/llama-server process with --control-vector and the pinned GGUF. Then rerun only the blocked bounded bench stages; do not use MNEME state."
-  },
   "bridge_proposal": {
-    "status": "proposal_only",
+    "status": "NOT_IMPLEMENTED",
     "pipeline": "SAA FieldResult -> portable active-neighborhood descriptor -> host-specific compiler -> qualified control-vector GGUF -> isolated application/reset -> frozen host response",
     "existing_parts": [
       "SAA selection and pressure already exist in MNEME",
@@ -464,6 +459,643 @@
       "no SAA or graph changes",
       "no production integration",
       "no PSR or HyperSteer implementation"
-    ]
+    ],
+    "reason": "Bench demonstrates startup control-vector mechanics only; no production integration authorized by the Phase 3.5 scope."
+  },
+  "historical_blocker": {
+    "class": "external_host_and_capability",
+    "exact": "The required MSI Gemma runtime is not listening on ports 64170/64173, SSH authentication is unavailable, and the resident llama-server interface has no per-request control-vector injection. Completing B-F requires an authorized vector-capable local process on the MSI (or an equivalent already-authorized endpoint) without substituting another model/provider.",
+    "next_action": "Restore the configured local Gemma service or provide authorized access to launch a dedicated llama-completion/llama-server process with --control-vector and the pinned GGUF. Then rerun only the blocked bounded bench stages; do not use MNEME state."
+  },
+  "execution": {
+    "scope": "standalone Phase 3.5 feasibility bench only; no MNEME state, CompactStore, SAA, learner, introspection, extractor, NLI, Quinn, or developmental run loaded",
+    "host": {
+      "id": "google/gemma-4-E4B-it",
+      "gguf_path": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+      "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+      "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+      "runtime": "llama-server/llama-cli 0.5.0-dev build 1",
+      "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "host": "brokeass-msi (100.115.208.48)"
+    },
+    "frozen_configuration": {
+      "reasoning": "on",
+      "cache_prompt": false,
+      "seed_schedule": [
+        930300,
+        930301
+      ],
+      "temperature": 0.35,
+      "top_k": 40,
+      "top_p": 0.9,
+      "min_p": 0.05,
+      "max_tokens": 2048,
+      "threads": 8,
+      "gpu_layers": 99,
+      "context": 16384,
+      "batch": "server defaults; no-cont-batching; parallel=1",
+      "layer_range": [
+        1,
+        41
+      ],
+      "gains": [
+        0.25,
+        0.5,
+        1.0
+      ]
+    },
+    "construction": {
+      "method": "mean",
+      "pairs_harbor": 8,
+      "pairs_random_control": 4,
+      "forward_passes": 24,
+      "harbor_positive_sha256": "d27841ab414b25ab026a6758aa47dc2a2d59a8a44e1ec16dd6b04f2b7e08479f",
+      "harbor_negative_sha256": "4f9f7c72f7dcd3c23bf85e327b11ee7ad733dffa64b8e83223b12437f001ff15",
+      "random_positive_sha256": "028008af194caa38a57f52279f065dc5b85a66af1d157bb5ae454ff4cd94aa84",
+      "random_negative_sha256": "7510c2dfa17f44e26e7f80df602ec436355c958d8ed87af770022d9e27699405",
+      "harbor_vector_sha256": "5c6545aa52b486f28b19198fb78aad58eb26701671d9f785ddae655158ecb8bf",
+      "random_vector_sha256": "790be51f49f093be665a328288ab27cbc4f364ab1ab5a755379beb221c6e6ea9",
+      "layer_range": [
+        1,
+        41
+      ],
+      "gains": [
+        0.25,
+        0.5,
+        1.0
+      ],
+      "reasoning": "generator has no --reasoning option; captures hidden l_out activations, generation matrix used reasoning on"
+    },
+    "mechanical": [
+      {
+        "file": "mech-disabled-930310.json",
+        "condition": "mech_disabled_930310",
+        "seed": 930310,
+        "finish_reason": "stop",
+        "reasoning_sha256": "15ce319ea1f1a926b14354e3d7088d2a2124637ad12287ce145d836600c905fd",
+        "final_sha256": "0e5430fd0c09d70ba3b45b20828b50cf691ec09fb6518904f86dc0665ead03be",
+        "reasoning_bytes": 493,
+        "final": "MECHANICAL"
+      },
+      {
+        "file": "mech-disabled-930311.json",
+        "condition": "mech_disabled_930311",
+        "seed": 930311,
+        "finish_reason": "stop",
+        "reasoning_sha256": "46ea58770a91812a0ff515e86d3c73acd9a666bae3365257d7d4c485ded2c385",
+        "final_sha256": "0e5430fd0c09d70ba3b45b20828b50cf691ec09fb6518904f86dc0665ead03be",
+        "reasoning_bytes": 311,
+        "final": "MECHANICAL"
+      },
+      {
+        "file": "mech-enabled-930310.json",
+        "condition": "mech_enabled_930310",
+        "seed": 930310,
+        "finish_reason": "stop",
+        "reasoning_sha256": "07f08e14e8cc7a846b844a0a030cea8e048f8bb443e17622e494659b52dc11e2",
+        "final_sha256": "0e5430fd0c09d70ba3b45b20828b50cf691ec09fb6518904f86dc0665ead03be",
+        "reasoning_bytes": 1407,
+        "final": "MECHANICAL"
+      },
+      {
+        "file": "mech-enabled-930311.json",
+        "condition": "mech_enabled_930311",
+        "seed": 930311,
+        "finish_reason": "stop",
+        "reasoning_sha256": "d6fefa94cec9d050de7d11f28076760faf1a05059950e62da598f3b2cce2ce9c",
+        "final_sha256": "0e5430fd0c09d70ba3b45b20828b50cf691ec09fb6518904f86dc0665ead03be",
+        "reasoning_bytes": 253,
+        "final": "MECHANICAL"
+      }
+    ],
+    "matrix": [
+      {
+        "condition": "text_baseline",
+        "seed": 930300,
+        "finish_reason": "stop",
+        "elapsed_s": 30.514,
+        "reasoning_bytes": 2676,
+        "reasoning_chars": 2674,
+        "final_bytes": 4019,
+        "final_chars": 4005,
+        "reasoning_sha256": "e3d60526c2ad31abe0b3a36bcb78d2423cefacc6d820e6bcc75702ea7729e5bb",
+        "final_sha256": "f1c0c55acf81c19ce141dbb893384858ceeecbc43a3a3e7623532728fc03e9ad",
+        "terms": {
+          "check-in": {
+            "reasoning": 0,
+            "final": 8
+          },
+          "calendar": {
+            "reasoning": 0,
+            "final": 1
+          }
+        },
+        "error": null
+      },
+      {
+        "condition": "text_weak",
+        "seed": 930300,
+        "finish_reason": "stop",
+        "elapsed_s": 32.845,
+        "reasoning_bytes": 2923,
+        "reasoning_chars": 2923,
+        "final_bytes": 4363,
+        "final_chars": 4345,
+        "reasoning_sha256": "bbec5dd9ec8a0af9ed55762f6ea969128ac616d079d1ce0b4dda1e52e56a3e79",
+        "final_sha256": "298df63a6762f9bc7ca4948f4f78d5c53e2d234f5002e96aa4b185d749717508",
+        "terms": {
+          "window": {
+            "reasoning": 0,
+            "final": 4
+          },
+          "check-in": {
+            "reasoning": 0,
+            "final": 3
+          }
+        },
+        "error": null
+      },
+      {
+        "condition": "text_strong",
+        "seed": 930300,
+        "finish_reason": "length",
+        "elapsed_s": 33.958,
+        "reasoning_bytes": 3104,
+        "reasoning_chars": 3104,
+        "final_bytes": 4489,
+        "final_chars": 4487,
+        "reasoning_sha256": "f0c32d8e73214742571edc64da7c9079bf7b84e47fa8c4d95a3de3d2a8931d89",
+        "final_sha256": "9e7ee55b8449d34e7b946d27db1419d74fd9f149083cb35c554b4c9afac0f230",
+        "terms": {
+          "harbor": {
+            "reasoning": 9,
+            "final": 9
+          },
+          "tide": {
+            "reasoning": 17,
+            "final": 16
+          },
+          "dock": {
+            "reasoning": 4,
+            "final": 7
+          },
+          "window": {
+            "reasoning": 4,
+            "final": 15
+          },
+          "availability": {
+            "reasoning": 1,
+            "final": 0
+          },
+          "check-in": {
+            "reasoning": 1,
+            "final": 3
+          },
+          "slot": {
+            "reasoning": 0,
+            "final": 2
+          },
+          "schedule": {
+            "reasoning": 2,
+            "final": 10
+          }
+        },
+        "error": null
+      },
+      {
+        "condition": "text_baseline",
+        "seed": 930301,
+        "finish_reason": "length",
+        "elapsed_s": 34.118,
+        "reasoning_bytes": 2520,
+        "reasoning_chars": 2520,
+        "final_bytes": 5057,
+        "final_chars": 5036,
+        "reasoning_sha256": "96cdcb834b418e2f9a9ea5ff9bb8eb14575f5ef30325195b8c21a687523f959e",
+        "final_sha256": "b721a278bc755bd5b4706ed6ecfec34d1596da35d46a91881ceefb765d03cb87",
+        "terms": {
+          "availability": {
+            "reasoning": 3,
+            "final": 0
+          },
+          "check-in": {
+            "reasoning": 1,
+            "final": 3
+          },
+          "calendar": {
+            "reasoning": 0,
+            "final": 1
+          }
+        },
+        "error": null
+      },
+      {
+        "condition": "text_weak",
+        "seed": 930301,
+        "finish_reason": "stop",
+        "elapsed_s": 28.138,
+        "reasoning_bytes": 2784,
+        "reasoning_chars": 2784,
+        "final_bytes": 3781,
+        "final_chars": 3778,
+        "reasoning_sha256": "bafd3b3da0d8eb41a6c06172a0c24419557b2c7231fa167c48327c1b18d01f9a",
+        "final_sha256": "1b73125d4199c74f996fad39abb9620589743994cbbf47f9ac261b67d97c49da",
+        "terms": {
+          "harbor": {
+            "reasoning": 1,
+            "final": 0
+          },
+          "tide": {
+            "reasoning": 1,
+            "final": 0
+          },
+          "window": {
+            "reasoning": 0,
+            "final": 1
+          },
+          "availability": {
+            "reasoning": 1,
+            "final": 2
+          },
+          "check-in": {
+            "reasoning": 1,
+            "final": 1
+          },
+          "schedule": {
+            "reasoning": 0,
+            "final": 1
+          }
+        },
+        "error": null
+      },
+      {
+        "condition": "text_strong",
+        "seed": 930301,
+        "finish_reason": "length",
+        "elapsed_s": 34.655,
+        "reasoning_bytes": 2876,
+        "reasoning_chars": 2876,
+        "final_bytes": 4635,
+        "final_chars": 4631,
+        "reasoning_sha256": "ea8a54007d5918fb470d75a5bff54173de404ae68aaa98a616bbf67f2d3dc1fe",
+        "final_sha256": "2f147cd6bef89fc73845e4fd8c7dde0730a329352037187696ef7a38562e6f86",
+        "terms": {
+          "harbor": {
+            "reasoning": 4,
+            "final": 1
+          },
+          "tide": {
+            "reasoning": 12,
+            "final": 26
+          },
+          "dock": {
+            "reasoning": 10,
+            "final": 24
+          },
+          "window": {
+            "reasoning": 6,
+            "final": 19
+          },
+          "availability": {
+            "reasoning": 8,
+            "final": 3
+          },
+          "check-in": {
+            "reasoning": 0,
+            "final": 1
+          },
+          "slot": {
+            "reasoning": 1,
+            "final": 5
+          },
+          "schedule": {
+            "reasoning": 0,
+            "final": 3
+          }
+        },
+        "error": null
+      },
+      {
+        "condition": "neural_low",
+        "seed": 930300,
+        "finish_reason": "stop",
+        "elapsed_s": 30.974,
+        "reasoning_bytes": 2474,
+        "reasoning_chars": 2474,
+        "final_bytes": 4731,
+        "final_chars": 4720,
+        "reasoning_sha256": "84287446ea115fa37926821094bfcd19cb7f8cf04ddcd5dc8d3dd9720b283d02",
+        "final_sha256": "84a37e5fdcb62f25f3d37c4ee63b48160018abae78db59cdd7169444f42e1074",
+        "terms": {
+          "window": {
+            "reasoning": 1,
+            "final": 2
+          },
+          "check-in": {
+            "reasoning": 2,
+            "final": 4
+          },
+          "schedule": {
+            "reasoning": 0,
+            "final": 2
+          }
+        },
+        "error": null
+      },
+      {
+        "condition": "neural_low",
+        "seed": 930301,
+        "finish_reason": "stop",
+        "elapsed_s": 31.795,
+        "reasoning_bytes": 2626,
+        "reasoning_chars": 2626,
+        "final_bytes": 4352,
+        "final_chars": 4338,
+        "reasoning_sha256": "c5cd6a51bb5adf5d800b4281f4428f90780919eabf030d5bded2f044207bff23",
+        "final_sha256": "12e9eaf621bca288ea46df2e8442dba95efdf733b7fc6ef1976e62d118ec08c0",
+        "terms": {
+          "window": {
+            "reasoning": 0,
+            "final": 2
+          },
+          "check-in": {
+            "reasoning": 0,
+            "final": 6
+          }
+        },
+        "error": null
+      },
+      {
+        "condition": "neural_medium",
+        "seed": 930300,
+        "finish_reason": "stop",
+        "elapsed_s": 30.046,
+        "reasoning_bytes": 2507,
+        "reasoning_chars": 2507,
+        "final_bytes": 4168,
+        "final_chars": 4150,
+        "reasoning_sha256": "bfe817117713b209fb7003150a8bc5ae273f2f555e77657099668533ed02c61b",
+        "final_sha256": "3aba64cf9f89c5202369a01bea261ff3c5cd7b7f58505b0d8c147104c302cc9d",
+        "terms": {
+          "window": {
+            "reasoning": 1,
+            "final": 7
+          },
+          "availability": {
+            "reasoning": 0,
+            "final": 1
+          },
+          "check-in": {
+            "reasoning": 2,
+            "final": 5
+          }
+        },
+        "error": null
+      },
+      {
+        "condition": "neural_medium",
+        "seed": 930301,
+        "finish_reason": "stop",
+        "elapsed_s": 29.683,
+        "reasoning_bytes": 2432,
+        "reasoning_chars": 2432,
+        "final_bytes": 3820,
+        "final_chars": 3809,
+        "reasoning_sha256": "e771e7d0daf7bcb538e1bdd6de46a61e88a9f351c0fbf8ee31ab4a4df6067309",
+        "final_sha256": "dc20a34968fc36593efb992d4bff518d50b4c8d4221e174de65b57d576a3e467",
+        "terms": {
+          "window": {
+            "reasoning": 0,
+            "final": 4
+          },
+          "reservation": {
+            "reasoning": 0,
+            "final": 1
+          },
+          "check-in": {
+            "reasoning": 3,
+            "final": 3
+          }
+        },
+        "error": null
+      },
+      {
+        "condition": "neural_high",
+        "seed": 930300,
+        "finish_reason": "stop",
+        "elapsed_s": 30.856,
+        "reasoning_bytes": 2810,
+        "reasoning_chars": 2810,
+        "final_bytes": 4187,
+        "final_chars": 4169,
+        "reasoning_sha256": "42b56a7b92e9cba449fa47a7ea7c0e3fbed31a99d1f5711b640f9fe912b3160e",
+        "final_sha256": "92756ab32fcc550a7c32ec25d6ec0eb00e00c2c33a55ad15bbd3be1b115fb3e8",
+        "terms": {
+          "window": {
+            "reasoning": 0,
+            "final": 8
+          },
+          "check-in": {
+            "reasoning": 5,
+            "final": 8
+          },
+          "queue": {
+            "reasoning": 0,
+            "final": 2
+          },
+          "slot": {
+            "reasoning": 0,
+            "final": 1
+          },
+          "schedule": {
+            "reasoning": 0,
+            "final": 5
+          }
+        },
+        "error": null
+      },
+      {
+        "condition": "neural_high",
+        "seed": 930301,
+        "finish_reason": "length",
+        "elapsed_s": 34.62,
+        "reasoning_bytes": 2709,
+        "reasoning_chars": 2709,
+        "final_bytes": 4947,
+        "final_chars": 4939,
+        "reasoning_sha256": "5a4dc0b778a4ef0ab80e6f7b7d416882bfdb31a630bfc14d7ef428d2525742f1",
+        "final_sha256": "41d13277b20e6cf8fa52b0e99e68dccf96a27a579452a960f7472fccb96ed457",
+        "terms": {
+          "window": {
+            "reasoning": 0,
+            "final": 16
+          },
+          "availability": {
+            "reasoning": 2,
+            "final": 2
+          },
+          "check-in": {
+            "reasoning": 0,
+            "final": 9
+          },
+          "schedule": {
+            "reasoning": 1,
+            "final": 0
+          },
+          "calendar": {
+            "reasoning": 1,
+            "final": 13
+          }
+        },
+        "error": null
+      },
+      {
+        "condition": "random_low",
+        "seed": 930300,
+        "finish_reason": "stop",
+        "elapsed_s": 31.021,
+        "reasoning_bytes": 2497,
+        "reasoning_chars": 2497,
+        "final_bytes": 4431,
+        "final_chars": 4420,
+        "reasoning_sha256": "9fa5799d1121fc495665105f04e9620ba6cb47be628897cc6bdad86c16e4bd0a",
+        "final_sha256": "d9bf39dcc0ed2dc0d579553b1e15343d172651a2af6d1985de59497d43d60423",
+        "terms": {
+          "check-in": {
+            "reasoning": 2,
+            "final": 6
+          }
+        },
+        "error": null
+      },
+      {
+        "condition": "random_low",
+        "seed": 930301,
+        "finish_reason": "length",
+        "elapsed_s": 34.016,
+        "reasoning_bytes": 2817,
+        "reasoning_chars": 2817,
+        "final_bytes": 4886,
+        "final_chars": 4875,
+        "reasoning_sha256": "5e10929eb29de178ebd1f82325e76ca2e95b4dc81a8009aff5e282f1cf7a80fd",
+        "final_sha256": "a65ca71120e5828a9ca7a716ea36579f212b1d56abd466f3044035a7c24ed72d",
+        "terms": {
+          "window": {
+            "reasoning": 0,
+            "final": 3
+          },
+          "availability": {
+            "reasoning": 1,
+            "final": 0
+          },
+          "check-in": {
+            "reasoning": 2,
+            "final": 5
+          }
+        },
+        "error": null
+      },
+      {
+        "condition": "random_medium",
+        "seed": 930300,
+        "finish_reason": "stop",
+        "elapsed_s": 31.435,
+        "reasoning_bytes": 2316,
+        "reasoning_chars": 2316,
+        "final_bytes": 4698,
+        "final_chars": 4685,
+        "reasoning_sha256": "ec2c075202867b5a2503ca50781746c3a41123ff5072345a0d80ecbb30186c41",
+        "final_sha256": "eb0971844264fafd52ba1d6595f621d144854739ef05d53c7e102fb419af4298",
+        "terms": {
+          "check-in": {
+            "reasoning": 0,
+            "final": 3
+          }
+        },
+        "error": null
+      },
+      {
+        "condition": "random_medium",
+        "seed": 930301,
+        "finish_reason": "stop",
+        "elapsed_s": 28.463,
+        "reasoning_bytes": 2425,
+        "reasoning_chars": 2425,
+        "final_bytes": 4066,
+        "final_chars": 4050,
+        "reasoning_sha256": "c6c1988fab17785b883ac53ff1a77ec5c1266984ec8fc7ad59f967151182e910",
+        "final_sha256": "221d86e525b638229ab28cdc52e17951bde197fa5bd7a10aca758943fc67b4cc",
+        "terms": {
+          "availability": {
+            "reasoning": 1,
+            "final": 1
+          },
+          "check-in": {
+            "reasoning": 1,
+            "final": 4
+          }
+        },
+        "error": null
+      },
+      {
+        "condition": "random_high",
+        "seed": 930300,
+        "finish_reason": "length",
+        "elapsed_s": 34.517,
+        "reasoning_bytes": 2618,
+        "reasoning_chars": 2618,
+        "final_bytes": 4736,
+        "final_chars": 4721,
+        "reasoning_sha256": "e2be3f6b12470eb276246b8ec54d5051b8454087542246f81d4b79a988cda94a",
+        "final_sha256": "dc9233a7fd26dec98cfe33666b57e80f5ec96965950a8bc8c262e1d877221256",
+        "terms": {
+          "availability": {
+            "reasoning": 1,
+            "final": 0
+          },
+          "check-in": {
+            "reasoning": 1,
+            "final": 4
+          }
+        },
+        "error": null
+      },
+      {
+        "condition": "random_high",
+        "seed": 930301,
+        "finish_reason": "stop",
+        "elapsed_s": 30.498,
+        "reasoning_bytes": 2486,
+        "reasoning_chars": 2486,
+        "final_bytes": 4168,
+        "final_chars": 4166,
+        "reasoning_sha256": "031b531811c16887afb9f8cde6d28996abd95cb9bb3b40c890b20da08b4355b4",
+        "final_sha256": "dd33cfd1824c7133035fd94565965602a7dcd022acf050b8a2ffcce8f2204ab0",
+        "terms": {
+          "check-in": {
+            "reasoning": 2,
+            "final": 2
+          }
+        },
+        "error": null
+      }
+    ],
+    "invalid_attempts": [
+      {
+        "description": "Initial harbor generator invocation used unsupported --reasoning option and exited before model evaluation",
+        "impact": "no model output; rerun with supported activation-capture invocation"
+      },
+      {
+        "description": "First vector matrix pass labeled medium/high while low-gain process remained resident",
+        "impact": "rows preserved externally as invalid configuration evidence; replaced by corrected medium/high rows"
+      }
+    ],
+    "artifacts_root": "/home/nyx/mneme_artifacts/phase35-neural-feasibility-20261004/",
+    "artifact_note": "Raw requests/responses, reasoning, final answers, server logs, generator logs and logits remain outside Git. The compact receipt contains hashes and counts only.",
+    "conclusions": {
+      "mechanical": "PASS: fixed-prefix logits changed under the harbor vector; no-vector replay was byte-identical; vector and no-vector mechanical completions both returned the requested final token while reasoning changed.",
+      "semantic": "INCONCLUSIVE: strong text framing produced literal harbor/tide/docking reasoning and output, while the static neural vector changed response structure without defensible direct harbor/tide uptake. Random control vectors also changed prose, so causal semantic attribution is not established.",
+      "integration": "NOT READY: static control-vector application is mechanically feasible and inspectable, but there is no production SAA-to-vector translation, request-time cvec injection, or validated semantic bridge for MNEME."
+    }
   }
 }
