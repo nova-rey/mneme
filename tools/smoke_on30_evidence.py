@@ -14,7 +14,6 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from mneme.contracts import GenerationRequest
 from mneme.experiments.shared_interloper import GEMMA_SYSTEM_PROMPT
-from mneme.state.compact import CompactStore
 from tools.run_p23_cross_thread import RemoteGlinerHost
 from tools.run_p23_f0_background_shared_interloper import RemoteNliBackend
 from tools.run_reasoning_25_thread import DeterministicRemoteGemma, digest_bytes

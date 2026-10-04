@@ -51,7 +51,6 @@ from tools.run_reasoning_25_thread import (
     DeterministicRemoteGemma,
     call,
     checkpoint,
-    digest_bytes,
     graph_with_observations,
     histories_to_messages,
     result_record,

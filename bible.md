@@ -1625,3 +1625,5 @@ and dispositions remain unchanged.
 * 2026-10-03: Completed the authorized ON-25 to ON-30 SAA influence continuation under the frozen five-thread schedule. T26-T30 produced 20/20 durable coordinate records with exact requests, full reasoning, final responses, field traces and candidate-level NLI evidence; strict review found 16 no-detectable-uptake and 4 ambiguous coordinates, with no defensible literal, rejection, transformation, bridge or intrusive uptake. ON-30 remains a live continuation-ready descendant and has a verified immutable checkpoint; no T31 or OFF continuation ran.
 
 - 2026-10-03: Corrected the compact ON-25→ON-30 derived report to record the post-close on-disk SHA-256 of the immutable ON-30 live specimen; the SQLite specimen, checkpoint, state digest, and historical evidence were not modified.
+
+- 2026-10-04: GitHub CI run 37158038289 passed all 760 tests but failed Ruff on two unused imports; removed only those imports from the ON-25→ON-30 continuation and evidence-smoke tools before revalidation.
