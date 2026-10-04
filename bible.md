@@ -1639,3 +1639,8 @@ and dispositions remain unchanged.
 
 - Frozen an isolated exact-Q2 Gemma control-vector hammer-test corpus before constructing vectors: ecological succession, musical counterpoint, and defense in depth, each with two cross-domain prompts and sixteen balanced contrast pairs.
 - This campaign is research-only: it cannot load or mutate MNEME, SAA, ON-30, CompactStore, or the resident inference service. Raw vectors and responses are durable external artifacts, while only compact code and receipts belong in Git.
+
+## 2026-10-04 — Phase 3.7 baseline-prompt correction
+
+- The first partial untreated baseline showed the initially proposed software/legacy and autonomous-agent prompts already elicited staged replacement and independent-work-stream framing. Those prompts are preserved only as rejected qualification evidence; no vector was constructed or applied.
+- Replaced and froze a less target-native cross-domain evaluation set before any vector result: community radio and roadside public land; a mixed-use library room and civic hotline; club equipment access and nonprofit event operations.

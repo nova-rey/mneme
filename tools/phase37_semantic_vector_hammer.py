@@ -58,8 +58,8 @@ TARGETS: tuple[Target, ...] = (
         "Ecological succession",
         "Disturbed systems often develop through enabling stages: early pioneer measures alter conditions for later structure; stabilization and mature organization emerge over time; immediate total replacement is not always best.",
         (
-            "I just inherited responsibility for a messy software project with years of quick fixes. It still works, but nobody understands all of it and replacing everything at once would be risky. How would you approach changing it?",
-            "A neighborhood has taken over an abandoned public lot after years of neglect. It has compacted soil, broken fencing, and scattered trash, but residents want it to become a useful shared place. What is a sensible first-year plan?",
+            "A community radio station has lost listeners after a long period of irregular programming. It has a small budget, several aging shows, and volunteers with different interests. What should its programming committee do next?",
+            "A city has acquired a narrow, noisy strip of land beside a busy road. Residents want it to become more useful, but the city cannot afford a major redevelopment. What should it do?",
         ),
         pairs(
             ("After a fire, hardy ground cover is established first; it holds soil and creates shade that later shrubs can use.", "After a fire, planners install the final mature landscape immediately and treat early temporary growth as wasted effort."),
@@ -85,8 +85,8 @@ TARGETS: tuple[Target, ...] = (
         "Musical counterpoint",
         "Several independent lines can remain locally coherent while interacting to form a coordinated whole; coordination need not collapse work into one line; complementary roles and planned interactions can create tension and resolution.",
         (
-            "I’m designing a workflow where several autonomous agents need to work on the same project without constantly waiting on one another or duplicating each other’s work. How should I structure it?",
-            "A regional emergency network includes volunteer groups that know their own neighborhoods well, but coordination becomes confused during a city-wide event. How should the groups work together without turning into one central command queue?",
+            "A district library wants one large reading room to feel welcoming to quiet researchers, families with children, and people dropping in for short visits. How should it plan the room and its programming?",
+            "A civic information hotline receives questions from residents, local businesses, and nonprofit groups. People say the service is confusing even when staff know the answers. How should the hotline be redesigned?",
         ),
         pairs(
             ("Several teams keep clear independent responsibilities and meet at defined handoff points where their work affects one another.", "Several teams surrender their independent responsibilities and route all work through one central sequence."),
@@ -112,8 +112,8 @@ TARGETS: tuple[Target, ...] = (
         "Defense in depth",
         "Resilient defense uses multiple partially independent layers with distinct detection and response roles; local containment and evidence-based escalation mean one bypassed barrier does not imply total failure.",
         (
-            "A neighborhood festival needs to keep operating safely even if volunteers miss things, equipment fails, or somebody causes a problem. I don’t want one person or one rule to become a single point of failure. How would you design the safeguards?",
-            "A public library lends equipment and runs workshops with many new volunteers. Small mistakes sometimes become serious disruptions because problems are noticed late. How should the library make operations more resilient without becoming punitive?",
+            "A university club keeps losing shared equipment from its storage room. Keys are copied informally, inventory records are inconsistent, and nobody is sure who should fix small problems. What should the club change?",
+            "A small nonprofit plans public events with volunteers who vary in experience. Tasks occasionally fall through, but the group wants to become more reliable without treating volunteers as suspects. What operating changes would help?",
         ),
         pairs(
             ("A problem is met by several distinct checks: early detection, local containment, and escalation when evidence warrants it.", "A problem is met by one central check; if it misses the problem, no other response exists."),
