@@ -11,7 +11,13 @@
       },
       "base_sha": "1bf54e1df0d1e0f5f2ababeca27a300c2debc8eb",
       "campaign": "mneme-phase-3-6l-local-neural-compiler",
-      "candidate": null,
+      "candidate": {
+        "artifact": null,
+        "base_sha": "1bf54e1df0d1e0f5f2ababeca27a300c2debc8eb",
+        "returned_at": "2026-10-04T20:11:34.317388Z",
+        "returned_by": "root",
+        "sha": "6ac00b2"
+      },
       "completion_criterion": "A compact report and JSON receipt state the measured local held-out result, random/retrieval/bespoke controls, resource use, and rental disposition; raw vectors and activations remain outside Git.",
       "created_at": "2026-10-04T17:08:13.422506Z",
       "dependencies": [],
@@ -50,11 +56,11 @@
       ],
       "scope": "A bounded local, host-specific control-vector generalization screen. No MNEME developmental state, SAA, CompactStore, ON-30, or production inference behavior may be modified.",
       "session_ids": [
-        "phase36l-local-screen"
+        "phase36l-validation"
       ],
-      "status": "RUNNING",
+      "status": "VALIDATING",
       "title": "Run the bounded exact-Q2 local neural compiler generalization screen",
-      "updated_at": "2026-10-04T17:08:13.491632Z",
+      "updated_at": "2026-10-04T20:11:34.658141Z",
       "validation": {
         "required": [
           "frozen-corpus-hash",
@@ -67,7 +73,48 @@
           "strict-mypy",
           "ci"
         ],
-        "results": {}
+        "results": {
+          "durable-artifact-manifest": {
+            "receipt": "docs/receipts/MNEME_Phase_3_6L_Local_Neural_Compiler_Screen_20261004.json",
+            "recorded_at": "2026-10-04T20:11:34.504984Z",
+            "status": "PASS"
+          },
+          "focused-tests": {
+            "receipt": "pytest tests/test_phase36l_local_compiler.py: 3 passed",
+            "recorded_at": "2026-10-04T20:11:34.540385Z",
+            "status": "PASS"
+          },
+          "frozen-corpus-hash": {
+            "receipt": "docs/receipts/MNEME_Phase_3_6L_Local_Neural_Compiler_Screen_20261004.json",
+            "recorded_at": "2026-10-04T20:11:34.392843Z",
+            "status": "PASS"
+          },
+          "full-pytest": {
+            "receipt": "pytest: 763 passed",
+            "recorded_at": "2026-10-04T20:11:34.575938Z",
+            "status": "PASS"
+          },
+          "held-out-isolation-check": {
+            "receipt": "docs/receipts/MNEME_Phase_3_6L_Local_Neural_Compiler_Screen_20261004.json",
+            "recorded_at": "2026-10-04T20:11:34.467192Z",
+            "status": "PASS"
+          },
+          "layer-identity-check": {
+            "receipt": "docs/receipts/MNEME_Phase_3_6L_Local_Neural_Compiler_Screen_20261004.json",
+            "recorded_at": "2026-10-04T20:11:34.429603Z",
+            "status": "PASS"
+          },
+          "ruff": {
+            "receipt": "ruff: passed",
+            "recorded_at": "2026-10-04T20:11:34.613920Z",
+            "status": "PASS"
+          },
+          "strict-mypy": {
+            "receipt": "mypy src/mneme: passed",
+            "recorded_at": "2026-10-04T20:11:34.658125Z",
+            "status": "PASS"
+          }
+        }
       },
       "waiting_on": [],
       "workstream": "phase-3.6l"
@@ -89,5 +136,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-10-04T17:08:13.491683Z"
+  "updated_at": "2026-10-04T20:11:34.658177Z"
 }
