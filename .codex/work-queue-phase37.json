@@ -11,7 +11,13 @@
       },
       "base_sha": "5a71d091e2454fe004ce3d0177d0bd0a9e32bf7a",
       "campaign": "mneme-phase-3-7-semantic-vector-hammer",
-      "candidate": null,
+      "candidate": {
+        "artifact": null,
+        "base_sha": "5a71d091e2454fe004ce3d0177d0bd0a9e32bf7a",
+        "returned_at": "2026-10-04T21:41:56.551183Z",
+        "returned_by": "root",
+        "sha": "e90d7b5"
+      },
       "completion_criterion": "A compact report and JSON receipt give the hard semantic-vector disposition, cross-domain controls, constructed vector details, runtime evidence, and resumable external artifact manifest.",
       "created_at": "2026-10-04T20:50:18.585803Z",
       "dependencies": [],
@@ -23,10 +29,12 @@
         "bible.md",
         ".codex/work-queue-phase37.json"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "docs/receipts/MNEME_Phase_3_7_Semantic_Vector_Hammer_Test_20261004.md"
+      ],
       "id": "P37-SEMANTIC-VECTOR-HAMMER",
       "notes": "",
-      "owner": "root",
+      "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -51,12 +59,10 @@
         }
       ],
       "scope": "Isolated exact-Q2 control-vector qualification only. No MNEME state, SAA, ON-30, developmental conversation, A100 rental, or production-runtime modification.",
-      "session_ids": [
-        "phase37-20261004"
-      ],
-      "status": "RUNNING",
+      "session_ids": [],
+      "status": "DONE",
       "title": "Qualify one exact-Q2 Gemma semantic steering vector across unrelated contexts",
-      "updated_at": "2026-10-04T20:50:18.628304Z",
+      "updated_at": "2026-10-04T21:42:08.000138Z",
       "validation": {
         "required": [
           "manifest-freeze",
@@ -68,7 +74,48 @@
           "strict-mypy",
           "ci"
         ],
-        "results": {}
+        "results": {
+          "baseline-before-vectors": {
+            "receipt": "r3 baseline.json (12 complete); r1/r2 retained as rejected pre-vector attempts",
+            "recorded_at": "2026-10-04T21:41:56.672844Z",
+            "status": "PASS"
+          },
+          "ci": {
+            "receipt": "https://github.com/nova-rey/mneme/actions/runs/37237058561",
+            "recorded_at": "2026-10-04T21:42:07.956865Z",
+            "status": "PASS"
+          },
+          "durable-results": {
+            "receipt": "/home/rey/mneme_artifacts/phase37-semantic-vector-hammer-20261004-r3; manifest/baseline/screen hashes in receipt",
+            "recorded_at": "2026-10-04T21:41:56.758684Z",
+            "status": "PASS"
+          },
+          "focused-tests": {
+            "receipt": "pytest tests/test_phase37_semantic_vector_hammer.py: 3 passed",
+            "recorded_at": "2026-10-04T21:41:56.803404Z",
+            "status": "PASS"
+          },
+          "layer-identity": {
+            "receipt": "directions 1..41; capture zero omitted; receipt JSON",
+            "recorded_at": "2026-10-04T21:41:56.711824Z",
+            "status": "PASS"
+          },
+          "manifest-freeze": {
+            "receipt": "docs/receipts/MNEME_Phase_3_7_Semantic_Vector_Hammer_Test_20261004.json",
+            "recorded_at": "2026-10-04T21:41:56.635904Z",
+            "status": "PASS"
+          },
+          "ruff": {
+            "receipt": "ruff phase37 tool/test: passed",
+            "recorded_at": "2026-10-04T21:41:56.842220Z",
+            "status": "PASS"
+          },
+          "strict-mypy": {
+            "receipt": "mypy src/mneme: passed",
+            "recorded_at": "2026-10-04T21:41:56.878825Z",
+            "status": "PASS"
+          }
+        }
       },
       "waiting_on": [],
       "workstream": "phase-3.7"
@@ -86,5 +133,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-10-04T20:50:18.628355Z"
+  "updated_at": "2026-10-04T21:42:08.000215Z"
 }

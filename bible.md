@@ -1665,3 +1665,8 @@ and dispositions remain unchanged.
 - The accepted r3 screen constructed balanced mean and coordinate-wise-median exact-Q2 vectors for ecological succession, musical counterpoint, and defense in depth, then tested both methods across four frozen layer ranges. No candidate made its target’s diagnostic cross-domain structure appear.
 - A full ecological dose/control sweep likewise found no semantic effect at gains 0.2–1.5 or low-gain sign reversal. The norm/layer-matched random vector became destructive at 1.5, confirming generic perturbation is not semantic success. Further high-gain sign reversal was safely pruned after sustained 86 C GPU operation; complete durable evidence and a resumable partial manifest remain external.
 - Disposition: `NO — NOT DEMONSTRATED`. Do not rent an A100 or integrate this vector path into MNEME without a specifically different upstream semantic-vector qualification method.
+
+## 2026-10-04 — Phase 3.7 closure
+
+- Phase 3.7 is closed after CI run 37237058561 passed, 766 local tests passed, Ruff and strict mypy passed, and the compact semantic-vector receipt was published.
+- No MNEME state, SAA, ON-30, CompactStore, resident inference service, or production runtime was modified. The external research artifact is retained locally; no further neural-vector work is authorized by this closure.
