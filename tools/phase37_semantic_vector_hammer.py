@@ -308,11 +308,14 @@ def make_one(root: Path, target: Target, method: str, index: int | None = None) 
     return output
 
 
-def construct(root: Path) -> None:
+def construct(root: Path, selected_target: str | None = None) -> None:
     if np is None:
         raise RuntimeError("construct requires numpy in the isolated research environment")
     ensure_manifest(root)
-    for target in TARGETS:
+    active = [target for target in TARGETS if selected_target in (None, target.identifier)]
+    if not active:
+        raise ValueError(f"unknown target {selected_target}")
+    for target in active:
         mean_path = root / "vectors" / f"{target.identifier}-mean.gguf"
         if not mean_path.exists():
             source = make_one(root, target, "mean", None); mean_path.parent.mkdir(parents=True, exist_ok=True); subprocess.run(["cp", "--reflink=auto", str(source), str(mean_path)], check=True)
@@ -336,34 +339,74 @@ def random_like(root: Path, vector: Path, target: str) -> Path:
     write_vector(path, values, f"Phase 3.7 matched random control {target}"); return path
 
 
-def screen(root: Path) -> None:
-    ensure_manifest(root); path = root / "screen.json"; rows = json.loads(path.read_text()).get("rows", []) if path.exists() else []; done = {(x["target"],x["method"],x["range"]) for x in rows}
-    for target in TARGETS:
-        for method in ("mean","median"):
+def screen(root: Path, selected_target: str | None = None) -> None:
+    """Screen one target at a time; each vector/range gets one reusable server."""
+    ensure_manifest(root)
+    path = root / "screen.json"
+    rows = json.loads(path.read_text()).get("rows", []) if path.exists() else []
+    done = {(x["target"], x["method"], x["range"]) for x in rows}
+    active = [target for target in TARGETS if selected_target in (None, target.identifier)]
+    if not active:
+        raise ValueError(f"unknown target {selected_target}")
+    for target in active:
+        for method in ("mean", "median"):
             vector = root / "vectors" / f"{target.identifier}-{method}.gguf"
             for name, layer_range in RANGES.items():
-                if (target.identifier,method,name) in done: continue
-                def run(base: str, cmd: list[str], log: Path) -> dict[str,Any]:
-                    return {"target":target.identifier,"method":method,"range":name,"layer_range":layer_range,"gain":SCREEN_GAIN,"vector_sha256":hash_file(vector),"server_command":cmd,"server_log":str(log),"generation":generate(base,target.evaluation_prompts[0],SEEDS[0])}
-                rows.append(server(root,vector=vector,layer_range=layer_range,gain=SCREEN_GAIN,fn=run)); atomic(path,{"rows":rows,"complete":False})
-    atomic(path,{"rows":rows,"complete":True})
-
+                if (target.identifier, method, name) in done:
+                    continue
+                def run(base: str, cmd: list[str], log: Path) -> dict[str, Any]:
+                    return {
+                        "target": target.identifier, "method": method, "range": name,
+                        "layer_range": layer_range, "gain": SCREEN_GAIN,
+                        "vector_sha256": hash_file(vector), "server_command": cmd,
+                        "server_log": str(log),
+                        "generation": generate(base, target.evaluation_prompts[0], SEEDS[0]),
+                    }
+                rows.append(server(root, vector=vector, layer_range=layer_range, gain=SCREEN_GAIN, fn=run))
+                atomic(path, {"rows": rows, "complete": False})
+    atomic(path, {"rows": rows, "complete": True})
 
 def eval_candidate(root: Path, target_id: str, method: str, range_name: str) -> None:
-    target = next(x for x in TARGETS if x.identifier == target_id); vector = root / "vectors" / f"{target_id}-{method}.gguf"; random = random_like(root,vector,target_id); path = root / "validation" / f"{target_id}-{method}-{range_name}.json"; rows=json.loads(path.read_text()).get("rows",[]) if path.exists() else []; done={(r["variant"],r["gain"],r["context"],r["seed"]) for r in rows}; layer_range=RANGES[range_name]
-    variants=[("none",None,0.0),("candidate",vector,None),("random",random,None),("sign_reversal",vector,None)]
-    for variant, vec, fixed in variants:
-        gains=(0.0,) if variant=="none" else GAINS
-        for raw_gain in gains:
-            gain = -raw_gain if variant=="sign_reversal" else raw_gain
-            for context,prompt_text in enumerate(target.evaluation_prompts):
-                for seed in SEEDS:
-                    if (variant,gain,context,seed) in done: continue
-                    def run(base:str,cmd:list[str],log:Path)->dict[str,Any]:
-                        return {"target":target_id,"method":method,"range":range_name,"layer_range":layer_range,"variant":variant,"gain":gain,"context":context,"seed":seed,"vector_sha256":None if vec is None else hash_file(vec),"server_command":cmd,"server_log":str(log),"generation":generate(base,prompt_text,seed)}
-                    rows.append(server(root,vector=vec,layer_range=layer_range,gain=gain,fn=run)); atomic(path,{"rows":rows,"complete":False})
-    atomic(path,{"rows":rows,"complete":True})
-
+    """Full validation groups four context/seed calls under each loaded vector."""
+    target = next(x for x in TARGETS if x.identifier == target_id)
+    vector = root / "vectors" / f"{target_id}-{method}.gguf"
+    random = random_like(root, vector, target_id)
+    path = root / "validation" / f"{target_id}-{method}-{range_name}.json"
+    rows = json.loads(path.read_text()).get("rows", []) if path.exists() else []
+    done = {(r["variant"], float(r["gain"])) for r in rows}
+    layer_range = RANGES[range_name]
+    variants: list[tuple[str, Path | None, tuple[float, ...]]] = [
+        ("none", None, (0.0,)),
+        ("candidate", vector, GAINS),
+        ("random", random, GAINS),
+        ("sign_reversal", vector, tuple(-value for value in GAINS)),
+    ]
+    for variant, vec, gains in variants:
+        for gain in gains:
+            if (variant, float(gain)) in done:
+                continue
+            progress = root / "validation-progress" / f"{target_id}-{method}-{range_name}-{variant}-{gain:+.2f}.json"
+            prior = json.loads(progress.read_text()).get("calls", []) if progress.exists() else []
+            seen = {(call["context"], call["seed"]) for call in prior}
+            def run(base: str, cmd: list[str], log: Path) -> dict[str, Any]:
+                calls = list(prior)
+                for context, prompt_text in enumerate(target.evaluation_prompts):
+                    for seed in SEEDS:
+                        if (context, seed) in seen:
+                            continue
+                        calls.append({"context": context, "seed": seed, "generation": generate(base, prompt_text, seed)})
+                        atomic(progress, {"target": target_id, "variant": variant, "gain": gain, "calls": calls, "complete": False})
+                atomic(progress, {"target": target_id, "variant": variant, "gain": gain, "calls": calls, "complete": True})
+                return {
+                    "target": target_id, "method": method, "range": range_name,
+                    "layer_range": layer_range, "variant": variant, "gain": gain,
+                    "vector_sha256": None if vec is None else hash_file(vec),
+                    "server_command": cmd, "server_log": str(log), "calls": calls,
+                    "progress_path": str(progress), "progress_sha256": hash_file(progress),
+                }
+            rows.append(server(root, vector=vec, layer_range=layer_range, gain=gain, fn=run))
+            atomic(path, {"rows": rows, "complete": False})
+    atomic(path, {"rows": rows, "complete": True})
 
 def status(root: Path) -> None:
     result={"root":str(root),"manifest":(root/"manifest.json").exists(),"baseline":(root/"baseline.json").exists(),"vectors":sorted(str(x) for x in (root/"vectors").glob("*.gguf")) if (root/"vectors").exists() else [],"screen_rows":len(json.loads((root/"screen.json").read_text()).get("rows",[])) if (root/"screen.json").exists() else 0,"validations":sorted(str(x) for x in (root/"validation").glob("*.json")) if (root/"validation").exists() else []}; print(json.dumps(result,indent=2))
@@ -373,8 +416,8 @@ def main() -> None:
     parser=argparse.ArgumentParser(); parser.add_argument("stage",choices=("baseline","construct","screen","validate","status")); parser.add_argument("--root",type=Path,required=True); parser.add_argument("--target"); parser.add_argument("--method",choices=("mean","median")); parser.add_argument("--range",dest="range_name",choices=tuple(RANGES)); args=parser.parse_args(); root=args.root.resolve(); root.mkdir(parents=True,exist_ok=True)
     if hash_file(Path(MODEL)) != MODEL_SHA256: raise RuntimeError("GGUF SHA mismatch")
     if args.stage=="baseline": baseline(root)
-    elif args.stage=="construct": construct(root)
-    elif args.stage=="screen": screen(root)
+    elif args.stage=="construct": construct(root, args.target)
+    elif args.stage=="screen": screen(root, args.target)
     elif args.stage=="validate":
         if not (args.target and args.method and args.range_name): parser.error("validate needs --target --method --range")
         eval_candidate(root,args.target,args.method,args.range_name)
