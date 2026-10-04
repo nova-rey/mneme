@@ -1,0 +1,56 @@
+{
+  "run": "phase36l-local-neural-compiler-20261004-r2",
+  "disposition": "NO_CURRENT_RENTAL_JUSTIFICATION",
+  "plain_english": "The local compiler did not show held-out semantic steering beyond nearest-vector retrieval, although both compiler and bespoke vectors were much less damaging than matched random perturbations.",
+  "host": {
+    "model_id": "google/gemma-4-E4B-it",
+    "gguf": "gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+    "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+    "llama_cpp_commit": "4b1a27f",
+    "reasoning": "on",
+    "cache_prompt": false,
+    "layer_range": [1, 41]
+  },
+  "corpus": {
+    "training_targets": 48,
+    "held_out_targets": 8,
+    "contrasts_per_target": 6,
+    "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+    "embedding_dimension": 384,
+    "mapper": "rank-12 ridge regression",
+    "corpus_sha256": "81b00275264c83df6e0a84c03ad0c015abd42478ccb34b4f192686d287a3bb32"
+  },
+  "stage1": {
+    "target_construction_seconds": 5.142755164999471,
+    "peak_vram_mib": 4681.0,
+    "peak_rss_kib": 3486500,
+    "vector_bytes": 421824
+  },
+  "evaluation": {
+    "configurations": 72,
+    "persisted_calls": 289,
+    "contexts_per_target": 2,
+    "seeds": [936100, 936101],
+    "gains": [0.35, 0.7],
+    "duplicate_preflight_byte_identical": true,
+    "conditions": {
+      "none": {"calls": 32, "nonempty_final": 32, "stop": 32},
+      "compiler": {"calls": 64, "nonempty_final": 64, "stop": 64},
+      "nearest": {"calls": 64, "nonempty_final": 64, "stop": 63},
+      "random": {"calls": 64, "nonempty_final": 52, "stop": 44},
+      "bespoke_reference": {"calls": 64, "nonempty_final": 64, "stop": 64}
+    }
+  },
+  "conclusions": {
+    "compiler_beats_random": "observed on competence preservation only",
+    "compiler_beats_nearest": "not demonstrated",
+    "bespoke_vector_establishes_clear_target_transfer": "not demonstrated",
+    "a100_rental": "not justified before a stronger target-vector qualification"
+  },
+  "external_evidence": {
+    "root": "/home/rey/mneme_artifacts/phase36l-local-neural-compiler-20261004-r2",
+    "evaluation_sha256": "5d412da719bf2639fbcf996cc9fff018864664cbe626aaabc3c15c76cc7212b6",
+    "controls_sha256": "44be7d8225d3393e30992f61d710192893ed36dc27f8f1758a28c1a2c9aa51b4",
+    "mapper_sha256": "5d2e64ac3772bbffb47c6b0032c02035638e6c87e5ca3e4d67abafdb42748193"
+  }
+}

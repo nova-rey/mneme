@@ -1,0 +1,39 @@
+{
+  "id": "P36L-LOCAL-SCREEN",
+  "title": "Run the bounded exact-Q2 local neural compiler generalization screen",
+  "requirement_ids": [
+    "stage-1-local-cost-measurement",
+    "frozen-held-out-corpus",
+    "exact-q2-vector-construction",
+    "held-out-compiler-baselines",
+    "durable-compact-publication"
+  ],
+  "priority": 1,
+  "dependencies": [],
+  "workstream": "phase-3.6l",
+  "domain": "neural-influence-research",
+  "scope": "A bounded local, host-specific control-vector generalization screen. No MNEME developmental state, SAA, CompactStore, ON-30, or production inference behavior may be modified.",
+  "edit_boundaries": [
+    "tools/phase36l_*",
+    "docs/receipts/MNEME_Phase_3_6L_*",
+    "bible.md",
+    ".codex/work-queue-phase36l.json"
+  ],
+  "resource_requirements": [
+    {"name": "canonical-integration", "units": 1, "exclusive": true},
+    {"name": "msi-gpu", "units": 1, "exclusive": true}
+  ],
+  "base_sha": "1bf54e1df0d1e0f5f2ababeca27a300c2debc8eb",
+  "validation_requirements": [
+    "frozen-corpus-hash",
+    "layer-identity-check",
+    "held-out-isolation-check",
+    "durable-artifact-manifest",
+    "focused-tests",
+    "full-pytest",
+    "ruff",
+    "strict-mypy",
+    "ci"
+  ],
+  "completion_criterion": "A compact report and JSON receipt state the measured local held-out result, random/retrieval/bespoke controls, resource use, and rental disposition; raw vectors and activations remain outside Git."
+}
