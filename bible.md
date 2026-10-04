@@ -1675,3 +1675,7 @@ and dispositions remain unchanged.
 
 - Audited Nokia Bell Labs `steer-like-the-llm` Focused/PSR against the exact resident Gemma-4 Q2 GGUF llama.cpp host before launching any GPU work. Published PSR requires Hugging Face/PyTorch forward hooks, aligned residual-stream `psi` MSE, autograd, and a dynamic per-token intervention; the Q2 static startup cvector ABI cannot execute it.
 - The MSI has a 6 GiB RTX 3060 and no Hugging Face Gemma weights. The sprint is therefore `NOT_RUNNABLE_LOCALLY` / `IMPLEMENTATION_HOST_BLOCKER`, not a semantic negative result. No MNEME state, SAA, ON-30, resident service, vectors, prompts, training, or inference were touched. A later owner choice would be an exact-Q2 PSR port or a clearly separate 24 GiB HF-surrogate qualification.
+
+## 2026-10-04 — Phase 3.8 closure
+
+- Closed the Phase 3.8 queue after the source audit, local host/resource audit, and compact receipt review passed. The result is a documented exact-host PSR implementation blocker, not a failed harbor semantic experiment; no GPU model coordinate was launched.

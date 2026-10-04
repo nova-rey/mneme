@@ -11,7 +11,13 @@
       },
       "base_sha": "04d684f7622f836a172b80642cc12697de3307fe",
       "campaign": "phase38-psr-harbor-sprint",
-      "candidate": null,
+      "candidate": {
+        "artifact": null,
+        "base_sha": "04d684f7622f836a172b80642cc12697de3307fe",
+        "returned_at": "2026-10-04T22:52:58.798352Z",
+        "returned_by": "root",
+        "sha": "d747262ac97e4fccff21f73bc04c60411f239324"
+      },
       "completion_criterion": "A faithful PSR result or a concrete exact-host implementation/resource blocker is preserved; no substitute method is labeled PSR.",
       "created_at": "2026-10-04T22:51:30.684483Z",
       "dependencies": [],
@@ -21,10 +27,12 @@
         "bible.md",
         ".codex/work-queue-phase38.json"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "docs/receipts/MNEME_Phase_3_8_PSR_Harbor_Feasibility_Sprint_20261004.md"
+      ],
       "id": "P38-PSR-HARBOR-SPRINT",
       "notes": "",
-      "owner": "root",
+      "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -40,19 +48,33 @@
         }
       ],
       "scope": "Audit Nokia Bell Labs Focused/PSR against the exact local Q2 GGUF llama.cpp host; run only if faithful execution is feasible; otherwise publish a concrete blocker receipt.",
-      "session_ids": [
-        "phase38-20261004"
-      ],
-      "status": "RUNNING",
+      "session_ids": [],
+      "status": "DONE",
       "title": "Phase 3.8 PSR harbor prompt-replacement feasibility sprint",
-      "updated_at": "2026-10-04T22:51:30.802998Z",
+      "updated_at": "2026-10-04T22:52:58.987346Z",
       "validation": {
         "required": [
           "source-audit",
           "local-host-resource-audit",
           "receipt-review"
         ],
-        "results": {}
+        "results": {
+          "local-host-resource-audit": {
+            "receipt": "docs/receipts/MNEME_Phase_3_8_PSR_Harbor_Feasibility_Sprint_20261004.json",
+            "recorded_at": "2026-10-04T22:52:58.913080Z",
+            "status": "PASS"
+          },
+          "receipt-review": {
+            "receipt": "python3 JSON parse + work-queue validate + staged diff --check",
+            "recorded_at": "2026-10-04T22:52:58.950866Z",
+            "status": "PASS"
+          },
+          "source-audit": {
+            "receipt": "docs/receipts/MNEME_Phase_3_8_PSR_Harbor_Feasibility_Sprint_20261004.md",
+            "recorded_at": "2026-10-04T22:52:58.876043Z",
+            "status": "PASS"
+          }
+        }
       },
       "waiting_on": [],
       "workstream": "neural-research"
@@ -70,5 +92,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-10-04T22:51:30.803070Z"
+  "updated_at": "2026-10-04T22:52:58.987393Z"
 }
