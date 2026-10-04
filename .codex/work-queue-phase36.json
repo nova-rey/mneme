@@ -1,0 +1,224 @@
+{
+  "campaign": "mneme-phase-3-6-neural-compiler",
+  "created_at": "2026-10-04T16:27:27.341827Z",
+  "dependencies": {},
+  "hard_problem_repo": "nova-rey/codex-config-backup",
+  "packages": [
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "75bd5e0e06a6dad688a23b7189f0faf2b268d7ed",
+      "campaign": "mneme-phase-3-6-neural-compiler",
+      "candidate": {
+        "artifact": null,
+        "base_sha": "75bd5e0e06a6dad688a23b7189f0faf2b268d7ed",
+        "returned_at": "2026-10-04T16:30:33.449874Z",
+        "returned_by": "phase36_librarian",
+        "sha": "research-packet-20261004"
+      },
+      "completion_criterion": "Evidence packet distinguishes viable unseen-target translators from lookup/retrieval.",
+      "created_at": "2026-10-04T16:27:27.389557Z",
+      "dependencies": [],
+      "domain": "research",
+      "edit_boundaries": [],
+      "evidence_refs": [
+        "indexed-research-packet-20261004"
+      ],
+      "id": "P36-AUDIT-METHODS",
+      "notes": "",
+      "owner": null,
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "stage0-methods"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": false,
+          "name": "research",
+          "units": 1
+        }
+      ],
+      "scope": "Read-only external method/resource audit",
+      "session_ids": [],
+      "status": "DONE",
+      "title": "Published method and implementation audit",
+      "updated_at": "2026-10-04T16:30:43.331109Z",
+      "validation": {
+        "required": [
+          "authoritative citations"
+        ],
+        "results": {
+          "authoritative citations": {
+            "receipt": "primary-method-and-resource-packet-20261004",
+            "recorded_at": "2026-10-04T16:30:43.292136Z",
+            "status": "PASS"
+          }
+        }
+      },
+      "waiting_on": [],
+      "workstream": "phase36"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "75bd5e0e06a6dad688a23b7189f0faf2b268d7ed",
+      "campaign": "mneme-phase-3-6-neural-compiler",
+      "candidate": {
+        "artifact": null,
+        "base_sha": "75bd5e0e06a6dad688a23b7189f0faf2b268d7ed",
+        "returned_at": "2026-10-04T16:45:29.834134Z",
+        "returned_by": "root",
+        "sha": "stage0-runtime-resource-and-capture-audit-20261004"
+      },
+      "completion_criterion": "Explains 42-vs-41 capture and exact viable runtime paths.",
+      "created_at": "2026-10-04T16:27:27.429538Z",
+      "dependencies": [],
+      "domain": "implementation",
+      "edit_boundaries": [],
+      "evidence_refs": [
+        "stage0-runtime-resource-and-capture-audit-20261004"
+      ],
+      "id": "P36-AUDIT-RUNTIME",
+      "notes": "",
+      "owner": null,
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "stage0-runtime",
+        "gemma4-defect"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": false,
+          "name": "research",
+          "units": 1
+        }
+      ],
+      "scope": "Read-only source/runtime and Phase 3.5 evidence audit",
+      "session_ids": [],
+      "status": "DONE",
+      "title": "Pinned Gemma control-vector and local-runtime audit",
+      "updated_at": "2026-10-04T16:45:38.793025Z",
+      "validation": {
+        "required": [
+          "reproducible source evidence",
+          "runtime resource map"
+        ],
+        "results": {
+          "reproducible source evidence": {
+            "receipt": "stage0-capture-source-and-smoke-20261004",
+            "recorded_at": "2026-10-04T16:45:38.702335Z",
+            "status": "PASS"
+          },
+          "runtime resource map": {
+            "receipt": "msi-resource-map-20261004",
+            "recorded_at": "2026-10-04T16:45:38.752537Z",
+            "status": "PASS"
+          }
+        }
+      },
+      "waiting_on": [],
+      "workstream": "phase36"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "75bd5e0e06a6dad688a23b7189f0faf2b268d7ed",
+      "campaign": "mneme-phase-3-6-neural-compiler",
+      "candidate": {
+        "artifact": null,
+        "base_sha": "75bd5e0e06a6dad688a23b7189f0faf2b268d7ed",
+        "returned_at": "2026-10-04T16:47:03.755373Z",
+        "returned_by": "root",
+        "sha": "phase36-gate-20261004"
+      },
+      "completion_criterion": "A predeclared experiment can falsify semantic compiler generalization.",
+      "created_at": "2026-10-04T16:27:27.474622Z",
+      "dependencies": [
+        "package:P36-AUDIT-METHODS",
+        "package:P36-AUDIT-RUNTIME"
+      ],
+      "domain": "architecture",
+      "edit_boundaries": [
+        "docs/receipts",
+        "tools"
+      ],
+      "evidence_refs": [
+        "phase36-not-testable-with-current-resources-20261004"
+      ],
+      "id": "P36-DESIGN-GATE",
+      "notes": "",
+      "owner": null,
+      "priority": 2,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "phase36a"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": true,
+          "name": "canonical-integration",
+          "units": 1
+        }
+      ],
+      "scope": "Freeze smallest valid held-out generalization design or document resource blocker",
+      "session_ids": [],
+      "status": "DONE",
+      "title": "Falsifiable translator design and resource decision",
+      "updated_at": "2026-10-04T16:47:06.716315Z",
+      "validation": {
+        "required": [
+          "held-out criteria",
+          "baseline criteria",
+          "budget"
+        ],
+        "results": {
+          "baseline criteria": {
+            "receipt": "phase36-gate-report-20261004",
+            "recorded_at": "2026-10-04T16:47:06.642237Z",
+            "status": "PASS"
+          },
+          "budget": {
+            "receipt": "phase36-gpu-envelope-20261004",
+            "recorded_at": "2026-10-04T16:47:06.681093Z",
+            "status": "PASS"
+          },
+          "held-out criteria": {
+            "receipt": "phase36-gate-report-20261004",
+            "recorded_at": "2026-10-04T16:47:06.600528Z",
+            "status": "PASS"
+          }
+        }
+      },
+      "waiting_on": [],
+      "workstream": "phase36"
+    }
+  ],
+  "project": "nova-rey/mneme",
+  "resources": {
+    "canonical-integration": {
+      "capacity": 1,
+      "exclusive": true
+    },
+    "msi-gpu": {
+      "capacity": 1,
+      "exclusive": true
+    },
+    "research": {
+      "capacity": 2,
+      "exclusive": false
+    }
+  },
+  "schema_version": 1,
+  "updated_at": "2026-10-04T16:47:06.716367Z"
+}

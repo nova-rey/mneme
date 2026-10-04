@@ -1,0 +1,11 @@
+diff --git a/src/models/gemma4.cpp b/src/models/gemma4.cpp
+index 67de74c54..173905dd5 100644
+--- a/src/models/gemma4.cpp
++++ b/src/models/gemma4.cpp
+@@ -398,1 +398,5 @@ llama_model_gemma4::graph::graph(const llama_model & model, const llm_graph_para
+-        cb(cur, "l_out", il);
++        // Phase 3.6 research-only capture alignment: cvector direction.N
++        // maps to runtime layer N, while layer zero is unsteerable.
++        if (il != 0) {
++            cb(cur, "l_out", il);
++        }

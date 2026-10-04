@@ -1,0 +1,44 @@
+{
+  "schema": "mneme.phase36.neural_compiler_generalization_gate.v1",
+  "date": "2026-10-04",
+  "disposition": "NOT_TESTABLE_WITH_CURRENT_RESOURCES",
+  "mneme_state_mutated": false,
+  "exact_host": {
+    "model": "google/gemma-4-E4B-it",
+    "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+    "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+    "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU",
+    "vram_mib": 6144,
+    "ram_gib": 61
+  },
+  "methods": {
+    "hypersteer": {"unseen_description_compiler": true, "runtime": "PyTorch/Transformers/pyvene", "published_hardware": "one A100 80GB"},
+    "psr": {"unseen_description_compiler": false, "role": "target-specific position/gain steering"},
+    "repeng": {"unseen_description_compiler": false, "role": "per-target contrast-vector baseline"},
+    "ucvg_cpp": {"unseen_description_compiler": false, "role": "per-trait construction/application reference"}
+  },
+  "gemma4_capture": {
+    "model_layers": 42,
+    "runtime_controllable_layers": [1, 41],
+    "original_generator_expected_captures": 41,
+    "observed_original_captures": 42,
+    "corrected_construction_rule": "omit layer-0 l_out callback; retain l_out for layers 1..41",
+    "isolated_smoke_patch_sha256": "6bb54f034c786274c098bf2d1729d76abf5a6a95369e697278265112648ab3a8",
+    "reproducible_patch_sha256": "f472b6ffbb5403bb37abfbbf4a2e08b4326fcdb0412df540948676b616db227e",
+    "smoke_vector_sha256": "ed0517f46fb46da6f065f7eb1abb119ec7d9e17f438ad701e501dc63babee1ad",
+    "smoke_direction_count": 41,
+    "raw_artifact_root": "/home/nyx/mneme_artifacts/phase36-neural-compiler-20261004"
+  },
+  "future_gate": {
+    "training_targets": 24,
+    "held_out_targets": 6,
+    "construction_contexts_per_target_minimum": 6,
+    "evaluation_contexts_per_held_out_target_minimum": 2,
+    "evaluation_seeds_per_context_minimum": 2,
+    "required_baselines": ["none", "generated", "bespoke-held-out", "random", "nearest-training-vector"],
+    "full_host_requirement": "Gemma-4-specific BF16 PyTorch activation/intervention implementation",
+    "proposed_rental": {"gpu": "A100 80GB", "scratch_storage_gib_minimum": 200, "gpu_hours_estimate": [48, 72], "gpu_cost_usd_estimate": [76, 115], "price_basis": "Runpod published A100 80GB Secure Cloud rate of USD 1.59/hour; recheck before rental"}
+  },
+  "recommendation": "REQUEST_OWNER_APPROVAL_FOR_A100_80GB_FOLLOWUP",
+  "historical_phase35": "preserved; static mechanics PASS, semantic harbor transfer INCONCLUSIVE, production NOT READY"
+}
