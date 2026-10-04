@@ -1670,3 +1670,8 @@ and dispositions remain unchanged.
 
 - Phase 3.7 is closed after CI run 37237058561 passed, 766 local tests passed, Ruff and strict mypy passed, and the compact semantic-vector receipt was published.
 - No MNEME state, SAA, ON-30, CompactStore, resident inference service, or production runtime was modified. The external research artifact is retained locally; no further neural-vector work is authorized by this closure.
+
+## 2026-10-04 — Phase 3.8 PSR harbor feasibility sprint
+
+- Audited Nokia Bell Labs `steer-like-the-llm` Focused/PSR against the exact resident Gemma-4 Q2 GGUF llama.cpp host before launching any GPU work. Published PSR requires Hugging Face/PyTorch forward hooks, aligned residual-stream `psi` MSE, autograd, and a dynamic per-token intervention; the Q2 static startup cvector ABI cannot execute it.
+- The MSI has a 6 GiB RTX 3060 and no Hugging Face Gemma weights. The sprint is therefore `NOT_RUNNABLE_LOCALLY` / `IMPLEMENTATION_HOST_BLOCKER`, not a semantic negative result. No MNEME state, SAA, ON-30, resident service, vectors, prompts, training, or inference were touched. A later owner choice would be an exact-Q2 PSR port or a clearly separate 24 GiB HF-surrogate qualification.

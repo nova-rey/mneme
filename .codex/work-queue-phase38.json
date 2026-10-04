@@ -1,0 +1,74 @@
+{
+  "campaign": "phase38-psr-harbor-sprint",
+  "created_at": "2026-10-04T22:51:16.970571Z",
+  "dependencies": {},
+  "hard_problem_repo": null,
+  "packages": [
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "04d684f7622f836a172b80642cc12697de3307fe",
+      "campaign": "phase38-psr-harbor-sprint",
+      "candidate": null,
+      "completion_criterion": "A faithful PSR result or a concrete exact-host implementation/resource blocker is preserved; no substitute method is labeled PSR.",
+      "created_at": "2026-10-04T22:51:30.684483Z",
+      "dependencies": [],
+      "domain": "research-feasibility",
+      "edit_boundaries": [
+        "docs/receipts",
+        "bible.md",
+        ".codex/work-queue-phase38.json"
+      ],
+      "evidence_refs": [],
+      "id": "P38-PSR-HARBOR-SPRINT",
+      "notes": "",
+      "owner": "root",
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "P38-0",
+        "P38-STOP"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": false,
+          "name": "model-agent",
+          "units": 1
+        }
+      ],
+      "scope": "Audit Nokia Bell Labs Focused/PSR against the exact local Q2 GGUF llama.cpp host; run only if faithful execution is feasible; otherwise publish a concrete blocker receipt.",
+      "session_ids": [
+        "phase38-20261004"
+      ],
+      "status": "RUNNING",
+      "title": "Phase 3.8 PSR harbor prompt-replacement feasibility sprint",
+      "updated_at": "2026-10-04T22:51:30.802998Z",
+      "validation": {
+        "required": [
+          "source-audit",
+          "local-host-resource-audit",
+          "receipt-review"
+        ],
+        "results": {}
+      },
+      "waiting_on": [],
+      "workstream": "neural-research"
+    }
+  ],
+  "project": "nova-rey/mneme",
+  "resources": {
+    "canonical-integration": {
+      "capacity": 1,
+      "exclusive": true
+    },
+    "model-agent": {
+      "capacity": 4,
+      "exclusive": false
+    }
+  },
+  "schema_version": 1,
+  "updated_at": "2026-10-04T22:51:30.803070Z"
+}

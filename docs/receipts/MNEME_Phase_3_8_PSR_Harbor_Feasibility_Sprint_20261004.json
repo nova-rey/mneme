@@ -1,0 +1,73 @@
+{
+  "schema": "mneme.phase38.psr_harbor_feasibility.v1",
+  "generated_at": "2026-10-04T22:51:00Z",
+  "disposition": "NOT_RUNNABLE_LOCALLY",
+  "classification": "IMPLEMENTATION_HOST_BLOCKER",
+  "question": "Can published PSR reproduce the known harbor prompt effect internally on the exact local Q2 GGUF host?",
+  "result": "No faithful PSR coordinate was executable against the exact Q2 llama.cpp host. No model calls were made.",
+  "boundaries": {
+    "mneme_state_loaded": false,
+    "developmental_calls": 0,
+    "saa_calls": 0,
+    "static_control_vector_substitution": false,
+    "resident_service_modified": false,
+    "hf_weights_downloaded": false,
+    "evaluation_prompts_materialized": false,
+    "reason": "Stage-0 incompatibility established before construction or inference."
+  },
+  "exact_host": {
+    "host": "brokeass-msi",
+    "checked_at": "2026-10-04T22:50:22Z",
+    "model_id": "google/gemma-4-E4B-it",
+    "gguf_path": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+    "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+    "quantization": "UD-Q2_K_XL",
+    "runtime": "llama.cpp",
+    "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+    "gpu": {"name": "NVIDIA GeForce RTX 3060 Laptop GPU", "vram_mib": 6144, "used_mib": 1},
+    "ram_gib": 61,
+    "available_disk_gib": 53,
+    "python": {"torch": "2.14.1+cu130", "transformers": "4.57.6", "cuda_available": true},
+    "hf_gemma_weights_present": false
+  },
+  "published_method": {
+    "repository": "https://github.com/Nokia-Bell-Labs/steer-like-the-llm",
+    "commit": "3d916c618d146c5d657f055e432a432b0fa493c6",
+    "paper": "https://proceedings.mlr.press/v306/heyman26a.html",
+    "implementation_name": "Focused",
+    "objective": "prompt_steering_imitation / psi",
+    "source_files": {
+      "focused_steering.py": "88ad1e8fce61",
+      "intervened_model.py": "01746b20cbe",
+      "steering_base.py": "74df88a07b26"
+    },
+    "requirements_observed": [
+      "Hugging Face PyTorch PreTrainedModel and tokenizer",
+      "model.get_submodule and register_forward_hook at selected layers",
+      "prompted and intervened model.forward residual streams",
+      "aligned residual-stream MSE psi objective",
+      "loss.backward through frozen host downstream computation",
+      "dynamic per-token learned location projection during generation"
+    ],
+    "module_parameters": "per selected layer: steering H-to-1 projection plus location-fit H-to-1 projection, with optional scalar bias"
+  },
+  "incompatibility": {
+    "llama_cpp_q2_supports": ["startup-loaded static cvector", "static direction application"],
+    "llama_cpp_q2_lacks": ["PyTorch module graph", "forward hooks", "residual tensor API for psi", "autograd", "dynamic per-token Focused location module", "request-time cvector injection"],
+    "conclusion": "A static cvector is not PSR; a custom differentiable capture and dynamic intervention ABI is required for exact-Q2 PSR."
+  },
+  "resource_assessment": {
+    "local_6gib_result": "insufficient for an autograd-enabled BF16 4B transformer host; weights alone are approximately 8 GB before training activations",
+    "smallest_credible_separate_prototype": "24 GiB single GPU, short context and batch 1, frozen HF host, explicit gradient/memory handling",
+    "qualification_caveat": "An HF prototype is a different host representation and requires an explicit comparability qualification before it can be used to make claims about exact Q2 llama.cpp."
+  },
+  "historical_calibration": {
+    "receipt": "docs/receipts/MNEME_Phase_3_5_Neural_Influence_Feasibility_20261004.md",
+    "known_positive_text_condition": "Forced consideration of the harbor association visibly engaged harbor/tide/docking structure.",
+    "not_repeated_here": true
+  },
+  "next_steps_require_owner_authorization": [
+    "design and qualify an exact-Q2 differentiable PSR port",
+    "run a separately labeled HF-surrogate PSR qualification on at least a 24 GiB GPU"
+  ]
+}
