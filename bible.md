@@ -1634,3 +1634,8 @@ and dispositions remain unchanged.
 - Phase 3.6L local exact-Q2 neural-compiler screen: frozen 48/8 balanced corpus, matched local control evaluation, and compact reporting are in progress; no MNEME developmental state was loaded or changed.
 - Phase 3.6L closure: the local compiler did not beat nearest-vector retrieval on held-out targets; preserve this negative screen and do not begin neural integration.
 - Phase 3.6L queue closure: all frozen local-screen evidence and validation receipts are complete; stop at the NO_CURRENT_RENTAL_JUSTIFICATION disposition.
+
+## 2026-10-04 — Phase 3.7 semantic vector qualification starts
+
+- Frozen an isolated exact-Q2 Gemma control-vector hammer-test corpus before constructing vectors: ecological succession, musical counterpoint, and defense in depth, each with two cross-domain prompts and sixteen balanced contrast pairs.
+- This campaign is research-only: it cannot load or mutate MNEME, SAA, ON-30, CompactStore, or the resident inference service. Raw vectors and responses are durable external artifacts, while only compact code and receipts belong in Git.

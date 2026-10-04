@@ -1,0 +1,90 @@
+{
+  "campaign": "mneme-phase-3-7-semantic-vector-hammer",
+  "created_at": "2026-10-04T20:50:18.544164Z",
+  "dependencies": {},
+  "hard_problem_repo": null,
+  "packages": [
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "5a71d091e2454fe004ce3d0177d0bd0a9e32bf7a",
+      "campaign": "mneme-phase-3-7-semantic-vector-hammer",
+      "candidate": null,
+      "completion_criterion": "A compact report and JSON receipt give the hard semantic-vector disposition, cross-domain controls, constructed vector details, runtime evidence, and resumable external artifact manifest.",
+      "created_at": "2026-10-04T20:50:18.585803Z",
+      "dependencies": [],
+      "domain": "neural-influence-research",
+      "edit_boundaries": [
+        "tools/phase37_*",
+        "tests/test_phase37_*",
+        "docs/receipts/MNEME_Phase_3_7_*",
+        "bible.md",
+        ".codex/work-queue-phase37.json"
+      ],
+      "evidence_refs": [],
+      "id": "P37-SEMANTIC-VECTOR-HAMMER",
+      "notes": "",
+      "owner": "root",
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "frozen-cross-domain-baseline",
+        "balanced-and-robust-vector-construction",
+        "bounded-layer-gain-screen",
+        "random-and-sign-controls",
+        "durable-external-evidence",
+        "compact-report"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": true,
+          "name": "msi-gpu",
+          "units": 1
+        },
+        {
+          "exclusive": true,
+          "name": "canonical-integration",
+          "units": 1
+        }
+      ],
+      "scope": "Isolated exact-Q2 control-vector qualification only. No MNEME state, SAA, ON-30, developmental conversation, A100 rental, or production-runtime modification.",
+      "session_ids": [
+        "phase37-20261004"
+      ],
+      "status": "RUNNING",
+      "title": "Qualify one exact-Q2 Gemma semantic steering vector across unrelated contexts",
+      "updated_at": "2026-10-04T20:50:18.628304Z",
+      "validation": {
+        "required": [
+          "manifest-freeze",
+          "baseline-before-vectors",
+          "layer-identity",
+          "durable-results",
+          "focused-tests",
+          "ruff",
+          "strict-mypy",
+          "ci"
+        ],
+        "results": {}
+      },
+      "waiting_on": [],
+      "workstream": "phase-3.7"
+    }
+  ],
+  "project": "nova-rey/mneme",
+  "resources": {
+    "canonical-integration": {
+      "capacity": 1,
+      "exclusive": true
+    },
+    "msi-gpu": {
+      "capacity": 1,
+      "exclusive": true
+    }
+  },
+  "schema_version": 1,
+  "updated_at": "2026-10-04T20:50:18.628355Z"
+}
