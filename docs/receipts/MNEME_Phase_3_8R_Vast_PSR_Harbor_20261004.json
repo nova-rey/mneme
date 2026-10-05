@@ -1,0 +1,63 @@
+{
+  "run_id": "phase38r-psr-harbor-20261004-r1",
+  "disposition": "NO_METHOD_FAILURE_BOUNDED_CONFIGURATION",
+  "answer": "No: trained PSR was byte-identical to baseline in both frozen evaluation contexts.",
+  "host": {
+    "model": "google/gemma-4-E4B-it",
+    "revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+    "representation": "HF/PyTorch BF16 surrogate; not asserted equivalent to deployed Q2 GGUF",
+    "layers": 42,
+    "hidden_size": 2560,
+    "torch": "2.6.0+cu124",
+    "cuda": "12.4"
+  },
+  "psr": {
+    "implementation": "Nokia Bell Labs steer-like-the-llm",
+    "commit": "3d916c618d146c5d657f055e432a432b0fa493c6",
+    "objective": "prompt_steering_imitation/psi residual MSE",
+    "focused_layer": 21,
+    "training_tasks": 4,
+    "epochs": 12,
+    "learning_rate": 0.003,
+    "pre_psi_loss": 5.74,
+    "post_psi_loss": 4.25,
+    "intervention_parameters_updated": true,
+    "base_model_unchanged": true,
+    "checkpoint_reload_same_output": true
+  },
+  "evaluations": [
+    {
+      "id": "eval-tool-lending",
+      "baseline_bytes": 4125,
+      "baseline_sha256": "5510978bfd489b3c",
+      "psr_equals_baseline": true,
+      "psr_off_equals_baseline": true,
+      "text_c_equals_baseline": false,
+      "untrained_control_equals_baseline": false
+    },
+    {
+      "id": "eval-clinic-room",
+      "baseline_bytes": 4094,
+      "baseline_sha256": "e5c8fa6ef32e3248",
+      "psr_equals_baseline": true,
+      "psr_off_equals_baseline": true,
+      "text_c_equals_baseline": false,
+      "untrained_control_equals_baseline": false
+    }
+  ],
+  "artifact_root": "/home/nyx/mneme_artifacts/phase38r-psr-harbor-20261004-r1",
+  "artifact_hashes": {
+    "training": "fb9fd5cf0818927b858a2a59223ae87ad87c129caa97eca4c20eafa462447711",
+    "checkpoint_reload": "10668938bf5c7de4820180087e7c747a5eb7c25df9f5aca7efb35d8d631bfb04",
+    "evaluation": "4460b90da6a5d613e121a43fba8ea763b5eaa5ece13dedaac45e2ab4d9d304e3"
+  },
+  "rental": {
+    "gpu": "RTX A5000",
+    "vram_mib": 24564,
+    "instance_id": "54215358",
+    "offer_id": "19951406",
+    "hourly_usd": 0.2445555556,
+    "estimated_charge_usd": 0.07,
+    "destroyed_and_verified": true
+  }
+}

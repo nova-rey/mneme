@@ -1679,3 +1679,8 @@ and dispositions remain unchanged.
 ## 2026-10-04 — Phase 3.8 closure
 
 - Closed the Phase 3.8 queue after the source audit, local host/resource audit, and compact receipt review passed. The result is a documented exact-host PSR implementation blocker, not a failed harbor semantic experiment; no GPU model coordinate was launched.
+
+## 2026-10-04 — Phase 3.8R Vast PSR harbor experiment
+
+- A bounded 24 GiB HF/PyTorch surrogate experiment ran Nokia Bell Labs Focused/PSR `psi` against the known harbor text-C effect. The trained intervention reduced residual imitation loss from 5.74 to 4.25 and reloaded, but its output was byte-identical to baseline and PSR-off on both frozen tool-lending and unrelated clinic-room contexts; Text-C remained visibly distinct.
+- Disposition: `NO — METHOD FAILURE FOR THIS BOUNDED CONFIGURATION`. The external artifact is hash-verified locally, and the temporary Vast RTX A5000 instance was destroyed and verified absent before receipt publication. No MNEME, SAA, developmental state, or deployed Q2 host was modified.
