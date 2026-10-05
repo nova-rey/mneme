@@ -1,0 +1,86 @@
+{
+  "analysis": {
+    "baselines_evaluated": 0,
+    "heldout_predictions": 0,
+    "linear_probes_fit": 0,
+    "reason": "no verified full feature shards"
+  },
+  "artifacts": {
+    "external_manifest_path": "/home/nyx/mneme_artifacts/phase39-relational-readout-20261004-r1/manifests/external-artifact-manifest.json",
+    "external_manifest_sha256": "cf93d8746b80039a73f519422fb7946c9d52a53c87c8ccb75d0472a30b85f789",
+    "root": "/home/nyx/mneme_artifacts/phase39-relational-readout-20261004-r1",
+    "transfer_status": "partial smoke transferred and verified; no full features produced"
+  },
+  "capture": {
+    "duration_seconds": 0.390178918838501,
+    "full_capture_examples": 0,
+    "layers": [
+      6,
+      13,
+      20,
+      27,
+      34,
+      41
+    ],
+    "repeat_max_abs_diff": 1.0,
+    "repeat_tolerance": 0.5,
+    "smoke_examples": 8,
+    "status": "FAILED_BEFORE_FULL_CAPTURE"
+  },
+  "cleanup": "OWNED_VAST_RESOURCES_DESTROYED_AND_VERIFIED",
+  "controls": {
+    "controller_mock": "PASS",
+    "lifecycle_mock": "PASS",
+    "live_smoke": "FAIL",
+    "remote_input_hash_verified": true
+  },
+  "corpus": {
+    "diagnostic": 240,
+    "frozen_corpus_sha256": "9400fc8173e372a2e1afe629e7c3b0cdd6c2663e6cb891ed111e47c57c1388a7",
+    "primary": 2400,
+    "test_domains": [
+      "waterworks",
+      "radio"
+    ],
+    "test_template_family": "primary-2"
+  },
+  "disposition": "APPARATUS_FAILURE_INCOMPLETE",
+  "host": {
+    "cuda": "12.4",
+    "hidden_size": 2560,
+    "layers": [
+      6,
+      13,
+      20,
+      27,
+      34,
+      41
+    ],
+    "model": "google/gemma-4-E4B-it",
+    "representation": "HF/BF16 surrogate, not local Q2 GGUF equivalence",
+    "revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+    "torch": "2.6.0+cu124",
+    "transformers": "5.19.0.dev0"
+  },
+  "limitations": [
+    "No semantic conclusion follows from failed capture.",
+    "The source of batch-versus-singleton numerical difference remains unresolved.",
+    "No further rental or capture was attempted under the one-fix bound."
+  ],
+  "plain_answer": "No readout result: a live batch-versus-singleton representation smoke failed before full capture, so no small reader was trained.",
+  "rental": {
+    "created_at_epoch": 1791161698.296184,
+    "destroyed_at_epoch": 1791162175.842445,
+    "destroyed_verified": true,
+    "duration_seconds": 477.54626083374023,
+    "estimated_charge_usd": 0.036228203265700074,
+    "gpu": "RTX 3090",
+    "instance_id": 54227145,
+    "observable_invoice_response_received": false,
+    "observable_invoice_status": "no parseable provider invoice response at immediate post-destroy check",
+    "selected_rate_usd_per_hour_including_storage_adjustment": 0.2731076388888889,
+    "vram_mib": 24576
+  },
+  "run_id": "phase39-relational-readout-20261004-r1",
+  "schema": "mneme.phase39.receipt.v1"
+}

@@ -1689,3 +1689,8 @@ and dispositions remain unchanged.
 
 - Froze and hash-validated the controller-side Phase 3.9 corpus: 2,400 primary matched synthetic relation scenes and 240 diagnostics, with five training domains, a validation domain, two entirely held-out domains, and withheld final template family.
 - Added the bounded read-only HF representation-capture worker, selected physical residual layers 6/13/20/27/34/41, controller-only regularized linear probe path, feature verification, lexical audit, lifecycle mock, and foreground Vast cleanup helper. No MNEME state, host, SAA, vector, writer, or developmental call was touched.
+
+## 2026-10-04 — Phase 3.9 relational-readout Vast disposition
+
+- The prepared-first Phase 3.9 controller apparatus and its 2,400-primary/240-control frozen corpus completed all local/mock checks, then an RTX 3090 HF/BF16 live capture smoke exposed a batch-versus-singleton selected-state difference of 1.0 after float16 export, exceeding the one bounded corrected tolerance of 0.5.
+- No full feature corpus, probe, prediction, reader metric, or scientific relational-readout conclusion was produced. The partial smoke, input hashes, lifecycle receipts, and external manifest are preserved. The sole owned Vast instance was transferred from, destroyed on the first cleanup attempt, and verified absent; no MNEME state or production runtime was changed.
