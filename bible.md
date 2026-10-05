@@ -1699,3 +1699,8 @@ and dispositions remain unchanged.
 ## 2026-10-04 — Phase 3.9 CI dependency correction
 
 - Phase 3.9's isolated controller probe code deliberately uses NumPy, but CI installs the declared development extra. The development extra now declares NumPy explicitly so the experimental script and its focused tests remain runnable in a clean CI checkout.
+
+## 2026-10-05 — Phase 3.9 r2 capture-contract correction
+
+- Preserved the Phase 3.9 r1 failed smoke as historical apparatus evidence. A new r2 capture root reuses its frozen corpus semantics but corrects the invalid repeat comparison: it requires exact float16 replay of the same sorted microbatches used for the full capture, retains batch-versus-singleton behavior as a non-gating diagnostic, and atomically persists selected smoke arrays before any replay assertion.
+- This is a capture-apparatus correction only. It does not alter MNEME, SAA, developmental state, the relation family, labels, domains, splits, feature layers, or the planned CPU-only reader analysis.

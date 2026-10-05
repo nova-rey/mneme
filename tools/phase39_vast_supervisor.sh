@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Phase 3.9 foreground-only lifecycle helper. It never stores a Vast credential.
 set -Eeuo pipefail
-ROOT="${PHASE39_ROOT:-/home/nyx/mneme_artifacts/phase39-relational-readout-20261004-r1}"
-RUN_ID="phase39-relational-readout-20261004-r1"
+ROOT="${PHASE39_ROOT:-/home/nyx/mneme_artifacts/phase39-relational-readout-20261005-r2}"
+RUN_ID="phase39-relational-readout-20261005-r2"
 STATE="$ROOT/manifests/lifecycle-state.json"
 LOG="$ROOT/logs/supervisor.log"
 mkdir -p "$ROOT/manifests" "$ROOT/logs" "$ROOT/incoming" "$ROOT/features"
@@ -21,7 +21,7 @@ p,phase,instance=sys.argv[1:]
 old={}
 try: old=json.load(open(p))
 except Exception: pass
-old.update({"run_id":"phase39-relational-readout-20261004-r1","phase":phase,"instance_id":instance or old.get("instance_id"),"updated_at":time.time()})
+old.update({"run_id":"phase39-relational-readout-20261005-r2","phase":phase,"instance_id":instance or old.get("instance_id"),"updated_at":time.time()})
 tmp=p+'.tmp'; open(tmp,'w').write(json.dumps(old,sort_keys=True,indent=2)+'\n'); __import__('os').replace(tmp,p)
 PY
 }

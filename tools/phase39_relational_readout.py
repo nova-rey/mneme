@@ -27,7 +27,7 @@ from typing import Any
 
 import numpy as np
 
-RUN_ID = "phase39-relational-readout-20261004-r1"
+RUN_ID = "phase39-relational-readout-20261005-r2"
 MODEL = "google/gemma-4-E4B-it"
 MODEL_REVISION = "ee0ef6023621cff504d758262d4e04895a5af4a2"
 PREDICATES = ("CAUSES", "ENABLES", "INHIBITS", "SUPPORTS", "DEPENDS_ON")
@@ -455,6 +455,13 @@ def build_corpus() -> dict[str, Any]:
             "test_template_families": ["primary-2"],
             "group_isolation": True,
         },
+        "prior_attempt": {
+            "run_id": "phase39-relational-readout-20261004-r1",
+            "status": "APPARATUS_FAILURE_INCOMPLETE",
+            "preserved": True,
+            "corpus_semantics_reused": True,
+            "reason_for_new_capture": "the former batch-versus-singleton repeat check did not test the fixed microbatch execution contract",
+        },
         "rows": all_rows,
     }
 
@@ -556,7 +563,7 @@ def remote_capture_source() -> str:
                 assert last==len(e["input_ids"])-1 and s<last and t<last
                 out.append({"row":r,"prompt":p,"input_ids":e["input_ids"],"source_position":s,"target_position":t,"final_position":last})
             return out
-        def capture(model,tok,items,batch_size):
+        def capture(model,tok,items,batch_size,forced_max_len=None):
             hooks=[]; collected={}; indices=torch.arange(batch_size,device="cuda")
             def hook(layer):
                 def on_output(_,__,output):
@@ -571,6 +578,9 @@ def remote_capture_source() -> str:
             try:
                 for first in range(0,len(items),batch_size):
                     batch=items[first:first+batch_size]; max_len=max(len(x["input_ids"]) for x in batch)
+                    if forced_max_len is not None:
+                        assert forced_max_len >= max_len
+                        max_len=forced_max_len
                     pad=int(tok.pad_token_id if tok.pad_token_id is not None else tok.eos_token_id)
                     ids=torch.full((len(batch),max_len),pad,dtype=torch.long,device="cuda"); mask=torch.zeros_like(ids)
                     poss=[]
@@ -599,14 +609,29 @@ def remote_capture_source() -> str:
             assert len(records)==len(rows) and len({r[0] for r in records})==len(rows)
             metrics={"mode":args.mode,"model":MODEL,"revision":REVISION,"layers":list(LAYERS),"hidden":model.config.hidden_size,"items":len(records),"elapsed_s":elapsed,"items_per_s":len(records)/max(elapsed,1e-9),"gpu_allocated":torch.cuda.memory_allocated(),"cuda":torch.version.cuda,"torch":torch.__version__,"transformers":__import__("transformers").__version__,"module_paths":[f"model.model.layers.{x}" for x in LAYERS]}
             if args.mode=="smoke":
-                # Same prepared first record twice must agree within BF16 rounding tolerance.
-                again=capture(model,tok,[items[0]],1)[0][1]; diff=float(np.max(np.abs(again.astype(np.float32)-records[0][1].astype(np.float32))))
-                metrics["repeat_max_abs_diff"] = diff
-                # BF16 CUDA repeated forwards are compared after float16 export; this
-                # tolerance permits only low-order numerical variation.
-                metrics["repeat_tolerance"] = 0.5
+                # Re-run exactly the same sorted microbatches.  That is the actual
+                # full-capture execution contract.  A separate cross-layout
+                # diagnostic is retained but does not substitute a second batch
+                # arrangement for the production capture path.
+                repeated=capture(model,tok,items,args.batch_size)
+                first_by_id={item[0]:item for item in records}
+                repeated_by_id={item[0]:item for item in repeated}
+                def selected(record): return np.concatenate((record[1].reshape(-1),record[2],record[3]))
+                def comparison(left,right):
+                    a=selected(left).astype(np.float32); b=selected(right).astype(np.float32)
+                    return {"max_abs":float(np.max(np.abs(a-b))),"mean_abs":float(np.mean(np.abs(a-b))),"exact_float16":bool(np.array_equal(a,b)),"relative_l2":float(np.linalg.norm(a-b)/max(np.linalg.norm(a),1e-12)),"cosine":float(np.dot(a,b)/max(np.linalg.norm(a)*np.linalg.norm(b),1e-12))}
+                exact=[comparison(first_by_id[key],repeated_by_id[key]) for key in sorted(first_by_id)]
+                pair=items[:args.batch_size]; padded=max(len(item["input_ids"]) for item in pair)
+                singleton=capture(model,tok,[pair[0]],1,forced_max_len=padded)[0]
+                layout=comparison(first_by_id[pair[0]["row"]["id"]],singleton)
+                with open(out/"smoke-features.npz.tmp","wb") as h:
+                    np.savez_compressed(h,ids=np.array([item[0] for item in records]),final=np.stack([item[1] for item in records]),roles=np.stack([item[2] for item in records]),embedding=np.stack([item[3] for item in records]),repeat_final=np.stack([item[1] for item in repeated]),repeat_roles=np.stack([item[2] for item in repeated]),repeat_embedding=np.stack([item[3] for item in repeated]))
+                Path(str(out/"smoke-features.npz.tmp")).replace(out/"smoke-features.npz")
+                metrics["same_microbatch_repeat"]={"count":len(exact),"all_exact_float16":all(item["exact_float16"] for item in exact),"max_abs":max(item["max_abs"] for item in exact),"max_relative_l2":max(item["relative_l2"] for item in exact),"min_cosine":min(item["cosine"] for item in exact)}
+                metrics["cross_layout_diagnostic"]={"same_padding_length":padded,"batch_to_singleton":layout}
+                metrics["smoke_features_sha256"]=digest_file(out/"smoke-features.npz")
                 put(out/"smoke.json",metrics)
-                assert np.isfinite(diff) and diff <= metrics["repeat_tolerance"]
+                assert metrics["same_microbatch_repeat"]["all_exact_float16"]
                 return
             shard_manifest=[]
             for shard_no,first in enumerate(range(0,len(records),args.shard_size)):
@@ -730,7 +755,8 @@ def prepare(root: Path) -> dict[str, Any]:
         "stop_rules": [
             "full tier cannot fit: use predefined full balanced 1200 tier",
             "neither tier fits: retain smoke then destroy",
-            "one bounded live apparatus correction",
+            "same-microbatch float16 replay must be exact before full capture",
+            "one bounded live apparatus correction after the new smoke only",
             "transfer then destroy before CPU analysis",
         ],
         "expected_feature_bytes_float16": (PRIMARY_COUNT + DIAGNOSTIC_COUNT)

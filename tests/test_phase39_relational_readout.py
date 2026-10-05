@@ -75,6 +75,10 @@ def test_linear_reader_finds_toy_signal_and_uses_masked_labels() -> None:
 
 def test_remote_capture_source_compiles_without_model_runtime(tmp_path: Path) -> None:
     path = tmp_path / "capture.py"
-    path.write_text(phase39.remote_capture_source(), encoding="utf-8")
+    remote = phase39.remote_capture_source()
+    path.write_text(remote, encoding="utf-8")
     source = compile(path.read_text(encoding="utf-8"), str(path), "exec")
     assert source is not None
+    assert "same_microbatch_repeat" in remote
+    assert "cross_layout_diagnostic" in remote
+    assert "smoke-features.npz" in remote
