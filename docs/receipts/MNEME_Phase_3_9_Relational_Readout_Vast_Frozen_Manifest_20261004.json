@@ -1,0 +1,72 @@
+{
+  "artifact_root": "/home/nyx/mneme_artifacts/phase39-relational-readout-20261004-r1",
+  "created_at": "2026-10-05T00:51:53.473049+00:00",
+  "diagnostic_examples": 240,
+  "expected_feature_bytes_float16": 256819200,
+  "features": {
+    "dtype": "float16",
+    "embedding": [
+      2560
+    ],
+    "final": [
+      6,
+      2560
+    ],
+    "roles": [
+      30720
+    ],
+    "shard_size": 128
+  },
+  "frozen_hashes": {
+    "corpus": "9400fc8173e372a2e1afe629e7c3b0cdd6c2663e6cb891ed111e47c57c1388a7",
+    "remote_capture_source": "a683fa87f57b8252dc7fe6e0c5bde6eaeb85959422b6766fbc00841b9eae457e"
+  },
+  "gpu_policy": {
+    "acquisition_minutes": 30,
+    "capture_only": true,
+    "cleanup_reserve_minutes": 15,
+    "max_cumulative_minutes": 120,
+    "max_hourly_usd": 0.5,
+    "max_total_usd": 2.0,
+    "offer_attempt_cap": 10,
+    "preferred_vram_gib": 24
+  },
+  "host_representation": "HF/BF16 research surrogate; not equivalent claim for local Q2 GGUF",
+  "layers_physical_zero_based": [
+    6,
+    13,
+    20,
+    27,
+    34,
+    41
+  ],
+  "model": "google/gemma-4-E4B-it",
+  "model_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+  "positions": [
+    "final_nonpad_input",
+    "ordered_source_query_mention",
+    "ordered_target_query_mention",
+    "mean_input_embedding"
+  ],
+  "primary_examples": 2400,
+  "purpose": "read-only relational representation capture and CPU linear probes",
+  "run_id": "phase39-relational-readout-20261004-r1",
+  "schema": "mneme.phase39.manifest.v1",
+  "seed": 390041,
+  "selection": {
+    "regularized_linear_only": true,
+    "test_labels_hidden_until_selection": true,
+    "validation_only": [
+      "feature_view",
+      "layer",
+      "regularization",
+      "threshold"
+    ]
+  },
+  "stop_rules": [
+    "full tier cannot fit: use predefined full balanced 1200 tier",
+    "neither tier fits: retain smoke then destroy",
+    "one bounded live apparatus correction",
+    "transfer then destroy before CPU analysis"
+  ]
+}

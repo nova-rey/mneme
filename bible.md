@@ -1684,3 +1684,8 @@ and dispositions remain unchanged.
 
 - A bounded 24 GiB HF/PyTorch surrogate experiment ran Nokia Bell Labs Focused/PSR `psi` against the known harbor text-C effect. The trained intervention reduced residual imitation loss from 5.74 to 4.25 and reloaded, but its output was byte-identical to baseline and PSR-off on both frozen tool-lending and unrelated clinic-room contexts; Text-C remained visibly distinct.
 - Disposition: `NO — METHOD FAILURE FOR THIS BOUNDED CONFIGURATION`. The external artifact is hash-verified locally, and the temporary Vast RTX A5000 instance was destroyed and verified absent before receipt publication. No MNEME, SAA, developmental state, or deployed Q2 host was modified.
+
+## 2026-10-04 — Phase 3.9 relational-readout prepared-first apparatus
+
+- Froze and hash-validated the controller-side Phase 3.9 corpus: 2,400 primary matched synthetic relation scenes and 240 diagnostics, with five training domains, a validation domain, two entirely held-out domains, and withheld final template family.
+- Added the bounded read-only HF representation-capture worker, selected physical residual layers 6/13/20/27/34/41, controller-only regularized linear probe path, feature verification, lexical audit, lifecycle mock, and foreground Vast cleanup helper. No MNEME state, host, SAA, vector, writer, or developmental call was touched.
