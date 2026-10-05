@@ -1694,3 +1694,8 @@ and dispositions remain unchanged.
 
 - The prepared-first Phase 3.9 controller apparatus and its 2,400-primary/240-control frozen corpus completed all local/mock checks, then an RTX 3090 HF/BF16 live capture smoke exposed a batch-versus-singleton selected-state difference of 1.0 after float16 export, exceeding the one bounded corrected tolerance of 0.5.
 - No full feature corpus, probe, prediction, reader metric, or scientific relational-readout conclusion was produced. The partial smoke, input hashes, lifecycle receipts, and external manifest are preserved. The sole owned Vast instance was transferred from, destroyed on the first cleanup attempt, and verified absent; no MNEME state or production runtime was changed.
+
+
+## 2026-10-04 — Phase 3.9 CI dependency correction
+
+- Phase 3.9's isolated controller probe code deliberately uses NumPy, but CI installs the declared development extra. The development extra now declares NumPy explicitly so the experimental script and its focused tests remain runnable in a clean CI checkout.
