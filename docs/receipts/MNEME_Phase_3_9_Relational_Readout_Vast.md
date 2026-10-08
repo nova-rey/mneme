@@ -1,33 +1,26 @@
-# MNEME Phase 3.9 — Relational Readout: Prepared-First Vast.ai Experiment
+# MNEME Phase 3.9 Relational Readout — Current Disposition
 
-**Could our small reader recognize relationships in Gemma on new subjects and new wording, rather than just spotting familiar words?** **APPARATUS FAILURE / INCOMPLETE.** No valid frozen-host feature corpus was captured, so no reader was trained and this run says nothing about whether Gemma does or does not represent the five relations.
+**Could our small reader recognize relationships in Gemma on new subjects and new wording, rather than just spotting familiar words?** No result yet: Phase 3.9 is **APPARATUS FAILURE / INCOMPLETE**. Neither attempt produced a locally verified feature dataset, reader metrics, or held-out predictions.
 
-## What happened
+## Attempt r1
 
-The prepared experiment passed all controller-side checks: a frozen corpus of 2,400 primary matched synthetic scenes plus 240 controls, held-out domains (`waterworks`, `radio`), a held-out surface-template family, group isolation, lexical audit, mock feature serialization/restart, lifecycle mock, controller storage check, Vast authentication, direct SSH, and a live RTX 3090/CUDA host check.
+The original smoke compared representations captured in two-item padded batches with a singleton. Its maximum absolute float16 difference was 1.0, above the corrected 0.5 limit. That comparison did not reproduce the fixed microbatch layout planned for full capture, so it was insufficient to identify a general capture instability. The r1 result remains preserved as an invalid/incomplete apparatus attempt.
 
-The required live representation-capture smoke then exercised eight inputs at physical layers 6, 13, 20, 27, 34, and 41 on the pinned HF/BF16 surrogate (`google/gemma-4-E4B-it`, revision `ee0ef6023621cff504d758262d4e04895a5af4a2`; 42 layers, hidden size 2560; Torch 2.6.0+cu124; CUDA 12.4; Transformers 5.19.0.dev0). Hooks fired at the intended module paths, values were finite, and capture took 0.390 seconds for eight inputs.
+## Attempt r2
 
-The repeatability check failed before any full-corpus capture. The original `0.02` absolute tolerance was too tight for exported BF16/float16 values, so the one allowed bounded apparatus correction recorded the measured difference and set a documented `0.5` tolerance. The corrected repeat still produced a maximum absolute difference of **1.0**, exceeding that tolerance. The smoke record was atomically written before it failed; its SHA-256 is `84c18b46e39c470e5c9f7a637d8652bf6e24cdc95e471f2f7d583486c13c7ab5`.
+I preserved r1 and corrected only the repeat check: r2 replayed the same sorted microbatches, saved selected smoke arrays before the assertion, and retained batch-versus-singleton comparison as a diagnostic. The frozen synthetic corpus semantics were reused; no MNEME state, SAA, model treatment, labels, split, domain, or feature layer changed.
 
-The difference is specifically between a representation captured in a padded two-item batch and a repeated singleton capture. It may be a batching/numerical property of this HF/BF16 host or a capture-path issue. This run did not establish which, and the experiment contract allowed one bounded live correction only. No full feature shards, reader predictions, probes, held-out metrics, or semantic conclusions were produced.
+The r2 remote process returned exit code 0. An SSH inspection then observed `smoke.json` and `smoke-features.npz` on the RTX 3090 Ti instance. Before these files were copied and hash-verified on the controller, the instance was stopped and SSH became unavailable. They could not be recovered through the authorized transfer path. Therefore I cannot verify their metrics or claim that the r2 smoke passed. No full-corpus capture, reader fit, baseline comparison, or semantic conclusion exists.
 
-## Frozen intended analysis, not executed analysis
+## Rental cleanup and charges
 
-Had capture passed, the controller would have fit only regularized linear binary readers for `CAUSES`, `ENABLES`, `INHIBITS`, `SUPPORTS`, and `DEPENDS_ON`; unknown labels would have remained masked. Validation alone would select layer, feature view, regularization, and threshold. Final evaluation would compare held-out domains, role reversals, entity renaming, same-words/different-structure controls, prevalence, length/position/entity, word/character n-grams, input embeddings, and grouped shuffled labels. This follows the control-task warning from Hewitt and Liang, [*Designing and Interpreting Probes with Control Tasks*](https://aclanthology.org/D19-1275/): raw probe accuracy is not evidence of an abstract readout when a probe can exploit input shortcuts.
+All three r2 instances were destroyed, and a fresh Vast account listing showed none of their IDs present. Their IDs were `54230143`, `54230791`, and `54231336`. The r1 instance was `54227145`. The provider invoice attributes $0.067 to r1 and **$5.896** to r2, for **$5.963** total against the authorized $2 cap. That is an overrun of **$3.963**. Instance `54231336` accounts for $4.627 of GPU charges over 18.759 billed hours, $1.225 of storage over 88.199 hours, $0.037 download, and $0.001 upload. The controller watchdog did not destroy the instance at its recorded deadline; after the experiment process ended, the resource remained billable until cleanup was performed on discovery. All three r2 IDs are now destroyed and absent from the account listing.
 
-The committed prediction CSV contains the eight smoke-coordinate IDs with blank predictions and the explicit reason `apparatus_failure_before_probe`; it is not a substitute for a readout result.
+No new rental should be launched under the existing cap. Continuing the scientific readout requires an owner decision on a new spend limit and a stronger independently supervised rental lifecycle.
 
-## Evidence, cost, and cleanup
+## Evidence
 
-The canonical partial artifact is retained outside Git at `/home/nyx/mneme_artifacts/phase39-relational-readout-20261004-r1`. Its directly readable external manifest is committed as [MNEME_Phase_3_9_Relational_Readout_Vast_External_Artifact_Manifest_20261004.json](MNEME_Phase_3_9_Relational_Readout_Vast_External_Artifact_Manifest_20261004.json), including hashes for the corpus, source, smoke, logs, input-transfer verification, and lifecycle receipt. Model weights/cache, account credentials, and account-private metadata were not copied into Git.
-
-One labeled Vast instance was created: ID `54227145`, an RTX 3090 with 24,576 MiB advertised VRAM. Its stated storage-adjusted rate was $0.2731076389/hour. It existed for 477.55 seconds; the estimated charge is **$0.0363**. An immediate invoice query did not provide a parseable attributable line item, so the estimate is not represented as an observed bill.
-
-The partial smoke was transferred and parsed on the controller before teardown. The instance destroy request succeeded on the first attempt, and a fresh account listing confirmed that ID absent. **OWNED VAST RESOURCES DESTROYED AND VERIFIED.** This follows Vast’s distinction between stopped instances, which retain billable storage, and destroyed instances, which delete the resource ([instance lifecycle documentation](https://docs.vast.ai/guides/instances/manage-instances), [billing documentation](https://docs.vast.ai/guides/reference/billing)).
-
-## Boundary
-
-No MNEME instance, ON-30, CompactStore, SAA, introspection, developmental history, production Q2 runtime, model weights, vector, intervention, writer, or base model was modified. The HF/BF16 host remains a research surrogate and was never claimed equivalent to the local Q2 GGUF host.
-
-A future retry would need a separately authorized, evidence-backed change to the repeatability/capture protocol; it must not silently treat this smoke as a successful full capture or reuse absent features.
+- r1 partial artifact root: `/home/nyx/mneme_artifacts/phase39-relational-readout-20261004-r1`
+- r2 artifact root: `/home/nyx/mneme_artifacts/phase39-relational-readout-20261005-r2`
+- r2 incident receipt: [MNEME_Phase_3_9_Relational_Readout_Vast_R2_Incident_20261008.json](MNEME_Phase_3_9_Relational_Readout_Vast_R2_Incident_20261008.json)
+- frozen corpus remains directly available in the committed r1 package; r2 corpus/source hashes, filtered invoices, and locally retained operational receipts are in the incident manifest.

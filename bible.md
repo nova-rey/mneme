@@ -1704,3 +1704,8 @@ and dispositions remain unchanged.
 
 - Preserved the Phase 3.9 r1 failed smoke as historical apparatus evidence. A new r2 capture root reuses its frozen corpus semantics but corrects the invalid repeat comparison: it requires exact float16 replay of the same sorted microbatches used for the full capture, retains batch-versus-singleton behavior as a non-gating diagnostic, and atomically persists selected smoke arrays before any replay assertion.
 - This is a capture-apparatus correction only. It does not alter MNEME, SAA, developmental state, the relation family, labels, domains, splits, feature layers, or the planned CPU-only reader analysis.
+
+## 2026-10-08 — Phase 3.9 r2 evidence-recovery and billing incident
+
+- The r2 capture worker completed its smoke command and remote inspection saw both `smoke.json` and `smoke-features.npz`; neither file was transferred and hash-verified before Vast instance 54231336 became stopped. The smoke result is therefore unavailable for scientific or qualification claims. Attempts 54230143, 54230791, and 54231336 are now destroyed and absent from the final provider listing.
+- The provider invoice query attributes $5.896 to r2 and $0.067 to r1, totaling $5.963 against the $2 authorization. The cap was exceeded after the r2 resource remained billable beyond the supervised execution window. No further rental is authorized under this cap; the full readout remains incomplete pending an owner decision.
