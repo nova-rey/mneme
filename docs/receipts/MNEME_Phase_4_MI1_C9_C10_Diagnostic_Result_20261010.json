@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "classification": "CALIBRATION_DIAGNOSTICS_NO_LATENT_UPTAKE",
+  "C9": {
+    "plan_sha256": "14f7bbb256e75a3c2d6d597d0ff155aff34d38a5235b79847b081b96864e3c2e",
+    "coordinates": 10,
+    "complete": 10,
+    "failed": 0,
+    "finish_reasons": {"stop": 10},
+    "result_by_condition": {
+      "no_bank": {"unknown": 2, "expected_unknown": 2},
+      "latent_A": {"Beka_with_path": 0, "expected": 2, "unknown": 2},
+      "latent_B": {"Tumo_with_path": 0, "expected": 2, "unknown": 2},
+      "latent_irrelevant": {"unknown": 2, "expected_unknown": 2},
+      "visible_A": {"Beka_with_path": 1, "expected": 2, "other": 1}
+    },
+    "interpretation": "Removing the restrictive only-written-rules wording and stating that relevant background memory may be used did not make the raw bank's rules behaviorally available. Both target-bank reasonings conclude that no background rules were provided. The visible control is one of two on this new wording and is not treated as a clean control pass."
+  },
+  "C10": {
+    "plan_sha256": "2eb8519a5c8dd9ed21b09e306eb5bf6971ddf45d54eeac7a6090eafde3ed9430",
+    "coordinates": 8,
+    "complete": 8,
+    "failed": 0,
+    "finish_reasons": {"stop": 8},
+    "result_by_condition": {
+      "context_only_A": {"Beka_with_path": 0, "expected": 2, "unknown": 2},
+      "raw_plus_context_A": {"Beka_with_path": 0, "expected": 2, "unknown": 2},
+      "context_only_B": {"Tumo_with_path": 0, "expected": 2, "unknown": 2},
+      "raw_plus_context_B": {"Tumo_with_path": 0, "expected": 2, "unknown": 2}
+    },
+    "bank_construction": {
+      "wrapper_template": "Stored background rule record. Preserve its directed relations and stated conditions:\n{descriptor}\nEnd of stored rule record.",
+      "raw_slots": 81,
+      "wrapped_tokens": 102,
+      "retained_contextual_descriptor_slots": 80,
+      "raw_plus_context_slots": 161,
+      "selected_sites_unchanged": true,
+      "bank_logit_bias": 0.0
+    },
+    "interpretation": "The first paper-style contextualized descriptor variants also did not make the facts usable on A01. Gemma still returned unknown. This rules out raw-only versus contextualized encoding as a sufficient correction on this case; it does not falsify MI generally."
+  },
+  "selected_site_attention_diagnostic": {
+    "source": "/home/nyx/mneme-artifacts/phase4-mi1/test-abc/A01-query.mi1qry",
+    "sha256": "fd8a72df5a519a7e0c15fe663cceefff7ead7d5904202e0fe3cb2a4ca9b71feb",
+    "prompt_tokens": 145,
+    "method": "last-prompt-token attention mass to appended bank slots, grouped by query head at selected layers",
+    "selected_head_bank_attention_mass": {
+      "layer_2": {"0.886137": [4], "0.583626": [5], "0.002032": [6], "0.133496": [7]},
+      "layer_6": {"0.126562": [4], "0.037205": [5], "0.902888": [6], "0.941059": [7]},
+      "layer_8": {"0.168328": [0], "0.478546": [1], "0.794743": [2], "0.556692": [3]},
+      "layer_28": {"0.769741": [4], "0.937613": [5], "0.367533": [6], "0.467297": [7]}
+    },
+    "interpretation": "The selected sites do consume a substantial fraction of attention mass from side-bank slots on this prompt. That establishes numeric routing, not semantic uptake."
+  },
+  "next_frozen_plan": "docs/receipts/MNEME_Phase_4_MI1_C11_Query_Site_Diagnostic_Freeze_20261010.json"
+}
