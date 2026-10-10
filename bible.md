@@ -1730,3 +1730,8 @@ and dispositions remain unchanged.
 
 - Added an append-only call journal that fsyncs exact requests before inference and results/failures before advancing. Reopen reconciles recoverable request/result files left just before an index replace, counts unresolved requests against the hard generation ceiling, and rejects conflicts or hash mismatches.
 - Added a deterministic Test-A replay scorer and CLI. The full frozen 144-coordinate denominator is retained, including not-run, failed, malformed, wrong-answer, and wrong-path cases; no model calls or MNEME state were used.
+
+## 2026-10-10 — Phase 4-MI1 staged-write recovery
+
+- Extended journal reopen to promote complete fsynced request/result temp files left before atomic rename. An incomplete, conflicting, or identity-mismatched stage now blocks further experiment work rather than being silently skipped.
+- Added crash-window tests; MI1 focused tests pass and the frozen suite regenerates byte-identically.

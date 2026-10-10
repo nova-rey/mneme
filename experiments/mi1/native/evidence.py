@@ -70,7 +70,45 @@ class EvidenceJournal:
                     {"schema_version": 1, "hard_call_limit": hard_call_limit, "attempts": []}
                 ),
             )
+        self._recover_staged_attempt_files()
         self._recover_unindexed_files(self._check_index())
+
+    def _recover_staged_attempt_files(self) -> None:
+        """Promote a complete fsynced attempt temp left before atomic rename."""
+        endings = (".request.json.", ".complete.json.", ".failed.json.")
+        for staged in self.attempts.glob(".*.tmp"):
+            stem = staged.name[1 : -len(".tmp")]
+            marker = next((ending for ending in endings if ending in stem), None)
+            if marker is None:
+                raise ValueError(f"unrecognized staged evidence file: {staged.name}")
+            attempt_id = stem.split(marker, 1)[0]
+            if not _SAFE_ID.fullmatch(attempt_id):
+                raise ValueError(f"invalid staged attempt ID: {staged.name}")
+            suffix = marker[:-1]
+            target = self.attempts / f"{attempt_id}{suffix}"
+            value = json.loads(staged.read_text(encoding="utf-8"))
+            if value.get("attempt_id") != attempt_id:
+                raise ValueError(f"staged evidence identity mismatch: {staged.name}")
+            if suffix != ".request.json":
+                expected_status = "COMPLETE" if suffix == ".complete.json" else "FAILED"
+                if value.get("status") != expected_status:
+                    raise ValueError(f"staged evidence status mismatch: {staged.name}")
+                request_path = self.attempts / f"{attempt_id}.request.json"
+                if not request_path.exists():
+                    raise ValueError(f"staged outcome has no request: {staged.name}")
+            if target.exists():
+                if target.read_bytes() != staged.read_bytes():
+                    raise ValueError(
+                        f"staged evidence conflicts with published file: {target.name}"
+                    )
+                staged.unlink()
+                continue
+            os.replace(staged, target)
+            directory = os.open(self.attempts, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
+            try:
+                os.fsync(directory)
+            finally:
+                os.close(directory)
 
     def _check_index(self) -> dict[str, Any]:
         index = json.loads(self._index_path.read_text(encoding="utf-8"))

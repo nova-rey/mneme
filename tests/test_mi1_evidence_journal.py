@@ -94,3 +94,33 @@ def test_reopen_rejects_conflicting_unindexed_outcomes(tmp_path: Path) -> None:
         )
     with pytest.raises(ValueError, match="conflicting evidence set"):
         EvidenceJournal(tmp_path, hard_call_limit=2)
+
+
+def test_reopen_promotes_fsynced_staged_request_and_result(tmp_path: Path) -> None:
+    EvidenceJournal(tmp_path, hard_call_limit=2)
+    attempt_dir = tmp_path / "attempts"
+    request = {"attempt_id": "staged", "metadata": {}, "request": {"prompt": "exact"}}
+    (attempt_dir / ".staged.request.json.abc123.tmp").write_text(
+        json.dumps(request, sort_keys=True, indent=2) + "\n", encoding="utf-8"
+    )
+    reopened = EvidenceJournal(tmp_path, hard_call_limit=2)
+    assert reopened.verify() == {"REQUEST_DURABLE": 1}
+    outcome = {
+        "attempt_id": "staged",
+        "status": "COMPLETE",
+        "metadata": {},
+        "payload": {"final": "ok"},
+    }
+    (attempt_dir / ".staged.complete.json.def456.tmp").write_text(
+        json.dumps(outcome, sort_keys=True, indent=2) + "\n", encoding="utf-8"
+    )
+    reopened = EvidenceJournal(tmp_path, hard_call_limit=2)
+    assert reopened.verify() == {"COMPLETE": 1}
+
+
+def test_reopen_stops_on_incomplete_staged_result(tmp_path: Path) -> None:
+    EvidenceJournal(tmp_path, hard_call_limit=2)
+    attempt_dir = tmp_path / "attempts"
+    (attempt_dir / ".call-1.complete.json.partial.tmp").write_text("{", encoding="utf-8")
+    with pytest.raises(json.JSONDecodeError):
+        EvidenceJournal(tmp_path, hard_call_limit=2)
