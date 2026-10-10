@@ -136,6 +136,19 @@
         "selected_site_max": 0.8735072016716003,
         "unselected_site_mass_max": 0.0
       }
+    },
+    "capture_context_size": 8192,
+    "capture_batch_size": 109,
+    "context_equivalence_check": {
+      "512_context_capture_same_hash_as_8192_context_capture": true,
+      "broad_moderate_sha256": "0eeb4e81713351b90a18cf30d040f7071b0b320b0defdc147c233d81851728df",
+      "sparse_moderate_sha256": "bd076cfe77a265bcc642a7dbad8a2b452cfbe14b518b2c38234a0f4d355f3ea9",
+      "note": "An initial 8192 context capture with batch=8192 exceeded 6 GiB VRAM (7.94 GiB compute buffer request). A temporary diagnostic-only tool revision set batch/ubatch to the 109 prompt tokens while retaining context=8192; it completed and produced byte-identical captures."
+    },
+    "temporary_capture_helper": {
+      "source_sha256": "296ba4b45bde5bda1bc0d36ff35e11f43d57082e1fc2c1a8307c7b8073a41f89",
+      "binary_sha256": "70445965279d5787b627346541c828f4ebc052e91fd517836f2b06528a103634",
+      "source_path": "/home/nyx/mneme-artifacts/phase4-mi1/calibration-C8/attention-capture/mi1_native_query_capture_ctx.cpp"
     }
   },
   "diagnosis": {
