@@ -28,6 +28,19 @@
     "total_preplanned": 436,
     "untouched_confirmation_reserve": 48
   },
+  "generation_config": {
+    "chat_template_kwargs": {
+      "enable_thinking": true
+    },
+    "max_tokens": 2048,
+    "reasoning_format": "deepseek",
+    "sampler": {
+      "min_p": 0.05,
+      "temperature": 0.35,
+      "top_k": 40,
+      "top_p": 0.9
+    }
+  },
   "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
   "host_model": "google/gemma-4-E4B-it",
   "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",

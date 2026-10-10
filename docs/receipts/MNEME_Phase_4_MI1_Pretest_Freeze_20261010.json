@@ -16,7 +16,10 @@
       "top_p": 0.9,
       "min_p": 0.05
     },
-    "seeds": [34031, 34037],
+    "seeds": [
+      34031,
+      34037
+    ],
     "mean_latency_seconds": 4.7527,
     "raw_evidence": {
       "path": "/home/nyx/mneme-artifacts/phase4-mi1/calibration/visible-calibration-20261010.json",
@@ -38,11 +41,20 @@
     "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU, 6144 MiB",
     "gpu_driver": "595.91.07",
     "build": "Release, GGML_CUDA=ON, GGML_CUDA_FA=ON",
-    "server_args": ["-ngl", "99", "-c", "8192", "--reasoning-format", "deepseek", "--no-warmup", "--no-webui"]
+    "server_args": [
+      "-ngl",
+      "99",
+      "-c",
+      "8192",
+      "--reasoning-format",
+      "deepseek",
+      "--no-warmup",
+      "--no-webui"
+    ]
   },
   "frozen_suite": {
     "path": "experiments/mi1/fixtures/mi1_frozen_suite.json",
-    "sha256": "5205a549154716d92ef3c6ab8c0e5d9fc7767366646ffcd98d0b553698c63e9a",
+    "sha256": "0a75c1001ba031715705b4db24953a6e160dd8b5c93518efd67152156e912afe",
     "test_a_generations": 144,
     "test_b_generations": 108,
     "test_c_generations": 16,
@@ -51,7 +63,22 @@
     "calibration_ceiling": 120,
     "total_preplanned_including_calibration_ceiling": 436,
     "authorized_hard_max": 800,
-    "scored_generations_run": 0
+    "scored_generations_run": 0,
+    "generation_config": {
+      "sampler": {
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9,
+        "min_p": 0.05
+      },
+      "max_tokens": 2048,
+      "chat_template_kwargs": {
+        "enable_thinking": true
+      },
+      "reasoning_format": "deepseek",
+      "cache_prompt": false
+    },
+    "status": "FIXTURES_AND_GENERATION_CONFIG_FROZEN_PRE_SITE_CALIBRATION"
   },
   "remaining_pre_scored_gates": [
     "site-selection calibration and freeze",

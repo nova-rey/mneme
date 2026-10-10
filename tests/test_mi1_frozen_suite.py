@@ -133,6 +133,12 @@ def test_calibration_is_separate_and_seeded() -> None:
     assert suite["test_a"]["seeds"] == [34001, 34019]
     assert suite["test_b"]["seeds"] == [34001, 34019]
     assert suite["cache_prompt"] is False
+    assert suite["generation_config"] == {
+        "sampler": {"temperature": 0.35, "top_k": 40, "top_p": 0.90, "min_p": 0.05},
+        "max_tokens": 2048,
+        "chat_template_kwargs": {"enable_thinking": True},
+        "reasoning_format": "deepseek",
+    }
 
 
 def test_update_and_new_bank_coordinates_are_fully_frozen() -> None:

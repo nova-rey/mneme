@@ -1735,3 +1735,8 @@ and dispositions remain unchanged.
 
 - Extended journal reopen to promote complete fsynced request/result temp files left before atomic rename. An incomplete, conflicting, or identity-mismatched stage now blocks further experiment work rather than being silently skipped.
 - Added crash-window tests; MI1 focused tests pass and the frozen suite regenerates byte-identically.
+
+## 2026-10-10 — Phase 4-MI1 generation configuration freeze
+
+- Before any scored latent generation, pinned the sampler, 2048-token output limit, reasoning-template setting, reasoning channel, and prompt-cache disablement in the suite and freeze receipt. These settings match the completed visible comprehension calibration; prompts, banks, answer keys, seeds, and conditions were unchanged.
+- Regenerated the suite byte-identically from its builder and added a regression assertion for the fixed generation configuration. No model calls were added.

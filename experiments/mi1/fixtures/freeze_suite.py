@@ -399,6 +399,12 @@ def build_suite() -> dict[str, Any]:
         "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
         "reasoning": "ON",
         "cache_prompt": False,
+        "generation_config": {
+            "sampler": {"temperature": 0.35, "top_k": 40, "top_p": 0.90, "min_p": 0.05},
+            "max_tokens": 2048,
+            "chat_template_kwargs": {"enable_thinking": True},
+            "reasoning_format": "deepseek",
+        },
         "seeds": SEEDS,
         "generation_budget": {
             "calibration_max": 120,
