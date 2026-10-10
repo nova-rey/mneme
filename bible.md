@@ -1854,3 +1854,8 @@ and dispositions remain unchanged.
 
 - Reconstructed no-bank prompts for calibration-only fixtures A01-A04 from the already frozen C11 fixture descriptions. Performed prefill-only captures on the exact pinned Q2 GGUF, with zero generated tokens, and scored Eq.3 query-to-target-versus-opposite-bank alignment using Gemma4's shared-KV source-layer mapping. Captures and raw source banks remain in the external MI1 artifact directory with hashes; selection code is covered by focused synthetic tests.
 - C11 selected polarity A groups at layers 31, 34, 7, 38 and polarity B groups at layers 34, 39, 12, 6 (each expanded to its four contiguous Q heads). This site result is frozen before any held-out C11 generation; it does not use response outputs. Result: `docs/receipts/MNEME_Phase_4_MI1_C11_Query_Site_Selection_20261010.json`.
+
+## 2026-10-10 MI1 C11 held-out execution freeze
+
+- Expanded the committed C11 design and C11 query-site selection into an exact 144-coordinate runner plan, preserving all eight A05-A12 fixtures, both seeds, nine conditions, the original expected answers, reasoning ON, fixed sampler, and `cache_prompt=false`. No holdout inference has been issued at this freeze.
+- Built 48 bank variants (16 raw source banks × three selectors: polarity-selected, old sparse, or matched random) with neutral bank bias. Per-call evidence will be written through `EvidenceJournal`; the remaining C11 generation allowance is counted against the existing experiment ledger. Execution plan: `docs/receipts/MNEME_Phase_4_MI1_C11_Execution_Freeze_20261010.json`.
