@@ -61,9 +61,9 @@ class EvidenceJournal:
     Request and outcome artifacts are immutable; only the small index is replaced.
     """
 
-    def __init__(self, root: Path, *, hard_call_limit: int = 800):
-        if hard_call_limit <= 0:
-            raise ValueError("hard_call_limit must be positive")
+    def __init__(self, root: Path, *, hard_call_limit: int | None = 800):
+        if hard_call_limit is not None and hard_call_limit <= 0:
+            raise ValueError("hard_call_limit must be positive or None")
         self.root = root
         self.attempts = root / "attempts"
         self.hard_call_limit = hard_call_limit
@@ -228,7 +228,7 @@ class EvidenceJournal:
                     changed = True
                 elif row.get("outcome_file") != outcome.name:
                     raise ValueError(f"conflicting indexed outcome for {attempt_id}")
-        if len(index["attempts"]) > self.hard_call_limit:
+        if self.hard_call_limit is not None and len(index["attempts"]) > self.hard_call_limit:
             raise RuntimeError("recovered evidence exceeds authorized MI1 model-call limit")
         if changed:
             index["attempts"].sort(key=lambda row: row["attempt_id"])
@@ -244,7 +244,7 @@ class EvidenceJournal:
         index = self._recover_unindexed_files(self._check_index())
         if any(row["attempt_id"] == attempt_id for row in index["attempts"]):
             raise FileExistsError(f"attempt already exists: {attempt_id}")
-        if len(index["attempts"]) >= self.hard_call_limit:
+        if self.hard_call_limit is not None and len(index["attempts"]) >= self.hard_call_limit:
             raise RuntimeError("authorized MI1 model-call limit reached")
         stream_name = metadata.get("stream_file")
         stream_path: Path | None = None

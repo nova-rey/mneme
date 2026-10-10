@@ -15,6 +15,7 @@ from experiments.mi1.native.bank import (
     augmented_attention,
     encode_slots,
     generation_side_attention,
+    native_bank_fingerprint,
 )
 
 
@@ -240,6 +241,33 @@ def test_reads_exact_tokenwise_native_encoder_capture(tmp_path: Path) -> None:
     assert bank.keys[0].shape == (2, 2, 4)
     assert bank.values[3].shape == (2, 1, 4)
     np.testing.assert_array_equal(bank.keys[3].reshape(-1), np.arange(8) + 3)
+
+
+def test_native_bank_fingerprint_matches_pinned_server_content_hash(tmp_path: Path) -> None:
+    manifest = BankManifest(
+        model_sha256="a" * 64,
+        llama_commit="4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+        architecture="gemma4-e4b",
+        layer_ids=(1,),
+        head_dim=2,
+        kv_heads_by_layer=(1,),
+        slot_count=1,
+        query_sites=((1, 0),),
+        bank_logit_bias=0.0,
+    )
+    bank = MemoryBank(
+        manifest,
+        {1: np.array([[[1.0, 2.0]]], dtype=np.float32)},
+        {1: np.array([[[3.0, 4.0]]], dtype=np.float32)},
+        "fingerprint fixture",
+        (17,),
+    )
+    path = tmp_path / "fingerprint.mi1"
+    bank.save_native(path)
+    assert native_bank_fingerprint(path) == "afaf47bf727d8906"
+    path.write_bytes(path.read_bytes()[:-1])
+    with pytest.raises(ValueError, match="truncated|trailing"):
+        native_bank_fingerprint(path)
 
 
 def test_native_encoder_capture_rejects_truncation_and_trailing_bytes(

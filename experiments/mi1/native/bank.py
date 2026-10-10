@@ -16,6 +16,59 @@ from numpy.typing import NDArray
 FloatArray = NDArray[np.float32]
 
 
+def native_bank_fingerprint(path: Path) -> str:
+    """Return llama.cpp MI1's FNV-1a identity for a serialized bank.
+
+    This deliberately mirrors ``llama_mi1::bank_fingerprint`` rather than
+    using the file SHA: the server fingerprints parsed tensor content and
+    query-head routing, not the binary header or source metadata.
+    """
+    raw = path.read_bytes()
+    if len(raw) < struct.calcsize("<8sIIII"):
+        raise ValueError("native MI1 bank is truncated before its header")
+    magic, version, layer_count, slots, site_count = struct.unpack_from("<8sIIII", raw)
+    if magic != b"MI1KV002" or version != 2 or not layer_count or not slots:
+        raise ValueError("unsupported native MI1 bank fingerprint format")
+    offset = struct.calcsize("<8sIIII")
+    value = 14695981039346656037
+
+    def update(data: bytes) -> None:
+        nonlocal value
+        for byte in data:
+            value = ((value ^ byte) * 1099511628211) & 0xFFFFFFFFFFFFFFFF
+
+    query_heads: dict[int, list[int]] = {}
+    for _ in range(layer_count):
+        if offset + struct.calcsize("<IIII") > len(raw):
+            raise ValueError("native MI1 bank is truncated in a layer descriptor")
+        layer, head_dim, kv_heads, layer_slots = struct.unpack_from("<IIII", raw, offset)
+        if not head_dim or not kv_heads or layer_slots != slots:
+            raise ValueError("native MI1 bank has inconsistent layer dimensions")
+        update(raw[offset : offset + struct.calcsize("<IIII")])
+        offset += struct.calcsize("<IIII")
+        tensor_bytes = slots * head_dim * kv_heads * struct.calcsize("<f")
+        if offset + 2 * tensor_bytes > len(raw):
+            raise ValueError("native MI1 bank is truncated in layer K/V")
+        update(raw[offset : offset + tensor_bytes])
+        offset += tensor_bytes
+        update(raw[offset : offset + tensor_bytes])
+        offset += tensor_bytes
+    for _ in range(site_count):
+        if offset + struct.calcsize("<II") > len(raw):
+            raise ValueError("native MI1 bank is truncated in query sites")
+        layer, head = struct.unpack_from("<II", raw, offset)
+        query_heads.setdefault(layer, []).append(head)
+        offset += struct.calcsize("<II")
+    for layer, heads in sorted(query_heads.items()):
+        update(struct.pack("<I", layer))
+        update(struct.pack(f"<{len(heads)}I", *heads))
+    bias_bytes = struct.calcsize("<f")
+    if offset + bias_bytes != len(raw):
+        raise ValueError("native MI1 bank has invalid trailing data")
+    update(raw[offset : offset + bias_bytes])
+    return f"{value:016x}"
+
+
 @dataclass(frozen=True)
 class BankManifest:
     """Shape and provenance needed to bind a bank to a particular host."""

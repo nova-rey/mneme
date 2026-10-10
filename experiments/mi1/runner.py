@@ -20,6 +20,7 @@ class ResolvedBank:
 
     path: Path
     native_sha256: str
+    bank_fingerprint: str
     selector_sha256: str
     selector: dict[str, Any]
 
@@ -30,6 +31,10 @@ class ResolvedBank:
         ):
             if len(digest) != 64 or any(ch not in "0123456789abcdef" for ch in digest):
                 raise ValueError(f"{label} SHA-256 must be lowercase hexadecimal")
+        if len(self.bank_fingerprint) != 16 or any(
+            ch not in "0123456789abcdef" for ch in self.bank_fingerprint
+        ):
+            raise ValueError("native bank fingerprint must be 16 lowercase hexadecimal digits")
 
 
 BankResolver = Callable[[str, str, dict[str, Any]], ResolvedBank]
@@ -130,8 +135,8 @@ class GenerationBudget:
         path: Path,
         *,
         prior_calibration_calls: int = 8,
-        calibration_limit: int = 120,
-        hard_limit: int = 800,
+        calibration_limit: int | None = 120,
+        hard_limit: int | None = 800,
     ) -> None:
         self.path = path
         self.prior_calibration_calls = prior_calibration_calls
@@ -175,12 +180,19 @@ class GenerationBudget:
         reservations = value["reservations"]
         if any(row["attempt_id"] == attempt_id for row in reservations):
             raise FileExistsError(f"generation ID already reserved: {attempt_id}")
-        if self.prior_calibration_calls + len(reservations) >= self.hard_limit:
+        if (
+            self.hard_limit is not None
+            and self.prior_calibration_calls + len(reservations) >= self.hard_limit
+        ):
             raise RuntimeError("MI1 authorized hard generation limit reached")
         calibration_count = self.prior_calibration_calls + sum(
             row["phase"] == "calibration" for row in reservations
         )
-        if phase == "calibration" and calibration_count >= self.calibration_limit:
+        if (
+            phase == "calibration"
+            and self.calibration_limit is not None
+            and calibration_count >= self.calibration_limit
+        ):
             raise RuntimeError("MI1 calibration generation ceiling reached")
         reservations.append({"attempt_id": attempt_id, "phase": phase})
         atomic_json_write(self.path, value)
@@ -251,6 +263,8 @@ class MI1CoordinateRunner:
             raise ValueError("native bank endpoint returned an inconsistent enabled state")
         if not isinstance(result.get("revision"), int):
             raise ValueError("native bank endpoint omitted its revision")
+        if artifact is not None and result.get("bank_fingerprint") != artifact.bank_fingerprint:
+            raise ValueError("native server loaded a bank with an unexpected fingerprint")
         return {
             "request": payload,
             "response": result,
@@ -260,6 +274,7 @@ class MI1CoordinateRunner:
             else {
                 "path": str(artifact.path),
                 "native_sha256": artifact.native_sha256,
+                "bank_fingerprint": artifact.bank_fingerprint,
                 "selector_sha256": artifact.selector_sha256,
                 "selector": artifact.selector,
             },

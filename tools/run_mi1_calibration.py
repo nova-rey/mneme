@@ -56,6 +56,7 @@ def main() -> int:
         return ResolvedBank(
             path=Path(row["remote_path"]),
             native_sha256=row["native_sha256"],
+            bank_fingerprint=row["bank_fingerprint"],
             selector_sha256=row["selector_sha256"],
             selector=row["selector"],
         )

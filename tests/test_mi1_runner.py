@@ -66,6 +66,7 @@ def test_runner_persists_exact_request_and_raw_output_in_order(tmp_path: Path) -
         return ResolvedBank(
             Path("/host/banks") / f"{digest}.mi1",
             "a" * 64,
+            "0123456789abcdef",
             "b" * 64,
             {"selected_layers": [3, 7, 11, 19]},
         )
@@ -73,7 +74,11 @@ def test_runner_persists_exact_request_and_raw_output_in_order(tmp_path: Path) -
     def transport(url: str, payload: dict[str, Any]) -> dict[str, Any]:
         calls.append((url, payload))
         if url.endswith("/mi1/bank"):
-            return {"revision": 4, "enabled": True}
+            return {
+                "revision": 4,
+                "enabled": True,
+                "bank_fingerprint": "0123456789abcdef",
+            }
         if url.endswith("/apply-template"):
             return {"prompt": "<bos>exact rendered prompt"}
         raise AssertionError(f"unexpected non-stream request: {url}")
@@ -148,6 +153,7 @@ def test_runner_persists_exact_request_and_raw_output_in_order(tmp_path: Path) -
     assert request["request"]["model_visible_prompt_sha256"]
     assert request["metadata"]["bank_state"]["response"]["revision"] == 4
     assert request["metadata"]["bank_state"]["artifact"]["native_sha256"] == "a" * 64
+    assert request["metadata"]["bank_state"]["artifact"]["bank_fingerprint"] == "0123456789abcdef"
     durable = load_completed_response(tmp_path / "journal", "A-fixture-latent-34001")
     assert durable == response
     assert journal.verify() == {"COMPLETE": 1}
@@ -165,7 +171,11 @@ def test_runner_rejects_prompt_cache_before_generation(tmp_path: Path) -> None:
     def transport(url: str, payload: dict[str, Any]) -> dict[str, Any]:
         calls.append(url)
         if url.endswith("/mi1/bank"):
-            return {"revision": 1, "enabled": True}
+            return {
+                "revision": 1,
+                "enabled": True,
+                "bank_fingerprint": "0123456789abcdef",
+            }
         return {"prompt": "rendered"}
 
     runner = MI1CoordinateRunner(
@@ -173,13 +183,48 @@ def test_runner_rejects_prompt_cache_before_generation(tmp_path: Path) -> None:
         journal=EvidenceJournal(tmp_path / "journal"),
         budget=GenerationBudget(tmp_path / "budget.json"),
         bank_resolver=lambda _text, _digest, _config: ResolvedBank(
-            Path("/host/bank.mi1"), "a" * 64, "b" * 64, {"selected_layers": [2]}
+            Path("/host/bank.mi1"),
+            "a" * 64,
+            "0123456789abcdef",
+            "b" * 64,
+            {"selected_layers": [2]},
         ),
         transport=transport,
     )
     with pytest.raises(ValueError, match="cache_prompt=false"):
         runner.execute(_coordinate(cache_prompt=True), phase="scored")
     assert not any(url.endswith("/v1/chat/completions") for url in calls)
+
+
+def test_runner_rejects_a_different_loaded_bank_fingerprint(tmp_path: Path) -> None:
+    calls: list[str] = []
+
+    def transport(url: str, _payload: dict[str, Any]) -> dict[str, Any]:
+        calls.append(url)
+        if url.endswith("/mi1/bank"):
+            return {
+                "revision": 1,
+                "enabled": True,
+                "bank_fingerprint": "fedcba9876543210",
+            }
+        return {"prompt": "rendered"}
+
+    runner = MI1CoordinateRunner(
+        base_url="http://localhost:64171",
+        journal=EvidenceJournal(tmp_path / "journal"),
+        budget=GenerationBudget(tmp_path / "budget.json"),
+        bank_resolver=lambda _text, _digest, _config: ResolvedBank(
+            Path("/host/bank.mi1"),
+            "a" * 64,
+            "0123456789abcdef",
+            "b" * 64,
+            {"selected_layers": [2]},
+        ),
+        transport=transport,
+    )
+    with pytest.raises(ValueError, match="unexpected fingerprint"):
+        runner.execute(_coordinate(), phase="calibration")
+    assert calls == ["http://localhost:64171/mi1/bank"]
 
 
 def test_budget_includes_prior_calibration_and_fails_closed(tmp_path: Path) -> None:
@@ -202,13 +247,34 @@ def test_budget_does_not_allow_unknown_ids_or_duplicate_reservations(tmp_path: P
         budget.reserve("once", "scored")
 
 
+def test_owner_authorized_uncapped_calibration_budget(tmp_path: Path) -> None:
+    budget = GenerationBudget(
+        tmp_path / "unbounded-budget.json",
+        prior_calibration_calls=97,
+        calibration_limit=None,
+        hard_limit=None,
+    )
+    journal = EvidenceJournal(tmp_path / "unbounded-journal", hard_call_limit=None)
+    for index in range(3):
+        attempt = f"c3-{index}"
+        budget.reserve(attempt, "calibration")
+        journal.begin(attempt, {"prompt": "frozen"}, {})
+        journal.complete(attempt, {"final": "answer"})
+    assert budget.counts() == {"total": 100, "calibration": 100, "scored": 0, "confirmation": 0}
+    assert journal.verify() == {"COMPLETE": 3}
+
+
 def test_runner_stores_http_failure_and_does_not_retry(tmp_path: Path) -> None:
     calls = 0
 
     def transport(url: str, payload: dict[str, Any]) -> dict[str, Any]:
         nonlocal calls
         if url.endswith("/mi1/bank"):
-            return {"revision": 1, "enabled": True}
+            return {
+                "revision": 1,
+                "enabled": True,
+                "bank_fingerprint": "0123456789abcdef",
+            }
         if url.endswith("/apply-template"):
             return {"prompt": "rendered"}
         return {}
@@ -224,7 +290,11 @@ def test_runner_stores_http_failure_and_does_not_retry(tmp_path: Path) -> None:
         journal=journal,
         budget=GenerationBudget(tmp_path / "budget.json"),
         bank_resolver=lambda _text, _digest, _config: ResolvedBank(
-            Path("/host/bank.mi1"), "a" * 64, "b" * 64, {"selected_layers": [2]}
+            Path("/host/bank.mi1"),
+            "a" * 64,
+            "0123456789abcdef",
+            "b" * 64,
+            {"selected_layers": [2]},
         ),
         transport=transport,
         stream_transport=stream_transport,
@@ -243,7 +313,11 @@ def test_runner_preserves_partial_stream_after_disconnect(tmp_path: Path) -> Non
 
     def transport(url: str, _payload: dict[str, Any]) -> dict[str, Any]:
         if url.endswith("/mi1/bank"):
-            return {"revision": 1, "enabled": True}
+            return {
+                "revision": 1,
+                "enabled": True,
+                "bank_fingerprint": "0123456789abcdef",
+            }
         return {"prompt": "rendered"}
 
     def stream_transport(_url: str, _payload: dict[str, Any], sink: Any) -> dict[str, Any]:
@@ -256,7 +330,11 @@ def test_runner_preserves_partial_stream_after_disconnect(tmp_path: Path) -> Non
         journal=journal,
         budget=GenerationBudget(tmp_path / "budget.json"),
         bank_resolver=lambda _text, _digest, _config: ResolvedBank(
-            Path("/host/bank.mi1"), "a" * 64, "b" * 64, {"selected_layers": [2]}
+            Path("/host/bank.mi1"),
+            "a" * 64,
+            "0123456789abcdef",
+            "b" * 64,
+            {"selected_layers": [2]},
         ),
         transport=transport,
         stream_transport=stream_transport,
@@ -279,9 +357,7 @@ def test_http_sse_reconstructs_channels_and_persists_raw_events(monkeypatch: Any
         _sse_event(
             {
                 "id": "r1",
-                "choices": [
-                    {"index": 0, "delta": {"reasoning_content": "considering "}}
-                ],
+                "choices": [{"index": 0, "delta": {"reasoning_content": "considering "}}],
             }
         ),
         _sse_event(
@@ -324,7 +400,8 @@ def test_http_sse_reconstructs_channels_and_persists_raw_events(monkeypatch: Any
         return len(captured)
 
     response = http_sse(
-        "http://localhost/v1/chat/completions", {"stream": True},
+        "http://localhost/v1/chat/completions",
+        {"stream": True},
         store_event,
     )
     assert captured == events
@@ -365,6 +442,7 @@ def test_http_sse_ignores_null_content_preamble(monkeypatch: Any) -> None:
 
     monkeypatch.setattr(urllib.request, "urlopen", lambda *_args, **_kwargs: FakeResponse())
     captured: list[bytes] = []
+
     def store(event: bytes) -> int:
         captured.append(event)
         return len(captured)

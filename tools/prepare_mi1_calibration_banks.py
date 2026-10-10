@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from experiments.mi1.calibration import build_calibration_coordinates, canonical_bytes, variant_key
-from experiments.mi1.native.bank import MemoryBank
+from experiments.mi1.native.bank import MemoryBank, native_bank_fingerprint
 from experiments.mi1.native.variant import configure_bank
 
 
@@ -83,6 +83,7 @@ def main() -> int:
             "local_path": str(local_path),
             "remote_path": f"{args.remote_dir.rstrip('/')}/{name}",
             "native_sha256": native_sha,
+            "bank_fingerprint": native_bank_fingerprint(local_path),
             "selector_sha256": sha256(canonical_bytes(selector_record)),
             "selector": selector_record,
         }
