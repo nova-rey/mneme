@@ -1,0 +1,301 @@
+{
+  "artifacts_root": "/home/nyx/mneme-artifacts/phase4-mi1/test-abc/c10-contextual-bank",
+  "bank_methods": {
+    "context_only": "Encode full wrapper+descriptor through the frozen host, exact-match the raw descriptor token IDs inside wrapper tokens (excluding BOS), retain only descriptor-position K/V; fail closed on zero/multiple matches.",
+    "raw_plus_context": "Concatenate raw descriptor bank slots with the contextualized descriptor-position slots. No wrapper token positions are retained."
+  },
+  "bank_sources": {
+    "A": "- Pavo activates Liri.\n- Liri activates Sone.\n- Sone activates Beka.\n- While Liri is active, Tumo is locked.\n- Exception: that lock is removed if Wexi is active; Wexi is not initially active and no rule activates it.\n- Tumo activates Wexi; this does not mean Wexi activates Tumo.",
+    "B": "- Pavo activates Liri.\n- Liri activates Sone.\n- Sone activates Tumo.\n- While Liri is active, Beka is locked.\n- Exception: that lock is removed if Wexi is active; Wexi is not initially active and no rule activates it.\n- Beka activates Wexi; this does not mean Wexi activates Beka."
+  },
+  "cache_prompt": false,
+  "coordinate_count": 8,
+  "coordinates": [
+    {
+      "conditions": {
+        "bank_logit_bias": 0.0,
+        "cache_prompt": false,
+        "prompt_id": "C9-neutral-memory-available",
+        "query_site_set": "frozen-testabc-sparse-16-sites"
+      },
+      "coordinate_id": "C10-A01-context_only-A-34001",
+      "expected": {
+        "answer": "Beka",
+        "path": [
+          "Pavo",
+          "Liri",
+          "Sone",
+          "Beka"
+        ]
+      },
+      "method": "context_only",
+      "seed": 34001,
+      "target_bank": "A"
+    },
+    {
+      "conditions": {
+        "bank_logit_bias": 0.0,
+        "cache_prompt": false,
+        "prompt_id": "C9-neutral-memory-available",
+        "query_site_set": "frozen-testabc-sparse-16-sites"
+      },
+      "coordinate_id": "C10-A01-context_only-A-34019",
+      "expected": {
+        "answer": "Beka",
+        "path": [
+          "Pavo",
+          "Liri",
+          "Sone",
+          "Beka"
+        ]
+      },
+      "method": "context_only",
+      "seed": 34019,
+      "target_bank": "A"
+    },
+    {
+      "conditions": {
+        "bank_logit_bias": 0.0,
+        "cache_prompt": false,
+        "prompt_id": "C9-neutral-memory-available",
+        "query_site_set": "frozen-testabc-sparse-16-sites"
+      },
+      "coordinate_id": "C10-A01-raw_plus_context-A-34001",
+      "expected": {
+        "answer": "Beka",
+        "path": [
+          "Pavo",
+          "Liri",
+          "Sone",
+          "Beka"
+        ]
+      },
+      "method": "raw_plus_context",
+      "seed": 34001,
+      "target_bank": "A"
+    },
+    {
+      "conditions": {
+        "bank_logit_bias": 0.0,
+        "cache_prompt": false,
+        "prompt_id": "C9-neutral-memory-available",
+        "query_site_set": "frozen-testabc-sparse-16-sites"
+      },
+      "coordinate_id": "C10-A01-raw_plus_context-A-34019",
+      "expected": {
+        "answer": "Beka",
+        "path": [
+          "Pavo",
+          "Liri",
+          "Sone",
+          "Beka"
+        ]
+      },
+      "method": "raw_plus_context",
+      "seed": 34019,
+      "target_bank": "A"
+    },
+    {
+      "conditions": {
+        "bank_logit_bias": 0.0,
+        "cache_prompt": false,
+        "prompt_id": "C9-neutral-memory-available",
+        "query_site_set": "frozen-testabc-sparse-16-sites"
+      },
+      "coordinate_id": "C10-A01-context_only-B-34001",
+      "expected": {
+        "answer": "Tumo",
+        "path": [
+          "Pavo",
+          "Liri",
+          "Sone",
+          "Tumo"
+        ]
+      },
+      "method": "context_only",
+      "seed": 34001,
+      "target_bank": "B"
+    },
+    {
+      "conditions": {
+        "bank_logit_bias": 0.0,
+        "cache_prompt": false,
+        "prompt_id": "C9-neutral-memory-available",
+        "query_site_set": "frozen-testabc-sparse-16-sites"
+      },
+      "coordinate_id": "C10-A01-context_only-B-34019",
+      "expected": {
+        "answer": "Tumo",
+        "path": [
+          "Pavo",
+          "Liri",
+          "Sone",
+          "Tumo"
+        ]
+      },
+      "method": "context_only",
+      "seed": 34019,
+      "target_bank": "B"
+    },
+    {
+      "conditions": {
+        "bank_logit_bias": 0.0,
+        "cache_prompt": false,
+        "prompt_id": "C9-neutral-memory-available",
+        "query_site_set": "frozen-testabc-sparse-16-sites"
+      },
+      "coordinate_id": "C10-A01-raw_plus_context-B-34001",
+      "expected": {
+        "answer": "Tumo",
+        "path": [
+          "Pavo",
+          "Liri",
+          "Sone",
+          "Tumo"
+        ]
+      },
+      "method": "raw_plus_context",
+      "seed": 34001,
+      "target_bank": "B"
+    },
+    {
+      "conditions": {
+        "bank_logit_bias": 0.0,
+        "cache_prompt": false,
+        "prompt_id": "C9-neutral-memory-available",
+        "query_site_set": "frozen-testabc-sparse-16-sites"
+      },
+      "coordinate_id": "C10-A01-raw_plus_context-B-34019",
+      "expected": {
+        "answer": "Tumo",
+        "path": [
+          "Pavo",
+          "Liri",
+          "Sone",
+          "Tumo"
+        ]
+      },
+      "method": "raw_plus_context",
+      "seed": 34019,
+      "target_bank": "B"
+    }
+  ],
+  "criteria": {
+    "negative_calibration": "If neither method yields target-consistent answers on A and B, move to a separately documented selector/accessibility diagnostic; do not claim MI works or fails globally from this calibration alone.",
+    "positive_calibration": "At least one method yields both seeds correct with the complete target path for both A and B, with no opposite-bank answer. This only permits a separate frozen held-out test; it is not final qualification."
+  },
+  "experiment": "MNEME Phase 4 MI1 C10 contextual-bank construction diagnostic",
+  "fixture_id": "A01",
+  "fixture_scope_note": "A01 is intentionally reused only as a diagnostic calibration case to isolate bank construction after all prior latent attempts failed. No success on A01 will be presented as generalization. Separate held-out fixtures are required after any positive result.",
+  "freeze_date": "2026-10-10",
+  "generation_config": {
+    "chat_template_kwargs": {
+      "enable_thinking": true
+    },
+    "max_tokens": 2048,
+    "reasoning_format": "deepseek",
+    "sampler": {
+      "min_p": 0.05,
+      "temperature": 0.35,
+      "top_k": 40,
+      "top_p": 0.9
+    }
+  },
+  "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+  "host_model": "google/gemma-4-E4B-it",
+  "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+  "max_generation_calls": 8,
+  "parent_diagnostic_freeze_sha256": "14f7bbb256e75a3c2d6d597d0ff155aff34d38a5235b79847b081b96864e3c2e",
+  "prior_c9_evidence_root": "/home/nyx/mneme-artifacts/phase4-mi1/test-abc/c9-prompt-access/evidence",
+  "prompt": {
+    "system": "Solve from the task facts and any relevant background record made available through the current context. If neither contains facts that decide the result, say unknown.",
+    "user": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. A background rule record may be available to you; use it only if it is actually present and relevant. Initially only Pavo is active. After applying the available rules, which of Beka or Tumo can become active? Give one label and the rule path; if the available facts do not decide, say unknown."
+  },
+  "purpose": "Test a documented text-derived bank construction step absent from earlier MI1 banks: contextualize source descriptors inside a frozen memory-record wrapper, retain the descriptor token positions, and compare contextual-only with raw-plus-contextualized banks.",
+  "rationale": {
+    "implementation_gap": "Prior banks encoded the raw descriptor only. The published MI text-bank recipe places source text inside one or more templates, records contextual hidden states, retains descriptor-aligned positions (or intentionally keeps the wrapper), and concatenates original and contextualized descriptor slots. This diagnostic tests descriptor-aligned contextualization and raw-plus-context concatenation.",
+    "observed": "Across C3/C4/C5/C6/C7/C8 and current Test A, visible banks can change answers while raw latent banks do not. The exact A prompt language and generic memory cue were tested; C9 neutral wording still produced unknown and reasoning explicitly said no record was present. An exact A01 prefill capture showed selected bank attention mass at the final prompt token (per selected heads, several heads >0.7), so attachment/selector path is not absent."
+  },
+  "reasoning": "ON",
+  "schema_version": 1,
+  "site_selection": {
+    "gain": {
+      "bank_logit_bias": 0.0
+    },
+    "selection_changed": false,
+    "sites": [
+      [
+        8,
+        0
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        8,
+        2
+      ],
+      [
+        8,
+        3
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        2,
+        7
+      ],
+      [
+        6,
+        4
+      ],
+      [
+        6,
+        5
+      ],
+      [
+        6,
+        6
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        28,
+        4
+      ],
+      [
+        28,
+        5
+      ],
+      [
+        28,
+        6
+      ],
+      [
+        28,
+        7
+      ]
+    ],
+    "type": "fixed existing sparse selector"
+  },
+  "source_suite_sha256": "0a75c1001ba031715705b4db24953a6e160dd8b5c93518efd67152156e912afe",
+  "status": "FROZEN_BEFORE_INFERENCE",
+  "wrapper_template": "Stored background rule record. Preserve its directed relations and stated conditions:\n{descriptor}\nEnd of stored rule record.",
+  "wrapper_texts": {
+    "A": "Stored background rule record. Preserve its directed relations and stated conditions:\n- Pavo activates Liri.\n- Liri activates Sone.\n- Sone activates Beka.\n- While Liri is active, Tumo is locked.\n- Exception: that lock is removed if Wexi is active; Wexi is not initially active and no rule activates it.\n- Tumo activates Wexi; this does not mean Wexi activates Tumo.\nEnd of stored rule record.",
+    "B": "Stored background rule record. Preserve its directed relations and stated conditions:\n- Pavo activates Liri.\n- Liri activates Sone.\n- Sone activates Tumo.\n- While Liri is active, Beka is locked.\n- Exception: that lock is removed if Wexi is active; Wexi is not initially active and no rule activates it.\n- Beka activates Wexi; this does not mean Wexi activates Beka.\nEnd of stored rule record."
+  }
+}
