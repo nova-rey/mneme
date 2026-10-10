@@ -1,0 +1,3034 @@
+{
+  "coordinates": [
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C2-CAL-REL-01-no_bank-34111",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "no_bank",
+        "corrective_of": "CAL-REL-01-no_bank-34111",
+        "duplicate_of": null,
+        "expected_answer": "unknown",
+        "expected_path": [],
+        "gain": null,
+        "gain_name": null,
+        "parent_coordinate_id": "C1-CAL-REL-01-no_bank-34111",
+        "seed": 34111,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-01",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Initially only Aster is active. Which of Deyu or Falen can become active? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "33877bc1392fb0d02abeb66f600511bf31e80d5c610b906ddc61a9abc71067cf",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C2-CAL-REL-01-no_bank-34133",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "no_bank",
+        "corrective_of": "CAL-REL-01-no_bank-34133",
+        "duplicate_of": null,
+        "expected_answer": "unknown",
+        "expected_path": [],
+        "gain": null,
+        "gain_name": null,
+        "parent_coordinate_id": "C1-CAL-REL-01-no_bank-34133",
+        "seed": 34133,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-01",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Initially only Aster is active. Which of Deyu or Falen can become active? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34133,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "a18fc7a920b7f0e7d061637476a536b4f8dc5a796fe8792169e546599488e66e",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C2-CAL-REL-01-visible_bank-34111",
+      "expected": {
+        "answer": "Deyu",
+        "path": [
+          "Aster",
+          "Beryl",
+          "Corda",
+          "Deyu"
+        ]
+      },
+      "metadata": {
+        "condition": "visible_bank",
+        "corrective_of": "CAL-REL-01-visible_bank-34111",
+        "duplicate_of": null,
+        "expected_answer": "Deyu",
+        "expected_path": [
+          "Aster",
+          "Beryl",
+          "Corda",
+          "Deyu"
+        ],
+        "gain": null,
+        "gain_name": null,
+        "parent_coordinate_id": "C1-CAL-REL-01-visible_bank-34111",
+        "seed": 34111,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-01",
+        "visible_bank_sha256": "071a7c6c38b9a385006f44e8d430d4d2aea88c0f145beeb1636cc720bc027dcf"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Reference relationships:\nAster activates Beryl.\nBeryl activates Corda.\nCorda makes Deyu available.\nOnly the stated direction applies.\n\nQuestion:\nInitially only Aster is active. Which of Deyu or Falen can become active? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "e51eaf90997634a92bd801adaa38f4583b4a58f930f63a2b1f9ad2e0a083dffd",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C2-CAL-REL-01-visible_bank-34133",
+      "expected": {
+        "answer": "Deyu",
+        "path": [
+          "Aster",
+          "Beryl",
+          "Corda",
+          "Deyu"
+        ]
+      },
+      "metadata": {
+        "condition": "visible_bank",
+        "corrective_of": "CAL-REL-01-visible_bank-34133",
+        "duplicate_of": null,
+        "expected_answer": "Deyu",
+        "expected_path": [
+          "Aster",
+          "Beryl",
+          "Corda",
+          "Deyu"
+        ],
+        "gain": null,
+        "gain_name": null,
+        "parent_coordinate_id": "C1-CAL-REL-01-visible_bank-34133",
+        "seed": 34133,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-01",
+        "visible_bank_sha256": "071a7c6c38b9a385006f44e8d430d4d2aea88c0f145beeb1636cc720bc027dcf"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Reference relationships:\nAster activates Beryl.\nBeryl activates Corda.\nCorda makes Deyu available.\nOnly the stated direction applies.\n\nQuestion:\nInitially only Aster is active. Which of Deyu or Falen can become active? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34133,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "c483803d2dd1fde21c01ded692e0fc6326d28bd6f781c38ae1f801cab81ac572",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": -0.6931471805599453,
+          "relative_prior": 0.5
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Aster activates Beryl.\nBeryl activates Corda.\nCorda makes Deyu available.\nOnly the stated direction applies.",
+      "bank_source_sha256": "071a7c6c38b9a385006f44e8d430d4d2aea88c0f145beeb1636cc720bc027dcf",
+      "coordinate_id": "C2-CAL-REL-01-latent_sparse_low-34111",
+      "expected": {
+        "answer": "Deyu",
+        "path": [
+          "Aster",
+          "Beryl",
+          "Corda",
+          "Deyu"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_sparse_low",
+        "corrective_of": "CAL-REL-01-latent_sparse_low-34111",
+        "duplicate_of": null,
+        "expected_answer": "Deyu",
+        "expected_path": [
+          "Aster",
+          "Beryl",
+          "Corda",
+          "Deyu"
+        ],
+        "gain": {
+          "logit_bias": -0.6931471805599453,
+          "relative_prior": 0.5
+        },
+        "gain_name": "low",
+        "parent_coordinate_id": "C1-CAL-REL-01-latent_sparse_low-34111",
+        "seed": 34111,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-01",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Initially only Aster is active. Which of Deyu or Falen can become active? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "33877bc1392fb0d02abeb66f600511bf31e80d5c610b906ddc61a9abc71067cf",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": -0.6931471805599453,
+          "relative_prior": 0.5
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Aster activates Beryl.\nBeryl activates Corda.\nCorda makes Deyu available.\nOnly the stated direction applies.",
+      "bank_source_sha256": "071a7c6c38b9a385006f44e8d430d4d2aea88c0f145beeb1636cc720bc027dcf",
+      "coordinate_id": "C2-CAL-REL-01-latent_sparse_low-34133",
+      "expected": {
+        "answer": "Deyu",
+        "path": [
+          "Aster",
+          "Beryl",
+          "Corda",
+          "Deyu"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_sparse_low",
+        "corrective_of": "CAL-REL-01-latent_sparse_low-34133",
+        "duplicate_of": null,
+        "expected_answer": "Deyu",
+        "expected_path": [
+          "Aster",
+          "Beryl",
+          "Corda",
+          "Deyu"
+        ],
+        "gain": {
+          "logit_bias": -0.6931471805599453,
+          "relative_prior": 0.5
+        },
+        "gain_name": "low",
+        "parent_coordinate_id": "C1-CAL-REL-01-latent_sparse_low-34133",
+        "seed": 34133,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-01",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Initially only Aster is active. Which of Deyu or Falen can become active? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34133,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "a18fc7a920b7f0e7d061637476a536b4f8dc5a796fe8792169e546599488e66e",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Aster activates Beryl.\nBeryl activates Corda.\nCorda makes Deyu available.\nOnly the stated direction applies.",
+      "bank_source_sha256": "071a7c6c38b9a385006f44e8d430d4d2aea88c0f145beeb1636cc720bc027dcf",
+      "coordinate_id": "C2-CAL-REL-01-latent_sparse_moderate-34111",
+      "expected": {
+        "answer": "Deyu",
+        "path": [
+          "Aster",
+          "Beryl",
+          "Corda",
+          "Deyu"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_sparse_moderate",
+        "corrective_of": "CAL-REL-01-latent_sparse_moderate-34111",
+        "duplicate_of": null,
+        "expected_answer": "Deyu",
+        "expected_path": [
+          "Aster",
+          "Beryl",
+          "Corda",
+          "Deyu"
+        ],
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "gain_name": "moderate",
+        "parent_coordinate_id": "C1-CAL-REL-01-latent_sparse_moderate-34111",
+        "seed": 34111,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-01",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Initially only Aster is active. Which of Deyu or Falen can become active? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "33877bc1392fb0d02abeb66f600511bf31e80d5c610b906ddc61a9abc71067cf",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Aster activates Beryl.\nBeryl activates Corda.\nCorda makes Deyu available.\nOnly the stated direction applies.",
+      "bank_source_sha256": "071a7c6c38b9a385006f44e8d430d4d2aea88c0f145beeb1636cc720bc027dcf",
+      "coordinate_id": "C2-CAL-REL-01-latent_sparse_moderate-34133",
+      "expected": {
+        "answer": "Deyu",
+        "path": [
+          "Aster",
+          "Beryl",
+          "Corda",
+          "Deyu"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_sparse_moderate",
+        "corrective_of": "CAL-REL-01-latent_sparse_moderate-34133",
+        "duplicate_of": null,
+        "expected_answer": "Deyu",
+        "expected_path": [
+          "Aster",
+          "Beryl",
+          "Corda",
+          "Deyu"
+        ],
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "gain_name": "moderate",
+        "parent_coordinate_id": "C1-CAL-REL-01-latent_sparse_moderate-34133",
+        "seed": 34133,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-01",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Initially only Aster is active. Which of Deyu or Falen can become active? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34133,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "a18fc7a920b7f0e7d061637476a536b4f8dc5a796fe8792169e546599488e66e",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Aster activates Beryl.\nBeryl activates Corda.\nCorda makes Deyu available.\nOnly the stated direction applies.",
+      "bank_source_sha256": "071a7c6c38b9a385006f44e8d430d4d2aea88c0f145beeb1636cc720bc027dcf",
+      "coordinate_id": "C2-CAL-REL-01-latent_sparse_strong-34111",
+      "expected": {
+        "answer": "Deyu",
+        "path": [
+          "Aster",
+          "Beryl",
+          "Corda",
+          "Deyu"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_sparse_strong",
+        "corrective_of": "CAL-REL-01-latent_sparse_strong-34111",
+        "duplicate_of": null,
+        "expected_answer": "Deyu",
+        "expected_path": [
+          "Aster",
+          "Beryl",
+          "Corda",
+          "Deyu"
+        ],
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "gain_name": "strong",
+        "parent_coordinate_id": "C1-CAL-REL-01-latent_sparse_strong-34111",
+        "seed": 34111,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-01",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Initially only Aster is active. Which of Deyu or Falen can become active? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "33877bc1392fb0d02abeb66f600511bf31e80d5c610b906ddc61a9abc71067cf",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Aster activates Beryl.\nBeryl activates Corda.\nCorda makes Deyu available.\nOnly the stated direction applies.",
+      "bank_source_sha256": "071a7c6c38b9a385006f44e8d430d4d2aea88c0f145beeb1636cc720bc027dcf",
+      "coordinate_id": "C2-CAL-REL-01-latent_sparse_strong-34133",
+      "expected": {
+        "answer": "Deyu",
+        "path": [
+          "Aster",
+          "Beryl",
+          "Corda",
+          "Deyu"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_sparse_strong",
+        "corrective_of": "CAL-REL-01-latent_sparse_strong-34133",
+        "duplicate_of": null,
+        "expected_answer": "Deyu",
+        "expected_path": [
+          "Aster",
+          "Beryl",
+          "Corda",
+          "Deyu"
+        ],
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "gain_name": "strong",
+        "parent_coordinate_id": "C1-CAL-REL-01-latent_sparse_strong-34133",
+        "seed": 34133,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-01",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Initially only Aster is active. Which of Deyu or Falen can become active? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34133,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "a18fc7a920b7f0e7d061637476a536b4f8dc5a796fe8792169e546599488e66e",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "broad"
+      },
+      "bank_source": "Aster activates Beryl.\nBeryl activates Corda.\nCorda makes Deyu available.\nOnly the stated direction applies.",
+      "bank_source_sha256": "071a7c6c38b9a385006f44e8d430d4d2aea88c0f145beeb1636cc720bc027dcf",
+      "coordinate_id": "C2-CAL-REL-01-latent_broad_moderate-34111",
+      "expected": {
+        "answer": "Deyu",
+        "path": [
+          "Aster",
+          "Beryl",
+          "Corda",
+          "Deyu"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_broad_moderate",
+        "corrective_of": "CAL-REL-01-latent_broad_moderate-34111",
+        "duplicate_of": null,
+        "expected_answer": "Deyu",
+        "expected_path": [
+          "Aster",
+          "Beryl",
+          "Corda",
+          "Deyu"
+        ],
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "gain_name": "moderate",
+        "parent_coordinate_id": "C1-CAL-REL-01-latent_broad_moderate-34111",
+        "seed": 34111,
+        "selector": "broad",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-01",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Initially only Aster is active. Which of Deyu or Falen can become active? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "33877bc1392fb0d02abeb66f600511bf31e80d5c610b906ddc61a9abc71067cf",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "broad"
+      },
+      "bank_source": "Aster activates Beryl.\nBeryl activates Corda.\nCorda makes Deyu available.\nOnly the stated direction applies.",
+      "bank_source_sha256": "071a7c6c38b9a385006f44e8d430d4d2aea88c0f145beeb1636cc720bc027dcf",
+      "coordinate_id": "C2-CAL-REL-01-latent_broad_moderate-34133",
+      "expected": {
+        "answer": "Deyu",
+        "path": [
+          "Aster",
+          "Beryl",
+          "Corda",
+          "Deyu"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_broad_moderate",
+        "corrective_of": "CAL-REL-01-latent_broad_moderate-34133",
+        "duplicate_of": null,
+        "expected_answer": "Deyu",
+        "expected_path": [
+          "Aster",
+          "Beryl",
+          "Corda",
+          "Deyu"
+        ],
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "gain_name": "moderate",
+        "parent_coordinate_id": "C1-CAL-REL-01-latent_broad_moderate-34133",
+        "seed": 34133,
+        "selector": "broad",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-01",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Initially only Aster is active. Which of Deyu or Falen can become active? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34133,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "a18fc7a920b7f0e7d061637476a536b4f8dc5a796fe8792169e546599488e66e",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Fenu marks Vato.\nVato records Seki.\nSeki stores Domi.\nDomi tags Leri.",
+      "bank_source_sha256": "458754b09fac4331a80d43d73963bf5affcff800758c355b7939f5ae04a1ed81",
+      "coordinate_id": "C2-CAL-REL-01-latent_irrelevant_sparse_moderate-34111",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_irrelevant_sparse_moderate",
+        "corrective_of": "CAL-REL-01-latent_irrelevant_sparse_moderate-34111",
+        "duplicate_of": null,
+        "expected_answer": "unknown",
+        "expected_path": [],
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "gain_name": "moderate",
+        "parent_coordinate_id": "C1-CAL-REL-01-latent_irrelevant_sparse_moderate-34111",
+        "seed": 34111,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-01",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Initially only Aster is active. Which of Deyu or Falen can become active? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "33877bc1392fb0d02abeb66f600511bf31e80d5c610b906ddc61a9abc71067cf",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Fenu marks Vato.\nVato records Seki.\nSeki stores Domi.\nDomi tags Leri.",
+      "bank_source_sha256": "458754b09fac4331a80d43d73963bf5affcff800758c355b7939f5ae04a1ed81",
+      "coordinate_id": "C2-CAL-REL-01-latent_irrelevant_sparse_moderate-34133",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_irrelevant_sparse_moderate",
+        "corrective_of": "CAL-REL-01-latent_irrelevant_sparse_moderate-34133",
+        "duplicate_of": null,
+        "expected_answer": "unknown",
+        "expected_path": [],
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "gain_name": "moderate",
+        "parent_coordinate_id": "C1-CAL-REL-01-latent_irrelevant_sparse_moderate-34133",
+        "seed": 34133,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-01",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Initially only Aster is active. Which of Deyu or Falen can become active? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34133,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "a18fc7a920b7f0e7d061637476a536b4f8dc5a796fe8792169e546599488e66e",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C2-CAL-REL-02-no_bank-34111",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "no_bank",
+        "corrective_of": "CAL-REL-02-no_bank-34111",
+        "duplicate_of": null,
+        "expected_answer": "unknown",
+        "expected_path": [],
+        "gain": null,
+        "gain_name": null,
+        "parent_coordinate_id": "C1-CAL-REL-02-no_bank-34111",
+        "seed": 34111,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-02",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Only Moro is active at the beginning. Does Jori or Keme become available? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "a4702e7ec5585c42f196b04689064f71b8b326244768ee7e6d76cfcb3db6d6b6",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C2-CAL-REL-02-no_bank-34133",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "no_bank",
+        "corrective_of": "CAL-REL-02-no_bank-34133",
+        "duplicate_of": null,
+        "expected_answer": "unknown",
+        "expected_path": [],
+        "gain": null,
+        "gain_name": null,
+        "parent_coordinate_id": "C1-CAL-REL-02-no_bank-34133",
+        "seed": 34133,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-02",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Only Moro is active at the beginning. Does Jori or Keme become available? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34133,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "80c4dafe3c013b682872c43035dd5fbb50f03fe2ff93455dde95e1edaa9fa0d3",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C2-CAL-REL-02-visible_bank-34111",
+      "expected": {
+        "answer": "Jori",
+        "path": [
+          "Moro",
+          "Pavi",
+          "Wela",
+          "Jori"
+        ]
+      },
+      "metadata": {
+        "condition": "visible_bank",
+        "corrective_of": "CAL-REL-02-visible_bank-34111",
+        "duplicate_of": null,
+        "expected_answer": "Jori",
+        "expected_path": [
+          "Moro",
+          "Pavi",
+          "Wela",
+          "Jori"
+        ],
+        "gain": null,
+        "gain_name": null,
+        "parent_coordinate_id": "C1-CAL-REL-02-visible_bank-34111",
+        "seed": 34111,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-02",
+        "visible_bank_sha256": "ac23e01c48e50d41316baa134001c7bcca28954be63691972b207a8f438100e2"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Reference relationships:\nMoro unlocks Pavi.\nPavi enables Wela.\nWela releases Jori.\nTazu releases Keme.\n\nQuestion:\nOnly Moro is active at the beginning. Does Jori or Keme become available? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "73471e59e0109bc347426814c56a97d9fb2892d090298d66981392b7e8e1a51a",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C2-CAL-REL-02-visible_bank-34133",
+      "expected": {
+        "answer": "Jori",
+        "path": [
+          "Moro",
+          "Pavi",
+          "Wela",
+          "Jori"
+        ]
+      },
+      "metadata": {
+        "condition": "visible_bank",
+        "corrective_of": "CAL-REL-02-visible_bank-34133",
+        "duplicate_of": null,
+        "expected_answer": "Jori",
+        "expected_path": [
+          "Moro",
+          "Pavi",
+          "Wela",
+          "Jori"
+        ],
+        "gain": null,
+        "gain_name": null,
+        "parent_coordinate_id": "C1-CAL-REL-02-visible_bank-34133",
+        "seed": 34133,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-02",
+        "visible_bank_sha256": "ac23e01c48e50d41316baa134001c7bcca28954be63691972b207a8f438100e2"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Reference relationships:\nMoro unlocks Pavi.\nPavi enables Wela.\nWela releases Jori.\nTazu releases Keme.\n\nQuestion:\nOnly Moro is active at the beginning. Does Jori or Keme become available? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34133,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "a0bc56465a3634b8e6ad3cd32480910ce225a2eb89ad5fff5f57f23212d4c852",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": -0.6931471805599453,
+          "relative_prior": 0.5
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Moro unlocks Pavi.\nPavi enables Wela.\nWela releases Jori.\nTazu releases Keme.",
+      "bank_source_sha256": "ac23e01c48e50d41316baa134001c7bcca28954be63691972b207a8f438100e2",
+      "coordinate_id": "C2-CAL-REL-02-latent_sparse_low-34111",
+      "expected": {
+        "answer": "Jori",
+        "path": [
+          "Moro",
+          "Pavi",
+          "Wela",
+          "Jori"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_sparse_low",
+        "corrective_of": "CAL-REL-02-latent_sparse_low-34111",
+        "duplicate_of": null,
+        "expected_answer": "Jori",
+        "expected_path": [
+          "Moro",
+          "Pavi",
+          "Wela",
+          "Jori"
+        ],
+        "gain": {
+          "logit_bias": -0.6931471805599453,
+          "relative_prior": 0.5
+        },
+        "gain_name": "low",
+        "parent_coordinate_id": "C1-CAL-REL-02-latent_sparse_low-34111",
+        "seed": 34111,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-02",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Only Moro is active at the beginning. Does Jori or Keme become available? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "a4702e7ec5585c42f196b04689064f71b8b326244768ee7e6d76cfcb3db6d6b6",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": -0.6931471805599453,
+          "relative_prior": 0.5
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Moro unlocks Pavi.\nPavi enables Wela.\nWela releases Jori.\nTazu releases Keme.",
+      "bank_source_sha256": "ac23e01c48e50d41316baa134001c7bcca28954be63691972b207a8f438100e2",
+      "coordinate_id": "C2-CAL-REL-02-latent_sparse_low-34133",
+      "expected": {
+        "answer": "Jori",
+        "path": [
+          "Moro",
+          "Pavi",
+          "Wela",
+          "Jori"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_sparse_low",
+        "corrective_of": "CAL-REL-02-latent_sparse_low-34133",
+        "duplicate_of": null,
+        "expected_answer": "Jori",
+        "expected_path": [
+          "Moro",
+          "Pavi",
+          "Wela",
+          "Jori"
+        ],
+        "gain": {
+          "logit_bias": -0.6931471805599453,
+          "relative_prior": 0.5
+        },
+        "gain_name": "low",
+        "parent_coordinate_id": "C1-CAL-REL-02-latent_sparse_low-34133",
+        "seed": 34133,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-02",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Only Moro is active at the beginning. Does Jori or Keme become available? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34133,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "80c4dafe3c013b682872c43035dd5fbb50f03fe2ff93455dde95e1edaa9fa0d3",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Moro unlocks Pavi.\nPavi enables Wela.\nWela releases Jori.\nTazu releases Keme.",
+      "bank_source_sha256": "ac23e01c48e50d41316baa134001c7bcca28954be63691972b207a8f438100e2",
+      "coordinate_id": "C2-CAL-REL-02-latent_sparse_moderate-34111",
+      "expected": {
+        "answer": "Jori",
+        "path": [
+          "Moro",
+          "Pavi",
+          "Wela",
+          "Jori"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_sparse_moderate",
+        "corrective_of": "CAL-REL-02-latent_sparse_moderate-34111",
+        "duplicate_of": null,
+        "expected_answer": "Jori",
+        "expected_path": [
+          "Moro",
+          "Pavi",
+          "Wela",
+          "Jori"
+        ],
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "gain_name": "moderate",
+        "parent_coordinate_id": "C1-CAL-REL-02-latent_sparse_moderate-34111",
+        "seed": 34111,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-02",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Only Moro is active at the beginning. Does Jori or Keme become available? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "a4702e7ec5585c42f196b04689064f71b8b326244768ee7e6d76cfcb3db6d6b6",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Moro unlocks Pavi.\nPavi enables Wela.\nWela releases Jori.\nTazu releases Keme.",
+      "bank_source_sha256": "ac23e01c48e50d41316baa134001c7bcca28954be63691972b207a8f438100e2",
+      "coordinate_id": "C2-CAL-REL-02-latent_sparse_moderate-34133",
+      "expected": {
+        "answer": "Jori",
+        "path": [
+          "Moro",
+          "Pavi",
+          "Wela",
+          "Jori"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_sparse_moderate",
+        "corrective_of": "CAL-REL-02-latent_sparse_moderate-34133",
+        "duplicate_of": null,
+        "expected_answer": "Jori",
+        "expected_path": [
+          "Moro",
+          "Pavi",
+          "Wela",
+          "Jori"
+        ],
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "gain_name": "moderate",
+        "parent_coordinate_id": "C1-CAL-REL-02-latent_sparse_moderate-34133",
+        "seed": 34133,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-02",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Only Moro is active at the beginning. Does Jori or Keme become available? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34133,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "80c4dafe3c013b682872c43035dd5fbb50f03fe2ff93455dde95e1edaa9fa0d3",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Moro unlocks Pavi.\nPavi enables Wela.\nWela releases Jori.\nTazu releases Keme.",
+      "bank_source_sha256": "ac23e01c48e50d41316baa134001c7bcca28954be63691972b207a8f438100e2",
+      "coordinate_id": "C2-CAL-REL-02-latent_sparse_strong-34111",
+      "expected": {
+        "answer": "Jori",
+        "path": [
+          "Moro",
+          "Pavi",
+          "Wela",
+          "Jori"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_sparse_strong",
+        "corrective_of": "CAL-REL-02-latent_sparse_strong-34111",
+        "duplicate_of": null,
+        "expected_answer": "Jori",
+        "expected_path": [
+          "Moro",
+          "Pavi",
+          "Wela",
+          "Jori"
+        ],
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "gain_name": "strong",
+        "parent_coordinate_id": "C1-CAL-REL-02-latent_sparse_strong-34111",
+        "seed": 34111,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-02",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Only Moro is active at the beginning. Does Jori or Keme become available? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "a4702e7ec5585c42f196b04689064f71b8b326244768ee7e6d76cfcb3db6d6b6",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Moro unlocks Pavi.\nPavi enables Wela.\nWela releases Jori.\nTazu releases Keme.",
+      "bank_source_sha256": "ac23e01c48e50d41316baa134001c7bcca28954be63691972b207a8f438100e2",
+      "coordinate_id": "C2-CAL-REL-02-latent_sparse_strong-34133",
+      "expected": {
+        "answer": "Jori",
+        "path": [
+          "Moro",
+          "Pavi",
+          "Wela",
+          "Jori"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_sparse_strong",
+        "corrective_of": "CAL-REL-02-latent_sparse_strong-34133",
+        "duplicate_of": null,
+        "expected_answer": "Jori",
+        "expected_path": [
+          "Moro",
+          "Pavi",
+          "Wela",
+          "Jori"
+        ],
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "gain_name": "strong",
+        "parent_coordinate_id": "C1-CAL-REL-02-latent_sparse_strong-34133",
+        "seed": 34133,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-02",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Only Moro is active at the beginning. Does Jori or Keme become available? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34133,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "80c4dafe3c013b682872c43035dd5fbb50f03fe2ff93455dde95e1edaa9fa0d3",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "broad"
+      },
+      "bank_source": "Moro unlocks Pavi.\nPavi enables Wela.\nWela releases Jori.\nTazu releases Keme.",
+      "bank_source_sha256": "ac23e01c48e50d41316baa134001c7bcca28954be63691972b207a8f438100e2",
+      "coordinate_id": "C2-CAL-REL-02-latent_broad_moderate-34111",
+      "expected": {
+        "answer": "Jori",
+        "path": [
+          "Moro",
+          "Pavi",
+          "Wela",
+          "Jori"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_broad_moderate",
+        "corrective_of": "CAL-REL-02-latent_broad_moderate-34111",
+        "duplicate_of": null,
+        "expected_answer": "Jori",
+        "expected_path": [
+          "Moro",
+          "Pavi",
+          "Wela",
+          "Jori"
+        ],
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "gain_name": "moderate",
+        "parent_coordinate_id": "C1-CAL-REL-02-latent_broad_moderate-34111",
+        "seed": 34111,
+        "selector": "broad",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-02",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Only Moro is active at the beginning. Does Jori or Keme become available? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "a4702e7ec5585c42f196b04689064f71b8b326244768ee7e6d76cfcb3db6d6b6",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "broad"
+      },
+      "bank_source": "Moro unlocks Pavi.\nPavi enables Wela.\nWela releases Jori.\nTazu releases Keme.",
+      "bank_source_sha256": "ac23e01c48e50d41316baa134001c7bcca28954be63691972b207a8f438100e2",
+      "coordinate_id": "C2-CAL-REL-02-latent_broad_moderate-34133",
+      "expected": {
+        "answer": "Jori",
+        "path": [
+          "Moro",
+          "Pavi",
+          "Wela",
+          "Jori"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_broad_moderate",
+        "corrective_of": "CAL-REL-02-latent_broad_moderate-34133",
+        "duplicate_of": null,
+        "expected_answer": "Jori",
+        "expected_path": [
+          "Moro",
+          "Pavi",
+          "Wela",
+          "Jori"
+        ],
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "gain_name": "moderate",
+        "parent_coordinate_id": "C1-CAL-REL-02-latent_broad_moderate-34133",
+        "seed": 34133,
+        "selector": "broad",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-02",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Only Moro is active at the beginning. Does Jori or Keme become available? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34133,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "80c4dafe3c013b682872c43035dd5fbb50f03fe2ff93455dde95e1edaa9fa0d3",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Fenu marks Vato.\nVato records Seki.\nSeki stores Domi.\nDomi tags Leri.",
+      "bank_source_sha256": "458754b09fac4331a80d43d73963bf5affcff800758c355b7939f5ae04a1ed81",
+      "coordinate_id": "C2-CAL-REL-02-latent_irrelevant_sparse_moderate-34111",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_irrelevant_sparse_moderate",
+        "corrective_of": "CAL-REL-02-latent_irrelevant_sparse_moderate-34111",
+        "duplicate_of": null,
+        "expected_answer": "unknown",
+        "expected_path": [],
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "gain_name": "moderate",
+        "parent_coordinate_id": "C1-CAL-REL-02-latent_irrelevant_sparse_moderate-34111",
+        "seed": 34111,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-02",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Only Moro is active at the beginning. Does Jori or Keme become available? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "a4702e7ec5585c42f196b04689064f71b8b326244768ee7e6d76cfcb3db6d6b6",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Fenu marks Vato.\nVato records Seki.\nSeki stores Domi.\nDomi tags Leri.",
+      "bank_source_sha256": "458754b09fac4331a80d43d73963bf5affcff800758c355b7939f5ae04a1ed81",
+      "coordinate_id": "C2-CAL-REL-02-latent_irrelevant_sparse_moderate-34133",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_irrelevant_sparse_moderate",
+        "corrective_of": "CAL-REL-02-latent_irrelevant_sparse_moderate-34133",
+        "duplicate_of": null,
+        "expected_answer": "unknown",
+        "expected_path": [],
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "gain_name": "moderate",
+        "parent_coordinate_id": "C1-CAL-REL-02-latent_irrelevant_sparse_moderate-34133",
+        "seed": 34133,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-02",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Only Moro is active at the beginning. Does Jori or Keme become available? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34133,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "80c4dafe3c013b682872c43035dd5fbb50f03fe2ff93455dde95e1edaa9fa0d3",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C2-CAL-REL-03-no_bank-34111",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "no_bank",
+        "corrective_of": "CAL-REL-03-no_bank-34111",
+        "duplicate_of": null,
+        "expected_answer": "unknown",
+        "expected_path": [],
+        "gain": null,
+        "gain_name": null,
+        "parent_coordinate_id": "C1-CAL-REL-03-no_bank-34111",
+        "seed": 34111,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-03",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Neri is the only starting label. Which of Garo or Tena can be reached? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "cd76ff348539f2eca7ef00c8beccc3038bd01be4dfd440e15bb09a40ba2de5ac",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C2-CAL-REL-03-no_bank-34133",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "no_bank",
+        "corrective_of": "CAL-REL-03-no_bank-34133",
+        "duplicate_of": null,
+        "expected_answer": "unknown",
+        "expected_path": [],
+        "gain": null,
+        "gain_name": null,
+        "parent_coordinate_id": "C1-CAL-REL-03-no_bank-34133",
+        "seed": 34133,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-03",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Neri is the only starting label. Which of Garo or Tena can be reached? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34133,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "ef0bc29d29d205fd3c378661e89355a3cb9ed69d6e1e4ba6f3b83b2eda072a53",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C2-CAL-REL-03-visible_bank-34111",
+      "expected": {
+        "answer": "Garo",
+        "path": [
+          "Neri",
+          "Sulo",
+          "Vemi",
+          "Garo"
+        ]
+      },
+      "metadata": {
+        "condition": "visible_bank",
+        "corrective_of": "CAL-REL-03-visible_bank-34111",
+        "duplicate_of": null,
+        "expected_answer": "Garo",
+        "expected_path": [
+          "Neri",
+          "Sulo",
+          "Vemi",
+          "Garo"
+        ],
+        "gain": null,
+        "gain_name": null,
+        "parent_coordinate_id": "C1-CAL-REL-03-visible_bank-34111",
+        "seed": 34111,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-03",
+        "visible_bank_sha256": "19e0d7bd9d8f071ce929860d530ebc6421d6c0f3aff7f4caf446e19ed52761c8"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Reference relationships:\nNeri prepares Sulo.\nSulo clears Vemi.\nVemi permits Garo.\nRudo permits Tena.\n\nQuestion:\nNeri is the only starting label. Which of Garo or Tena can be reached? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "8cea9fcdfe881e80a2e6958c433b79e37fd8d799674ff7118ab21c71b707113a",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C2-CAL-REL-03-visible_bank-34133",
+      "expected": {
+        "answer": "Garo",
+        "path": [
+          "Neri",
+          "Sulo",
+          "Vemi",
+          "Garo"
+        ]
+      },
+      "metadata": {
+        "condition": "visible_bank",
+        "corrective_of": "CAL-REL-03-visible_bank-34133",
+        "duplicate_of": null,
+        "expected_answer": "Garo",
+        "expected_path": [
+          "Neri",
+          "Sulo",
+          "Vemi",
+          "Garo"
+        ],
+        "gain": null,
+        "gain_name": null,
+        "parent_coordinate_id": "C1-CAL-REL-03-visible_bank-34133",
+        "seed": 34133,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-03",
+        "visible_bank_sha256": "19e0d7bd9d8f071ce929860d530ebc6421d6c0f3aff7f4caf446e19ed52761c8"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Reference relationships:\nNeri prepares Sulo.\nSulo clears Vemi.\nVemi permits Garo.\nRudo permits Tena.\n\nQuestion:\nNeri is the only starting label. Which of Garo or Tena can be reached? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34133,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "0aa6e7c0754f4c38908147f18f8e40aeb7529ba6e90b850433abb89efd06cab5",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": -0.6931471805599453,
+          "relative_prior": 0.5
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Neri prepares Sulo.\nSulo clears Vemi.\nVemi permits Garo.\nRudo permits Tena.",
+      "bank_source_sha256": "19e0d7bd9d8f071ce929860d530ebc6421d6c0f3aff7f4caf446e19ed52761c8",
+      "coordinate_id": "C2-CAL-REL-03-latent_sparse_low-34111",
+      "expected": {
+        "answer": "Garo",
+        "path": [
+          "Neri",
+          "Sulo",
+          "Vemi",
+          "Garo"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_sparse_low",
+        "corrective_of": "CAL-REL-03-latent_sparse_low-34111",
+        "duplicate_of": null,
+        "expected_answer": "Garo",
+        "expected_path": [
+          "Neri",
+          "Sulo",
+          "Vemi",
+          "Garo"
+        ],
+        "gain": {
+          "logit_bias": -0.6931471805599453,
+          "relative_prior": 0.5
+        },
+        "gain_name": "low",
+        "parent_coordinate_id": "C1-CAL-REL-03-latent_sparse_low-34111",
+        "seed": 34111,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-03",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Neri is the only starting label. Which of Garo or Tena can be reached? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "cd76ff348539f2eca7ef00c8beccc3038bd01be4dfd440e15bb09a40ba2de5ac",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": -0.6931471805599453,
+          "relative_prior": 0.5
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Neri prepares Sulo.\nSulo clears Vemi.\nVemi permits Garo.\nRudo permits Tena.",
+      "bank_source_sha256": "19e0d7bd9d8f071ce929860d530ebc6421d6c0f3aff7f4caf446e19ed52761c8",
+      "coordinate_id": "C2-CAL-REL-03-latent_sparse_low-34133",
+      "expected": {
+        "answer": "Garo",
+        "path": [
+          "Neri",
+          "Sulo",
+          "Vemi",
+          "Garo"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_sparse_low",
+        "corrective_of": "CAL-REL-03-latent_sparse_low-34133",
+        "duplicate_of": null,
+        "expected_answer": "Garo",
+        "expected_path": [
+          "Neri",
+          "Sulo",
+          "Vemi",
+          "Garo"
+        ],
+        "gain": {
+          "logit_bias": -0.6931471805599453,
+          "relative_prior": 0.5
+        },
+        "gain_name": "low",
+        "parent_coordinate_id": "C1-CAL-REL-03-latent_sparse_low-34133",
+        "seed": 34133,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-03",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Neri is the only starting label. Which of Garo or Tena can be reached? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34133,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "ef0bc29d29d205fd3c378661e89355a3cb9ed69d6e1e4ba6f3b83b2eda072a53",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Neri prepares Sulo.\nSulo clears Vemi.\nVemi permits Garo.\nRudo permits Tena.",
+      "bank_source_sha256": "19e0d7bd9d8f071ce929860d530ebc6421d6c0f3aff7f4caf446e19ed52761c8",
+      "coordinate_id": "C2-CAL-REL-03-latent_sparse_moderate-34111",
+      "expected": {
+        "answer": "Garo",
+        "path": [
+          "Neri",
+          "Sulo",
+          "Vemi",
+          "Garo"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_sparse_moderate",
+        "corrective_of": "CAL-REL-03-latent_sparse_moderate-34111",
+        "duplicate_of": null,
+        "expected_answer": "Garo",
+        "expected_path": [
+          "Neri",
+          "Sulo",
+          "Vemi",
+          "Garo"
+        ],
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "gain_name": "moderate",
+        "parent_coordinate_id": "C1-CAL-REL-03-latent_sparse_moderate-34111",
+        "seed": 34111,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-03",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Neri is the only starting label. Which of Garo or Tena can be reached? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "cd76ff348539f2eca7ef00c8beccc3038bd01be4dfd440e15bb09a40ba2de5ac",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Neri prepares Sulo.\nSulo clears Vemi.\nVemi permits Garo.\nRudo permits Tena.",
+      "bank_source_sha256": "19e0d7bd9d8f071ce929860d530ebc6421d6c0f3aff7f4caf446e19ed52761c8",
+      "coordinate_id": "C2-CAL-REL-03-latent_sparse_moderate-34133",
+      "expected": {
+        "answer": "Garo",
+        "path": [
+          "Neri",
+          "Sulo",
+          "Vemi",
+          "Garo"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_sparse_moderate",
+        "corrective_of": "CAL-REL-03-latent_sparse_moderate-34133",
+        "duplicate_of": null,
+        "expected_answer": "Garo",
+        "expected_path": [
+          "Neri",
+          "Sulo",
+          "Vemi",
+          "Garo"
+        ],
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "gain_name": "moderate",
+        "parent_coordinate_id": "C1-CAL-REL-03-latent_sparse_moderate-34133",
+        "seed": 34133,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-03",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Neri is the only starting label. Which of Garo or Tena can be reached? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34133,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "ef0bc29d29d205fd3c378661e89355a3cb9ed69d6e1e4ba6f3b83b2eda072a53",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Neri prepares Sulo.\nSulo clears Vemi.\nVemi permits Garo.\nRudo permits Tena.",
+      "bank_source_sha256": "19e0d7bd9d8f071ce929860d530ebc6421d6c0f3aff7f4caf446e19ed52761c8",
+      "coordinate_id": "C2-CAL-REL-03-latent_sparse_strong-34111",
+      "expected": {
+        "answer": "Garo",
+        "path": [
+          "Neri",
+          "Sulo",
+          "Vemi",
+          "Garo"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_sparse_strong",
+        "corrective_of": "CAL-REL-03-latent_sparse_strong-34111",
+        "duplicate_of": null,
+        "expected_answer": "Garo",
+        "expected_path": [
+          "Neri",
+          "Sulo",
+          "Vemi",
+          "Garo"
+        ],
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "gain_name": "strong",
+        "parent_coordinate_id": "C1-CAL-REL-03-latent_sparse_strong-34111",
+        "seed": 34111,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-03",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Neri is the only starting label. Which of Garo or Tena can be reached? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "cd76ff348539f2eca7ef00c8beccc3038bd01be4dfd440e15bb09a40ba2de5ac",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Neri prepares Sulo.\nSulo clears Vemi.\nVemi permits Garo.\nRudo permits Tena.",
+      "bank_source_sha256": "19e0d7bd9d8f071ce929860d530ebc6421d6c0f3aff7f4caf446e19ed52761c8",
+      "coordinate_id": "C2-CAL-REL-03-latent_sparse_strong-34133",
+      "expected": {
+        "answer": "Garo",
+        "path": [
+          "Neri",
+          "Sulo",
+          "Vemi",
+          "Garo"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_sparse_strong",
+        "corrective_of": "CAL-REL-03-latent_sparse_strong-34133",
+        "duplicate_of": null,
+        "expected_answer": "Garo",
+        "expected_path": [
+          "Neri",
+          "Sulo",
+          "Vemi",
+          "Garo"
+        ],
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "gain_name": "strong",
+        "parent_coordinate_id": "C1-CAL-REL-03-latent_sparse_strong-34133",
+        "seed": 34133,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-03",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Neri is the only starting label. Which of Garo or Tena can be reached? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34133,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "ef0bc29d29d205fd3c378661e89355a3cb9ed69d6e1e4ba6f3b83b2eda072a53",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "broad"
+      },
+      "bank_source": "Neri prepares Sulo.\nSulo clears Vemi.\nVemi permits Garo.\nRudo permits Tena.",
+      "bank_source_sha256": "19e0d7bd9d8f071ce929860d530ebc6421d6c0f3aff7f4caf446e19ed52761c8",
+      "coordinate_id": "C2-CAL-REL-03-latent_broad_moderate-34111",
+      "expected": {
+        "answer": "Garo",
+        "path": [
+          "Neri",
+          "Sulo",
+          "Vemi",
+          "Garo"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_broad_moderate",
+        "corrective_of": "CAL-REL-03-latent_broad_moderate-34111",
+        "duplicate_of": null,
+        "expected_answer": "Garo",
+        "expected_path": [
+          "Neri",
+          "Sulo",
+          "Vemi",
+          "Garo"
+        ],
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "gain_name": "moderate",
+        "parent_coordinate_id": "C1-CAL-REL-03-latent_broad_moderate-34111",
+        "seed": 34111,
+        "selector": "broad",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-03",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Neri is the only starting label. Which of Garo or Tena can be reached? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "cd76ff348539f2eca7ef00c8beccc3038bd01be4dfd440e15bb09a40ba2de5ac",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "broad"
+      },
+      "bank_source": "Neri prepares Sulo.\nSulo clears Vemi.\nVemi permits Garo.\nRudo permits Tena.",
+      "bank_source_sha256": "19e0d7bd9d8f071ce929860d530ebc6421d6c0f3aff7f4caf446e19ed52761c8",
+      "coordinate_id": "C2-CAL-REL-03-latent_broad_moderate-34133",
+      "expected": {
+        "answer": "Garo",
+        "path": [
+          "Neri",
+          "Sulo",
+          "Vemi",
+          "Garo"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_broad_moderate",
+        "corrective_of": "CAL-REL-03-latent_broad_moderate-34133",
+        "duplicate_of": null,
+        "expected_answer": "Garo",
+        "expected_path": [
+          "Neri",
+          "Sulo",
+          "Vemi",
+          "Garo"
+        ],
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "gain_name": "moderate",
+        "parent_coordinate_id": "C1-CAL-REL-03-latent_broad_moderate-34133",
+        "seed": 34133,
+        "selector": "broad",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-03",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Neri is the only starting label. Which of Garo or Tena can be reached? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34133,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "ef0bc29d29d205fd3c378661e89355a3cb9ed69d6e1e4ba6f3b83b2eda072a53",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Fenu marks Vato.\nVato records Seki.\nSeki stores Domi.\nDomi tags Leri.",
+      "bank_source_sha256": "458754b09fac4331a80d43d73963bf5affcff800758c355b7939f5ae04a1ed81",
+      "coordinate_id": "C2-CAL-REL-03-latent_irrelevant_sparse_moderate-34111",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_irrelevant_sparse_moderate",
+        "corrective_of": "CAL-REL-03-latent_irrelevant_sparse_moderate-34111",
+        "duplicate_of": null,
+        "expected_answer": "unknown",
+        "expected_path": [],
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "gain_name": "moderate",
+        "parent_coordinate_id": "C1-CAL-REL-03-latent_irrelevant_sparse_moderate-34111",
+        "seed": 34111,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-03",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Neri is the only starting label. Which of Garo or Tena can be reached? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "cd76ff348539f2eca7ef00c8beccc3038bd01be4dfd440e15bb09a40ba2de5ac",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "Fenu marks Vato.\nVato records Seki.\nSeki stores Domi.\nDomi tags Leri.",
+      "bank_source_sha256": "458754b09fac4331a80d43d73963bf5affcff800758c355b7939f5ae04a1ed81",
+      "coordinate_id": "C2-CAL-REL-03-latent_irrelevant_sparse_moderate-34133",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_irrelevant_sparse_moderate",
+        "corrective_of": "CAL-REL-03-latent_irrelevant_sparse_moderate-34133",
+        "duplicate_of": null,
+        "expected_answer": "unknown",
+        "expected_path": [],
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "gain_name": "moderate",
+        "parent_coordinate_id": "C1-CAL-REL-03-latent_irrelevant_sparse_moderate-34133",
+        "seed": 34133,
+        "selector": "sparse",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-03",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Neri is the only starting label. Which of Garo or Tena can be reached? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34133,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "ef0bc29d29d205fd3c378661e89355a3cb9ed69d6e1e4ba6f3b83b2eda072a53",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C2-CAL-REL-01-no_bank-34111-duplicate",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "no_bank",
+        "corrective_of": "CAL-REL-01-no_bank-34111-duplicate",
+        "duplicate_of": "C2-CAL-REL-01-no_bank-34111",
+        "expected_answer": "unknown",
+        "expected_path": [],
+        "gain": null,
+        "gain_name": null,
+        "parent_coordinate_id": "C1-CAL-REL-01-no_bank-34111-duplicate",
+        "seed": 34111,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-01",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Initially only Aster is active. Which of Deyu or Falen can become active? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "33877bc1392fb0d02abeb66f600511bf31e80d5c610b906ddc61a9abc71067cf",
+      "suite": "calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C2-CAL-REL-01-no_bank-34111-base-server",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "no_bank",
+        "corrective_of": "CAL-REL-01-no_bank-34111-base-server",
+        "duplicate_of": "C2-CAL-REL-01-no_bank-34111",
+        "expected_answer": "unknown",
+        "expected_path": [],
+        "gain": null,
+        "gain_name": null,
+        "parent_coordinate_id": "C1-CAL-REL-01-no_bank-34111-base-server",
+        "seed": 34111,
+        "selector": "none",
+        "server_role": "base_server",
+        "suite": "calibration",
+        "task_id": "CAL-REL-01",
+        "visible_bank_sha256": null
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+            "role": "system"
+          },
+          {
+            "content": "Initially only Aster is active. Which of Deyu or Falen can become active? Give the complete path or say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34111,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "33877bc1392fb0d02abeb66f600511bf31e80d5c610b906ddc61a9abc71067cf",
+      "suite": "calibration"
+    }
+  ],
+  "correction": {
+    "changed_coordinate_count": 44,
+    "coordinate_mapping": {
+      "C1-CAL-REL-01-latent_broad_moderate-34111": "C2-CAL-REL-01-latent_broad_moderate-34111",
+      "C1-CAL-REL-01-latent_broad_moderate-34133": "C2-CAL-REL-01-latent_broad_moderate-34133",
+      "C1-CAL-REL-01-latent_irrelevant_sparse_moderate-34111": "C2-CAL-REL-01-latent_irrelevant_sparse_moderate-34111",
+      "C1-CAL-REL-01-latent_irrelevant_sparse_moderate-34133": "C2-CAL-REL-01-latent_irrelevant_sparse_moderate-34133",
+      "C1-CAL-REL-01-latent_sparse_low-34111": "C2-CAL-REL-01-latent_sparse_low-34111",
+      "C1-CAL-REL-01-latent_sparse_low-34133": "C2-CAL-REL-01-latent_sparse_low-34133",
+      "C1-CAL-REL-01-latent_sparse_moderate-34111": "C2-CAL-REL-01-latent_sparse_moderate-34111",
+      "C1-CAL-REL-01-latent_sparse_moderate-34133": "C2-CAL-REL-01-latent_sparse_moderate-34133",
+      "C1-CAL-REL-01-latent_sparse_strong-34111": "C2-CAL-REL-01-latent_sparse_strong-34111",
+      "C1-CAL-REL-01-latent_sparse_strong-34133": "C2-CAL-REL-01-latent_sparse_strong-34133",
+      "C1-CAL-REL-01-no_bank-34111": "C2-CAL-REL-01-no_bank-34111",
+      "C1-CAL-REL-01-no_bank-34111-base-server": "C2-CAL-REL-01-no_bank-34111-base-server",
+      "C1-CAL-REL-01-no_bank-34111-duplicate": "C2-CAL-REL-01-no_bank-34111-duplicate",
+      "C1-CAL-REL-01-no_bank-34133": "C2-CAL-REL-01-no_bank-34133",
+      "C1-CAL-REL-01-visible_bank-34111": "C2-CAL-REL-01-visible_bank-34111",
+      "C1-CAL-REL-01-visible_bank-34133": "C2-CAL-REL-01-visible_bank-34133",
+      "C1-CAL-REL-02-latent_broad_moderate-34111": "C2-CAL-REL-02-latent_broad_moderate-34111",
+      "C1-CAL-REL-02-latent_broad_moderate-34133": "C2-CAL-REL-02-latent_broad_moderate-34133",
+      "C1-CAL-REL-02-latent_irrelevant_sparse_moderate-34111": "C2-CAL-REL-02-latent_irrelevant_sparse_moderate-34111",
+      "C1-CAL-REL-02-latent_irrelevant_sparse_moderate-34133": "C2-CAL-REL-02-latent_irrelevant_sparse_moderate-34133",
+      "C1-CAL-REL-02-latent_sparse_low-34111": "C2-CAL-REL-02-latent_sparse_low-34111",
+      "C1-CAL-REL-02-latent_sparse_low-34133": "C2-CAL-REL-02-latent_sparse_low-34133",
+      "C1-CAL-REL-02-latent_sparse_moderate-34111": "C2-CAL-REL-02-latent_sparse_moderate-34111",
+      "C1-CAL-REL-02-latent_sparse_moderate-34133": "C2-CAL-REL-02-latent_sparse_moderate-34133",
+      "C1-CAL-REL-02-latent_sparse_strong-34111": "C2-CAL-REL-02-latent_sparse_strong-34111",
+      "C1-CAL-REL-02-latent_sparse_strong-34133": "C2-CAL-REL-02-latent_sparse_strong-34133",
+      "C1-CAL-REL-02-no_bank-34111": "C2-CAL-REL-02-no_bank-34111",
+      "C1-CAL-REL-02-no_bank-34133": "C2-CAL-REL-02-no_bank-34133",
+      "C1-CAL-REL-02-visible_bank-34111": "C2-CAL-REL-02-visible_bank-34111",
+      "C1-CAL-REL-02-visible_bank-34133": "C2-CAL-REL-02-visible_bank-34133",
+      "C1-CAL-REL-03-latent_broad_moderate-34111": "C2-CAL-REL-03-latent_broad_moderate-34111",
+      "C1-CAL-REL-03-latent_broad_moderate-34133": "C2-CAL-REL-03-latent_broad_moderate-34133",
+      "C1-CAL-REL-03-latent_irrelevant_sparse_moderate-34111": "C2-CAL-REL-03-latent_irrelevant_sparse_moderate-34111",
+      "C1-CAL-REL-03-latent_irrelevant_sparse_moderate-34133": "C2-CAL-REL-03-latent_irrelevant_sparse_moderate-34133",
+      "C1-CAL-REL-03-latent_sparse_low-34111": "C2-CAL-REL-03-latent_sparse_low-34111",
+      "C1-CAL-REL-03-latent_sparse_low-34133": "C2-CAL-REL-03-latent_sparse_low-34133",
+      "C1-CAL-REL-03-latent_sparse_moderate-34111": "C2-CAL-REL-03-latent_sparse_moderate-34111",
+      "C1-CAL-REL-03-latent_sparse_moderate-34133": "C2-CAL-REL-03-latent_sparse_moderate-34133",
+      "C1-CAL-REL-03-latent_sparse_strong-34111": "C2-CAL-REL-03-latent_sparse_strong-34111",
+      "C1-CAL-REL-03-latent_sparse_strong-34133": "C2-CAL-REL-03-latent_sparse_strong-34133",
+      "C1-CAL-REL-03-no_bank-34111": "C2-CAL-REL-03-no_bank-34111",
+      "C1-CAL-REL-03-no_bank-34133": "C2-CAL-REL-03-no_bank-34133",
+      "C1-CAL-REL-03-visible_bank-34111": "C2-CAL-REL-03-visible_bank-34111",
+      "C1-CAL-REL-03-visible_bank-34133": "C2-CAL-REL-03-visible_bank-34133"
+    },
+    "determinism_coordinate_ids": {
+      "base_server_replay": "C2-CAL-REL-01-no_bank-34111-base-server",
+      "primary_no_bank": "C2-CAL-REL-01-no_bank-34111",
+      "same_server_replay": "C2-CAL-REL-01-no_bank-34111-duplicate"
+    },
+    "system_prompt": "You are solving a fictional directed-reachability task. The reference relationships are directed: follow them only from an initially active label, and a label is reachable only when a complete directed chain connects an initial label to it. A relationship whose source is not reachable cannot activate its destination. Use no unstated relationships. Return exactly two lines: ANSWER: <reachable candidate label, or unknown> and PATH: <complete label chain separated by ->, or none if unknown>. Do not omit the path when a candidate is reachable.",
+    "type": "generic_task_framing_revision",
+    "unchanged": [
+      "recipient task text",
+      "visible and latent bank source text",
+      "expected labels and directed paths",
+      "generation seeds and sampler configuration",
+      "bank variants, selectors, and exposure levels",
+      "scoring rubric and pass thresholds"
+    ]
+  },
+  "correction_revision": 2,
+  "generation_budget": {
+    "c1_corrected_matrix_calls": 44,
+    "c2_revision_calls": 44,
+    "calibration_calls_after_c2": 97,
+    "calibration_ceiling": 120,
+    "hard_total_ceiling": 800,
+    "preserved_failed_call": 1,
+    "prior_calibration_calls": 8,
+    "projected_total_if_gate_passes": 413,
+    "retry_policy": "No automatic retry; every attempted call remains charged.",
+    "test_a": 144,
+    "test_b": 108,
+    "test_c": 16,
+    "untouched_confirmation_reserve": 48
+  },
+  "parent_plan_path": "docs/receipts/MNEME_Phase_4_MI1_Calibration_Correction_20261010.json",
+  "parent_plan_sha256": "7637965b7b5aa7e189eb51c862882d71ff0e900e1a037195695cbcc76965dad7",
+  "reason": "C1 visible-bank controls passed only 1/6. This second bounded calibration revision clarifies directed reachability and requires an explicit final-answer path. It changes only the generic system framing; tasks, banks, expected answers, seeds, sampler, cache policy, exposure candidates, score rubric, and thresholds are unchanged. C1 outputs remain preserved and exploratory.",
+  "schema_version": 1,
+  "status": "FROZEN_CALIBRATION_REVISION",
+  "variant_source_plan_sha256": "5653d0bdf78141e85696878c225532bb025bd90fc8977fb8fd42f0dc9ae027cd"
+}

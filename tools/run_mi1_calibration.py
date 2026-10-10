@@ -33,12 +33,15 @@ def main() -> int:
     if plan.get("status") not in {
         "FROZEN_BEFORE_CALIBRATION_GENERATION",
         "FROZEN_MECHANICAL_CORRECTION",
+        "FROZEN_CALIBRATION_REVISION",
     }:
         raise ValueError("calibration plan is not frozen before generation")
     variant_manifest = json.loads(args.variant_map.read_text(encoding="utf-8"))
-    expected_variant_plan = plan.get("parent_plan_sha256") or hashlib.sha256(
-        args.plan.read_bytes()
-    ).hexdigest()
+    expected_variant_plan = (
+        plan.get("variant_source_plan_sha256")
+        or plan.get("parent_plan_sha256")
+        or hashlib.sha256(args.plan.read_bytes()).hexdigest()
+    )
     if variant_manifest.get("plan_sha256") != expected_variant_plan:
         raise ValueError("variant map was prepared for another frozen plan")
     variants = variant_manifest["variants"]

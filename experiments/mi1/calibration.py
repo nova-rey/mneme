@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 import math
@@ -87,6 +88,91 @@ CONDITIONS = (
     "latent_broad_moderate",
     "latent_irrelevant_sparse_moderate",
 )
+
+CALIBRATION_SYSTEM_REVISION_2 = (
+    "You are solving a fictional directed-reachability task. The reference relationships "
+    "are directed: follow them only from an initially active label, and a label is "
+    "reachable only when a complete directed chain connects an initial label to it. "
+    "A relationship whose source is not reachable cannot activate its destination. "
+    "Use no unstated relationships. Return exactly two lines: "
+    "ANSWER: <reachable candidate label, or unknown> and "
+    "PATH: <complete label chain separated by ->, or none if unknown>. "
+    "Do not omit the path when a candidate is reachable."
+)
+
+
+def build_calibration_framing_revision(
+    parent_plan: dict[str, Any], *, parent_sha256: str
+) -> dict[str, Any]:
+    """Freeze a generic output-format clarification without changing stimuli."""
+    coordinates = copy.deepcopy(parent_plan["coordinates"])
+    mapping = {
+        row["coordinate_id"]: row["coordinate_id"].replace("C1-", "C2-", 1)
+        for row in coordinates
+    }
+    if len(coordinates) != 44 or any(old == new for old, new in mapping.items()):
+        raise ValueError("framing revision expects the frozen 44-coordinate C1 plan")
+    for row in coordinates:
+        old_id = row["coordinate_id"]
+        row["coordinate_id"] = mapping[old_id]
+        row["metadata"]["parent_coordinate_id"] = old_id
+        duplicate_of = row["metadata"].get("duplicate_of")
+        if duplicate_of is not None:
+            row["metadata"]["duplicate_of"] = mapping[duplicate_of]
+        row["request"]["messages"][0]["content"] = CALIBRATION_SYSTEM_REVISION_2
+        row["request_sha256"] = hashlib.sha256(canonical_bytes(row["request"])).hexdigest()
+
+    determinism_ids = {
+        "primary_no_bank": "C2-CAL-REL-01-no_bank-34111",
+        "same_server_replay": "C2-CAL-REL-01-no_bank-34111-duplicate",
+        "base_server_replay": "C2-CAL-REL-01-no_bank-34111-base-server",
+    }
+    return {
+        "schema_version": 1,
+        "status": "FROZEN_CALIBRATION_REVISION",
+        "correction_revision": 2,
+        "parent_plan_path": "docs/receipts/MNEME_Phase_4_MI1_Calibration_Correction_20261010.json",
+        "parent_plan_sha256": parent_sha256,
+        "variant_source_plan_sha256": parent_plan.get("parent_plan_sha256"),
+        "reason": (
+            "C1 visible-bank controls passed only 1/6. This second bounded calibration "
+            "revision clarifies directed reachability and requires an explicit final-answer "
+            "path. It changes only the generic system framing; tasks, banks, expected answers, "
+            "seeds, sampler, cache policy, exposure candidates, score rubric, and thresholds "
+            "are unchanged. C1 outputs remain preserved and exploratory."
+        ),
+        "correction": {
+            "type": "generic_task_framing_revision",
+            "system_prompt": CALIBRATION_SYSTEM_REVISION_2,
+            "changed_coordinate_count": len(coordinates),
+            "unchanged": [
+                "recipient task text",
+                "visible and latent bank source text",
+                "expected labels and directed paths",
+                "generation seeds and sampler configuration",
+                "bank variants, selectors, and exposure levels",
+                "scoring rubric and pass thresholds",
+            ],
+            "coordinate_mapping": mapping,
+            "determinism_coordinate_ids": determinism_ids,
+        },
+        "generation_budget": {
+            "prior_calibration_calls": 8,
+            "preserved_failed_call": 1,
+            "c1_corrected_matrix_calls": 44,
+            "c2_revision_calls": 44,
+            "calibration_calls_after_c2": 97,
+            "calibration_ceiling": 120,
+            "test_a": 144,
+            "test_b": 108,
+            "test_c": 16,
+            "untouched_confirmation_reserve": 48,
+            "projected_total_if_gate_passes": 413,
+            "hard_total_ceiling": 800,
+            "retry_policy": "No automatic retry; every attempted call remains charged.",
+        },
+        "coordinates": coordinates,
+    }
 
 
 def canonical_bytes(value: Any) -> bytes:

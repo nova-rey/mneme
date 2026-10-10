@@ -1774,3 +1774,7 @@ and dispositions remain unchanged.
 ## 2026-10-10 Phase 4 MI1 calibration outcome
 
 - The corrected frozen 44-coordinate matrix completed with durable evidence. Determinism passed, negative controls scored 12/12, but visible-bank positive checks scored 1/6 and every latent candidate scored 0/6; the predeclared calibration gate failed, so no scored Test A/B/C generation was launched. Corrected scorer reads replay IDs from the immutable correction amendment. Full raw results remain local under `/home/nyx/mneme-artifacts/phase4-mi1/calibration-run/`; the compact outcome is published in `docs/receipts/MNEME_Phase_4_MI1_Memory_Inception_Calibration_Outcome_20261010.*`.
+
+## 2026-10-10 Phase 4 MI1 calibration framing revision 2
+
+- Because visible-bank comprehension failed, applied the second and final bounded calibration revision permitted by the MI1 spec: clarify directed reachability and require an explicit final path. This is a generic response-format correction only; facts, banks, expected answers, seeds, bank variants, exposures, rubric, and thresholds are unchanged. C1 remains exploratory and immutable. Frozen C2 manifest is `docs/receipts/MNEME_Phase_4_MI1_Calibration_Framing_Revision_20261010.json`; 44 new IDs keep total calibration within 97/120 generations. No A/B/C call is allowed before C2 passes all calibration gates.
