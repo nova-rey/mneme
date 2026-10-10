@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import base64
 import hashlib
 import json
 import os
@@ -15,6 +16,11 @@ _SAFE_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$")
 
 def _canonical(value: Any) -> bytes:
     return (json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8")
+
+
+def _canonical_line(value: Any) -> bytes:
+    encoded = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return (encoded + "\n").encode("utf-8")
 
 
 def _sha256_bytes(value: bytes) -> str:
@@ -182,6 +188,16 @@ class EvidenceJournal:
                 raise ValueError(f"request identity mismatch: {request.name}")
             row = rows.get(attempt_id)
             if row is None:
+                stream_name = request_payload.get("metadata", {}).get("stream_file")
+                if stream_name is not None:
+                    expected_stream = f"{attempt_id}.stream.jsonl"
+                    if stream_name != expected_stream:
+                        raise ValueError(f"invalid stream filename in {request.name}")
+                    stream_path = self.attempts / expected_stream
+                    if not stream_path.exists():
+                        if complete is not None or failed is not None:
+                            raise ValueError(f"completed stream file is missing: {expected_stream}")
+                        _atomic_write(stream_path, b"")
                 request_bytes = request.read_bytes()
                 row = {
                     "attempt_id": attempt_id,
@@ -230,10 +246,21 @@ class EvidenceJournal:
             raise FileExistsError(f"attempt already exists: {attempt_id}")
         if len(index["attempts"]) >= self.hard_call_limit:
             raise RuntimeError("authorized MI1 model-call limit reached")
+        stream_name = metadata.get("stream_file")
+        stream_path: Path | None = None
+        if stream_name is not None:
+            expected_stream = f"{attempt_id}.stream.jsonl"
+            if stream_name != expected_stream:
+                raise ValueError("stream filename must be derived from the attempt ID")
+            stream_path = self.attempts / expected_stream
+            if stream_path.exists():
+                raise FileExistsError(f"stream evidence already exists: {expected_stream}")
         payload = _canonical({"attempt_id": attempt_id, "metadata": metadata, "request": request})
         file_name = f"{attempt_id}.request.json"
         path = self.attempts / file_name
         _atomic_write(path, payload)
+        if stream_path is not None:
+            _atomic_write(stream_path, b"")
         index["attempts"].append(
             {
                 "attempt_id": attempt_id,
@@ -246,6 +273,45 @@ class EvidenceJournal:
         )
         self._write_index(index)
         return path
+
+    def append_stream_event(self, attempt_id: str, raw_event: bytes) -> int:
+        """Durably append one exact SSE event before consuming the next event."""
+        if not raw_event:
+            raise ValueError("empty SSE event")
+        index = self._recover_unindexed_files(self._check_index())
+        row = next((item for item in index["attempts"] if item["attempt_id"] == attempt_id), None)
+        if row is None or row["status"] != "REQUEST_DURABLE":
+            raise ValueError("stream events require a durable in-flight request")
+        request = json.loads(
+            (self.attempts / row["request_file"]).read_text(encoding="utf-8")
+        )
+        stream_name = request.get("metadata", {}).get("stream_file")
+        if stream_name != f"{attempt_id}.stream.jsonl":
+            raise ValueError("request does not declare the expected stream file")
+        stream_path = self.attempts / stream_name
+        previous = stream_path.read_bytes()
+        sequence = len(previous.splitlines())
+        record = {
+            "sequence": sequence,
+            "raw_event_base64": base64.b64encode(raw_event).decode("ascii"),
+            "raw_event_sha256": _sha256_bytes(raw_event),
+        }
+        with stream_path.open("ab") as stream:
+            stream.write(_canonical_line(record))
+            stream.flush()
+            os.fsync(stream.fileno())
+        return sequence + 1
+
+    def stream_summary(self, attempt_id: str) -> dict[str, Any]:
+        """Return a verifiable byte/count summary for a request's durable stream."""
+        path = self.attempts / f"{attempt_id}.stream.jsonl"
+        raw = path.read_bytes()
+        records = [json.loads(line) for line in raw.splitlines()]
+        return {
+            "stream_file": path.name,
+            "stream_sha256": _sha256_bytes(raw),
+            "stream_event_count": len(records),
+        }
 
     def complete(
         self, attempt_id: str, response: dict[str, Any], metadata: dict[str, Any] | None = None
@@ -297,4 +363,38 @@ class EvidenceJournal:
         }
         if on_disk != indexed:
             raise ValueError(f"unindexed or missing evidence files: {sorted(on_disk ^ indexed)}")
+        expected_streams: set[str] = set()
+        for row in index["attempts"]:
+            request = json.loads(
+                (self.attempts / row["request_file"]).read_text(encoding="utf-8")
+            )
+            stream_name = request.get("metadata", {}).get("stream_file")
+            if stream_name is None:
+                continue
+            expected = f"{row['attempt_id']}.stream.jsonl"
+            if stream_name != expected:
+                raise ValueError(f"invalid stream filename for {row['attempt_id']}")
+            expected_streams.add(expected)
+            stream_path = self.attempts / expected
+            stream_bytes = stream_path.read_bytes()
+            records = [json.loads(line) for line in stream_bytes.splitlines()]
+            for sequence, record in enumerate(records):
+                event = base64.b64decode(record["raw_event_base64"], validate=True)
+                if (
+                    record.get("sequence") != sequence
+                    or record.get("raw_event_sha256") != _sha256_bytes(event)
+                ):
+                    raise ValueError(f"invalid streamed event {sequence} for {row['attempt_id']}")
+            if row["status"] in {"COMPLETE", "FAILED"}:
+                outcome = json.loads(
+                    (self.attempts / row["outcome_file"]).read_text(encoding="utf-8")
+                )
+                summary = outcome.get("metadata", {}).get("stream")
+                if summary is None or summary.get("stream_sha256") != _sha256_bytes(stream_bytes):
+                    raise ValueError(f"stream digest mismatch for {row['attempt_id']}")
+        on_disk_streams = {path.name for path in self.attempts.glob("*.stream.jsonl")}
+        if on_disk_streams != expected_streams:
+            raise ValueError(
+                f"unindexed stream evidence: {sorted(on_disk_streams ^ expected_streams)}"
+            )
         return statuses

@@ -1750,3 +1750,7 @@ and dispositions remain unchanged.
 
 - Added a cache-disabled execution layer that records the exact rendered prompt, frozen request, source and compiled bank hashes, selector metadata, bank attach/clear revision, and complete raw generation response through the append-only journal.
 - Added an experiment-wide durable generation ledger that includes the eight prior comprehension calls in both the 120-call calibration ceiling and the 800-call hard cap. Test-C continuation construction uses only the prior persisted visible answer. Fake-transport and recovery-oriented tests pass; no new Gemma generation was run.
+
+## 2026-10-10 Phase 4 MI1 calibration freeze repair
+
+- Preserved the pre-generation MI1 calibration boundary while hardening the evidence path: fixed visible-bank calibration to remain text-only, added streamed raw-event journaling and exact base-server replay, froze 44 calibration requests with prompt-cache reuse disabled, and committed the isolated llama.cpp source patch bundle. Only the eight earlier visible-text calls have generated tokens; no new calibration or scored calls were launched in this commit. Validation: 839 pytest passed, Ruff passed, strict mypy passed.

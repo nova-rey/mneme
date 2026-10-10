@@ -31,7 +31,7 @@ def _coordinate(
     request = {
         "model": suite["host_model"],
         "messages": messages,
-        "stream": False,
+        "stream": True,
         "cache_prompt": suite["cache_prompt"],
         "seed": metadata["seed"],
         "max_tokens": generation["max_tokens"],

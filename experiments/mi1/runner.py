@@ -9,15 +9,9 @@ import urllib.request
 from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Protocol
+from typing import Any
 
 from experiments.mi1.native.evidence import EvidenceJournal, atomic_json_write
-
-
-class BankResolver(Protocol):
-    """Resolve exact frozen bank text to a host-local native bank file."""
-
-    def __call__(self, source_text: str, source_sha256: str) -> ResolvedBank: ...
 
 
 @dataclass(frozen=True)
@@ -38,7 +32,10 @@ class ResolvedBank:
                 raise ValueError(f"{label} SHA-256 must be lowercase hexadecimal")
 
 
+BankResolver = Callable[[str, str, dict[str, Any]], ResolvedBank]
 Transport = Callable[[str, dict[str, Any]], dict[str, Any]]
+StreamEventSink = Callable[[bytes], int]
+StreamTransport = Callable[[str, dict[str, Any], StreamEventSink], dict[str, Any]]
 
 
 def http_json(url: str, payload: dict[str, Any]) -> dict[str, Any]:
@@ -53,6 +50,76 @@ def http_json(url: str, payload: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"expected JSON object from {url}")
     return value
+
+
+def http_sse(url: str, payload: dict[str, Any], on_event: StreamEventSink) -> dict[str, Any]:
+    """Consume an OpenAI-compatible SSE response while journaling each raw event."""
+    request = urllib.request.Request(
+        url,
+        data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+        headers={"Content-Type": "application/json", "Accept": "text/event-stream"},
+        method="POST",
+    )
+    response: dict[str, Any] = {"choices": []}
+    choices: dict[int, dict[str, Any]] = {}
+    event_lines: list[bytes] = []
+    saw_done = False
+
+    def consume(raw_event: bytes) -> None:
+        nonlocal saw_done
+        on_event(raw_event)
+        data_lines = [
+            line[5:].lstrip(b" ")
+            for line in raw_event.splitlines()
+            if line.startswith(b"data:")
+        ]
+        if not data_lines:
+            return
+        data = b"\n".join(data_lines)
+        if data == b"[DONE]":
+            saw_done = True
+            return
+        chunk = json.loads(data.decode("utf-8"))
+        if not isinstance(chunk, dict):
+            raise ValueError("SSE data must contain a JSON object")
+        for key in ("id", "object", "created", "model", "system_fingerprint"):
+            if key in chunk:
+                response[key] = chunk[key]
+        if "usage" in chunk:
+            response["usage"] = chunk["usage"]
+        for item in chunk.get("choices", []):
+            index = item.get("index", 0)
+            state = choices.setdefault(index, {"index": index, "message": {"role": "assistant"}})
+            delta = item.get("delta", {})
+            message = state["message"]
+            for field, value in delta.items():
+                if isinstance(value, str) and field in {
+                    "content",
+                    "reasoning_content",
+                    "reasoning",
+                }:
+                    message[field] = message.get(field, "") + value
+                elif field not in message:
+                    message[field] = value
+            if item.get("finish_reason") is not None:
+                state["finish_reason"] = item["finish_reason"]
+
+    with urllib.request.urlopen(request, timeout=1800) as stream:
+        for line in stream:
+            event_lines.append(line)
+            if line in (b"\n", b"\r\n"):
+                consume(b"".join(event_lines))
+                event_lines.clear()
+                if saw_done:
+                    break
+        if event_lines:
+            consume(b"".join(event_lines))
+    if not saw_done:
+        raise EOFError("SSE response closed before [DONE]")
+    response["choices"] = [choices[index] for index in sorted(choices)]
+    if not response["choices"]:
+        raise ValueError("SSE response contained no assistant choices")
+    return response
 
 
 class GenerationBudget:
@@ -137,24 +204,36 @@ class MI1CoordinateRunner:
         self,
         *,
         base_url: str,
+        base_server_url: str | None = None,
         journal: EvidenceJournal,
         budget: GenerationBudget,
         bank_resolver: BankResolver,
         transport: Transport = http_json,
+        stream_transport: StreamTransport = http_sse,
     ) -> None:
         if not base_url.startswith("http://") and not base_url.startswith("https://"):
             raise ValueError("base_url must use http(s)")
         self.base_url = base_url.rstrip("/")
+        self.base_server_url = (
+            None if base_server_url is None else base_server_url.rstrip("/")
+        )
         self.journal = journal
         self.budget = budget
         self.bank_resolver = bank_resolver
         self.transport = transport
+        self.stream_transport = stream_transport
 
-    def _post(self, route: str, payload: dict[str, Any]) -> dict[str, Any]:
-        return self.transport(self.base_url + route, payload)
+    def _post(
+        self, route: str, payload: dict[str, Any], *, base_url: str | None = None
+    ) -> dict[str, Any]:
+        return self.transport((base_url or self.base_url) + route, payload)
 
     def _bank_state(
-        self, operation: str, bank_text: str | None, bank_sha: str | None
+        self,
+        operation: str,
+        bank_text: str | None,
+        bank_sha: str | None,
+        bank_config: dict[str, Any],
     ) -> dict[str, Any]:
         artifact: ResolvedBank | None = None
         if operation == "clear":
@@ -162,7 +241,7 @@ class MI1CoordinateRunner:
         elif operation in {"attach", "replace", "encode_and_attach"}:
             if bank_text is None or bank_sha is None:
                 raise ValueError(f"{operation} requires frozen bank text and its hash")
-            artifact = self.bank_resolver(bank_text, bank_sha)
+            artifact = self.bank_resolver(bank_text, bank_sha, bank_config)
             payload = {"operation": "attach" if operation == "encode_and_attach" else operation,
                        "path": str(artifact.path)}
         else:
@@ -196,6 +275,14 @@ class MI1CoordinateRunner:
         """Execute one coordinate; caller supplies C-turn-2 dynamic messages."""
         coordinate_id = coordinate["coordinate_id"]
         request_template = dict(coordinate["request"])
+        metadata = coordinate.get("metadata", {})
+        server_role = metadata.get("server_role", "mi1_server")
+        if server_role == "mi1_server":
+            server_url = self.base_url
+        elif server_role == "base_server" and self.base_server_url is not None:
+            server_url = self.base_server_url
+        else:
+            raise ValueError(f"unsupported or unconfigured MI1 server role: {server_role}")
         if messages is None:
             frozen_messages = request_template.get("messages")
             if not isinstance(frozen_messages, list):
@@ -203,30 +290,45 @@ class MI1CoordinateRunner:
             messages = [dict(row) for row in frozen_messages]
         if request_template.get("cache_prompt") is not False:
             raise ValueError("MI1 matched generations require cache_prompt=false")
+        if request_template.get("stream") is not True:
+            raise ValueError("MI1 generation must stream to its durable journal")
         request_template["messages"] = messages
+        generation_request = dict(request_template)
 
-        bank = self._bank_state(
-            coordinate["bank_action"],
-            coordinate.get("bank_source"),
-            coordinate.get("bank_source_sha256"),
-        )
+        if server_role == "base_server":
+            if (
+                coordinate.get("bank_action") != "clear"
+                or coordinate.get("bank_source") is not None
+            ):
+                raise ValueError("base server coordinates must not attach an MI1 bank")
+            bank = {"status": "not_applicable_base_server"}
+        else:
+            bank = self._bank_state(
+                coordinate["bank_action"],
+                coordinate.get("bank_source"),
+                coordinate.get("bank_source_sha256"),
+                coordinate.get("bank_config", {}),
+            )
         template_request = {
             "messages": messages,
             "add_generation_prompt": True,
             "chat_template_kwargs": request_template.get("chat_template_kwargs", {}),
         }
-        template = self._post("/apply-template", template_request)
+        template = self._post("/apply-template", template_request, base_url=server_url)
         prompt = template.get("prompt")
         if not isinstance(prompt, str):
             raise ValueError("llama.cpp template endpoint returned no exact prompt")
         prompt_hash = hashlib.sha256(prompt.encode("utf-8")).hexdigest()
-        request_template["model_visible_prompt"] = prompt
-        request_template["model_visible_prompt_sha256"] = prompt_hash
+        journal_request = {
+            **generation_request,
+            "model_visible_prompt": prompt,
+            "model_visible_prompt_sha256": prompt_hash,
+        }
 
         self.budget.reserve(coordinate_id, phase)
         self.journal.begin(
             coordinate_id,
-            request_template,
+            journal_request,
             {
                 "coordinate": coordinate,
                 "bank_state": bank,
@@ -234,15 +336,28 @@ class MI1CoordinateRunner:
                 "template_response": template,
                 "phase": phase,
                 "generation_budget": self.budget.counts(),
+                "stream_file": f"{coordinate_id}.stream.jsonl",
             },
         )
         try:
-            response = self._post("/v1/chat/completions", request_template)
-        except (OSError, urllib.error.URLError, TimeoutError, ValueError) as exc:
+            response = self.stream_transport(
+                server_url + "/v1/chat/completions",
+                generation_request,
+                lambda raw_event: self.journal.append_stream_event(coordinate_id, raw_event),
+            )
+        except (OSError, urllib.error.URLError, TimeoutError, EOFError, ValueError) as exc:
             failure = {"error_type": type(exc).__name__, "message": str(exc)}
-            self.journal.fail(coordinate_id, failure, {"phase": phase})
+            self.journal.fail(
+                coordinate_id,
+                failure,
+                {"phase": phase, "stream": self.journal.stream_summary(coordinate_id)},
+            )
             raise
-        self.journal.complete(coordinate_id, response, {"phase": phase})
+        self.journal.complete(
+            coordinate_id,
+            response,
+            {"phase": phase, "stream": self.journal.stream_summary(coordinate_id)},
+        )
         return response
 
 
