@@ -1,0 +1,550 @@
+{
+  "conditions": [
+    "no_bank",
+    "latent_A",
+    "latent_B",
+    "latent_irrelevant",
+    "visible_A"
+  ],
+  "coordinate_count": 10,
+  "coordinates": [
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C9-A01-no_bank-34001",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "no_bank",
+        "fixture_id": "A01",
+        "seed": 34001,
+        "suite": "mi1_c9_prompt_access_diagnostic"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "Solve from the task facts and any relevant background record made available through the current context. If neither contains facts that decide the result, say unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. A background rule record may be available to you; use it only if it is actually present and relevant. Initially only Pavo is active. After applying the available rules, which of Beka or Tumo can become active? Give one label and the rule path; if the available facts do not decide, say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34001,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "9489f5540b945da234bd5870d636d455d9e27bd0e778247e8a356dc299f86564",
+      "suite": "mi1_c9_prompt_access_diagnostic"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C9-A01-no_bank-34019",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "no_bank",
+        "fixture_id": "A01",
+        "seed": 34019,
+        "suite": "mi1_c9_prompt_access_diagnostic"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "Solve from the task facts and any relevant background record made available through the current context. If neither contains facts that decide the result, say unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. A background rule record may be available to you; use it only if it is actually present and relevant. Initially only Pavo is active. After applying the available rules, which of Beka or Tumo can become active? Give one label and the rule path; if the available facts do not decide, say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34019,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "1217786bd58bc4f128a5bb981b02d1c15214f136f95850abb803c34b08eda0e7",
+      "suite": "mi1_c9_prompt_access_diagnostic"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "- Pavo activates Liri.\n- Liri activates Sone.\n- Sone activates Beka.\n- While Liri is active, Tumo is locked.\n- Exception: that lock is removed if Wexi is active; Wexi is not initially active and no rule activates it.\n- Tumo activates Wexi; this does not mean Wexi activates Tumo.",
+      "bank_source_sha256": "fa6993d4bc89a403d440464ae27d150cab723eed7ddca5a56c82fd48996c0f37",
+      "coordinate_id": "C9-A01-latent_A-34001",
+      "expected": {
+        "answer": "Beka",
+        "path": [
+          "Pavo",
+          "Liri",
+          "Sone",
+          "Beka"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_A",
+        "fixture_id": "A01",
+        "seed": 34001,
+        "suite": "mi1_c9_prompt_access_diagnostic"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "Solve from the task facts and any relevant background record made available through the current context. If neither contains facts that decide the result, say unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. A background rule record may be available to you; use it only if it is actually present and relevant. Initially only Pavo is active. After applying the available rules, which of Beka or Tumo can become active? Give one label and the rule path; if the available facts do not decide, say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34001,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "9489f5540b945da234bd5870d636d455d9e27bd0e778247e8a356dc299f86564",
+      "suite": "mi1_c9_prompt_access_diagnostic"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "- Pavo activates Liri.\n- Liri activates Sone.\n- Sone activates Beka.\n- While Liri is active, Tumo is locked.\n- Exception: that lock is removed if Wexi is active; Wexi is not initially active and no rule activates it.\n- Tumo activates Wexi; this does not mean Wexi activates Tumo.",
+      "bank_source_sha256": "fa6993d4bc89a403d440464ae27d150cab723eed7ddca5a56c82fd48996c0f37",
+      "coordinate_id": "C9-A01-latent_A-34019",
+      "expected": {
+        "answer": "Beka",
+        "path": [
+          "Pavo",
+          "Liri",
+          "Sone",
+          "Beka"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_A",
+        "fixture_id": "A01",
+        "seed": 34019,
+        "suite": "mi1_c9_prompt_access_diagnostic"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "Solve from the task facts and any relevant background record made available through the current context. If neither contains facts that decide the result, say unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. A background rule record may be available to you; use it only if it is actually present and relevant. Initially only Pavo is active. After applying the available rules, which of Beka or Tumo can become active? Give one label and the rule path; if the available facts do not decide, say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34019,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "1217786bd58bc4f128a5bb981b02d1c15214f136f95850abb803c34b08eda0e7",
+      "suite": "mi1_c9_prompt_access_diagnostic"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "- Pavo activates Liri.\n- Liri activates Sone.\n- Sone activates Tumo.\n- While Liri is active, Beka is locked.\n- Exception: that lock is removed if Wexi is active; Wexi is not initially active and no rule activates it.\n- Beka activates Wexi; this does not mean Wexi activates Beka.",
+      "bank_source_sha256": "1246697b3a9b3b59cbcd1e451f41d159167e674df0915b506e26fd6b14686063",
+      "coordinate_id": "C9-A01-latent_B-34001",
+      "expected": {
+        "answer": "Tumo",
+        "path": [
+          "Pavo",
+          "Liri",
+          "Sone",
+          "Tumo"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_B",
+        "fixture_id": "A01",
+        "seed": 34001,
+        "suite": "mi1_c9_prompt_access_diagnostic"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "Solve from the task facts and any relevant background record made available through the current context. If neither contains facts that decide the result, say unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. A background rule record may be available to you; use it only if it is actually present and relevant. Initially only Pavo is active. After applying the available rules, which of Beka or Tumo can become active? Give one label and the rule path; if the available facts do not decide, say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34001,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "9489f5540b945da234bd5870d636d455d9e27bd0e778247e8a356dc299f86564",
+      "suite": "mi1_c9_prompt_access_diagnostic"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "- Pavo activates Liri.\n- Liri activates Sone.\n- Sone activates Tumo.\n- While Liri is active, Beka is locked.\n- Exception: that lock is removed if Wexi is active; Wexi is not initially active and no rule activates it.\n- Beka activates Wexi; this does not mean Wexi activates Beka.",
+      "bank_source_sha256": "1246697b3a9b3b59cbcd1e451f41d159167e674df0915b506e26fd6b14686063",
+      "coordinate_id": "C9-A01-latent_B-34019",
+      "expected": {
+        "answer": "Tumo",
+        "path": [
+          "Pavo",
+          "Liri",
+          "Sone",
+          "Tumo"
+        ]
+      },
+      "metadata": {
+        "condition": "latent_B",
+        "fixture_id": "A01",
+        "seed": 34019,
+        "suite": "mi1_c9_prompt_access_diagnostic"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "Solve from the task facts and any relevant background record made available through the current context. If neither contains facts that decide the result, say unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. A background rule record may be available to you; use it only if it is actually present and relevant. Initially only Pavo is active. After applying the available rules, which of Beka or Tumo can become active? Give one label and the rule path; if the available facts do not decide, say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34019,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "1217786bd58bc4f128a5bb981b02d1c15214f136f95850abb803c34b08eda0e7",
+      "suite": "mi1_c9_prompt_access_diagnostic"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "- When Rema is awake, it calls Nilo.\n- Nilo marks an entry in the daily ledger.\n- Tova copies each marked entry into the archive.\n- Seki remains unmarked unless Tova copies an entry.\n- If Vuma is awake, Seki may be marked without a copy.\n- Every eighth marked entry receives a green tab.",
+      "bank_source_sha256": "37d9628961c484c9ffb0796d832e8ad3a93569421eb3321663b284cfda8f6133",
+      "coordinate_id": "C9-A01-latent_irrelevant-34001",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_irrelevant",
+        "fixture_id": "A01",
+        "seed": 34001,
+        "suite": "mi1_c9_prompt_access_diagnostic"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "Solve from the task facts and any relevant background record made available through the current context. If neither contains facts that decide the result, say unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. A background rule record may be available to you; use it only if it is actually present and relevant. Initially only Pavo is active. After applying the available rules, which of Beka or Tumo can become active? Give one label and the rule path; if the available facts do not decide, say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34001,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "9489f5540b945da234bd5870d636d455d9e27bd0e778247e8a356dc299f86564",
+      "suite": "mi1_c9_prompt_access_diagnostic"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0
+        },
+        "selector": "sparse"
+      },
+      "bank_source": "- When Rema is awake, it calls Nilo.\n- Nilo marks an entry in the daily ledger.\n- Tova copies each marked entry into the archive.\n- Seki remains unmarked unless Tova copies an entry.\n- If Vuma is awake, Seki may be marked without a copy.\n- Every eighth marked entry receives a green tab.",
+      "bank_source_sha256": "37d9628961c484c9ffb0796d832e8ad3a93569421eb3321663b284cfda8f6133",
+      "coordinate_id": "C9-A01-latent_irrelevant-34019",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_irrelevant",
+        "fixture_id": "A01",
+        "seed": 34019,
+        "suite": "mi1_c9_prompt_access_diagnostic"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "Solve from the task facts and any relevant background record made available through the current context. If neither contains facts that decide the result, say unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. A background rule record may be available to you; use it only if it is actually present and relevant. Initially only Pavo is active. After applying the available rules, which of Beka or Tumo can become active? Give one label and the rule path; if the available facts do not decide, say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34019,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "1217786bd58bc4f128a5bb981b02d1c15214f136f95850abb803c34b08eda0e7",
+      "suite": "mi1_c9_prompt_access_diagnostic"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C9-A01-visible_A-34001",
+      "expected": {
+        "answer": "Beka",
+        "path": [
+          "Pavo",
+          "Liri",
+          "Sone",
+          "Beka"
+        ]
+      },
+      "metadata": {
+        "condition": "visible_A",
+        "fixture_id": "A01",
+        "seed": 34001,
+        "suite": "mi1_c9_prompt_access_diagnostic"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "Solve from the task facts and any relevant background record made available through the current context. If neither contains facts that decide the result, say unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Reference rules:\n- Pavo activates Liri.\n- Liri activates Sone.\n- Sone activates Beka.\n- While Liri is active, Tumo is locked.\n- Exception: that lock is removed if Wexi is active; Wexi is not initially active and no rule activates it.\n- Tumo activates Wexi; this does not mean Wexi activates Tumo.\n\nQuestion:\nTreat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. A background rule record may be available to you; use it only if it is actually present and relevant. Initially only Pavo is active. After applying the available rules, which of Beka or Tumo can become active? Give one label and the rule path; if the available facts do not decide, say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34001,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "d530b530a9727f5d9ab79530ddfdb40e72724957b3599663c5cbc2d4a3f294f4",
+      "suite": "mi1_c9_prompt_access_diagnostic"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C9-A01-visible_A-34019",
+      "expected": {
+        "answer": "Beka",
+        "path": [
+          "Pavo",
+          "Liri",
+          "Sone",
+          "Beka"
+        ]
+      },
+      "metadata": {
+        "condition": "visible_A",
+        "fixture_id": "A01",
+        "seed": 34019,
+        "suite": "mi1_c9_prompt_access_diagnostic"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 2048,
+        "messages": [
+          {
+            "content": "Solve from the task facts and any relevant background record made available through the current context. If neither contains facts that decide the result, say unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Reference rules:\n- Pavo activates Liri.\n- Liri activates Sone.\n- Sone activates Beka.\n- While Liri is active, Tumo is locked.\n- Exception: that lock is removed if Wexi is active; Wexi is not initially active and no rule activates it.\n- Tumo activates Wexi; this does not mean Wexi activates Tumo.\n\nQuestion:\nTreat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. A background rule record may be available to you; use it only if it is actually present and relevant. Initially only Pavo is active. After applying the available rules, which of Beka or Tumo can become active? Give one label and the rule path; if the available facts do not decide, say unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "seed": 34019,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "67afb709c25a76cdc4d9e3de87adcbc296338499b9e328990612b34d659145d6",
+      "suite": "mi1_c9_prompt_access_diagnostic"
+    }
+  ],
+  "criteria": {
+    "interpretation": "This single-fixture wording diagnostic cannot establish broad reliability; if it supports the hypothesis, a separate frozen multi-fixture/held-out test is required.",
+    "irrelevant_control": "Both seeds should say unknown with no target path.",
+    "latent_target_support": "Both seeds for latent_A and latent_B must provide the respective answer and complete path to count as replicated positive; any one-seed result is provisional only.",
+    "no_bank_control": "Both seeds should say unknown absent the bank.",
+    "visible_control": "Both seeds should answer Beka with the expected path."
+  },
+  "experiment": "MNEME Phase 4 MI1 C9 prompt-access diagnostic",
+  "fixed_factors": [
+    "same A01 task and rule bank contents",
+    "same Gemma GGUF/runtime",
+    "same selected sparse query sites",
+    "same neutral bank bias 0.0",
+    "same generation seeds 34001 and 34019",
+    "same sampling/context/reasoning/cache_prompt=false",
+    "only system/user wording differs from prior A01; within this C9 all conditions use the exact same recipient prompt except visible_A adds the frozen rules"
+  ],
+  "freeze_date": "2026-10-10",
+  "frozen_system": "Solve from the task facts and any relevant background record made available through the current context. If neither contains facts that decide the result, say unknown.",
+  "frozen_user": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. A background rule record may be available to you; use it only if it is actually present and relevant. Initially only Pavo is active. After applying the available rules, which of Beka or Tumo can become active? Give one label and the rule path; if the available facts do not decide, say unknown.",
+  "generation_budget": {
+    "budget_file": "/home/nyx/mneme-artifacts/phase4-mi1/test-abc/c9-generation-budget.json",
+    "new_calls": 10,
+    "no_retries": true
+  },
+  "hypothesis": "The previous Test-A prompt says to use only supplied/written rules although the target rules are delivered only in the hidden side bank. A neutral availability statement may allow the same bank to be used as evidence.",
+  "prior_artifacts": {
+    "evidence_path": "/home/nyx/mneme-artifacts/phase4-mi1/test-abc/evidence",
+    "scored_suite_sha256": "0a75c1001ba031715705b4db24953a6e160dd8b5c93518efd67152156e912afe",
+    "scorer_v3": "/home/nyx/mneme-artifacts/phase4-mi1/test-abc/test-a-score-v3.json",
+    "test_abc_plan_sha256": "5262a8d9ff5a3ab01aecf4a195e4c9f2b0feaa2c647bdc998762fd7bbbcdda94"
+  },
+  "purpose": "Directly test whether the Test-A wording that excludes non-visible rules suppresses use of an attached latent memory bank. This is diagnostic, not a qualification or success claim.",
+  "schema_version": 1,
+  "status": "FROZEN_BEFORE_INFERENCE",
+  "visible_control_user": "Reference rules:\n- Pavo activates Liri.\n- Liri activates Sone.\n- Sone activates Beka.\n- While Liri is active, Tumo is locked.\n- Exception: that lock is removed if Wexi is active; Wexi is not initially active and no rule activates it.\n- Tumo activates Wexi; this does not mean Wexi activates Tumo.\n\nQuestion:\nTreat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. A background rule record may be available to you; use it only if it is actually present and relevant. Initially only Pavo is active. After applying the available rules, which of Beka or Tumo can become active? Give one label and the rule path; if the available facts do not decide, say unknown."
+}

@@ -30,7 +30,7 @@ def main() -> None:
     rows = load_journal_rows(args.journal, hard_call_limit=args.hard_call_limit)
     receipt: dict[str, Any] = {
         "schema_version": 1,
-        "scorer": "mi1-test-a-v1",
+        "scorer": "mi1-test-a-v3-live-request-and-sse-envelope",
         "frozen_suite_sha256": hashlib.sha256(suite_bytes).hexdigest(),
         "journal_index_sha256": hashlib.sha256(index_bytes).hexdigest(),
         "journal_attempts": len(rows),

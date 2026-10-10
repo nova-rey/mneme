@@ -35,6 +35,36 @@ def _ordered_path(text: str, path: list[str]) -> bool:
     return True
 
 
+def _final_response(outcome: dict[str, Any] | None) -> tuple[str, str | None]:
+    """Read the final answer and finish reason from the durable journal schema.
+
+    Historical unit fixtures used a compact ``payload.final`` shape. The live
+    SSE journal stores the OpenAI-compatible response under
+    ``payload.choices[0].message.content`` instead. Accept both forms so
+    scoring is tied to the actual recorded answer rather than an absent field.
+    """
+    if outcome is None:
+        return "", None
+    payload = outcome.get("payload", {})
+    if not isinstance(payload, dict):
+        return "", None
+    legacy_final = payload.get("final")
+    legacy_reason = payload.get("finish_reason")
+    if isinstance(legacy_final, str):
+        return legacy_final, legacy_reason if isinstance(legacy_reason, str) else None
+    choices = payload.get("choices")
+    if not isinstance(choices, list) or not choices or not isinstance(choices[0], dict):
+        return "", None
+    choice = choices[0]
+    message = choice.get("message")
+    final = message.get("content") if isinstance(message, dict) else None
+    finish_reason = choice.get("finish_reason")
+    return (
+        final if isinstance(final, str) else "",
+        finish_reason if isinstance(finish_reason, str) else None,
+    )
+
+
 def load_journal_rows(root: Path, *, hard_call_limit: int = 800) -> list[dict[str, Any]]:
     """Read only hash-verified journal rows; never infer a missing outcome."""
     journal = EvidenceJournal(root, hard_call_limit=hard_call_limit)
@@ -80,7 +110,12 @@ def score_test_a(suite: dict[str, Any], rows: list[dict[str, Any]]) -> dict[str,
     observed: dict[str, dict[str, Any]] = {}
     unexpected: list[str] = []
     for row in rows:
-        metadata = row["request"].get("metadata", {})
+        request_envelope = row["request"]
+        metadata = request_envelope.get("metadata", {})
+        coordinate = metadata.get("coordinate") if isinstance(metadata, dict) else None
+        if isinstance(coordinate, dict):
+            coordinate_metadata = coordinate.get("metadata")
+            metadata = coordinate_metadata if isinstance(coordinate_metadata, dict) else {}
         if metadata.get("suite") != "test_a":
             continue
         fixture_id = metadata.get("fixture_id")
@@ -93,8 +128,7 @@ def score_test_a(suite: dict[str, Any], rows: list[dict[str, Any]]) -> dict[str,
         coordinate = expected_coordinates[key]
         outcome = row["outcome"]
         status = outcome.get("status") if outcome else "MISSING_OUTCOME"
-        payload = outcome.get("payload", {}) if outcome else {}
-        final = payload.get("final", "") if status == "COMPLETE" else ""
+        final, finish_reason = _final_response(outcome) if status == "COMPLETE" else ("", None)
         parsed = _choice_at_start(final, coordinate["choices"] + ["unknown"])
         path_ok = _ordered_path(final, coordinate["path"]) if coordinate["path"] else None
         expected = coordinate["expected"]
@@ -102,7 +136,7 @@ def score_test_a(suite: dict[str, Any], rows: list[dict[str, Any]]) -> dict[str,
             **coordinate,
             "attempt_id": row["attempt_id"],
             "status": status,
-            "finish_reason": payload.get("finish_reason"),
+            "finish_reason": finish_reason,
             "parsed_answer": parsed,
             "answer_correct": parsed is not None and parsed.casefold() == expected.casefold(),
             "path_required": bool(coordinate["path"]),

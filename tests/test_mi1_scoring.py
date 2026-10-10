@@ -87,3 +87,46 @@ def test_missing_failure_and_wrong_path_remain_in_denominator() -> None:
     assert result["condition_accuracy"]["latent_A"]["correct"] == 0
     assert result["condition_accuracy"]["latent_B"]["correct"] == 0
     assert sum(row["n"] for row in result["condition_accuracy"].values()) == 144
+
+
+def test_test_a_scores_live_openai_compatible_journal_payload() -> None:
+    suite = build_suite()
+    fixture = suite["test_a"]["fixtures"][0]
+    seed = suite["test_a"]["seeds"][0]
+    answer = fixture["bank_A"]["expected_answer"]
+    path = " -> ".join(fixture["checks"]["bank_A_path"])
+    row = _row("live-shape", fixture, "visible_A", seed, answer)
+    row["outcome"]["payload"] = {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "message": {
+                    "role": "assistant",
+                    "content": f"{answer}\nPath: {path}",
+                    "reasoning_content": "I can follow the supplied directed links.",
+                },
+            }
+        ]
+    }
+    row["request"] = {
+        "attempt_id": "live-shape",
+        "metadata": {
+            "coordinate": {
+                "metadata": {
+                    "suite": "test_a",
+                    "fixture_id": fixture["fixture_id"],
+                    "condition": "visible_A",
+                    "seed": seed,
+                }
+            }
+        },
+        "request": {"messages": []},
+    }
+
+    result = score_test_a(suite, [row])
+
+    assert result["observed_coordinates"] == 1
+    assert result["condition_accuracy"]["visible_A"] == {"correct": 1, "n": 24, "rate": 1 / 24}
+    scored = next(item for item in result["coordinates"] if item.get("attempt_id") == "live-shape")
+    assert scored["finish_reason"] == "stop"
+    assert scored["correct"] is True

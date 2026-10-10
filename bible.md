@@ -1828,3 +1828,14 @@ and dispositions remain unchanged.
 ## 2026-10-10 MI1 scored-suite durable runner
 
 - Added `tools/run_mi1_test_abc.py` for the frozen 268-coordinate Test A/B/C suite. It checks the plan and bank-map digests, enforces the experiment-wide 800-call ceiling with 361 prior calls, refuses retry of failed/uncertain coordinates, writes each streamed request/result through the existing durable journal, and atomically records per-coordinate latency. Test-C ongoing turn 2 is reconstructed from the durable turn-1 visible answer only; no hidden reasoning is inserted into chat history. Offline runner/coordinate tests pass; Ruff and strict mypy pass. No scored model call has yet run.
+
+## 2026-10-10 MI1 live-journal scorer correction
+
+- The first frozen Test A replay exposed a scorer/schema mismatch: it expected `payload.final`, while live durable SSE results store the final answer and finish reason in `payload.choices[0].message.content` and `payload.choices[0].finish_reason`. The initial all-zero scoring receipt is invalid and must not be interpreted; raw calls remain unchanged. Updated scoring to accept the live response envelope (and retained legacy fixtures), versioned the receipt, and added a regression test before rescoring the preserved 268-coordinate journal.
+
+- The scorer audit then found the companion join mismatch: live request envelopes place fixture/condition/seed beneath `metadata.coordinate.metadata`, not at the envelope metadata root. Scoring now resolves both the request metadata and response content from the journal's actual persisted schema; regression coverage exercises that complete envelope before any Test A interpretation.
+
+## 2026-10-10 MI1 C9 frozen prompt-access diagnostic
+
+- After corrected scoring of the durable 268-coordinate Test A/B/C run, Test A's visible-rule positive conditions worked (19/24 and 15/24 full answer/path criteria), while latent A/B were 0/24; no-bank and irrelevant-bank controls were 23/24. Exact fixture wording also says “Use only the supplied rules” and “Only written rules count” although the target rules are delivered only through the hidden side bank. The native exact-prompt capture confirms the selected MI bank slots participate in attention, so this is a prompt-policy conflict hypothesis, not evidence of a missing attachment.
+- Froze a ten-call A01 wording-isolation diagnostic before inference. It holds the latent banks, selector, gain, model, seeds and sampler fixed and changes the recipient wording to permit a relevant available background record. This is diagnostic only; even a positive result requires a separate multi-fixture held-out test. Plan: `docs/receipts/MNEME_Phase_4_MI1_C9_Prompt_Access_Diagnostic_Freeze_20261010.json`.
