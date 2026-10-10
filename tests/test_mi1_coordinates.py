@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from typing import Any, cast
 
-from experiments.mi1.coordinates import build_scored_coordinates
+from experiments.mi1.coordinates import build_ongoing_turn_two_messages, build_scored_coordinates
 
 
 def _suite() -> dict[str, Any]:
@@ -48,3 +48,14 @@ def test_test_c_orders_removal_restore_and_marks_ongoing_dependency() -> None:
     assert len(ongoing) == 2
     assert ongoing[1]["depends_on_attempt"] == ongoing[0]["coordinate_id"]
     assert ongoing[1]["request"]["messages"] is None
+
+
+def test_test_c_ongoing_turn_two_uses_durable_visible_answer_only() -> None:
+    suite = _suite()
+    messages = build_ongoing_turn_two_messages(suite, "Feli via Neri -> Vako -> Feli.")
+    assert [row["role"] for row in messages] == ["system", "user", "assistant", "user"]
+    assert messages[2]["content"] == "Feli via Neri -> Vako -> Feli."
+    exchange = suite["test_c"]["ongoing_exchange"]
+    assert messages[1]["content"] == exchange["turn1_user_prompt"]
+    assert messages[3]["content"] == exchange["turn2_user_prompt"]
+    assert "reasoning" not in messages[2]["content"].lower()

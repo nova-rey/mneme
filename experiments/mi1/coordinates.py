@@ -261,3 +261,18 @@ def build_scored_coordinates(suite: dict[str, Any]) -> list[dict[str, Any]]:
     if len(ids) != len(set(ids)):
         raise ValueError("duplicate frozen coordinate IDs")
     return coordinates
+
+
+def build_ongoing_turn_two_messages(
+    suite: dict[str, Any], prior_visible_answer: str
+) -> list[dict[str, str]]:
+    """Build frozen Test-C turn two from the durable turn-one visible answer."""
+    if not prior_visible_answer.strip():
+        raise ValueError("ongoing turn two requires a nonempty persisted turn-one answer")
+    exchange = suite["test_c"]["ongoing_exchange"]
+    return [
+        {"role": "system", "content": suite["test_a"]["system_prompt"]},
+        {"role": "user", "content": exchange["turn1_user_prompt"]},
+        {"role": "assistant", "content": prior_visible_answer},
+        {"role": "user", "content": exchange["turn2_user_prompt"]},
+    ]

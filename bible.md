@@ -1745,3 +1745,8 @@ and dispositions remain unchanged.
 
 - Added a deterministic expansion of the frozen Test A/B/C schedule into 268 stable request coordinates, keeping latent bank source text outside recipient messages and recording the exact bank action and expected answer/rubric per coordinate.
 - The plan marks the ongoing Test-C second turn as dependent on the first recorded answer, rather than fabricating a fixed history. Coordinate and evidence/scoring tests pass; no inference was run.
+
+## 2026-10-10 — Phase 4-MI1 durable coordinate executor
+
+- Added a cache-disabled execution layer that records the exact rendered prompt, frozen request, source and compiled bank hashes, selector metadata, bank attach/clear revision, and complete raw generation response through the append-only journal.
+- Added an experiment-wide durable generation ledger that includes the eight prior comprehension calls in both the 120-call calibration ceiling and the 800-call hard cap. Test-C continuation construction uses only the prior persisted visible answer. Fake-transport and recovery-oriented tests pass; no new Gemma generation was run.
