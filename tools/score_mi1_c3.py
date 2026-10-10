@@ -41,15 +41,19 @@ def _score(final: str, expected: dict[str, Any]) -> dict[str, Any]:
             )
         )
         return {"answer_correct": unknown, "path_correct": None, "correct": unknown}
+    first_line = _normal(final.splitlines()[0]) if final.splitlines() else ""
     target_found = (
         re.search(rf"(?<!\w){re.escape(target.casefold())}(?!\w)", normalized) is not None
     )
-    yes = re.search(r"\byes\b", normalized) is not None
+    yes = re.search(r"\byes\b", first_line) is not None
+    labeled_answer = re.match(
+        rf"\s*answer\s*:\s*{re.escape(target.casefold())}(?!\w)", first_line
+    ) is not None
     path_found = _has_full_path(final, expected["path"])
     return {
-        "answer_correct": target_found and yes,
+        "answer_correct": target_found and yes or labeled_answer,
         "path_correct": path_found,
-        "correct": target_found and yes and path_found,
+        "correct": (target_found and yes or labeled_answer) and path_found,
     }
 
 

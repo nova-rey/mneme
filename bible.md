@@ -1795,3 +1795,11 @@ and dispositions remain unchanged.
 ## 2026-10-10 Phase 4 MI1 C4 freeze
 
 - C3 result receipt preserves 44/44 outputs and hashes: visible positive 8/8 after accepting the model's LaTeX path delimiter; 10 no-bank controls did not produce a final before token limit; latent outputs were unusable or repetitive, and all 26 attached-bank fingerprints matched. C4 was frozen before new inference to correct the answer-completion contract and cross no-bank/visible/sparse/broad conditions with or without a generic private-memory cue. C4 is diagnostic, not scored A/B/C; C3 raw evidence remains local and immutable.
+
+## 2026-10-10 Phase 4 MI1 C4 outcome and C5 freeze
+
+- C4 completed 56/56 durable calls; all 32 attached banks matched expected fingerprints. The C2 two-line output form still yielded only 5/8 visible, 2/8 no-bank, and 1/8 cue/no-bank correct; all latent conditions scored 0/8, with repeated/incomplete outputs. This shows answer formatting alone did not transfer without C2's task framing. Froze C5 using C2's exact directed-reachability system contract and two-candidate question shape on the earlier simple-chain fixtures, pairing identical no-bank/latent prompts with and without a generic memory cue. This remains diagnostic and does not waive A/B/C.
+
+## 2026-10-10 Phase 4 MI1 C5 pre-inference freeze and scorer compatibility
+
+- Published the compact C4 machine receipt (56 coordinates; SHA-256 `667b1041998ec1b0763b7203bfe6a00e3b99f20dfe93af5558889c27618b668d`) and froze C5 at `docs/receipts/MNEME_Phase_4_MI1_C5_Calibration_Freeze_20261010.json` (SHA-256 `a0469a23ce7432a65d0df88bbc2fe2cfe73772689e513c3c6db9c674881dbdb7`) before inference. C5 reuses C2's directed-reachability system framing on C3's simple fixtures, testing exact no-bank/latent-prompt matches with and without a generic memory cue. Updated the scorer to preserve both established YES-plus-path and explicit ANSWER-label contracts; replayed C3 scoring remains 8/8 visible. Focused tests, Ruff, and strict mypy pass; no C5 generation has run yet.

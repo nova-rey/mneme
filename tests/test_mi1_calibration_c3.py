@@ -58,6 +58,14 @@ def test_c3_scoring_requires_full_labeled_path_and_retains_no_bank_control() -> 
     assert _score("YES: Zepi -> Moru -> Kadi -> Velo -> Runi", {"answer": "Runi", "path": path})[
         "correct"
     ]
+    assert _score(
+        "ANSWER: Runi\nPATH: Zepi -> Moru -> Kadi -> Velo -> Runi",
+        {"answer": "Runi", "path": path},
+    )["correct"]
+    assert not _score(
+        "ANSWER: unknown\nPATH: Zepi -> Moru -> Kadi -> Velo -> Runi",
+        {"answer": "Runi", "path": path},
+    )["correct"]
 
 
 def test_c3_scoring_reads_raw_completion_envelope() -> None:
