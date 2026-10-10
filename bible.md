@@ -1715,3 +1715,9 @@ and dispositions remain unchanged.
 - Registered the version-pinned Memory Inception paper (arXiv:2605.06225v2, CC BY 4.0) and retained its 31-page PDF with SHA-256 in the source receipt. The complete v2 paper and Appendices A–G were read; v1/v2 source comparison found no method/result changes.
 - A likely author-associated public repository was inspected at a pinned commit, but it has no license and the paper does not link it. It was not executed or reused; the Gemma/llama.cpp work must be labeled an independent port unless attribution and code license are established.
 - This source filing supports the explicitly authorized local MI1 implementation study. It does not claim that the paper or code was added to ChatGPT Project Sources, and it does not modify production MNEME behavior.
+
+## 2026-10-10 — Phase 4-MI1 visible comprehension gate and suite freeze
+
+- Before scored side-bank calls, ran eight live local Gemma reasoning-ON visible-text calibration calls on four separate answer-keyed fictional rule tasks; all eight returned the expected target and complete directed path. Complete raw prompts/reasoning/finals and server log are preserved outside Git with hashes in the freeze receipt.
+- Froze the separate synthetic suite with 12 paired/counterbalanced fictional banks, three relational packs and nine held-out tasks, and exact update/removal/new-bank prompts. The 436-call preplanned envelope includes the 120-call calibration ceiling and remains within the authorized 800-call cap. No latent or scored generation was run.
+- Native site/gain selection and true bank attach/exclusion/replay qualification remain required gates before scored evaluation.

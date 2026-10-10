@@ -1,0 +1,1708 @@
+{
+  "base_commit": "df8e3c9dfd0afc2f17dd98737543da4a82c63683",
+  "cache_prompt": false,
+  "calibration": {
+    "gain_levels": [
+      "low",
+      "moderate",
+      "strong"
+    ],
+    "separate_from_scored": true,
+    "site_diagnostic": "Compare a small sparse selector against broad valid attention sites; use separate tasks/fixtures and freeze site set, exposure schedule, wrapping, and gains before scored runs.",
+    "task_families": [
+      "fictional reachability",
+      "work coordination",
+      "staged transition",
+      "continuity planning"
+    ]
+  },
+  "experiment": "MNEME Phase 4-MI1 local Memory Inception synthetic test",
+  "freeze_date": "2026-10-10",
+  "generation_budget": {
+    "authorized_hard_max": 800,
+    "calibration_max": 120,
+    "note": "Any failed, repair, or repeated call counts; no replacement hides the original failure. Forward-only bank encoding is counted separately and bounded to these frozen banks plus calibration banks.",
+    "test_a": 144,
+    "test_b": 108,
+    "test_c": 16,
+    "total_preplanned": 436,
+    "untouched_confirmation_reserve": 48
+  },
+  "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+  "host_model": "google/gemma-4-E4B-it",
+  "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+  "reasoning": "ON",
+  "schema_version": 1,
+  "scope": [
+    "synthetic only",
+    "no MNEME instance or state",
+    "no SAA or developmental calls",
+    "no cloud",
+    "base weights frozen"
+  ],
+  "seeds": [
+    34001,
+    34019
+  ],
+  "test_a": {
+    "condition_wrappers": {
+      "latent_A": "{recipient_request}",
+      "latent_B": "{recipient_request}",
+      "latent_irrelevant": "{recipient_request}",
+      "no_bank": "{recipient_request}",
+      "visible_A": "Reference rules:\n{bank_A}\n\nQuestion:\n{recipient_request}",
+      "visible_B": "Reference rules:\n{bank_B}\n\nQuestion:\n{recipient_request}"
+    },
+    "conditions": [
+      "no_bank",
+      "visible_A",
+      "visible_B",
+      "latent_A",
+      "latent_B",
+      "latent_irrelevant"
+    ],
+    "design": "12 fictional paired banks with same labels and counterfactual edge changes; each asks one fixed, answer-keyed reachability question.",
+    "fixture_count": 12,
+    "fixtures": [
+      {
+        "bank_A": {
+          "activation_edges": [
+            [
+              "Pavo",
+              "Liri"
+            ],
+            [
+              "Liri",
+              "Sone"
+            ],
+            [
+              "Sone",
+              "Beka"
+            ],
+            [
+              "Tumo",
+              "Wexi"
+            ]
+          ],
+          "expected_answer": "Beka",
+          "lock": {
+            "node": "Tumo",
+            "unless_active": "Wexi",
+            "while_active": "Liri"
+          },
+          "statements": [
+            "Pavo activates Liri.",
+            "Liri activates Sone.",
+            "Sone activates Beka.",
+            "While Liri is active, Tumo is locked.",
+            "Exception: that lock is removed if Wexi is active; Wexi is not initially active and no rule activates it.",
+            "Tumo activates Wexi; this does not mean Wexi activates Tumo."
+          ]
+        },
+        "bank_B": {
+          "activation_edges": [
+            [
+              "Pavo",
+              "Liri"
+            ],
+            [
+              "Liri",
+              "Sone"
+            ],
+            [
+              "Sone",
+              "Tumo"
+            ],
+            [
+              "Beka",
+              "Wexi"
+            ]
+          ],
+          "expected_answer": "Tumo",
+          "lock": {
+            "node": "Beka",
+            "unless_active": "Wexi",
+            "while_active": "Liri"
+          },
+          "statements": [
+            "Pavo activates Liri.",
+            "Liri activates Sone.",
+            "Sone activates Tumo.",
+            "While Liri is active, Beka is locked.",
+            "Exception: that lock is removed if Wexi is active; Wexi is not initially active and no rule activates it.",
+            "Beka activates Wexi; this does not mean Wexi activates Beka."
+          ]
+        },
+        "checks": {
+          "answer_switches": true,
+          "bank_A_path": [
+            "Pavo",
+            "Liri",
+            "Sone",
+            "Beka"
+          ],
+          "bank_B_path": [
+            "Pavo",
+            "Liri",
+            "Sone",
+            "Tumo"
+          ],
+          "includes_inactive_exception": true,
+          "includes_reverse_direction_decoy": true,
+          "same_nodes_different_edges": true
+        },
+        "expected_by_condition": {
+          "latent_A": "Beka",
+          "latent_B": "Tumo",
+          "latent_irrelevant": "unknown",
+          "no_bank": "unknown",
+          "visible_A": "Beka",
+          "visible_B": "Tumo"
+        },
+        "fixture_id": "A01",
+        "initial_active": [
+          "Pavo"
+        ],
+        "irrelevant_bank": {
+          "expected_answer": "unknown",
+          "statements": [
+            "When Rema is awake, it calls Nilo.",
+            "Nilo marks an entry in the daily ledger.",
+            "Tova copies each marked entry into the archive.",
+            "Seki remains unmarked unless Tova copies an entry.",
+            "If Vuma is awake, Seki may be marked without a copy.",
+            "Every eighth marked entry receives a green tab."
+          ]
+        },
+        "nodes": [
+          "Pavo",
+          "Liri",
+          "Sone",
+          "Beka",
+          "Tumo",
+          "Wexi"
+        ],
+        "recipient_request": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. Only written rules count. Initially only Pavo is active. After applying the rules, which of Beka or Tumo can become active? Give one label and the rule path; if the supplied facts do not decide, say unknown."
+      },
+      {
+        "bank_A": {
+          "activation_edges": [
+            [
+              "Neri",
+              "Vako"
+            ],
+            [
+              "Vako",
+              "Juma"
+            ],
+            [
+              "Juma",
+              "Rudo"
+            ],
+            [
+              "Feli",
+              "Kexa"
+            ]
+          ],
+          "expected_answer": "Rudo",
+          "lock": {
+            "node": "Feli",
+            "unless_active": "Kexa",
+            "while_active": "Vako"
+          },
+          "statements": [
+            "Neri activates Vako.",
+            "Vako activates Juma.",
+            "Juma activates Rudo.",
+            "While Vako is active, Feli is locked.",
+            "Exception: that lock is removed if Kexa is active; Kexa is not initially active and no rule activates it.",
+            "Only the direction Feli to Kexa is stated; the reverse direction is not a rule."
+          ]
+        },
+        "bank_B": {
+          "activation_edges": [
+            [
+              "Neri",
+              "Vako"
+            ],
+            [
+              "Vako",
+              "Juma"
+            ],
+            [
+              "Juma",
+              "Feli"
+            ],
+            [
+              "Rudo",
+              "Kexa"
+            ]
+          ],
+          "expected_answer": "Feli",
+          "lock": {
+            "node": "Rudo",
+            "unless_active": "Kexa",
+            "while_active": "Vako"
+          },
+          "statements": [
+            "Neri activates Vako.",
+            "Vako activates Juma.",
+            "Juma activates Feli.",
+            "While Vako is active, Rudo is locked.",
+            "Exception: that lock is removed if Kexa is active; Kexa is not initially active and no rule activates it.",
+            "Only the direction Rudo to Kexa is stated; the reverse direction is not a rule."
+          ]
+        },
+        "checks": {
+          "answer_switches": true,
+          "bank_A_path": [
+            "Neri",
+            "Vako",
+            "Juma",
+            "Rudo"
+          ],
+          "bank_B_path": [
+            "Neri",
+            "Vako",
+            "Juma",
+            "Feli"
+          ],
+          "includes_inactive_exception": true,
+          "includes_reverse_direction_decoy": true,
+          "same_nodes_different_edges": true
+        },
+        "expected_by_condition": {
+          "latent_A": "Rudo",
+          "latent_B": "Feli",
+          "latent_irrelevant": "unknown",
+          "no_bank": "unknown",
+          "visible_A": "Rudo",
+          "visible_B": "Feli"
+        },
+        "fixture_id": "A02",
+        "initial_active": [
+          "Neri"
+        ],
+        "irrelevant_bank": {
+          "expected_answer": "unknown",
+          "statements": [
+            "Nilo marks an entry in the daily ledger.",
+            "Tova copies each marked entry into the archive.",
+            "Seki remains unmarked unless Tova copies an entry.",
+            "If Vuma is awake, Seki may be marked without a copy.",
+            "Every eighth marked entry receives a green tab.",
+            "When Rema is awake, it calls Nilo."
+          ]
+        },
+        "nodes": [
+          "Neri",
+          "Vako",
+          "Juma",
+          "Feli",
+          "Rudo",
+          "Kexa"
+        ],
+        "recipient_request": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. Only written rules count. Initially only Neri is active. After applying the rules, which of Feli or Rudo can become active? Give one label and the rule path; if the supplied facts do not decide, say unknown."
+      },
+      {
+        "bank_A": {
+          "activation_edges": [
+            [
+              "Cavi",
+              "Mepo"
+            ],
+            [
+              "Mepo",
+              "Zuri"
+            ],
+            [
+              "Zuri",
+              "Hano"
+            ],
+            [
+              "Deki",
+              "Lova"
+            ]
+          ],
+          "expected_answer": "Hano",
+          "lock": {
+            "node": "Deki",
+            "unless_active": "Lova",
+            "while_active": "Mepo"
+          },
+          "statements": [
+            "Cavi activates Mepo.",
+            "Mepo activates Zuri.",
+            "Zuri activates Hano.",
+            "While Mepo is active, Deki is locked.",
+            "Exception: that lock is removed if Lova is active; Lova is not initially active and no rule activates it.",
+            "Deki activates Lova; this does not mean Lova activates Deki."
+          ]
+        },
+        "bank_B": {
+          "activation_edges": [
+            [
+              "Cavi",
+              "Mepo"
+            ],
+            [
+              "Mepo",
+              "Zuri"
+            ],
+            [
+              "Zuri",
+              "Deki"
+            ],
+            [
+              "Hano",
+              "Lova"
+            ]
+          ],
+          "expected_answer": "Deki",
+          "lock": {
+            "node": "Hano",
+            "unless_active": "Lova",
+            "while_active": "Mepo"
+          },
+          "statements": [
+            "Cavi activates Mepo.",
+            "Mepo activates Zuri.",
+            "Zuri activates Deki.",
+            "While Mepo is active, Hano is locked.",
+            "Exception: that lock is removed if Lova is active; Lova is not initially active and no rule activates it.",
+            "Hano activates Lova; this does not mean Lova activates Hano."
+          ]
+        },
+        "checks": {
+          "answer_switches": true,
+          "bank_A_path": [
+            "Cavi",
+            "Mepo",
+            "Zuri",
+            "Hano"
+          ],
+          "bank_B_path": [
+            "Cavi",
+            "Mepo",
+            "Zuri",
+            "Deki"
+          ],
+          "includes_inactive_exception": true,
+          "includes_reverse_direction_decoy": true,
+          "same_nodes_different_edges": true
+        },
+        "expected_by_condition": {
+          "latent_A": "Hano",
+          "latent_B": "Deki",
+          "latent_irrelevant": "unknown",
+          "no_bank": "unknown",
+          "visible_A": "Hano",
+          "visible_B": "Deki"
+        },
+        "fixture_id": "A03",
+        "initial_active": [
+          "Cavi"
+        ],
+        "irrelevant_bank": {
+          "expected_answer": "unknown",
+          "statements": [
+            "Tova copies each marked entry into the archive.",
+            "Seki remains unmarked unless Tova copies an entry.",
+            "If Vuma is awake, Seki may be marked without a copy.",
+            "Every eighth marked entry receives a green tab.",
+            "When Rema is awake, it calls Nilo.",
+            "Nilo marks an entry in the daily ledger."
+          ]
+        },
+        "nodes": [
+          "Cavi",
+          "Mepo",
+          "Zuri",
+          "Hano",
+          "Deki",
+          "Lova"
+        ],
+        "recipient_request": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. Only written rules count. Initially only Cavi is active. After applying the rules, which of Hano or Deki can become active? Give one label and the rule path; if the supplied facts do not decide, say unknown."
+      },
+      {
+        "bank_A": {
+          "activation_edges": [
+            [
+              "Teni",
+              "Gavo"
+            ],
+            [
+              "Gavo",
+              "Rika"
+            ],
+            [
+              "Rika",
+              "Selo"
+            ],
+            [
+              "Muni",
+              "Baxi"
+            ]
+          ],
+          "expected_answer": "Selo",
+          "lock": {
+            "node": "Muni",
+            "unless_active": "Baxi",
+            "while_active": "Gavo"
+          },
+          "statements": [
+            "Teni activates Gavo.",
+            "Gavo activates Rika.",
+            "Rika activates Selo.",
+            "While Gavo is active, Muni is locked.",
+            "Exception: that lock is removed if Baxi is active; Baxi is not initially active and no rule activates it.",
+            "Only the direction Muni to Baxi is stated; the reverse direction is not a rule."
+          ]
+        },
+        "bank_B": {
+          "activation_edges": [
+            [
+              "Teni",
+              "Gavo"
+            ],
+            [
+              "Gavo",
+              "Rika"
+            ],
+            [
+              "Rika",
+              "Muni"
+            ],
+            [
+              "Selo",
+              "Baxi"
+            ]
+          ],
+          "expected_answer": "Muni",
+          "lock": {
+            "node": "Selo",
+            "unless_active": "Baxi",
+            "while_active": "Gavo"
+          },
+          "statements": [
+            "Teni activates Gavo.",
+            "Gavo activates Rika.",
+            "Rika activates Muni.",
+            "While Gavo is active, Selo is locked.",
+            "Exception: that lock is removed if Baxi is active; Baxi is not initially active and no rule activates it.",
+            "Only the direction Selo to Baxi is stated; the reverse direction is not a rule."
+          ]
+        },
+        "checks": {
+          "answer_switches": true,
+          "bank_A_path": [
+            "Teni",
+            "Gavo",
+            "Rika",
+            "Selo"
+          ],
+          "bank_B_path": [
+            "Teni",
+            "Gavo",
+            "Rika",
+            "Muni"
+          ],
+          "includes_inactive_exception": true,
+          "includes_reverse_direction_decoy": true,
+          "same_nodes_different_edges": true
+        },
+        "expected_by_condition": {
+          "latent_A": "Selo",
+          "latent_B": "Muni",
+          "latent_irrelevant": "unknown",
+          "no_bank": "unknown",
+          "visible_A": "Selo",
+          "visible_B": "Muni"
+        },
+        "fixture_id": "A04",
+        "initial_active": [
+          "Teni"
+        ],
+        "irrelevant_bank": {
+          "expected_answer": "unknown",
+          "statements": [
+            "Seki remains unmarked unless Tova copies an entry.",
+            "If Vuma is awake, Seki may be marked without a copy.",
+            "Every eighth marked entry receives a green tab.",
+            "When Rema is awake, it calls Nilo.",
+            "Nilo marks an entry in the daily ledger.",
+            "Tova copies each marked entry into the archive."
+          ]
+        },
+        "nodes": [
+          "Teni",
+          "Gavo",
+          "Rika",
+          "Muni",
+          "Selo",
+          "Baxi"
+        ],
+        "recipient_request": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. Only written rules count. Initially only Teni is active. After applying the rules, which of Muni or Selo can become active? Give one label and the rule path; if the supplied facts do not decide, say unknown."
+      },
+      {
+        "bank_A": {
+          "activation_edges": [
+            [
+              "Yaro",
+              "Ceni"
+            ],
+            [
+              "Ceni",
+              "Fuma"
+            ],
+            [
+              "Fuma",
+              "Davo"
+            ],
+            [
+              "Kiri",
+              "Noxa"
+            ]
+          ],
+          "expected_answer": "Davo",
+          "lock": {
+            "node": "Kiri",
+            "unless_active": "Noxa",
+            "while_active": "Ceni"
+          },
+          "statements": [
+            "Yaro activates Ceni.",
+            "Ceni activates Fuma.",
+            "Fuma activates Davo.",
+            "While Ceni is active, Kiri is locked.",
+            "Exception: that lock is removed if Noxa is active; Noxa is not initially active and no rule activates it.",
+            "Kiri activates Noxa; this does not mean Noxa activates Kiri."
+          ]
+        },
+        "bank_B": {
+          "activation_edges": [
+            [
+              "Yaro",
+              "Ceni"
+            ],
+            [
+              "Ceni",
+              "Fuma"
+            ],
+            [
+              "Fuma",
+              "Kiri"
+            ],
+            [
+              "Davo",
+              "Noxa"
+            ]
+          ],
+          "expected_answer": "Kiri",
+          "lock": {
+            "node": "Davo",
+            "unless_active": "Noxa",
+            "while_active": "Ceni"
+          },
+          "statements": [
+            "Yaro activates Ceni.",
+            "Ceni activates Fuma.",
+            "Fuma activates Kiri.",
+            "While Ceni is active, Davo is locked.",
+            "Exception: that lock is removed if Noxa is active; Noxa is not initially active and no rule activates it.",
+            "Davo activates Noxa; this does not mean Noxa activates Davo."
+          ]
+        },
+        "checks": {
+          "answer_switches": true,
+          "bank_A_path": [
+            "Yaro",
+            "Ceni",
+            "Fuma",
+            "Davo"
+          ],
+          "bank_B_path": [
+            "Yaro",
+            "Ceni",
+            "Fuma",
+            "Kiri"
+          ],
+          "includes_inactive_exception": true,
+          "includes_reverse_direction_decoy": true,
+          "same_nodes_different_edges": true
+        },
+        "expected_by_condition": {
+          "latent_A": "Davo",
+          "latent_B": "Kiri",
+          "latent_irrelevant": "unknown",
+          "no_bank": "unknown",
+          "visible_A": "Davo",
+          "visible_B": "Kiri"
+        },
+        "fixture_id": "A05",
+        "initial_active": [
+          "Yaro"
+        ],
+        "irrelevant_bank": {
+          "expected_answer": "unknown",
+          "statements": [
+            "If Vuma is awake, Seki may be marked without a copy.",
+            "Every eighth marked entry receives a green tab.",
+            "When Rema is awake, it calls Nilo.",
+            "Nilo marks an entry in the daily ledger.",
+            "Tova copies each marked entry into the archive.",
+            "Seki remains unmarked unless Tova copies an entry."
+          ]
+        },
+        "nodes": [
+          "Yaro",
+          "Ceni",
+          "Fuma",
+          "Davo",
+          "Kiri",
+          "Noxa"
+        ],
+        "recipient_request": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. Only written rules count. Initially only Yaro is active. After applying the rules, which of Davo or Kiri can become active? Give one label and the rule path; if the supplied facts do not decide, say unknown."
+      },
+      {
+        "bank_A": {
+          "activation_edges": [
+            [
+              "Hemi",
+              "Zavo"
+            ],
+            [
+              "Zavo",
+              "Puri"
+            ],
+            [
+              "Puri",
+              "Mado"
+            ],
+            [
+              "Leka",
+              "Saxi"
+            ]
+          ],
+          "expected_answer": "Mado",
+          "lock": {
+            "node": "Leka",
+            "unless_active": "Saxi",
+            "while_active": "Zavo"
+          },
+          "statements": [
+            "Hemi activates Zavo.",
+            "Zavo activates Puri.",
+            "Puri activates Mado.",
+            "While Zavo is active, Leka is locked.",
+            "Exception: that lock is removed if Saxi is active; Saxi is not initially active and no rule activates it.",
+            "Only the direction Leka to Saxi is stated; the reverse direction is not a rule."
+          ]
+        },
+        "bank_B": {
+          "activation_edges": [
+            [
+              "Hemi",
+              "Zavo"
+            ],
+            [
+              "Zavo",
+              "Puri"
+            ],
+            [
+              "Puri",
+              "Leka"
+            ],
+            [
+              "Mado",
+              "Saxi"
+            ]
+          ],
+          "expected_answer": "Leka",
+          "lock": {
+            "node": "Mado",
+            "unless_active": "Saxi",
+            "while_active": "Zavo"
+          },
+          "statements": [
+            "Hemi activates Zavo.",
+            "Zavo activates Puri.",
+            "Puri activates Leka.",
+            "While Zavo is active, Mado is locked.",
+            "Exception: that lock is removed if Saxi is active; Saxi is not initially active and no rule activates it.",
+            "Only the direction Mado to Saxi is stated; the reverse direction is not a rule."
+          ]
+        },
+        "checks": {
+          "answer_switches": true,
+          "bank_A_path": [
+            "Hemi",
+            "Zavo",
+            "Puri",
+            "Mado"
+          ],
+          "bank_B_path": [
+            "Hemi",
+            "Zavo",
+            "Puri",
+            "Leka"
+          ],
+          "includes_inactive_exception": true,
+          "includes_reverse_direction_decoy": true,
+          "same_nodes_different_edges": true
+        },
+        "expected_by_condition": {
+          "latent_A": "Mado",
+          "latent_B": "Leka",
+          "latent_irrelevant": "unknown",
+          "no_bank": "unknown",
+          "visible_A": "Mado",
+          "visible_B": "Leka"
+        },
+        "fixture_id": "A06",
+        "initial_active": [
+          "Hemi"
+        ],
+        "irrelevant_bank": {
+          "expected_answer": "unknown",
+          "statements": [
+            "Every eighth marked entry receives a green tab.",
+            "When Rema is awake, it calls Nilo.",
+            "Nilo marks an entry in the daily ledger.",
+            "Tova copies each marked entry into the archive.",
+            "Seki remains unmarked unless Tova copies an entry.",
+            "If Vuma is awake, Seki may be marked without a copy."
+          ]
+        },
+        "nodes": [
+          "Hemi",
+          "Zavo",
+          "Puri",
+          "Leka",
+          "Mado",
+          "Saxi"
+        ],
+        "recipient_request": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. Only written rules count. Initially only Hemi is active. After applying the rules, which of Leka or Mado can become active? Give one label and the rule path; if the supplied facts do not decide, say unknown."
+      },
+      {
+        "bank_A": {
+          "activation_edges": [
+            [
+              "Boru",
+              "Tavi"
+            ],
+            [
+              "Tavi",
+              "Nemi"
+            ],
+            [
+              "Nemi",
+              "Ralo"
+            ],
+            [
+              "Vusa",
+              "Jexo"
+            ]
+          ],
+          "expected_answer": "Ralo",
+          "lock": {
+            "node": "Vusa",
+            "unless_active": "Jexo",
+            "while_active": "Tavi"
+          },
+          "statements": [
+            "Boru activates Tavi.",
+            "Tavi activates Nemi.",
+            "Nemi activates Ralo.",
+            "While Tavi is active, Vusa is locked.",
+            "Exception: that lock is removed if Jexo is active; Jexo is not initially active and no rule activates it.",
+            "Vusa activates Jexo; this does not mean Jexo activates Vusa."
+          ]
+        },
+        "bank_B": {
+          "activation_edges": [
+            [
+              "Boru",
+              "Tavi"
+            ],
+            [
+              "Tavi",
+              "Nemi"
+            ],
+            [
+              "Nemi",
+              "Vusa"
+            ],
+            [
+              "Ralo",
+              "Jexo"
+            ]
+          ],
+          "expected_answer": "Vusa",
+          "lock": {
+            "node": "Ralo",
+            "unless_active": "Jexo",
+            "while_active": "Tavi"
+          },
+          "statements": [
+            "Boru activates Tavi.",
+            "Tavi activates Nemi.",
+            "Nemi activates Vusa.",
+            "While Tavi is active, Ralo is locked.",
+            "Exception: that lock is removed if Jexo is active; Jexo is not initially active and no rule activates it.",
+            "Ralo activates Jexo; this does not mean Jexo activates Ralo."
+          ]
+        },
+        "checks": {
+          "answer_switches": true,
+          "bank_A_path": [
+            "Boru",
+            "Tavi",
+            "Nemi",
+            "Ralo"
+          ],
+          "bank_B_path": [
+            "Boru",
+            "Tavi",
+            "Nemi",
+            "Vusa"
+          ],
+          "includes_inactive_exception": true,
+          "includes_reverse_direction_decoy": true,
+          "same_nodes_different_edges": true
+        },
+        "expected_by_condition": {
+          "latent_A": "Ralo",
+          "latent_B": "Vusa",
+          "latent_irrelevant": "unknown",
+          "no_bank": "unknown",
+          "visible_A": "Ralo",
+          "visible_B": "Vusa"
+        },
+        "fixture_id": "A07",
+        "initial_active": [
+          "Boru"
+        ],
+        "irrelevant_bank": {
+          "expected_answer": "unknown",
+          "statements": [
+            "When Rema is awake, it calls Nilo.",
+            "Nilo marks an entry in the daily ledger.",
+            "Tova copies each marked entry into the archive.",
+            "Seki remains unmarked unless Tova copies an entry.",
+            "If Vuma is awake, Seki may be marked without a copy.",
+            "Every eighth marked entry receives a green tab."
+          ]
+        },
+        "nodes": [
+          "Boru",
+          "Tavi",
+          "Nemi",
+          "Ralo",
+          "Vusa",
+          "Jexo"
+        ],
+        "recipient_request": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. Only written rules count. Initially only Boru is active. After applying the rules, which of Ralo or Vusa can become active? Give one label and the rule path; if the supplied facts do not decide, say unknown."
+      },
+      {
+        "bank_A": {
+          "activation_edges": [
+            [
+              "Kumo",
+              "Deri"
+            ],
+            [
+              "Deri",
+              "Walo"
+            ],
+            [
+              "Walo",
+              "Peni"
+            ],
+            [
+              "Fexa",
+              "Guta"
+            ]
+          ],
+          "expected_answer": "Peni",
+          "lock": {
+            "node": "Fexa",
+            "unless_active": "Guta",
+            "while_active": "Deri"
+          },
+          "statements": [
+            "Kumo activates Deri.",
+            "Deri activates Walo.",
+            "Walo activates Peni.",
+            "While Deri is active, Fexa is locked.",
+            "Exception: that lock is removed if Guta is active; Guta is not initially active and no rule activates it.",
+            "Only the direction Fexa to Guta is stated; the reverse direction is not a rule."
+          ]
+        },
+        "bank_B": {
+          "activation_edges": [
+            [
+              "Kumo",
+              "Deri"
+            ],
+            [
+              "Deri",
+              "Walo"
+            ],
+            [
+              "Walo",
+              "Fexa"
+            ],
+            [
+              "Peni",
+              "Guta"
+            ]
+          ],
+          "expected_answer": "Fexa",
+          "lock": {
+            "node": "Peni",
+            "unless_active": "Guta",
+            "while_active": "Deri"
+          },
+          "statements": [
+            "Kumo activates Deri.",
+            "Deri activates Walo.",
+            "Walo activates Fexa.",
+            "While Deri is active, Peni is locked.",
+            "Exception: that lock is removed if Guta is active; Guta is not initially active and no rule activates it.",
+            "Only the direction Peni to Guta is stated; the reverse direction is not a rule."
+          ]
+        },
+        "checks": {
+          "answer_switches": true,
+          "bank_A_path": [
+            "Kumo",
+            "Deri",
+            "Walo",
+            "Peni"
+          ],
+          "bank_B_path": [
+            "Kumo",
+            "Deri",
+            "Walo",
+            "Fexa"
+          ],
+          "includes_inactive_exception": true,
+          "includes_reverse_direction_decoy": true,
+          "same_nodes_different_edges": true
+        },
+        "expected_by_condition": {
+          "latent_A": "Peni",
+          "latent_B": "Fexa",
+          "latent_irrelevant": "unknown",
+          "no_bank": "unknown",
+          "visible_A": "Peni",
+          "visible_B": "Fexa"
+        },
+        "fixture_id": "A08",
+        "initial_active": [
+          "Kumo"
+        ],
+        "irrelevant_bank": {
+          "expected_answer": "unknown",
+          "statements": [
+            "Nilo marks an entry in the daily ledger.",
+            "Tova copies each marked entry into the archive.",
+            "Seki remains unmarked unless Tova copies an entry.",
+            "If Vuma is awake, Seki may be marked without a copy.",
+            "Every eighth marked entry receives a green tab.",
+            "When Rema is awake, it calls Nilo."
+          ]
+        },
+        "nodes": [
+          "Kumo",
+          "Deri",
+          "Walo",
+          "Fexa",
+          "Peni",
+          "Guta"
+        ],
+        "recipient_request": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. Only written rules count. Initially only Kumo is active. After applying the rules, which of Fexa or Peni can become active? Give one label and the rule path; if the supplied facts do not decide, say unknown."
+      },
+      {
+        "bank_A": {
+          "activation_edges": [
+            [
+              "Savo",
+              "Miri"
+            ],
+            [
+              "Miri",
+              "Heka"
+            ],
+            [
+              "Heka",
+              "Zuno"
+            ],
+            [
+              "Ceta",
+              "Rixi"
+            ]
+          ],
+          "expected_answer": "Zuno",
+          "lock": {
+            "node": "Ceta",
+            "unless_active": "Rixi",
+            "while_active": "Miri"
+          },
+          "statements": [
+            "Savo activates Miri.",
+            "Miri activates Heka.",
+            "Heka activates Zuno.",
+            "While Miri is active, Ceta is locked.",
+            "Exception: that lock is removed if Rixi is active; Rixi is not initially active and no rule activates it.",
+            "Ceta activates Rixi; this does not mean Rixi activates Ceta."
+          ]
+        },
+        "bank_B": {
+          "activation_edges": [
+            [
+              "Savo",
+              "Miri"
+            ],
+            [
+              "Miri",
+              "Heka"
+            ],
+            [
+              "Heka",
+              "Ceta"
+            ],
+            [
+              "Zuno",
+              "Rixi"
+            ]
+          ],
+          "expected_answer": "Ceta",
+          "lock": {
+            "node": "Zuno",
+            "unless_active": "Rixi",
+            "while_active": "Miri"
+          },
+          "statements": [
+            "Savo activates Miri.",
+            "Miri activates Heka.",
+            "Heka activates Ceta.",
+            "While Miri is active, Zuno is locked.",
+            "Exception: that lock is removed if Rixi is active; Rixi is not initially active and no rule activates it.",
+            "Zuno activates Rixi; this does not mean Rixi activates Zuno."
+          ]
+        },
+        "checks": {
+          "answer_switches": true,
+          "bank_A_path": [
+            "Savo",
+            "Miri",
+            "Heka",
+            "Zuno"
+          ],
+          "bank_B_path": [
+            "Savo",
+            "Miri",
+            "Heka",
+            "Ceta"
+          ],
+          "includes_inactive_exception": true,
+          "includes_reverse_direction_decoy": true,
+          "same_nodes_different_edges": true
+        },
+        "expected_by_condition": {
+          "latent_A": "Zuno",
+          "latent_B": "Ceta",
+          "latent_irrelevant": "unknown",
+          "no_bank": "unknown",
+          "visible_A": "Zuno",
+          "visible_B": "Ceta"
+        },
+        "fixture_id": "A09",
+        "initial_active": [
+          "Savo"
+        ],
+        "irrelevant_bank": {
+          "expected_answer": "unknown",
+          "statements": [
+            "Tova copies each marked entry into the archive.",
+            "Seki remains unmarked unless Tova copies an entry.",
+            "If Vuma is awake, Seki may be marked without a copy.",
+            "Every eighth marked entry receives a green tab.",
+            "When Rema is awake, it calls Nilo.",
+            "Nilo marks an entry in the daily ledger."
+          ]
+        },
+        "nodes": [
+          "Savo",
+          "Miri",
+          "Heka",
+          "Zuno",
+          "Ceta",
+          "Rixi"
+        ],
+        "recipient_request": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. Only written rules count. Initially only Savo is active. After applying the rules, which of Zuno or Ceta can become active? Give one label and the rule path; if the supplied facts do not decide, say unknown."
+      },
+      {
+        "bank_A": {
+          "activation_edges": [
+            [
+              "Lumo",
+              "Beri"
+            ],
+            [
+              "Beri",
+              "Teka"
+            ],
+            [
+              "Teka",
+              "Juri"
+            ],
+            [
+              "Vano",
+              "Fosa"
+            ]
+          ],
+          "expected_answer": "Juri",
+          "lock": {
+            "node": "Vano",
+            "unless_active": "Fosa",
+            "while_active": "Beri"
+          },
+          "statements": [
+            "Lumo activates Beri.",
+            "Beri activates Teka.",
+            "Teka activates Juri.",
+            "While Beri is active, Vano is locked.",
+            "Exception: that lock is removed if Fosa is active; Fosa is not initially active and no rule activates it.",
+            "Only the direction Vano to Fosa is stated; the reverse direction is not a rule."
+          ]
+        },
+        "bank_B": {
+          "activation_edges": [
+            [
+              "Lumo",
+              "Beri"
+            ],
+            [
+              "Beri",
+              "Teka"
+            ],
+            [
+              "Teka",
+              "Vano"
+            ],
+            [
+              "Juri",
+              "Fosa"
+            ]
+          ],
+          "expected_answer": "Vano",
+          "lock": {
+            "node": "Juri",
+            "unless_active": "Fosa",
+            "while_active": "Beri"
+          },
+          "statements": [
+            "Lumo activates Beri.",
+            "Beri activates Teka.",
+            "Teka activates Vano.",
+            "While Beri is active, Juri is locked.",
+            "Exception: that lock is removed if Fosa is active; Fosa is not initially active and no rule activates it.",
+            "Only the direction Juri to Fosa is stated; the reverse direction is not a rule."
+          ]
+        },
+        "checks": {
+          "answer_switches": true,
+          "bank_A_path": [
+            "Lumo",
+            "Beri",
+            "Teka",
+            "Juri"
+          ],
+          "bank_B_path": [
+            "Lumo",
+            "Beri",
+            "Teka",
+            "Vano"
+          ],
+          "includes_inactive_exception": true,
+          "includes_reverse_direction_decoy": true,
+          "same_nodes_different_edges": true
+        },
+        "expected_by_condition": {
+          "latent_A": "Juri",
+          "latent_B": "Vano",
+          "latent_irrelevant": "unknown",
+          "no_bank": "unknown",
+          "visible_A": "Juri",
+          "visible_B": "Vano"
+        },
+        "fixture_id": "A10",
+        "initial_active": [
+          "Lumo"
+        ],
+        "irrelevant_bank": {
+          "expected_answer": "unknown",
+          "statements": [
+            "Seki remains unmarked unless Tova copies an entry.",
+            "If Vuma is awake, Seki may be marked without a copy.",
+            "Every eighth marked entry receives a green tab.",
+            "When Rema is awake, it calls Nilo.",
+            "Nilo marks an entry in the daily ledger.",
+            "Tova copies each marked entry into the archive."
+          ]
+        },
+        "nodes": [
+          "Lumo",
+          "Beri",
+          "Teka",
+          "Vano",
+          "Juri",
+          "Fosa"
+        ],
+        "recipient_request": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. Only written rules count. Initially only Lumo is active. After applying the rules, which of Vano or Juri can become active? Give one label and the rule path; if the supplied facts do not decide, say unknown."
+      },
+      {
+        "bank_A": {
+          "activation_edges": [
+            [
+              "Duma",
+              "Xeri"
+            ],
+            [
+              "Xeri",
+              "Kavo"
+            ],
+            [
+              "Kavo",
+              "Pela"
+            ],
+            [
+              "Suri",
+              "Moxa"
+            ]
+          ],
+          "expected_answer": "Pela",
+          "lock": {
+            "node": "Suri",
+            "unless_active": "Moxa",
+            "while_active": "Xeri"
+          },
+          "statements": [
+            "Duma activates Xeri.",
+            "Xeri activates Kavo.",
+            "Kavo activates Pela.",
+            "While Xeri is active, Suri is locked.",
+            "Exception: that lock is removed if Moxa is active; Moxa is not initially active and no rule activates it.",
+            "Suri activates Moxa; this does not mean Moxa activates Suri."
+          ]
+        },
+        "bank_B": {
+          "activation_edges": [
+            [
+              "Duma",
+              "Xeri"
+            ],
+            [
+              "Xeri",
+              "Kavo"
+            ],
+            [
+              "Kavo",
+              "Suri"
+            ],
+            [
+              "Pela",
+              "Moxa"
+            ]
+          ],
+          "expected_answer": "Suri",
+          "lock": {
+            "node": "Pela",
+            "unless_active": "Moxa",
+            "while_active": "Xeri"
+          },
+          "statements": [
+            "Duma activates Xeri.",
+            "Xeri activates Kavo.",
+            "Kavo activates Suri.",
+            "While Xeri is active, Pela is locked.",
+            "Exception: that lock is removed if Moxa is active; Moxa is not initially active and no rule activates it.",
+            "Pela activates Moxa; this does not mean Moxa activates Pela."
+          ]
+        },
+        "checks": {
+          "answer_switches": true,
+          "bank_A_path": [
+            "Duma",
+            "Xeri",
+            "Kavo",
+            "Pela"
+          ],
+          "bank_B_path": [
+            "Duma",
+            "Xeri",
+            "Kavo",
+            "Suri"
+          ],
+          "includes_inactive_exception": true,
+          "includes_reverse_direction_decoy": true,
+          "same_nodes_different_edges": true
+        },
+        "expected_by_condition": {
+          "latent_A": "Pela",
+          "latent_B": "Suri",
+          "latent_irrelevant": "unknown",
+          "no_bank": "unknown",
+          "visible_A": "Pela",
+          "visible_B": "Suri"
+        },
+        "fixture_id": "A11",
+        "initial_active": [
+          "Duma"
+        ],
+        "irrelevant_bank": {
+          "expected_answer": "unknown",
+          "statements": [
+            "If Vuma is awake, Seki may be marked without a copy.",
+            "Every eighth marked entry receives a green tab.",
+            "When Rema is awake, it calls Nilo.",
+            "Nilo marks an entry in the daily ledger.",
+            "Tova copies each marked entry into the archive.",
+            "Seki remains unmarked unless Tova copies an entry."
+          ]
+        },
+        "nodes": [
+          "Duma",
+          "Xeri",
+          "Kavo",
+          "Pela",
+          "Suri",
+          "Moxa"
+        ],
+        "recipient_request": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. Only written rules count. Initially only Duma is active. After applying the rules, which of Pela or Suri can become active? Give one label and the rule path; if the supplied facts do not decide, say unknown."
+      },
+      {
+        "bank_A": {
+          "activation_edges": [
+            [
+              "Ruma",
+              "Cavo"
+            ],
+            [
+              "Cavo",
+              "Yeni"
+            ],
+            [
+              "Yeni",
+              "Tori"
+            ],
+            [
+              "Hesa",
+              "Vexa"
+            ]
+          ],
+          "expected_answer": "Tori",
+          "lock": {
+            "node": "Hesa",
+            "unless_active": "Vexa",
+            "while_active": "Cavo"
+          },
+          "statements": [
+            "Ruma activates Cavo.",
+            "Cavo activates Yeni.",
+            "Yeni activates Tori.",
+            "While Cavo is active, Hesa is locked.",
+            "Exception: that lock is removed if Vexa is active; Vexa is not initially active and no rule activates it.",
+            "Only the direction Hesa to Vexa is stated; the reverse direction is not a rule."
+          ]
+        },
+        "bank_B": {
+          "activation_edges": [
+            [
+              "Ruma",
+              "Cavo"
+            ],
+            [
+              "Cavo",
+              "Yeni"
+            ],
+            [
+              "Yeni",
+              "Hesa"
+            ],
+            [
+              "Tori",
+              "Vexa"
+            ]
+          ],
+          "expected_answer": "Hesa",
+          "lock": {
+            "node": "Tori",
+            "unless_active": "Vexa",
+            "while_active": "Cavo"
+          },
+          "statements": [
+            "Ruma activates Cavo.",
+            "Cavo activates Yeni.",
+            "Yeni activates Hesa.",
+            "While Cavo is active, Tori is locked.",
+            "Exception: that lock is removed if Vexa is active; Vexa is not initially active and no rule activates it.",
+            "Only the direction Tori to Vexa is stated; the reverse direction is not a rule."
+          ]
+        },
+        "checks": {
+          "answer_switches": true,
+          "bank_A_path": [
+            "Ruma",
+            "Cavo",
+            "Yeni",
+            "Tori"
+          ],
+          "bank_B_path": [
+            "Ruma",
+            "Cavo",
+            "Yeni",
+            "Hesa"
+          ],
+          "includes_inactive_exception": true,
+          "includes_reverse_direction_decoy": true,
+          "same_nodes_different_edges": true
+        },
+        "expected_by_condition": {
+          "latent_A": "Tori",
+          "latent_B": "Hesa",
+          "latent_irrelevant": "unknown",
+          "no_bank": "unknown",
+          "visible_A": "Tori",
+          "visible_B": "Hesa"
+        },
+        "fixture_id": "A12",
+        "initial_active": [
+          "Ruma"
+        ],
+        "irrelevant_bank": {
+          "expected_answer": "unknown",
+          "statements": [
+            "Every eighth marked entry receives a green tab.",
+            "When Rema is awake, it calls Nilo.",
+            "Nilo marks an entry in the daily ledger.",
+            "Tova copies each marked entry into the archive.",
+            "Seki remains unmarked unless Tova copies an entry.",
+            "If Vuma is awake, Seki may be marked without a copy."
+          ]
+        },
+        "nodes": [
+          "Ruma",
+          "Cavo",
+          "Yeni",
+          "Hesa",
+          "Tori",
+          "Vexa"
+        ],
+        "recipient_request": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. Only written rules count. Initially only Ruma is active. After applying the rules, which of Hesa or Tori can become active? Give one label and the rule path; if the supplied facts do not decide, say unknown."
+      }
+    ],
+    "generation_count": 144,
+    "latent_bank_source_must_not_appear_in_recipient_request": true,
+    "seeds": [
+      34001,
+      34019
+    ],
+    "system_prompt": "You are solving a fictional rule task. Use only the supplied rules. Give the answer and a concise rule path; if the rules do not determine it, say unknown."
+  },
+  "test_b": {
+    "condition_wrappers": {
+      "latent_correct": "{task_prompt}",
+      "latent_irrelevant": "{task_prompt}",
+      "latent_topology_altered": "{task_prompt}",
+      "no_bank": "{task_prompt}",
+      "text_C": "Required consideration: Before answering, explicitly consider the following neighborhood and determine which relationships, if any, transfer to the user's task. You may reject the connection if it is not useful.\n\n{pack}\n\nUser task:\n{task_prompt}",
+      "visible_pack": "Reference neighborhood:\n{pack}\n\nUser task:\n{task_prompt}"
+    },
+    "conditions": [
+      "no_bank",
+      "visible_pack",
+      "text_C",
+      "latent_correct",
+      "latent_irrelevant",
+      "latent_topology_altered"
+    ],
+    "design": "Three relational packs x three held-out ordinary tasks x two fixed seeds x six conditions.",
+    "generation_count": 108,
+    "irrelevant_pack": {
+      "pack_id": "B-IRRELEVANT-ARCHIVING",
+      "statements": [
+        "A page is assigned a stable title before it is filed.",
+        "Related pages are grouped by subject in an index.",
+        "A brief note records where a quotation came from.",
+        "The index is checked when a reader searches for an old topic.",
+        "A duplicate page is marked as a copy rather than treated as a new source."
+      ]
+    },
+    "latent_bank_source_must_not_appear_in_recipient_request": true,
+    "packs": [
+      {
+        "pack_id": "B-HARBOR",
+        "statements": [
+          "The usable shared area has a fixed capacity.",
+          "Access is allocated in timed windows rather than by an unlimited queue.",
+          "A completed return frees capacity for a later user.",
+          "A delayed arrival shifts later handoffs instead of creating extra capacity.",
+          "Current occupancy is checked before admitting the next user."
+        ],
+        "tasks": [
+          {
+            "prompt": "Our neighborhood is considering a shared tool-lending setup for drills, saws, ladders, and gardening equipment. Popular tools disappear for days, people forget return dates, and nobody knows what is available. I want light administration. How would you design it?",
+            "task_id": "B-HARBOR-1",
+            "task_native_overlap": "High: the prompt directly names shared tools, disappearance, returns, and availability. Generic scheduling alone is not evidence of bank uptake."
+          },
+          {
+            "prompt": "A small community workshop has one laser cutter used by several clubs. Conflicts are common, but a formal booking office would be excessive. What lightweight operating arrangement would you suggest?",
+            "task_id": "B-HARBOR-2",
+            "task_native_overlap": "Moderate: shared machine use implies coordination, but no explicit schedule or time-window solution is requested."
+          },
+          {
+            "prompt": "An apartment building has a few shared e-bike charging outlets. Residents report that charged bikes are sometimes left connected and others cannot tell which outlets are occupied. Suggest a simple policy that does not require an app.",
+            "task_id": "B-HARBOR-3",
+            "task_native_overlap": "Moderate: occupancy is stated; time windows and handoffs are possible but not prescribed."
+          }
+        ],
+        "topology_altered": [
+          "The usable shared area has a fixed capacity.",
+          "Access is allocated in timed windows rather than by an unlimited queue.",
+          "A completed return does not free capacity for a later user.",
+          "A delayed arrival leaves later handoffs unchanged and may create overlap.",
+          "Current occupancy is checked only after the next user is admitted."
+        ]
+      },
+      {
+        "pack_id": "B-STAGED-CHANGE",
+        "statements": [
+          "A small early change can survive disruption and establish a workable foothold.",
+          "That first foothold changes conditions for what can be changed next.",
+          "Later changes depend on conditions created by earlier ones.",
+          "Stable organization can emerge after several dependent transitions.",
+          "Replacing every early element immediately can erase useful conditions and restart the process."
+        ],
+        "tasks": [
+          {
+            "prompt": "I inherited a messy software project held together by years of quick fixes. It still works, but nobody understands every dependency, and replacing it all at once would be risky. How should I approach change?",
+            "task_id": "B-STAGED-1",
+            "task_native_overlap": "High: incremental software change is common task-native advice. Count only explicit dependency-enabling structure, not simply 'do it gradually.'"
+          },
+          {
+            "prompt": "A family-owned corner shop needs a major interior renovation but must stay open most days. There is little money for temporary relocation. How would you sequence the work?",
+            "task_id": "B-STAGED-2",
+            "task_native_overlap": "Moderate: staging is invited by staying open, but path-dependent enabling conditions are not stated."
+          },
+          {
+            "prompt": "A volunteer organization is combining two long-running services while clients still depend on both. Staff and records are organized differently, and abrupt changes could interrupt support. What transition plan would reduce risk?",
+            "task_id": "B-STAGED-3",
+            "task_native_overlap": "Moderate: transition planning is task-native; count only early changes that enable later structures and stabilization."
+          }
+        ],
+        "topology_altered": [
+          "A small early change can survive disruption and establish a workable foothold.",
+          "That first foothold does not change conditions for what can be changed next.",
+          "Later changes are independent of conditions created by earlier ones.",
+          "Stable organization is imposed before any transition occurs.",
+          "Replacing every early element immediately preserves all useful conditions and never restarts the process."
+        ]
+      },
+      {
+        "pack_id": "B-LAYERED-RESILIENCE",
+        "statements": [
+          "Several partially independent safeguards can cover different failure signals.",
+          "An early check handles common mistakes before they spread.",
+          "A local containment step limits damage while the cause is investigated.",
+          "A separate fallback keeps service available if one safeguard fails.",
+          "Escalation becomes stronger when evidence or severity increases."
+        ],
+        "tasks": [
+          {
+            "prompt": "A neighborhood festival needs to keep operating safely even if volunteers miss things, equipment fails, or someone causes a problem. We do not want one person or one rule to become a single point of failure. How would you design safeguards?",
+            "task_id": "B-LAYERED-1",
+            "task_native_overlap": "High: the prompt explicitly invites safeguards and failures. Count differentiated independent layers, containment, fallback, and evidence-scaled escalation, not generic caution."
+          },
+          {
+            "prompt": "A small nonprofit must protect its donor records and keep essential services running through staff turnover, accidental mistakes, and occasional computer outages. It cannot hire a security team. What practical protections should it use?",
+            "task_id": "B-LAYERED-2",
+            "task_native_overlap": "Moderate: backups and checks are natural, but independent detection/containment/escalation roles are not prescribed."
+          },
+          {
+            "prompt": "A volunteer food-distribution group depends on a few suppliers and rotating drivers. Missed deliveries or a vehicle problem can leave families without food that week. Suggest a practical continuity plan for a small budget.",
+            "task_id": "B-LAYERED-3",
+            "task_native_overlap": "Moderate: contingency planning is task-native; count only non-identical safeguards with local containment and severity-based escalation."
+          }
+        ],
+        "topology_altered": [
+          "Several safeguards use the same signal and fail together.",
+          "A check is performed only after damage has spread.",
+          "A containment step is skipped while the cause is investigated.",
+          "A fallback depends on the same component as the primary safeguard.",
+          "Escalation is constant regardless of evidence or severity."
+        ]
+      }
+    ],
+    "rubric": {
+      "direct_repetition": "Repeats supplied wording or nouns without using its linked structure.",
+      "intrusion": "Disproportionate fixation or task displacement attributable to the bank.",
+      "multi_link": "Reasoning or final output uses at least two distinct connected relations from the bank.",
+      "rejection": "Explicitly evaluates and rejects a bank-derived idea as unsuitable.",
+      "task_native_overlap": "Predeclared per prompt; do not credit ordinary advice already invited by the prompt absent traceable structural contribution.",
+      "transformation": "Maps the relations into concrete task-native mechanisms without merely echoing source wording."
+    },
+    "seeds": [
+      34001,
+      34019
+    ],
+    "system_prompt": "Answer the user helpfully and stay focused on the task. Think through relevant considerations before giving a concise, practical response."
+  },
+  "test_c": {
+    "design": "Three Test-A recipient coordinates replayed through bank-A, bank-B, disabled, then bank-A-restored; a separate ongoing exchange and a new bank use the frozen selector.",
+    "fixtures": [
+      "A02",
+      "A06",
+      "A10"
+    ],
+    "fresh_context_generations": 12,
+    "generation_count": 16,
+    "interpretation": "Fresh clean recipient contexts prove disable/restore without generated-history carryover; the ongoing exchange is separately labeled and cannot imply past tokens were erased.",
+    "new_bank": {
+      "encoding_passes": 1,
+      "expected_path": [
+        "Daxi",
+        "Bero",
+        "Cuni",
+        "Efo",
+        "Gaxi"
+      ],
+      "fresh_context_generations": 2,
+      "generations": 2,
+      "initial_active": "Daxi",
+      "recipient_contexts": [
+        "Starting only with Daxi active, can Gaxi become active? Give the directed rule path or say unknown.",
+        "If Bero becomes active from Daxi, what additional labels follow from the supplied relationships, and can Gaxi be reached?"
+      ],
+      "source_text": [
+        "Daxi activates Bero.",
+        "Bero activates Cuni.",
+        "Cuni activates Efo.",
+        "Efo activates Gaxi."
+      ]
+    },
+    "ongoing_exchange": {
+      "bank_transition": "A then B",
+      "fixture_id": "A02",
+      "generations": 2,
+      "interpretation": "The prior assistant response remains in the ongoing context; this is an update-in-conversation test, not proof that replacement erases prior generated text.",
+      "turn1_user_prompt": "Treat these as abstract labels. A rule saying X activates Y means that if X becomes active, Y can become active. A lock prevents activation unless its stated exception applies. Only written rules count. Initially only Neri is active. After applying the rules, which of Feli or Rudo can become active? Give one label and the rule path; if the supplied facts do not decide, say unknown.",
+      "turn2_user_prompt": "Using the same initially active label and the same candidate labels, answer the question again after the available rule neighborhood has been replaced. Give only the currently supported target and path.",
+      "turns": 2
+    },
+    "seed": 34001
+  }
+}

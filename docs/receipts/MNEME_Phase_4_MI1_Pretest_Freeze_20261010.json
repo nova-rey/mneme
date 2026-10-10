@@ -1,0 +1,61 @@
+{
+  "experiment": "MNEME Phase 4-MI1 local Memory Inception synthetic test",
+  "status": "FIXTURES_FROZEN_PRE_SITE_CALIBRATION",
+  "visible_task_comprehension": {
+    "separate_fixtures": 4,
+    "seeds_per_fixture": 2,
+    "generations": 8,
+    "passed": 8,
+    "failed": 0,
+    "rubric": "final output contains the answer-key target and the complete directed path; normal finish",
+    "reasoning": "ON",
+    "cache_prompt": false,
+    "sampler": {
+      "temperature": 0.35,
+      "top_k": 40,
+      "top_p": 0.9,
+      "min_p": 0.05
+    },
+    "seeds": [34031, 34037],
+    "mean_latency_seconds": 4.7527,
+    "raw_evidence": {
+      "path": "/home/nyx/mneme-artifacts/phase4-mi1/calibration/visible-calibration-20261010.json",
+      "sha256": "8e87bb6a841310e6562795cf92291807fd321d6f9aea809d6c9fa5dd838dc513"
+    },
+    "server_log": {
+      "path": "/home/nyx/mneme-artifacts/phase4-mi1/calibration/visible-calibration-20261010.server.log",
+      "sha256": "e4677be2c354ca636d74aa5e749e10e9e13beaa7389147430e89bf11f019befe"
+    }
+  },
+  "model_stack": {
+    "model": "google/gemma-4-E4B-it",
+    "gguf": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+    "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+    "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+    "llama_server_version": "0.5.0-dev (build 1)",
+    "llama_server_binary_sha256": "f34159bac9695a8fe24c5a7de77635db80923d52fa267873a7cab6f16e71e63c",
+    "host": "brokeass-msi",
+    "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU, 6144 MiB",
+    "gpu_driver": "595.91.07",
+    "build": "Release, GGML_CUDA=ON, GGML_CUDA_FA=ON",
+    "server_args": ["-ngl", "99", "-c", "8192", "--reasoning-format", "deepseek", "--no-warmup", "--no-webui"]
+  },
+  "frozen_suite": {
+    "path": "experiments/mi1/fixtures/mi1_frozen_suite.json",
+    "sha256": "11c93e86f4c2875e4524eb86de19008fb8b1971e023e146de2766ebf71c59c79",
+    "test_a_generations": 144,
+    "test_b_generations": 108,
+    "test_c_generations": 16,
+    "untouched_confirmation_reserve": 48,
+    "calibration_ceiling": 120,
+    "total_preplanned_including_calibration_ceiling": 436,
+    "authorized_hard_max": 800,
+    "scored_generations_run": 0
+  },
+  "remaining_pre_scored_gates": [
+    "site-selection calibration and freeze",
+    "bank exposure and gain configuration freeze",
+    "native bank attach/exclusion and duplicate-replay qualification",
+    "native absent-bank baseline task-comprehension confirmation"
+  ]
+}
