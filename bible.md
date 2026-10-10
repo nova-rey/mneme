@@ -1740,3 +1740,8 @@ and dispositions remain unchanged.
 
 - Before any scored latent generation, pinned the sampler, 2048-token output limit, reasoning-template setting, reasoning channel, and prompt-cache disablement in the suite and freeze receipt. These settings match the completed visible comprehension calibration; prompts, banks, answer keys, seeds, and conditions were unchanged.
 - Regenerated the suite byte-identically from its builder and added a regression assertion for the fixed generation configuration. No model calls were added.
+
+## 2026-10-10 — Phase 4-MI1 coordinate expansion
+
+- Added a deterministic expansion of the frozen Test A/B/C schedule into 268 stable request coordinates, keeping latent bank source text outside recipient messages and recording the exact bank action and expected answer/rubric per coordinate.
+- The plan marks the ongoing Test-C second turn as dependent on the first recorded answer, rather than fabricating a fixed history. Coordinate and evidence/scoring tests pass; no inference was run.
