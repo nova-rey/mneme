@@ -1,0 +1,11 @@
+# MI1 C8 diagnostic result
+
+C8 replayed the exact simple-prompt matrix from C3 with the corrected 8,192-token server context. All 44 calls completed and all 16 attached-bank fingerprints matched. The visible-rule condition scored 8/8, while the latent conditions scored 0/24: sparse moderate 0/8, broad moderate 0/8, and broad strong 0/8. No-bank scored 2/8. The two cue-only diagnostic rows scored 1/2 without a bank and 0/2 with broad-strong bank.
+
+The context-window failure seen in C5 is absent. However, 12 broad-setting coordinates ended at the request's 2,048-token output limit; several broad outputs became repetitive or malformed. Sparse latent calls all stopped normally and still failed to retrieve the rules. Thus output truncation explains some broad failures, but not the sparse result.
+
+A separate prefill-only capture used the exact rendered C8 prompt and the same attached bank variants. It recorded mean final-query attention mass on the 28 bank slots of 0.407 across all 336 broad sites at moderate strength and 0.545 at broad-strong. Sparse moderate had a mean 0.384 across its 16 selected query sites and exactly zero bank mass at the 320 unselected sites. The expected bank fingerprints and complete per-coordinate hashes are in the JSON receipt.
+
+This rules out an absent/wrong bank and zero numerical attention as the explanation for this prompt. It does not show semantic use: high attention did not produce correct rule recall, and broad-strong exposure was often disruptive. The direct capture is prefill-only and was run with flash attention disabled; it diagnoses the attention path, not every generation decode step. C8 remains a diagnostic calibration, not the scored A/B/C experiment or final MI1 disposition.
+
+The frozen plan is [C8](MNEME_Phase_4_MI1_C8_Calibration_Freeze_20261010.json). The compact per-coordinate results and attention measurements are in [C8 JSON](MNEME_Phase_4_MI1_C8_Result_20261010.json). Full streamed prompts, reasoning, and outputs remain outside Git at `/home/nyx/mneme-artifacts/phase4-mi1/calibration-C8/evidence/`; binary attention captures remain at `/home/nyx/mneme-artifacts/phase4-mi1/calibration-C8/attention-capture/` with hashes in the receipt.
