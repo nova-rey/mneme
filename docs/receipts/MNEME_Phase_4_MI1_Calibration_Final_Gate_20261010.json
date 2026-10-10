@@ -936,5 +936,33 @@
       "coordinate_id": "C2-CAL-REL-03-visible_bank-34133",
       "correct": false
     }
-  ]
+  ],
+  "full_spec_status": {
+    "overall": "INCOMPLETE_AT_FAILED_CALIBRATION_GATE",
+    "prior_separate_visible_comprehension": {
+      "result": "PASS_8_OF_8_ON_DIFFERENT_FIXTURES",
+      "interpretation": "Shows some reachability-task comprehension; does not satisfy the later frozen positive-control threshold.",
+      "receipt": "docs/receipts/MNEME_Phase_4_MI1_Pretest_Freeze_20261010.json",
+      "receipt_sha256": "5e1ca8533862f0c35ef4c87cfc60be3620216d54062c1842aaf8d96af2aa580d"
+    },
+    "native_side_bank_access": {
+      "status": "MECHANICAL_PREFILL_ACCESS_DEMONSTRATED_NO_GENERATION",
+      "bank_slots": 28,
+      "final_query_mean_bank_attention_mass": 0.5157753825187683,
+      "generated_tokens": 0,
+      "receipt_local_path": "/home/nyx/mneme-artifacts/phase4-mi1/native/mi1-native-attached-prefill-smoke/receipt.json",
+      "receipt_sha256": "53b7668b9f9c0f4efcf9b2fc2a39572781bea3452a107b4eb3d9f554f991edbd"
+    },
+    "site_calibration": {
+      "status": "PREFILL_SITE_CALIBRATION_COMPLETE_NO_GENERATION",
+      "receipt": "docs/receipts/MNEME_Phase_4_MI1_Site_Calibration_20261010.json",
+      "receipt_sha256": "e6345e27662fd4299f989bd0bbd8a3fd14af6ecef79f10542bc51f82deb5394e"
+    },
+    "test_a_counterfactual_transfer": "NOT_RUN_SCORED_GATE_FAILED",
+    "test_b_neighborhood_deliberation": "NOT_RUN_SCORED_GATE_FAILED",
+    "test_c_update_remove_reuse": "NOT_RUN_SCORED_GATE_FAILED",
+    "new_bank_end_to_end_cost": "UNMEASURED",
+    "recommendation": "CONTINUE_ONE_IDENTIFIED_ENGINEERING_REPAIR_ONLY_AFTER_NEW_OWNER_AUTHORIZATION",
+    "no_mneme_state_mutation": true
+  }
 }
