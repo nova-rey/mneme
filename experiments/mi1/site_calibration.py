@@ -12,6 +12,7 @@ from experiments.mi1.native.selector import (
     appendix_c_sparse_selector,
     attention_mass,
     expand_kv_groups,
+    gemma4_source_kv_mapping,
     grouped_alignment_margin,
 )
 
@@ -27,6 +28,29 @@ class SiteSelection:
     sparse_query_sites: tuple[tuple[int, int], ...]
     broad_groups: tuple[tuple[int, int], ...]
     broad_query_sites: tuple[tuple[int, int], ...]
+    source_kv_by_query_layer: tuple[tuple[int, int], ...]
+
+
+def _source_layer_mapping(
+    query_dims_by_layer: tuple[int, ...], bank_layer_ids: tuple[int, ...]
+) -> tuple[tuple[int, int], ...]:
+    """Resolve the pinned Gemma4 shared-KV source layer for every Q layer."""
+    n_layers = len(query_dims_by_layer)
+    if bank_layer_ids == tuple(range(n_layers)):
+        return tuple((layer, layer) for layer in range(n_layers))
+    n_kv_layers = len(bank_layer_ids)
+    if bank_layer_ids != tuple(range(n_kv_layers)) or n_kv_layers >= n_layers:
+        raise ValueError("MI1 bank layers do not match Gemma4 shared-KV source layout")
+    full_attention_dim = max(query_dims_by_layer)
+    if full_attention_dim <= 0 or any(dim <= 0 for dim in query_dims_by_layer):
+        raise ValueError("query head dimensions must be positive")
+    # This pinned Gemma4 E4B exposes 256-wide sliding-window and 512-wide full
+    # attention Q heads. Shared K/V layers use the preceding SWA source or the
+    # latest full-attention source, respectively.
+    is_swa = tuple(dim != full_attention_dim for dim in query_dims_by_layer)
+    return gemma4_source_kv_mapping(
+        n_layers=n_layers, n_kv_layers_from_start=n_kv_layers, is_swa=is_swa
+    )
 
 
 def select_query_sites(
@@ -51,21 +75,35 @@ def select_query_sites(
     alignment_rows: list[np.ndarray] = []
     bank_mass_rows: list[np.ndarray] = []
     prompt_mass_rows: list[np.ndarray] = []
+    source_mapping: tuple[tuple[int, int], ...] | None = None
 
     for key in sorted(captures):
         capture = captures[key]
         target_bank = target_banks[key]
         if set(capture.layers) != layer_ids:
             raise ValueError("calibration captures have different query layer sets")
+        mapping = _source_layer_mapping(
+            tuple(capture.layers[layer].query.shape[-1] for layer in sorted(layer_ids)),
+            target_bank.manifest.layer_ids,
+        )
+        if source_mapping is None:
+            source_mapping = mapping
+        elif source_mapping != mapping:
+            raise ValueError("calibration tasks do not share one Gemma4 KV source mapping")
+        source_by_query = dict(mapping)
         layer_alignment: list[np.ndarray] = []
         layer_bank_mass: list[np.ndarray] = []
         layer_prompt_mass: list[np.ndarray] = []
         for layer in sorted(layer_ids):
             q = capture.layers[layer].query[-1]
-            target_keys = target_bank.keys[layer]
-            reference_keys = reference_bank.keys[layer]
+            source_layer = source_by_query[layer]
+            target_keys = target_bank.keys[source_layer]
+            reference_keys = reference_bank.keys[source_layer]
             margins = grouped_alignment_margin(q, target_keys, reference_keys)
             probabilities = capture.layers[layer].attention[-1].T
+            # llama.cpp reserves a 256-token prompt cache even for short inputs;
+            # the native graph appends bank slots after that capacity. The helper
+            # verifies the unused capacity is masked, then measures actual tokens.
             prompt_mass, bank_mass = attention_mass(
                 probabilities,
                 prompt_slots=len(capture.token_ids),
@@ -101,4 +139,5 @@ def select_query_sites(
         broad_query_sites=expand_kv_groups(
             broad_groups, query_heads=8, kv_groups=2
         ),
+        source_kv_by_query_layer=source_mapping or (),
     )

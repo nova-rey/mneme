@@ -67,6 +67,20 @@ def test_gemma4_shared_kv_mapping_records_query_and_source_layers() -> None:
     assert mapping == ((0, 0), (1, 1), (2, 2), (3, 3), (4, 3), (5, 2))
 
 
+def test_attention_mass_ignores_zeroed_prompt_cache_capacity_before_bank() -> None:
+    # Actual prompt slots, two masked cache-capacity slots, then one bank slot.
+    weights = np.asarray([[0.2], [0.3], [0.0], [0.0], [0.5]], dtype=np.float32)
+    prompt, bank = attention_mass(weights, prompt_slots=2, bank_slots=1)
+    np.testing.assert_allclose(prompt, [0.5])
+    np.testing.assert_allclose(bank, [0.5])
+
+
+def test_attention_mass_rejects_unmasked_prompt_cache_capacity() -> None:
+    weights = np.asarray([[0.2], [0.3], [0.1], [0.0], [0.4]], dtype=np.float32)
+    with pytest.raises(ValueError, match="unused prompt-capacity slots"):
+        attention_mass(weights, prompt_slots=2, bank_slots=1)
+
+
 @pytest.mark.parametrize("prompt_slots,bank_slots", [(0, 1), (2, 0)])
 def test_attention_mass_rejects_missing_slot_groups(prompt_slots: int, bank_slots: int) -> None:
     with pytest.raises(ValueError):

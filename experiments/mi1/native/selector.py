@@ -83,17 +83,22 @@ def attention_mass(
     """Split captured attention probabilities into prompt and bank mass.
 
     Input uses llama.cpp ``kq_soft_max`` ordering normalized to
-    ``[keys, q_heads]`` for one query. The returned arrays have one value per
-    head. This deliberately does not infer cognition; it supports the frozen
-    Appendix-C site-calibration statistic only.
+    ``[keys, q_heads]`` for one query. The actual prompt occupies the leading
+    ``prompt_slots``; unused, masked cache-capacity slots may follow; appended
+    bank slots are the final ``bank_slots`` entries. The returned arrays have
+    one value per head. This supports Appendix-C calibration only.
     """
     values = np.asarray(probabilities, dtype=np.float32)
     if values.ndim != 2 or prompt_slots <= 0 or bank_slots <= 0:
         raise ValueError("probabilities must be [keys,heads] with positive slot counts")
-    if values.shape[0] != prompt_slots + bank_slots:
-        raise ValueError("prompt and bank slot counts do not cover captured keys")
+    if values.shape[0] < prompt_slots + bank_slots:
+        raise ValueError("captured keys cannot contain the prompt and bank slots")
+    bank_start = values.shape[0] - bank_slots
+    masked_capacity = values[prompt_slots:bank_start]
+    if masked_capacity.size and not np.allclose(masked_capacity, 0.0, rtol=0.0, atol=1e-7):
+        raise ValueError("unused prompt-capacity slots must be masked before appended bank slots")
     prompt = values[:prompt_slots].sum(axis=0)
-    bank = values[prompt_slots:].sum(axis=0)
+    bank = values[bank_start:].sum(axis=0)
     return prompt, bank
 
 

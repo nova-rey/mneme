@@ -55,6 +55,9 @@ def main() -> int:
         "sparse_query_sites": [list(row) for row in result.sparse_query_sites],
         "broad_groups": [list(row) for row in result.broad_groups],
         "broad_query_sites": [list(row) for row in result.broad_query_sites],
+        "source_kv_by_query_layer": [
+            list(row) for row in result.source_kv_by_query_layer
+        ],
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")

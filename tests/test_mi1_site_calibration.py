@@ -4,7 +4,7 @@ import numpy as np
 
 from experiments.mi1.native.bank import BankManifest, MemoryBank
 from experiments.mi1.native.query_capture import QueryCapture, QueryLayerCapture
-from experiments.mi1.site_calibration import select_query_sites
+from experiments.mi1.site_calibration import _source_layer_mapping, select_query_sites
 
 
 def _bank(key_value: float, source_text: str) -> MemoryBank:
@@ -57,3 +57,9 @@ def test_site_selection_is_stable_and_expands_sparse_and_broad_sites() -> None:
     assert selection.broad_groups[0] == (0, 0)
     assert selection.broad_groups[-1] == (41, 1)
     assert len(selection.broad_query_sites) == 336
+
+
+def test_gemma4_shared_kv_mapping_uses_swa_and_full_attention_sources() -> None:
+    dims = (256, 256, 512, 256, 512, 256)
+    mapping = _source_layer_mapping(dims, (0, 1, 2, 3))
+    assert mapping == ((0, 0), (1, 1), (2, 2), (3, 3), (4, 3), (5, 2))

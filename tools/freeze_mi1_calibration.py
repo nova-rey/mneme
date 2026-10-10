@@ -24,9 +24,14 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--native-receipt", type=Path, required=True)
     parser.add_argument("--base-server-sha256", required=True)
+    parser.add_argument("--site-selection", type=Path, required=True)
+    parser.add_argument("--site-receipt", type=Path, required=True)
     args = parser.parse_args()
     suite: dict[str, Any] = json.loads(args.suite.read_text(encoding="utf-8"))
     native: dict[str, Any] = json.loads(args.native_receipt.read_text(encoding="utf-8"))
+    site_selection: dict[str, Any] = json.loads(
+        args.site_selection.read_text(encoding="utf-8")
+    )
     coordinates = build_calibration_coordinates(suite)
     payload = {
         "schema_version": 1,
@@ -36,6 +41,13 @@ def main() -> int:
         "frozen_suite_sha256": sha256(args.suite),
         "calibration_code_sha256": sha256(Path("experiments/mi1/calibration.py")),
         "site_calibration_code_sha256": sha256(Path("experiments/mi1/site_calibration.py")),
+        "site_selector_code_sha256": sha256(Path("experiments/mi1/native/selector.py")),
+        "bank_code_sha256": sha256(Path("experiments/mi1/native/bank.py")),
+        "query_capture_reader_code_sha256": sha256(
+            Path("experiments/mi1/native/query_capture.py")
+        ),
+        "query_capture_tool_code_sha256": sha256(Path("tools/mi1_native_query_capture.cpp")),
+        "site_selection_tool_code_sha256": sha256(Path("tools/mi1_select_sites.py")),
         "runner_code_sha256": sha256(Path("experiments/mi1/runner.py")),
         "evidence_journal_code_sha256": sha256(Path("experiments/mi1/native/evidence.py")),
         "coordinate_builder_code_sha256": sha256(Path("experiments/mi1/coordinates.py")),
@@ -116,6 +128,12 @@ def main() -> int:
             "retry_policy": (
                 "No automatic retry. Failed or uncertain calls remain charged and reported."
             ),
+        },
+        "site_selection_sha256": sha256(args.site_selection),
+        "site_selection": site_selection,
+        "site_calibration_receipt": {
+            "path": "docs/receipts/MNEME_Phase_4_MI1_Site_Calibration_20261010.json",
+            "sha256": sha256(args.site_receipt),
         },
         "site_calibration": {
             "query_prompts": (

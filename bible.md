@@ -1754,3 +1754,7 @@ and dispositions remain unchanged.
 ## 2026-10-10 Phase 4 MI1 calibration freeze repair
 
 - Preserved the pre-generation MI1 calibration boundary while hardening the evidence path: fixed visible-bank calibration to remain text-only, added streamed raw-event journaling and exact base-server replay, froze 44 calibration requests with prompt-cache reuse disabled, and committed the isolated llama.cpp source patch bundle. Only the eight earlier visible-text calls have generated tokens; no new calibration or scored calls were launched in this commit. Validation: 839 pytest passed, Ruff passed, strict mypy passed.
+
+## 2026-10-10 Phase 4 MI1 site-calibration mapping correction
+
+- Before any calibration generation, corrected the prefill scorer for llama.cpp's masked 256-token cache capacity and Gemma4's 42-query/24-KV shared-layer map. The captured unused key positions were measured at exactly zero probability; the frozen selector now uses the final appended bank slots and maps SWA/full query layers to their proper K/V source. Recomputed and embedded actual selector scores and artifact hashes in the calibration freeze. No Gemma generation was added. Focused validation: 26 tests, Ruff, and strict mypy pass.
