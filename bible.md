@@ -1859,3 +1859,8 @@ and dispositions remain unchanged.
 
 - Expanded the committed C11 design and C11 query-site selection into an exact 144-coordinate runner plan, preserving all eight A05-A12 fixtures, both seeds, nine conditions, the original expected answers, reasoning ON, fixed sampler, and `cache_prompt=false`. No holdout inference has been issued at this freeze.
 - Built 48 bank variants (16 raw source banks × three selectors: polarity-selected, old sparse, or matched random) with neutral bank bias. Per-call evidence will be written through `EvidenceJournal`; the remaining C11 generation allowance is counted against the existing experiment ledger. Execution plan: `docs/receipts/MNEME_Phase_4_MI1_C11_Execution_Freeze_20261010.json`.
+
+## 2026-10-10 MI1 C11 bank distribution preserves K/V exactly
+
+- To avoid retransferring roughly 429 MiB of immutable base K/V tensors, added a metadata-only native-bank selector patcher for C11 distribution. It requires an unselected, neutral source bank and changes only the selector count/sites and logit-bias trailer; source tensors are copied unchanged and outputs are hash-checked against locally serialized variants.
+- Cross-checked all 48 generated C11 variants byte-for-byte against `MemoryBank.save_native`; 48/48 matched. Synthetic atomicity/format tests pass. The helper is specific to distributing already-frozen C11 variants and does not alter MI1 inference behavior.
