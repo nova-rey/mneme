@@ -1725,3 +1725,8 @@ and dispositions remain unchanged.
 ## 2026-10-10 — Phase 4-MI1 confirmation reserve concretized
 
 - Before any scored generation, expanded the frozen suite to spell out every prompt in the 48-call untouched confirmation reserve (two new prompts per pack, two seeds, four conditions). The previous fixture hash is superseded; no scored result exists and no model call was added by this change.
+
+## 2026-10-10 — Phase 4-MI1 durable scoring instrumentation
+
+- Added an append-only call journal that fsyncs exact requests before inference and results/failures before advancing. Reopen reconciles recoverable request/result files left just before an index replace, counts unresolved requests against the hard generation ceiling, and rejects conflicts or hash mismatches.
+- Added a deterministic Test-A replay scorer and CLI. The full frozen 144-coordinate denominator is retained, including not-run, failed, malformed, wrong-answer, and wrong-path cases; no model calls or MNEME state were used.

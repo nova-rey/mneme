@@ -87,7 +87,7 @@ def make_fixture(fixture_id: str, nodes: list[str], decoy_index: int) -> dict[st
     unrelated = [
         f"{IRRELEVANT_A_RULES[(decoy_index + i) % len(IRRELEVANT_A_RULES)]}" for i in range(6)
     ]
-    item = {
+    item: dict[str, Any] = {
         "fixture_id": fixture_id,
         "nodes": nodes,
         "initial_active": [source],
