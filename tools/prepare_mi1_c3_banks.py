@@ -68,7 +68,8 @@ def main() -> int:
             query_sites=tuple((int(row[0]), int(row[1])) for row in sites),
             bank_logit_bias=bias,
         )
-        name = f"c3-{source_sha[:12]}-{selector_name}-{key[:10]}.mi1"
+        prefix = str(plan.get("revision", "mi1")).split("-", 1)[0].lower()
+        name = f"{prefix}-{source_sha[:12]}-{selector_name}-{key[:10]}.mi1"
         local_path = args.output_dir / name
         native_sha = configured.save_native(local_path)
         selector_record = {

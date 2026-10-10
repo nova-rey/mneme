@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 from experiments.mi1.calibration_c3 import build_c3_plan
-from tools.score_mi1_c3 import _has_full_path, _score
+from tools.score_mi1_c3 import _has_full_path, _response_fields, _score
 
 
 def test_c3_plan_is_complete_matched_and_does_not_cue_primary_conditions() -> None:
@@ -49,11 +49,34 @@ def test_c3_plan_is_complete_matched_and_does_not_cue_primary_conditions() -> No
 def test_c3_scoring_requires_full_labeled_path_and_retains_no_bank_control() -> None:
     path = ["Zepi", "Moru", "Kadi", "Velo", "Runi"]
     assert _has_full_path("YES: Zepi -> Moru -> Kadi -> Velo -> Runi", path)
+    assert _has_full_path(
+        r"YES: Zepi $\rightarrow$ Moru $\rightarrow$ Kadi $\rightarrow$ Velo $\rightarrow$ Runi",
+        path,
+    )
     assert not _has_full_path("YES: Zepi -> Moru -> Kadi -> Velo", path)
     assert not _has_full_path("YES, Runi is reachable through Zepi", path)
     assert _score("YES: Zepi -> Moru -> Kadi -> Velo -> Runi", {"answer": "Runi", "path": path})[
         "correct"
     ]
+
+
+def test_c3_scoring_reads_raw_completion_envelope() -> None:
+    final, reasoning, finish_reason = _response_fields(
+        {
+            "choices": [
+                {
+                    "finish_reason": "stop",
+                    "message": {
+                        "content": "YES: Zepi -> Moru -> Kadi -> Velo -> Runi",
+                        "reasoning_content": "Trace each activation from Zepi.",
+                    },
+                }
+            ]
+        }
+    )
+    assert final == "YES: Zepi -> Moru -> Kadi -> Velo -> Runi"
+    assert reasoning == "Trace each activation from Zepi."
+    assert finish_reason == "stop"
     assert _score("Not enough information is given.", {"answer": "unknown", "path": []})["correct"]
 
 

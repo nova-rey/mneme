@@ -19,9 +19,10 @@ def _normal(value: str) -> str:
 
 
 def _has_full_path(final: str, path: list[str]) -> bool:
+    normalized_final = final.replace(r"$\rightarrow$", "->").replace(r"\rightarrow", "->")
     separator = r"(?:\s*(?:->|→|⟶|—|–|,|;|/)\s*|\s+)"
     pattern = separator.join(re.escape(label) for label in path)
-    return re.search(rf"(?<!\w){pattern}(?!\w)", final, flags=re.IGNORECASE) is not None
+    return re.search(rf"(?<!\w){pattern}(?!\w)", normalized_final, flags=re.IGNORECASE) is not None
 
 
 def _score(final: str, expected: dict[str, Any]) -> dict[str, Any]:
@@ -50,6 +51,25 @@ def _score(final: str, expected: dict[str, Any]) -> dict[str, Any]:
         "path_correct": path_found,
         "correct": target_found and yes and path_found,
     }
+
+
+def _response_fields(payload: dict[str, Any]) -> tuple[str, str, str | None]:
+    """Extract visible/reasoning text from the journal's raw completion envelope."""
+    choices = payload.get("choices", [])
+    if not isinstance(choices, list) or not choices or not isinstance(choices[0], dict):
+        return "", "", None
+    choice = choices[0]
+    message = choice.get("message", {})
+    if not isinstance(message, dict):
+        return "", "", None
+    final = message.get("content", "")
+    reasoning = message.get("reasoning_content") or message.get("reasoning", "")
+    finish_reason = choice.get("finish_reason")
+    return (
+        final if isinstance(final, str) else "",
+        reasoning if isinstance(reasoning, str) else "",
+        finish_reason if isinstance(finish_reason, str) else None,
+    )
 
 
 def main() -> int:
@@ -96,7 +116,7 @@ def main() -> int:
         request, outcome = item
         status = outcome.get("status", "MISSING_OUTCOME") if outcome else "MISSING_OUTCOME"
         payload = outcome.get("payload", {}) if outcome and status == "COMPLETE" else {}
-        final = payload.get("final", "")
+        final, reasoning, finish_reason = _response_fields(payload)
         result = (
             _score(final, expected["expected"])
             if status == "COMPLETE"
@@ -108,10 +128,10 @@ def main() -> int:
             "condition": expected["metadata"]["condition"],
             "seed": expected["metadata"]["seed"],
             "status": status,
-            "finish_reason": payload.get("finish_reason"),
+            "finish_reason": finish_reason,
             **result,
             "final": final,
-            "reasoning": payload.get("reasoning", ""),
+            "reasoning": reasoning,
             "request_sha256": request.get("request", {}).get("request_sha256"),
             "loaded_bank_fingerprint": (
                 request.get("metadata", {})

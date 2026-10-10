@@ -1787,3 +1787,11 @@ and dispositions remain unchanged.
 ## 2026-10-10 Phase 4 MI1 owner-authorized C3 diagnostic
 
 - Compared the earlier 8/8 simple single-chain visible fixtures with C1/C2's multi-target, disconnected, varied-predicate task form. C1/C2 requests loaded the expected parsed-bank fingerprints; failures included incomplete paths, false reachability, and an invented edge, so task-comprehension demand is a plausible confound while MI1 efficacy remains unestablished. Froze C3 before new inference: 44 coordinates reuse the earlier 8/8 fixtures and isolate visible/no-bank controls, three latent exposure settings, and generic-cue diagnostics. Main latent prompts remain uncued; cue rows cannot count as primary efficacy evidence. Added parsed-bank fingerprint verification and authorized uncapped durable call accounting. Validation is recorded with this commit; no C3 generation has yet run.
+
+## 2026-10-10 Phase 4 MI1 C3 diagnostic outcome
+
+- Preserved all 44 C3 outputs; 26/26 attached requests loaded their expected parsed-bank fingerprints. The visible simple-chain controls scored 8/8 after adding the model's LaTeX arrow syntax to the path parser. The 8 no-bank and 2 cue/no-bank requests all exhausted 2,048 tokens in reasoning without a visible final; sparse latent/no-cue did likewise, while broad conditions produced unusable repetitive/corrupted outputs. C3 remains diagnostic, not A/B/C efficacy evidence. Froze C4 to pair identical no-bank/latent prompts under no-cue and generic-cue system variants with an explicit two-line answer contract informed by C2 negative-control behavior; no C4 inference occurred in this commit.
+
+## 2026-10-10 Phase 4 MI1 C4 freeze
+
+- C3 result receipt preserves 44/44 outputs and hashes: visible positive 8/8 after accepting the model's LaTeX path delimiter; 10 no-bank controls did not produce a final before token limit; latent outputs were unusable or repetitive, and all 26 attached-bank fingerprints matched. C4 was frozen before new inference to correct the answer-completion contract and cross no-bank/visible/sparse/broad conditions with or without a generic private-memory cue. C4 is diagnostic, not scored A/B/C; C3 raw evidence remains local and immutable.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the immutable C3 diagnostic plan with a durable, uncapped ledger."""
+"""Run a frozen MI1 diagnostic plan with a durable, uncapped ledger."""
 
 from __future__ import annotations
 
@@ -22,6 +22,7 @@ def main() -> int:
     parser.add_argument("--budget", type=Path, required=True)
     parser.add_argument("--base-url", required=True)
     parser.add_argument("--coordinate-id")
+    parser.add_argument("--prior-calibration-calls", type=int, default=97)
     args = parser.parse_args()
     plan: dict[str, Any] = json.loads(args.plan.read_text(encoding="utf-8"))
     if plan.get("status") != "FROZEN_BEFORE_CALIBRATION_GENERATION":
@@ -50,7 +51,7 @@ def main() -> int:
     journal = EvidenceJournal(args.evidence_root, hard_call_limit=None)
     budget = GenerationBudget(
         args.budget,
-        prior_calibration_calls=97,
+        prior_calibration_calls=args.prior_calibration_calls,
         calibration_limit=None,
         hard_limit=None,
     )
