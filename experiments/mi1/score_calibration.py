@@ -42,6 +42,22 @@ def _is_correct(text: str | None, coordinate: dict[str, Any]) -> bool:
         return False
     expected = coordinate["expected"]
     answer = expected["answer"]
+    # C2 asks for an explicit two-line answer. Score that frozen schema
+    # directly instead of applying the legacy bare-label parser to its tags.
+    if re.search(r"(?im)^\s*ANSWER\s*:", text):
+        answer_match = re.search(r"(?im)^\s*ANSWER\s*:\s*(.*?)\s*$", text)
+        path_match = re.search(r"(?im)^\s*PATH\s*:\s*(.*?)\s*$", text)
+        if answer_match is None or path_match is None:
+            return False
+        reported_answer = answer_match.group(1).strip().strip("`*_\"'").casefold()
+        reported_path = path_match.group(1).strip()
+        if answer == "unknown":
+            no_path = re.match(r"^\s*none(?:\b|$)", reported_path, re.I) is not None
+            return reported_answer in {"unknown", "unknown.", "unknown!"} and no_path
+        if reported_answer != answer.casefold():
+            return False
+        reported_labels = re.findall(r"\b[A-Z][a-z]+\b", reported_path)
+        return reported_labels == expected["path"]
     if answer == "unknown":
         return re.match(r"^\s*(?:\*\*)?unknown(?:\*\*)?(?:\b|\s|[.!,:;])", text, re.I) is not None
     labels = expected["path"]

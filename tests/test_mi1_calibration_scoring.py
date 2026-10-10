@@ -28,6 +28,21 @@ def test_calibration_unknown_requires_unknown_as_the_final_answer() -> None:
     assert not _is_correct("Deyu", coord)
 
 
+def test_calibration_revision_two_scores_explicit_answer_and_path_lines() -> None:
+    reachable = _coordinate("Deyu", ["Aster", "Beryl", "Corda", "Deyu"])
+    unknown = _coordinate("unknown", [])
+    assert _is_correct(
+        "ANSWER: Deyu\nPATH: Aster -> Beryl -> Corda -> Deyu", reachable
+    )
+    assert not _is_correct("ANSWER: Deyu\nPATH: A -> B -> C -> D", reachable)
+    assert not _is_correct(
+        "ANSWER: Deyu\nPATH: Aster -> Beryl -> Corda -> Deyu -> Rudo", reachable
+    )
+    assert _is_correct("ANSWER: unknown\nPATH: none", unknown)
+    assert _is_correct("ANSWER: unknown\nPATH: none if unknown", unknown)
+    assert not _is_correct("ANSWER: unknown\nPATH: Aster -> Deyu", unknown)
+
+
 def test_negative_control_rate_excludes_deterministic_replays() -> None:
     rows: list[dict[str, Any]] = [
         {"condition": "no_bank", "duplicate_of": None},

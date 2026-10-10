@@ -78,6 +78,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   records the pinned arXiv v2 paper, its section-to-implementation map, and the status of a
   separately located but unlicensed author-associated code repository. The paper is a technical
   source for the authorized local MI1 experiment, not a claim that the Gemma port is published.
+* [Phase 4-MI1 final calibration gate](receipts/MNEME_Phase_4_MI1_Calibration_Final_Gate_20261010.md)
+  records the outcome after both permitted calibration revisions. The visible positive control
+  remained below threshold, so scored Test A/B/C calls were not run; this does not establish
+  whether the MI1 associative mechanism itself is effective.
 * [Phase 3.6 host-specific neural-compiler generalization gate](receipts/MNEME_Phase_3_6_Host_Specific_Neural_Compiler_Generalization_Gate_20261004.md)
   (`P4-RB-NEURAL-2026-09-27`, revision 1) is owner-supplied research context for
   Librarian and future planning: SAA selection, host-specific activation steering,

@@ -1778,3 +1778,7 @@ and dispositions remain unchanged.
 ## 2026-10-10 Phase 4 MI1 calibration framing revision 2
 
 - Because visible-bank comprehension failed, applied the second and final bounded calibration revision permitted by the MI1 spec: clarify directed reachability and require an explicit final path. This is a generic response-format correction only; facts, banks, expected answers, seeds, bank variants, exposures, rubric, and thresholds are unchanged. C1 remains exploratory and immutable. Frozen C2 manifest is `docs/receipts/MNEME_Phase_4_MI1_Calibration_Framing_Revision_20261010.json`; 44 new IDs keep total calibration within 97/120 generations. No A/B/C call is allowed before C2 passes all calibration gates.
+
+## 2026-10-10 Phase 4 MI1 final calibration gate
+
+- C2 completed with 2/6 visible positive answers, 12/12 negative controls after scoring the prompted `PATH: none if unknown` form correctly, 0/6 for every latent candidate, and byte-identical replay controls. Both allowed calibration revisions are exhausted. No Test A/B/C calls ran; associative efficacy is not established because visible comprehension did not qualify. Final compact gate receipt is `docs/receipts/MNEME_Phase_4_MI1_Calibration_Final_Gate_20261010.*`.
