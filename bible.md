@@ -1762,3 +1762,7 @@ and dispositions remain unchanged.
 ## 2026-10-10 Phase 4 MI1 calibration execution harness
 
 - Added resumable, no-retry calibration tooling that derives exactly configured remote bank variants from the frozen plan, verifies source/config identities, routes the one untouched-server replay separately, and journals each streamed request/result under the call budget. The plan fingerprints both tools. No additional generation has been made. Focused validation: 33 tests, Ruff, and strict mypy pass.
+
+## 2026-10-10 Phase 4 MI1 pre-generation request verification
+
+- Confirmed all three prefill-capture prompts are byte-identical to the final runner's exact `add_generation_prompt=true`, reasoning-enabled `/apply-template` output from the pinned base server. Recorded the hashes and zero-generation check, refreshed the plan digest, and rederived the variant-map manifest. Calibration/scored generation remained unstarted at this commit.
