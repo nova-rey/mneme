@@ -1721,3 +1721,7 @@ and dispositions remain unchanged.
 - Before scored side-bank calls, ran eight live local Gemma reasoning-ON visible-text calibration calls on four separate answer-keyed fictional rule tasks; all eight returned the expected target and complete directed path. Complete raw prompts/reasoning/finals and server log are preserved outside Git with hashes in the freeze receipt.
 - Froze the separate synthetic suite with 12 paired/counterbalanced fictional banks, three relational packs and nine held-out tasks, and exact update/removal/new-bank prompts. The 436-call preplanned envelope includes the 120-call calibration ceiling and remains within the authorized 800-call cap. No latent or scored generation was run.
 - Native site/gain selection and true bank attach/exclusion/replay qualification remain required gates before scored evaluation.
+
+## 2026-10-10 — Phase 4-MI1 confirmation reserve concretized
+
+- Before any scored generation, expanded the frozen suite to spell out every prompt in the 48-call untouched confirmation reserve (two new prompts per pack, two seeds, four conditions). The previous fixture hash is superseded; no scored result exists and no model call was added by this change.

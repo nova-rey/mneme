@@ -20,6 +20,7 @@ def test_frozen_suite_has_predeclared_bounded_coordinate_count() -> None:
     assert suite["test_a"]["generation_count"] == 12 * 2 * 6 == 144
     assert suite["test_b"]["generation_count"] == 3 * 3 * 2 * 6 == 108
     assert suite["test_c"]["generation_count"] == 16
+    assert suite["untouched_confirmation"]["generation_count"] == 48
     assert suite["generation_budget"]["total_preplanned"] == 436
     assert (
         suite["generation_budget"]["total_preplanned"]
@@ -116,6 +117,13 @@ def test_harbor_and_other_pack_tasks_do_not_name_their_concept() -> None:
             assert not any(
                 re.search(rf"\b{re.escape(token)}\b", lowered)
                 for token in forbidden_by_pack[pack["pack_id"]]
+            )
+    for pack_id, tasks in suite["untouched_confirmation"]["tasks_by_pack"].items():
+        for task in tasks:
+            lowered = task["prompt"].lower()
+            assert not any(
+                re.search(rf"\b{re.escape(token)}\b", lowered)
+                for token in forbidden_by_pack[pack_id]
             )
 
 

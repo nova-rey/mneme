@@ -253,6 +253,45 @@ IRRELEVANT_PACK = {
     ],
 }
 
+CONFIRMATION_TASKS = {
+    "B-HARBOR": [
+        {
+            "task_id": "C-HARBOR-1",
+            "prompt": "Several neighborhood groups share one indoor room for repair sessions. The room is sometimes left full of equipment when the next group arrives, and volunteers want a simple way to coordinate use without hiring a coordinator. What arrangement would you suggest?",
+            "task_native_overlap": "Moderate: shared use is explicit; timed access and turnover are possible but not prescribed.",
+        },
+        {
+            "task_id": "C-HARBOR-2",
+            "prompt": "A town lends a few portable flood barriers to different blocks during storm season. Requests can overlap and return times depend on conditions. How could a small volunteer team keep the process fair and understandable?",
+            "task_native_overlap": "Moderate: overlapping requests and returns appear in the task; linked occupancy accounting and handoffs are not prescribed.",
+        },
+    ],
+    "B-STAGED-CHANGE": [
+        {
+            "task_id": "C-STAGED-1",
+            "prompt": "A local permit office must replace a confusing filing process while residents still need permits every day. Staff can change only a small part of the workflow at a time. What sequence would reduce disruption?",
+            "task_native_overlap": "Moderate: incremental work is required by the constraint; early changes enabling later changes are not stated.",
+        },
+        {
+            "task_id": "C-STAGED-2",
+            "prompt": "A small museum is moving its collections into a renovated building in stages, but researchers still need access during the move. How should the team organize the transition?",
+            "task_native_overlap": "Moderate: staged transition is stated; dependencies where early setup creates later options are not prescribed.",
+        },
+    ],
+    "B-LAYERED-RESILIENCE": [
+        {
+            "task_id": "C-LAYERED-1",
+            "prompt": "A community theater relies on volunteers, a few aging lights, and a single ticket desk. A missed task or equipment issue should not cancel the whole evening. What practical operating safeguards would you add?",
+            "task_native_overlap": "Moderate: safeguards are requested; distinct detection, containment, fallback, and escalation roles are not prescribed.",
+        },
+        {
+            "task_id": "C-LAYERED-2",
+            "prompt": "A small mobile health clinic visits several towns with a limited staff and equipment kit. Delays or a broken device can affect later appointments. How can it remain reliable without adding much staff?",
+            "task_native_overlap": "Moderate: continuity is requested; independent safeguards and severity-based escalation are not specified.",
+        },
+    ],
+}
+
 
 def build_suite() -> dict[str, Any]:
     fixtures = [make_fixture(*row) for row in FIXTURE_ROWS]
@@ -307,6 +346,14 @@ def build_suite() -> dict[str, Any]:
         "packs": packs,
         "irrelevant_pack": IRRELEVANT_PACK,
         "generation_count": sum(len(p["tasks"]) for p in packs) * len(SEEDS) * 6,
+    }
+    confirmation = {
+        "design": "Untouched confirmation reserve: two distinct tasks per pack, two fixed seeds, and four latent/control conditions.",
+        "conditions": ["no_bank", "latent_correct", "latent_irrelevant", "latent_topology_altered"],
+        "seeds": SEEDS,
+        "tasks_by_pack": CONFIRMATION_TASKS,
+        "generation_count": 2 * len(packs) * len(SEEDS) * 4,
+        "scoring": "Use the frozen Test-B relation rubric and its pack-specific task-native-overlap caution. This set is only dispatched if a documented engineering revision makes all prior scored examples exploratory.",
     }
     test_c = {
         "design": "Three Test-A recipient coordinates replayed through bank-A, bank-B, disabled, then bank-A-restored; a separate ongoing exchange and a new bank use the frozen selector.",
@@ -377,6 +424,7 @@ def build_suite() -> dict[str, Any]:
         "test_a": test_a,
         "test_b": test_b,
         "test_c": test_c,
+        "untouched_confirmation": confirmation,
         "scope": [
             "synthetic only",
             "no MNEME instance or state",
