@@ -99,6 +99,13 @@ def source_hash(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
+def variant_key(source_sha256: str, config: dict[str, Any]) -> str:
+    """Stable key for a source-bank plus frozen selector/exposure configuration."""
+    return hashlib.sha256(
+        canonical_bytes({"source_sha256": source_sha256, "config": config})
+    ).hexdigest()
+
+
 def build_calibration_coordinates(suite: dict[str, Any]) -> list[dict[str, Any]]:
     """Expand the frozen 3-task x 2-seed grid plus two exact replay controls.
 

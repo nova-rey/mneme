@@ -48,6 +48,10 @@ def main() -> int:
         ),
         "query_capture_tool_code_sha256": sha256(Path("tools/mi1_native_query_capture.cpp")),
         "site_selection_tool_code_sha256": sha256(Path("tools/mi1_select_sites.py")),
+        "bank_preparation_tool_code_sha256": sha256(
+            Path("tools/prepare_mi1_calibration_banks.py")
+        ),
+        "calibration_runner_tool_code_sha256": sha256(Path("tools/run_mi1_calibration.py")),
         "runner_code_sha256": sha256(Path("experiments/mi1/runner.py")),
         "evidence_journal_code_sha256": sha256(Path("experiments/mi1/native/evidence.py")),
         "coordinate_builder_code_sha256": sha256(Path("experiments/mi1/coordinates.py")),

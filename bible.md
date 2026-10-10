@@ -1758,3 +1758,7 @@ and dispositions remain unchanged.
 ## 2026-10-10 Phase 4 MI1 site-calibration mapping correction
 
 - Before any calibration generation, corrected the prefill scorer for llama.cpp's masked 256-token cache capacity and Gemma4's 42-query/24-KV shared-layer map. The captured unused key positions were measured at exactly zero probability; the frozen selector now uses the final appended bank slots and maps SWA/full query layers to their proper K/V source. Recomputed and embedded actual selector scores and artifact hashes in the calibration freeze. No Gemma generation was added. Focused validation: 26 tests, Ruff, and strict mypy pass.
+
+## 2026-10-10 Phase 4 MI1 calibration execution harness
+
+- Added resumable, no-retry calibration tooling that derives exactly configured remote bank variants from the frozen plan, verifies source/config identities, routes the one untouched-server replay separately, and journals each streamed request/result under the call budget. The plan fingerprints both tools. No additional generation has been made. Focused validation: 33 tests, Ruff, and strict mypy pass.

@@ -5,7 +5,11 @@ import json
 from pathlib import Path
 from typing import Any, cast
 
-from experiments.mi1.calibration import build_calibration_coordinates, canonical_bytes
+from experiments.mi1.calibration import (
+    build_calibration_coordinates,
+    canonical_bytes,
+    variant_key,
+)
 
 
 def _suite() -> dict[str, Any]:
@@ -89,3 +93,13 @@ def test_visible_calibration_is_text_only_and_clears_native_bank() -> None:
                 "Neri prepares Sulo.",
             )
         )
+
+
+def test_variant_key_binds_source_and_exact_config() -> None:
+    source = "a" * 64
+    config = {"selector": "sparse", "gain": {"logit_bias": 0.0}}
+    assert variant_key(source, config) == variant_key(source, dict(config))
+    assert variant_key(source, config) != variant_key("b" * 64, config)
+    assert variant_key(source, config) != variant_key(
+        source, {"selector": "broad", "gain": {"logit_bias": 0.0}}
+    )
