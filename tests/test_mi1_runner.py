@@ -335,6 +335,48 @@ def test_http_sse_reconstructs_channels_and_persists_raw_events(monkeypatch: Any
     assert response["choices"][0]["finish_reason"] == "stop"
 
 
+def test_http_sse_ignores_null_content_preamble(monkeypatch: Any) -> None:
+    events = [
+        _sse_event({"choices": [{"index": 0, "delta": {"role": "assistant", "content": None}}]}),
+        _sse_event({"choices": [{"index": 0, "delta": {"reasoning_content": "think"}}]}),
+        _sse_event(
+            {
+                "choices": [
+                    {
+                        "index": 0,
+                        "delta": {"content": "answer"},
+                        "finish_reason": "stop",
+                    }
+                ]
+            }
+        ),
+        b"data: [DONE]\n\n",
+    ]
+
+    class FakeResponse:
+        def __enter__(self) -> FakeResponse:
+            return self
+
+        def __exit__(self, *_args: object) -> None:
+            return None
+
+        def __iter__(self) -> Any:
+            return iter(b"".join(events).splitlines(keepends=True))
+
+    monkeypatch.setattr(urllib.request, "urlopen", lambda *_args, **_kwargs: FakeResponse())
+    captured: list[bytes] = []
+    def store(event: bytes) -> int:
+        captured.append(event)
+        return len(captured)
+
+    result = http_sse("http://localhost/v1/chat/completions", {"stream": True}, store)
+    message = result["choices"][0]["message"]
+    assert captured == events
+    assert message["reasoning_content"] == "think"
+    assert message["content"] == "answer"
+    assert result["choices"][0]["finish_reason"] == "stop"
+
+
 def test_base_server_replay_skips_mi1_bank_endpoint(tmp_path: Path) -> None:
     calls: list[str] = []
 

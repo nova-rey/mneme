@@ -27,12 +27,19 @@ def main() -> int:
     parser.add_argument("--base-url", required=True)
     parser.add_argument("--base-server-url", required=True)
     parser.add_argument("--server-role", choices=("mi1_server", "base_server"), required=True)
+    parser.add_argument("--coordinate-id")
     args = parser.parse_args()
     plan: dict[str, Any] = json.loads(args.plan.read_text(encoding="utf-8"))
-    if plan.get("status") != "FROZEN_BEFORE_CALIBRATION_GENERATION":
+    if plan.get("status") not in {
+        "FROZEN_BEFORE_CALIBRATION_GENERATION",
+        "FROZEN_MECHANICAL_CORRECTION",
+    }:
         raise ValueError("calibration plan is not frozen before generation")
     variant_manifest = json.loads(args.variant_map.read_text(encoding="utf-8"))
-    if variant_manifest.get("plan_sha256") != hashlib.sha256(args.plan.read_bytes()).hexdigest():
+    expected_variant_plan = plan.get("parent_plan_sha256") or hashlib.sha256(
+        args.plan.read_bytes()
+    ).hexdigest()
+    if variant_manifest.get("plan_sha256") != expected_variant_plan:
         raise ValueError("variant map was prepared for another frozen plan")
     variants = variant_manifest["variants"]
 
@@ -64,9 +71,13 @@ def main() -> int:
     failed = {row["attempt_id"] for row in index["attempts"] if row["status"] != "COMPLETE"}
     reservations = json.loads(args.budget.read_text(encoding="utf-8"))["reservations"]
     reserved = {row["attempt_id"] for row in reservations}
+    selected_count = 0
     for coordinate in plan["coordinates"]:
+        if args.coordinate_id is not None and coordinate["coordinate_id"] != args.coordinate_id:
+            continue
         if coordinate["metadata"]["server_role"] != args.server_role:
             continue
+        selected_count += 1
         coordinate_id = coordinate["coordinate_id"]
         if coordinate_id in failed:
             raise RuntimeError(
@@ -79,6 +90,8 @@ def main() -> int:
                 f"reserved call has no complete evidence; refusing retry: {coordinate_id}"
             )
         runner.execute(coordinate, phase="calibration")
+    if args.coordinate_id is not None and selected_count != 1:
+        raise ValueError("requested coordinate ID is absent or ambiguous in this plan")
     print(json.dumps(budget.counts(), sort_keys=True))
     return 0
 

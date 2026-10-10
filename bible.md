@@ -1766,3 +1766,7 @@ and dispositions remain unchanged.
 ## 2026-10-10 Phase 4 MI1 pre-generation request verification
 
 - Confirmed all three prefill-capture prompts are byte-identical to the final runner's exact `add_generation_prompt=true`, reasoning-enabled `/apply-template` output from the pinned base server. Recorded the hashes and zero-generation check, refreshed the plan digest, and rederived the variant-map manifest. Calibration/scored generation remained unstarted at this commit.
+
+## 2026-10-10 Phase 4 MI1 streaming parser correction
+
+- Preserved the first base-server replay as FAILED: the original SSE stream contained 213 durable events and visible `unknown` text but lacked `finish_reason` and `[DONE]` after a null-content preamble triggered a parser TypeError. Fixed null-delta handling and durable exception closure, then froze a separate corrected 44-coordinate calibration matrix with new IDs and identical requests. The failed call remains charged; revised full envelope is 369 calls including prior calibration and untouched confirmation. Validation: 845 pytest passed, Ruff passed, strict mypy passed.

@@ -93,13 +93,13 @@ def http_sse(url: str, payload: dict[str, Any], on_event: StreamEventSink) -> di
             delta = item.get("delta", {})
             message = state["message"]
             for field, value in delta.items():
-                if isinstance(value, str) and field in {
-                    "content",
-                    "reasoning_content",
-                    "reasoning",
-                }:
-                    message[field] = message.get(field, "") + value
-                elif field not in message:
+                if field in {"content", "reasoning_content", "reasoning"}:
+                    if isinstance(value, str):
+                        previous = message.get(field)
+                        message[field] = (previous if isinstance(previous, str) else "") + value
+                    elif value is not None and field not in message:
+                        message[field] = value
+                elif value is not None and field not in message:
                     message[field] = value
             if item.get("finish_reason") is not None:
                 state["finish_reason"] = item["finish_reason"]
@@ -345,7 +345,14 @@ class MI1CoordinateRunner:
                 generation_request,
                 lambda raw_event: self.journal.append_stream_event(coordinate_id, raw_event),
             )
-        except (OSError, urllib.error.URLError, TimeoutError, EOFError, ValueError) as exc:
+        except (
+            OSError,
+            urllib.error.URLError,
+            TimeoutError,
+            EOFError,
+            TypeError,
+            ValueError,
+        ) as exc:
             failure = {"error_type": type(exc).__name__, "message": str(exc)}
             self.journal.fail(
                 coordinate_id,

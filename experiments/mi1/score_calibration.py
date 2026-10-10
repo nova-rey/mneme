@@ -69,6 +69,16 @@ def _message_signature(outcome: dict[str, Any]) -> tuple[str, str, str] | None:
     )
 
 
+def _primary_negative_controls(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Return the 12 primary no-bank/irrelevant controls, excluding replay rows."""
+    return [
+        row
+        for row in rows
+        if row["condition"] in {"no_bank", "latent_irrelevant_sparse_moderate"}
+        and row.get("duplicate_of") is None
+    ]
+
+
 def score_calibration(plan_path: Path, journal_root: Path) -> dict[str, Any]:
     plan = json.loads(plan_path.read_text(encoding="utf-8"))
     index = json.loads((journal_root / "index.json").read_text(encoding="utf-8"))
@@ -91,6 +101,7 @@ def score_calibration(plan_path: Path, journal_root: Path) -> dict[str, Any]:
                 "condition": coordinate["metadata"]["condition"],
                 "server_role": coordinate["metadata"]["server_role"],
                 "seed": coordinate["metadata"]["seed"],
+                "duplicate_of": coordinate["metadata"].get("duplicate_of"),
                 "status": outcome.get("status"),
                 "correct": _is_correct(text, coordinate),
                 "answer": text,
@@ -101,7 +112,7 @@ def score_calibration(plan_path: Path, journal_root: Path) -> dict[str, Any]:
         return [row for row in scored_rows if row["condition"] == condition]
 
     visible = rows_for("visible_bank")
-    negative = rows_for("no_bank") + rows_for("latent_irrelevant_sparse_moderate")
+    negative = _primary_negative_controls(scored_rows)
     gates = {
         "visible_correct": sum(row["correct"] for row in visible),
         "visible_total": len(visible),
@@ -145,9 +156,14 @@ def score_calibration(plan_path: Path, journal_root: Path) -> dict[str, Any]:
             }
         )
 
-    dup_id = "CAL-REL-01-no_bank-34111-duplicate"
-    base_id = "CAL-REL-01-no_bank-34111-base-server"
-    original_id = "CAL-REL-01-no_bank-34111"
+    deterministic_ids = plan.get("determinism_coordinate_ids", {})
+    dup_id = deterministic_ids.get(
+        "same_server_replay", "CAL-REL-01-no_bank-34111-duplicate"
+    )
+    base_id = deterministic_ids.get(
+        "base_server_replay", "CAL-REL-01-no_bank-34111-base-server"
+    )
+    original_id = deterministic_ids.get("primary_no_bank", "CAL-REL-01-no_bank-34111")
     signatures = {
         key: _message_signature(
             json.loads(
@@ -161,6 +177,7 @@ def score_calibration(plan_path: Path, journal_root: Path) -> dict[str, Any]:
         for key in (original_id, dup_id, base_id)
     }
     duplicate_checks = {
+        "base_server_coordinate_id": base_id,
         "mi1_replay_byte_identical": signatures[original_id] is not None
         and signatures[original_id] == signatures[dup_id],
         "base_server_byte_identical": signatures[original_id] is not None
@@ -199,6 +216,7 @@ def score_calibration(plan_path: Path, journal_root: Path) -> dict[str, Any]:
         "selected_condition": selected if gates["calibration_pass"] else None,
         "duplicate_checks": duplicate_checks,
         "rows": scored_rows,
+        "prior_mechanical_failures": plan.get("prior_mechanical_failures", []),
         "note": (
             "No automatic retries. Missing or failed attempts score incorrect and remain counted."
         ),

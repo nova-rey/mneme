@@ -1,0 +1,7 @@
+# MI1 calibration parser correction
+
+The original pre-generation plan remains immutable. Its first base-server replay was reserved and persisted, then marked `FAILED`: llama.cpp emitted an initial `delta.content: null` event, and the streaming parser stored that null before later text arrived. The client recorded the later reasoning and visible `unknown` text, but terminated before observing `finish_reason` or `[DONE]`. It is not a complete response and is excluded from calibration scoring.
+
+The parser now ignores null content/reasoning deltas and journals unexpected parser exceptions as failed outcomes. Because the same event shape could affect every streamed coordinate, the amendment reissues the full 44-coordinate matrix with distinct `C1-` IDs. All prompts, banks, selectors, seeds, samplers, thresholds, and conditions are byte-identical to the parent plan. This is an explicit apparatus correction, not an automatic retry; the original failed call remains charged.
+
+The machine-readable amendment contains the coordinate mapping, parent-plan SHA-256, exact corrected request matrix, code hashes, failed stream digest, and revised budget. Total planned generation accounting is 8 prior visible-text calls + 1 failed attempt + 44 corrected calibration calls + 268 scored calls + 48 untouched confirmation coordinates = 369, within the existing 120 calibration and 800 total ceilings. The 48 confirmation coordinates remain untouched unless a separately documented revision is required.
