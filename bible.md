@@ -1709,3 +1709,9 @@ and dispositions remain unchanged.
 
 - The r2 capture worker completed its smoke command and remote inspection saw both `smoke.json` and `smoke-features.npz`; neither file was transferred and hash-verified before Vast instance 54231336 became stopped. The smoke result is therefore unavailable for scientific or qualification claims. Attempts 54230143, 54230791, and 54231336 are now destroyed and absent from the final provider listing.
 - The provider invoice query attributes $5.896 to r2 and $0.067 to r1, totaling $5.963 against the $2 authorization. The cap was exceeded after the r2 resource remained billable beyond the supervised execution window. No further rental is authorized under this cap; the full readout remains incomplete pending an owner decision.
+
+## 2026-10-10 — Phase 4-MI1 Memory Inception source intake
+
+- Registered the version-pinned Memory Inception paper (arXiv:2605.06225v2, CC BY 4.0) and retained its 31-page PDF with SHA-256 in the source receipt. The complete v2 paper and Appendices A–G were read; v1/v2 source comparison found no method/result changes.
+- A likely author-associated public repository was inspected at a pinned commit, but it has no license and the paper does not link it. It was not executed or reused; the Gemma/llama.cpp work must be labeled an independent port unless attribution and code license are established.
+- This source filing supports the explicitly authorized local MI1 implementation study. It does not claim that the paper or code was added to ChatGPT Project Sources, and it does not modify production MNEME behavior.

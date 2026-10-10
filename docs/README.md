@@ -74,6 +74,10 @@ The documents are preserved in their supplied form and are intentionally not mer
   or begin Phase Three. The byte-preserving ingestion record is
   [here](receipts/MNEME_Research_Architecture_Amendment_Stochastic_Associative_Accessibility_Ingestion_20260926.md).
 * [Phase Four research brief: on-demand neural influence](research/MNEME_Phase_Four_Research_Brief_On_Demand_Neural_Influence_2026-09-27.md)
+* [Phase 4-MI1 source intake: Memory Inception](receipts/MNEME_Phase_4_MI1_Memory_Inception_Source_Intake_20261010.md)
+  records the pinned arXiv v2 paper, its section-to-implementation map, and the status of a
+  separately located but unlicensed author-associated code repository. The paper is a technical
+  source for the authorized local MI1 experiment, not a claim that the Gemma port is published.
 * [Phase 3.6 host-specific neural-compiler generalization gate](receipts/MNEME_Phase_3_6_Host_Specific_Neural_Compiler_Generalization_Gate_20261004.md)
   (`P4-RB-NEURAL-2026-09-27`, revision 1) is owner-supplied research context for
   Librarian and future planning: SAA selection, host-specific activation steering,
