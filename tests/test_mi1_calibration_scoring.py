@@ -2,7 +2,11 @@ from __future__ import annotations
 
 from typing import Any
 
-from experiments.mi1.score_calibration import _is_correct, _primary_negative_controls
+from experiments.mi1.score_calibration import (
+    _determinism_ids,
+    _is_correct,
+    _primary_negative_controls,
+)
 
 
 def _coordinate(answer: str, path: list[str]) -> dict[str, Any]:
@@ -32,3 +36,12 @@ def test_negative_control_rate_excludes_deterministic_replays() -> None:
         {"condition": "visible_bank", "duplicate_of": None},
     ]
     assert _primary_negative_controls(rows) == [rows[0], rows[2]]
+
+
+def test_determinism_ids_read_from_correction_amendment() -> None:
+    ids = {
+        "primary_no_bank": "C1-primary",
+        "same_server_replay": "C1-replay",
+        "base_server_replay": "C1-base",
+    }
+    assert _determinism_ids({"correction": {"determinism_coordinate_ids": ids}}) == ids

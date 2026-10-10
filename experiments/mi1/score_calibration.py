@@ -79,6 +79,15 @@ def _primary_negative_controls(rows: list[dict[str, Any]]) -> list[dict[str, Any
     ]
 
 
+def _determinism_ids(plan: dict[str, Any]) -> dict[str, str]:
+    """Read replay IDs from current plans or a correction amendment."""
+    ids = plan.get("determinism_coordinate_ids")
+    if ids is None:
+        correction = plan.get("correction", {})
+        ids = correction.get("determinism_coordinate_ids", {})
+    return ids
+
+
 def score_calibration(plan_path: Path, journal_root: Path) -> dict[str, Any]:
     plan = json.loads(plan_path.read_text(encoding="utf-8"))
     index = json.loads((journal_root / "index.json").read_text(encoding="utf-8"))
@@ -156,7 +165,9 @@ def score_calibration(plan_path: Path, journal_root: Path) -> dict[str, Any]:
             }
         )
 
-    deterministic_ids = plan.get("determinism_coordinate_ids", {})
+    # Mechanical correction plans keep their new replay IDs under the explicit
+    # correction object so the original frozen plan remains unchanged.
+    deterministic_ids = _determinism_ids(plan)
     dup_id = deterministic_ids.get(
         "same_server_replay", "CAL-REL-01-no_bank-34111-duplicate"
     )

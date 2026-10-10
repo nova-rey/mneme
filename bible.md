@@ -1770,3 +1770,7 @@ and dispositions remain unchanged.
 ## 2026-10-10 Phase 4 MI1 streaming parser correction
 
 - Preserved the first base-server replay as FAILED: the original SSE stream contained 213 durable events and visible `unknown` text but lacked `finish_reason` and `[DONE]` after a null-content preamble triggered a parser TypeError. Fixed null-delta handling and durable exception closure, then froze a separate corrected 44-coordinate calibration matrix with new IDs and identical requests. The failed call remains charged; revised full envelope is 369 calls including prior calibration and untouched confirmation. Validation: 845 pytest passed, Ruff passed, strict mypy passed.
+
+## 2026-10-10 Phase 4 MI1 calibration outcome
+
+- The corrected frozen 44-coordinate matrix completed with durable evidence. Determinism passed, negative controls scored 12/12, but visible-bank positive checks scored 1/6 and every latent candidate scored 0/6; the predeclared calibration gate failed, so no scored Test A/B/C generation was launched. Corrected scorer reads replay IDs from the immutable correction amendment. Full raw results remain local under `/home/nyx/mneme-artifacts/phase4-mi1/calibration-run/`; the compact outcome is published in `docs/receipts/MNEME_Phase_4_MI1_Memory_Inception_Calibration_Outcome_20261010.*`.
