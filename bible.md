@@ -2000,3 +2000,9 @@ and dispositions remain unchanged.
 - The full suite passed 908 tests; strict mypy passed for 72 source files; Ruff check passed. Four focused C13/C14 scoring/calibration tests passed after formatting-only line wrapping in the existing research scripts.
 - Repository-wide Ruff formatter check is intentionally not claimed: it is not a CI check and reports formatting differences across 141 unrelated existing files. The 12 MI1 C13/C14 files touched for line length now pass scoped format validation.
 - External evidence indexes were hash-checked: Test A/B/C is 268/268 complete and C17 is 40/40 complete. The machine-readable disposition receipt parses and its referenced raw hashes reconcile.
+
+## 2026-10-11 MI1 continued resolution
+
+- Compared the 8/8 visible positive, C2's 2/6 visible positive, and C3's same-simple-fixture 8/8 retest. C2's four misses are one full-path label omission and three substantive reachability/invented-edge errors; the discrepancy is fixture difficulty, not hidden-bank behavior. The same simple visible fixtures return to 8/8 while their latent conditions remain 0/24.
+- Reconciled completed A/B/C and mechanism diagnostics: 268/268 scored coordinates, Test A latent A/B each 0/24 with no-bank/irrelevant controls 23/24 unknown, Test B has no attributable repeatable latent effect, and Test C mechanically replaces/removes/restores banks but all outputs remain unknown. C10 contextual-only and raw-plus-context banks were already 0/8; C17 all-head routing did not recover reliable readout.
+- Continued MI1 disposition: numerical side-bank attention and downstream state changes are observed, semantic access is not reliable enough for MNEME. Remaining low-level cause (Gemma/KV semantics, quantization, port interaction) is unresolved; park this local implementation. Addendum: `docs/receipts/MNEME_Phase_4_MI1_Continued_Resolution_20261011.md` and `.json`.
