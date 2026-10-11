@@ -45,7 +45,12 @@ def main() -> int:
         )
 
     journal = EvidenceJournal(args.evidence_root, hard_call_limit=int(plan["call_count"]))
-    budget = GenerationBudget(args.budget, prior_calibration_calls=880)
+    budget = GenerationBudget(
+        args.budget,
+        prior_calibration_calls=880,
+        calibration_limit=None,
+        hard_limit=None,
+    )
     runner = MI1CoordinateRunner(
         base_url=args.base_url,
         journal=journal,

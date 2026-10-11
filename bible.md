@@ -1893,3 +1893,9 @@ and dispositions remain unchanged.
 - Froze 72 C13 calibration calls before inference. C13 changes the generic “may be available” cue into a content-free assertion that an internal record is available, retains a cue-only false-positive control, and compares the C12 selected query heads against all 336 Gemma4 query heads at the same 4x bank prior. An irrelevant all-head bank remains a control.
 - The 144 possible confirmation coordinates (eight previously withheld fixtures, two seeds, nine conditions) are explicitly frozen in the plan. If the calibration gate passes for a routing mode, its 112-call confirmation subset is predeclared; select sparse routing over broad routing if both pass. The C12-derived facts remain absent from latent request text.
 - C13 freeze SHA-256: `ffccd81d1580ab490cbad50f170e5fe1ee6c236c5c1fff921cb8b76695672a11`. No C13 inference has been issued at this freeze.
+
+## 2026-10-11 MI1 C13 execution binding and preflight
+
+- Before dispatch, caught and corrected a generation-budget default that would have rejected further calls after the prior 880-call campaign ledger. C13 now explicitly has no inherited calibration ceiling or hard call cap, consistent with the owner's continuation authorization; the runner still refuses implicit retries for uncertain attempts.
+- Created an execution binding for the C13 plan, 20 bank variants, runner/preparation code hashes, model/runtime config, and explicit 880 + 72 call projection. All 20 remote bank files (eight reused selected-site variants and twelve broad-head variants) match local SHA-256. This artifact was committed before inference: `docs/receipts/MNEME_Phase_4_MI1_C13_Execution_Freeze_20261011.json`.
+- GPU was idle at 40 °C with 2.6 GiB used before dispatch, mains online, 15 GiB disk free. No C13 generation had been issued as of this entry.
