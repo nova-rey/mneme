@@ -1,0 +1,106 @@
+{
+  "calibration": {
+    "calls_by_condition": {
+      "cue_no_bank_assertive": {
+        "hits": 8,
+        "n": 8,
+        "rate": 1.0
+      },
+      "latent_raw_A": {
+        "hits": 0,
+        "n": 8,
+        "rate": 0.0
+      },
+      "latent_raw_B": {
+        "hits": 0,
+        "n": 8,
+        "rate": 0.0
+      },
+      "latent_system_turn_A": {
+        "hits": 0,
+        "n": 8,
+        "rate": 0.0
+      },
+      "latent_system_turn_B": {
+        "hits": 0,
+        "n": 8,
+        "rate": 0.0
+      },
+      "latent_user_turn_A": {
+        "hits": 0,
+        "n": 8,
+        "rate": 0.0
+      },
+      "latent_user_turn_B": {
+        "hits": 0,
+        "n": 8,
+        "rate": 0.0
+      },
+      "no_bank": {
+        "hits": 8,
+        "n": 8,
+        "rate": 1.0
+      },
+      "visible_A": {
+        "hits": 8,
+        "n": 8,
+        "rate": 1.0
+      },
+      "visible_B": {
+        "hits": 8,
+        "n": 8,
+        "rate": 1.0
+      }
+    },
+    "complete": 80,
+    "encoding_gate_results": {
+      "raw": false,
+      "system_turn": false,
+      "user_turn": false
+    },
+    "failed_or_uncertain": 0,
+    "heldout_confirmation_authorized": false,
+    "scheduled": 80,
+    "selected_encoding": null,
+    "thresholds": {
+      "confirmation_denominator_per_condition": 8,
+      "confirmation_latent_each_polarity_minimum": 7,
+      "confirmation_unknown_control_minimum": 7,
+      "confirmation_visible_each_polarity_minimum": 7,
+      "denominator_per_condition": 8,
+      "latent_each_polarity_minimum": 6,
+      "unknown_control_minimum": 7,
+      "visible_each_polarity_minimum": 7
+    }
+  },
+  "diagnosis": [
+    "No-bank and cue-only controls returned unknown on 8/8 each; visible A and B returned the correct label on 8/8 each.",
+    "Raw, serialized system-turn, and serialized user-turn banks each returned 0/8 for both target polarities despite the attached bank fingerprint, selected-site routing, and frozen 4x prior.",
+    "The assistant-role bank interpretation was not tested in C15B.",
+    "C15 multi-slot crash is a separate preserved apparatus failure; C15B reran the full matrix under one slot and completed all coordinates."
+  ],
+  "disposition": "CALIBRATION_GATE_FAILED_NO_HELDOUT_CONFIRMATION",
+  "evidence": {
+    "index_path": "/home/nyx/mneme-artifacts/phase4-mi1/c15b-encoding/evidence/index.json",
+    "index_sha256": "817388bb825897be1860f3628d04f155638f05ab28a81631819ae0dab18c503d",
+    "raw_attempt_count": 80,
+    "raw_requests_and_responses_root": "/home/nyx/mneme-artifacts/phase4-mi1/c15b-encoding/evidence",
+    "score_path": "/home/nyx/mneme-artifacts/phase4-mi1/c15b-encoding/calibration-score.json",
+    "score_sha256": "f4960ac584204ec7cc36b71400dd2072d912f8041ee03caa61cc79199e6a9ccb"
+  },
+  "execution_freeze": "docs/receipts/MNEME_Phase_4_MI1_C15B_Execution_Freeze_20261011.json",
+  "execution_freeze_sha256": "e0eaf6d60e2d25903ea6d50afefa811ea638b5dac412899a2f66610cc6c6fb8e",
+  "experiment": "MNEME Phase 4 MI1 C15B single-slot bank-encoding calibration",
+  "freeze": "docs/receipts/MNEME_Phase_4_MI1_C15B_Single_Slot_Calibration_Freeze_20261011.json",
+  "freeze_sha256": "a007d18bb3c960e050b23d45168142cf0cb372d2d074358e3f4df755c3d29b93",
+  "runtime": {
+    "cache_prompt": false,
+    "device": "RTX 3060 Laptop GPU, 6 GiB VRAM",
+    "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+    "model": "google/gemma-4-E4B-it",
+    "model_gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+    "parallel_slots": 1,
+    "reasoning": "on"
+  },
+  "schema_version": 1
+}
