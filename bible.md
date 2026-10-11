@@ -1977,3 +1977,8 @@ and dispositions remain unchanged.
 - Added repeatable C17 variant construction and durable execution/scoring tooling. Reused all 16 immutable C16 base K/V captures; built 16 variants with no query-site restriction and log-bank prior `ln(4)`, retaining all 24 KV source layers.
 - Local and MSI SHA-256 manifests match for all 16 variants. This validates transfer identity only; no C17 model generation had been issued at this checkpoint.
 - Focused plan tests pass; Ruff and compile checks pass.
+
+## 2026-10-11 MI1 C17 host-side routing preflight
+
+- Loaded one C17 all-head bank through the isolated llama.cpp server, verified its expected fingerprint, then cleared it. Server health remained OK; bank state ended disabled at revision 130. No generation occurred.
+- Added resumable execution chunks so thermal/resource checks can be interleaved; this does not cap the experiment's total calls.

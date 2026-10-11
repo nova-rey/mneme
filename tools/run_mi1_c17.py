@@ -125,6 +125,7 @@ def main() -> int:
     parser.add_argument("--base-url", required=True)
     parser.add_argument("--phase", choices=("calibration", "confirmation"), required=True)
     parser.add_argument("--score-only", action="store_true")
+    parser.add_argument("--max-new-calls", type=int)
     args = parser.parse_args()
     plan_bytes = args.plan.read_bytes()
     plan = json.loads(plan_bytes)
@@ -173,11 +174,17 @@ def main() -> int:
                 raise RuntimeError(
                     "held-out confirmation is not authorized by the frozen calibration gate"
                 )
+        if args.max_new_calls is not None and args.max_new_calls <= 0:
+            raise ValueError("--max-new-calls must be positive")
+        new_calls = 0
         for coordinate in coordinates:
             if coordinate["coordinate_id"] in completed:
                 continue
+            if args.max_new_calls is not None and new_calls >= args.max_new_calls:
+                break
             runner.execute(coordinate, phase=args.phase)
             completed.add(coordinate["coordinate_id"])
+            new_calls += 1
     result = score_phase(plan, args.evidence_root, args.phase)
     atomic_json_write(args.score, result)
     print(
