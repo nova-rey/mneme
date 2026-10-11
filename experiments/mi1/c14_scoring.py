@@ -32,7 +32,9 @@ def score_c14(plan_path: Path, evidence_root: Path) -> dict[str, Any]:
         if attempt["status"] != "COMPLETE":
             missing.append(coordinate_id)
             continue
-        outcome = json.loads((evidence_root / "attempts" / attempt["outcome_file"]).read_text(encoding="utf-8"))
+        outcome = json.loads(
+            (evidence_root / "attempts" / attempt["outcome_file"]).read_text(encoding="utf-8")
+        )
         if outcome.get("attempt_id") != coordinate_id or outcome.get("status") != "COMPLETE":
             raise ValueError(f"invalid C14 completion envelope: {coordinate_id}")
         choices = outcome.get("payload", {}).get("choices", [])
@@ -98,7 +100,8 @@ def score_c14(plan_path: Path, evidence_root: Path) -> dict[str, Any]:
         gain_word = "two" if gain == 2 else "four"
         gates[str(gain)] = (
             hits(f"latent_A_selected_{gain_word}fold") >= criteria["latent_each_polarity_minimum"]
-            and hits(f"latent_B_selected_{gain_word}fold") >= criteria["latent_each_polarity_minimum"]
+            and hits(f"latent_B_selected_{gain_word}fold")
+            >= criteria["latent_each_polarity_minimum"]
             and hits("visible_A") >= criteria["visible_each_polarity_minimum"]
             and hits("visible_B") >= criteria["visible_each_polarity_minimum"]
             and hits("no_bank") >= criteria["unknown_control_minimum"]

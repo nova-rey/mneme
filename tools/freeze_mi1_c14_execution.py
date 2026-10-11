@@ -44,7 +44,14 @@ def main() -> int:
         local_sha = _sha(path)
         if local_sha != row["native_sha256"] or remote_hashes.get(name) != local_sha:
             raise ValueError(f"C14 local/remote bank hash mismatch: {name}")
-        bound.append({"name": name, "sha256": local_sha, "fingerprint": row["bank_fingerprint"], "selector": row["selector"]})
+        bound.append(
+            {
+                "name": name,
+                "sha256": local_sha,
+                "fingerprint": row["bank_fingerprint"],
+                "selector": row["selector"],
+            }
+        )
     code_paths = (
         "experiments/mi1/c14_calibration.py",
         "experiments/mi1/c13_scoring.py",
@@ -65,7 +72,12 @@ def main() -> int:
         "calibration_call_count": plan["call_count"],
         "prior_campaign_generations": 952,
         "projected_after_calibration": 952 + int(plan["call_count"]),
-        "budget_contract": {"prior_calibration_calls": 952, "calibration_limit": None, "hard_limit": None, "implicit_retries": False},
+        "budget_contract": {
+            "prior_calibration_calls": 952,
+            "calibration_limit": None,
+            "hard_limit": None,
+            "implicit_retries": False,
+        },
         "evidence_root": "/home/nyx/mneme-artifacts/phase4-mi1/c14-calibration/evidence",
         "code_sha256": {name: _sha(Path(name)) for name in code_paths},
         "remote_bank_variants": sorted(bound, key=lambda value: value["name"]),
@@ -74,7 +86,17 @@ def main() -> int:
     temporary = args.output.with_suffix(args.output.suffix + ".tmp")
     temporary.write_text(json.dumps(output, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     temporary.replace(args.output)
-    print(json.dumps({"output": str(args.output), "sha256": _sha(args.output), "variants": len(bound), "calls": plan["call_count"]}, sort_keys=True))
+    print(
+        json.dumps(
+            {
+                "output": str(args.output),
+                "sha256": _sha(args.output),
+                "variants": len(bound),
+                "calls": plan["call_count"],
+            },
+            sort_keys=True,
+        )
+    )
     return 0
 
 

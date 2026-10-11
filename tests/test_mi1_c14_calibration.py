@@ -12,7 +12,9 @@ def test_c14_freezes_separate_atomic_recall_calibration_and_confirmation() -> No
     assert len(plan["coordinates"]) == 64
     assert len(plan["confirmation_coordinates_frozen_but_not_run"]) == 64
     assert len({row["fixture_id"] for row in plan["coordinates"]}) == 4
-    assert set(row["fixture_id"] for row in plan["confirmation_coordinates_frozen_but_not_run"]) == {
+    assert set(
+        row["fixture_id"] for row in plan["confirmation_coordinates_frozen_but_not_run"]
+    ) == {
         "A29",
         "A30",
         "A31",
@@ -22,9 +24,9 @@ def test_c14_freezes_separate_atomic_recall_calibration_and_confirmation() -> No
 
     for row in plan["coordinates"] + plan["confirmation_coordinates_frozen_but_not_run"]:
         if row["bank_source"] is not None:
-            assert hashlib.sha256(row["bank_source"].encode()).hexdigest() == row[
-                "bank_source_sha256"
-            ]
+            assert (
+                hashlib.sha256(row["bank_source"].encode()).hexdigest() == row["bank_source_sha256"]
+            )
         else:
             assert row["bank_source_sha256"] is None
         request_text = " ".join(message["content"] for message in row["request"]["messages"])

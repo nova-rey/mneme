@@ -74,7 +74,10 @@ def main() -> int:
             raise RuntimeError(f"C14 call was reserved without complete evidence: {attempt}")
         runner.execute(coordinate, phase="calibration")
         complete.add(attempt)
-        print(json.dumps({"complete": len(complete), "total": plan["call_count"], "id": attempt}), flush=True)
+        print(
+            json.dumps({"complete": len(complete), "total": plan["call_count"], "id": attempt}),
+            flush=True,
+        )
     print(json.dumps({"budget": budget.counts(), "journal": journal.verify()}, sort_keys=True))
     return 0
 

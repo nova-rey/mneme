@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "experiment": "MNEME Phase 4 MI1 local Memory Inception feasibility",
+  "disposition": "DOES_NOT_WORK_WELL_ENOUGH_TO_ADVANCE",
+  "host": {
+    "model": "google/gemma-4-E4B-it",
+    "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+    "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+    "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU",
+    "vram_mib": 6144,
+    "reasoning": "on",
+    "cache_prompt": false
+  },
+  "conclusion": {
+    "bank_attachment_and_numeric_access_demonstrated": true,
+    "reliable_structured_semantic_readout_demonstrated": false,
+    "attributable_open_ended_process_prior_effect_demonstrated": false,
+    "mneme_integration_recommended": false,
+    "scope": "negative disposition for the tested Gemma Q2 llama.cpp implementation and bank constructions; not a universal claim about Memory Inception"
+  },
+  "historical_positive_control": {
+    "result": "8/8 visible-text positive controls",
+    "interpretation": "ordinary-prompt visibility control, not hidden-bank success"
+  },
+  "retrieval_tests": {
+    "C14_selected_site": {
+      "latent_A_2x": "0/8",
+      "latent_B_2x": "0/8",
+      "latent_A_4x": "0/8",
+      "latent_B_4x": "0/8",
+      "no_bank_unknown": "8/8",
+      "cue_only_unknown": "8/8",
+      "visible_A": "8/8",
+      "visible_B": "8/8",
+      "prefill_bank_attention_mass_selected_heads_mean": 0.498,
+      "prefill_bank_attention_mass_selected_heads_range": [0.055, 0.97],
+      "prefill_bank_attention_mass_all_heads_mean": 0.0237,
+      "interpretation": "attention access was measured, semantic readout was not"
+    },
+    "C16_assistant_turn": {
+      "latent_A": "0/8",
+      "latent_B": "0/8",
+      "no_bank_unknown": "8/8",
+      "cue_only_unknown": "8/8",
+      "visible_A": "7/8",
+      "visible_B": "8/8",
+      "heldout_confirmation": "not run; frozen calibration gate failed"
+    },
+    "Test_A": {
+      "latent_A": "0/24",
+      "latent_B": "0/24",
+      "latent_irrelevant_unknown": "23/24",
+      "no_bank_unknown": "23/24",
+      "visible_A": "19/24",
+      "visible_B": "15/24",
+      "frozen_suite_sha256": "0a75c1001ba031715705b4db24953a6e160dd8b5c93518efd67152156e912afe",
+      "score_sha256": "96a933b27dfe8e74906b6a6fe1c6d23a2df3676589683516408ca0fd81232da1"
+    },
+    "C17_all_head": {
+      "latent_A": "1/8; sole exact-label output had no reasoning text",
+      "latent_B": "0/8",
+      "latent_reasoning_missing": "16/16",
+      "no_bank_unknown": "8/8",
+      "visible_A": "7/8",
+      "visible_B": "8/8",
+      "malformed_or_partial_latent_outputs": "observed; examples include 'The stored in the canvas.' and repetitive 'S-filter' output",
+      "finish_reason_counts": {
+        "stop": 39,
+        "length": 1
+      },
+      "routing": "all 42 query layers x 8 heads; all 24 KV source layers; log bank prior ln(4)",
+      "calibration_calls": 40,
+      "heldout_confirmation": "not run; frozen calibration gate failed",
+      "plan_sha256": "3b8140de20b055d986d08e87837de185ce6c11360feda9319d6ef0f0b95c88bb",
+      "execution_binding_sha256": "34eff55abb99bc78352be4dd70d4cce8ce245452b0998223f855fd8e488a6ef0",
+      "score_path": "/home/nyx/mneme-artifacts/phase4-mi1/c17-allhead/score-calibration.json",
+      "score_sha256": "6c3b325485c072b8cc0c3e6f237195cf973989c3a1b870b1f3b80c006de99697",
+      "evidence_index_path": "/home/nyx/mneme-artifacts/phase4-mi1/c17-allhead/evidence/index.json",
+      "evidence_index_sha256": "3d2acd955402319042fb73780f2aa1a34a8bd90ee3fce179956cd546e1c19037"
+    }
+  },
+  "test_abc": {
+    "planned_and_completed": 268,
+    "coordinates": {
+      "test_a": 144,
+      "test_b": 108,
+      "test_c_fresh": 12,
+      "test_c_new_bank": 2,
+      "test_c_ongoing": 2
+    },
+    "complete_durable_results": "268/268",
+    "test_b_interpretation": "no repeatable hidden-bank effect distinguishable from task-native advice; some outputs include bank-consistent wording but reasoning does not identify the hidden source and matched no-bank outputs already contain related structure",
+    "test_c_outputs": "16/16 unknown across fresh A/B, disabled, restored A, ongoing-turn and new-bank coordinates",
+    "test_c_lifecycle": "attach/replace/disable/restore state transitions and fingerprints worked; no behavioral effect was available to remove and restore",
+    "evidence_index_path": "/home/nyx/mneme-artifacts/phase4-mi1/test-abc/evidence/index.json",
+    "evidence_index_sha256": "bf2968b9bd8ae26b533a32c4c1feb5c49f21898ab6866ea6ded93f289beb33db",
+    "test_a_score_path": "/home/nyx/mneme-artifacts/phase4-mi1/test-abc/test-a-score-v3.json",
+    "test_a_score_sha256": "96a933b27dfe8e74906b6a6fe1c6d23a2df3676589683516408ca0fd81232da1"
+  },
+  "diagnostic_interpretation": {
+    "observed": [
+      "banks were attached with matching fingerprints",
+      "prefill attention reached bank slots",
+      "earlier instrumentation observed downstream hidden-state changes",
+      "visible facts worked substantially better than hidden-bank facts",
+      "global all-head exposure failed and removed reasoning text from every latent output"
+    ],
+    "unresolved": [
+      "whether the remaining semantic-readout failure is due to Gemma-specific K/V and attention semantics, sliding-window/shared-KV behavior, custom llama.cpp port details, Q2 quantization, bank representation, or the model's learned use of appended K/V"
+    ],
+    "paper_implementation_caveat": "tested Gemma path is a custom augmented-attention port; successful attachment and attention mass do not prove fidelity to all intended paper semantics"
+  },
+  "cost": {
+    "test_abc_model_calls": 268,
+    "test_abc_summed_request_latency_seconds": 5217.55,
+    "test_abc_median_request_latency_seconds": 14.93,
+    "test_abc_p90_request_latency_seconds": 34.83,
+    "test_abc_max_request_latency_seconds": 42.91,
+    "c17_model_calls": 40,
+    "c17_server_prompt_timing_sum_seconds": 5.107,
+    "c17_server_generation_timing_sum_seconds": 142.286,
+    "bank_build_sources_measured": 38,
+    "bank_encoding_seconds_sum": 55.38,
+    "bank_encoding_seconds_mean_per_source": 1.457,
+    "bank_pack_configure_seconds_sum": 1.19,
+    "bank_variant_bytes_median": 9232924,
+    "c17_allhead_variant_bytes_total": 31087040,
+    "attach_latency": "not separately timed"
+  },
+  "cleanup": {
+    "resident_server_health": "ok",
+    "active_bank_cleared": true,
+    "post_clear_bank_state": {
+      "revision": 171,
+      "enabled": false,
+      "bank_fingerprint": ""
+    },
+    "last_recorded_gpu_temperature_c": 59,
+    "last_recorded_gpu_utilization_percent": 0,
+    "note": "SSH refresh of host telemetry was unavailable in this session; server health endpoint was reachable and the bank was verified clear"
+  },
+  "boundaries": {
+    "mneme_state_loaded_or_modified": false,
+    "saa_or_learner_modified": false,
+    "heldout_confirmation_run_after_failed_gate": false,
+    "integration_authorized": false
+  }
+}

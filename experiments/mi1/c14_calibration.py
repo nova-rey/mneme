@@ -74,14 +74,16 @@ def _coordinate(fixture: dict[str, str], condition: str, seed: int) -> dict[str,
         f"{first} or {second}? If the note's value is unavailable, answer unknown."
     )
     visible_source = source if condition in {"visible_A", "visible_B"} else None
-    user = f"Visible record:\n- {visible_source}\n\nQuestion:\n{question}" if visible_source else question
+    user = (
+        f"Visible record:\n- {visible_source}\n\nQuestion:\n{question}"
+        if visible_source
+        else question
+    )
     expected = "unknown" if side is None else fixture["target"] if side == "A" else fixture["decoy"]
     bank_selector = "none" if gain is None else "selected_A" if side == "A" else "selected_B"
     bank_config = {
         "selector": bank_selector,
-        "gain": None
-        if gain is None
-        else {"logit_bias": math.log(gain), "relative_prior": gain},
+        "gain": None if gain is None else {"logit_bias": math.log(gain), "relative_prior": gain},
     }
     return {
         "coordinate_id": f"C14-{fixture['fixture_id']}-{condition}-{seed}",
@@ -94,7 +96,14 @@ def _coordinate(fixture: dict[str, str], condition: str, seed: int) -> dict[str,
         "bank_source_sha256": hashlib.sha256(source.encode()).hexdigest() if gain else None,
         "bank_config": bank_config,
         "expected": {"answer": expected},
-        "metadata": {"suite": "c14_atomic_calibration", "fixture_id": fixture["fixture_id"], "seed": seed, "condition": condition, "selector": bank_selector, "server_role": "mi1_server"},
+        "metadata": {
+            "suite": "c14_atomic_calibration",
+            "fixture_id": fixture["fixture_id"],
+            "seed": seed,
+            "condition": condition,
+            "selector": bank_selector,
+            "server_role": "mi1_server",
+        },
         "request": {
             "model": MODEL,
             "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
@@ -134,15 +143,30 @@ def build_c14_plan(*, c13_readout_sha256: str) -> dict[str, Any]:
         "experiment": "MNEME Phase 4 MI1 C14 atomic-fact access calibration",
         "status": "FROZEN_BEFORE_CALIBRATION_GENERATION",
         "parent_c13_readout_sha256": c13_readout_sha256,
-        "model": {"name": MODEL, "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03"},
-        "generation_config": {"cache_prompt": False, "reasoning": "ON", "temperature": 0.35, "top_k": 40, "top_p": 0.9, "min_p": 0.05, "max_tokens": 1024},
+        "model": {
+            "name": MODEL,
+            "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+        },
+        "generation_config": {
+            "cache_prompt": False,
+            "reasoning": "ON",
+            "temperature": 0.35,
+            "top_k": 40,
+            "top_p": 0.9,
+            "min_p": 0.05,
+            "max_tokens": 1024,
+        },
         "seeds": list(SEEDS),
         "conditions": list(CONDITIONS),
         "calibration_fixture_ids": [row["fixture_id"] for row in CALIBRATION_FIXTURES],
         "heldout_fixture_ids_frozen_but_not_run": [row["fixture_id"] for row in heldout_fixtures],
         "heldout_fixtures": heldout_fixtures,
         "confirmation_coordinates_frozen_but_not_run": confirmation,
-        "confirmation_selection_rule": "If a gain passes calibration, select the lower passing gain. Confirmation includes no-bank, cue-only, both visible polarities, and both latent polarities at the selected gain.",
+        "confirmation_selection_rule": (
+            "If a gain passes calibration, select the lower passing gain. Confirmation "
+            "includes no-bank, cue-only, both visible polarities, and both latent "
+            "polarities at the selected gain."
+        ),
         "criteria": {
             "latent_each_polarity_minimum": 6,
             "visible_each_polarity_minimum": 7,
@@ -153,7 +177,14 @@ def build_c14_plan(*, c13_readout_sha256: str) -> dict[str, Any]:
             "confirmation_unknown_control_minimum": 7,
             "confirmation_denominator": 8,
         },
-        "design_rationale": "C13 selected-site bank attention failed to surface two-hop directed facts, while broad routing was disruptive. C14 tests the simpler prerequisite of retrieving a single text-derived codeword fact with selected-site routing at two fixed strengths. Four calibration fixture pairs and four separate heldout pairs are frozen before generation; visible and no-bank/cue-only controls remain matched.",
+        "design_rationale": (
+            "C13 selected-site bank attention failed to surface two-hop directed facts, "
+            "while broad routing was disruptive. C14 tests the simpler prerequisite of "
+            "retrieving a single text-derived codeword fact with selected-site routing at "
+            "two fixed strengths. Four calibration fixture pairs and four separate heldout "
+            "pairs are frozen before generation; visible and no-bank/cue-only controls "
+            "remain matched."
+        ),
         "call_count": len(calibration),
         "coordinates": calibration,
         "confirmation_call_count_per_gain": len(heldout_fixtures) * len(SEEDS) * 6,

@@ -47,8 +47,12 @@ def main() -> int:
         ]
         if not variants:
             raise ValueError(f"missing frozen C12 selected_{side} query sites")
-        sites = tuple(tuple(int(value) for value in pair) for pair in variants[0]["selector"]["query_sites"])
-        if any(row["selector"]["query_sites"] != [list(pair) for pair in sites] for row in variants):
+        sites = tuple(
+            tuple(int(value) for value in pair) for pair in variants[0]["selector"]["query_sites"]
+        )
+        if any(
+            row["selector"]["query_sites"] != [list(pair) for pair in sites] for row in variants
+        ):
             raise ValueError(f"C12 selected_{side} query sites are inconsistent")
         selectors[side] = sites
 
@@ -84,18 +88,20 @@ def main() -> int:
         )
         base_path = args.output_dir / f"{digest}.npz"
         base_npz_sha = base.save(base_path)
-        source_rows.append({
-            "source_sha256": digest,
-            "capture_path": str(capture),
-            "capture_sha256": _sha(capture),
-            "capture_bytes": capture.stat().st_size,
-            "slot_count": base.manifest.slot_count,
-            "layer_count": len(base.manifest.layer_ids),
-            "base_npz_sha256": base_npz_sha,
-            "base_native_sha256": _sha(base_path.with_suffix(".mi1")),
-            "selector": f"selected_{side}",
-            "query_sites": [list(pair) for pair in selectors[side]],
-        })
+        source_rows.append(
+            {
+                "source_sha256": digest,
+                "capture_path": str(capture),
+                "capture_sha256": _sha(capture),
+                "capture_bytes": capture.stat().st_size,
+                "slot_count": base.manifest.slot_count,
+                "layer_count": len(base.manifest.layer_ids),
+                "base_npz_sha256": base_npz_sha,
+                "base_native_sha256": _sha(base_path.with_suffix(".mi1")),
+                "selector": f"selected_{side}",
+                "query_sites": [list(pair) for pair in selectors[side]],
+            }
+        )
         for gain in (2.0, 4.0):
             config = {
                 "selector": f"selected_{side}",

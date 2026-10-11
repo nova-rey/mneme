@@ -1987,3 +1987,16 @@ and dispositions remain unchanged.
 
 - Bound the frozen 40-call calibration and gated 40-call held-out suite to C16 source captures, all 16 local/remote bank hashes, the pinned model/server runtime, and the all-head configuration. Server reports Gemma 4 E4B-it; health is OK; one attach/clear lifecycle check passed; no generations have been issued.
 - Execution freeze: `docs/receipts/MNEME_Phase_4_MI1_C17_Execution_Freeze_20261011.json`, SHA-256 `34eff55abb99bc78352be4dd70d4cce8ce245452b0998223f855fd8e488a6ef0`. GPU preflight: 39 C, idle, about 2.6 GiB VRAM used.
+
+## 2026-10-11 MI1 final disposition
+
+- C17 completed its frozen 40-call all-head calibration: hidden-bank retrieval remained 1/8 for A and 0/8 for B; the sole matching output had no reasoning text, and all 16 latent calls omitted reasoning. The unchanged gate failed, so no held-out calls ran.
+- Across C14, C16, Test A/B/C, and C17, side-bank attachment and numerical access were demonstrated, but reliable semantic readout or attributable process-prior behavior was not. Test C's bank replacement/removal/restoration lifecycle worked mechanically, with all 16 outputs remaining `unknown`.
+- MI1 is not recommended for MNEME integration on this Gemma Q2/llama.cpp path. The precise K/V/attention/readout cause remains unresolved. The resident bank was cleared and verified disabled.
+- Final compact report and machine-readable receipt: `docs/receipts/MNEME_Phase_4_MI1_Final_Disposition_20261011.md` and `.json`; canonical request/result artifacts remain outside Git under `/home/nyx/mneme-artifacts/phase4-mi1/` with hashes in the receipt.
+
+## 2026-10-11 MI1 disposition validation
+
+- The full suite passed 908 tests; strict mypy passed for 72 source files; Ruff check passed. Four focused C13/C14 scoring/calibration tests passed after formatting-only line wrapping in the existing research scripts.
+- Repository-wide Ruff formatter check is intentionally not claimed: it is not a CI check and reports formatting differences across 141 unrelated existing files. The 12 MI1 C13/C14 files touched for line length now pass scoped format validation.
+- External evidence indexes were hash-checked: Test A/B/C is 268/268 complete and C17 is 40/40 complete. The machine-readable disposition receipt parses and its referenced raw hashes reconcile.

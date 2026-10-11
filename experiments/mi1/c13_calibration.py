@@ -175,7 +175,7 @@ def build_c13_plan(c12_plan: dict[str, Any], *, c12_plan_sha256: str) -> dict[st
         "denominator": len(heldout) * len(SEEDS),
         "visible_each_polarity_minimum": 7,
         "unknown_controls_minimum": 7,
-        "requirement": "At least one of selected or broad must pass A and B; choose selected if both pass.",
+        "requirement": "Require A and B for one routing mode; prefer selected when both pass.",
     }
     return {
         "schema_version": 1,
@@ -200,7 +200,8 @@ def build_c13_plan(c12_plan: dict[str, Any], *, c12_plan_sha256: str) -> dict[st
             "C12's generic may-be-available cue was interpreted by reasoning as no record was "
             "provided, despite a matching attached bank and measured selected-site attention. "
             "C13 tests a non-content assertive availability cue and broad all-query-head routing, "
-            "with a cue-only control and irrelevant-bank control. No bank fact is in latent prompt text."
+            "with a cue-only control and irrelevant-bank control. "
+            "No bank fact is in latent prompt text."
         ),
         "criteria": {
             "calibration_per_polarity_minimum": 7,
@@ -210,7 +211,11 @@ def build_c13_plan(c12_plan: dict[str, Any], *, c12_plan_sha256: str) -> dict[st
             "confirmation_per_polarity_minimum": 14,
             "confirmation_denominator": selected_gate["denominator"],
             "confirmation_controls_minimum": 14,
-            "selection_rule": "Choose selected-site confirmation if selected A and B both pass; otherwise choose broad-site confirmation if broad A and B both pass; if both pass prefer selected sites.",
+            "selection_rule": (
+                "Choose selected-site confirmation if selected A and B both pass; "
+                "otherwise choose broad-site confirmation if broad A and B both pass; "
+                "if both pass prefer selected sites."
+            ),
         },
         "call_count": len(coordinates),
         "coordinates": coordinates,

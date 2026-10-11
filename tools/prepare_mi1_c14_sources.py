@@ -45,9 +45,15 @@ def main() -> int:
     }
     args.manifest.parent.mkdir(parents=True, exist_ok=True)
     temporary_manifest = args.manifest.with_suffix(args.manifest.suffix + ".tmp")
-    temporary_manifest.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    temporary_manifest.write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
     temporary_manifest.replace(args.manifest)
-    print(json.dumps({"sources": len(entries), "plan_sha256": manifest["plan_sha256"]}, sort_keys=True))
+    print(
+        json.dumps(
+            {"sources": len(entries), "plan_sha256": manifest["plan_sha256"]}, sort_keys=True
+        )
+    )
     return 0
 
 

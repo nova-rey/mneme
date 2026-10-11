@@ -24,7 +24,17 @@ def main() -> int:
     temporary = args.output.with_suffix(args.output.suffix + ".tmp")
     temporary.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     temporary.replace(args.output)
-    print(json.dumps({"output": str(args.output), "complete_coordinates": result["complete_coordinates"], "calibration_gate_passed": result["calibration_gate_passed"], "passing_gains": result["passing_gains_in_low_to_high_order"]}, sort_keys=True))
+    print(
+        json.dumps(
+            {
+                "output": str(args.output),
+                "complete_coordinates": result["complete_coordinates"],
+                "calibration_gate_passed": result["calibration_gate_passed"],
+                "passing_gains": result["passing_gains_in_low_to_high_order"],
+            },
+            sort_keys=True,
+        )
+    )
     return 0
 
 

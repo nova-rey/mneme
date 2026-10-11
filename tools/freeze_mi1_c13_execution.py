@@ -94,7 +94,11 @@ def main() -> int:
     temporary = args.output.with_suffix(args.output.suffix + ".tmp")
     temporary.write_text(json.dumps(execution, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     temporary.replace(args.output)
-    print(json.dumps({"output": str(args.output), "sha256": sha256(args.output), "variants": len(verified)}))
+    print(
+        json.dumps(
+            {"output": str(args.output), "sha256": sha256(args.output), "variants": len(verified)}
+        )
+    )
     return 0
 
 

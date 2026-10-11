@@ -28,9 +28,16 @@ def test_c13_scoring_applies_frozen_gate_and_prefers_selected_sites(tmp_path: Pa
             for condition in conditions:
                 answer = (
                     "unknown"
-                    if condition in {"no_bank", "cue_no_bank_assertive", "latent_irrelevant_broad_assertive_fourfold"}
-                    else "Target" if condition.endswith("A")
-                    else "Decoy" if condition.endswith("B")
+                    if condition
+                    in {
+                        "no_bank",
+                        "cue_no_bank_assertive",
+                        "latent_irrelevant_broad_assertive_fourfold",
+                    }
+                    else "Target"
+                    if condition.endswith("A")
+                    else "Decoy"
+                    if condition.endswith("B")
                     else "unknown"
                 )
                 if condition.startswith("latent_A_"):
@@ -48,7 +55,9 @@ def test_c13_scoring_applies_frozen_gate_and_prefers_selected_sites(tmp_path: Pa
                     else "- Start activates Decoy.\n"
                     if condition.startswith("latent_B_")
                     else None,
-                    "bank_config": {"selector": "selected" if "selected" in condition else "all_heads"},
+                    "bank_config": {
+                        "selector": "selected" if "selected" in condition else "all_heads"
+                    },
                     "expected": {"answer": answer},
                 }
                 coordinates.append(source)
