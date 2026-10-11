@@ -262,6 +262,7 @@ class MemoryBank:
         llama_commit: str,
         architecture: str = "gemma4-e4b",
         tokenizer: str = "llama.cpp pinned Gemma4 tokenizer",
+        tokenization: str = "llama_tokenize(add_special=true,parse_special=false)",
     ) -> MemoryBank:
         """Read the isolated native encoder's exact per-token K/V capture.
 
@@ -327,6 +328,7 @@ class MemoryBank:
             kv_heads_by_layer=tuple(kv_heads_by_layer),
             slot_count=slot_count,
             tokenizer=tokenizer,
+            tokenization=tokenization,
             head_dim_by_layer=tuple(head_dim_by_layer),
         )
         bank = cls(manifest, keys, values, source_text, token_ids)

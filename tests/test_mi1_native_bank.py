@@ -234,12 +234,14 @@ def test_reads_exact_tokenwise_native_encoder_capture(tmp_path: Path) -> None:
         source_text="known source text",
         model_sha256="a" * 64,
         llama_commit="4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+        tokenization="llama_tokenize(add_special=true,parse_special=true)",
     )
     assert bank.token_ids == (2, 991)
     assert bank.manifest.layer_ids == (0, 3)
     assert bank.manifest.kv_heads_by_layer == (2, 1)
     assert bank.keys[0].shape == (2, 2, 4)
     assert bank.values[3].shape == (2, 1, 4)
+    assert bank.manifest.tokenization == "llama_tokenize(add_special=true,parse_special=true)"
     np.testing.assert_array_equal(bank.keys[3].reshape(-1), np.arange(8) + 3)
 
 

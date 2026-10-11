@@ -1,0 +1,110 @@
+#!/usr/bin/env python3
+"""Run/resume the frozen C15 calibration or selected held-out confirmation."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+from pathlib import Path
+from typing import Any
+
+from experiments.mi1.calibration import variant_key
+from experiments.mi1.native.evidence import EvidenceJournal
+from experiments.mi1.runner import GenerationBudget, MI1CoordinateRunner, ResolvedBank
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--plan", type=Path, required=True)
+    parser.add_argument("--variant-map", type=Path, required=True)
+    parser.add_argument("--evidence-root", type=Path, required=True)
+    parser.add_argument("--budget", type=Path, required=True)
+    parser.add_argument("--phase", choices=("calibration", "confirmation"), default="calibration")
+    parser.add_argument("--encoding", choices=("system_turn", "user_turn", "raw"))
+    parser.add_argument("--base-url", default="http://127.0.0.1:18472")
+    args = parser.parse_args()
+    plan_raw = args.plan.read_bytes()
+    plan: dict[str, Any] = json.loads(plan_raw)
+    if plan.get("status") != "FROZEN_BEFORE_CALIBRATION_GENERATION":
+        raise ValueError("C15 plan is not frozen")
+    if args.phase == "confirmation" and not args.encoding:
+        raise ValueError("confirmation requires the encoding selected by the frozen gate")
+    variants: dict[str, Any] = json.loads(args.variant_map.read_text(encoding="utf-8"))
+    if variants.get("plan_sha256") != hashlib.sha256(plan_raw).hexdigest():
+        raise ValueError("C15 bank map belongs to another frozen plan")
+
+    def resolve(source: str, digest: str, config: dict[str, Any]) -> ResolvedBank:
+        if hashlib.sha256(source.encode("utf-8")).hexdigest() != digest:
+            raise ValueError("C15 bank source hash mismatch")
+        row = variants["variants"].get(variant_key(digest, config))
+        if row is None or row.get("source_sha256") != digest or row.get("config") != config:
+            raise ValueError("missing or mismatched C15 bank variant")
+        return ResolvedBank(
+            path=Path(row["remote_path"]),
+            native_sha256=row["native_sha256"],
+            bank_fingerprint=row["bank_fingerprint"],
+            selector_sha256=row["selector_sha256"],
+            selector=row["selector"],
+        )
+
+    journal = EvidenceJournal(
+        args.evidence_root,
+        hard_call_limit=plan["call_count"] + plan["confirmation_call_count"],
+    )
+    budget = GenerationBudget(
+        args.budget, prior_calibration_calls=0, calibration_limit=None, hard_limit=None
+    )
+    runner = MI1CoordinateRunner(
+        base_url=args.base_url, journal=journal, budget=budget, bank_resolver=resolve
+    )
+    index_path = args.evidence_root / "index.json"
+    if index_path.exists():
+        index = json.loads(index_path.read_text(encoding="utf-8"))
+        complete = {row["attempt_id"] for row in index["attempts"] if row["status"] == "COMPLETE"}
+        uncertain = [row["attempt_id"] for row in index["attempts"] if row["status"] != "COMPLETE"]
+        if uncertain:
+            raise RuntimeError(
+                f"C15 has uncertain calls; refusing implicit retry: {sorted(uncertain)}"
+            )
+    else:
+        complete = set()
+    reserved = {
+        row["attempt_id"]
+        for row in json.loads(args.budget.read_text(encoding="utf-8"))["reservations"]
+    }
+    if args.phase == "calibration":
+        coordinates = plan["coordinates"]
+    else:
+        desired = {
+            "no_bank",
+            "visible_A",
+            "visible_B",
+            f"latent_{args.encoding}_A",
+            f"latent_{args.encoding}_B",
+        }
+        coordinates = [
+            row
+            for row in plan["confirmation_coordinates_frozen_not_authorized_until_gate"]
+            if row["condition"] in desired
+        ]
+    for coordinate in coordinates:
+        attempt = coordinate["coordinate_id"]
+        if attempt in complete:
+            continue
+        if attempt in reserved:
+            raise RuntimeError(f"C15 reservation lacks a complete evidence envelope: {attempt}")
+        runner.execute(coordinate, phase=args.phase)
+        complete.add(attempt)
+        print(
+            json.dumps(
+                {"complete": len(complete), "phase": args.phase, "id": attempt}, sort_keys=True
+            ),
+            flush=True,
+        )
+    print(json.dumps({"budget": budget.counts(), "journal": journal.verify()}, sort_keys=True))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -174,14 +174,24 @@ void write_capture(const std::string & path, const CaptureState & state,
 } // namespace
 
 int main(int argc, char ** argv) {
-    if (argc != 4) {
-        std::cerr << "usage: mi1_native_encode MODEL.gguf SOURCE.txt OUTPUT.mi1cap\n";
+    if (argc != 4 && argc != 5) {
+        std::cerr << "usage: mi1_native_encode MODEL.gguf SOURCE.txt OUTPUT.mi1cap [raw|chat-special]\n";
         return 2;
     }
     try {
         const std::string model_path = argv[1];
         const std::string source_path = argv[2];
         const std::string output_path = argv[3];
+        const std::string tokenization_mode = argc == 5 ? argv[4] : "raw";
+        if (tokenization_mode != "raw" && tokenization_mode != "chat-special") {
+            throw std::runtime_error("tokenization mode must be raw or chat-special");
+        }
+        // `raw` preserves the original C14 behavior: add the model BOS, but
+        // treat source bytes as ordinary text. `chat-special` is for an
+        // explicitly serialized Gemma turn: add BOS and parse its control
+        // tokens into their actual vocabulary IDs.
+        const bool add_special = true;
+        const bool parse_special = tokenization_mode == "chat-special";
         const std::string source_text = read_text(source_path);
         if (source_text.empty()) {
             throw std::runtime_error("source text must not be empty");
@@ -197,14 +207,15 @@ int main(int argc, char ** argv) {
         }
         const llama_vocab * vocab = llama_model_get_vocab(model);
         int32_t token_count = -llama_tokenize(vocab, source_text.data(),
-                static_cast<int32_t>(source_text.size()), nullptr, 0, true, false);
+                static_cast<int32_t>(source_text.size()), nullptr, 0,
+                add_special, parse_special);
         if (token_count <= 0) {
             throw std::runtime_error("source text tokenization failed");
         }
         std::vector<llama_token> tokens(static_cast<size_t>(token_count));
         token_count = llama_tokenize(vocab, source_text.data(),
                 static_cast<int32_t>(source_text.size()), tokens.data(), token_count,
-                true, false);
+                add_special, parse_special);
         if (token_count <= 0) {
             throw std::runtime_error("source text tokenization failed");
         }
@@ -242,6 +253,7 @@ int main(int argc, char ** argv) {
         write_capture(output_path, capture, tokens);
         std::cout << "captured_slots=" << tokens.size()
                   << " kv_layers=" << capture.layers.size()
+                  << " tokenization_mode=" << tokenization_mode
                   << " output=" << output_path << "\n";
         llama_free(context);
         llama_model_free(model);
