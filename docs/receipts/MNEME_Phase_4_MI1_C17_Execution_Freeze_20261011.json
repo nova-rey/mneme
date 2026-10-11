@@ -1,0 +1,111 @@
+{
+  "bank_state_before_generation": {
+    "bank_fingerprint": "",
+    "enabled": false,
+    "revision": 130
+  },
+  "banks": {
+    "remote_directory": "/home/rey/mi1-artifacts/c17-allhead/banks",
+    "remote_manifest_matches_local": true,
+    "remote_manifest_path": "/home/nyx/mneme-artifacts/phase4-mi1/c17-allhead/remote-bank-sha256.txt",
+    "remote_manifest_sha256": "19598f620acaa53f1d1698b2cdf8e9a762fd14de99bf3ef9111ebfc0053b0080",
+    "source_manifest_path": "/home/nyx/mneme-artifacts/phase4-mi1/c16-assistant/source-manifest.json",
+    "source_manifest_sha256": "07fc559d20e3ca1d9c6adaaee8d05d4ccfe90f6c6445cca3a1274e263a91cfa7",
+    "total_native_variant_bytes": 31087040,
+    "transfer_archive_sha256": "f255f7f0ad85d3d34e806fc21df6a098211631882ea9b49703475e0fbf232793",
+    "variant_count": 16,
+    "variant_map_path": "/home/nyx/mneme-artifacts/phase4-mi1/c17-allhead/variant-map.json",
+    "variant_map_sha256": "09917228fc5ea361c2665a1083ec36d88e5376eebd9b29d70d905dad4c6db5ab",
+    "verified_variant_count": 16
+  },
+  "budget_path": "/home/nyx/mneme-artifacts/phase4-mi1/c17-allhead/budget.json",
+  "calibration_calls": 40,
+  "code_commit": "d8cbc51",
+  "criteria": {
+    "calibration_denominator_per_condition": 8,
+    "confirmation_denominator_per_condition": 8,
+    "confirmation_minimum_each_condition": 7,
+    "confirmation_runs_only_if_all_calibration_thresholds_pass": true,
+    "latent_all_A_minimum": 6,
+    "latent_all_B_minimum": 6,
+    "no_bank_minimum": 7,
+    "visible_A_minimum": 7,
+    "visible_B_minimum": 7
+  },
+  "evidence_root": "/home/nyx/mneme-artifacts/phase4-mi1/c17-allhead/evidence",
+  "experiment": "MNEME Phase 4 MI1 C17 maximum-access calibration",
+  "generation_issued": false,
+  "gpu_preflight": {
+    "memory_total_mib": 6144,
+    "memory_used_mib": 2657,
+    "name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+    "temperature_c": 39,
+    "utilization_pct": 0
+  },
+  "heldout_confirmation_calls_if_gate_passes": 40,
+  "llama_cpp": {
+    "commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+    "server_binary_sha256": "0032af18feb8cfa683ed34757c47bb10e4fbcdcd309071e937e4f6b4e4fd741c",
+    "version": "0.5.0-dev (build 1, commit 4b1a27f)"
+  },
+  "model": {
+    "name": "google/gemma-4-E4B-it",
+    "path": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+    "sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03"
+  },
+  "note": "All-head/full-layer routing changes exposure only. Source facts, assistant-turn encoding, recipient prompts, model, tokenization, reasoning, sampler, and relative bank prior remain as frozen. C17 is an exact-fact routing diagnostic; it does not itself qualify process-prior generalization.",
+  "parent_c16_plan_sha256": "ed1ed7028f6187b0eab33a09413e588814432b0fe3c83af306467c2796369a20",
+  "parent_c16_readout_sha256": "f85dec25476cf27aa5668bebb4df8f0a987c8637906be2366823760b73c08917",
+  "plan_path": "docs/receipts/MNEME_Phase_4_MI1_C17_All_Head_Calibration_Freeze_20261011.json",
+  "plan_sha256": "3b8140de20b055d986d08e87837de185ce6c11360feda9319d6ef0f0b95c88bb",
+  "routing_preflight": {
+    "attached_fingerprint": "14567f9e22521148",
+    "cleared": true,
+    "generation_calls": 0,
+    "post_clear_revision": 130,
+    "test": "attach one all-head variant, verify fingerprint, clear"
+  },
+  "runtime": {
+    "cache_prompt": false,
+    "context_size_per_slot": 8192,
+    "cuda_build": true,
+    "driver": "595.91.07",
+    "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU",
+    "parallel_slots": 1,
+    "reasoning": "ON",
+    "threads": 4,
+    "vram_bytes": 6442450944
+  },
+  "schema_version": 1,
+  "server_command": [
+    "/home/rey/src/llama-mi1/build-mi1/bin/llama-server",
+    "--model",
+    "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+    "--alias",
+    "google/gemma-4-E4B-it",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "18472",
+    "--ctx-size",
+    "8192",
+    "--n-gpu-layers",
+    "99",
+    "--threads",
+    "4",
+    "--threads-batch",
+    "4",
+    "--parallel",
+    "1",
+    "--reasoning",
+    "on",
+    "--reasoning-format",
+    "deepseek"
+  ],
+  "server_health": {
+    "status": "ok",
+    "url": "http://127.0.0.1:18472/health"
+  },
+  "server_model_alias": "google/gemma-4-E4B-it",
+  "status": "FROZEN_BEFORE_GENERATION"
+}

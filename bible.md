@@ -1982,3 +1982,8 @@ and dispositions remain unchanged.
 
 - Loaded one C17 all-head bank through the isolated llama.cpp server, verified its expected fingerprint, then cleared it. Server health remained OK; bank state ended disabled at revision 130. No generation occurred.
 - Added resumable execution chunks so thermal/resource checks can be interleaved; this does not cap the experiment's total calls.
+
+## 2026-10-11 MI1 C17 execution binding
+
+- Bound the frozen 40-call calibration and gated 40-call held-out suite to C16 source captures, all 16 local/remote bank hashes, the pinned model/server runtime, and the all-head configuration. Server reports Gemma 4 E4B-it; health is OK; one attach/clear lifecycle check passed; no generations have been issued.
+- Execution freeze: `docs/receipts/MNEME_Phase_4_MI1_C17_Execution_Freeze_20261011.json`, SHA-256 `34eff55abb99bc78352be4dd70d4cce8ce245452b0998223f855fd8e488a6ef0`. GPU preflight: 39 C, idle, about 2.6 GiB VRAM used.
