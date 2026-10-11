@@ -31,9 +31,24 @@
     }
   },
   "completed_suite": {
-    "test_a": {"coordinates": 144, "latent_a_correct": 0, "latent_b_correct": 0, "per_polarity_n": 24, "no_bank_unknown": 23, "irrelevant_bank_unknown": 23},
-    "test_b": {"coordinates": 108, "attributable_repeatable_latent_effect_established": false},
-    "test_c": {"coordinates": 16, "all_outputs_unknown": true, "bank_physical_lifecycle": "attach/replace/disable/restore verified", "behavioral_removal_restoration": "not demonstrated because no prior behavioral effect was established"},
+    "test_a": {
+      "coordinates": 144,
+      "latent_a_correct": 0,
+      "latent_b_correct": 0,
+      "per_polarity_n": 24,
+      "no_bank_unknown": 23,
+      "irrelevant_bank_unknown": 23
+    },
+    "test_b": {
+      "coordinates": 108,
+      "attributable_repeatable_latent_effect_established": false
+    },
+    "test_c": {
+      "coordinates": 16,
+      "all_outputs_unknown": true,
+      "bank_physical_lifecycle": "attach/replace/disable/restore verified",
+      "behavioral_removal_restoration": "not demonstrated because no prior behavioral effect was established"
+    },
     "total_coordinates": 268,
     "evidence_index": "/home/nyx/mneme-artifacts/phase4-mi1/test-abc/evidence/index.json",
     "evidence_index_sha256": "bf2968b9bd8ae26b533a32c4c1feb5c49f21898ab6866ea6ded93f289beb33db"
@@ -41,13 +56,39 @@
   "mechanism_diagnostics": {
     "bank_attachment_fingerprint_verified": true,
     "selected_attention_bank_mass": [
-      {"test": "C11", "mean": 0.448, "selected_heads": 16, "unselected_head_mass": 0.0},
-      {"test": "C14", "mean": 0.498, "range": [0.055, 0.97]}
+      {
+        "test": "C11",
+        "mean": 0.448,
+        "selected_heads": 16,
+        "unselected_head_mass": 0.0
+      },
+      {
+        "test": "C14",
+        "mean": 0.498,
+        "range": [
+          0.055,
+          0.97
+        ]
+      }
     ],
     "downstream_query_state_change_measured": true,
-    "context_only_and_raw_plus_context": {"test": "C10", "correct": 0, "total": 8},
-    "assistant_turn_bank": {"test": "C16", "correct": 0, "total": 16},
-    "all_head_all_layer": {"test": "C17", "latent_a_correct": 1, "latent_b_correct": 0, "total_per_polarity": 8, "reasoning_available_for_latent_coordinates": 0},
+    "context_only_and_raw_plus_context": {
+      "test": "C10",
+      "correct": 0,
+      "total": 8
+    },
+    "assistant_turn_bank": {
+      "test": "C16",
+      "correct": 0,
+      "total": 16
+    },
+    "all_head_all_layer": {
+      "test": "C17",
+      "latent_a_correct": 1,
+      "latent_b_correct": 0,
+      "total_per_polarity": 8,
+      "reasoning_available_for_latent_coordinates": 0
+    },
     "interpretation": "Numerical access and computation changes are demonstrated; semantic decoding/retrieval is not reliable."
   },
   "cost": {
@@ -59,22 +100,89 @@
     "mean_encode_seconds": 1.457,
     "mean_package_configure_seconds": 0.031,
     "typical_selected_site_bank_bytes_approx": 9230000,
-    "attach_latency": "not separately measured"
+    "lifecycle_measurement": {
+      "run_id": "MI1-LIFECYCLE-COST-01",
+      "generation_calls": 0,
+      "warmup_cycles": 2,
+      "measured_cycles": 25,
+      "operation_latency_us": {
+        "attach": {
+          "mean": 9029.535,
+          "median": 9180.361,
+          "p90": 9299.636,
+          "min": 6828.583,
+          "max": 9392.733,
+          "n": 25
+        },
+        "replace": {
+          "mean": 9149.185,
+          "median": 9312.918,
+          "p90": 11027.429,
+          "min": 6929.119,
+          "max": 11311.701,
+          "n": 25
+        },
+        "disable": {
+          "mean": 1277.004,
+          "median": 1509.027,
+          "p90": 1587.249,
+          "min": 281.509,
+          "max": 1646.889,
+          "n": 25
+        },
+        "clear": {
+          "mean": 1301.585,
+          "median": 1220.796,
+          "p90": 1601.981,
+          "min": 1110.263,
+          "max": 1639.511,
+          "n": 25
+        }
+      },
+      "final_bank_state": "disabled and empty; revision 108",
+      "server_stopped_and_port_closed": true,
+      "summary_path": "/home/nyx/mneme-artifacts/phase4-mi1/continued-resolution/lifecycle-cost/summary.json",
+      "summary_sha256": "549932477704e8262b5d808413f6003df290cf68deffd0dc51e76cf191f44907",
+      "raw_journal_sha256": "a341b96188883d57a0be4b96da96723b65a5c2ecfee26b054eeba54f700d4ce9",
+      "measurement_scope": "MSI loopback HTTP API only, warm-cache steady state after two warmup cycles; includes file read/validation for attach/replace; excludes model startup, bank encode, transfer, generation and SAA."
+    },
+    "indicative_encode_configure_attach_seconds": 1.497
   },
   "root_cause": {
     "supported": "The tested Gemma Q2/llama.cpp path numerically routes side-bank K/V into selected attention and changes downstream states, but does not reliably decode structured bank contents into correct attributable answers or ordinary task behavior.",
-    "ruled_out_as_complete_explanations": ["bank missing or misbound", "selected-head mask absent", "C2 visible-control task mismatch explains all latent failures"],
-    "unresolved": ["Gemma learned response to side-loaded K/V", "Q2 quantization", "Gemma-specific attention/KV semantic mismatch in isolated port", "interaction among these"],
+    "ruled_out_as_complete_explanations": [
+      "bank missing or misbound",
+      "selected-head mask absent",
+      "C2 visible-control task mismatch explains all latent failures"
+    ],
+    "unresolved": [
+      "Gemma learned response to side-loaded K/V",
+      "Q2 quantization",
+      "Gemma-specific attention/KV semantic mismatch in isolated port",
+      "interaction among these"
+    ],
     "recommendation": "Park this local implementation; do not integrate into MNEME."
   },
   "historical_dispositions_unchanged": true,
   "no_new_gemma_calls": true,
   "no_mneme_state_or_saa_mutation": true,
   "evidence_refs": {
+    "lifecycle_cost_plan_sha256": "691f732fed7b5668d48f0e820b5d24754616f59da1daa8ff699f1b4c5073457c",
     "c2_score": "/home/nyx/mneme-artifacts/phase4-mi1/calibration-run/calibration-score-c2.json",
     "c2_score_sha256": "dd9ed159b3f94dbd3575294c1ecaeb747fb493bdf8e78a4e75e6db111ced97d4",
     "c17_score": "/home/nyx/mneme-artifacts/phase4-mi1/c17-allhead/score-calibration.json",
     "c17_score_sha256": "6c3b325485c072b8cc0c3e6f237195cf973989c3a1b870b1f3b80c006de99697",
     "prior_disposition": "docs/receipts/MNEME_Phase_4_MI1_Final_Disposition_20261011.md"
+  },
+  "test_c_new_bank": {
+    "coordinates": 2,
+    "bank_source": "Daxi activates Bero; Bero activates Cuni; Cuni activates Efo; Efo activates Gaxi.",
+    "source_sha256": "7c2a9afd1d4e179bdfe27ab1ca8928cfbc4e32064d27b213c7129933c70080be",
+    "bank_encoding": "normal local bank encoding and attach",
+    "selector": "frozen sparse; 16 query sites",
+    "selector_sha256": "186aa3365012236c48deb7d063941555c5b8ac5c6737e8192025ae017433ff56",
+    "per_neighborhood_recalibration_performed": false,
+    "outputs": "2/2 unknown",
+    "interpretation": "New-bank encoding and attachment worked mechanically; semantic reuse on this new neighborhood was not demonstrated."
   }
 }
