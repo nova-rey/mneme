@@ -1959,3 +1959,9 @@ and dispositions remain unchanged.
 
 - Encoded 16 new assistant-turn sources with the exact-Q2 native encoder. Remote capture manifest lists 16/16 captures; all local hashes match. Constructed 16 selected-site 4x banks and verified each configured bank file against its remote SHA-256. The remote bank directory also contains 16 base unselected files; only the 16 hash-bound configured variants are used. The one-slot Gemma server remains healthy at 44 C with about 2.7 GiB VRAM used.
 - Bound model/runtime/server command, C16 plan, code, source/capture/variant manifests, and 48-calibration/40-confirmation maximum in `docs/receipts/MNEME_Phase_4_MI1_C16_Execution_Freeze_20261011.json`, SHA-256 `e11d1f9666034a1b7e8cbaa668155258ca55a0de7f6a1594b99541c165c9c61a`. No C16 generation has been issued at this binding.
+
+## 2026-10-11 MI1 C16 assistant-turn calibration outcome
+
+- C16 completed all 48 frozen coordinates with no missing/uncertain attempts. No-bank and cue-only unknown controls were 8/8, visible A/B were 7/8 and 8/8, while both selected assistant-turn latent polarities were 0/8. The frozen gate failed, so none of the 40 held-out coordinates ran.
+- Representative latent reasoning explicitly treated the hidden note as unavailable. This is a valid behavioral negative despite successful bank attachment; numeric prefill attention alone does not establish semantic retrieval. C16 only rejects this atomic-recall/assistant-turn configuration, not process-prior steering in general.
+- Compact readout: `docs/receipts/MNEME_Phase_4_MI1_C16_Calibration_Readout_20261011.md` and `.json`. Full requests/reasoning/answers remain under `/home/nyx/mneme-artifacts/phase4-mi1/c16-assistant/` with evidence index SHA-256 `ecd63e75f37338e969948ec69afa79745b88fa29cf1a90302fdb0632b3a85e6a` and score SHA-256 `01e926308f4e27409d0e4b91b681dfeff3074e1506a133e943a33dbcabe7096c`.
