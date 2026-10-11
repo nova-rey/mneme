@@ -1947,3 +1947,10 @@ and dispositions remain unchanged.
 
 - Completed all 80 frozen C15B calls on the one-slot server. Negative controls were 8/8 unknown; visible A/B were 8/8 each; latent A/B were 0/8 each for raw, system-turn, and user-turn bank encoding. The held-out gate failed and no confirmation ran. This rules out the tested role-token interpretation but leaves the assistant-role interpretation and broader semantic-steering feasibility unresolved.
 - The earlier C15 four-slot server crash remains an apparatus failure; C15B is the separate full corrected rerun. Full outputs stay local; compact readout: `docs/receipts/MNEME_Phase_4_MI1_C15B_Calibration_Readout_20261011.md` and `.json`.
+
+## 2026-10-11 MI1 C16 assistant-authored-memory calibration freeze
+
+- C15B's correctly attached raw/system/user bank encodings all failed latent one-hop retrieval while visible and negative controls passed. Frozen C16 before new inference to test the remaining role hypothesis: the same fact as a completed assistant-authored note, with new calibration and disjoint held-out fixtures, same exact-Q2 host, C12 selected sites, 4x prior, reasoning ON, no prompt cache, and one server slot. The gate is unchanged at 6/8 per latent polarity and 7/8 for visible and unknown controls; held-out confirmation remains gated.
+- Plan: `docs/receipts/MNEME_Phase_4_MI1_C16_Assistant_Memory_Calibration_Freeze_20261011.json`. No C16 generation has been issued.
+
+- C16 frozen schedule hash: `ed1ed7028f6187b0eab33a09413e588814432b0fe3c83af306467c2796369a20`; 48 calibration calls and 40 disjoint held-out confirmation calls are specified. No generation has been issued.

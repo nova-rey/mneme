@@ -1,0 +1,5145 @@
+{
+  "calibration_fixtures": [
+    {
+      "decoy": "Tavi",
+      "fixture_id": "A41",
+      "item": "canvas pouch",
+      "target": "Mero"
+    },
+    {
+      "decoy": "Doru",
+      "fixture_id": "A42",
+      "item": "signal lamp",
+      "target": "Peka"
+    },
+    {
+      "decoy": "Garo",
+      "fixture_id": "A43",
+      "item": "water filter",
+      "target": "Sumi"
+    },
+    {
+      "decoy": "Voma",
+      "fixture_id": "A44",
+      "item": "survey case",
+      "target": "Leki"
+    }
+  ],
+  "call_count": 48,
+  "conditions": [
+    "no_bank",
+    "cue_no_bank",
+    "visible_A",
+    "visible_B",
+    "latent_assistant_turn_A",
+    "latent_assistant_turn_B"
+  ],
+  "confirmation_call_count": 40,
+  "confirmation_coordinates_frozen_not_authorized_until_gate": [
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "no_bank",
+      "coordinate_id": "C16-confirmation-A45-no_bank-34201",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A45",
+      "item": "rope bag",
+      "metadata": {
+        "condition": "no_bank",
+        "encoding": null,
+        "fixture_id": "A45",
+        "phase": "confirmation",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the rope bag: Neri or Kavu? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "8133f79668cd9c8d6762a63db56552b1f131048191050476b5592a9d7e41b003",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_A",
+      "coordinate_id": "C16-confirmation-A45-visible_A-34201",
+      "expected": {
+        "answer": "Neri"
+      },
+      "fixture_id": "A45",
+      "item": "rope bag",
+      "metadata": {
+        "condition": "visible_A",
+        "encoding": null,
+        "fixture_id": "A45",
+        "phase": "confirmation",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the rope bag is Neri.\n\nQuestion:\nWhich label does the archived note associate with the rope bag: Neri or Kavu? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "bf6b7f0369c87c76338ff80b39644df97d68c3111a97252cc239b25038592b1e",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_B",
+      "coordinate_id": "C16-confirmation-A45-visible_B-34201",
+      "expected": {
+        "answer": "Kavu"
+      },
+      "fixture_id": "A45",
+      "item": "rope bag",
+      "metadata": {
+        "condition": "visible_B",
+        "encoding": null,
+        "fixture_id": "A45",
+        "phase": "confirmation",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the rope bag is Kavu.\n\nQuestion:\nWhich label does the archived note associate with the rope bag: Neri or Kavu? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "e42c524a7b1a0ee2235b57e9702ec6a9d83417ae1b1b3e0927a06048b65b779b",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the rope bag is Neri.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the rope bag is Neri.<turn|>\n",
+      "bank_source_sha256": "818dad7a6540dd83374a792050cd36e69142557aaf6ff57e61711ae896bad953",
+      "condition": "latent_assistant_turn_A",
+      "coordinate_id": "C16-confirmation-A45-latent_assistant_turn_A-34201",
+      "expected": {
+        "answer": "Neri"
+      },
+      "fixture_id": "A45",
+      "item": "rope bag",
+      "metadata": {
+        "condition": "latent_assistant_turn_A",
+        "encoding": "assistant_turn",
+        "fixture_id": "A45",
+        "phase": "confirmation",
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the rope bag: Neri or Kavu? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "b668d4a9f10bbba4e000747f86ec91c36a2c1cf69595f7ae89f00d4fd833c41a",
+      "seed": 34201,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the rope bag is Kavu.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the rope bag is Kavu.<turn|>\n",
+      "bank_source_sha256": "1b978e80f1a263ecdb21684caf912ebe605da83b3a3f9194838efeac20c66c01",
+      "condition": "latent_assistant_turn_B",
+      "coordinate_id": "C16-confirmation-A45-latent_assistant_turn_B-34201",
+      "expected": {
+        "answer": "Kavu"
+      },
+      "fixture_id": "A45",
+      "item": "rope bag",
+      "metadata": {
+        "condition": "latent_assistant_turn_B",
+        "encoding": "assistant_turn",
+        "fixture_id": "A45",
+        "phase": "confirmation",
+        "seed": 34201,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the rope bag: Neri or Kavu? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "b668d4a9f10bbba4e000747f86ec91c36a2c1cf69595f7ae89f00d4fd833c41a",
+      "seed": 34201,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "no_bank",
+      "coordinate_id": "C16-confirmation-A45-no_bank-34219",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A45",
+      "item": "rope bag",
+      "metadata": {
+        "condition": "no_bank",
+        "encoding": null,
+        "fixture_id": "A45",
+        "phase": "confirmation",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the rope bag: Neri or Kavu? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "3348bf36b4f467a7eb5df420d2fe5b298297093c2c1f8f6ce44c0107da6e36b8",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_A",
+      "coordinate_id": "C16-confirmation-A45-visible_A-34219",
+      "expected": {
+        "answer": "Neri"
+      },
+      "fixture_id": "A45",
+      "item": "rope bag",
+      "metadata": {
+        "condition": "visible_A",
+        "encoding": null,
+        "fixture_id": "A45",
+        "phase": "confirmation",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the rope bag is Neri.\n\nQuestion:\nWhich label does the archived note associate with the rope bag: Neri or Kavu? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "4a89993c77799ada4c64a2a8a4a95eeade64499637f8981e4078aab4c6da8fa8",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_B",
+      "coordinate_id": "C16-confirmation-A45-visible_B-34219",
+      "expected": {
+        "answer": "Kavu"
+      },
+      "fixture_id": "A45",
+      "item": "rope bag",
+      "metadata": {
+        "condition": "visible_B",
+        "encoding": null,
+        "fixture_id": "A45",
+        "phase": "confirmation",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the rope bag is Kavu.\n\nQuestion:\nWhich label does the archived note associate with the rope bag: Neri or Kavu? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "bb4c82e3c422526b9fd149b458a595ad7fdd58402c119b78e3a16c9fa71007f5",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the rope bag is Neri.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the rope bag is Neri.<turn|>\n",
+      "bank_source_sha256": "818dad7a6540dd83374a792050cd36e69142557aaf6ff57e61711ae896bad953",
+      "condition": "latent_assistant_turn_A",
+      "coordinate_id": "C16-confirmation-A45-latent_assistant_turn_A-34219",
+      "expected": {
+        "answer": "Neri"
+      },
+      "fixture_id": "A45",
+      "item": "rope bag",
+      "metadata": {
+        "condition": "latent_assistant_turn_A",
+        "encoding": "assistant_turn",
+        "fixture_id": "A45",
+        "phase": "confirmation",
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the rope bag: Neri or Kavu? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "5e751c2b832d717498a24ddd249692e8543a51686702bc2e76af11adc0951eab",
+      "seed": 34219,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the rope bag is Kavu.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the rope bag is Kavu.<turn|>\n",
+      "bank_source_sha256": "1b978e80f1a263ecdb21684caf912ebe605da83b3a3f9194838efeac20c66c01",
+      "condition": "latent_assistant_turn_B",
+      "coordinate_id": "C16-confirmation-A45-latent_assistant_turn_B-34219",
+      "expected": {
+        "answer": "Kavu"
+      },
+      "fixture_id": "A45",
+      "item": "rope bag",
+      "metadata": {
+        "condition": "latent_assistant_turn_B",
+        "encoding": "assistant_turn",
+        "fixture_id": "A45",
+        "phase": "confirmation",
+        "seed": 34219,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the rope bag: Neri or Kavu? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "5e751c2b832d717498a24ddd249692e8543a51686702bc2e76af11adc0951eab",
+      "seed": 34219,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "no_bank",
+      "coordinate_id": "C16-confirmation-A46-no_bank-34201",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A46",
+      "item": "repair kit",
+      "metadata": {
+        "condition": "no_bank",
+        "encoding": null,
+        "fixture_id": "A46",
+        "phase": "confirmation",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the repair kit: Besa or Yori? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "39377c12289ebfe9eec970e67a231b9ee9a9291c8400bd8ce1cd8035207270f1",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_A",
+      "coordinate_id": "C16-confirmation-A46-visible_A-34201",
+      "expected": {
+        "answer": "Besa"
+      },
+      "fixture_id": "A46",
+      "item": "repair kit",
+      "metadata": {
+        "condition": "visible_A",
+        "encoding": null,
+        "fixture_id": "A46",
+        "phase": "confirmation",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the repair kit is Besa.\n\nQuestion:\nWhich label does the archived note associate with the repair kit: Besa or Yori? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "14e595ed5c7abb39fd6b768a89a5299f20cfc0d3e7a32454c7e57dc7a6d11f21",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_B",
+      "coordinate_id": "C16-confirmation-A46-visible_B-34201",
+      "expected": {
+        "answer": "Yori"
+      },
+      "fixture_id": "A46",
+      "item": "repair kit",
+      "metadata": {
+        "condition": "visible_B",
+        "encoding": null,
+        "fixture_id": "A46",
+        "phase": "confirmation",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the repair kit is Yori.\n\nQuestion:\nWhich label does the archived note associate with the repair kit: Besa or Yori? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "a3acb44580d6a98c03161f9bcfdd7f19117e5000b169c6b07ea5961c9a71bfb1",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the repair kit is Besa.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the repair kit is Besa.<turn|>\n",
+      "bank_source_sha256": "4e7aede161525f068ccf56d8bb479e6b8fec53702c038d5a89fd75e95cc959e2",
+      "condition": "latent_assistant_turn_A",
+      "coordinate_id": "C16-confirmation-A46-latent_assistant_turn_A-34201",
+      "expected": {
+        "answer": "Besa"
+      },
+      "fixture_id": "A46",
+      "item": "repair kit",
+      "metadata": {
+        "condition": "latent_assistant_turn_A",
+        "encoding": "assistant_turn",
+        "fixture_id": "A46",
+        "phase": "confirmation",
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the repair kit: Besa or Yori? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "5b1e7c4436ad35d5a212b5e4437327bc249d1b40cf7e73df4fd59298a145e3a1",
+      "seed": 34201,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the repair kit is Yori.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the repair kit is Yori.<turn|>\n",
+      "bank_source_sha256": "7775ec914f70737d26d738a16da3e3c2c9b3b99ba266962efd2cfb1cc2cca210",
+      "condition": "latent_assistant_turn_B",
+      "coordinate_id": "C16-confirmation-A46-latent_assistant_turn_B-34201",
+      "expected": {
+        "answer": "Yori"
+      },
+      "fixture_id": "A46",
+      "item": "repair kit",
+      "metadata": {
+        "condition": "latent_assistant_turn_B",
+        "encoding": "assistant_turn",
+        "fixture_id": "A46",
+        "phase": "confirmation",
+        "seed": 34201,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the repair kit: Besa or Yori? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "5b1e7c4436ad35d5a212b5e4437327bc249d1b40cf7e73df4fd59298a145e3a1",
+      "seed": 34201,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "no_bank",
+      "coordinate_id": "C16-confirmation-A46-no_bank-34219",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A46",
+      "item": "repair kit",
+      "metadata": {
+        "condition": "no_bank",
+        "encoding": null,
+        "fixture_id": "A46",
+        "phase": "confirmation",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the repair kit: Besa or Yori? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "4f013c2ccda9946196054e81e5182c2d5e72d71bc0ad15298e4cecd7b652c32a",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_A",
+      "coordinate_id": "C16-confirmation-A46-visible_A-34219",
+      "expected": {
+        "answer": "Besa"
+      },
+      "fixture_id": "A46",
+      "item": "repair kit",
+      "metadata": {
+        "condition": "visible_A",
+        "encoding": null,
+        "fixture_id": "A46",
+        "phase": "confirmation",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the repair kit is Besa.\n\nQuestion:\nWhich label does the archived note associate with the repair kit: Besa or Yori? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "8e5b8051936ee7239cafc4f94c08f975886edaecdf4b590f7d84f28a83b562e7",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_B",
+      "coordinate_id": "C16-confirmation-A46-visible_B-34219",
+      "expected": {
+        "answer": "Yori"
+      },
+      "fixture_id": "A46",
+      "item": "repair kit",
+      "metadata": {
+        "condition": "visible_B",
+        "encoding": null,
+        "fixture_id": "A46",
+        "phase": "confirmation",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the repair kit is Yori.\n\nQuestion:\nWhich label does the archived note associate with the repair kit: Besa or Yori? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "a33b032b457f54048381926108094788308b1b58fe5025ed46244bc86a23c23c",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the repair kit is Besa.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the repair kit is Besa.<turn|>\n",
+      "bank_source_sha256": "4e7aede161525f068ccf56d8bb479e6b8fec53702c038d5a89fd75e95cc959e2",
+      "condition": "latent_assistant_turn_A",
+      "coordinate_id": "C16-confirmation-A46-latent_assistant_turn_A-34219",
+      "expected": {
+        "answer": "Besa"
+      },
+      "fixture_id": "A46",
+      "item": "repair kit",
+      "metadata": {
+        "condition": "latent_assistant_turn_A",
+        "encoding": "assistant_turn",
+        "fixture_id": "A46",
+        "phase": "confirmation",
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the repair kit: Besa or Yori? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "4c2f85787bac232087905b20194472eeb526eba974bd26e11b57667b3c0afd0f",
+      "seed": 34219,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the repair kit is Yori.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the repair kit is Yori.<turn|>\n",
+      "bank_source_sha256": "7775ec914f70737d26d738a16da3e3c2c9b3b99ba266962efd2cfb1cc2cca210",
+      "condition": "latent_assistant_turn_B",
+      "coordinate_id": "C16-confirmation-A46-latent_assistant_turn_B-34219",
+      "expected": {
+        "answer": "Yori"
+      },
+      "fixture_id": "A46",
+      "item": "repair kit",
+      "metadata": {
+        "condition": "latent_assistant_turn_B",
+        "encoding": "assistant_turn",
+        "fixture_id": "A46",
+        "phase": "confirmation",
+        "seed": 34219,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the repair kit: Besa or Yori? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "4c2f85787bac232087905b20194472eeb526eba974bd26e11b57667b3c0afd0f",
+      "seed": 34219,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "no_bank",
+      "coordinate_id": "C16-confirmation-A47-no_bank-34201",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A47",
+      "item": "food tin",
+      "metadata": {
+        "condition": "no_bank",
+        "encoding": null,
+        "fixture_id": "A47",
+        "phase": "confirmation",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the food tin: Haku or Cemi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "f1db9f41044e7f77bb4cb4942ff8e4bcc502ac098147da6ac069100e9e85eaca",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_A",
+      "coordinate_id": "C16-confirmation-A47-visible_A-34201",
+      "expected": {
+        "answer": "Haku"
+      },
+      "fixture_id": "A47",
+      "item": "food tin",
+      "metadata": {
+        "condition": "visible_A",
+        "encoding": null,
+        "fixture_id": "A47",
+        "phase": "confirmation",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the food tin is Haku.\n\nQuestion:\nWhich label does the archived note associate with the food tin: Haku or Cemi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "f220554fafbe053a78a3e68b63a28340efb107170c4ba608be5c242385cd06b6",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_B",
+      "coordinate_id": "C16-confirmation-A47-visible_B-34201",
+      "expected": {
+        "answer": "Cemi"
+      },
+      "fixture_id": "A47",
+      "item": "food tin",
+      "metadata": {
+        "condition": "visible_B",
+        "encoding": null,
+        "fixture_id": "A47",
+        "phase": "confirmation",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the food tin is Cemi.\n\nQuestion:\nWhich label does the archived note associate with the food tin: Haku or Cemi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "d063d8de253d623ae4e6bfd11663835aa23e79de69c5c3813223fab716f973a0",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the food tin is Haku.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the food tin is Haku.<turn|>\n",
+      "bank_source_sha256": "00320a2e9765ac91f046840243e7f888562f7779b5f1f20ab287304c1459144d",
+      "condition": "latent_assistant_turn_A",
+      "coordinate_id": "C16-confirmation-A47-latent_assistant_turn_A-34201",
+      "expected": {
+        "answer": "Haku"
+      },
+      "fixture_id": "A47",
+      "item": "food tin",
+      "metadata": {
+        "condition": "latent_assistant_turn_A",
+        "encoding": "assistant_turn",
+        "fixture_id": "A47",
+        "phase": "confirmation",
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the food tin: Haku or Cemi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "0d5916bcaee960466fefa36509a862e7bc62a731d360b066a4cdb62cc8d00936",
+      "seed": 34201,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the food tin is Cemi.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the food tin is Cemi.<turn|>\n",
+      "bank_source_sha256": "fbae73eb65a63d2f2d9520176d48bec37237069e7f424aeec02f80d09cabf243",
+      "condition": "latent_assistant_turn_B",
+      "coordinate_id": "C16-confirmation-A47-latent_assistant_turn_B-34201",
+      "expected": {
+        "answer": "Cemi"
+      },
+      "fixture_id": "A47",
+      "item": "food tin",
+      "metadata": {
+        "condition": "latent_assistant_turn_B",
+        "encoding": "assistant_turn",
+        "fixture_id": "A47",
+        "phase": "confirmation",
+        "seed": 34201,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the food tin: Haku or Cemi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "0d5916bcaee960466fefa36509a862e7bc62a731d360b066a4cdb62cc8d00936",
+      "seed": 34201,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "no_bank",
+      "coordinate_id": "C16-confirmation-A47-no_bank-34219",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A47",
+      "item": "food tin",
+      "metadata": {
+        "condition": "no_bank",
+        "encoding": null,
+        "fixture_id": "A47",
+        "phase": "confirmation",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the food tin: Haku or Cemi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "fff1ccf6746cd54da5517a553ec9c436ed225407b8e4ee6b1512207140592583",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_A",
+      "coordinate_id": "C16-confirmation-A47-visible_A-34219",
+      "expected": {
+        "answer": "Haku"
+      },
+      "fixture_id": "A47",
+      "item": "food tin",
+      "metadata": {
+        "condition": "visible_A",
+        "encoding": null,
+        "fixture_id": "A47",
+        "phase": "confirmation",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the food tin is Haku.\n\nQuestion:\nWhich label does the archived note associate with the food tin: Haku or Cemi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "27da6a0b7ac738333c9cf89efc962c2a24ff139089c2c1e269b4addfddb9e906",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_B",
+      "coordinate_id": "C16-confirmation-A47-visible_B-34219",
+      "expected": {
+        "answer": "Cemi"
+      },
+      "fixture_id": "A47",
+      "item": "food tin",
+      "metadata": {
+        "condition": "visible_B",
+        "encoding": null,
+        "fixture_id": "A47",
+        "phase": "confirmation",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the food tin is Cemi.\n\nQuestion:\nWhich label does the archived note associate with the food tin: Haku or Cemi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "f003c4945c2d356e4d53b6ac5161aa5f1603df256d0b846f0cd70f7e4a2ff446",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the food tin is Haku.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the food tin is Haku.<turn|>\n",
+      "bank_source_sha256": "00320a2e9765ac91f046840243e7f888562f7779b5f1f20ab287304c1459144d",
+      "condition": "latent_assistant_turn_A",
+      "coordinate_id": "C16-confirmation-A47-latent_assistant_turn_A-34219",
+      "expected": {
+        "answer": "Haku"
+      },
+      "fixture_id": "A47",
+      "item": "food tin",
+      "metadata": {
+        "condition": "latent_assistant_turn_A",
+        "encoding": "assistant_turn",
+        "fixture_id": "A47",
+        "phase": "confirmation",
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the food tin: Haku or Cemi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "f1c2ff7236bdcfe0bc5ffb678339562eb903b43370d3b47db1835d9a6b2af130",
+      "seed": 34219,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the food tin is Cemi.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the food tin is Cemi.<turn|>\n",
+      "bank_source_sha256": "fbae73eb65a63d2f2d9520176d48bec37237069e7f424aeec02f80d09cabf243",
+      "condition": "latent_assistant_turn_B",
+      "coordinate_id": "C16-confirmation-A47-latent_assistant_turn_B-34219",
+      "expected": {
+        "answer": "Cemi"
+      },
+      "fixture_id": "A47",
+      "item": "food tin",
+      "metadata": {
+        "condition": "latent_assistant_turn_B",
+        "encoding": "assistant_turn",
+        "fixture_id": "A47",
+        "phase": "confirmation",
+        "seed": 34219,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the food tin: Haku or Cemi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "f1c2ff7236bdcfe0bc5ffb678339562eb903b43370d3b47db1835d9a6b2af130",
+      "seed": 34219,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "no_bank",
+      "coordinate_id": "C16-confirmation-A48-no_bank-34201",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A48",
+      "item": "map case",
+      "metadata": {
+        "condition": "no_bank",
+        "encoding": null,
+        "fixture_id": "A48",
+        "phase": "confirmation",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the map case: Feli or Ravo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "092337fcbaa31306aee559ee060625721aff67f3674cccb105d7a5984df0e124",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_A",
+      "coordinate_id": "C16-confirmation-A48-visible_A-34201",
+      "expected": {
+        "answer": "Feli"
+      },
+      "fixture_id": "A48",
+      "item": "map case",
+      "metadata": {
+        "condition": "visible_A",
+        "encoding": null,
+        "fixture_id": "A48",
+        "phase": "confirmation",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the map case is Feli.\n\nQuestion:\nWhich label does the archived note associate with the map case: Feli or Ravo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "df01b7505dc3e68ed95fb891fe51c8f47cf7e66b44c2e35ac650bb3e692657ea",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_B",
+      "coordinate_id": "C16-confirmation-A48-visible_B-34201",
+      "expected": {
+        "answer": "Ravo"
+      },
+      "fixture_id": "A48",
+      "item": "map case",
+      "metadata": {
+        "condition": "visible_B",
+        "encoding": null,
+        "fixture_id": "A48",
+        "phase": "confirmation",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the map case is Ravo.\n\nQuestion:\nWhich label does the archived note associate with the map case: Feli or Ravo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "b32b20efd442a9623141099ba27516d4dc72d4767f57a7e354ebab11cc211c81",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the map case is Feli.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the map case is Feli.<turn|>\n",
+      "bank_source_sha256": "265a7708ffbd7cd0783976e1fd1b81229b0dbd984b55337242a79a686fa0fb2b",
+      "condition": "latent_assistant_turn_A",
+      "coordinate_id": "C16-confirmation-A48-latent_assistant_turn_A-34201",
+      "expected": {
+        "answer": "Feli"
+      },
+      "fixture_id": "A48",
+      "item": "map case",
+      "metadata": {
+        "condition": "latent_assistant_turn_A",
+        "encoding": "assistant_turn",
+        "fixture_id": "A48",
+        "phase": "confirmation",
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the map case: Feli or Ravo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "deec2e3dadfa7c824aa6814390706b170ae8391e854d9874a7839db99a6cedc6",
+      "seed": 34201,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the map case is Ravo.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the map case is Ravo.<turn|>\n",
+      "bank_source_sha256": "f88d8371741950987818a3ee01331f82515f163be559d828786a0d46629938cf",
+      "condition": "latent_assistant_turn_B",
+      "coordinate_id": "C16-confirmation-A48-latent_assistant_turn_B-34201",
+      "expected": {
+        "answer": "Ravo"
+      },
+      "fixture_id": "A48",
+      "item": "map case",
+      "metadata": {
+        "condition": "latent_assistant_turn_B",
+        "encoding": "assistant_turn",
+        "fixture_id": "A48",
+        "phase": "confirmation",
+        "seed": 34201,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the map case: Feli or Ravo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "deec2e3dadfa7c824aa6814390706b170ae8391e854d9874a7839db99a6cedc6",
+      "seed": 34201,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "no_bank",
+      "coordinate_id": "C16-confirmation-A48-no_bank-34219",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A48",
+      "item": "map case",
+      "metadata": {
+        "condition": "no_bank",
+        "encoding": null,
+        "fixture_id": "A48",
+        "phase": "confirmation",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the map case: Feli or Ravo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "97138f5927f3e8fa325696949c069523e43b0ee18052cf9d2e4107770665ca64",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_A",
+      "coordinate_id": "C16-confirmation-A48-visible_A-34219",
+      "expected": {
+        "answer": "Feli"
+      },
+      "fixture_id": "A48",
+      "item": "map case",
+      "metadata": {
+        "condition": "visible_A",
+        "encoding": null,
+        "fixture_id": "A48",
+        "phase": "confirmation",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the map case is Feli.\n\nQuestion:\nWhich label does the archived note associate with the map case: Feli or Ravo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "4ee26c17efec3d532e7722b70e29b56cc401f7461387a8f6c21aa2a5ca351aba",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_B",
+      "coordinate_id": "C16-confirmation-A48-visible_B-34219",
+      "expected": {
+        "answer": "Ravo"
+      },
+      "fixture_id": "A48",
+      "item": "map case",
+      "metadata": {
+        "condition": "visible_B",
+        "encoding": null,
+        "fixture_id": "A48",
+        "phase": "confirmation",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the map case is Ravo.\n\nQuestion:\nWhich label does the archived note associate with the map case: Feli or Ravo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "ae69e480a5fb86a1ba8c2babfce04ce0743befaad0adca04943471855c4011c6",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the map case is Feli.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the map case is Feli.<turn|>\n",
+      "bank_source_sha256": "265a7708ffbd7cd0783976e1fd1b81229b0dbd984b55337242a79a686fa0fb2b",
+      "condition": "latent_assistant_turn_A",
+      "coordinate_id": "C16-confirmation-A48-latent_assistant_turn_A-34219",
+      "expected": {
+        "answer": "Feli"
+      },
+      "fixture_id": "A48",
+      "item": "map case",
+      "metadata": {
+        "condition": "latent_assistant_turn_A",
+        "encoding": "assistant_turn",
+        "fixture_id": "A48",
+        "phase": "confirmation",
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the map case: Feli or Ravo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "f6650fe02910ac557322dbc0a590f19455f9f58d6a476b87a6ecc2e1d5cf4314",
+      "seed": 34219,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the map case is Ravo.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the map case is Ravo.<turn|>\n",
+      "bank_source_sha256": "f88d8371741950987818a3ee01331f82515f163be559d828786a0d46629938cf",
+      "condition": "latent_assistant_turn_B",
+      "coordinate_id": "C16-confirmation-A48-latent_assistant_turn_B-34219",
+      "expected": {
+        "answer": "Ravo"
+      },
+      "fixture_id": "A48",
+      "item": "map case",
+      "metadata": {
+        "condition": "latent_assistant_turn_B",
+        "encoding": "assistant_turn",
+        "fixture_id": "A48",
+        "phase": "confirmation",
+        "seed": 34219,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the map case: Feli or Ravo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "f6650fe02910ac557322dbc0a590f19455f9f58d6a476b87a6ecc2e1d5cf4314",
+      "seed": 34219,
+      "tokenization_mode": "chat-special"
+    }
+  ],
+  "coordinates": [
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "no_bank",
+      "coordinate_id": "C16-calibration-A41-no_bank-34201",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A41",
+      "item": "canvas pouch",
+      "metadata": {
+        "condition": "no_bank",
+        "encoding": null,
+        "fixture_id": "A41",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the canvas pouch: Mero or Tavi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "5a82a4771635697900fc0d08c0ca8317dd35f64ab4d18b48f57aacfdb554120d",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "cue_no_bank",
+      "coordinate_id": "C16-calibration-A41-cue_no_bank-34201",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A41",
+      "item": "canvas pouch",
+      "metadata": {
+        "condition": "cue_no_bank",
+        "encoding": null,
+        "fixture_id": "A41",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are answering a small fictional stored-fact question. You have an additional internal note available to your attention, although its text is not printed in this conversation. Use the note's actual contents as evidence if they are available; do not invent or infer a value. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the canvas pouch: Mero or Tavi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "7cfb40f290da221d7ca4f4cab617f4dee63a515577aae692f8fd5fca7e51c624",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_A",
+      "coordinate_id": "C16-calibration-A41-visible_A-34201",
+      "expected": {
+        "answer": "Mero"
+      },
+      "fixture_id": "A41",
+      "item": "canvas pouch",
+      "metadata": {
+        "condition": "visible_A",
+        "encoding": null,
+        "fixture_id": "A41",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the canvas pouch is Mero.\n\nQuestion:\nWhich label does the archived note associate with the canvas pouch: Mero or Tavi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "df3e8a684d12d81c236f246270912562c624cb786d67d5c4aabce5fc43ba0bf6",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_B",
+      "coordinate_id": "C16-calibration-A41-visible_B-34201",
+      "expected": {
+        "answer": "Tavi"
+      },
+      "fixture_id": "A41",
+      "item": "canvas pouch",
+      "metadata": {
+        "condition": "visible_B",
+        "encoding": null,
+        "fixture_id": "A41",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the canvas pouch is Tavi.\n\nQuestion:\nWhich label does the archived note associate with the canvas pouch: Mero or Tavi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "9324ee9097851a78d996c6d001f43e303b309463ed0543bb7d2ca7fd77cf92d2",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the canvas pouch is Mero.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the canvas pouch is Mero.<turn|>\n",
+      "bank_source_sha256": "2fad933d7018922a0b5b21274f615bbc25c1e0d89ec8f87d10e27522f217fede",
+      "condition": "latent_assistant_turn_A",
+      "coordinate_id": "C16-calibration-A41-latent_assistant_turn_A-34201",
+      "expected": {
+        "answer": "Mero"
+      },
+      "fixture_id": "A41",
+      "item": "canvas pouch",
+      "metadata": {
+        "condition": "latent_assistant_turn_A",
+        "encoding": "assistant_turn",
+        "fixture_id": "A41",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the canvas pouch: Mero or Tavi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "c7cf67d79cb8fcdb92cbfb5c501001006540d4f21321e2399799fa57d5281faa",
+      "seed": 34201,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the canvas pouch is Tavi.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the canvas pouch is Tavi.<turn|>\n",
+      "bank_source_sha256": "f75e2fccca468f02c1338c58e17efe40a78c956d6155c2feb1b4c4ed1f5e03e8",
+      "condition": "latent_assistant_turn_B",
+      "coordinate_id": "C16-calibration-A41-latent_assistant_turn_B-34201",
+      "expected": {
+        "answer": "Tavi"
+      },
+      "fixture_id": "A41",
+      "item": "canvas pouch",
+      "metadata": {
+        "condition": "latent_assistant_turn_B",
+        "encoding": "assistant_turn",
+        "fixture_id": "A41",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the canvas pouch: Mero or Tavi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "c7cf67d79cb8fcdb92cbfb5c501001006540d4f21321e2399799fa57d5281faa",
+      "seed": 34201,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "no_bank",
+      "coordinate_id": "C16-calibration-A41-no_bank-34219",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A41",
+      "item": "canvas pouch",
+      "metadata": {
+        "condition": "no_bank",
+        "encoding": null,
+        "fixture_id": "A41",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the canvas pouch: Mero or Tavi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "55e5960bb0ada1e443806dd3e3344c902b55376ac4e4d75a3de659d8689dfcaa",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "cue_no_bank",
+      "coordinate_id": "C16-calibration-A41-cue_no_bank-34219",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A41",
+      "item": "canvas pouch",
+      "metadata": {
+        "condition": "cue_no_bank",
+        "encoding": null,
+        "fixture_id": "A41",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are answering a small fictional stored-fact question. You have an additional internal note available to your attention, although its text is not printed in this conversation. Use the note's actual contents as evidence if they are available; do not invent or infer a value. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the canvas pouch: Mero or Tavi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "bb0155f4d62669e5ecfbf541e7084be01bc4c2580491873855eca795759da8e1",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_A",
+      "coordinate_id": "C16-calibration-A41-visible_A-34219",
+      "expected": {
+        "answer": "Mero"
+      },
+      "fixture_id": "A41",
+      "item": "canvas pouch",
+      "metadata": {
+        "condition": "visible_A",
+        "encoding": null,
+        "fixture_id": "A41",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the canvas pouch is Mero.\n\nQuestion:\nWhich label does the archived note associate with the canvas pouch: Mero or Tavi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "5e11b6873d8391a10f8499811b19c6ad2ec37b15d6358d4303d70626ecbe4bd7",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_B",
+      "coordinate_id": "C16-calibration-A41-visible_B-34219",
+      "expected": {
+        "answer": "Tavi"
+      },
+      "fixture_id": "A41",
+      "item": "canvas pouch",
+      "metadata": {
+        "condition": "visible_B",
+        "encoding": null,
+        "fixture_id": "A41",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the canvas pouch is Tavi.\n\nQuestion:\nWhich label does the archived note associate with the canvas pouch: Mero or Tavi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "85e72a7e719a288001fec51173f7a9f353cf5cb0310b9204f2b34c86906e80f6",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the canvas pouch is Mero.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the canvas pouch is Mero.<turn|>\n",
+      "bank_source_sha256": "2fad933d7018922a0b5b21274f615bbc25c1e0d89ec8f87d10e27522f217fede",
+      "condition": "latent_assistant_turn_A",
+      "coordinate_id": "C16-calibration-A41-latent_assistant_turn_A-34219",
+      "expected": {
+        "answer": "Mero"
+      },
+      "fixture_id": "A41",
+      "item": "canvas pouch",
+      "metadata": {
+        "condition": "latent_assistant_turn_A",
+        "encoding": "assistant_turn",
+        "fixture_id": "A41",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the canvas pouch: Mero or Tavi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "0e25cd9cda81fb73be29cd119031f340727728c4d83a94de1f754ff6685fa997",
+      "seed": 34219,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the canvas pouch is Tavi.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the canvas pouch is Tavi.<turn|>\n",
+      "bank_source_sha256": "f75e2fccca468f02c1338c58e17efe40a78c956d6155c2feb1b4c4ed1f5e03e8",
+      "condition": "latent_assistant_turn_B",
+      "coordinate_id": "C16-calibration-A41-latent_assistant_turn_B-34219",
+      "expected": {
+        "answer": "Tavi"
+      },
+      "fixture_id": "A41",
+      "item": "canvas pouch",
+      "metadata": {
+        "condition": "latent_assistant_turn_B",
+        "encoding": "assistant_turn",
+        "fixture_id": "A41",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the canvas pouch: Mero or Tavi? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "0e25cd9cda81fb73be29cd119031f340727728c4d83a94de1f754ff6685fa997",
+      "seed": 34219,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "no_bank",
+      "coordinate_id": "C16-calibration-A42-no_bank-34201",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A42",
+      "item": "signal lamp",
+      "metadata": {
+        "condition": "no_bank",
+        "encoding": null,
+        "fixture_id": "A42",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the signal lamp: Peka or Doru? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "3c4e8965542e2962fd2f49a95b8167e4314f56d2a0bb598df0587fbb434efad6",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "cue_no_bank",
+      "coordinate_id": "C16-calibration-A42-cue_no_bank-34201",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A42",
+      "item": "signal lamp",
+      "metadata": {
+        "condition": "cue_no_bank",
+        "encoding": null,
+        "fixture_id": "A42",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are answering a small fictional stored-fact question. You have an additional internal note available to your attention, although its text is not printed in this conversation. Use the note's actual contents as evidence if they are available; do not invent or infer a value. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the signal lamp: Peka or Doru? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "02d10906fecf50201b7bda0aee8ebd08ecb6c8b08ca34711c4fa5e414785e826",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_A",
+      "coordinate_id": "C16-calibration-A42-visible_A-34201",
+      "expected": {
+        "answer": "Peka"
+      },
+      "fixture_id": "A42",
+      "item": "signal lamp",
+      "metadata": {
+        "condition": "visible_A",
+        "encoding": null,
+        "fixture_id": "A42",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the signal lamp is Peka.\n\nQuestion:\nWhich label does the archived note associate with the signal lamp: Peka or Doru? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "573ec038117cbfb7c3d17e7af25f2200889aa06ebe9ade1fc13c2357a7826c84",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_B",
+      "coordinate_id": "C16-calibration-A42-visible_B-34201",
+      "expected": {
+        "answer": "Doru"
+      },
+      "fixture_id": "A42",
+      "item": "signal lamp",
+      "metadata": {
+        "condition": "visible_B",
+        "encoding": null,
+        "fixture_id": "A42",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the signal lamp is Doru.\n\nQuestion:\nWhich label does the archived note associate with the signal lamp: Peka or Doru? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "ea1ce61291c061020468f46ec3e535a2e2eb808b321b59cd3c2cc3f33fa072d3",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the signal lamp is Peka.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the signal lamp is Peka.<turn|>\n",
+      "bank_source_sha256": "fabaa2148e2a190b8c98e6cdb7d4727184c38763529a989c54fb69bdc61d1a79",
+      "condition": "latent_assistant_turn_A",
+      "coordinate_id": "C16-calibration-A42-latent_assistant_turn_A-34201",
+      "expected": {
+        "answer": "Peka"
+      },
+      "fixture_id": "A42",
+      "item": "signal lamp",
+      "metadata": {
+        "condition": "latent_assistant_turn_A",
+        "encoding": "assistant_turn",
+        "fixture_id": "A42",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the signal lamp: Peka or Doru? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "7d02da04be4bfb156d45a1410105417bf83b1ae75be1eb55c884cf1ab094bb70",
+      "seed": 34201,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the signal lamp is Doru.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the signal lamp is Doru.<turn|>\n",
+      "bank_source_sha256": "220e9471bbff48c5e1abf7c550850f6a8517c3c6cb4b0392111b2361bb0d7e69",
+      "condition": "latent_assistant_turn_B",
+      "coordinate_id": "C16-calibration-A42-latent_assistant_turn_B-34201",
+      "expected": {
+        "answer": "Doru"
+      },
+      "fixture_id": "A42",
+      "item": "signal lamp",
+      "metadata": {
+        "condition": "latent_assistant_turn_B",
+        "encoding": "assistant_turn",
+        "fixture_id": "A42",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the signal lamp: Peka or Doru? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "7d02da04be4bfb156d45a1410105417bf83b1ae75be1eb55c884cf1ab094bb70",
+      "seed": 34201,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "no_bank",
+      "coordinate_id": "C16-calibration-A42-no_bank-34219",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A42",
+      "item": "signal lamp",
+      "metadata": {
+        "condition": "no_bank",
+        "encoding": null,
+        "fixture_id": "A42",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the signal lamp: Peka or Doru? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "e48f5466c6758c2e7d2f4fc68fc8686ecff954e6016286be30ae82a614b07a96",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "cue_no_bank",
+      "coordinate_id": "C16-calibration-A42-cue_no_bank-34219",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A42",
+      "item": "signal lamp",
+      "metadata": {
+        "condition": "cue_no_bank",
+        "encoding": null,
+        "fixture_id": "A42",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are answering a small fictional stored-fact question. You have an additional internal note available to your attention, although its text is not printed in this conversation. Use the note's actual contents as evidence if they are available; do not invent or infer a value. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the signal lamp: Peka or Doru? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "235509260885970dfd12732dda867fbfcbdfaf1a85951b386bcc0ff26fe67a5f",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_A",
+      "coordinate_id": "C16-calibration-A42-visible_A-34219",
+      "expected": {
+        "answer": "Peka"
+      },
+      "fixture_id": "A42",
+      "item": "signal lamp",
+      "metadata": {
+        "condition": "visible_A",
+        "encoding": null,
+        "fixture_id": "A42",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the signal lamp is Peka.\n\nQuestion:\nWhich label does the archived note associate with the signal lamp: Peka or Doru? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "e22b12314fc76b24564d3742882683be1854170d3b26e387901d0908610f408e",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_B",
+      "coordinate_id": "C16-calibration-A42-visible_B-34219",
+      "expected": {
+        "answer": "Doru"
+      },
+      "fixture_id": "A42",
+      "item": "signal lamp",
+      "metadata": {
+        "condition": "visible_B",
+        "encoding": null,
+        "fixture_id": "A42",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the signal lamp is Doru.\n\nQuestion:\nWhich label does the archived note associate with the signal lamp: Peka or Doru? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "1e6be6a557e7d5f6ce11baf8dc661c25610eca80ae2a0ab51967f7d49a6a7c62",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the signal lamp is Peka.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the signal lamp is Peka.<turn|>\n",
+      "bank_source_sha256": "fabaa2148e2a190b8c98e6cdb7d4727184c38763529a989c54fb69bdc61d1a79",
+      "condition": "latent_assistant_turn_A",
+      "coordinate_id": "C16-calibration-A42-latent_assistant_turn_A-34219",
+      "expected": {
+        "answer": "Peka"
+      },
+      "fixture_id": "A42",
+      "item": "signal lamp",
+      "metadata": {
+        "condition": "latent_assistant_turn_A",
+        "encoding": "assistant_turn",
+        "fixture_id": "A42",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the signal lamp: Peka or Doru? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "2a31fd2ebf7b2ee03400448853e4d9531412dc0509d951a4ef9913090b0df68d",
+      "seed": 34219,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the signal lamp is Doru.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the signal lamp is Doru.<turn|>\n",
+      "bank_source_sha256": "220e9471bbff48c5e1abf7c550850f6a8517c3c6cb4b0392111b2361bb0d7e69",
+      "condition": "latent_assistant_turn_B",
+      "coordinate_id": "C16-calibration-A42-latent_assistant_turn_B-34219",
+      "expected": {
+        "answer": "Doru"
+      },
+      "fixture_id": "A42",
+      "item": "signal lamp",
+      "metadata": {
+        "condition": "latent_assistant_turn_B",
+        "encoding": "assistant_turn",
+        "fixture_id": "A42",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the signal lamp: Peka or Doru? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "2a31fd2ebf7b2ee03400448853e4d9531412dc0509d951a4ef9913090b0df68d",
+      "seed": 34219,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "no_bank",
+      "coordinate_id": "C16-calibration-A43-no_bank-34201",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A43",
+      "item": "water filter",
+      "metadata": {
+        "condition": "no_bank",
+        "encoding": null,
+        "fixture_id": "A43",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the water filter: Sumi or Garo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "a3f25cec906cfa945ba046cf0b060eb92dcf5d2998c4f75743878b7c7be5c39c",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "cue_no_bank",
+      "coordinate_id": "C16-calibration-A43-cue_no_bank-34201",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A43",
+      "item": "water filter",
+      "metadata": {
+        "condition": "cue_no_bank",
+        "encoding": null,
+        "fixture_id": "A43",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are answering a small fictional stored-fact question. You have an additional internal note available to your attention, although its text is not printed in this conversation. Use the note's actual contents as evidence if they are available; do not invent or infer a value. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the water filter: Sumi or Garo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "db215fae5bae9e58eed0be8650e49822c57874fd69f437a60db1b5a0312de67a",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_A",
+      "coordinate_id": "C16-calibration-A43-visible_A-34201",
+      "expected": {
+        "answer": "Sumi"
+      },
+      "fixture_id": "A43",
+      "item": "water filter",
+      "metadata": {
+        "condition": "visible_A",
+        "encoding": null,
+        "fixture_id": "A43",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the water filter is Sumi.\n\nQuestion:\nWhich label does the archived note associate with the water filter: Sumi or Garo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "c4251c291571f9579bc1994ed3bebee0523ad8ee55e321e91ff58638e2580164",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_B",
+      "coordinate_id": "C16-calibration-A43-visible_B-34201",
+      "expected": {
+        "answer": "Garo"
+      },
+      "fixture_id": "A43",
+      "item": "water filter",
+      "metadata": {
+        "condition": "visible_B",
+        "encoding": null,
+        "fixture_id": "A43",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the water filter is Garo.\n\nQuestion:\nWhich label does the archived note associate with the water filter: Sumi or Garo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "af6928efed9bd9faf990d7b8c5ee6cb69fec2328abd2705fbf89c0c14d6b7dab",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the water filter is Sumi.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the water filter is Sumi.<turn|>\n",
+      "bank_source_sha256": "dcdeaa8818a91ee89e52903da414fb34a0d8999a980b43ef529b9e2bde33b5c3",
+      "condition": "latent_assistant_turn_A",
+      "coordinate_id": "C16-calibration-A43-latent_assistant_turn_A-34201",
+      "expected": {
+        "answer": "Sumi"
+      },
+      "fixture_id": "A43",
+      "item": "water filter",
+      "metadata": {
+        "condition": "latent_assistant_turn_A",
+        "encoding": "assistant_turn",
+        "fixture_id": "A43",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the water filter: Sumi or Garo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "755acf76367c53063d1db7d7965b90f96d221b940092fcc0c393810c85b2b542",
+      "seed": 34201,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the water filter is Garo.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the water filter is Garo.<turn|>\n",
+      "bank_source_sha256": "dce942015287a85b17c8638fc87e07803fef9a695de3ab7559fc1b573b76bb84",
+      "condition": "latent_assistant_turn_B",
+      "coordinate_id": "C16-calibration-A43-latent_assistant_turn_B-34201",
+      "expected": {
+        "answer": "Garo"
+      },
+      "fixture_id": "A43",
+      "item": "water filter",
+      "metadata": {
+        "condition": "latent_assistant_turn_B",
+        "encoding": "assistant_turn",
+        "fixture_id": "A43",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the water filter: Sumi or Garo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "755acf76367c53063d1db7d7965b90f96d221b940092fcc0c393810c85b2b542",
+      "seed": 34201,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "no_bank",
+      "coordinate_id": "C16-calibration-A43-no_bank-34219",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A43",
+      "item": "water filter",
+      "metadata": {
+        "condition": "no_bank",
+        "encoding": null,
+        "fixture_id": "A43",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the water filter: Sumi or Garo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "18f7250e90152219c7b236a7083e682140927dfa6ca286b278b5d2f727e14d40",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "cue_no_bank",
+      "coordinate_id": "C16-calibration-A43-cue_no_bank-34219",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A43",
+      "item": "water filter",
+      "metadata": {
+        "condition": "cue_no_bank",
+        "encoding": null,
+        "fixture_id": "A43",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are answering a small fictional stored-fact question. You have an additional internal note available to your attention, although its text is not printed in this conversation. Use the note's actual contents as evidence if they are available; do not invent or infer a value. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the water filter: Sumi or Garo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "c4d6f3356030178c0f3bcc20fd30c9fa50b0db1fb4473f57c99c8e39fb094bce",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_A",
+      "coordinate_id": "C16-calibration-A43-visible_A-34219",
+      "expected": {
+        "answer": "Sumi"
+      },
+      "fixture_id": "A43",
+      "item": "water filter",
+      "metadata": {
+        "condition": "visible_A",
+        "encoding": null,
+        "fixture_id": "A43",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the water filter is Sumi.\n\nQuestion:\nWhich label does the archived note associate with the water filter: Sumi or Garo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "0d72965c11c42598355203f3b83fe24552fe94c9015f7b0a72dcbcb5593f2a44",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_B",
+      "coordinate_id": "C16-calibration-A43-visible_B-34219",
+      "expected": {
+        "answer": "Garo"
+      },
+      "fixture_id": "A43",
+      "item": "water filter",
+      "metadata": {
+        "condition": "visible_B",
+        "encoding": null,
+        "fixture_id": "A43",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the water filter is Garo.\n\nQuestion:\nWhich label does the archived note associate with the water filter: Sumi or Garo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "803bb555fb65df9237747ad10fcb0a7df32115fe92e2beb1d165ab4a24a46786",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the water filter is Sumi.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the water filter is Sumi.<turn|>\n",
+      "bank_source_sha256": "dcdeaa8818a91ee89e52903da414fb34a0d8999a980b43ef529b9e2bde33b5c3",
+      "condition": "latent_assistant_turn_A",
+      "coordinate_id": "C16-calibration-A43-latent_assistant_turn_A-34219",
+      "expected": {
+        "answer": "Sumi"
+      },
+      "fixture_id": "A43",
+      "item": "water filter",
+      "metadata": {
+        "condition": "latent_assistant_turn_A",
+        "encoding": "assistant_turn",
+        "fixture_id": "A43",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the water filter: Sumi or Garo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "8c4a1a3c023565dada0d5b396b22568d7b8dd853980d3e1801a56d04e4991fca",
+      "seed": 34219,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the water filter is Garo.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the water filter is Garo.<turn|>\n",
+      "bank_source_sha256": "dce942015287a85b17c8638fc87e07803fef9a695de3ab7559fc1b573b76bb84",
+      "condition": "latent_assistant_turn_B",
+      "coordinate_id": "C16-calibration-A43-latent_assistant_turn_B-34219",
+      "expected": {
+        "answer": "Garo"
+      },
+      "fixture_id": "A43",
+      "item": "water filter",
+      "metadata": {
+        "condition": "latent_assistant_turn_B",
+        "encoding": "assistant_turn",
+        "fixture_id": "A43",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the water filter: Sumi or Garo? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "8c4a1a3c023565dada0d5b396b22568d7b8dd853980d3e1801a56d04e4991fca",
+      "seed": 34219,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "no_bank",
+      "coordinate_id": "C16-calibration-A44-no_bank-34201",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A44",
+      "item": "survey case",
+      "metadata": {
+        "condition": "no_bank",
+        "encoding": null,
+        "fixture_id": "A44",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the survey case: Leki or Voma? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "17ddd495352b8e52bd45614f42622fc6667bf42af8e1fd3e71098f6b5b39aa69",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "cue_no_bank",
+      "coordinate_id": "C16-calibration-A44-cue_no_bank-34201",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A44",
+      "item": "survey case",
+      "metadata": {
+        "condition": "cue_no_bank",
+        "encoding": null,
+        "fixture_id": "A44",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are answering a small fictional stored-fact question. You have an additional internal note available to your attention, although its text is not printed in this conversation. Use the note's actual contents as evidence if they are available; do not invent or infer a value. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the survey case: Leki or Voma? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "8c57240dfe4a1bcb15547fb842d50dc6f104116d731c94a28a648a9f02459984",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_A",
+      "coordinate_id": "C16-calibration-A44-visible_A-34201",
+      "expected": {
+        "answer": "Leki"
+      },
+      "fixture_id": "A44",
+      "item": "survey case",
+      "metadata": {
+        "condition": "visible_A",
+        "encoding": null,
+        "fixture_id": "A44",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the survey case is Leki.\n\nQuestion:\nWhich label does the archived note associate with the survey case: Leki or Voma? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "7da699dc70646e50fe4302a11246952b58f136775df9e8e5ca3621e9ac5cdd6b",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_B",
+      "coordinate_id": "C16-calibration-A44-visible_B-34201",
+      "expected": {
+        "answer": "Voma"
+      },
+      "fixture_id": "A44",
+      "item": "survey case",
+      "metadata": {
+        "condition": "visible_B",
+        "encoding": null,
+        "fixture_id": "A44",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the survey case is Voma.\n\nQuestion:\nWhich label does the archived note associate with the survey case: Leki or Voma? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "c5f0259963dae7955bac8cc25e07daf3262abc968611c9f9acb39a10675c251a",
+      "seed": 34201,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the survey case is Leki.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the survey case is Leki.<turn|>\n",
+      "bank_source_sha256": "f53c0095a35f2a133bb202bc951aeda0b3c939ee2007c5f674fb5df3713e3f26",
+      "condition": "latent_assistant_turn_A",
+      "coordinate_id": "C16-calibration-A44-latent_assistant_turn_A-34201",
+      "expected": {
+        "answer": "Leki"
+      },
+      "fixture_id": "A44",
+      "item": "survey case",
+      "metadata": {
+        "condition": "latent_assistant_turn_A",
+        "encoding": "assistant_turn",
+        "fixture_id": "A44",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the survey case: Leki or Voma? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "4c55760b94c4f6f4fc3bafc49a7d7e80125ab86746bf1fc9b8a27d018cf9a85d",
+      "seed": 34201,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the survey case is Voma.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the survey case is Voma.<turn|>\n",
+      "bank_source_sha256": "c10992b8cff444e0b03d201207f098b98fab47b9c534f171057251ca6062d2be",
+      "condition": "latent_assistant_turn_B",
+      "coordinate_id": "C16-calibration-A44-latent_assistant_turn_B-34201",
+      "expected": {
+        "answer": "Voma"
+      },
+      "fixture_id": "A44",
+      "item": "survey case",
+      "metadata": {
+        "condition": "latent_assistant_turn_B",
+        "encoding": "assistant_turn",
+        "fixture_id": "A44",
+        "phase": "calibration",
+        "seed": 34201,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the survey case: Leki or Voma? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "4c55760b94c4f6f4fc3bafc49a7d7e80125ab86746bf1fc9b8a27d018cf9a85d",
+      "seed": 34201,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "no_bank",
+      "coordinate_id": "C16-calibration-A44-no_bank-34219",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A44",
+      "item": "survey case",
+      "metadata": {
+        "condition": "no_bank",
+        "encoding": null,
+        "fixture_id": "A44",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the survey case: Leki or Voma? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "c2c52cdbf5d70e65e102ee9e44ae0a6c43f07d648dd8aa1731c5241685865734",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "cue_no_bank",
+      "coordinate_id": "C16-calibration-A44-cue_no_bank-34219",
+      "expected": {
+        "answer": "unknown"
+      },
+      "fixture_id": "A44",
+      "item": "survey case",
+      "metadata": {
+        "condition": "cue_no_bank",
+        "encoding": null,
+        "fixture_id": "A44",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are answering a small fictional stored-fact question. You have an additional internal note available to your attention, although its text is not printed in this conversation. Use the note's actual contents as evidence if they are available; do not invent or infer a value. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the survey case: Leki or Voma? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "a76088dd71f236ec87fdd614fdc4d50c95f5484af346a28232b6a366f9eb2674",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_A",
+      "coordinate_id": "C16-calibration-A44-visible_A-34219",
+      "expected": {
+        "answer": "Leki"
+      },
+      "fixture_id": "A44",
+      "item": "survey case",
+      "metadata": {
+        "condition": "visible_A",
+        "encoding": null,
+        "fixture_id": "A44",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the survey case is Leki.\n\nQuestion:\nWhich label does the archived note associate with the survey case: Leki or Voma? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "58e24e9360901807b925600be5e9388ffa1302fb98436019d1a24a0d516e28c5",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_encoding": null,
+      "bank_fact": null,
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "condition": "visible_B",
+      "coordinate_id": "C16-calibration-A44-visible_B-34219",
+      "expected": {
+        "answer": "Voma"
+      },
+      "fixture_id": "A44",
+      "item": "survey case",
+      "metadata": {
+        "condition": "visible_B",
+        "encoding": null,
+        "fixture_id": "A44",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- The stored codeword for the survey case is Voma.\n\nQuestion:\nWhich label does the archived note associate with the survey case: Leki or Voma? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "7cafe1bd49f8f3a50fd4e2157722e71714636ca878dfb20b7bb53bd8295a4df5",
+      "seed": 34219,
+      "tokenization_mode": "raw"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the survey case is Leki.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the survey case is Leki.<turn|>\n",
+      "bank_source_sha256": "f53c0095a35f2a133bb202bc951aeda0b3c939ee2007c5f674fb5df3713e3f26",
+      "condition": "latent_assistant_turn_A",
+      "coordinate_id": "C16-calibration-A44-latent_assistant_turn_A-34219",
+      "expected": {
+        "answer": "Leki"
+      },
+      "fixture_id": "A44",
+      "item": "survey case",
+      "metadata": {
+        "condition": "latent_assistant_turn_A",
+        "encoding": "assistant_turn",
+        "fixture_id": "A44",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the survey case: Leki or Voma? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "ab4fd3aaee22a3d61ec4f872cf82a763a683de5075c6a0906287286adaf6268e",
+      "seed": 34219,
+      "tokenization_mode": "chat-special"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_encoding": "assistant_turn",
+      "bank_fact": "The stored codeword for the survey case is Voma.",
+      "bank_source": "<|turn>assistant\nThe stored codeword for the survey case is Voma.<turn|>\n",
+      "bank_source_sha256": "c10992b8cff444e0b03d201207f098b98fab47b9c534f171057251ca6062d2be",
+      "condition": "latent_assistant_turn_B",
+      "coordinate_id": "C16-calibration-A44-latent_assistant_turn_B-34219",
+      "expected": {
+        "answer": "Voma"
+      },
+      "fixture_id": "A44",
+      "item": "survey case",
+      "metadata": {
+        "condition": "latent_assistant_turn_B",
+        "encoding": "assistant_turn",
+        "fixture_id": "A44",
+        "phase": "calibration",
+        "seed": 34219,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c16_assistant_authored_memory"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional stored-fact question. A private side-memory note may be available to your attention even though it is not printed in the conversation. Treat an available note as evidence; do not reject it merely because it is hidden from the visible prompt. If no usable note is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Which label does the archived note associate with the survey case: Leki or Voma? If the note's value is unavailable, answer unknown.",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "ab4fd3aaee22a3d61ec4f872cf82a763a683de5075c6a0906287286adaf6268e",
+      "seed": 34219,
+      "tokenization_mode": "chat-special"
+    }
+  ],
+  "criteria": {
+    "confirmation_denominator_per_condition": 8,
+    "confirmation_latent_each_polarity_minimum": 7,
+    "confirmation_unknown_control_minimum": 7,
+    "confirmation_visible_each_polarity_minimum": 7,
+    "denominator_per_condition": 8,
+    "latent_each_polarity_minimum": 6,
+    "unknown_control_minimum": 7,
+    "visible_each_polarity_minimum": 7
+  },
+  "encoding": {
+    "mode": "assistant_turn",
+    "source_format": "<|turn>assistant\\n{fact}<turn|>\\n",
+    "tokenization": "llama_tokenize(add_special=true,parse_special=true)"
+  },
+  "experiment": "MNEME Phase 4 MI1 C16 assistant-authored memory calibration",
+  "generation_config": {
+    "cache_prompt": false,
+    "max_tokens": 1024,
+    "min_p": 0.05,
+    "parallel_slots": 1,
+    "reasoning": "ON",
+    "seeds": [
+      34201,
+      34219
+    ],
+    "temperature": 0.35,
+    "top_k": 40,
+    "top_p": 0.9
+  },
+  "heldout_fixtures": [
+    {
+      "decoy": "Kavu",
+      "fixture_id": "A45",
+      "item": "rope bag",
+      "target": "Neri"
+    },
+    {
+      "decoy": "Yori",
+      "fixture_id": "A46",
+      "item": "repair kit",
+      "target": "Besa"
+    },
+    {
+      "decoy": "Cemi",
+      "fixture_id": "A47",
+      "item": "food tin",
+      "target": "Haku"
+    },
+    {
+      "decoy": "Ravo",
+      "fixture_id": "A48",
+      "item": "map case",
+      "target": "Feli"
+    }
+  ],
+  "hypothesis": "C14-C15 bank K/V are attached and numerically attended, but raw, system-turn, and user-turn facts are not retrieved. C16 tests one remaining role-specific encoding: the same fact as a completed assistant-authored note. The fact sentence, task, selector, gain, and scoring thresholds remain otherwise fixed.",
+  "model": {
+    "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+    "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+    "name": "google/gemma-4-E4B-it"
+  },
+  "parents": {
+    "c15b_readout_sha256": "97aaf53bf57473312aee7f1bedb7c164eef48df26d9d647ce7b6765e0cb5ad45",
+    "selected_site_map_sha256": "e960423b56ac9e06ff2dbf175c0db5a7727644b198401a42f223357d64d9577a"
+  },
+  "revision": "C16",
+  "schema_version": 1,
+  "selection_rule": "Run held-out confirmation only if assistant-turn latent A and B each reach 6/8, visible A and B each reach 7/8, and both no-bank and cue-only controls reach 7/8. Confirmation requires at least 7/8 for each frozen condition.",
+  "source_sha256": {
+    "bank_model": "cd7374c7a01772ec7a85270a52ae3942deaeee324039e50184537aa2ea530977",
+    "bank_preparation": "d5675977f57b1ae9a2a419567c07461d1458885162406486aeda11eec9463cca",
+    "calibration": "a939219c93aca2d1e1fb598c7fa5a3634d2f310a4e5a68e9ff477fd805dc20d8",
+    "freeze_tool": "cc9f2858062744eabeb96f8412dd27689be0d013ae945867e544c36fa8c12417",
+    "native_encoder": "8010379d728e016b4adabc677d48a6247126f658b66c48e56e8f4be957119dc7",
+    "runner": "20b8205935ac0e2dcc76db072445b9332d7bcf6c604971e44ef07cc46dbb2737",
+    "scoring": "a939219c93aca2d1e1fb598c7fa5a3634d2f310a4e5a68e9ff477fd805dc20d8"
+  },
+  "status": "FROZEN_BEFORE_CALIBRATION_GENERATION"
+}
