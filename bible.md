@@ -1881,3 +1881,9 @@ and dispositions remain unchanged.
 - C11 established high selected-head attention mass and downstream hidden-state perturbation but no structured-rule retrieval. Froze C12 before generation to separate absent/weak memory-readout cue from accessibility: four new calibration fixtures, two seeds, no-bank/cue-only/visible-A/B controls, latent-A/B at per-slot priors 1x/2x/4x, and an irrelevant-bank control at 4x.
 - Eight distinct held-out fixtures and prompt wording are committed in the freeze but will only be generated if the predeclared calibration gate passes; the deterministic selection rule chooses the lowest passing common A/B strength. No bank content is placed in latent request text; `cache_prompt=false` and reasoning ON remain fixed.
 - Freeze: `docs/receipts/MNEME_Phase_4_MI1_C12_Calibration_Freeze_20261011.json` (SHA-256 `66d61ff220d002db55e48089ff994a87ec90b481f1b4a3f1a2c2922aab3e0272`).
+
+## 2026-10-11 MI1 C12 readout and exact-prompt access diagnostic
+
+- C12 completed all 88 frozen calls. No-bank, cue-only, and irrelevant-bank unknown controls passed (8/8 each); visible A/B scored 8/8 and 7/8; latent A/B scored 0/8 at 1x, 2x, and 4x. The predeclared holdout gate failed, so the eight frozen holdouts were not run.
+- A fresh no-generation capture on the exact C12 A13 prompt and fourfold selected-A bank recorded 17 bank slots with mean 0.3043 final-query bank attention across the 16 selected sites; unselected sites had zero. This supports active attachment/routing, while model reasoning still states the facts are absent. It does not prove semantic decode.
+- Added deterministic C12 scoring and tests. Readout: `docs/receipts/MNEME_Phase_4_MI1_C12_Calibration_Readout_20261011.md` and `.json`. Full reasoning streams and the 92 MB attention capture remain local under `/home/nyx/mneme-artifacts/phase4-mi1/c12-calibration/`.
