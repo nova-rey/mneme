@@ -1864,3 +1864,8 @@ and dispositions remain unchanged.
 
 - To avoid retransferring roughly 429 MiB of immutable base K/V tensors, added a metadata-only native-bank selector patcher for C11 distribution. It requires an unselected, neutral source bank and changes only the selector count/sites and logit-bias trailer; source tensors are copied unchanged and outputs are hash-checked against locally serialized variants.
 - Cross-checked all 48 generated C11 variants byte-for-byte against `MemoryBank.save_native`; 48/48 matched. Synthetic atomicity/format tests pass. The helper is specific to distributing already-frozen C11 variants and does not alter MI1 inference behavior.
+
+## 2026-10-11 MI1 C11 response-loss recovery freeze
+
+- Preserved the C11 response-capture interruption as a lost attempt: the request was durably recorded, its event stream is empty, and the llama-server log records completion of the corresponding serialized task without retaining its answer. The task-to-coordinate association is documented as inferred, and no answer is reconstructed.
+- Froze a recovery matrix containing one explicitly named replay of that coordinate plus only the 119 never-attempted coordinates. The recovery runner writes to a new evidence journal, preserves original requests/results, and remains within the preexisting 800-call ceiling (projected total 792). Focused tests cover prefix/accounting validation and no prompt changes.
