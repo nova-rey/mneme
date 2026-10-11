@@ -1,0 +1,1915 @@
+{
+  "build": {
+    "cuda_compiler": "/usr/bin/nvcc",
+    "driver": "595.91.07",
+    "ggml_cuda": true,
+    "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU",
+    "type": "Release",
+    "vram_bytes": 6442450944
+  },
+  "calibration_call_count": 80,
+  "capture_bytes": 86497160,
+  "capture_count": 48,
+  "confirmation_max_frozen": 72,
+  "encoder_binary_sha256": "9f30bd144ba79ffbc3b4c8887dffd247ed95d91ba4daac1982ea2eb3cad8b6a2",
+  "encoder_source_sha256": "8010379d728e016b4adabc677d48a6247126f658b66c48e56e8f4be957119dc7",
+  "experiment": "MNEME Phase 4 MI1 C15 exact-Q2 execution freeze",
+  "frozen_at_utc": "2026-10-11T18:13:44.413192+00:00",
+  "generation_config": {
+    "cache_prompt": false,
+    "max_tokens": 1024,
+    "min_p": 0.05,
+    "reasoning": "ON",
+    "seeds": [
+      34201,
+      34219
+    ],
+    "temperature": 0.35,
+    "top_k": 40,
+    "top_p": 0.9
+  },
+  "generation_issued": false,
+  "llama_dirty_source_sha256": {
+    "CMakeLists.txt": "f498ce013a849239b2422e4f93632f09a013b94195e9911790e70148390e01e1",
+    "include/llama-mi1.h": "967fe9105bddd4594c8cfd554920d100c400eead994eda393d385f9e840b22dc",
+    "src/llama-graph.cpp": "0ba1c3be23ec42485292b96ed392d5e9e6da7396eba45745a46eb69bb4f4a69e",
+    "src/llama-graph.h": "392f0c3a92f52e929dd7f9bb634b3097e829947657abc86c890db870ab025c09",
+    "src/mi1-bank.h": "51c59accfcef4158a22d43c996ba0662a4169e956b6962358f1aa37b5c082cdc",
+    "src/models/gemma4.cpp": "de72c128b8ab19aac7a38c15b49562189702d1536f60feb65d13572908ccfa7f",
+    "tools/server/server.cpp": "9d5bb9ee2b94394986a9c6eaa1365660fffde4ce58e60e70ef2640baa00ee3ee"
+  },
+  "llama_server_sha256": "0032af18feb8cfa683ed34757c47bb10e4fbcdcd309071e937e4f6b4e4fd741c",
+  "llama_server_version": "0.5.0-dev (build 1, commit 4b1a27f)",
+  "llama_source_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+  "local_resource_guard": {
+    "gpu_processes_before_start": 0,
+    "gpu_temperature_c": 41,
+    "msi_root_free_bytes": 16106127360
+  },
+  "model": {
+    "name": "google/gemma-4-E4B-it",
+    "path": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+    "sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03"
+  },
+  "normalized_capture_manifest_sha256": "b17ed9737059462e4bb35130aeb21904ea930f245afdfc79620600d51e216941",
+  "plan_commit": "88e671045bc41c81d1ba8088b6507a5c04aec8d4",
+  "plan_sha256": "b7a3a0f9af9a23d374304553b347a392fc669fad8d815524baeeb1312b860264",
+  "remote_capture_manifest_sha256": "dfe8aa45dacea9f17a88c443b8bc8e44c2af9ca646e0642d3341fa8064b7da4b",
+  "remote_upload_verified_count": 24,
+  "result_evidence_root": "/home/nyx/mneme-artifacts/phase4-mi1/c15-encoding/evidence",
+  "schema_version": 1,
+  "selector_map_sha256": "e960423b56ac9e06ff2dbf175c0db5a7727644b198401a42f223357d64d9577a",
+  "server_command": [
+    "/home/rey/src/llama-mi1/build-mi1/bin/llama-server",
+    "--model",
+    "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+    "--alias",
+    "google/gemma-4-E4B-it",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "18472",
+    "--ctx-size",
+    "8192",
+    "--n-gpu-layers",
+    "99",
+    "--threads",
+    "4",
+    "--threads-batch",
+    "4",
+    "--reasoning",
+    "on",
+    "--reasoning-format",
+    "deepseek"
+  ],
+  "source_manifest_sha256": "ad82d7624ae1debbe9a8e2c0e19cbed7488bdf549ac5d8eda71908907e7a93f9",
+  "status": "FROZEN_BEFORE_MODEL_GENERATION",
+  "uploaded_calibration_bank_manifest_sha256": "fb997190655a140a215602b46d82937d1301a3a628a87f0a4d0ae837ff769df5",
+  "uploaded_calibration_banks": [
+    {
+      "fingerprint": "f26892f311ff8ec0",
+      "name": "00a0f8fc0bda-selected_A-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            31,
+            4
+          ],
+          [
+            31,
+            5
+          ],
+          [
+            31,
+            6
+          ],
+          [
+            31,
+            7
+          ],
+          [
+            34,
+            0
+          ],
+          [
+            34,
+            1
+          ],
+          [
+            34,
+            2
+          ],
+          [
+            34,
+            3
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            7,
+            5
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            7,
+            7
+          ],
+          [
+            38,
+            4
+          ],
+          [
+            38,
+            5
+          ],
+          [
+            38,
+            6
+          ],
+          [
+            38,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_A"
+      },
+      "sha256": "0f8f3bff2b523df39bbc003f135a776840cdb67b4aebafd5fc4435ba7c35712a"
+    },
+    {
+      "fingerprint": "0e178d55450dbeb4",
+      "name": "051c5a2eca76-selected_B-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            34,
+            4
+          ],
+          [
+            34,
+            5
+          ],
+          [
+            34,
+            6
+          ],
+          [
+            34,
+            7
+          ],
+          [
+            39,
+            4
+          ],
+          [
+            39,
+            5
+          ],
+          [
+            39,
+            6
+          ],
+          [
+            39,
+            7
+          ],
+          [
+            12,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            6,
+            6
+          ],
+          [
+            6,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_B"
+      },
+      "sha256": "a79ef8d4372433972ff9e85694bf00ffee7923b2fc99dd7f1ac42dafe62935dd"
+    },
+    {
+      "fingerprint": "8597b7dcea75d5f7",
+      "name": "0ff2955d504c-selected_A-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            31,
+            4
+          ],
+          [
+            31,
+            5
+          ],
+          [
+            31,
+            6
+          ],
+          [
+            31,
+            7
+          ],
+          [
+            34,
+            0
+          ],
+          [
+            34,
+            1
+          ],
+          [
+            34,
+            2
+          ],
+          [
+            34,
+            3
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            7,
+            5
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            7,
+            7
+          ],
+          [
+            38,
+            4
+          ],
+          [
+            38,
+            5
+          ],
+          [
+            38,
+            6
+          ],
+          [
+            38,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_A"
+      },
+      "sha256": "ca889b1d41eb09c629d4d7b5a345d7392cbdee230590c46fb7be49822746ca88"
+    },
+    {
+      "fingerprint": "a17c6d16b0183b17",
+      "name": "23331b493fa3-selected_A-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            31,
+            4
+          ],
+          [
+            31,
+            5
+          ],
+          [
+            31,
+            6
+          ],
+          [
+            31,
+            7
+          ],
+          [
+            34,
+            0
+          ],
+          [
+            34,
+            1
+          ],
+          [
+            34,
+            2
+          ],
+          [
+            34,
+            3
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            7,
+            5
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            7,
+            7
+          ],
+          [
+            38,
+            4
+          ],
+          [
+            38,
+            5
+          ],
+          [
+            38,
+            6
+          ],
+          [
+            38,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_A"
+      },
+      "sha256": "75b0b26c664b60cab1389dc61a485bbe1e503d9d13099721bbb34f63ab38cf07"
+    },
+    {
+      "fingerprint": "1f5e4352f060050b",
+      "name": "30606c210ac4-selected_A-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            31,
+            4
+          ],
+          [
+            31,
+            5
+          ],
+          [
+            31,
+            6
+          ],
+          [
+            31,
+            7
+          ],
+          [
+            34,
+            0
+          ],
+          [
+            34,
+            1
+          ],
+          [
+            34,
+            2
+          ],
+          [
+            34,
+            3
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            7,
+            5
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            7,
+            7
+          ],
+          [
+            38,
+            4
+          ],
+          [
+            38,
+            5
+          ],
+          [
+            38,
+            6
+          ],
+          [
+            38,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_A"
+      },
+      "sha256": "d5b15aabcfeb40976228c916df93ca03fef3011b57244f8037c8394e67d2e716"
+    },
+    {
+      "fingerprint": "802306a65068235c",
+      "name": "3347a795831a-selected_B-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            34,
+            4
+          ],
+          [
+            34,
+            5
+          ],
+          [
+            34,
+            6
+          ],
+          [
+            34,
+            7
+          ],
+          [
+            39,
+            4
+          ],
+          [
+            39,
+            5
+          ],
+          [
+            39,
+            6
+          ],
+          [
+            39,
+            7
+          ],
+          [
+            12,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            6,
+            6
+          ],
+          [
+            6,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_B"
+      },
+      "sha256": "ec80811c908f7d7a74af9ccb49c20411772c395dc1e90e873402861b6d5052ee"
+    },
+    {
+      "fingerprint": "73e20e130a166543",
+      "name": "35728bf29cf9-selected_B-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            34,
+            4
+          ],
+          [
+            34,
+            5
+          ],
+          [
+            34,
+            6
+          ],
+          [
+            34,
+            7
+          ],
+          [
+            39,
+            4
+          ],
+          [
+            39,
+            5
+          ],
+          [
+            39,
+            6
+          ],
+          [
+            39,
+            7
+          ],
+          [
+            12,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            6,
+            6
+          ],
+          [
+            6,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_B"
+      },
+      "sha256": "45b6ec5a2bf6fa18e13105abaab5d0a26f645f44521cf84ce7d14b0810c6b4fe"
+    },
+    {
+      "fingerprint": "503604ec7e4e0ac9",
+      "name": "3b4bb1d8d32a-selected_A-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            31,
+            4
+          ],
+          [
+            31,
+            5
+          ],
+          [
+            31,
+            6
+          ],
+          [
+            31,
+            7
+          ],
+          [
+            34,
+            0
+          ],
+          [
+            34,
+            1
+          ],
+          [
+            34,
+            2
+          ],
+          [
+            34,
+            3
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            7,
+            5
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            7,
+            7
+          ],
+          [
+            38,
+            4
+          ],
+          [
+            38,
+            5
+          ],
+          [
+            38,
+            6
+          ],
+          [
+            38,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_A"
+      },
+      "sha256": "f22a681e6ab26948b05a2c6e597594ba40c9988fec3b23c29f77c1447318d8f3"
+    },
+    {
+      "fingerprint": "35537e9cb70f0a8e",
+      "name": "3e3186ae90c5-selected_A-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            31,
+            4
+          ],
+          [
+            31,
+            5
+          ],
+          [
+            31,
+            6
+          ],
+          [
+            31,
+            7
+          ],
+          [
+            34,
+            0
+          ],
+          [
+            34,
+            1
+          ],
+          [
+            34,
+            2
+          ],
+          [
+            34,
+            3
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            7,
+            5
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            7,
+            7
+          ],
+          [
+            38,
+            4
+          ],
+          [
+            38,
+            5
+          ],
+          [
+            38,
+            6
+          ],
+          [
+            38,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_A"
+      },
+      "sha256": "277687cb9afed425f3beeb480ef779f76f75c5183d3b8e0f4025c40132ec1065"
+    },
+    {
+      "fingerprint": "9a0de20a277f6889",
+      "name": "6360877117fe-selected_A-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            31,
+            4
+          ],
+          [
+            31,
+            5
+          ],
+          [
+            31,
+            6
+          ],
+          [
+            31,
+            7
+          ],
+          [
+            34,
+            0
+          ],
+          [
+            34,
+            1
+          ],
+          [
+            34,
+            2
+          ],
+          [
+            34,
+            3
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            7,
+            5
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            7,
+            7
+          ],
+          [
+            38,
+            4
+          ],
+          [
+            38,
+            5
+          ],
+          [
+            38,
+            6
+          ],
+          [
+            38,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_A"
+      },
+      "sha256": "3c199510fa3344bca28458b2bf1aeefead24d75c98f112c2a79bfb035c8149c3"
+    },
+    {
+      "fingerprint": "716f7663d094b657",
+      "name": "67e52e841c44-selected_A-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            31,
+            4
+          ],
+          [
+            31,
+            5
+          ],
+          [
+            31,
+            6
+          ],
+          [
+            31,
+            7
+          ],
+          [
+            34,
+            0
+          ],
+          [
+            34,
+            1
+          ],
+          [
+            34,
+            2
+          ],
+          [
+            34,
+            3
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            7,
+            5
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            7,
+            7
+          ],
+          [
+            38,
+            4
+          ],
+          [
+            38,
+            5
+          ],
+          [
+            38,
+            6
+          ],
+          [
+            38,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_A"
+      },
+      "sha256": "b357776b1a05941cc3f3235fbc9fde638907c7391654301354392989640bee20"
+    },
+    {
+      "fingerprint": "132343d52a6ae387",
+      "name": "76eefb6c5da7-selected_B-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            34,
+            4
+          ],
+          [
+            34,
+            5
+          ],
+          [
+            34,
+            6
+          ],
+          [
+            34,
+            7
+          ],
+          [
+            39,
+            4
+          ],
+          [
+            39,
+            5
+          ],
+          [
+            39,
+            6
+          ],
+          [
+            39,
+            7
+          ],
+          [
+            12,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            6,
+            6
+          ],
+          [
+            6,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_B"
+      },
+      "sha256": "0606a1dd672da288a319ac3e1c8f3ea19ee9f03ce8cca8c0d1ff7194aa5859b0"
+    },
+    {
+      "fingerprint": "0baeb4d12cc8b1dc",
+      "name": "83468da0e36f-selected_B-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            34,
+            4
+          ],
+          [
+            34,
+            5
+          ],
+          [
+            34,
+            6
+          ],
+          [
+            34,
+            7
+          ],
+          [
+            39,
+            4
+          ],
+          [
+            39,
+            5
+          ],
+          [
+            39,
+            6
+          ],
+          [
+            39,
+            7
+          ],
+          [
+            12,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            6,
+            6
+          ],
+          [
+            6,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_B"
+      },
+      "sha256": "dd9b803f69d519ada18113bddb4be6f26bc0052516d219473a6058b84c222946"
+    },
+    {
+      "fingerprint": "3df6274130cbb738",
+      "name": "90a478b667b4-selected_B-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            34,
+            4
+          ],
+          [
+            34,
+            5
+          ],
+          [
+            34,
+            6
+          ],
+          [
+            34,
+            7
+          ],
+          [
+            39,
+            4
+          ],
+          [
+            39,
+            5
+          ],
+          [
+            39,
+            6
+          ],
+          [
+            39,
+            7
+          ],
+          [
+            12,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            6,
+            6
+          ],
+          [
+            6,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_B"
+      },
+      "sha256": "6150576d5a70059870760d625df92aa15511e7f7ccbf8cd9b20d5804797992c9"
+    },
+    {
+      "fingerprint": "76fe64061953955a",
+      "name": "a69fab144e40-selected_B-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            34,
+            4
+          ],
+          [
+            34,
+            5
+          ],
+          [
+            34,
+            6
+          ],
+          [
+            34,
+            7
+          ],
+          [
+            39,
+            4
+          ],
+          [
+            39,
+            5
+          ],
+          [
+            39,
+            6
+          ],
+          [
+            39,
+            7
+          ],
+          [
+            12,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            6,
+            6
+          ],
+          [
+            6,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_B"
+      },
+      "sha256": "08f61d42839dbfca78a32f870c40b9fc07660688af19c771b51b1b8ad3fe8321"
+    },
+    {
+      "fingerprint": "3d5c0db540c5a1dc",
+      "name": "a9ba608ca0c1-selected_B-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            34,
+            4
+          ],
+          [
+            34,
+            5
+          ],
+          [
+            34,
+            6
+          ],
+          [
+            34,
+            7
+          ],
+          [
+            39,
+            4
+          ],
+          [
+            39,
+            5
+          ],
+          [
+            39,
+            6
+          ],
+          [
+            39,
+            7
+          ],
+          [
+            12,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            6,
+            6
+          ],
+          [
+            6,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_B"
+      },
+      "sha256": "6b7b65ec5f9609886267519cc0ae7b6813fbab0794dd2d7c94abb8e937af3e07"
+    },
+    {
+      "fingerprint": "159f43936a9bb4b3",
+      "name": "bc6f314961ab-selected_B-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            34,
+            4
+          ],
+          [
+            34,
+            5
+          ],
+          [
+            34,
+            6
+          ],
+          [
+            34,
+            7
+          ],
+          [
+            39,
+            4
+          ],
+          [
+            39,
+            5
+          ],
+          [
+            39,
+            6
+          ],
+          [
+            39,
+            7
+          ],
+          [
+            12,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            6,
+            6
+          ],
+          [
+            6,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_B"
+      },
+      "sha256": "fb584f7ac930ade0ab5f014989a87545cd4e80fb8767514085b930585d217aed"
+    },
+    {
+      "fingerprint": "d359510c521bd219",
+      "name": "c83617520b4f-selected_B-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            34,
+            4
+          ],
+          [
+            34,
+            5
+          ],
+          [
+            34,
+            6
+          ],
+          [
+            34,
+            7
+          ],
+          [
+            39,
+            4
+          ],
+          [
+            39,
+            5
+          ],
+          [
+            39,
+            6
+          ],
+          [
+            39,
+            7
+          ],
+          [
+            12,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            6,
+            6
+          ],
+          [
+            6,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_B"
+      },
+      "sha256": "64b1eadf844dceaa830d0bee6f2c3aa0e11733f1e7e7c17d5591e17f977dd66e"
+    },
+    {
+      "fingerprint": "3a4ac66bd6c57f2d",
+      "name": "d8fa2afb0fb3-selected_A-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            31,
+            4
+          ],
+          [
+            31,
+            5
+          ],
+          [
+            31,
+            6
+          ],
+          [
+            31,
+            7
+          ],
+          [
+            34,
+            0
+          ],
+          [
+            34,
+            1
+          ],
+          [
+            34,
+            2
+          ],
+          [
+            34,
+            3
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            7,
+            5
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            7,
+            7
+          ],
+          [
+            38,
+            4
+          ],
+          [
+            38,
+            5
+          ],
+          [
+            38,
+            6
+          ],
+          [
+            38,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_A"
+      },
+      "sha256": "8bc7222013fd71dcafd46b85dc1c98f785d6091ef9fa4c365efe404b1450c4d7"
+    },
+    {
+      "fingerprint": "860e1849bde69368",
+      "name": "dc46a3a12fc6-selected_B-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            34,
+            4
+          ],
+          [
+            34,
+            5
+          ],
+          [
+            34,
+            6
+          ],
+          [
+            34,
+            7
+          ],
+          [
+            39,
+            4
+          ],
+          [
+            39,
+            5
+          ],
+          [
+            39,
+            6
+          ],
+          [
+            39,
+            7
+          ],
+          [
+            12,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            6,
+            6
+          ],
+          [
+            6,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_B"
+      },
+      "sha256": "dec2f294c2ca7698303e6cf24269652639724b8456d8fdf8c1f7eb8f7eebb5e1"
+    },
+    {
+      "fingerprint": "86e41bc3d17e6428",
+      "name": "e90c7bf77bbc-selected_A-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            31,
+            4
+          ],
+          [
+            31,
+            5
+          ],
+          [
+            31,
+            6
+          ],
+          [
+            31,
+            7
+          ],
+          [
+            34,
+            0
+          ],
+          [
+            34,
+            1
+          ],
+          [
+            34,
+            2
+          ],
+          [
+            34,
+            3
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            7,
+            5
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            7,
+            7
+          ],
+          [
+            38,
+            4
+          ],
+          [
+            38,
+            5
+          ],
+          [
+            38,
+            6
+          ],
+          [
+            38,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_A"
+      },
+      "sha256": "a7c904e1013b35f5fa3279e56f06f16f631b533cfbd90c18ac676c126e58c5fd"
+    },
+    {
+      "fingerprint": "2e05f9fbae7272cf",
+      "name": "f002da241b16-selected_A-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            31,
+            4
+          ],
+          [
+            31,
+            5
+          ],
+          [
+            31,
+            6
+          ],
+          [
+            31,
+            7
+          ],
+          [
+            34,
+            0
+          ],
+          [
+            34,
+            1
+          ],
+          [
+            34,
+            2
+          ],
+          [
+            34,
+            3
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            7,
+            5
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            7,
+            7
+          ],
+          [
+            38,
+            4
+          ],
+          [
+            38,
+            5
+          ],
+          [
+            38,
+            6
+          ],
+          [
+            38,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_A"
+      },
+      "sha256": "3eea4b66b36ea6ef988f01ea29164d2eba4925af21ef8340327847230f7f5a54"
+    },
+    {
+      "fingerprint": "4b2800464ebaee5d",
+      "name": "f4a4b608955d-selected_B-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            34,
+            4
+          ],
+          [
+            34,
+            5
+          ],
+          [
+            34,
+            6
+          ],
+          [
+            34,
+            7
+          ],
+          [
+            39,
+            4
+          ],
+          [
+            39,
+            5
+          ],
+          [
+            39,
+            6
+          ],
+          [
+            39,
+            7
+          ],
+          [
+            12,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            6,
+            6
+          ],
+          [
+            6,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_B"
+      },
+      "sha256": "c05d88e575dba9848acea3b2dd94bcf087b3891d8194a2775cba65941490bff2"
+    },
+    {
+      "fingerprint": "d4ace8d181a1593a",
+      "name": "fafe71554134-selected_A-4x.mi1",
+      "selector": {
+        "bank_logit_bias": 1.3862943611198906,
+        "query_sites": [
+          [
+            31,
+            4
+          ],
+          [
+            31,
+            5
+          ],
+          [
+            31,
+            6
+          ],
+          [
+            31,
+            7
+          ],
+          [
+            34,
+            0
+          ],
+          [
+            34,
+            1
+          ],
+          [
+            34,
+            2
+          ],
+          [
+            34,
+            3
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            7,
+            5
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            7,
+            7
+          ],
+          [
+            38,
+            4
+          ],
+          [
+            38,
+            5
+          ],
+          [
+            38,
+            6
+          ],
+          [
+            38,
+            7
+          ]
+        ],
+        "relative_prior": 4.0,
+        "selector": "selected_A"
+      },
+      "sha256": "3ac8882fc10633ce86e0c67a5f264d7562854544f3c5711336ee2643e09f553a"
+    }
+  ],
+  "variant_map_sha256": "66299dee856f84b9bdd34b26c08ec8f3c2d95137cee7f08bd9e57a43b5fc2f2f"
+}
