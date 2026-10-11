@@ -1887,3 +1887,9 @@ and dispositions remain unchanged.
 - C12 completed all 88 frozen calls. No-bank, cue-only, and irrelevant-bank unknown controls passed (8/8 each); visible A/B scored 8/8 and 7/8; latent A/B scored 0/8 at 1x, 2x, and 4x. The predeclared holdout gate failed, so the eight frozen holdouts were not run.
 - A fresh no-generation capture on the exact C12 A13 prompt and fourfold selected-A bank recorded 17 bank slots with mean 0.3043 final-query bank attention across the 16 selected sites; unselected sites had zero. This supports active attachment/routing, while model reasoning still states the facts are absent. It does not prove semantic decode.
 - Added deterministic C12 scoring and tests. Readout: `docs/receipts/MNEME_Phase_4_MI1_C12_Calibration_Readout_20261011.md` and `.json`. Full reasoning streams and the 92 MB attention capture remain local under `/home/nyx/mneme-artifacts/phase4-mi1/c12-calibration/`.
+
+## 2026-10-11 MI1 C13 availability and site-breadth calibration freeze
+
+- Froze 72 C13 calibration calls before inference. C13 changes the generic “may be available” cue into a content-free assertion that an internal record is available, retains a cue-only false-positive control, and compares the C12 selected query heads against all 336 Gemma4 query heads at the same 4x bank prior. An irrelevant all-head bank remains a control.
+- The 144 possible confirmation coordinates (eight previously withheld fixtures, two seeds, nine conditions) are explicitly frozen in the plan. If the calibration gate passes for a routing mode, its 112-call confirmation subset is predeclared; select sparse routing over broad routing if both pass. The C12-derived facts remain absent from latent request text.
+- C13 freeze SHA-256: `ffccd81d1580ab490cbad50f170e5fe1ee6c236c5c1fff921cb8b76695672a11`. No C13 inference has been issued at this freeze.
