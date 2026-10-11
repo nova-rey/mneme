@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "experiment": "MNEME Phase 4 MI1 C13 availability-cue and site-breadth diagnostic",
+  "plan_sha256": "ffccd81d1580ab490cbad50f170e5fe1ee6c236c5c1fff921cb8b76695672a11",
+  "execution_freeze_sha256": "f76a6848082a9d69fbe1fa8556deeb136adc42f2532227a31f86d9f523fbb83b",
+  "evidence_index": {
+    "path": "/home/nyx/mneme-artifacts/phase4-mi1/c13-calibration/evidence/index.json",
+    "sha256": "5975da6e66cfd26a11e21f49c94e48fcd98d28e3726bc3074b34e01f4ba0b492",
+    "complete": 72,
+    "failed_or_uncertain": 0
+  },
+  "calibration_gate": {
+    "passed": false,
+    "minimum_per_polarity": 7,
+    "visible_minimum_each": 7,
+    "unknown_control_minimum_each": 7,
+    "selected_confirmation": false,
+    "broad_confirmation": false,
+    "heldout_confirmation_calls": 0
+  },
+  "condition_rates": {
+    "no_bank": {"n": 8, "correct": 8, "expected": "unknown"},
+    "cue_no_bank_assertive": {"n": 8, "correct": 8, "expected": "unknown"},
+    "visible_A": {"n": 8, "correct": 8},
+    "visible_B": {"n": 8, "correct": 7},
+    "latent_A_selected_assertive_fourfold": {"n": 8, "correct": 0},
+    "latent_B_selected_assertive_fourfold": {"n": 8, "correct": 0},
+    "latent_A_broad_assertive_fourfold": {"n": 8, "correct": 0},
+    "latent_B_broad_assertive_fourfold": {"n": 8, "correct": 0},
+    "latent_irrelevant_broad_assertive_fourfold": {"n": 8, "correct": 0, "expected": "unknown"}
+  },
+  "finish_reasons": {
+    "normal_stop": 47,
+    "length": 25,
+    "length_conditions": [
+      "visible_B (one coordinate)",
+      "latent_A_broad_assertive_fourfold",
+      "latent_B_broad_assertive_fourfold",
+      "latent_irrelevant_broad_assertive_fourfold"
+    ]
+  },
+  "direct_observations": [
+    "Selected-site calls ended normally but returned unknown for every latent target; reasoning said the hidden record was unavailable.",
+    "All-head calls reached the 1024-token limit with repetitive output, including the irrelevant-bank control.",
+    "Bank fingerprints matched the frozen variants; this verifies loaded identity, not semantic access.",
+    "No frozen confirmation calls were run because the calibration gate failed."
+  ],
+  "interpretation": "C13 strengthens the evidence that this current Gemma/llama.cpp implementation numerically routes to the side bank but does not make the encoded relations behaviorally accessible under these fixtures. Broad all-head routing is disruptive. This is not yet the final MI1 disposition; further owner-authorized technical diagnosis is underway.",
+  "scored_coordinate_summary": {
+    "path": "/home/nyx/mneme-artifacts/phase4-mi1/c13-calibration/scored.json",
+    "sha256": "7c2a34b8e09796f6396ffbecb555e82472ef5ec64f6c04765ed7cb9a344bb849"
+  }
+}

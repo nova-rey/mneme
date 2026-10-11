@@ -28,6 +28,10 @@ def main() -> int:
             Path("experiments/mi1/c12_calibration.py").read_bytes()
         ).hexdigest(),
         "runner": hashlib.sha256(Path("experiments/mi1/runner.py").read_bytes()).hexdigest(),
+        "generation_tool": hashlib.sha256(Path("tools/run_mi1_c13.py").read_bytes()).hexdigest(),
+        "bank_preparation_tool": hashlib.sha256(
+            Path("tools/prepare_mi1_c13_banks.py").read_bytes()
+        ).hexdigest(),
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     temporary = args.output.with_suffix(args.output.suffix + ".tmp")
