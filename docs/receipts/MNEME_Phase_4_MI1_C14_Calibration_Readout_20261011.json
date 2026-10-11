@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "experiment": "MNEME Phase 4 MI1 C14 atomic-fact access calibration",
+  "disposition": "CALIBRATION_GATE_FAILED",
+  "scheduled_coordinates": 64,
+  "complete_coordinates": 64,
+  "failed_or_uncertain_coordinates": 0,
+  "condition_rates": {
+    "no_bank": {"n": 8, "exact_label_hits": 8, "interpretation": "expected unknown"},
+    "cue_no_bank_assertive": {"n": 8, "exact_label_hits": 8, "interpretation": "expected unknown"},
+    "visible_A": {"n": 8, "exact_label_hits": 8, "interpretation": "visible positive control"},
+    "visible_B": {"n": 8, "exact_label_hits": 8, "interpretation": "visible positive control"},
+    "latent_A_selected_twofold": {"n": 8, "exact_label_hits": 0},
+    "latent_B_selected_twofold": {"n": 8, "exact_label_hits": 0},
+    "latent_A_selected_fourfold": {"n": 8, "exact_label_hits": 0},
+    "latent_B_selected_fourfold": {"n": 8, "exact_label_hits": 0}
+  },
+  "finish_reasons": {"stop": 64},
+  "gain_gate_results": {"2": false, "4": false},
+  "heldout_confirmation_run": false,
+  "failed_coordinate": {
+    "coordinate_id": "C14-A25-latent_A_selected_fourfold-34201",
+    "fixture": "A25 equipment locker",
+    "expected": "Tulo",
+    "answer": "unknown",
+    "reasoning_excerpt": "Since I do not have the specific internal record, I cannot answer the specific question.",
+    "request_sha256": "0ceba67b57b0aefcfbc657692cf5e3fa2840ea09df46fc17a947dcd20779326f",
+    "outcome_sha256": "7308906194df95421e6c01cda6f22010a96b89cd61c3e1355363c3c8e5c6d5cc",
+    "bank_source_sha256": "13e368e9932c56d5fa139864227ad281f1d290d13db1aa239956e3bb55485e7c",
+    "bank_sha256": "0fd8f3753d7d5ba5f9ddc0376b8961159788584d9ab7f407c67679e6ea485a70",
+    "bank_fingerprint": "e5f49d70d1741f2b",
+    "selector_sha256": "3de71bc448e4fefcbd9e28b3bd6ef9f1c8137b9915538f7ea11cc358a12688c"
+  },
+  "attention_capture": {
+    "prompt_path": "/home/nyx/mneme-artifacts/phase4-mi1/c14-calibration/diagnostics/A25-latent-A-4x-seed34201.prompt.txt",
+    "prompt_bytes": 709,
+    "prompt_sha256": "097bdea0c23f32b6171a559dace735845fd28d79d0fa86daee6bef9643691d7c",
+    "capture_path": "/home/nyx/mneme-artifacts/phase4-mi1/c14-calibration/diagnostics/A25-latent-A-4x-seed34201.mi1qry",
+    "capture_sha256": "926d3646c0b8f06d0a3a3da15ab9acf70cf3e9e8c609bcf68485a2e239b54316",
+    "capture_bytes": 115043732,
+    "prompt_tokens": 154,
+    "query_layers": 42,
+    "query_heads": 8,
+    "bank_slots": 12,
+    "selected_sites": [[31,4],[31,5],[31,6],[31,7],[34,0],[34,1],[34,2],[34,3],[7,4],[7,5],[7,6],[7,7],[38,4],[38,5],[38,6],[38,7]],
+    "selected_site_final_prompt_query_bank_attention": {
+      "mean": 0.4984512925,
+      "min": 0.0548851639,
+      "max": 0.9702339768
+    },
+    "all_heads_final_prompt_query_bank_attention": {
+      "mean": 0.0237357765,
+      "max": 0.9702339768
+    },
+    "interpretation": "Numerical bank routing is present. Attention mass does not establish semantic decoding or answer use."
+  },
+  "evidence": {
+    "plan_sha256": "1f6dcda399eb422feaa1d60a7cfcfefdf08305a16d9896d75af0e281d039d59f",
+    "execution_binding_sha256": "d245897944ccb3afe78f3a9cee490cd6f0f0f4340319e1cc306582557144917f",
+    "scored_sha256": "14491943634d1a21ba826c0fd558cf0a827ae92ce54c6a4a9dc4b3db2bd207e8",
+    "external_scored_path": "/home/nyx/mneme-artifacts/phase4-mi1/c14-calibration/scored.json",
+    "external_evidence_path": "/home/nyx/mneme-artifacts/phase4-mi1/c14-calibration/evidence/",
+    "external_attention_capture_path": "/home/nyx/mneme-artifacts/phase4-mi1/c14-calibration/diagnostics/A25-latent-A-4x-seed34201.mi1qry"
+  },
+  "limitations": [
+    "This diagnostic tests exact atomic fact retrieval; it does not exhaustively test abstract process-prior steering.",
+    "The attention capture is prefill-only and does not directly show every generation-time attention output.",
+    "No held-out C14 coordinates ran because the calibration gate failed."
+  ]
+}

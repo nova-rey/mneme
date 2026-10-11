@@ -1916,3 +1916,10 @@ and dispositions remain unchanged.
 
 - Encoded the eight frozen C14 calibration fact strings with the exact Q2 GGUF and the pinned MI1 native encoder; all 24 KV layers and 11–12 token slots were captured. Remote capture hashes were checked against local copies. Built 16 selected-site variants using the frozen C12 polarity-specific site sets at 2x/4x, then verified every remote bank SHA-256 against the local artifacts.
 - Bound plan, variant map, code, model/runtime, 64-call budget, and remote artifact hashes in `docs/receipts/MNEME_Phase_4_MI1_C14_Execution_Freeze_20261011.json`, SHA-256 `d245897944ccb3afe78f3a9cee490cd6f0f4340319e1cc306582557144917f`. No C14 generation had started at this binding.
+
+## 2026-10-11 MI1 C14 atomic-recall result and exact-prompt attention audit
+
+- Completed all 64 frozen C14 calls. After correcting a scorer's condition-name join before applying its gate, visible A/B controls were 8/8 each, no-bank and cue-only controls were 8/8 unknown, and latent A/B were 0/8 at both fixed 2x and 4x priors. All calls stopped normally; no held-out confirmation ran because neither gain passed.
+- Captured the exact model-visible prompt and selected-bank prefill attention for one failed 4x coordinate. The request journal binds the expected bank fingerprint, native bank hash, attachment revision and selector. At the final prompt query, selected sites averaged 0.498 bank-attention mass (0.055–0.970); all 336 heads averaged 0.0237. Gemma still answered `unknown`; its reasoning explicitly says it lacks the actual internal record. Thus numerical routing is present, but this is not proof that values are semantically decoded.
+- C14 narrows the failure from graph-depth to one-hop atomic recall. It is a diagnostic failure, not a final MI1 disposition: paper results emphasize process-prior steering, and post-attention semantic use remains to be tested. Full output evidence and the 110 MB query capture remain outside Git; compact readout files record hashes and paths.
+- C14 readout: `docs/receipts/MNEME_Phase_4_MI1_C14_Calibration_Readout_20261011.md` and `.json`.
