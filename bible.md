@@ -1954,3 +1954,8 @@ and dispositions remain unchanged.
 - Plan: `docs/receipts/MNEME_Phase_4_MI1_C16_Assistant_Memory_Calibration_Freeze_20261011.json`. No C16 generation has been issued.
 
 - C16 frozen schedule hash: `ed1ed7028f6187b0eab33a09413e588814432b0fe3c83af306467c2796369a20`; 48 calibration calls and 40 disjoint held-out confirmation calls are specified. No generation has been issued.
+
+## 2026-10-11 MI1 C16 execution binding
+
+- Encoded 16 new assistant-turn sources with the exact-Q2 native encoder. Remote capture manifest lists 16/16 captures; all local hashes match. Constructed 16 selected-site 4x banks and verified each configured bank file against its remote SHA-256. The remote bank directory also contains 16 base unselected files; only the 16 hash-bound configured variants are used. The one-slot Gemma server remains healthy at 44 C with about 2.7 GiB VRAM used.
+- Bound model/runtime/server command, C16 plan, code, source/capture/variant manifests, and 48-calibration/40-confirmation maximum in `docs/receipts/MNEME_Phase_4_MI1_C16_Execution_Freeze_20261011.json`, SHA-256 `e11d1f9666034a1b7e8cbaa668155258ca55a0de7f6a1594b99541c165c9c61a`. No C16 generation has been issued at this binding.

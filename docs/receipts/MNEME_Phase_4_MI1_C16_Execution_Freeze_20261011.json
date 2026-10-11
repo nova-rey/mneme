@@ -1,0 +1,96 @@
+{
+  "banks": {
+    "remote_manifest_file_count": 32,
+    "remote_manifest_path": "/home/nyx/mneme-artifacts/phase4-mi1/c16-assistant/banks/bank-manifest.sha256",
+    "remote_manifest_sha256": "1d3fb6738a7723840017f09b3a5cad3b12d856a8fcbbae30d4a8982b14a31b78",
+    "selected_variant_count": 16,
+    "variant_map_path": "/home/nyx/mneme-artifacts/phase4-mi1/c16-assistant/variant-map.json",
+    "variant_map_sha256": "7a3e127d9533913579c1b584941e9eb1b3e0b24e1ecef022f6d739911aeca5c6",
+    "verified_selected_variant_count": 16
+  },
+  "budget_path": "/home/nyx/mneme-artifacts/phase4-mi1/c16-assistant/budget.json",
+  "calibration_calls": 48,
+  "confirmation_max_calls": 40,
+  "encoding_binary_sha256": "9f30bd144ba79ffbc3b4c8887dffd247ed95d91ba4daac1982ea2eb3cad8b6a2",
+  "evidence_root": "/home/nyx/mneme-artifacts/phase4-mi1/c16-assistant/evidence",
+  "experiment": "MNEME Phase 4 MI1 C16 assistant-authored memory calibration",
+  "generation_config": {
+    "cache_prompt": false,
+    "max_tokens": 1024,
+    "min_p": 0.05,
+    "parallel_slots": 1,
+    "reasoning": "ON",
+    "seeds": [
+      34201,
+      34219
+    ],
+    "temperature": 0.35,
+    "top_k": 40,
+    "top_p": 0.9
+  },
+  "generation_issued": false,
+  "hard_call_limit": 88,
+  "llama_cpp": {
+    "commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+    "server_binary_sha256": "0032af18feb8cfa683ed34757c47bb10e4fbcdcd309071e937e4f6b4e4fd741c",
+    "version": "0.5.0-dev (build 1, commit 4b1a27f)"
+  },
+  "model": {
+    "name": "google/gemma-4-E4B-it",
+    "path": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+    "sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03"
+  },
+  "parent_c15b_execution_sha256": "e0eaf6d60e2d25903ea6d50afefa811ea638b5dac412899a2f66610cc6c6fb8e",
+  "plan_sha256": "ed1ed7028f6187b0eab33a09413e588814432b0fe3c83af306467c2796369a20",
+  "runtime": {
+    "cache_prompt": false,
+    "context_size_per_slot": 8192,
+    "cuda_build": true,
+    "driver": "595.91.07",
+    "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU",
+    "parallel_slots": 1,
+    "reasoning": "ON",
+    "threads": 4,
+    "vram_bytes": 6442450944
+  },
+  "schema_version": 1,
+  "server_command": [
+    "/home/rey/src/llama-mi1/build-mi1/bin/llama-server",
+    "--model",
+    "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+    "--alias",
+    "google/gemma-4-E4B-it",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "18472",
+    "--ctx-size",
+    "8192",
+    "--n-gpu-layers",
+    "99",
+    "--threads",
+    "4",
+    "--threads-batch",
+    "4",
+    "--parallel",
+    "1",
+    "--reasoning",
+    "on",
+    "--reasoning-format",
+    "deepseek"
+  ],
+  "source_sha256": {
+    "bank_preparation": "d5675977f57b1ae9a2a419567c07461d1458885162406486aeda11eec9463cca",
+    "calibration_and_scoring": "a939219c93aca2d1e1fb598c7fa5a3634d2f310a4e5a68e9ff477fd805dc20d8",
+    "execution_freezer": "650ba56c7d961e547d50488ad180420ac72df2713c05f4f3173f76d18ec6946a",
+    "runner": "20b8205935ac0e2dcc76db072445b9332d7bcf6c604971e44ef07cc46dbb2737"
+  },
+  "sources": {
+    "capture_manifest_path": "/home/nyx/mneme-artifacts/phase4-mi1/c16-assistant/captures/capture-manifest.sha256",
+    "capture_manifest_sha256": "38758e0f121419cadc5b713d41dd7f97a7772e582f7f72c38c053aba56f27ee0",
+    "manifest_path": "/home/nyx/mneme-artifacts/phase4-mi1/c16-assistant/source-manifest.json",
+    "manifest_sha256": "07fc559d20e3ca1d9c6adaaee8d05d4ccfe90f6c6445cca3a1274e263a91cfa7",
+    "source_count": 16
+  },
+  "status": "FROZEN_BEFORE_CALIBRATION_GENERATION"
+}
