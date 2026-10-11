@@ -1971,3 +1971,9 @@ and dispositions remain unchanged.
 - Read-across of C3, C14, C16, and frozen Test A/B/C found no prior hidden-bank semantic success: the historical 8/8 was visible text; all latent exact-recall calibrations remained 0, while Test A latent retrieval remained 0/24 per polarity. The remaining directly testable explanation is that prior banks were exposed only at sparse selected query sites.
 - Froze C17 before generation: reuse C16 assistant-turn K/V and unchanged codeword questions, expose them to all 42 Gemma query layers/eight heads through all 24 KV-producing layers at the already tested fourfold prior, with matched no-bank/visible A/B controls, fresh seeds, and disjoint C16-heldout items behind the same unchanged gate.
 - Plan: `docs/receipts/MNEME_Phase_4_MI1_C17_All_Head_Calibration_Freeze_20261011.json`; SHA-256 `3b8140de20b055d986d08e87837de185ce6c11360feda9319d6ef0f0b95c88bb`. No C17 generation has been issued at this freeze.
+
+## 2026-10-11 MI1 C17 all-head diagnostic apparatus
+
+- Added repeatable C17 variant construction and durable execution/scoring tooling. Reused all 16 immutable C16 base K/V captures; built 16 variants with no query-site restriction and log-bank prior `ln(4)`, retaining all 24 KV source layers.
+- Local and MSI SHA-256 manifests match for all 16 variants. This validates transfer identity only; no C17 model generation had been issued at this checkpoint.
+- Focused plan tests pass; Ruff and compile checks pass.

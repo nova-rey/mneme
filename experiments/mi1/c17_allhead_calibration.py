@@ -141,7 +141,9 @@ def build_plan(*, c16_plan_sha256: str, c16_readout_sha256: str) -> dict[str, An
 
 
 def write_plan(path: Path, *, c16_plan: Path, c16_readout: Path) -> str:
-    digest = lambda item: hashlib.sha256(item.read_bytes()).hexdigest()
+    def digest(item: Path) -> str:
+        return hashlib.sha256(item.read_bytes()).hexdigest()
+
     value = build_plan(c16_plan_sha256=digest(c16_plan), c16_readout_sha256=digest(c16_readout))
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
