@@ -1911,3 +1911,8 @@ and dispositions remain unchanged.
 - C13 showed valid visible reading, correct no-bank controls, zero selected-site latent retrieval, and disruptive all-head routing. To separate hidden-bank accessibility from multi-hop reasoning, froze C14 as a simple stored-codeword retrieval calibration before any C14 generation.
 - C14 uses four calibration fixture pairs, two matched seeds, no-bank/cue-only/visible A/B controls, and selected-site latent A/B at two fixed strengths. Four distinct fixture pairs are frozen for independent confirmation; if either calibration gain passes, confirmation selects the lower passing gain. The frozen 64-call calibration gate requires 6/8 latent hits per polarity and 7/8 for both visible polarities and unknown controls.
 - C14 plan SHA-256: `1f6dcda399eb422feaa1d60a7cfcfefdf08305a16d9896d75af0e281d039d59f`. No C14 inference has been issued at this freeze.
+
+## 2026-10-11 MI1 C14 execution binding
+
+- Encoded the eight frozen C14 calibration fact strings with the exact Q2 GGUF and the pinned MI1 native encoder; all 24 KV layers and 11–12 token slots were captured. Remote capture hashes were checked against local copies. Built 16 selected-site variants using the frozen C12 polarity-specific site sets at 2x/4x, then verified every remote bank SHA-256 against the local artifacts.
+- Bound plan, variant map, code, model/runtime, 64-call budget, and remote artifact hashes in `docs/receipts/MNEME_Phase_4_MI1_C14_Execution_Freeze_20261011.json`, SHA-256 `d245897944ccb3afe78f3a9cee490cd6f0f4340319e1cc306582557144917f`. No C14 generation had started at this binding.
