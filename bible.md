@@ -1869,3 +1869,9 @@ and dispositions remain unchanged.
 
 - Preserved the C11 response-capture interruption as a lost attempt: the request was durably recorded, its event stream is empty, and the llama-server log records completion of the corresponding serialized task without retaining its answer. The task-to-coordinate association is documented as inferred, and no answer is reconstructed.
 - Froze a recovery matrix containing one explicitly named replay of that coordinate plus only the 119 never-attempted coordinates. The recovery runner writes to a new evidence journal, preserves original requests/results, and remains within the preexisting 800-call ceiling (projected total 792). Focused tests cover prefix/accounting validation and no prompt changes.
+
+## 2026-10-11 MI1 C11 selected-site diagnostic and score parser
+
+- Reconstructed the complete 144-coordinate C11 matrix from immutable original and recovery journals, preserving the one empty-stream attempt as lost rather than inventing a response. Updated the C11 answer parser to recognize markdown-labeled answer formats without changing the frozen scoring rubric.
+- Scored selected A/B at 0/16 each while no-bank unknown was 16/16; visible controls did not meet the frozen threshold. An exact-prompt, zero-generation prefill capture proved selected heads attend to bank slots and alter downstream query states, while the recorded reasoning still says the background rules are absent. This narrows the diagnosis to semantic readout/accessibility rather than attachment or masking failure, and motivates a newly frozen cue/accessibility calibration with independent holdout.
+- Compact report and machine-readable summary: `docs/receipts/MNEME_Phase_4_MI1_C11_Readout_20261011.md` and `.json`. Large journals/captures remain in the local artifact directory referenced by the receipt.

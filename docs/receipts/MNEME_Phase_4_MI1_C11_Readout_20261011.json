@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "experiment": "MNEME Phase 4 MI1 C11 selected query-site readout diagnostic",
+  "disposition": "SELECTED_SITE_DIAGNOSTIC_FAILED; MI1 INVESTIGATION CONTINUES",
+  "model": "google/gemma-4-E4B-it",
+  "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+  "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+  "plans": {
+    "design_sha256": "072233d50f0806c82ede66fa16beaed73b15ee10fc8049ac9c757eeeb55003be",
+    "execution_sha256": "f697a130945f8126b6d30b00f4431883b2f1400d019598885c3004144ac04882",
+    "site_selection_sha256": "5120118259de6a0f5c5c85441faa2b731c43293f86b07023799d3f0f6b66ebc6",
+    "recovery_freeze_sha256": "cdd738c2b1ac25e0e9ad30291f9fe51e6fa6cb88e442f899552f6ce7f2cc309c"
+  },
+  "call_accounting": {
+    "prior_calibration_calls": 647,
+    "original_c11_attempts": 25,
+    "original_c11_complete": 24,
+    "original_c11_unrecoverable_empty_stream": 1,
+    "recovery_calls": 120,
+    "unique_complete_coordinates": 144,
+    "total_calls": 792,
+    "previous_hard_ceiling": 800
+  },
+  "criteria": {
+    "condition_rates": [
+      {"condition":"no_bank","correct":16,"n":16,"rate":1.0},
+      {"condition":"selected_A","correct":0,"n":16,"rate":0.0},
+      {"condition":"selected_B","correct":0,"n":16,"rate":0.0},
+      {"condition":"old_sparse_A","correct":0,"n":16,"rate":0.0},
+      {"condition":"old_sparse_B","correct":0,"n":16,"rate":0.0},
+      {"condition":"random_A","correct":0,"n":16,"rate":0.0},
+      {"condition":"random_B","correct":0,"n":16,"rate":0.0},
+      {"condition":"visible_A","correct":11,"n":16,"rate":0.6875},
+      {"condition":"visible_B","correct":12,"n":16,"rate":0.75}
+    ],
+    "visible_and_no_bank_controls_at_least_80_percent": false,
+    "selected_A_and_B_at_least_80_percent": false,
+    "selected_exceeds_old_sparse_and_random_by_20pp_each_polarity": false,
+    "all_pass": false,
+    "scorer_sha256": "b11f9dd67a5adc21acfeaf31affbf664f28795251f4134be1580f73550fc927a"
+  },
+  "prefill_attention_diagnostic": {
+    "purpose": "separate absent/misrouted bank from bank attended without useful retrieval",
+    "generation_tokens": 0,
+    "prompt_sha256": "416b5c4835004154de1d2e736d1fac7b4d07a8ac314a1765519f004774ad959d",
+    "prompt_bytes_identical_between_conditions": true,
+    "bank_slots": 81,
+    "selected_query_sites": 16,
+    "selected_site_mean_bank_attention_mass_at_final_prompt_token": 0.448355,
+    "unselected_site_mean_bank_attention_mass": 0.0,
+    "all_site_mean_bank_attention_mass": 0.02135,
+    "selected_site_q_rms_delta_by_layer": {
+      "7": 0.0,
+      "31": 0.015092206,
+      "34": 0.040027991,
+      "38": 0.050277263,
+      "41": 0.057538047
+    },
+    "capture_manifest_sha256": "56808c509dfa517926433795dffdac4317da4b2d8b6cc8c13e22fdede2a34d54"
+  },
+  "interpretation": {
+    "observed": [
+      "The attached bank fingerprint matched the request on all scored selected-bank coordinates.",
+      "The selected heads attend to appended bank slots, and downstream prompt-token query states change.",
+      "For A05 selected_A, Gemma's reasoning explicitly says no background rule record was provided; the final answer is unknown.",
+      "Selected-site, old-sparse, and random-bank conditions all score 0/16 per polarity; no-bank is 16/16 unknown."
+    ],
+    "inferred": [
+      "C11 failure is not explained by a missing bank attachment, empty bank, or incorrect selected-head mask.",
+      "The current native KV bank is computationally accessible but has not been shown to expose its structured relations as usable evidence to Gemma."
+    ],
+    "unresolved": [
+      "Whether a stronger but generic memory-availability cue, a bounded selected-site accessibility increase, or a bank encoding change can bridge attention to semantic retrieval.",
+      "Whether the exact KV construction has a Gemma-specific semantic readout limitation despite the verified numerical influence."
+    ]
+  },
+  "external_evidence": {
+    "parent_index": "/home/nyx/mneme-artifacts/phase4-mi1/test-abc/c11-query-sites/evidence/index.json",
+    "recovery_index": "/home/nyx/mneme-artifacts/phase4-mi1/test-abc/c11-query-sites/recovery-evidence/index.json",
+    "score": "/home/nyx/mneme-artifacts/phase4-mi1/test-abc/c11-query-sites/score.json",
+    "prefill_capture_directory": "/home/nyx/mneme-artifacts/phase4-mi1/test-abc/c11-query-sites/prefill-diagnostic-20261011",
+    "prefill_no_bank_sha256": "56bb31ab3dc8640ce43cbd943f95b1292a2846c071c832c47f085416cf6e2381",
+    "prefill_selected_A_sha256": "ddb53130b191f52253b570ee4bd970f2ad033d5e1a3f2e3e27d1f0dfa681319f",
+    "selected_A_bank_sha256": "563367b0e8e0e92c8361cef7edfc26aa263fa8dcda078084a0ef0c5fad01a5b3"
+  }
+}
