@@ -1,0 +1,4843 @@
+{
+  "bank_prior_multipliers": {
+    "fourfold": 4.0,
+    "twofold": 2.0,
+    "zero": 1.0
+  },
+  "calibration_fixture_ids": [
+    "A13",
+    "A14",
+    "A15",
+    "A16"
+  ],
+  "call_count": 88,
+  "code_sha256": {
+    "calibration_module": "e1e983f1d827bf2408b31bf0017107b8e8a495164edd4bd07765381b1f01db13",
+    "runner": "2408e579c508e0430bd33726bcaa32909345e4e9b196136fc785a871a142e3da",
+    "site_selection": "8c1b286c9becb4f135cc785a7a7784b49e6a08f6fa4e63daaa67eac783312b41"
+  },
+  "conditions": [
+    "no_bank",
+    "cue_no_bank",
+    "visible_A",
+    "visible_B",
+    "latent_A_zero",
+    "latent_A_twofold",
+    "latent_A_fourfold",
+    "latent_B_zero",
+    "latent_B_twofold",
+    "latent_B_fourfold",
+    "latent_irrelevant_fourfold"
+  ],
+  "coordinates": [
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C12-A13-no_bank-34201",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "no_bank",
+        "expected_answer": "unknown",
+        "fixture_id": "A13",
+        "logit_bias": null,
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "1675fb1513ff90fe5026d603991f6e7f254095caff6895d83615b92063a92018",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C12-A13-cue_no_bank-34201",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "cue_no_bank",
+        "expected_answer": "unknown",
+        "fixture_id": "A13",
+        "logit_bias": null,
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "e2ef1e584df8c654f9a595a50e3307fe6a345ba16e3e3c17cb8415eb196eab79",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": "- Rava activates Nemi.\n- Nemi activates Tulo.\n",
+      "bank_source_sha256": "a836fabfe752e8c3e137914d9f00a5b9c0294c7d2fd13df0223c25fafe42ca08",
+      "coordinate_id": "C12-A13-visible_A-34201",
+      "expected": {
+        "answer": "Tulo",
+        "path": []
+      },
+      "metadata": {
+        "condition": "visible_A",
+        "expected_answer": "Tulo",
+        "fixture_id": "A13",
+        "logit_bias": null,
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- Rava activates Nemi.\n- Nemi activates Tulo.\n\n\nQuestion:\nStarting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "9e46738302e9219fc613fc72400eea873e52be107deaecef9b56aafed5adb9bf",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": "- Rava activates Nemi.\n- Nemi activates Fera.\n",
+      "bank_source_sha256": "6163f8bf22d5291063acb4f882dabb2267b826f79823d40d960d87a8e4c88e83",
+      "coordinate_id": "C12-A13-visible_B-34201",
+      "expected": {
+        "answer": "Fera",
+        "path": []
+      },
+      "metadata": {
+        "condition": "visible_B",
+        "expected_answer": "Fera",
+        "fixture_id": "A13",
+        "logit_bias": null,
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- Rava activates Nemi.\n- Nemi activates Fera.\n\n\nQuestion:\nStarting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "834718c313e20e20e0461921702006b68ac34ba648fe6165f1ed4c46f0467f2b",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Rava activates Nemi.\n- Nemi activates Tulo.\n",
+      "bank_source_sha256": "a836fabfe752e8c3e137914d9f00a5b9c0294c7d2fd13df0223c25fafe42ca08",
+      "coordinate_id": "C12-A13-latent_A_zero-34201",
+      "expected": {
+        "answer": "Tulo",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_zero",
+        "expected_answer": "Tulo",
+        "fixture_id": "A13",
+        "logit_bias": 0.0,
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "e2ef1e584df8c654f9a595a50e3307fe6a345ba16e3e3c17cb8415eb196eab79",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Rava activates Nemi.\n- Nemi activates Tulo.\n",
+      "bank_source_sha256": "a836fabfe752e8c3e137914d9f00a5b9c0294c7d2fd13df0223c25fafe42ca08",
+      "coordinate_id": "C12-A13-latent_A_twofold-34201",
+      "expected": {
+        "answer": "Tulo",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_twofold",
+        "expected_answer": "Tulo",
+        "fixture_id": "A13",
+        "logit_bias": 0.6931471805599453,
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "e2ef1e584df8c654f9a595a50e3307fe6a345ba16e3e3c17cb8415eb196eab79",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Rava activates Nemi.\n- Nemi activates Tulo.\n",
+      "bank_source_sha256": "a836fabfe752e8c3e137914d9f00a5b9c0294c7d2fd13df0223c25fafe42ca08",
+      "coordinate_id": "C12-A13-latent_A_fourfold-34201",
+      "expected": {
+        "answer": "Tulo",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_fourfold",
+        "expected_answer": "Tulo",
+        "fixture_id": "A13",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "e2ef1e584df8c654f9a595a50e3307fe6a345ba16e3e3c17cb8415eb196eab79",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Rava activates Nemi.\n- Nemi activates Fera.\n",
+      "bank_source_sha256": "6163f8bf22d5291063acb4f882dabb2267b826f79823d40d960d87a8e4c88e83",
+      "coordinate_id": "C12-A13-latent_B_zero-34201",
+      "expected": {
+        "answer": "Fera",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_zero",
+        "expected_answer": "Fera",
+        "fixture_id": "A13",
+        "logit_bias": 0.0,
+        "seed": 34201,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "e2ef1e584df8c654f9a595a50e3307fe6a345ba16e3e3c17cb8415eb196eab79",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Rava activates Nemi.\n- Nemi activates Fera.\n",
+      "bank_source_sha256": "6163f8bf22d5291063acb4f882dabb2267b826f79823d40d960d87a8e4c88e83",
+      "coordinate_id": "C12-A13-latent_B_twofold-34201",
+      "expected": {
+        "answer": "Fera",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_twofold",
+        "expected_answer": "Fera",
+        "fixture_id": "A13",
+        "logit_bias": 0.6931471805599453,
+        "seed": 34201,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "e2ef1e584df8c654f9a595a50e3307fe6a345ba16e3e3c17cb8415eb196eab79",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Rava activates Nemi.\n- Nemi activates Fera.\n",
+      "bank_source_sha256": "6163f8bf22d5291063acb4f882dabb2267b826f79823d40d960d87a8e4c88e83",
+      "coordinate_id": "C12-A13-latent_B_fourfold-34201",
+      "expected": {
+        "answer": "Fera",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_fourfold",
+        "expected_answer": "Fera",
+        "fixture_id": "A13",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34201,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "e2ef1e584df8c654f9a595a50e3307fe6a345ba16e3e3c17cb8415eb196eab79",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Savo activates Kiri.\n- Kiri activates Fera.\n",
+      "bank_source_sha256": "ef79426e0fe56797888edc7be46391e4236cb456530e86f3004774c2b83c38cb",
+      "coordinate_id": "C12-A13-latent_irrelevant_fourfold-34201",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_irrelevant_fourfold",
+        "expected_answer": "unknown",
+        "fixture_id": "A13",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "e2ef1e584df8c654f9a595a50e3307fe6a345ba16e3e3c17cb8415eb196eab79",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C12-A13-no_bank-34219",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "no_bank",
+        "expected_answer": "unknown",
+        "fixture_id": "A13",
+        "logit_bias": null,
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "ff1d24bd08e769e29f0b0639fc0aff4482ca98b8b21e4a8a8978512f14e5b144",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C12-A13-cue_no_bank-34219",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "cue_no_bank",
+        "expected_answer": "unknown",
+        "fixture_id": "A13",
+        "logit_bias": null,
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "619fd1dd55ba9a59565afafc6c231243d654560a8fb947b19ef80019decea8a7",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": "- Rava activates Nemi.\n- Nemi activates Tulo.\n",
+      "bank_source_sha256": "a836fabfe752e8c3e137914d9f00a5b9c0294c7d2fd13df0223c25fafe42ca08",
+      "coordinate_id": "C12-A13-visible_A-34219",
+      "expected": {
+        "answer": "Tulo",
+        "path": []
+      },
+      "metadata": {
+        "condition": "visible_A",
+        "expected_answer": "Tulo",
+        "fixture_id": "A13",
+        "logit_bias": null,
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- Rava activates Nemi.\n- Nemi activates Tulo.\n\n\nQuestion:\nStarting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "24270549b1483175d5b6fd725a90f9c9e40c21a90352d5eb5b0ffb2287786a6e",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": "- Rava activates Nemi.\n- Nemi activates Fera.\n",
+      "bank_source_sha256": "6163f8bf22d5291063acb4f882dabb2267b826f79823d40d960d87a8e4c88e83",
+      "coordinate_id": "C12-A13-visible_B-34219",
+      "expected": {
+        "answer": "Fera",
+        "path": []
+      },
+      "metadata": {
+        "condition": "visible_B",
+        "expected_answer": "Fera",
+        "fixture_id": "A13",
+        "logit_bias": null,
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- Rava activates Nemi.\n- Nemi activates Fera.\n\n\nQuestion:\nStarting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "97284533ad64ab6eec62d6f0288d3202a131ed3162c7f8e92450c886ef680a1a",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Rava activates Nemi.\n- Nemi activates Tulo.\n",
+      "bank_source_sha256": "a836fabfe752e8c3e137914d9f00a5b9c0294c7d2fd13df0223c25fafe42ca08",
+      "coordinate_id": "C12-A13-latent_A_zero-34219",
+      "expected": {
+        "answer": "Tulo",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_zero",
+        "expected_answer": "Tulo",
+        "fixture_id": "A13",
+        "logit_bias": 0.0,
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "619fd1dd55ba9a59565afafc6c231243d654560a8fb947b19ef80019decea8a7",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Rava activates Nemi.\n- Nemi activates Tulo.\n",
+      "bank_source_sha256": "a836fabfe752e8c3e137914d9f00a5b9c0294c7d2fd13df0223c25fafe42ca08",
+      "coordinate_id": "C12-A13-latent_A_twofold-34219",
+      "expected": {
+        "answer": "Tulo",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_twofold",
+        "expected_answer": "Tulo",
+        "fixture_id": "A13",
+        "logit_bias": 0.6931471805599453,
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "619fd1dd55ba9a59565afafc6c231243d654560a8fb947b19ef80019decea8a7",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Rava activates Nemi.\n- Nemi activates Tulo.\n",
+      "bank_source_sha256": "a836fabfe752e8c3e137914d9f00a5b9c0294c7d2fd13df0223c25fafe42ca08",
+      "coordinate_id": "C12-A13-latent_A_fourfold-34219",
+      "expected": {
+        "answer": "Tulo",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_fourfold",
+        "expected_answer": "Tulo",
+        "fixture_id": "A13",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "619fd1dd55ba9a59565afafc6c231243d654560a8fb947b19ef80019decea8a7",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Rava activates Nemi.\n- Nemi activates Fera.\n",
+      "bank_source_sha256": "6163f8bf22d5291063acb4f882dabb2267b826f79823d40d960d87a8e4c88e83",
+      "coordinate_id": "C12-A13-latent_B_zero-34219",
+      "expected": {
+        "answer": "Fera",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_zero",
+        "expected_answer": "Fera",
+        "fixture_id": "A13",
+        "logit_bias": 0.0,
+        "seed": 34219,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "619fd1dd55ba9a59565afafc6c231243d654560a8fb947b19ef80019decea8a7",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Rava activates Nemi.\n- Nemi activates Fera.\n",
+      "bank_source_sha256": "6163f8bf22d5291063acb4f882dabb2267b826f79823d40d960d87a8e4c88e83",
+      "coordinate_id": "C12-A13-latent_B_twofold-34219",
+      "expected": {
+        "answer": "Fera",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_twofold",
+        "expected_answer": "Fera",
+        "fixture_id": "A13",
+        "logit_bias": 0.6931471805599453,
+        "seed": 34219,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "619fd1dd55ba9a59565afafc6c231243d654560a8fb947b19ef80019decea8a7",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Rava activates Nemi.\n- Nemi activates Fera.\n",
+      "bank_source_sha256": "6163f8bf22d5291063acb4f882dabb2267b826f79823d40d960d87a8e4c88e83",
+      "coordinate_id": "C12-A13-latent_B_fourfold-34219",
+      "expected": {
+        "answer": "Fera",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_fourfold",
+        "expected_answer": "Fera",
+        "fixture_id": "A13",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34219,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "619fd1dd55ba9a59565afafc6c231243d654560a8fb947b19ef80019decea8a7",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Savo activates Kiri.\n- Kiri activates Fera.\n",
+      "bank_source_sha256": "ef79426e0fe56797888edc7be46391e4236cb456530e86f3004774c2b83c38cb",
+      "coordinate_id": "C12-A13-latent_irrelevant_fourfold-34219",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_irrelevant_fourfold",
+        "expected_answer": "unknown",
+        "fixture_id": "A13",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Rava, which of Tulo or Fera is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "619fd1dd55ba9a59565afafc6c231243d654560a8fb947b19ef80019decea8a7",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C12-A14-no_bank-34201",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "no_bank",
+        "expected_answer": "unknown",
+        "fixture_id": "A14",
+        "logit_bias": null,
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "3957362f7626faeee0476077f85d3224c82871a4dab489dbf225974b42cedaec",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C12-A14-cue_no_bank-34201",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "cue_no_bank",
+        "expected_answer": "unknown",
+        "fixture_id": "A14",
+        "logit_bias": null,
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "260428956e2e387fe61e2db157f4d5f211d09fca01799aa1309d9db9f0a53436",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": "- Dema activates Vori.\n- Vori activates Leka.\n",
+      "bank_source_sha256": "f81879e4775e1ab24eb0bdf8808f621e3391866ef90ea5ad3ad290c157fcedd5",
+      "coordinate_id": "C12-A14-visible_A-34201",
+      "expected": {
+        "answer": "Leka",
+        "path": []
+      },
+      "metadata": {
+        "condition": "visible_A",
+        "expected_answer": "Leka",
+        "fixture_id": "A14",
+        "logit_bias": null,
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- Dema activates Vori.\n- Vori activates Leka.\n\n\nQuestion:\nStarting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "0eb5f7b0a288f58356ec7ac57958da1375108d3ca37267cb2ea0efcbba882f5e",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": "- Dema activates Vori.\n- Vori activates Panu.\n",
+      "bank_source_sha256": "3efede85687e4f98ee926ad345b46c0ba8ebcb1c523f1a5c99d2f62d99c57ae9",
+      "coordinate_id": "C12-A14-visible_B-34201",
+      "expected": {
+        "answer": "Panu",
+        "path": []
+      },
+      "metadata": {
+        "condition": "visible_B",
+        "expected_answer": "Panu",
+        "fixture_id": "A14",
+        "logit_bias": null,
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- Dema activates Vori.\n- Vori activates Panu.\n\n\nQuestion:\nStarting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "4940ea22efdba40ac2a0b8ca13d379debac1e2e58c6c358c65742a70220693db",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Dema activates Vori.\n- Vori activates Leka.\n",
+      "bank_source_sha256": "f81879e4775e1ab24eb0bdf8808f621e3391866ef90ea5ad3ad290c157fcedd5",
+      "coordinate_id": "C12-A14-latent_A_zero-34201",
+      "expected": {
+        "answer": "Leka",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_zero",
+        "expected_answer": "Leka",
+        "fixture_id": "A14",
+        "logit_bias": 0.0,
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "260428956e2e387fe61e2db157f4d5f211d09fca01799aa1309d9db9f0a53436",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Dema activates Vori.\n- Vori activates Leka.\n",
+      "bank_source_sha256": "f81879e4775e1ab24eb0bdf8808f621e3391866ef90ea5ad3ad290c157fcedd5",
+      "coordinate_id": "C12-A14-latent_A_twofold-34201",
+      "expected": {
+        "answer": "Leka",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_twofold",
+        "expected_answer": "Leka",
+        "fixture_id": "A14",
+        "logit_bias": 0.6931471805599453,
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "260428956e2e387fe61e2db157f4d5f211d09fca01799aa1309d9db9f0a53436",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Dema activates Vori.\n- Vori activates Leka.\n",
+      "bank_source_sha256": "f81879e4775e1ab24eb0bdf8808f621e3391866ef90ea5ad3ad290c157fcedd5",
+      "coordinate_id": "C12-A14-latent_A_fourfold-34201",
+      "expected": {
+        "answer": "Leka",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_fourfold",
+        "expected_answer": "Leka",
+        "fixture_id": "A14",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "260428956e2e387fe61e2db157f4d5f211d09fca01799aa1309d9db9f0a53436",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Dema activates Vori.\n- Vori activates Panu.\n",
+      "bank_source_sha256": "3efede85687e4f98ee926ad345b46c0ba8ebcb1c523f1a5c99d2f62d99c57ae9",
+      "coordinate_id": "C12-A14-latent_B_zero-34201",
+      "expected": {
+        "answer": "Panu",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_zero",
+        "expected_answer": "Panu",
+        "fixture_id": "A14",
+        "logit_bias": 0.0,
+        "seed": 34201,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "260428956e2e387fe61e2db157f4d5f211d09fca01799aa1309d9db9f0a53436",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Dema activates Vori.\n- Vori activates Panu.\n",
+      "bank_source_sha256": "3efede85687e4f98ee926ad345b46c0ba8ebcb1c523f1a5c99d2f62d99c57ae9",
+      "coordinate_id": "C12-A14-latent_B_twofold-34201",
+      "expected": {
+        "answer": "Panu",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_twofold",
+        "expected_answer": "Panu",
+        "fixture_id": "A14",
+        "logit_bias": 0.6931471805599453,
+        "seed": 34201,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "260428956e2e387fe61e2db157f4d5f211d09fca01799aa1309d9db9f0a53436",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Dema activates Vori.\n- Vori activates Panu.\n",
+      "bank_source_sha256": "3efede85687e4f98ee926ad345b46c0ba8ebcb1c523f1a5c99d2f62d99c57ae9",
+      "coordinate_id": "C12-A14-latent_B_fourfold-34201",
+      "expected": {
+        "answer": "Panu",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_fourfold",
+        "expected_answer": "Panu",
+        "fixture_id": "A14",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34201,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "260428956e2e387fe61e2db157f4d5f211d09fca01799aa1309d9db9f0a53436",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Gesi activates Mota.\n- Mota activates Panu.\n",
+      "bank_source_sha256": "0ce1224c0677cab48e699861180ae6ec0d7748cfa1093ff458d2ffb656bfd01a",
+      "coordinate_id": "C12-A14-latent_irrelevant_fourfold-34201",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_irrelevant_fourfold",
+        "expected_answer": "unknown",
+        "fixture_id": "A14",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "260428956e2e387fe61e2db157f4d5f211d09fca01799aa1309d9db9f0a53436",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C12-A14-no_bank-34219",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "no_bank",
+        "expected_answer": "unknown",
+        "fixture_id": "A14",
+        "logit_bias": null,
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "58e086d09f3e33be5a0388d60e54928c12a6c582c369d4c958bc4d9b58859e70",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C12-A14-cue_no_bank-34219",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "cue_no_bank",
+        "expected_answer": "unknown",
+        "fixture_id": "A14",
+        "logit_bias": null,
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "dad5b730786821739427fa443e970c31cab9bea2f8efc662d272a71677bc6974",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": "- Dema activates Vori.\n- Vori activates Leka.\n",
+      "bank_source_sha256": "f81879e4775e1ab24eb0bdf8808f621e3391866ef90ea5ad3ad290c157fcedd5",
+      "coordinate_id": "C12-A14-visible_A-34219",
+      "expected": {
+        "answer": "Leka",
+        "path": []
+      },
+      "metadata": {
+        "condition": "visible_A",
+        "expected_answer": "Leka",
+        "fixture_id": "A14",
+        "logit_bias": null,
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- Dema activates Vori.\n- Vori activates Leka.\n\n\nQuestion:\nStarting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "e14200148cbb82769d89d9a4fc77c9c4df533da9ef5bbe75325ffd7c76a8b9b2",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": "- Dema activates Vori.\n- Vori activates Panu.\n",
+      "bank_source_sha256": "3efede85687e4f98ee926ad345b46c0ba8ebcb1c523f1a5c99d2f62d99c57ae9",
+      "coordinate_id": "C12-A14-visible_B-34219",
+      "expected": {
+        "answer": "Panu",
+        "path": []
+      },
+      "metadata": {
+        "condition": "visible_B",
+        "expected_answer": "Panu",
+        "fixture_id": "A14",
+        "logit_bias": null,
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- Dema activates Vori.\n- Vori activates Panu.\n\n\nQuestion:\nStarting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "e85f7fc8987abb029bea4ec7b46e3ebee33dad39429dd411b2c73b7397c44252",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Dema activates Vori.\n- Vori activates Leka.\n",
+      "bank_source_sha256": "f81879e4775e1ab24eb0bdf8808f621e3391866ef90ea5ad3ad290c157fcedd5",
+      "coordinate_id": "C12-A14-latent_A_zero-34219",
+      "expected": {
+        "answer": "Leka",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_zero",
+        "expected_answer": "Leka",
+        "fixture_id": "A14",
+        "logit_bias": 0.0,
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "dad5b730786821739427fa443e970c31cab9bea2f8efc662d272a71677bc6974",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Dema activates Vori.\n- Vori activates Leka.\n",
+      "bank_source_sha256": "f81879e4775e1ab24eb0bdf8808f621e3391866ef90ea5ad3ad290c157fcedd5",
+      "coordinate_id": "C12-A14-latent_A_twofold-34219",
+      "expected": {
+        "answer": "Leka",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_twofold",
+        "expected_answer": "Leka",
+        "fixture_id": "A14",
+        "logit_bias": 0.6931471805599453,
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "dad5b730786821739427fa443e970c31cab9bea2f8efc662d272a71677bc6974",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Dema activates Vori.\n- Vori activates Leka.\n",
+      "bank_source_sha256": "f81879e4775e1ab24eb0bdf8808f621e3391866ef90ea5ad3ad290c157fcedd5",
+      "coordinate_id": "C12-A14-latent_A_fourfold-34219",
+      "expected": {
+        "answer": "Leka",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_fourfold",
+        "expected_answer": "Leka",
+        "fixture_id": "A14",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "dad5b730786821739427fa443e970c31cab9bea2f8efc662d272a71677bc6974",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Dema activates Vori.\n- Vori activates Panu.\n",
+      "bank_source_sha256": "3efede85687e4f98ee926ad345b46c0ba8ebcb1c523f1a5c99d2f62d99c57ae9",
+      "coordinate_id": "C12-A14-latent_B_zero-34219",
+      "expected": {
+        "answer": "Panu",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_zero",
+        "expected_answer": "Panu",
+        "fixture_id": "A14",
+        "logit_bias": 0.0,
+        "seed": 34219,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "dad5b730786821739427fa443e970c31cab9bea2f8efc662d272a71677bc6974",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Dema activates Vori.\n- Vori activates Panu.\n",
+      "bank_source_sha256": "3efede85687e4f98ee926ad345b46c0ba8ebcb1c523f1a5c99d2f62d99c57ae9",
+      "coordinate_id": "C12-A14-latent_B_twofold-34219",
+      "expected": {
+        "answer": "Panu",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_twofold",
+        "expected_answer": "Panu",
+        "fixture_id": "A14",
+        "logit_bias": 0.6931471805599453,
+        "seed": 34219,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "dad5b730786821739427fa443e970c31cab9bea2f8efc662d272a71677bc6974",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Dema activates Vori.\n- Vori activates Panu.\n",
+      "bank_source_sha256": "3efede85687e4f98ee926ad345b46c0ba8ebcb1c523f1a5c99d2f62d99c57ae9",
+      "coordinate_id": "C12-A14-latent_B_fourfold-34219",
+      "expected": {
+        "answer": "Panu",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_fourfold",
+        "expected_answer": "Panu",
+        "fixture_id": "A14",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34219,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "dad5b730786821739427fa443e970c31cab9bea2f8efc662d272a71677bc6974",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Gesi activates Mota.\n- Mota activates Panu.\n",
+      "bank_source_sha256": "0ce1224c0677cab48e699861180ae6ec0d7748cfa1093ff458d2ffb656bfd01a",
+      "coordinate_id": "C12-A14-latent_irrelevant_fourfold-34219",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_irrelevant_fourfold",
+        "expected_answer": "unknown",
+        "fixture_id": "A14",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Dema, which of Leka or Panu is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "dad5b730786821739427fa443e970c31cab9bea2f8efc662d272a71677bc6974",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C12-A15-no_bank-34201",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "no_bank",
+        "expected_answer": "unknown",
+        "fixture_id": "A15",
+        "logit_bias": null,
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "09b364d7e4706c7bb71fc406948c96d1a059d716e7d9e9bcdecc85f7f6c155dd",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C12-A15-cue_no_bank-34201",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "cue_no_bank",
+        "expected_answer": "unknown",
+        "fixture_id": "A15",
+        "logit_bias": null,
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "66ff076fdb04ce62cae8c810a280fd481aa331a23672aaa287e9a1453f50284a",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": "- Bero activates Cavi.\n- Cavi activates Zuna.\n",
+      "bank_source_sha256": "7f22183a209ecbfe9949d9957e5e0e0d446ff8085f3ff0c0688faf9eb5e9aa14",
+      "coordinate_id": "C12-A15-visible_A-34201",
+      "expected": {
+        "answer": "Zuna",
+        "path": []
+      },
+      "metadata": {
+        "condition": "visible_A",
+        "expected_answer": "Zuna",
+        "fixture_id": "A15",
+        "logit_bias": null,
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- Bero activates Cavi.\n- Cavi activates Zuna.\n\n\nQuestion:\nStarting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "775e308f4ab2e1602b7b62b217256bd3a84a9b69e0285e261831ff20f085bc0b",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": "- Bero activates Cavi.\n- Cavi activates Hedo.\n",
+      "bank_source_sha256": "adf0869d003573991b26c1c15172320343698b930fea5210c86b594e5c4dea89",
+      "coordinate_id": "C12-A15-visible_B-34201",
+      "expected": {
+        "answer": "Hedo",
+        "path": []
+      },
+      "metadata": {
+        "condition": "visible_B",
+        "expected_answer": "Hedo",
+        "fixture_id": "A15",
+        "logit_bias": null,
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- Bero activates Cavi.\n- Cavi activates Hedo.\n\n\nQuestion:\nStarting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "b9bbae0622df3d086292e96dcb73709764d20c2116642a71df2785dc5eef0e78",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Bero activates Cavi.\n- Cavi activates Zuna.\n",
+      "bank_source_sha256": "7f22183a209ecbfe9949d9957e5e0e0d446ff8085f3ff0c0688faf9eb5e9aa14",
+      "coordinate_id": "C12-A15-latent_A_zero-34201",
+      "expected": {
+        "answer": "Zuna",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_zero",
+        "expected_answer": "Zuna",
+        "fixture_id": "A15",
+        "logit_bias": 0.0,
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "66ff076fdb04ce62cae8c810a280fd481aa331a23672aaa287e9a1453f50284a",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Bero activates Cavi.\n- Cavi activates Zuna.\n",
+      "bank_source_sha256": "7f22183a209ecbfe9949d9957e5e0e0d446ff8085f3ff0c0688faf9eb5e9aa14",
+      "coordinate_id": "C12-A15-latent_A_twofold-34201",
+      "expected": {
+        "answer": "Zuna",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_twofold",
+        "expected_answer": "Zuna",
+        "fixture_id": "A15",
+        "logit_bias": 0.6931471805599453,
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "66ff076fdb04ce62cae8c810a280fd481aa331a23672aaa287e9a1453f50284a",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Bero activates Cavi.\n- Cavi activates Zuna.\n",
+      "bank_source_sha256": "7f22183a209ecbfe9949d9957e5e0e0d446ff8085f3ff0c0688faf9eb5e9aa14",
+      "coordinate_id": "C12-A15-latent_A_fourfold-34201",
+      "expected": {
+        "answer": "Zuna",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_fourfold",
+        "expected_answer": "Zuna",
+        "fixture_id": "A15",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "66ff076fdb04ce62cae8c810a280fd481aa331a23672aaa287e9a1453f50284a",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Bero activates Cavi.\n- Cavi activates Hedo.\n",
+      "bank_source_sha256": "adf0869d003573991b26c1c15172320343698b930fea5210c86b594e5c4dea89",
+      "coordinate_id": "C12-A15-latent_B_zero-34201",
+      "expected": {
+        "answer": "Hedo",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_zero",
+        "expected_answer": "Hedo",
+        "fixture_id": "A15",
+        "logit_bias": 0.0,
+        "seed": 34201,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "66ff076fdb04ce62cae8c810a280fd481aa331a23672aaa287e9a1453f50284a",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Bero activates Cavi.\n- Cavi activates Hedo.\n",
+      "bank_source_sha256": "adf0869d003573991b26c1c15172320343698b930fea5210c86b594e5c4dea89",
+      "coordinate_id": "C12-A15-latent_B_twofold-34201",
+      "expected": {
+        "answer": "Hedo",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_twofold",
+        "expected_answer": "Hedo",
+        "fixture_id": "A15",
+        "logit_bias": 0.6931471805599453,
+        "seed": 34201,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "66ff076fdb04ce62cae8c810a280fd481aa331a23672aaa287e9a1453f50284a",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Bero activates Cavi.\n- Cavi activates Hedo.\n",
+      "bank_source_sha256": "adf0869d003573991b26c1c15172320343698b930fea5210c86b594e5c4dea89",
+      "coordinate_id": "C12-A15-latent_B_fourfold-34201",
+      "expected": {
+        "answer": "Hedo",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_fourfold",
+        "expected_answer": "Hedo",
+        "fixture_id": "A15",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34201,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "66ff076fdb04ce62cae8c810a280fd481aa331a23672aaa287e9a1453f50284a",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Javi activates Weno.\n- Weno activates Hedo.\n",
+      "bank_source_sha256": "d09b3d9656dced7c17d8748d9af514e9c21af833ad3f21d4349ffce6829c79cd",
+      "coordinate_id": "C12-A15-latent_irrelevant_fourfold-34201",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_irrelevant_fourfold",
+        "expected_answer": "unknown",
+        "fixture_id": "A15",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "66ff076fdb04ce62cae8c810a280fd481aa331a23672aaa287e9a1453f50284a",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C12-A15-no_bank-34219",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "no_bank",
+        "expected_answer": "unknown",
+        "fixture_id": "A15",
+        "logit_bias": null,
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "b04666b052d8572856fbb8bc528b4f640e0771dd5f4c853130ce424923948fca",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C12-A15-cue_no_bank-34219",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "cue_no_bank",
+        "expected_answer": "unknown",
+        "fixture_id": "A15",
+        "logit_bias": null,
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "2f3392a2c8cd7647e374db67c2574593530562626b7d43ce46043134b3e76cdc",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": "- Bero activates Cavi.\n- Cavi activates Zuna.\n",
+      "bank_source_sha256": "7f22183a209ecbfe9949d9957e5e0e0d446ff8085f3ff0c0688faf9eb5e9aa14",
+      "coordinate_id": "C12-A15-visible_A-34219",
+      "expected": {
+        "answer": "Zuna",
+        "path": []
+      },
+      "metadata": {
+        "condition": "visible_A",
+        "expected_answer": "Zuna",
+        "fixture_id": "A15",
+        "logit_bias": null,
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- Bero activates Cavi.\n- Cavi activates Zuna.\n\n\nQuestion:\nStarting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "158571c0028d9c516fa844296a547fcce8cf579234ee39123818b0c8f21c4612",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": "- Bero activates Cavi.\n- Cavi activates Hedo.\n",
+      "bank_source_sha256": "adf0869d003573991b26c1c15172320343698b930fea5210c86b594e5c4dea89",
+      "coordinate_id": "C12-A15-visible_B-34219",
+      "expected": {
+        "answer": "Hedo",
+        "path": []
+      },
+      "metadata": {
+        "condition": "visible_B",
+        "expected_answer": "Hedo",
+        "fixture_id": "A15",
+        "logit_bias": null,
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- Bero activates Cavi.\n- Cavi activates Hedo.\n\n\nQuestion:\nStarting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "5b4c325f83b1b9d71fc028a133af0fce3cc78ec39b3fcd3190c368fc9518544e",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Bero activates Cavi.\n- Cavi activates Zuna.\n",
+      "bank_source_sha256": "7f22183a209ecbfe9949d9957e5e0e0d446ff8085f3ff0c0688faf9eb5e9aa14",
+      "coordinate_id": "C12-A15-latent_A_zero-34219",
+      "expected": {
+        "answer": "Zuna",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_zero",
+        "expected_answer": "Zuna",
+        "fixture_id": "A15",
+        "logit_bias": 0.0,
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "2f3392a2c8cd7647e374db67c2574593530562626b7d43ce46043134b3e76cdc",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Bero activates Cavi.\n- Cavi activates Zuna.\n",
+      "bank_source_sha256": "7f22183a209ecbfe9949d9957e5e0e0d446ff8085f3ff0c0688faf9eb5e9aa14",
+      "coordinate_id": "C12-A15-latent_A_twofold-34219",
+      "expected": {
+        "answer": "Zuna",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_twofold",
+        "expected_answer": "Zuna",
+        "fixture_id": "A15",
+        "logit_bias": 0.6931471805599453,
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "2f3392a2c8cd7647e374db67c2574593530562626b7d43ce46043134b3e76cdc",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Bero activates Cavi.\n- Cavi activates Zuna.\n",
+      "bank_source_sha256": "7f22183a209ecbfe9949d9957e5e0e0d446ff8085f3ff0c0688faf9eb5e9aa14",
+      "coordinate_id": "C12-A15-latent_A_fourfold-34219",
+      "expected": {
+        "answer": "Zuna",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_fourfold",
+        "expected_answer": "Zuna",
+        "fixture_id": "A15",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "2f3392a2c8cd7647e374db67c2574593530562626b7d43ce46043134b3e76cdc",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Bero activates Cavi.\n- Cavi activates Hedo.\n",
+      "bank_source_sha256": "adf0869d003573991b26c1c15172320343698b930fea5210c86b594e5c4dea89",
+      "coordinate_id": "C12-A15-latent_B_zero-34219",
+      "expected": {
+        "answer": "Hedo",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_zero",
+        "expected_answer": "Hedo",
+        "fixture_id": "A15",
+        "logit_bias": 0.0,
+        "seed": 34219,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "2f3392a2c8cd7647e374db67c2574593530562626b7d43ce46043134b3e76cdc",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Bero activates Cavi.\n- Cavi activates Hedo.\n",
+      "bank_source_sha256": "adf0869d003573991b26c1c15172320343698b930fea5210c86b594e5c4dea89",
+      "coordinate_id": "C12-A15-latent_B_twofold-34219",
+      "expected": {
+        "answer": "Hedo",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_twofold",
+        "expected_answer": "Hedo",
+        "fixture_id": "A15",
+        "logit_bias": 0.6931471805599453,
+        "seed": 34219,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "2f3392a2c8cd7647e374db67c2574593530562626b7d43ce46043134b3e76cdc",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Bero activates Cavi.\n- Cavi activates Hedo.\n",
+      "bank_source_sha256": "adf0869d003573991b26c1c15172320343698b930fea5210c86b594e5c4dea89",
+      "coordinate_id": "C12-A15-latent_B_fourfold-34219",
+      "expected": {
+        "answer": "Hedo",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_fourfold",
+        "expected_answer": "Hedo",
+        "fixture_id": "A15",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34219,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "2f3392a2c8cd7647e374db67c2574593530562626b7d43ce46043134b3e76cdc",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Javi activates Weno.\n- Weno activates Hedo.\n",
+      "bank_source_sha256": "d09b3d9656dced7c17d8748d9af514e9c21af833ad3f21d4349ffce6829c79cd",
+      "coordinate_id": "C12-A15-latent_irrelevant_fourfold-34219",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_irrelevant_fourfold",
+        "expected_answer": "unknown",
+        "fixture_id": "A15",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Bero, which of Zuna or Hedo is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "2f3392a2c8cd7647e374db67c2574593530562626b7d43ce46043134b3e76cdc",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C12-A16-no_bank-34201",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "no_bank",
+        "expected_answer": "unknown",
+        "fixture_id": "A16",
+        "logit_bias": null,
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "3a82324ad4f453e903a815e0eb8f793a522a335d7b91f9a50ea2250caa189797",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C12-A16-cue_no_bank-34201",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "cue_no_bank",
+        "expected_answer": "unknown",
+        "fixture_id": "A16",
+        "logit_bias": null,
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "2a6669bcc4956e7622d60c76827b970dc0afc8237786414796bb1cd236e956f3",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": "- Sula activates Riko.\n- Riko activates Mavi.\n",
+      "bank_source_sha256": "320ac5860384b06f669027facd27763d9f5a2c8f98fd817e2a0402bd1584c445",
+      "coordinate_id": "C12-A16-visible_A-34201",
+      "expected": {
+        "answer": "Mavi",
+        "path": []
+      },
+      "metadata": {
+        "condition": "visible_A",
+        "expected_answer": "Mavi",
+        "fixture_id": "A16",
+        "logit_bias": null,
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- Sula activates Riko.\n- Riko activates Mavi.\n\n\nQuestion:\nStarting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "9fd908bd47c5d6a3b88c7ab263f671b382d86497bb41f5ce9feaafb4cbbc008a",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": "- Sula activates Riko.\n- Riko activates Tena.\n",
+      "bank_source_sha256": "91ea919f576330bb50e6f318c90f3fdb774fd4a76f0ebf830a79d6c51ea44b70",
+      "coordinate_id": "C12-A16-visible_B-34201",
+      "expected": {
+        "answer": "Tena",
+        "path": []
+      },
+      "metadata": {
+        "condition": "visible_B",
+        "expected_answer": "Tena",
+        "fixture_id": "A16",
+        "logit_bias": null,
+        "seed": 34201,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- Sula activates Riko.\n- Riko activates Tena.\n\n\nQuestion:\nStarting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "f3e084af3b5ac4f94f6a46f22f0a00338b7ecc2b0c82ae7bbfb2cf70c45a5b37",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Sula activates Riko.\n- Riko activates Mavi.\n",
+      "bank_source_sha256": "320ac5860384b06f669027facd27763d9f5a2c8f98fd817e2a0402bd1584c445",
+      "coordinate_id": "C12-A16-latent_A_zero-34201",
+      "expected": {
+        "answer": "Mavi",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_zero",
+        "expected_answer": "Mavi",
+        "fixture_id": "A16",
+        "logit_bias": 0.0,
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "2a6669bcc4956e7622d60c76827b970dc0afc8237786414796bb1cd236e956f3",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Sula activates Riko.\n- Riko activates Mavi.\n",
+      "bank_source_sha256": "320ac5860384b06f669027facd27763d9f5a2c8f98fd817e2a0402bd1584c445",
+      "coordinate_id": "C12-A16-latent_A_twofold-34201",
+      "expected": {
+        "answer": "Mavi",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_twofold",
+        "expected_answer": "Mavi",
+        "fixture_id": "A16",
+        "logit_bias": 0.6931471805599453,
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "2a6669bcc4956e7622d60c76827b970dc0afc8237786414796bb1cd236e956f3",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Sula activates Riko.\n- Riko activates Mavi.\n",
+      "bank_source_sha256": "320ac5860384b06f669027facd27763d9f5a2c8f98fd817e2a0402bd1584c445",
+      "coordinate_id": "C12-A16-latent_A_fourfold-34201",
+      "expected": {
+        "answer": "Mavi",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_fourfold",
+        "expected_answer": "Mavi",
+        "fixture_id": "A16",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "2a6669bcc4956e7622d60c76827b970dc0afc8237786414796bb1cd236e956f3",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Sula activates Riko.\n- Riko activates Tena.\n",
+      "bank_source_sha256": "91ea919f576330bb50e6f318c90f3fdb774fd4a76f0ebf830a79d6c51ea44b70",
+      "coordinate_id": "C12-A16-latent_B_zero-34201",
+      "expected": {
+        "answer": "Tena",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_zero",
+        "expected_answer": "Tena",
+        "fixture_id": "A16",
+        "logit_bias": 0.0,
+        "seed": 34201,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "2a6669bcc4956e7622d60c76827b970dc0afc8237786414796bb1cd236e956f3",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Sula activates Riko.\n- Riko activates Tena.\n",
+      "bank_source_sha256": "91ea919f576330bb50e6f318c90f3fdb774fd4a76f0ebf830a79d6c51ea44b70",
+      "coordinate_id": "C12-A16-latent_B_twofold-34201",
+      "expected": {
+        "answer": "Tena",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_twofold",
+        "expected_answer": "Tena",
+        "fixture_id": "A16",
+        "logit_bias": 0.6931471805599453,
+        "seed": 34201,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "2a6669bcc4956e7622d60c76827b970dc0afc8237786414796bb1cd236e956f3",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Sula activates Riko.\n- Riko activates Tena.\n",
+      "bank_source_sha256": "91ea919f576330bb50e6f318c90f3fdb774fd4a76f0ebf830a79d6c51ea44b70",
+      "coordinate_id": "C12-A16-latent_B_fourfold-34201",
+      "expected": {
+        "answer": "Tena",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_fourfold",
+        "expected_answer": "Tena",
+        "fixture_id": "A16",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34201,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "2a6669bcc4956e7622d60c76827b970dc0afc8237786414796bb1cd236e956f3",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Gora activates Peli.\n- Peli activates Tena.\n",
+      "bank_source_sha256": "ba7256b237be11a61f94daf8762df31d89aa3a39d62c2bb424d2c1cc03d9e828",
+      "coordinate_id": "C12-A16-latent_irrelevant_fourfold-34201",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_irrelevant_fourfold",
+        "expected_answer": "unknown",
+        "fixture_id": "A16",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34201,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34201,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "2a6669bcc4956e7622d60c76827b970dc0afc8237786414796bb1cd236e956f3",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C12-A16-no_bank-34219",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "no_bank",
+        "expected_answer": "unknown",
+        "fixture_id": "A16",
+        "logit_bias": null,
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. Use only the facts available in this request. If no usable directed facts are available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "84aad071e5b0c9a678fa5a3501062062c52f6a8af8ffb4c1c7c42245d894275b",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": null,
+      "bank_source_sha256": null,
+      "coordinate_id": "C12-A16-cue_no_bank-34219",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "cue_no_bank",
+        "expected_answer": "unknown",
+        "fixture_id": "A16",
+        "logit_bias": null,
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "0f1a3e97126a39bea034735dd12f49c947d72e8ef0dbdb932f91b18d72522449",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": "- Sula activates Riko.\n- Riko activates Mavi.\n",
+      "bank_source_sha256": "320ac5860384b06f669027facd27763d9f5a2c8f98fd817e2a0402bd1584c445",
+      "coordinate_id": "C12-A16-visible_A-34219",
+      "expected": {
+        "answer": "Mavi",
+        "path": []
+      },
+      "metadata": {
+        "condition": "visible_A",
+        "expected_answer": "Mavi",
+        "fixture_id": "A16",
+        "logit_bias": null,
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- Sula activates Riko.\n- Riko activates Mavi.\n\n\nQuestion:\nStarting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "92261aa48d1cdecadad2e4174f4f2acc106009d8934e9e41702acb8185b257f3",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "clear",
+      "bank_config": {
+        "gain": null,
+        "selector": "none"
+      },
+      "bank_source": "- Sula activates Riko.\n- Riko activates Tena.\n",
+      "bank_source_sha256": "91ea919f576330bb50e6f318c90f3fdb774fd4a76f0ebf830a79d6c51ea44b70",
+      "coordinate_id": "C12-A16-visible_B-34219",
+      "expected": {
+        "answer": "Tena",
+        "path": []
+      },
+      "metadata": {
+        "condition": "visible_B",
+        "expected_answer": "Tena",
+        "fixture_id": "A16",
+        "logit_bias": null,
+        "seed": 34219,
+        "selector": "none",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Visible record:\n- Sula activates Riko.\n- Riko activates Tena.\n\n\nQuestion:\nStarting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "146a49817eef570d8221420022cb69a1a4084a6b7967231d03668463dfdd53ae",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Sula activates Riko.\n- Riko activates Mavi.\n",
+      "bank_source_sha256": "320ac5860384b06f669027facd27763d9f5a2c8f98fd817e2a0402bd1584c445",
+      "coordinate_id": "C12-A16-latent_A_zero-34219",
+      "expected": {
+        "answer": "Mavi",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_zero",
+        "expected_answer": "Mavi",
+        "fixture_id": "A16",
+        "logit_bias": 0.0,
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "0f1a3e97126a39bea034735dd12f49c947d72e8ef0dbdb932f91b18d72522449",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Sula activates Riko.\n- Riko activates Mavi.\n",
+      "bank_source_sha256": "320ac5860384b06f669027facd27763d9f5a2c8f98fd817e2a0402bd1584c445",
+      "coordinate_id": "C12-A16-latent_A_twofold-34219",
+      "expected": {
+        "answer": "Mavi",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_twofold",
+        "expected_answer": "Mavi",
+        "fixture_id": "A16",
+        "logit_bias": 0.6931471805599453,
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "0f1a3e97126a39bea034735dd12f49c947d72e8ef0dbdb932f91b18d72522449",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Sula activates Riko.\n- Riko activates Mavi.\n",
+      "bank_source_sha256": "320ac5860384b06f669027facd27763d9f5a2c8f98fd817e2a0402bd1584c445",
+      "coordinate_id": "C12-A16-latent_A_fourfold-34219",
+      "expected": {
+        "answer": "Mavi",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_A_fourfold",
+        "expected_answer": "Mavi",
+        "fixture_id": "A16",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "0f1a3e97126a39bea034735dd12f49c947d72e8ef0dbdb932f91b18d72522449",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.0,
+          "relative_prior": 1.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Sula activates Riko.\n- Riko activates Tena.\n",
+      "bank_source_sha256": "91ea919f576330bb50e6f318c90f3fdb774fd4a76f0ebf830a79d6c51ea44b70",
+      "coordinate_id": "C12-A16-latent_B_zero-34219",
+      "expected": {
+        "answer": "Tena",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_zero",
+        "expected_answer": "Tena",
+        "fixture_id": "A16",
+        "logit_bias": 0.0,
+        "seed": 34219,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "0f1a3e97126a39bea034735dd12f49c947d72e8ef0dbdb932f91b18d72522449",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 0.6931471805599453,
+          "relative_prior": 2.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Sula activates Riko.\n- Riko activates Tena.\n",
+      "bank_source_sha256": "91ea919f576330bb50e6f318c90f3fdb774fd4a76f0ebf830a79d6c51ea44b70",
+      "coordinate_id": "C12-A16-latent_B_twofold-34219",
+      "expected": {
+        "answer": "Tena",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_twofold",
+        "expected_answer": "Tena",
+        "fixture_id": "A16",
+        "logit_bias": 0.6931471805599453,
+        "seed": 34219,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "0f1a3e97126a39bea034735dd12f49c947d72e8ef0dbdb932f91b18d72522449",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_B"
+      },
+      "bank_source": "- Sula activates Riko.\n- Riko activates Tena.\n",
+      "bank_source_sha256": "91ea919f576330bb50e6f318c90f3fdb774fd4a76f0ebf830a79d6c51ea44b70",
+      "coordinate_id": "C12-A16-latent_B_fourfold-34219",
+      "expected": {
+        "answer": "Tena",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_B_fourfold",
+        "expected_answer": "Tena",
+        "fixture_id": "A16",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34219,
+        "selector": "selected_B",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "0f1a3e97126a39bea034735dd12f49c947d72e8ef0dbdb932f91b18d72522449",
+      "suite": "c12_calibration"
+    },
+    {
+      "bank_action": "attach",
+      "bank_config": {
+        "gain": {
+          "logit_bias": 1.3862943611198906,
+          "relative_prior": 4.0
+        },
+        "selector": "selected_A"
+      },
+      "bank_source": "- Gora activates Peli.\n- Peli activates Tena.\n",
+      "bank_source_sha256": "ba7256b237be11a61f94daf8762df31d89aa3a39d62c2bb424d2c1cc03d9e828",
+      "coordinate_id": "C12-A16-latent_irrelevant_fourfold-34219",
+      "expected": {
+        "answer": "unknown",
+        "path": []
+      },
+      "metadata": {
+        "condition": "latent_irrelevant_fourfold",
+        "expected_answer": "unknown",
+        "fixture_id": "A16",
+        "logit_bias": 1.3862943611198906,
+        "seed": 34219,
+        "selector": "selected_A",
+        "server_role": "mi1_server",
+        "suite": "c12_calibration"
+      },
+      "request": {
+        "cache_prompt": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "content": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+            "role": "system"
+          },
+          {
+            "content": "Starting only at Sula, which of Mavi or Tena is reachable by following the directed links?",
+            "role": "user"
+          }
+        ],
+        "min_p": 0.05,
+        "model": "google/gemma-4-E4B-it",
+        "reasoning_format": "deepseek",
+        "seed": 34219,
+        "stream": true,
+        "temperature": 0.35,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "request_sha256": "0f1a3e97126a39bea034735dd12f49c947d72e8ef0dbdb932f91b18d72522449",
+      "suite": "c12_calibration"
+    }
+  ],
+  "criteria": {
+    "heldout_confirmation": "Required before any WORKS disposition.",
+    "latent_each_polarity_minimum": 7,
+    "per_condition_denominator": 8,
+    "unknown_control_minimum": 7,
+    "visible_each_polarity_minimum": 7
+  },
+  "cue": "You are solving a small fictional directed-reachability task. A private side-memory record may be available to your attention even though it is not printed in the conversation. Treat an available record as a source of directed facts; do not reject it merely because it is hidden from the visible prompt. If no usable record is available, answer unknown. Reply with exactly one candidate label or unknown.",
+  "cue_contents_rule": "Cue may identify that a side-memory mechanism exists; it contains none of the bank facts.",
+  "experiment": "MNEME Phase 4 MI1 C12 memory-readout cue and bank-prior calibration",
+  "fixtures": [
+    {
+      "decoy": "Fera",
+      "fixture_id": "A13",
+      "middle": "Nemi",
+      "other": "Savo",
+      "start": "Rava",
+      "target": "Tulo",
+      "unused": "Kiri"
+    },
+    {
+      "decoy": "Panu",
+      "fixture_id": "A14",
+      "middle": "Vori",
+      "other": "Gesi",
+      "start": "Dema",
+      "target": "Leka",
+      "unused": "Mota"
+    },
+    {
+      "decoy": "Hedo",
+      "fixture_id": "A15",
+      "middle": "Cavi",
+      "other": "Javi",
+      "start": "Bero",
+      "target": "Zuna",
+      "unused": "Weno"
+    },
+    {
+      "decoy": "Tena",
+      "fixture_id": "A16",
+      "middle": "Riko",
+      "other": "Gora",
+      "start": "Sula",
+      "target": "Mavi",
+      "unused": "Peli"
+    },
+    {
+      "decoy": "Baki",
+      "fixture_id": "A17",
+      "middle": "Qena",
+      "other": "Lumi",
+      "start": "Filo",
+      "target": "Doru",
+      "unused": "Seki"
+    },
+    {
+      "decoy": "Celo",
+      "fixture_id": "A18",
+      "middle": "Juno",
+      "other": "Rudi",
+      "start": "Wera",
+      "target": "Pexa",
+      "unused": "Navo"
+    },
+    {
+      "decoy": "Vulo",
+      "fixture_id": "A19",
+      "middle": "Meri",
+      "other": "Teki",
+      "start": "Kavo",
+      "target": "Sadi",
+      "unused": "Bena"
+    },
+    {
+      "decoy": "Feki",
+      "fixture_id": "A20",
+      "middle": "Zavi",
+      "other": "Dasi",
+      "start": "Yeno",
+      "target": "Lumo",
+      "unused": "Ravo"
+    },
+    {
+      "decoy": "Neri",
+      "fixture_id": "A21",
+      "middle": "Huno",
+      "other": "Pavo",
+      "start": "Cira",
+      "target": "Gavi",
+      "unused": "Tumo"
+    },
+    {
+      "decoy": "Meko",
+      "fixture_id": "A22",
+      "middle": "Bulo",
+      "other": "Jaso",
+      "start": "Vesa",
+      "target": "Reni",
+      "unused": "Fanu"
+    },
+    {
+      "decoy": "Qori",
+      "fixture_id": "A23",
+      "middle": "Tavi",
+      "other": "Suna",
+      "start": "Ledo",
+      "target": "Wemi",
+      "unused": "Davi"
+    },
+    {
+      "decoy": "Yaro",
+      "fixture_id": "A24",
+      "middle": "Fela",
+      "other": "Cumi",
+      "start": "Navo",
+      "target": "Kesi",
+      "unused": "Vena"
+    }
+  ],
+  "generation_config": {
+    "cache_prompt": false,
+    "max_tokens": 1024,
+    "min_p": 0.05,
+    "reasoning": "ON",
+    "temperature": 0.35,
+    "top_k": 40,
+    "top_p": 0.9
+  },
+  "heldout_fixture_ids_frozen_but_not_run": [
+    "A17",
+    "A18",
+    "A19",
+    "A20",
+    "A21",
+    "A22",
+    "A23",
+    "A24"
+  ],
+  "heldout_rule": "For each polarity, choose the smallest bank prior with at least 7/8 correct on latent_A and latent_B; require visible_A and visible_B at least 7/8 and no_bank, cue_no_bank, and irrelevant_fourfold each at least 7/8 unknown. If no level passes, no holdout generation occurs.",
+  "model": {
+    "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+    "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+    "name": "google/gemma-4-E4B-it"
+  },
+  "parent_c11_readout_sha256": "b11f9dd67a5adc21acfeaf31affbf664f28795251f4134be1580f73550fc927a",
+  "schema_version": 1,
+  "seeds": [
+    34201,
+    34219
+  ],
+  "site_selection_sha256": "3ea0dbaee055ba9a94fb071eb4a9dc50536c5397bcfad0173ff6da760752bab8",
+  "status": "FROZEN_BEFORE_CALIBRATION_GENERATION"
+}
