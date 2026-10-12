@@ -1,0 +1,624 @@
+{
+  "schema_version": 1,
+  "artifact_type": "MI2_VISIBLE_ONLY_CANDIDATE",
+  "candidate_version": "v3.4",
+  "package_id": "MI2-PAPER-GUIDANCE-20261011",
+  "created_utc": "2026-10-12T00:00:00Z",
+  "purpose": "Estimate whether the paper's same Quantum process card has a repeatable visible effect on a broader untouched PHYSICS-eval cohort before authorizing latent work.",
+  "source": {
+    "dataset": "PHYSICS-eval Quantum subject, original paper benchmark split",
+    "path": "/home/nyx/mneme-artifacts/phase4-mi2/source/PHYSICS/PHYSICS/PHYSICS-eval/quantum_dataset_eval.jsonl",
+    "sha256": "6274d86cc8767fdd332f04ab2175d5754bb20250190ba10bf45d9e33367ac919",
+    "row_count": 53,
+    "license": "PHYSICS source repository MIT license"
+  },
+  "cohort_rule": {
+    "previously_used_ids": [
+      "quantum/1-1022",
+      "quantum/1-1041",
+      "quantum/3-3013",
+      "quantum/3-3024",
+      "quantum/3-3025",
+      "quantum/3-3047",
+      "quantum/4002",
+      "quantum/5005",
+      "quantum/5051",
+      "quantum/6015",
+      "quantum/6040",
+      "quantum/6046"
+    ],
+    "excluded_other_ids": [
+      {
+        "id": "quantum/1-1023",
+        "reason": "unavailable figure/diagram input"
+      },
+      {
+        "id": "quantum/1-1046",
+        "reason": "unavailable figure/diagram input"
+      },
+      {
+        "id": "quantum/1-1047",
+        "reason": "unavailable figure/diagram input"
+      },
+      {
+        "id": "quantum/1-1048",
+        "reason": "unavailable figure/diagram input"
+      },
+      {
+        "id": "quantum/1-1049",
+        "reason": "unavailable figure/diagram input"
+      },
+      {
+        "id": "quantum/5002",
+        "reason": "unavailable figure/diagram input"
+      },
+      {
+        "id": "quantum/6023",
+        "reason": "unavailable figure/diagram input"
+      },
+      {
+        "id": "quantum/6041",
+        "reason": "unavailable figure/diagram input"
+      }
+    ],
+    "eligibility": "Every remaining quantum item with official final_answers, no attached graph/image, and no figure reference. No quality selection; no PHYSICS-test.",
+    "eligible_count": 33,
+    "task_ids": [
+      "quantum/1-1024",
+      "quantum/1-1025",
+      "quantum/2-2013",
+      "quantum/2-2014",
+      "quantum/2-2015",
+      "quantum/3-3023",
+      "quantum/3-3048",
+      "quantum/4004",
+      "quantum/4010",
+      "quantum/5003",
+      "quantum/5032",
+      "quantum/5035",
+      "quantum/5060",
+      "quantum/5067",
+      "quantum/5068",
+      "quantum/5069",
+      "quantum/6012",
+      "quantum/6013",
+      "quantum/6014",
+      "quantum/7008",
+      "quantum/7012",
+      "quantum/7013",
+      "quantum/7014",
+      "quantum/7015",
+      "quantum/7022",
+      "quantum/7023",
+      "quantum/7024",
+      "quantum/7025",
+      "quantum/8001",
+      "quantum/8006",
+      "quantum/8007",
+      "quantum/8008",
+      "quantum/8009"
+    ]
+  },
+  "guidance": {
+    "source": "Memory Inception arXiv:2605.06225v2, Appendix E, Table 5, Quantum row",
+    "card": "Trigger: A prompt mixes states, operators, spectra, measurement, and time language; separate spectral, dynamical, measurement, and approximation questions before computing.\nAction: Decide whether the answer concerns allowed states, time evolution, measurement statistics, response to a small change, or asymptotic behavior.\nTrap Check: Avoid solving the wrong kind of quantum problem because similar symbols appear in the prompt. The mathematical object in the final answer should match the physical question.",
+    "construction": "Same verbatim paper card as v3.3.1; unchanged after its weak single-item result."
+  },
+  "scoring": {
+    "answer_correctness": "Score each official answer component: 0=incorrect/missing, 0.5=partly correct/equivalent but incomplete, 1=correct/equivalent. Average components per response; report 0-1 and 0-5 separately from process.",
+    "process_rubric": [
+      "Identifies the requested physical/mathematical object or operation, such as spectrum, dynamics, measurement, perturbation, or approximation.",
+      "Chooses and applies a representation or procedure suited to that object and the stated physical regime.",
+      "Keeps distinct requested objects/operations separate and avoids a category substitution warned against by the card."
+    ],
+    "process_score": "Three frozen binary criteria. Require exact evidence quotes from the saved reasoning or answer; repeating card wording alone does not count.",
+    "trigger_strata": "Report direct_quantum_process items separately from two broad_quantum items; do not filter the cohort after outputs.",
+    "baseline_headroom_gate": "Continue only if direct-item answer mean <=0.90/1 and fewer than 20% of direct-item means equal 1.0; otherwise stop for baseline ceiling.",
+    "visible_gate": "Pass only if direct-item mean process delta >=0.25/3, positive task means exceed negative means with one-sided exact sign-test p<=0.05 (ties excluded), and answer-score harm <=0.05. Broad items cannot rescue a failed direct gate.",
+    "finish_policy": "Do not retry abnormal, uncertain, or missing calls. Preserve failure and stop."
+  },
+  "prompt_contract": {
+    "baseline_system_text_exact": "You are solving a quantum mechanics problem. Work from the stated assumptions, show the reasoning needed to justify each requested result, and clearly label final answers for every part.",
+    "visible_system_text_exact": "You are solving a quantum mechanics problem. Work from the stated assumptions, show the reasoning needed to justify each requested result, and clearly label final answers for every part.\n\nQuantum mechanics process guide (Memory Inception, Appendix E, Table 5):\nTrigger: A prompt mixes states, operators, spectra, measurement, and time language; separate spectral, dynamical, measurement, and approximation questions before computing.\nAction: Decide whether the answer concerns allowed states, time evolution, measurement statistics, response to a small change, or asymptotic behavior.\nTrap Check: Avoid solving the wrong kind of quantum problem because similar symbols appear in the prompt. The mathematical object in the final answer should match the physical question.",
+    "only_condition_difference": "Only the fixed card changes the system text; user text and runtime fields are identical for each matched item and seed.",
+    "user_message": "Use the exact question as the only user message; do not include the solution or answer key.",
+    "reasoning": "ON",
+    "cache_prompt": false,
+    "generation_seeds": [
+      482011,
+      482029,
+      482047
+    ],
+    "runtime": {
+      "model": "google/gemma-4-E4B-it",
+      "gguf_path": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+      "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+      "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+      "temperature": 0.35,
+      "top_k": 40,
+      "top_p": 0.9,
+      "min_p": 0.05,
+      "max_tokens": 8192,
+      "context_size": 8192,
+      "reasoning_format": "deepseek",
+      "gpu_layers": 99,
+      "batch_size": 2048,
+      "ubatch_size": 512,
+      "threads": 4,
+      "threads_batch": 4,
+      "parallel": 1
+    }
+  },
+  "tasks": [
+    {
+      "id": "quantum/1-1024",
+      "question": "An infinitely deep one-dimensional square well potential confines a particle to the region $0 \\leq x \\leq L$. Sketch the wave function for its lowest energy eigenstate. If a repulsive delta function potential, $H = \\lambda \\delta (x - L/2) (\\lambda > 0)$, is added at the center of the well, sketch the new wave function and state whether the energy increases or decreases. If it was originally $E_0$, what does it become when $\\lambda \\to \\infty$?",
+      "question_sha256": "a028f9bcfdc31edd8eb8838b8f4641ac1e400f7277e6bbb55959449be7ada38e",
+      "answer_components": [
+        "E = 4E_0"
+      ],
+      "answer_key_sha256": "203841978608fb41121fd686f03ed4a94968427b268f18f5a511e7a6e9f632d7",
+      "solution_sha256": "3972e66fc8e8267f6281acc832bdd4d0dd4de80dc8bfb8e45481d82d586de647",
+      "source_row_sha256": "f50c7688890547ba166ba0408f7afce71261da7017c4b6647d693ff0a9ec4768",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/1-1025",
+      "question": "A nonrelativistic particle of mass m undergoes one-dimensional motion in the potential\n\n$$\nV(z) = -g[\\delta(x-a) + \\delta(x+a)]\n$$\n\nwhere $\\text{g} > 0$ is a constant and $\\delta(x)$ is the Dirac delta function. Find the ground-state energy eigenfunction and obtain an equation which relates the corresponding energy eigenvalue to the constant $\\text{g}$.",
+      "question_sha256": "709af038489c122236c35293dd9ef9dbb99dba59cf6f204264e1df92e0e7f753",
+      "answer_components": [
+        "\\psi(x) = \\begin{cases} \n   B e^{ka} \\cosh (ka) e^{-k |x|}, & |x| > a, \\\\\n   B \\cosh(kx), & |x| \\le a.\n   \\end{cases}",
+        "k \\left[1 + \\tanh(ka) \\right] = \\frac{2mg}{\\hbar^2}"
+      ],
+      "answer_key_sha256": "4d5fe1201b0527ce2c6981b6576c31ab0cb42948d6763dea5cf847ff6069f37f",
+      "solution_sha256": "f3e5b8c1c8c48091db64b174d860069e6184d166a54bf42d81cd0fd119b09747",
+      "source_row_sha256": "ff98cc2f29bc08bd187f6961eb4a2f887a81f9a581d1a9e99a242d45c412a024",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/2-2013",
+      "question": "The ground state energy and Bohr radius for the hydrogen atom are $E_0 = -e^2/2a_0$, $a_0 = \\hbar^2/me^2$, where $\\text m$ is the reduced mass of the system.\n$$\n\\{ m_e = 9.11 \\times 10^{-28} \\ \\text{g}, \\ m_p = 1.67 \\times 10^{-24} \\ \\text{g}, \\ e = 4.80 \\times 10^{-10} \\ \\text{e.s.u.}, \\ \\hbar = 1.05 \\times 10^{-27} \\ \\text{erg sec.} \\}\n$$\n\n(a) Compute the ground state energy and Bohr radius of the positronium.\n\n(b) What is the degeneracy of the positronium ground state due to electron spin? Write down the possible spin wave functions which have definite values of the total spin together with the corresponding eigenvalues.\n\n(c) The ground state of positronium can decay by annihilation into photons. Calculate the energy and angular momentum released in this process and prove that there must be at least two photons in the final state.\n\n",
+      "question_sha256": "b01313e2a91bf2f8975fb58dee4b1fb8d84e43fb1789a9af0b2888453665aae3",
+      "answer_components": [
+        "E_0 = -6.8 \\ \\text{eV}",
+        "a_0 = 1.05 \\times 10^{-8} \\ \\text{cm}",
+        "\\Delta E = 1.02 \\ \\text{MeV}",
+        "AJ = \\sqrt{2}\\hbar"
+      ],
+      "answer_key_sha256": "0e98d262da18146a497fc2c9435a8aa17e93c9ad39fa0b56c573913fe6d31c70",
+      "solution_sha256": "4d0d4261687123b13cf8394362cf827f0df5db16e09831cf982238da2e2e9802",
+      "source_row_sha256": "221ae3b7b5c3a4b44363e2915e4f3c97570854f30bea7c7d15f78d696f7d4109",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/2-2014",
+      "question": "Consider an electron moving in a spherically symmetric potential $V = kr$, where $k > 0$.\n\n(a) Use the uncertainty principle to estimate the ground state energy.\n\n(b) Use the Bohr-Sommerfeld quantization rule to calculate the ground state energy.\n\n(c) Do the same using the variational principle and a trial wave function of your own choice.\n\n(d) Solve for the energy eigenvalue and eigenfunction exactly for the ground state.  \n\n(Hint: Use Fourier transforms.)\n\n(e) Write down the effective potential for nonzero angular momentum states.",
+      "question_sha256": "fa383c98475467bb8de6aa2dd1e7655b573334b0f4ba2877db389e793614188d",
+      "answer_components": [
+        "E = \\frac{3}{2} \\left( \\frac{k^2 \\hbar^2}{4m} \\right)^{1/3}",
+        "E_0 = \\frac{3}{2}(k^2 \\hbar^2/m)^{1/3}",
+        "\\bar{H} = \\frac{3}{2} \\left( \\frac{9}{4} \\frac{k^2 \\hbar^2}{m} \\right)^{1/3}",
+        "E_0 = \\left( \\frac{\\hbar^2}{2mk} \\right)^{\\frac{1}{3}} kx_0",
+        "R(r) = \\frac{1}{r} Ai(-x) \\quad \\text{with} \\quad x = \\left( \\frac{2mk}{\\hbar^2} \\right)^{1/3} \\left( \\frac{E_0}{k} - r \\right)",
+        "V_{eff} = kr + \\frac{\\hbar^2 l(l+1)}{2mr^2}"
+      ],
+      "answer_key_sha256": "e6cef3e33e15332783574717314e829acb192eb3ef8b8cc14bcb71ebb3fd3ec1",
+      "solution_sha256": "d9ad6d0860f5df32d5a4aa6d715c89236d50f02e0c4016a0fba239934f144781",
+      "source_row_sha256": "99173990940adeb6e37c2d1ed5377b50dd85483a717831630ec2cdaf72107551",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/2-2015",
+      "question": "The interactions of heavy quarks are often approximated by a spin-independent nonrelativistic potential which is a linear function of the radial variable $r$, where $r$ is the separation of the quarks: $V(r) = A + Br$. Thus the famous \"charmonium\" particles, the $\\psi$ and $\\psi'$, with rest energies 3.1 $\\text{GeV}$ and 3.7 $\\text{GeV}$  (1 $\\text{GeV}$  = $10^9$ $\\text{eV}$ ), are believed to be the $n = 0$ and $n = 1$ bound states of zero orbital angular momentum of a charm quark of mass $m_c = 1.5 \\text{ GeV}/c^2$ (i.e. $E = 1.5 \\text{ GeV}$) and an anti-quark of the same mass in the above linear potential. Similarly, the recently discovered upsilon particles, the $\\Upsilon$ and $\\Upsilon'$, are believed to be the $n = 0$ and $n = 1$ zero orbital angular momentum bound states of a bottom quark and anti-quark pair in the same potential. The rest mass of bottom quark is $m_b = 4.5 \\text{ GeV}/c^2$. The rest energy of $\\Upsilon$ is 9.5 $\\text{GeV}$ .\n\n(a) Using dimensional analysis, derive a relation between the energy splitting of the $\\psi$ and $\\psi'$ and that of the $\\Upsilon$ and $\\Upsilon'$, and thereby evaluate the rest energy of the $\\Upsilon'$. (Express all energies in units of $\\text{GeV}$ .)\n\n(b) Call the $n = 2$, zero orbital angular momentum charmonium particle the $\\psi''$. Use the $\\text{WKB}$ approximation to estimate the energy splitting of the $\\psi'$ and the $\\psi''$ in terms of the energy splitting of the $\\psi$ and the $\\psi'$, and thereby give a numerical estimate of the rest energy of the $\\psi''$.\n\n",
+      "question_sha256": "1c5d54a1923dd3d5d9bc5c9822f25b60fa39e80fb621347a6da43da4bfc57455",
+      "answer_components": [
+        "E_{\\Upsilon'} = 9.9 \\, \\text{GeV}",
+        "E_{\\psi''} = 4.2 \\, \\text{GeV}"
+      ],
+      "answer_key_sha256": "24f8abf7bed660136640c7a9ab69977447edd41e62e37992b4d97b19db561475",
+      "solution_sha256": "df1a69bf67e9f495c1555b04c601fd436645dfef73d4fe62b586d7f54359bf10",
+      "source_row_sha256": "cfe4c2cf08775310e97fedff4fa5b0dc98232ce417e23e0f7a3fd4991470a1ab",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/3-3023",
+      "question": "Consider an electron in a uniform magnetic field in the positive $z$ direction. The result of a measurement has shown that the electron spin is along the positive $x$ direction at $t = 0$. Use Ehrenfest theorem to compute the probability for $t > 0$ that the electron is in the state (a) $s_x = 1/2$, (b) $s_x = -1/2$, (c) $s_y = 1/2$, (d) $s_y = -1/2$, (e) $s_z = 1/2$, (f) $s_z = -1/2$. \n\nEhrenfest theorem states that the expectation values of a quantum mechanical operator obey the classical equation of motion. \n\n[Hint: Recall the connection between expectation values and probability considerations].",
+      "question_sha256": "50033a73bff6607a109505ede13b8ad653416bf4ab6af70536e451ee0315dd5a",
+      "answer_components": [
+        "\\mathbf{P}(s_x = 1/2) = \\cos^2\\left(\\frac{\\omega t}{2}\\right)",
+        "\\mathbf{P}(s_x = -1/2) = \\sin^2\\left(\\frac{\\omega t}{2}\\right)",
+        "\\mathbf{P}(s_y = 1/2) = \\cos^2\\left(\\frac{\\omega t}{2} - \\frac{\\pi}{4}\\right)",
+        "\\mathbf{P}(s_y = -1/2) = \\sin^2\\left(\\frac{\\omega t}{2} - \\frac{\\pi}{4}\\right)",
+        "\\mathbf{P}(s_z = 1/2) = \\frac{1}{2}",
+        "\\mathbf{P}(s_z = -1/2) = \\frac{1}{2}"
+      ],
+      "answer_key_sha256": "b295aa69f8b2ec26edec30e0d3d9f1d5104a7bc48ac38acee74321014ad8fca8",
+      "solution_sha256": "2e50f04f60834d5ef842248cc6fd67caad353eb749b14336c33b9bb1a7f77a26",
+      "source_row_sha256": "9723920c0fa9d959f00cc9aa293d67661b9a1365350021fd70f6daa39d25fe9a",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/3-3048",
+      "question": "The Hamiltonian for a $(\\mu^+ e^-)$ atom in the $n = 1, l = 0$ state in an external magnetic field $\\mathbf{B}$ is\n\n$$\nH = as_\\mu \\cdot \\mathbf{s}_e + \\frac{|e|}{m_ec} \\mathbf{s}_e \\cdot \\mathbf{B} - \\frac{|e|}{m_\\mu c} \\mathbf{s}_\\mu \\cdot \\mathbf{B}\n$$\n\n(a) What is the physical significance of each term? Which term dominates in the interaction with the external field?  \n\n(b) Choosing the z-axis along $\\mathbf{B}$ and using the notation ($F, M$), where $\\mathbf{F} = \\mathbf{s}_\\mu + \\mathbf{s}_e$, show that (1, +1) is an eigenstate of $H$ and give its eigenvalue.\n\n(c) An $rf$ field can be applied to cause transitions to the state (0, 0).  \n\nDescribe qualitatively how an observation of the decay $\\mu^+ \\rightarrow e^+ \\nu_e \\nu_\\mu$ could be used to detect the occurrence of this transition.",
+      "question_sha256": "ee8ee40fae6c0cd4cbf758deef185b854975a9a8b65beef9384fb49a0b4ece7e",
+      "answer_components": [
+        "\\text{The second term, } \\frac{|e|}{m_e c} \\mathbf{s}_e \\cdot \\mathbf{B}, \\text{ dominates.}",
+        "\\frac{a \\hbar^2}{4} + \\frac{e \\hbar B}{2 m_e c} - \\frac{e \\hbar B}{2 m_\\mu c}",
+        "\\text{Detection of } e^+e^- \\rightarrow 2\\gamma \\text{ indicates the presence of } (0, 0) \\text{ state.}"
+      ],
+      "answer_key_sha256": "554e08901ee61434e2496560a1189faa273246b82f3c9381be3872520602e941",
+      "solution_sha256": "c31551ebc68d5aeff90558760f2a7086e8826c56551f9e6d6c6c5e043fde27bd",
+      "source_row_sha256": "96460252e41e2b6de8820952f195a3a73338dd1cc333afadd388c8d5daec0faa",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/4004",
+      "question": "An electron of mass $\\text m$ and charge $-e$ moves in a region where a uniform magnetic field $\\mathbf{B} = \\mathbf{\\nabla} \\times \\mathbf{A}$ exists in $z$ direction.\n\n(a) Set up the Schrödinger equation in rectangular coordinates.  \n\n(b) Solve the equation for all energy levels.  \n\n(c) Discuss the motion of the electron.",
+      "question_sha256": "60fd17deb3a8291b80c89c9671384dad1bc81a20a91dd436b9ce813bae563c1a",
+      "answer_components": [
+        "\\hat{H} \\psi = \\frac{1}{2m} \\left[ \\hat{P}_x^2 + \\left( \\hat{P}_y + \\frac{eBx}{c} \\right)^2 + \\hat{P}_z^2 \\right] \\psi = E \\psi",
+        "E = (n + \\frac{1}{2}) \\hbar w + \\frac{P_z^2}{2m}, \\quad n = 0, 1, 2, \\ldots"
+      ],
+      "answer_key_sha256": "8a48af1a0c72a551df5645e129e87204815e53779236243c58d13a0d09b02247",
+      "solution_sha256": "61ddd4ca06eb57e3feec28c5d4ce89f83860c2754e00be3b2a1425f4e3f6372e",
+      "source_row_sha256": "8cb42abacc348319c541137a9b7beff7cc39a906096b6978a0adefc372c64423",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/4010",
+      "question": "A particle has mass $m$, charge $q$, intrinsic angular momentum $s$ (s is not necessarily equal to $\\hbar/2$) and a magnetic dipole moment $\\mu = gqs/2mc$. The particle moves in a uniform magnetic field $\\mathbf{B}$ with a velocity small compared with $c$.\n\n(a) Write down the Hamiltonian for this system. (The vector potential for the uniform magnetic field may be written as $\\mathbf{A} = \\mathbf{B} \\times \\mathbf{r}/2$)\n\n(b) Derive the quantum mechanical (Heisenberg) equations of motion from this Hamiltonian, for the linear momentum $\\mathbf{P}$ and for the angular momentum $s$. The $A^2$ term may be neglected in this nonrelativistic approximation.\n\n(Note that the results look exactly like the classical equations of motion.)\n\n(c) Without solving these equations, identify the value of the constant $g$ for which the helicity will remain constant. (Helicity is defined here as the cosine of the angle between the vectors $\\mathbf{P}$ and $s$)\n\n(d) What is the actual value of the constant $g$ for any one of the following particles: $e$, $\\mathbf{p}$, $n$, $\\pi$?",
+      "question_sha256": "388a7cf4146895135c3602899e7d6517df2f1965e355a0652db34b2cc5cd52f4",
+      "answer_components": [
+        "H = \\frac{1}{2m} \\mathbf{P}^2 - \\frac{q}{mc} \\mathbf{A} \\cdot \\mathbf{P} - \\frac{gq}{2mc} \\mathbf{s} \\cdot \\mathbf{B}",
+        "\\frac{dP_i}{dt} = \\frac{q}{mc} (\\partial_i A_j) P_j",
+        "\\frac{ds_i}{dt} = -\\frac{gq}{2mc} (\\mathbf{B} \\times \\mathbf{s})_i",
+        "g = 1",
+        "\\begin{array}{lcl}\ne & : & -2.0 \\\\\np & : & 5.6 \\\\\nn & : & -3.8 \\\\\n\\pi & : & 0 \\\\\n\\end{array}"
+      ],
+      "answer_key_sha256": "4277f6f7b79f7b4af2155e5c25493a81c83279bc29b9de7e5976500f46a6d59e",
+      "solution_sha256": "a880afdbd37c0a88fd85b133cb72ff38bef9ee7f0657e68dbab1a005a804c0f3",
+      "source_row_sha256": "60432c17fbca8052efecf334617a0b4da75e98a06444019a16be6be2f9caafa9",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/5003",
+      "question": "A particle of mass $m$ moves one-dimensionally in the oscillator potential $V(x) = \\frac{1}{2}m\\omega^2x^2$. In the nonrelativistic limit, where the kinetic energy $T$ and momentum $p$ are related by $T = p^2/2m$, the ground state energy is well known to be $\\frac{1}{2}\\hbar \\omega$.\n\nAllow for relativistic corrections in the relation between $T$ and $p$ and compute the ground state level shift $\\Delta E$ to order $\\frac{1}{c^2}$ ($c$ = speed of light).",
+      "question_sha256": "e410bb3e2baf9ecb8ab4d7b7496bb9950a2cacd840f85491c55ba657c08e975a",
+      "answer_components": [
+        "\\Delta E = -\\frac{15}{32} \\frac{(\\hbar \\omega)^2}{mc^2}"
+      ],
+      "answer_key_sha256": "6dd214f6e52f9c8fc7fe4f9a8bd0e138120cffe155d935ca2ac05c393f034dcb",
+      "solution_sha256": "e8969f25f603878a2e06dd80bfae73d6835297d1003aa289bb3a8b9481d32c42",
+      "source_row_sha256": "6049c0207ce2cf5de2dd5b54ecc86ac5ac4001ce644b6a0f530562cd01799ad9",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/5032",
+      "question": "(a) Using an energy-level diagram give the complete set of electronic quantum numbers (total angular momentum, spin, parity) for the ground state and the first two excited states of a helium atom.\n\n(b) Explain qualitatively the role of the Pauli principle in determining the level order of these states.\n\n(c) Assuming Coulomb forces only and a knowledge of $Z = 2$ hydrogenic wave functions, denoted by $|1s\\rangle, |2s\\rangle, |2p\\rangle$, etc., together with associated $Z = 2$ hydrogenic energy eigenvalues $E_{1s}, E_{2s}, E_{2p}, \\ldots$, give perturbation formulas for the energies of these helium states. Do not evaluate integrals, but carefully explain the notation in which you express your result.  ",
+      "question_sha256": "641a0e4d20af7696706a511257b4fd59a3a1f0cd685bb6fc0ff74122d80d8da0",
+      "answer_components": [
+        "\\begin{aligned}\n&\\text{Ground state: } (J, S, P) = (0, 0, \\text{even}) \\\\\n&\\text{First excited state: } (J, S, P) = (1, 1, \\text{even}) \\\\\n&\\text{Second excited state: } (J, S, P) = (0, 1, \\text{odd})\n\\end{aligned}",
+        "\\text{Pauli principle: Triplet states have lower energy due to antisymmetric spatial wave functions and reduced repulsion.}",
+        "\\begin{aligned}\n&\\Delta E_{1s} = \\left\\langle 1s1s \\left| \\frac{e^2}{|r_1 - r_2|} \\right| 1s1s \\right\\rangle \\\\\n&\\Delta E_{nl}^{(3)} = \\left\\langle 1snl \\left| \\frac{e^2}{|r_1 - r_2|} \\right| 1snl \\right\\rangle - \\left\\langle 1snl \\left| \\frac{e^2}{|r_1 - r_2|} \\right| nl1s \\right\\rangle \\\\\n&\\Delta E_{nl}^{(1)} = \\left\\langle 1snl \\left| \\frac{e^2}{|r_1 - r_2|} \\right| 1snl \\right\\rangle + \\left\\langle 1snl \\left| \\frac{e^2}{|r_1 - r_2|} \\right| nl1s \\right\\rangle \n\\end{aligned}"
+      ],
+      "answer_key_sha256": "dd0912624bdb61319374d4f9f429cb2571bb18e55c0b439babcdb13a83b05400",
+      "solution_sha256": "5498eeb72d63e6ed4b398e0b5d580aa8a537436109d959335c62227760d7f01c",
+      "source_row_sha256": "7104ba621bfc839ba4c59a648da04ce4a4c99f70e5cd96a794ea84a261a21a1b",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/5035",
+      "question": "Discuss and compute the Stark effect for the ground state of the hydrogen atom.",
+      "question_sha256": "5fecbbe27d3fc394421a43de39c2682ce99f8818f5b972e5609613220e7b8839",
+      "answer_components": [
+        "E^{(1)} = 0",
+        "E^{(2)} = -e^2\\varepsilon^2 \\sum_{\\substack{n \\neq 1 \\\\ l,m}} \\frac{|\\langle 1, 0, 0 | z | n, l, m \\rangle|^2}{|E_1 - E_n|}"
+      ],
+      "answer_key_sha256": "a8b4d84e8dbfc3f2b569b08caaaf769fad00cbefa453976fa093166ce4a4fc6a",
+      "solution_sha256": "b05ed3ba9e546ece94676ffd4a3a72c2b2253933803f80b61a58b91cdc4e6c28",
+      "source_row_sha256": "cbad73b131189536344d46feb0be788a87144afe1b206d7da3b9abbb970070bc",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/5060",
+      "question": "An atom is in a state of total electron spin $S$, total orbital angular momentum $L$, and total angular momentum $J$. (The nuclear spin can be ignored for this problem). The $z$ component of the atomic total angular momentum is $J_z$. By how much does the energy of this atomic state change if a weak magnetic field of strength $B$ is applied in the $z$  direction? Assume that the interaction with the field is small compared with the fine structure interaction.\n\nThe answer should be given as an explicit expression in terms of the quantum numbers $J, L, S, J_z$ and natural constants.",
+      "question_sha256": "9dcc64c785cb5486af30094999089c16e9d98eaa62de482fc1bf64b9202ed485",
+      "answer_components": [
+        "\\Delta E = M_J \\hbar \\omega_l + \\sum_{M_L} (M_J - M_L) \\hbar \\omega_l \\left[\\langle L M_L S, M_J - M_L | J M_J \\rangle\\right]^2"
+      ],
+      "answer_key_sha256": "f334f47c8b07ab6d8beb0efeed50fe987841b089f48176ba80bbaf49b9d08508",
+      "solution_sha256": "d2b33d03dd55c002adadac8d19ef494a509ab16b9c6c304fa04e3a38fce6655e",
+      "source_row_sha256": "ccf7d2b35d2b3c95b53d40fc560b7c1cf08f40b86bf11baee9bb6f10a8e9a86c",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/5067",
+      "question": "Positronium consists of an electron and a positron bound by their Coulomb attraction.\n\n(a) What is the radius of the ground state? The binding energy of the ground state?\n\n(b) The singlet and triplet ground states are split by their spin-spin interaction such that the singlet state lies about $10^{-3}$ volts below the triplet state. Explain the behavior of positronium in a magnetic field. Draw an energy level diagram to illustrate any dependence on the magnetic field.",
+      "question_sha256": "e113f759b24df4109b7b7cbc50e99c01897273b0950ce048e1e4509fa7c8e413",
+      "answer_components": [
+        "a_0' = 2 a_0 \\approx 1 \\text{ A}",
+        "E_1' \\approx 6.8 \\text{ eV}",
+        "E_1 = E_2 = A \\hbar^2 / 4",
+        "E_3 = -A \\hbar^2 / 4 + \\sqrt{\\left(\\frac{A \\hbar^2}{2}\\right)^2 + \\hbar^2 \\left(\\frac{eB}{mc}\\right)^2}",
+        "E_4 = -A \\hbar^2 / 4 - \\sqrt{\\left(\\frac{A \\hbar^2}{2}\\right)^2 + \\hbar^2 \\left(\\frac{eB}{mc}\\right)^2}"
+      ],
+      "answer_key_sha256": "f8dcbab6dad1016a4e4884492ddb93b2d07094af4c84e64f5b78c4dac3b56451",
+      "solution_sha256": "7db6529de092e53890c5e89108b8f1729d0f77052b650fc8b8c9e03f79801e38",
+      "source_row_sha256": "4cc646bd1f3d9b849e9250774b7c944648bc136add7b816a6ecf1b595e240fc0",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/5068",
+      "question": "Estimate the magnetic susceptibility of a He atom in its ground state. Is it paramagnetic or diamagnetic?",
+      "question_sha256": "29bdb11c16f8e6c73d42f17f76823910024032c465fc1effd9a7336b66690d08",
+      "answer_components": [
+        "\\chi \\approx -\\frac{4\\pi}{c^2} \\frac{e^2 r^2_{He\\,g.s.}}{3m}"
+      ],
+      "answer_key_sha256": "c0950c17765b2953c1ca26445b74182f52378abcff62f7ec4639001394bb2a5f",
+      "solution_sha256": "6e501c420c9a1259dc8d42f348e8c2ccfcf628892cab4ef83e5e1d312e24c6ef",
+      "source_row_sha256": "113900fffa1c7258668853d936561c362d898869257f9c48373d1f9972eb7f17",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/5069",
+      "question": "An atom with no permanent magnetic moment is said to be diamagnetic. In this problem the object is to calculate the induced diamagnetic moment for a hydrogen atom in a weak magnetic field $B$ ignoring the spins of the electron and proton.\n\n(a) Write down the nonrelativistic Hamiltonian for a particle of mass $m$ and charge $q$ in a combined vector and scalar electromagnetic field.\n\n(b) Using the fact that a satisfactory vector potential $\\mathbf{A}$ for a uniform magnetic field is $\\mathbf{A} = -\\frac{1}{2} \\mathbf{r} \\times \\mathbf{B}$, write down the steady-state Schrödinger equation for the hydrogen atom. Assume the proton to be infinitely massive so center of mass motion can be ignored.\n\n(c) Treat the terms arising from the magnetic field as a perturbation and calculate the shift in the ground state energy due to the existence of the magnetic field.\n\n(d) Calculate the induced diamagnetic moment per atom.",
+      "question_sha256": "fa1ab1bd63e2856af45ae8249281590e6fdc6b19f7637f4482cb330db49f196c",
+      "answer_components": [
+        "H = \\frac{1}{2m} \\left( \\mathbf{p} - \\frac{q}{c} \\mathbf{A} \\right)^2 + q \\phi",
+        "\\left( -\\frac{\\hbar^2}{2m_e} \\nabla^2 - \\frac{e^2}{r} - \\frac{ieB\\hbar}{2m_ec} \\frac{\\partial}{\\partial \\varphi} + \\frac{e^2B^2}{8m_ec^2} r^2 \\sin^2 \\theta \\right) \\psi(r, \\theta, \\varphi) = E\\psi(r, \\theta, \\varphi)",
+        "\\Delta E = \\frac{a^2e^2B^2}{4m_ec^2}",
+        "\\mu = - \\frac{e^2 a^2}{4 m_e c^2} \\mathbf{B}"
+      ],
+      "answer_key_sha256": "bfd546b779f277da7ceaabb76dac0cef67fa03a32d3b1c0311b3a86f79733310",
+      "solution_sha256": "f6b8da0604a05049999defe881ebc78eca215de29cccf982aeec83153ce8fb6e",
+      "source_row_sha256": "0475a24f30bbcc3b0538e6ff2536f79617554830183b9bcb4133e7d5e4d900e2",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/6012",
+      "question": "For an attractive square-well potential $(V = -V_0, r < a; \\, V = 0, r > a)$ find the matching equation at a positive energy, which determines the energy dependence of the $\\ell = 0$ phase shift $\\delta_0$. From this show that at high energies, $\\delta(k) \\rightarrow \\frac{maV_0}{\\hbar^2 k}$, and obtain this result from the Born approximation.",
+      "question_sha256": "9fc679b9ff9761b0047fe158151f80304932ee94e713601a1e48e723e963d882",
+      "answer_components": [
+        "\\delta(k) \\rightarrow \\frac{maV_0}{\\hbar^2 k}",
+        "\\delta_0 \\rightarrow \\frac{mV_0 a}{\\hbar^2 k}"
+      ],
+      "answer_key_sha256": "0a75a0478b178b26027f24fd4f2168ee63dc70b9ece31affcdbb112bfdfc5070",
+      "solution_sha256": "74ea2c63dfe95300d6c0ec99113ac0c7e01e92fab6f79c0de28dc3378deeeb53",
+      "source_row_sha256": "7233e98d3ba83b04c27baca294b5ceec1c26ec305a05be9f7052a76c638ceb42",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/6013",
+      "question": "Calculate the scattering cross section for a low energy particle from a potential given by $V = -V_0$ for $r < a$, $V = 0$ for $r > a$. Compare this with the Born approximation result.",
+      "question_sha256": "f042edfaa772f92e6f4c437649bb0545c6e1aaaf48a96799a9d811010aacc79a",
+      "answer_components": [
+        "\\sigma = \\frac{16 \\pi a^6 m^2 V_0^2}{9 \\hbar^4}"
+      ],
+      "answer_key_sha256": "20a70ccf910ae363fdc63ae7da08ed16a3ffea8542ce70575d9a07f6023a2776",
+      "solution_sha256": "06299887ec87876101770f83dfad3201ae87966451e958b5c10c18573944f4d1",
+      "source_row_sha256": "9c4814f79027b2d4a8e41b06fb9df794592fe1643c17c4e59483bf4695d5f43a",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/6014",
+      "question": "In scattering from a potential $V(r)$, the wave function may be written as an incident plane wave plus an outgoing scattered wave: $\\psi = e^{ikz} + v(r)$. Derive a differential equation for $v(r)$ in the first Born approximation.",
+      "question_sha256": "06bd778abdeb4377df5fa4484d91398b46955b778360665b73637b23f990eb41",
+      "answer_components": [
+        "(\\nabla^2 + k^2) v(\\mathbf{r}) = \\frac{2m}{\\hbar^2} V(\\mathbf{r}) e^{ikz}"
+      ],
+      "answer_key_sha256": "a04c4146408649396a8e8e77411939b2ba1b3408349f07fbb26d84a83da2c359",
+      "solution_sha256": "cecf1b499562143db4bf632eca10f0312f3f666ae8bdd2a84c235f38542df0a7",
+      "source_row_sha256": "21725bd470d84c6ae829803c62056eccb324d0dfb6989b928bff72a436b5c746",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/7008",
+      "question": "A one-dimensional square well of infinite depth and 1 Å width contains 3 electrons. The potential well is described by $V = 0$ for $0 \\leq x \\leq 1$ Å and $V = +\\infty$ for $x < 0$ and $x > 1$ Å. For a temperature of $T = 0 \\, \\text K$, the average energy of the 3 electrons is $E = 12.4 \\, \\text{eV}$ in the approximation that one neglects the Coulomb interaction between electrons. In the same approximation and for $T = 0 \\, \\text K$, what is the average energy for 4 electrons in this potential well?\n",
+      "question_sha256": "d3675028df57746e9aa153d4a257381bf6ac37f14cd2d4a06bdbf056c35d5b78",
+      "answer_components": [
+        "E = 15.5 \\, \\text{eV}"
+      ],
+      "answer_key_sha256": "3b5b525d0803ecc7f5b117c06e2bc580f26053c9aaee40059337e67a60c7d9af",
+      "solution_sha256": "2ac57efe53da1cfebc162c1b8011244e7153de786305bd5caa37d0c3f56e581b",
+      "source_row_sha256": "68c75861a067b4d04dd8980949b800f4a05d2dc0ab9e9536a3b7b812a1946851",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/7012",
+      "question": "Two electrons at fixed positions on the z-axis have a magnetic dipole interaction (energy) $\\mathbf{E} = A (\\mathbf{s}_1 \\cdot \\mathbf{s}_2 - 3s_{1z}s_{2z})$, where $\\mathbf{s}_i = \\frac{1}{2} \\sigma_i; \\sigma_i$ being Pauli's spin matrix, $A =$ constant.\n\n(a) Express $\\mathbf{E}/A$ in terms of the total spin operator $\\mathbf{S} = \\mathbf{s}_1 + \\mathbf{s}_2$.\n\n(b) State the eigenvalues of $\\mathbf{E}/A$ and their degeneracy (statistical weights).",
+      "question_sha256": "4403be7b58134f05e4749a65e88d40bb5eadd257ef2f7b95d4ea48829225a761",
+      "answer_components": [
+        "\\frac{\\mathbf{E}}{A} = \\frac{1}{2} (\\mathbf{S}^2 - 3S_z^2)",
+        "\\begin{array}{|c|c|c|}\n\\hline\n\\vert S, M \\rangle & \\frac{\\mathbf{E}}{A} & D(\\mathbf{E}/A) \\\\\n\\hline\n\\vert 0, 0 \\rangle & 0 & 1 \\\\\n\\vert 1, \\pm 1 \\rangle & -\\frac{1}{2} & 2 \\\\\n\\vert 1, 0 \\rangle & 1 & 1 \\\\\n\\hline\n\\end{array}"
+      ],
+      "answer_key_sha256": "77f759b4576c272b6ef9d6c3e511cb483500b009d957b630ec068c738c95a779",
+      "solution_sha256": "2943f6b7b85b21b75c024b5b341029a6ce94a445e0ff82041b4161b7661cfcf8",
+      "source_row_sha256": "a4c26b1b2565d977623647fc110356467639765baf02cd5a74a801e31896a277",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/7013",
+      "question": "(a) A 2-fermion system has a wave function $\\psi(1, 2)$. What condition must it satisfy if the particles are identical?  \n(b) How does this imply the elementary statement of the Pauli exclusion principle that no two electrons in an atom can have identical quantum numbers?  \n(c) The first excited state of Mg has the configuration $(3s, 3p)$ for the valence electrons. In the LS-coupling limit, which values of $L$ and $S$ are possible? What is the form of the spatial part of their wave functions using the single-particle functions $\\psi_s(\\mathbf{r})$ and $\\phi_p(\\mathbf{r})$? Which will have the lowest energy, and Why?  \n",
+      "question_sha256": "26ea56cc007bc890c0664e20c421fd5a73cdb1aa706c64c6b9c892943b5fb4d6",
+      "answer_components": [
+        "\\hat{P}_{12} \\psi(1, 2) = \\psi(2, 1) = -\\psi(1, 2)",
+        "\\psi(1, 2) = 0",
+        "L = 1, \\; S = 0, 1",
+        "\\begin{cases}\n\\phi^1_0(1, 2) = \\frac{1}{\\sqrt{2}} (\\phi_s(r_1) \\phi_p(r_2) + \\phi_s(r_2) \\phi_p(r_1)), \\\\\n\\phi^1_1(1, 2) = \\frac{1}{\\sqrt{2}} (1 - \\hat{P}_{12}) \\phi_s(r_1) \\phi_p(r_2).\n\\end{cases}",
+        "S = 1"
+      ],
+      "answer_key_sha256": "a955b85f486482353098dbe72e4d1c7fcf98b5da1a02b4d30db1eb2e46443fb1",
+      "solution_sha256": "e07b27ceafd5809bd0a8413b967f31ff2441d8169fdbdcd7c4eaf40451a1f8b1",
+      "source_row_sha256": "dd73e5bc006a4e616675415a4db7277f3a3d946691e0cbce5827b8ac2acec127",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/7014",
+      "question": "Two particles, each of mass $M$, are bound in a one-dimensional harmonic oscillator potential $V = \\frac{1}{2} k x^2$ and interact with each other through an attractive harmonic force $F_{12} = -K (x_1 - x_2)$. You may take $K$ to be small. \n\n(a) What are the energies of the three lowest states of this system?\n\n(b) If the particles are identical and spinless, which of the states of (a) are allowed?\n\n(c) If the particles are identical and have spin $1/2$, what is the total spin of each of the states of (a)?",
+      "question_sha256": "85fe778400b71fe3ed2a6a8b140c727e652b6f9cac565370ce1beed13b058b73",
+      "answer_components": [
+        "E_{00} = \\frac{1}{2} \\hbar (\\omega_1 + \\omega_2)",
+        "E_{10} = \\frac{1}{2} \\hbar (\\omega_1 + \\omega_2) + \\hbar \\omega_1",
+        "E_{01} = \\frac{1}{2} \\hbar (\\omega_1 + \\omega_2) + \\hbar \\omega_2",
+        "|00 \\rangle, |10 \\rangle",
+        "S = 0 \\text{ for } |00 \\rangle",
+        "S = 0 \\text{ for } |10 \\rangle",
+        "S = 1 \\text{ for } |01 \\rangle"
+      ],
+      "answer_key_sha256": "7c98801cb17c6cd9ea18f8019952aaef12e6f5d268629cb68ad06e895002f523",
+      "solution_sha256": "ba14fa5a2a2f05654f28023808b852d4595076971376cd862f54b3ae95aee9e9",
+      "source_row_sha256": "3cb99c40adcfcbc85372b7cb47ecb759c7599e363489138457be7d679ccdce13",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/7015",
+      "question": "A particular one-dimensional potential well has the following bound-state single-particle energy eigenfunctions:\n\n$$\n\\psi_a(x), \\ \\psi_b(x), \\ \\psi_c(x) \\cdots , \\quad \\text{where} \\quad E_a < E_b < E_c \\cdots .\n$$\n\nTwo non-interacting particles are placed in the well. For each of the cases (a), (b), (c) listed below write down: \n\nthe two lowest total energies available to the two-particle system, the degeneracy of each of the two energy levels, the possible two-particle wave functions associated with each of the levels.  \n\n(Use $\\psi$ to express the spatial part and a ket $\\lvert S, m_s \\rangle$ to express the spin part. $S$ is the total spin.)\n\n(a) Two distinguishable spin-$\\frac{1}{2}$ particles.  \n\n(b) Two identical spin-$\\frac{1}{2}$ particles. \n\n(c) Two identical spin-0 particles.",
+      "question_sha256": "5e87f0a9ae5d4d94309da8044239d99ec4ecc718774c171823fc0cd4e27db79e",
+      "answer_components": [
+        "\\begin{aligned}\n(a) & \\quad \\text{Two distinguishable spin-}\\frac{1}{2} \\text{ particles:} \\\\\n& \\quad \\begin{aligned}\n\\text{(i) Total energy} & = E_a + E_a, \\ \\text{degeneracy} = 4, \\\\\n\\text{Wave functions:} \\ & \n\\begin{cases}\n\\psi_a(x_1) \\psi_a(x_2) \\lvert 0, 0 \\rangle, \\\\\n\\psi_a(x_1) \\psi_a(x_2) \\lvert 1, m \\rangle, \\ (m = 0, \\pm 1)\n\\end{cases} \\\\\n\\text{(ii) Total energy} & = E_a + E_b, \\ \\text{degeneracy} = 8, \\\\\n\\text{Wave functions:} \\ &\n\\begin{cases}\n\\psi_a(x_1) \\psi_b(x_2) \\lvert 0, 0 \\rangle, \\\\\n\\psi_a(x_1) \\psi_b(x_2) \\lvert 1, m \\rangle, \\ (m = 0, \\pm 1)\n\\end{cases}\n\\end{aligned} \\\\\n(b) & \\quad \\text{Two identical spin-}\\frac{1}{2} \\text{ particles:} \\\\\n& \\quad \\begin{aligned}\n\\text{(i) Total energy} & = E_a + E_a, \\ \\text{degeneracy} = 1, \\\\\n\\text{Wave function:} \\ & \\psi_a(x_1)\\psi_a(x_2) |0, 0\\rangle, \\\\\n\\text{(ii) Total energy} & = E_a + E_b, \\ \\text{degeneracy} = 4, \\\\\n\\text{Wave functions:} \\ &\n\\left\\{ \n  \\begin{aligned}\n    & \\frac{1}{\\sqrt{2}}[\\psi_a(x_1)\\psi_b(x_2) + \\psi_b(x_1)\\psi_a(x_2)] |0, 0\\rangle, \\\\\n    & \\frac{1}{\\sqrt{2}}[\\psi_a(x_1)\\psi_b(x_2) - \\psi_b(x_1)\\psi_a(x_2)] |1, m\\rangle, \\ (m = 0, \\pm 1)\n  \\end{aligned} \n\\right.\n\\end{aligned} \\\\\n(c) & \\quad \\text{Two identical spin-0 particles:} \\\\\n& \\quad \\begin{aligned}\n\\text{(i) Total energy} & = E_a + E_a, \\ \\text{degeneracy} = 1, \\\\\n\\text{Wave function:} \\ & \\psi_a(x_1)\\psi_a(x_2) |0, 0\\rangle, \\\\\n\\text{(ii) Total energy} & = E_a + E_b, \\ \\text{degeneracy} = 1, \\\\\n\\text{Wave function:} \\ & \\frac{1}{\\sqrt{2}}[\\psi_a(x_1)\\psi_b(x_2) + \\psi_b(x_1)\\psi_a(x_2)] |0, 0\\rangle.\n\\end{aligned}\n\\end{aligned}"
+      ],
+      "answer_key_sha256": "2e897283c6f35e3c532e8dd16007c0a51bd7b5b7cb85b37f74d41be703867ee3",
+      "solution_sha256": "c5a3dff5a3f36c272cd3635dd6a941884cb74c758e657f9c0e78fe12670251ca",
+      "source_row_sha256": "c73faeeddd240955bc7f07cf1a83eb944ebf0738a74616e69cb2414da43a7a61",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/7022",
+      "question": "Consider the (homonuclear) molecule $N^{14}_2$. Use the fact that a nitrogen nucleus has spin $I = 1$ in order to derive the result that the ratio of intensities of adjacent rotational lines in the molecule's spectrum is 2:1. ",
+      "question_sha256": "f26da5eb2a69fb4b57d643c89e287b64fc8b3e1f49c49b0f9e654c5c929c70e7",
+      "answer_components": [
+        "2:1"
+      ],
+      "answer_key_sha256": "43cdb0e76a89d71077da80c7b45cb6706fdad7c23d2648a9d28599a45edbcfdc",
+      "solution_sha256": "21a3ad476d350ba0626a9d2b20b5b04fc35b47da328316da9e410791fbe0460d",
+      "source_row_sha256": "2220b6ca054fce03435d5257324f7a9608dbb2e54ce2ff20115dfb83f8f8b2c7",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/7023",
+      "question": "(a) Assuming that two protons of $H_2^+$ molecule are fixed at their normal separation of 1.06 Å, sketch the potential energy of the electron along an axis passing through the protons.\n\n(b) Sketch the electron wave functions for the two lowest states in $H_2^+$, indicating roughly how they are related to hydrogenic wave functions. Which wave function corresponds to the ground state, and why?\n\n(c) What happens to the two lowest energy levels of $H_2^+$ in the limit that the protons are moved far apart?",
+      "question_sha256": "593596e3ce7a22ec2d0f8afcd8e192b4879edb8e0ede19aec0318689967cb283",
+      "answer_components": [
+        "V = -\\frac{e^2}{|x|} - \\frac{e^2}{|R - x|}",
+        "\\psi_\\pm = \\frac{1}{\\sqrt{2}} [\\phi(\\mathbf r_1) \\pm \\phi(\\mathbf r_2)]",
+        "\\text{Energy of both states} \\to \\text{ground state energy of hydrogen atom}"
+      ],
+      "answer_key_sha256": "1b4e9fede79bc609b0c5191de84526a56397bd49555ff025f89691c35b8841c9",
+      "solution_sha256": "82254722fd1e1823c4c8edc9e3545fe06eec40b56894ed74d4c86858cb76aa00",
+      "source_row_sha256": "19ce80d95caeea896e7a4719a6a24e667f3fa5a1602db14af9800228220f3c76",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/7024",
+      "question": "Write the Schrödinger equation for atomic helium, treating the nucleus as an infinitely heavy point charge.",
+      "question_sha256": "077dbd75ef69559bc1be40289457db025df877750bbe0a5db7db7f7edc1f9efc",
+      "answer_components": [
+        "\\left( \\frac{p_1^2}{2m_e} + \\frac{p_2^2}{2m_e} - \\frac{2e^2}{R_1} - \\frac{2e^2}{R_2} + \\frac{e^2}{|\\mathbf{R_1} - \\mathbf{R_2}|} \\right) \\psi(\\mathbf{R_1}, \\mathbf{R_2}) = E \\psi(\\mathbf{R_1}, \\mathbf{R_2})"
+      ],
+      "answer_key_sha256": "d0a7f6baff4c11ff90307a4a52429fa1a1270c65405586e3729361aa26023d65",
+      "solution_sha256": "f807b76c3190bfc09ab1f8d5ebe8bca29388d5da2aeab509868c330fa774b37b",
+      "source_row_sha256": "4878690c8c78a2326585c89f9f89ccecae84684a54da24aaa1f399f21aca3a27",
+      "trigger_applicability": "broad_quantum"
+    },
+    {
+      "id": "quantum/7025",
+      "question": "The excited electronic configuration $(1s)^1(2s)^1$ of the helium atom can exist as either a singlet or a triplet state. Tell which state has the lower energy and explain why. Give an expression which represents the energy separation between the singlet and triplet states in terms of the one-electron orbitals $\\psi_{1s}(\\mathbf{r})$ and $\\psi_{2s}(\\mathbf{r})$.\n",
+      "question_sha256": "f18a8533b2681daea64e879f67d977cb33a31daecfc294caa8c6ded3880d46ed",
+      "answer_components": [
+        "\\text{The triplet state has the lower energy.}",
+        "\\Delta E = 2 \\int \\frac{e^2}{r_{12}}[\\psi_{1s}(\\mathbf r_1)\\psi_{2s}(\\mathbf r_1)\\psi_{1s}(\\mathbf r_2)\\psi_{2s}(\\mathbf r_2)]d\\mathbf{r}_1d\\mathbf{r}_2"
+      ],
+      "answer_key_sha256": "08730be991edfd7b3e942d9b872aedb72ba522caa0bac17b19af0934563543b5",
+      "solution_sha256": "9916858ba2a7da310ff3a60a28afb8c9c81c4f4c173922fd4576c79e68190080",
+      "source_row_sha256": "ad78cd0f9c0e3a1bffd3495afd69c09284291a90a18a4927ef8eda7306ae6856",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/8001",
+      "question": "Express $ e^{\\begin{pmatrix} 0 & a \\\\ -a & 0 \\end{pmatrix}} $ as a $2 \\times 2$ matrix; $a$ is a positive constant.  ",
+      "question_sha256": "1430c008ad6f91a4d388913a9069fdf974db26dd27ae3ade3b56fa5d675606e6",
+      "answer_components": [
+        "\\begin{pmatrix} \\cos a & \\sin a \\\\ -\\sin a & \\cos a \\end{pmatrix}"
+      ],
+      "answer_key_sha256": "e997cbb6c725d6455bf0c440d2ec083dd590608be0fb572ca40535d3459c8d54",
+      "solution_sha256": "422a4bff3486316a70c6f4af703c96ad69c5abd35e710161472a6c7ac15add4b",
+      "source_row_sha256": "569f1d7d124d0fc0b266eafd5fff40025f8a92967d8c625f6565ca8f08de0f0f",
+      "trigger_applicability": "broad_quantum"
+    },
+    {
+      "id": "quantum/8006",
+      "question": "Answer each of the following questions with a brief and, where possible, quantitative statement. Give your reasoning.\n\n(a) A beam of neutral atoms passes through a Stern-Gerlach apparatus. Five equally-spaced lines are observed. What is the total angular momentum of the atom?\n(b) What is the magnetic moment of an atom in the state $^3P_0$? (Disregard nuclear effects)\n(c) Why are the noble gases chemically inert?\n(d) Estimate the energy density of black body radiation in this room in erg cm<sup>-3</sup>. Assume the walls are black.\n(e) In a hydrogen gas discharge both the spectral lines corresponding to the transitions $2^2P_{1/2} \\to 1^2S_{1/2}$ and $2^2P_{3/2} \\to 1^2S_{1/2}$ are observed. Estimate the ratios of their intensities.\n(f) What is the cause for the existence of two independent term level schemes, the singlet and triplet systems, in atomic helium?",
+      "question_sha256": "f90fa4ef8a54460ec3c48b596a5a131af0c3bb65344cfd6cc701f3777bcae111",
+      "answer_components": [
+        "J = 2",
+        "\\mu = 0",
+        "6 \\times 10^{-5} \\, \\text{erg/cm}^3",
+        "\\frac{1}{2}"
+      ],
+      "answer_key_sha256": "3829d6bd3f8e6e13de281b43fc85a0159986c858777a150bc79aae374b13a4fd",
+      "solution_sha256": "2774b2cadf9788b1038ed2c9dd3cef22895ef9631c7e7ede0be634b661caa00d",
+      "source_row_sha256": "3a7f3a74e1afa6b1cd4ca7aace906bdc71f46cd9bf0ded7352a1bfadd99feadb",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/8007",
+      "question": "(a) Derive the conditions for the validity of the $\\text {WKB}$ approximation for the one-dimensional time-independent Schrödinger equation, and show that the approximation must fail in the immediate neighborhood of a classical turning point.\n\n(b) Explain, using perturbation theory, why the ground state energy of an atom always decreases when the atom is placed in an external electric field.",
+      "question_sha256": "3131075fe6916e2a872067a0ede62af0ef0ce15e7515e4278f857c63adac41cb",
+      "answer_components": [
+        "\\left| \\frac{\\hbar}{p^{2}} \\frac{dp}{dx} \\right| \\ll 1",
+        "\\Delta E_0 < 0"
+      ],
+      "answer_key_sha256": "d7efa990d4d1c19a8021ad93770e8fcc86d34e53aa7353a3aa1988348c1a1052",
+      "solution_sha256": "2a1b90a7d3f2a2fb97a1e70d1a2300b7b0a93c760b92b2f15a0dfd235b79b1e3",
+      "source_row_sha256": "f847d41bfb1cf100137aa820af6acccd7e8c72dbef5efae575541ddddb0949a6",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/8008",
+      "question": "A particle of mass $m$ moves with zero angular momentum in a spherically symmetric attractive potential $V(r)$.\n\n(a) Write down the differential equation of radial motion, defining your radial wave function carefully and specifying the boundary conditions on it for bound states. What is the $\\text {WKB}$ eigenvalue condition for s-states in such a potential? (Be careful to incorporate in your one-dimensional $\\text {WKB}$ analysis the constraints of radial motion $(0 < r < \\infty)$.\n\n(b) For $V(r) = -V_0 \\exp(-r/a)$, use the $\\text {WKB}$ relation to estimate the minimum value of $V_0$ such that there will be one and only one bound state, just barely bound. Compare your value to the exact result for the exponential potential, $2mV_0a^2/\\hbar^2 = 1.44$.",
+      "question_sha256": "d63308f5c9c668fa5434f3f7ce1df8096d1ba8fc8a5887e2263cb7cf9a8d6d2c",
+      "answer_components": [
+        "-\\frac{\\hbar^2}{2m} \\frac{d^2 \\chi}{dr^2} + V(r) \\chi = E \\chi \\quad (0 < r < \\infty)",
+        "\\oint \\sqrt{2m(E - V)} \\, dr = \\left( n + \\frac{3}{4} \\right) h, \\quad n = 0, 1, 2, \\ldots",
+        "\\frac{2mV_0 a^2}{\\hbar^2} \\approx 1.39"
+      ],
+      "answer_key_sha256": "dcd6bf9032e6e8339caa11ea29b36723edef9f3d2e60cfcbfe5370a605787345",
+      "solution_sha256": "5f5667b4ac597885b23af7e9e883f9f4f6e467107f202daf52c58be6c0f7903d",
+      "source_row_sha256": "e3470b931f4045651e5ddf470b04bb4a01f907f3d086ea2acf69a1c7c69c619d",
+      "trigger_applicability": "direct_quantum_process"
+    },
+    {
+      "id": "quantum/8009",
+      "question": "Set up the relevant equations with estimates of all missing parameters. The molecular bond (spring constant) of $\\text {HCl}$ is about 470 $\\text {N/m}$. The moment of inertia is $2.3 \\times 10^{-47}$ $\\text{kg·m²}$.\n\n(a) At 300 $\\text K$ what is the probability that the molecule is in its lowest excited vibrational state?\n\n(c) Of the molecules in the vibrational ground state what is the ratio of the number in the ground rotational state to the number in the first excited rotational state?",
+      "question_sha256": "e6ec74282bb5a5baeda749db9a606ccaf37d9593d82f5ea05eb470ec4fe96278",
+      "answer_components": [
+        "P_1 = 1.37 \\times 10^{-6}",
+        "\\frac{N(J = 0)}{N(J = 1)} = 0.37"
+      ],
+      "answer_key_sha256": "d26d0d53c0df8d6577b0f7304e7c804310b0adab6b2596904a75104afe527cf4",
+      "solution_sha256": "d000d587b0d642f730c47c2304c14d3c687ca527c44ad5ee54dc0a94ea4810bb",
+      "source_row_sha256": "8b4358075e225370389bc5f384c8d00ed7756422e00b23d27655c34e3cebfe26",
+      "trigger_applicability": "direct_quantum_process"
+    }
+  ],
+  "scope_boundary": {
+    "allowed": [
+      "BASELINE duplicate preflight",
+      "BASELINE matrix",
+      "VISIBLE_GUIDANCE matrix conditional on baseline gate",
+      "offline scoring"
+    ],
+    "forbidden": [
+      "side-memory bank build",
+      "K/V capture",
+      "selector",
+      "latent",
+      "irrelevant bank",
+      "held-out evaluation",
+      "PHYSICS-test",
+      "MNEME/SAA state",
+      "other model family",
+      "Quinn scoring calls"
+    ]
+  }
+}

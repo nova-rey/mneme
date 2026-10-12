@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "artifact_type": "MI2_VISIBLE_GATE_APPROVAL",
+  "approval_id": "MI2-V3.4-VISIBLE-GATE-APPROVAL-20261012",
+  "created_utc": "2026-10-12T00:00:00Z",
+  "approved_by": "Root Foreman under owner-authorized MI2 continuation; visible-only prerequisite gate",
+  "approval_status": "APPROVED_FOR_FROZEN_VISIBLE_GATE_ONLY",
+  "candidate": {
+    "path": "docs/receipts/MI2_Calibration_v3_4_Candidate_20261012.json",
+    "sha256": "f1e26d775d7fdb2e35b2ce47ca572ab66ae137a3ec52e7b069f57ed8bfe4b23a"
+  },
+  "freeze": {
+    "path": "docs/receipts/MI2_Calibration_v3_4_Preheldout_Freeze_20261012.json",
+    "sha256": "8b8963b99d2575276fc9ff7f070f1f8840f64fe0dbd6115382563f2006cac967"
+  },
+  "authorized_limits": {
+    "preflight_calls": 2,
+    "baseline_calls": 99,
+    "conditional_visible_calls": 99,
+    "maximum_calls": 200,
+    "reasoning": "ON",
+    "cache_prompt": false,
+    "conditions": [
+      "BASELINE",
+      "VISIBLE_GUIDANCE"
+    ],
+    "seeds": [
+      482011,
+      482029,
+      482047
+    ],
+    "host": "google/gemma-4-E4B-it",
+    "test_split_access": false
+  },
+  "stop_conditions": [
+    "same-seed duplicate differs bytewise -> stop",
+    "any uncertain/abnormal coordinate -> stop without retry",
+    "baseline-only headroom gate fails -> stop before visible",
+    "visible gate fails -> stop before bank/latent/heldout",
+    "no PHYSICS-test access",
+    "no model family switch",
+    "no MNEME/SAA changes"
+  ],
+  "scope": "No K/V capture, bank construction, selector, latent, irrelevant-memory, removal/reuse, heldout, or MNEME operations are authorized by this gate."
+}

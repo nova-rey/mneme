@@ -162,7 +162,7 @@
       "base_sha": "70536e84bc90a4e4497d8b085346d069350bae71",
       "campaign": "mi2-paper-guidance-gemma-q2",
       "candidate": null,
-      "completion_criterion": "The 31-item eligible cohort and all task-specific score components are frozen before inference; duplicate BASELINE preflight is byte-identical; all 93 BASELINE calls complete, are durably preserved, and pass the frozen headroom gate before any visible call; then all 93 VISIBLE calls complete and are scored against the frozen rubric, or the experiment stops at the baseline gate. Publish compact machine-readable result and review. No latent or bank calls under this package.",
+      "completion_criterion": "The 33-item eligible cohort and all task-specific score components are frozen before inference; duplicate BASELINE preflight is byte-identical; all 99 BASELINE calls complete, are durably preserved, and pass the frozen headroom gate before any visible call; then all 99 VISIBLE calls complete and are scored against the frozen rubric, or the experiment stops at the baseline gate. Total maximum 200 calls. Publish compact machine-readable result and review. No latent or bank calls under this package.",
       "created_at": "2026-10-12T03:41:01.640680Z",
       "dependencies": [],
       "domain": "local-model-evaluation",
@@ -176,7 +176,7 @@
       "evidence_refs": [],
       "id": "MI2-V35-WIDE-VISIBLE-GATE",
       "notes": "",
-      "owner": null,
+      "owner": "root",
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -196,10 +196,12 @@
         }
       ],
       "scope": "Freeze the same source Quantum process card and every previously unused, text-self-contained PHYSICS-eval Quantum item, then execute a deterministic BASELINE-first, VISIBLE-only prerequisite gate on the exact local Gemma Q2 host. Score official-answer correctness separately from process-card use. Baseline headroom failure or visible-gate failure stops before all bank/selector/latent/heldout work. No task or rubric changes after inference starts.",
-      "session_ids": [],
-      "status": "READY",
+      "session_ids": [
+        "codex-mi2-v34-wide-visible-run"
+      ],
+      "status": "RUNNING",
       "title": "Run broad paper-card visible prerequisite gate",
-      "updated_at": "2026-10-12T03:41:01.640680Z",
+      "updated_at": "2026-10-12T03:41:29.075601Z",
       "validation": {
         "required": [
           "candidate-card-and-cohort-hashes-verified",
@@ -227,5 +229,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-10-12T03:41:01.640808Z"
+  "updated_at": "2026-10-12T03:41:29.075686Z"
 }
