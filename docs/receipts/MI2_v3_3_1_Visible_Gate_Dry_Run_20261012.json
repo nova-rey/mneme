@@ -1,0 +1,56 @@
+{
+  "approval_sha256": "7a6edf6d72983b541a7f4cd006154592d715a5e2d98d122f38ff9021a28b646f",
+  "bank_or_selector_calls": 0,
+  "cache_prompt": false,
+  "candidate_sha256": "f03023d72b9d3ac844cf22c84f156ef3ed30d1ef8c58b0938cf3a9f5fea445e1",
+  "conditions": [
+    "BASELINE",
+    "VISIBLE_GUIDANCE"
+  ],
+  "dispatch_stages": {
+    "1": "two-call same-coordinate BASELINE determinism preflight",
+    "2": "six BASELINE matrix calls",
+    "3": "score frozen baseline ceiling rule; stop if ceiling-limited",
+    "4": "six VISIBLE_GUIDANCE calls only after baseline gate passes",
+    "5": "score frozen visible-minus-baseline process/answer gate after all 14 outputs durable"
+  },
+  "execution_projection_sha256": "a9493f2eb2e6b534eab0a23f0d1c9d74d0806604a52f1320a485f1b4e9f8adb6",
+  "freeze_id": "MI2-CAL-V3.3.1-20261012",
+  "generation_dispatched": false,
+  "heldout_coordinates": 0,
+  "latent_coordinates": 0,
+  "matrix_count": 12,
+  "matrix_ids": [
+    "v331_cal_quantum_1_1041_baseline_481001",
+    "v331_cal_quantum_1_1041_visible_guidance_481001",
+    "v331_cal_quantum_1_1041_baseline_481019",
+    "v331_cal_quantum_1_1041_visible_guidance_481019",
+    "v331_cal_quantum_3_3025_baseline_481001",
+    "v331_cal_quantum_3_3025_visible_guidance_481001",
+    "v331_cal_quantum_3_3025_baseline_481019",
+    "v331_cal_quantum_3_3025_visible_guidance_481019",
+    "v331_cal_quantum_3_3047_baseline_481001",
+    "v331_cal_quantum_3_3047_visible_guidance_481001",
+    "v331_cal_quantum_3_3047_baseline_481019",
+    "v331_cal_quantum_3_3047_visible_guidance_481019"
+  ],
+  "max_total_calls": 14,
+  "package_id": "MI2-PAPER-GUIDANCE-20261011",
+  "plan_sha256": "40cc66141761ab50412800717497b12d5197288aa7930c74b93c4a6d6d8c3690",
+  "preflight_ids": [
+    "v331_preflight_quantum_1_1041_baseline_481001_a",
+    "v331_preflight_quantum_1_1041_baseline_481001_b"
+  ],
+  "reasoning": "ON",
+  "runner_script_sha256": "a536894456145a509ea06bed6b4477ad51323a304cbc1f4a51b6292dcc80deea",
+  "seeds": [
+    481001,
+    481019
+  ],
+  "status": "DRY_RUN_VALIDATED_NO_NETWORK_NO_GENERATION",
+  "task_ids": [
+    "quantum/1-1041",
+    "quantum/3-3025",
+    "quantum/3-3047"
+  ]
+}
