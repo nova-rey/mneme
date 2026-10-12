@@ -28,10 +28,12 @@
         "bible.md",
         ".codex/work-queue-mi2.json"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "commit 70536e84bc90a4e4497d8b085346d069350bae71 contains the validated score/report, bible update, and queue record; 14 result coordinates complete and 36 hashes checked"
+      ],
       "id": "MI2-V331-RESULT",
       "notes": "",
-      "owner": "root",
+      "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -49,12 +51,10 @@
         }
       ],
       "scope": "Publish derived v3.3.1 scores and a concise diagnostic receipt from already completed baseline/visible outputs. No inference, no bank/latent work, no source/evaluation prompt changes.",
-      "session_ids": [
-        "codex-mi2-v331-validation-20261012"
-      ],
-      "status": "VALIDATING",
+      "session_ids": [],
+      "status": "DONE",
       "title": "Close and publish v3.3.1 visible-gate result",
-      "updated_at": "2026-10-12T03:30:57.917336Z",
+      "updated_at": "2026-10-12T03:34:32.311967Z",
       "validation": {
         "required": [
           "all-14-complete-hashes",
@@ -89,7 +89,13 @@
       },
       "base_sha": "bd12b3fd519ada16ed9bc2b6c1d6fcba9a7ddaf2",
       "campaign": "mi2-paper-guidance-gemma-q2",
-      "candidate": null,
+      "candidate": {
+        "artifact": "docs/receipts/MI2_v3_3_1_Visible_Gate_Review_20261012.md",
+        "base_sha": "70536e84bc90a4e4497d8b085346d069350bae71",
+        "returned_at": "2026-10-12T03:35:53.199832Z",
+        "returned_by": "root",
+        "sha": "cb2cc0d99d8de4c081f7d1ee242fbd914bbf8ec4741798a6ffa74bbe66b5f314"
+      },
       "completion_criterion": "Return an evidence-based diagnosis and recommendation to Root without modifying files or making calls.",
       "created_at": "2026-10-12T03:29:37.712363Z",
       "dependencies": [
@@ -101,7 +107,9 @@
         "docs/receipts/MI2_Calibration*",
         "docs/receipts/MI2_v3_3_1*"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "Read-only diagnosis complete; report recommendation is a larger prospectively selected visible-only PHYSICS-eval gate because prior task counts (3-4) do not support reliable attribution; do not infer latent outcome"
+      ],
       "id": "MI2-V34-DIAGNOSTIC-DESIGN",
       "notes": "",
       "owner": null,
@@ -116,20 +124,94 @@
       "resource_requirements": [],
       "scope": "Read-only, model-free review of visible guidance failures and source method. Recommend a distinct next calibration or supported stop. No code edits, no inference, no latent or heldout operations.",
       "session_ids": [],
-      "status": "WAITING",
+      "status": "DONE",
       "title": "Diagnose paper-faithful visible calibration frontier",
-      "updated_at": "2026-10-12T03:29:37.712363Z",
+      "updated_at": "2026-10-12T03:35:53.383230Z",
       "validation": {
         "required": [
           "cite-primary-paper-and-receipts",
           "no-model-calls",
           "no-worktree-modifications"
         ],
+        "results": {
+          "cite-primary-paper-and-receipts": {
+            "receipt": "Review traced results to canonical paper correspondence doc and v1/v2/v3.1/v3.2/v3.3.1 frozen score receipts; visible efficacy remains unestablished, not latent failure",
+            "recorded_at": "2026-10-12T03:35:53.250569Z",
+            "status": "PASS"
+          },
+          "no-model-calls": {
+            "receipt": "Read-only audit only; no Gemma, Quinn, bank, or latent calls",
+            "recorded_at": "2026-10-12T03:35:53.294352Z",
+            "status": "PASS"
+          },
+          "no-worktree-modifications": {
+            "receipt": "Supervisor made no edits; root committed prior package before opening diagnostic package",
+            "recorded_at": "2026-10-12T03:35:53.339298Z",
+            "status": "PASS"
+          }
+        }
+      },
+      "waiting_on": [],
+      "workstream": "mi2-paper-guidance"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "70536e84bc90a4e4497d8b085346d069350bae71",
+      "campaign": "mi2-paper-guidance-gemma-q2",
+      "candidate": null,
+      "completion_criterion": "The 31-item eligible cohort and all task-specific score components are frozen before inference; duplicate BASELINE preflight is byte-identical; all 93 BASELINE calls complete, are durably preserved, and pass the frozen headroom gate before any visible call; then all 93 VISIBLE calls complete and are scored against the frozen rubric, or the experiment stops at the baseline gate. Publish compact machine-readable result and review. No latent or bank calls under this package.",
+      "created_at": "2026-10-12T03:41:01.640680Z",
+      "dependencies": [],
+      "domain": "local-model-evaluation",
+      "edit_boundaries": [
+        "docs/receipts/MI2_v3_4*",
+        "tools/mi2_run_visible_gate_v3_4.py",
+        "tests/test_mi2_v3_4_visible_gate.py",
+        "bible.md",
+        ".codex/work-queue-mi2.json"
+      ],
+      "evidence_refs": [],
+      "id": "MI2-V35-WIDE-VISIBLE-GATE",
+      "notes": "",
+      "owner": null,
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "same-paper-card",
+        "full-unseen-quantum-eval-cohort",
+        "deterministic-capture",
+        "baseline-headroom-gate",
+        "visible-before-latent",
+        "durable-call-journal"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": true,
+          "name": "local-gemma-gpu",
+          "units": 1
+        }
+      ],
+      "scope": "Freeze the same source Quantum process card and every previously unused, text-self-contained PHYSICS-eval Quantum item, then execute a deterministic BASELINE-first, VISIBLE-only prerequisite gate on the exact local Gemma Q2 host. Score official-answer correctness separately from process-card use. Baseline headroom failure or visible-gate failure stops before all bank/selector/latent/heldout work. No task or rubric changes after inference starts.",
+      "session_ids": [],
+      "status": "READY",
+      "title": "Run broad paper-card visible prerequisite gate",
+      "updated_at": "2026-10-12T03:41:01.640680Z",
+      "validation": {
+        "required": [
+          "candidate-card-and-cohort-hashes-verified",
+          "all-run-calls-durable-and-reconciled",
+          "scoring-and-stop-gate-reproducible",
+          "no-latent-or-bank-call-made",
+          "runner-tests-pass",
+          "ruff-and-strict-mypy-pass"
+        ],
         "results": {}
       },
-      "waiting_on": [
-        "package:MI2-V331-RESULT"
-      ],
+      "waiting_on": [],
       "workstream": "mi2-paper-guidance"
     }
   ],
@@ -145,5 +227,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-10-12T03:30:57.917372Z"
+  "updated_at": "2026-10-12T03:41:01.640808Z"
 }
