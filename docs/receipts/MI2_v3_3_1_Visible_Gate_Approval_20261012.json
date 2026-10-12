@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "artifact_type": "MI2_VISIBLE_GATE_PRECALL_APPROVAL",
+  "approval_id": "MI2-V3.3.1-VISIBLE-GATE-APPROVAL-20261012",
+  "created_utc": "2026-10-12T03:03:07Z",
+  "package_id": "MI2-PAPER-GUIDANCE-20261011",
+  "approved_by": "Root Foreman; explicit package authorization in the current task message",
+  "approval_status": "APPROVED_FOR_FROZEN_VISIBLE_GUIDANCE_CALIBRATION_ONLY_NOT_DISPATCHED",
+  "freeze": {
+    "path": "docs/receipts/MI2_Calibration_v3_3_1_Preheldout_Freeze_20261012.json",
+    "sha256": "40cc66141761ab50412800717497b12d5197288aa7930c74b93c4a6d6d8c3690"
+  },
+  "candidate": {
+    "path": "docs/receipts/MI2_Calibration_v3_3_1_Candidate_20261012.json",
+    "sha256": "f03023d72b9d3ac844cf22c84f156ef3ed30d1ef8c58b0938cf3a9f5fea445e1"
+  },
+  "authorized_limits": {
+    "preflight_calls": 2,
+    "baseline_calls": 6,
+    "conditional_visible_calls": 6,
+    "maximum_calls": 14,
+    "order": [
+      "two same-request BASELINE determinism preflight calls",
+      "six frozen BASELINE task-seed coordinates",
+      "six VISIBLE_GUIDANCE coordinates only after baseline headroom passes"
+    ],
+    "host": "exact runtime and model fingerprint in frozen candidate only",
+    "reasoning": "ON",
+    "cache_prompt": false,
+    "conditions": [
+      "BASELINE",
+      "VISIBLE_GUIDANCE"
+    ],
+    "task_ids": [
+      "quantum/1-1041",
+      "quantum/3-3025",
+      "quantum/3-3047"
+    ],
+    "seeds": [
+      481001,
+      481019
+    ]
+  },
+  "explicit_exclusions": [
+    "LATENT",
+    "IRRELEVANT_MEMORY",
+    "DISABLED",
+    "BANK_BUILD",
+    "KV_CAPTURE",
+    "SELECTOR_CAPTURE",
+    "HELDOUT",
+    "PHYSICS-test access",
+    "removal/reuse",
+    "MNEME integration",
+    "additional model/host/Quinn calls"
+  ],
+  "stop_conditions": [
+    "Any nondeterministic preflight output stops the run.",
+    "Any abnormal finish, uncertain call, missing/corrupt durable output stops the run without retry.",
+    "Stop before visible calls if baseline mean process score >2.5/3 OR at least two of three task means equal 3/3.",
+    "After complete matrix, visible gate passes only under the frozen process-delta and answer-harm criteria; failure ends this candidate."
+  ],
+  "scope_note": "This approval records Root authorization for the bounded visible calibration gate, not a dispatch record. No inference, host, or Quinn call has been issued by this package turn. Any latent/heldout or follow-on stage requires separate Root review."
+}

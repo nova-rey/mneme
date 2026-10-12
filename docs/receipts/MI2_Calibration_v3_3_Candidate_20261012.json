@@ -1,0 +1,204 @@
+{
+  "anti_result_shopping": [
+    "The QM card is a distinct paper-source process card rather than a retuned E&M card.",
+    "Exact three question bytes, answer components, process criteria, thresholds, seeds, and stop rules are included before any calls.",
+    "Selected IDs are unused by prior MI2 calibration/heldout task plans; selection is based on direct card-task alignment and official answerability, not prior output behavior.",
+    "Baseline ceiling or visible-gate failure ends v3.3 without replacement tasks."
+  ],
+  "base_commit": "4068407e6328985a8763af817303d8a16eed91cb",
+  "benchmark_source": {
+    "byte_length": 621065,
+    "dataset": "PHYSICS benchmark quantum subject; PHYSICS-eval split only.",
+    "file_sha256": "6274d86cc8767fdd332f04ab2175d5754bb20250190ba10bf45d9e33367ac919",
+    "path": "/home/nyx/mneme-artifacts/phase4-mi2/source/PHYSICS/PHYSICS/PHYSICS-eval/quantum_dataset_eval.jsonl",
+    "prior_task_disjointness": "Selected IDs are disjoint from v1 and v2 calibration/heldout ID sets in the preserved plans, as well as prior Atomic/E&M cards.",
+    "row_count": 53,
+    "selection_rule": "Select only unused PHYSICS-eval questions whose requested operation directly matches a published QM-card category; inspect question and official answer key for self-contained answerability. Selection is model-free and precedes any output.",
+    "test_split_boundary": "PHYSICS-test was not opened, searched, hashed, enumerated, or used. No heldout IDs are proposed in this calibration candidate; any future heldout design requires separate Root-reviewed freeze and remains outside this scope."
+  },
+  "candidate_tasks": [
+    {
+      "answer_component_scoring": {
+        "normalization": "Score each official final-answer component 0=wrong/missing, 0.5=partial/semantically equivalent incomplete, 1=correct or fully equivalent; normalize within task then average seeds. Kept separate from process score.",
+        "scale_per_component": [
+          0,
+          0.5,
+          1
+        ]
+      },
+      "answer_key_components": [
+        "E_n = \\frac{\\hbar^2 \\pi^2 n^2}{8ma^2}",
+        "\\psi^+_n(x) = \\sqrt{\\frac{1}{a}} \\cos \\frac{n \\pi x}{2a} \\text{ for odd } n",
+        "\\psi^-_n(x) = \\sqrt{\\frac{1}{a}} \\sin \\frac{n \\pi x}{2a} \\text{ for even } n",
+        "\\text{No first order effect for wave functions with definite parity}",
+        "\\Delta k = \\pm 1"
+      ],
+      "answer_key_sha256": "49fd045e142c573947b4312fbfcca86538db3966dcbd799f07781e9a315705a0",
+      "id": "quantum/6046",
+      "process_score_criteria_binary": [
+        "Recognizes this as a centered-well stationary-state problem with separate perturbative-response and dipole-selection-rule subquestions.",
+        "For the odd perturbation kx, uses the first-order diagonal expectation value in a parity eigenstate; explains the vanishing from symmetry rather than solving a different spectral problem.",
+        "Keeps the requested mathematical objects distinct: spectrum/eigenfunctions, first-order energy shift, and dipole selection rule are answered as separate parts."
+      ],
+      "process_score_range": {
+        "criterion_scoring": "Each frozen criterion is binary 0/1; score only explicit observable reasoning/final evidence. Generic card vocabulary alone earns no credit.",
+        "max": 3,
+        "min": 0
+      },
+      "question": "Consider a particle in a one-dimensional infinite potential well. Let the origin be at the center as shown in Fig. 6.14.\n(a) What are the allowed energies?  \n(b) What are the allowed wave functions?  \n(c) For what class of solutions will a perturbing potential $\\Delta V(x) = kx$ have no first order effect on the energy?  \n(d) If transitions between states can occur by dipole radiation, what are the selection rules?  \n",
+      "question_sha256": "ebc553ab365f6dd176d1f358f1d8379730d46afa8c5e8e369a6d8f39c77af089",
+      "source_line_number": 4,
+      "source_row_sha256": "1c869ff02e60884f50981eeca61feff693d8f6bc0e8179d15ef511aa5f7c73a4",
+      "source_split": "PHYSICS-eval/quantum_dataset_eval.jsonl",
+      "task_card_alignment": "Direct mixed stationary-state/perturbative-response/selection-rule case: identify the requested operation for each subpart and use parity for the first-order response."
+    },
+    {
+      "answer_component_scoring": {
+        "normalization": "Score each official final-answer component 0=wrong/missing, 0.5=partial/semantically equivalent incomplete, 1=correct or fully equivalent; normalize within task then average seeds. Kept separate from process score.",
+        "scale_per_component": [
+          0,
+          0.5,
+          1
+        ]
+      },
+      "answer_key_components": [
+        "s_z(t) = s_z(0) \\cos \\left( \\frac{g e B}{2mc} t \\right) + s_x(0) \\sin \\left( \\frac{g e B}{2mc} t \\right)"
+      ],
+      "answer_key_sha256": "ff10c59309b0ec94a9a5c89809286521edfed0fabff672d5f74b9a741c40cfd3",
+      "id": "quantum/3-3025",
+      "process_score_criteria_binary": [
+        "Identifies the requested result as Heisenberg time evolution of spin operators in the specified constant field, rather than an energy-spectrum or measurement-probability problem.",
+        "Uses the operator equation of motion from the Hamiltonian commutator and spin commutation relations to obtain coupled spin-precession dynamics.",
+        "Uses the initial operator values to give the requested s_z(t) operator expression with the correct precession frequency/sign convention; does not substitute a state probability for the operator."
+      ],
+      "process_score_range": {
+        "criterion_scoring": "Each frozen criterion is binary 0/1; score only explicit observable reasoning/final evidence. Generic card vocabulary alone earns no credit.",
+        "max": 3,
+        "min": 0
+      },
+      "question": "The Hamiltonian for a spin-$\\frac{1}{2}$ particle with charge $+e$ in an external magnetic field is\n\n$$\nH = -\\frac{ge}{2mc} \\mathbf{s} \\cdot \\mathbf{B}.\n$$\n\nCalculate the operator $d\\mathbf{s}/dt$ if $\\mathbf{B} = B\\hat{y}$. What is $s_z(t)$ in matrix form?",
+      "question_sha256": "09b8c6fe01625e5d612ca78eb078c38b3f249a632ee141cf031f994d65cf1ae9",
+      "source_line_number": 7,
+      "source_row_sha256": "15c464a8022b7e04720bd034dc674f25065fff954736c58f08d8391a7c727071",
+      "source_split": "PHYSICS-eval/quantum_dataset_eval.jsonl",
+      "task_card_alignment": "Direct time-evolution case: operator, Hamiltonian, and requested s_z(t) make dynamical evolution the mathematical object; distinct from finding a spectrum."
+    },
+    {
+      "answer_component_scoring": {
+        "normalization": "Score each official final-answer component 0=wrong/missing, 0.5=partial/semantically equivalent incomplete, 1=correct or fully equivalent; normalize within task then average seeds. Kept separate from process score.",
+        "scale_per_component": [
+          0,
+          0.5,
+          1
+        ]
+      },
+      "answer_key_components": [
+        "\\left| \\chi \\right\\rangle = \n\\begin{pmatrix} \n\\cos \\omega_2 t \\\\ \n-i \\sin \\omega_2 t \n\\end{pmatrix}",
+        "\\mathbf{p} = (0, -\\sin 2 \\omega_2 t, \\cos 2 \\omega_2 t)",
+        "t \\ll \\frac{h}{|\\mu_n| B_2}"
+      ],
+      "answer_key_sha256": "8a02a0cfa0bc5b91d823162a63184f4c572bb758cd80cd51288e2c38e286910a",
+      "id": "quantum/3-3047",
+      "process_score_criteria_binary": [
+        "Separates state evolution in region II from the later measurement-statistics request, while retaining the stated initial +z polarization and sudden field change.",
+        "Propagates the spin state under the region-II Hamiltonian before calculating observations; the method yields the spinor (or equivalent state) requested in part (a).",
+        "Obtains observed spin fractions from Born probabilities/expectation values and states the transition-time condition needed for the abrupt-boundary approximation; does not equate amplitudes with probabilities."
+      ],
+      "process_score_range": {
+        "criterion_scoring": "Each frozen criterion is binary 0/1; score only explicit observable reasoning/final evidence. Generic card vocabulary alone earns no credit.",
+        "max": 3,
+        "min": 0
+      },
+      "question": "A beam of neutrons of velocity $v$ passes from a region ($\\text I$) (where the magnetic field is $\\mathbf{B} = B_1 \\mathbf{e}_z$) to a region ($\\text {II}$) (where the field is $\\mathbf{B} = B_2 \\mathbf{e}_x$). In region ($\\text I$) the beam is completely polarized in the $+z$ direction.\n\n(a) Assuming that a given particle passes from ($\\text I$) to ($\\text {II}$) at time $t = 0$, what is the spin wave function of that particle for $t > 0$?\n\n(b) As a function of time, what fraction of the particles would be observed to have spins in the $+x$ direction; the $+y$ direction; the $+z$ direction?\n\n(c) As a practical matter, how abrupt must the transition between  ($\\text I$) and ($\\text {II}$) be to have the above description valid?",
+      "question_sha256": "b129db8d282f0de004fa1f6b5cfb8d2a91f1d2233983234c6db7a2114674a383",
+      "source_line_number": 19,
+      "source_row_sha256": "7f55951d155684836090855683155e2c0a459b15c5d6c82a100e60a15afd03b7",
+      "source_split": "PHYSICS-eval/quantum_dataset_eval.jsonl",
+      "task_card_alignment": "Direct mixed dynamics/measurement case: evolve the spin state, then derive observed fractions; the card explicitly says to separate those question types."
+    }
+  ],
+  "candidate_version": "v3.3",
+  "expected_minimal_generation_budget": {
+    "baseline_matrix_calls": 6,
+    "baseline_preflight_calls": 2,
+    "calls_if_baseline_headroom_fails": 8,
+    "heldout_calls": 0,
+    "latent_calls": 0,
+    "selector_or_bank_operations": 0,
+    "total_maximum_calls": 14,
+    "visible_matrix_calls_if_headroom_passes": 6
+  },
+  "no_calls_status": "No Gemma/Quinn/host calls were made while preparing this candidate. No bank/KV artifacts, selector/query captures, or PHYSICS-test material were created/accessed.",
+  "package_id": "MI2-PAPER-GUIDANCE-20261011",
+  "paper_source": {
+    "arxiv_version": "2605.06225v2",
+    "canonical_pdf_sha256": "ffd265f3b32a93d6b7967c69faf8e992d13ccdadc2c0bc2927a2f7ffcf5791fc",
+    "card_fields": {
+      "action": "Decide whether the answer concerns allowed states, time evolution, measurement statistics, response to a small change, or asymptotic behavior.",
+      "trap_check": "Avoid solving the wrong kind of quantum problem because similar symbols appear in the prompt. The mathematical object in the final answer should match the physical question.",
+      "trigger": "A prompt mixes states, operators, spectra, measurement, and time language; separate spectral, dynamical, measurement, and approximation questions before computing."
+    },
+    "location": "Appendix E, Table 5, Quantum mechanics row; PDF page 20 / printed page 19.",
+    "source_check": "The canonical local PDF row was directly verified. The exact process-card wording is retained with normalized line breaks and field labels.",
+    "title": "Memory Inception: Latent-Space KV Cache Manipulation for Steering LLMs"
+  },
+  "prompt_contract": {
+    "cache_prompt": false,
+    "generation_seeds": [
+      481001,
+      481019
+    ],
+    "only_condition_difference": "BASELINE uses baseline_system_text_exact; VISIBLE_GUIDANCE uses visible_system_text_exact. User question, host, reasoning mode, generation settings, seeds, context, and all other request fields are identical.",
+    "reasoning": "ON",
+    "runtime": {
+      "batch_size": 2048,
+      "context_size": 8192,
+      "gguf_path": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+      "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+      "gpu_layers": 99,
+      "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+      "max_tokens": 8192,
+      "min_p": 0.05,
+      "model": "google/gemma-4-E4B-it",
+      "parallel": 1,
+      "reasoning_format": "deepseek",
+      "temperature": 0.35,
+      "threads": 4,
+      "threads_batch": 4,
+      "top_k": 40,
+      "top_p": 0.9,
+      "ubatch_size": 512
+    },
+    "user_message": "Send each selected dataset question verbatim as the only user message. No solution, final-answer key, side-memory, or other candidate task content appears in the user message."
+  },
+  "schema_version": 1,
+  "scope": "Candidate for a Quantum-mechanics-card visible-guidance calibration gate only. No inference, side-memory/KV bank construction, selector/query capture, latent or held-out evaluation, MNEME state/SAA/integration.",
+  "scoring_proposal": {
+    "answer_aggregation": "Score each official answer component 0/0.5/1, normalize within task to 0-1, average seeds, and compare visible with baseline; report separately from process score.",
+    "baseline_headroom_stop_rule": "Run two duplicate baseline preflight calls, then six BASELINE coordinates. After durable output and frozen scoring, before any VISIBLE_GUIDANCE call, stop if baseline mean process score >2.5/3 OR at least two of three task means equal 3/3. No task substitution.",
+    "process_aggregation": "For each task, average its three binary criteria across two seeds (0-3). Compute its matched visible-minus-baseline task delta, then average the three deltas.",
+    "scorer_protocol": "Score only after condition outputs are durable, using frozen criteria and official answer components; no rubric edits, exclusions, or replacements after seeing outputs.",
+    "visible_gate": "Pass only if mean matched process delta >= +0.50/3, positive process delta on at least 2 of 3 tasks, and normalized answer-score harm is no worse than 0.10. This is a small visible calibration gate, not a statistical claim about latent efficacy."
+  },
+  "source_card_choice": {
+    "baseline_system_text_exact": "You are solving a quantum mechanics problem. Work from the stated assumptions, show the reasoning needed to justify each requested result, and clearly label final answers for every part.",
+    "choice": "Quantum mechanics card, Appendix E Table 5",
+    "paper_card_text_normalized": "Trigger: A prompt mixes states, operators, spectra, measurement, and time language; separate spectral, dynamical, measurement, and approximation questions before computing.\nAction: Decide whether the answer concerns allowed states, time evolution, measurement statistics, response to a small change, or asymptotic behavior.\nTrap Check: Avoid solving the wrong kind of quantum problem because similar symbols appear in the prompt. The mathematical object in the final answer should match the physical question.",
+    "visible_system_text_exact": "You are solving a quantum mechanics problem. Work from the stated assumptions, show the reasoning needed to justify each requested result, and clearly label final answers for every part.\n\nQuantum mechanics process guide (Memory Inception, Appendix E, Table 5):\nTrigger: A prompt mixes states, operators, spectra, measurement, and time language; separate spectral, dynamical, measurement, and approximation questions before computing.\nAction: Decide whether the answer concerns allowed states, time evolution, measurement statistics, response to a small change, or asymptotic behavior.\nTrap Check: Avoid solving the wrong kind of quantum problem because similar symbols appear in the prompt. The mathematical object in the final answer should match the physical question."
+  },
+  "status": "MODEL_FREE_CALIBRATION_CANDIDATE_PENDING_ROOT_REVIEW_NO_CALLS",
+  "stop_rules": [
+    "Failed deterministic duplicate preflight, abnormal finish, missing/corrupt artifact, insufficient baseline headroom, or visible-gate failure ends this candidate. Preserve all results; do not substitute tasks.",
+    "A visible-gate pass is necessary but not sufficient for latent testing and triggers a separate Root review only.",
+    "No latent/heldout calls, bank construction, selector capture, removal/reuse calls, MNEME integration, or PHYSICS-test access are authorized."
+  ],
+  "v3_2_failure_context": {
+    "interpretation": "This is a valid failed E&M visible calibration, not evidence about latent efficacy. v3.3 changes to a distinct paper card and fresh, unused, card-aligned questions; it does not reuse v3.2 outputs.",
+    "root_audit": "For all six matched baseline/visible coordinates, durable requests differed only in intended system prompt and rendered prompt/hash. User text, seed, sampler, cache_prompt=false, model, and all other request fields matched. v3.2 failure was not caused by request/configuration mismatch.",
+    "root_reported_normalized_answer_harm": 0.133,
+    "root_reported_positive_item_deltas": "0/3",
+    "root_reported_process_delta": -0.333,
+    "status": "VISIBLE_GATE_FAIL_STOP",
+    "visible_gate_annotations_sha256": "aa904d248c34c25e5570a72f3ad58123e3da7a238fc5296372f5b6010dd508d9"
+  }
+}

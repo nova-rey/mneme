@@ -2022,3 +2022,9 @@ and dispositions remain unchanged.
 
 - Added a fail-closed runner for the frozen visible-only calibration. It journals the duplicate determinism preflight, then six baseline coordinates; a durable baseline-only ceiling score is required before the six visible calls. Full gate scoring requires all 14 approved outputs, and the runner has no latent/heldout/bank/selector dispatch path.
 - Dry-run receipt `docs/receipts/MI2_v3_2_Visible_Gate_Dry_Run_20261012.json` SHA-256 `7c683e36d2a9eda2c5b14c0487f00be1f6d3c1b691a487070136df8f8d650cce`. Focused tests: 8 passed; Ruff and strict mypy passed. No inference was issued by the dry run.
+
+## 2026-10-12 MI2 v3.3.1 visible-guidance calibration freeze
+
+- Root approved v3.3.1 only for a bounded, frozen visible-guidance calibration gate. The revised candidate replaces the figure-dependent quantum/6046 prompt with the self-contained quantum/1-1041 item and explicitly scores the requested matrix form for quantum/3-3025. Candidate: docs/receipts/MI2_Calibration_v3_3_1_Candidate_20261012.json, SHA-256 f03023d72b9d3ac844cf22c84f156ef3ed30d1ef8c58b0938cf3a9f5fea445e1; prior v3.3 candidate is retained unchanged at SHA-256 3ecc8d25a38a45e6acbd4178253ad50d7940a3ac02c9d9b1c0fcc81065f13808.
+- Frozen permission is at most 14 inference calls: two identical BASELINE determinism preflight requests, six frozen BASELINE coordinates, then six VISIBLE_GUIDANCE coordinates only if the baseline headroom rule passes. No bank/selector, latent, irrelevant, disabled, heldout, PHYSICS-test, removal/reuse, or MNEME calls are authorized. No inference has been dispatched under this freeze.
+- Freeze: docs/receipts/MI2_Calibration_v3_3_1_Preheldout_Freeze_20261012.json, SHA-256 40cc66141761ab50412800717497b12d5197288aa7930c74b93c4a6d6d8c3690; pre-call approval: docs/receipts/MI2_v3_3_1_Visible_Gate_Approval_20261012.json, SHA-256 7a6edf6d72983b541a7f4cd006154592d715a5e2d98d122f38ff9021a28b646f.
