@@ -1,0 +1,149 @@
+{
+  "campaign": "mi2-paper-guidance-gemma-q2",
+  "created_at": "2026-10-12T03:28:31.205600Z",
+  "dependencies": {},
+  "hard_problem_repo": null,
+  "packages": [
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "bd12b3fd519ada16ed9bc2b6c1d6fcba9a7ddaf2",
+      "campaign": "mi2-paper-guidance-gemma-q2",
+      "candidate": {
+        "artifact": "docs/receipts/MI2_v3_3_1_Visible_Gate_Score_20261012.json",
+        "base_sha": "bd12b3fd519ada16ed9bc2b6c1d6fcba9a7ddaf2",
+        "returned_at": "2026-10-12T03:30:57.724805Z",
+        "returned_by": "root",
+        "sha": "cb2cc0d99d8de4c081f7d1ee242fbd914bbf8ec4741798a6ffa74bbe66b5f314"
+      },
+      "completion_criterion": "Commit compact score/report and bible note, with all 14 completed coordinates hash-linked and the frozen gate result reproducible from the saved journal.",
+      "created_at": "2026-10-12T03:29:37.616433Z",
+      "dependencies": [],
+      "domain": "research-evaluation",
+      "edit_boundaries": [
+        "docs/receipts/MI2_v3_3_1_Visible_Gate_Score_20261012.json",
+        "docs/receipts/MI2_v3_3_1_Visible_Gate_Review_20261012.md",
+        "bible.md",
+        ".codex/work-queue-mi2.json"
+      ],
+      "evidence_refs": [],
+      "id": "MI2-V331-RESULT",
+      "notes": "",
+      "owner": "root",
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "score-frozen-visible-gate",
+        "verify-durable-artifacts",
+        "preserve-failure-historically",
+        "publish-compact-receipt"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": true,
+          "name": "canonical-integration",
+          "units": 1
+        }
+      ],
+      "scope": "Publish derived v3.3.1 scores and a concise diagnostic receipt from already completed baseline/visible outputs. No inference, no bank/latent work, no source/evaluation prompt changes.",
+      "session_ids": [
+        "codex-mi2-v331-validation-20261012"
+      ],
+      "status": "VALIDATING",
+      "title": "Close and publish v3.3.1 visible-gate result",
+      "updated_at": "2026-10-12T03:30:57.917336Z",
+      "validation": {
+        "required": [
+          "all-14-complete-hashes",
+          "score-runner-reconciliation",
+          "report-receipt-consistency"
+        ],
+        "results": {
+          "all-14-complete-hashes": {
+            "receipt": "receipt validator: 12 matrix + 2 preflight complete; 36 request/stream/result hashes verified",
+            "recorded_at": "2026-10-12T03:30:57.828537Z",
+            "status": "PASS"
+          },
+          "report-receipt-consistency": {
+            "receipt": "report and JSON agree with frozen score and preserved external journal",
+            "recorded_at": "2026-10-12T03:30:57.917321Z",
+            "status": "PASS"
+          },
+          "score-runner-reconciliation": {
+            "receipt": "frozen runner stage score: VISIBLE_GATE_FAIL_STOP; delta +0.1666667/3; 1/3 positive tasks",
+            "recorded_at": "2026-10-12T03:30:57.876389Z",
+            "status": "PASS"
+          }
+        }
+      },
+      "waiting_on": [],
+      "workstream": "mi2-paper-guidance"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "bd12b3fd519ada16ed9bc2b6c1d6fcba9a7ddaf2",
+      "campaign": "mi2-paper-guidance-gemma-q2",
+      "candidate": null,
+      "completion_criterion": "Return an evidence-based diagnosis and recommendation to Root without modifying files or making calls.",
+      "created_at": "2026-10-12T03:29:37.712363Z",
+      "dependencies": [
+        "package:MI2-V331-RESULT"
+      ],
+      "domain": "research-methodology",
+      "edit_boundaries": [
+        "docs/research/MI2_Memory_Inception_Paper_Reference_20261011.md",
+        "docs/receipts/MI2_Calibration*",
+        "docs/receipts/MI2_v3_3_1*"
+      ],
+      "evidence_refs": [],
+      "id": "MI2-V34-DIAGNOSTIC-DESIGN",
+      "notes": "",
+      "owner": null,
+      "priority": 2,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "compare-prior-visible-calibrations",
+        "inspect-paper-construction-reproduction",
+        "recommend-no-shopping-next-gate"
+      ],
+      "resource_requirements": [],
+      "scope": "Read-only, model-free review of visible guidance failures and source method. Recommend a distinct next calibration or supported stop. No code edits, no inference, no latent or heldout operations.",
+      "session_ids": [],
+      "status": "WAITING",
+      "title": "Diagnose paper-faithful visible calibration frontier",
+      "updated_at": "2026-10-12T03:29:37.712363Z",
+      "validation": {
+        "required": [
+          "cite-primary-paper-and-receipts",
+          "no-model-calls",
+          "no-worktree-modifications"
+        ],
+        "results": {}
+      },
+      "waiting_on": [
+        "package:MI2-V331-RESULT"
+      ],
+      "workstream": "mi2-paper-guidance"
+    }
+  ],
+  "project": "nova-rey/mneme",
+  "resources": {
+    "canonical-integration": {
+      "capacity": 1,
+      "exclusive": true
+    },
+    "local-gemma-gpu": {
+      "capacity": 1,
+      "exclusive": true
+    }
+  },
+  "schema_version": 1,
+  "updated_at": "2026-10-12T03:30:57.917372Z"
+}

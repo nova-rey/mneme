@@ -1,0 +1,579 @@
+{
+  "schema_version": 1,
+  "artifact_type": "MI2_V331_VISIBLE_GUIDANCE_GATE_RESULT",
+  "created_utc": "2026-10-12T03:30:01.033062+00:00",
+  "candidate_version": "v3.3.1",
+  "freeze_id": "MI2-CAL-V3.3.1-20261012",
+  "run_directory": "/home/nyx/mneme-artifacts/phase4-mi2/calibration-run-v3.3.1",
+  "host": {
+    "model": "google/gemma-4-E4B-it",
+    "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+    "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+    "gpu": "RTX 3060 Laptop 6 GiB",
+    "reasoning": "ON",
+    "cache_prompt": false,
+    "seeds": [
+      481001,
+      481019
+    ]
+  },
+  "frozen_input_hashes": {
+    "candidate": "f03023d72b9d3ac844cf22c84f156ef3ed30d1ef8c58b0938cf3a9f5fea445e1",
+    "freeze": "40cc66141761ab50412800717497b12d5197288aa7930c74b93c4a6d6d8c3690",
+    "approval": "7a6edf6d72983b541a7f4cd006154592d715a5e2d98d122f38ff9021a28b646f",
+    "runner_sha256": "a536894456145a509ea06bed6b4477ad51323a304cbc1f4a51b6292dcc80deea",
+    "source_dataset_sha256": "6274d86cc8767fdd332f04ab2175d5754bb20250190ba10bf45d9e33367ac919"
+  },
+  "completion": {
+    "preflight_calls": 2,
+    "matrix_calls": 12,
+    "total_calls": 14,
+    "all_finish_reason_stop": true,
+    "all_coordinate_files_present": true,
+    "determinism_preflight_identical": true,
+    "latent_or_bank_calls": 0
+  },
+  "preflight": [
+    {
+      "attempt_id": "v331_preflight_quantum_1_1041_baseline_481001_a",
+      "complete_sha256": "7db847ec68a294af5100b609f45ab2cb3ec8f39b31fc39fee393953c106108c2",
+      "finish_reason": "stop",
+      "reasoning_sha256": "96f711c9001eebd724644b891459935db32604b832291fbabd86f546144af333",
+      "final_sha256": "7d4de61808732532bfb3f2c86cc1e188f233026550ee4203fde622d82d38ae7e"
+    },
+    {
+      "attempt_id": "v331_preflight_quantum_1_1041_baseline_481001_b",
+      "complete_sha256": "6caa83a5e945d5cd8314c7110341b097acf9408b1ba11f7370fa6c4ce15f4f59",
+      "finish_reason": "stop",
+      "reasoning_sha256": "96f711c9001eebd724644b891459935db32604b832291fbabd86f546144af333",
+      "final_sha256": "7d4de61808732532bfb3f2c86cc1e188f233026550ee4203fde622d82d38ae7e"
+    }
+  ],
+  "frozen_gate_result": {
+    "approval_sha256": "7a6edf6d72983b541a7f4cd006154592d715a5e2d98d122f38ff9021a28b646f",
+    "baseline_process_mean": 1.0,
+    "next_authority_boundary": "No latent/heldout/bank/selector work is authorized by a visible-gate pass.",
+    "no_task_substitution": true,
+    "normalized_answer_score_harm": -0.05555555555555555,
+    "per_task": [
+      {
+        "baseline_answer_mean": 0.5,
+        "baseline_process_mean": 1.0,
+        "process_delta": 0.0,
+        "task_id": "quantum/1-1041",
+        "visible_answer_mean": 0.5,
+        "visible_process_mean": 1.0
+      },
+      {
+        "baseline_answer_mean": 0.0,
+        "baseline_process_mean": 1.0,
+        "process_delta": 0.0,
+        "task_id": "quantum/3-3025",
+        "visible_answer_mean": 0.0,
+        "visible_process_mean": 1.0
+      },
+      {
+        "baseline_answer_mean": 0.0,
+        "baseline_process_mean": 1.0,
+        "process_delta": 0.5,
+        "task_id": "quantum/3-3047",
+        "visible_answer_mean": 0.16666666666666666,
+        "visible_process_mean": 1.5
+      }
+    ],
+    "plan_sha256": "40cc66141761ab50412800717497b12d5197288aa7930c74b93c4a6d6d8c3690",
+    "positive_item_deltas": 1,
+    "scored_after_durable_completion": true,
+    "status": "VISIBLE_GATE_FAIL_STOP",
+    "visible_minus_baseline_process_delta": 0.16666666666666666
+  },
+  "coordinate_scores": [
+    {
+      "attempt_id": "v331_cal_quantum_1_1041_baseline_481001",
+      "task_id": "quantum/1-1041",
+      "condition": "BASELINE",
+      "generation_seed": 481001,
+      "process_criterion_scores": [
+        1,
+        0,
+        0
+      ],
+      "process_score": 1,
+      "answer_component_scores": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "evidence_spans": [
+        {
+          "field": "content",
+          "quote": "### (a) Find the mean position of the particle."
+        },
+        {
+          "field": "content",
+          "quote": "V(x) = \\frac{1}{2} k x^2"
+        },
+        {
+          "field": "content",
+          "quote": "P(p) dp = \\frac{1}{2\\pi}"
+        }
+      ],
+      "finish_reason": "stop",
+      "request_sha256": "2e25dc432ddb702fe8a9e656d2f7bc415aca572154e14c4fe43900dbd151ca86",
+      "stream_sha256": "af301ba50b73e18c65920e95801da8368de0e081ad66af8e74ee716806829f1b",
+      "complete_sha256": "c38955018f4b8ac580ff5198d1d2f0fc915dbd9118f28091ab1a6f6284e1fc72",
+      "reasoning_sha256": "96f711c9001eebd724644b891459935db32604b832291fbabd86f546144af333",
+      "final_sha256": "7d4de61808732532bfb3f2c86cc1e188f233026550ee4203fde622d82d38ae7e",
+      "reasoning_chars": 7419,
+      "final_chars": 2946
+    },
+    {
+      "attempt_id": "v331_cal_quantum_1_1041_baseline_481019",
+      "task_id": "quantum/1-1041",
+      "condition": "BASELINE",
+      "generation_seed": 481019,
+      "process_criterion_scores": [
+        1,
+        0,
+        0
+      ],
+      "process_score": 1,
+      "answer_component_scores": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "evidence_spans": [
+        {
+          "field": "content",
+          "quote": "### (a) Find the mean position of the particle ($\\langle x \\rangle$)"
+        },
+        {
+          "field": "content",
+          "quote": "V(x) = \\frac{1}{2} k x^2"
+        },
+        {
+          "field": "content",
+          "quote": "P(p) = C' e^{-p^2 / (4\\sigma^2)}"
+        }
+      ],
+      "finish_reason": "stop",
+      "request_sha256": "fd68dd105f92477c03a9596a15141c15a11ab31323343cc2a3e4e538fcbdcccd",
+      "stream_sha256": "3a700376094c88190ecb796720aa23b1c2abdd4282e3c4d427cfe592a5cca634",
+      "complete_sha256": "f26c0703b36d97bbc414fcb0f183395d353b6f741dbaf0682180b5d861a7924d",
+      "reasoning_sha256": "bbeeb2c09ea72e761ac276887d24be7ae000a01847e068d6ca391a70c17acb1f",
+      "final_sha256": "9dbafdb7e9d1ff925a3aeb7261b33961e76d9ad1707e87df98cfd3129423f652",
+      "reasoning_chars": 9718,
+      "final_chars": 2767
+    },
+    {
+      "attempt_id": "v331_cal_quantum_1_1041_visible_guidance_481001",
+      "task_id": "quantum/1-1041",
+      "condition": "VISIBLE_GUIDANCE",
+      "generation_seed": 481001,
+      "process_criterion_scores": [
+        1,
+        0,
+        0
+      ],
+      "process_score": 1,
+      "answer_component_scores": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "evidence_spans": [
+        {
+          "field": "content",
+          "quote": "### (a) Find the mean position of the particle ($\\langle x \\rangle$)."
+        },
+        {
+          "field": "content",
+          "quote": "The probability density function in momentum space is defined by the Fourier transform of the position wave function."
+        },
+        {
+          "field": "content",
+          "quote": "P(p) dp = |\\tilde{\\psi}(p)|^2 dp"
+        },
+        {
+          "field": "content",
+          "quote": "P(p) dp = \\left(\\frac{\\gamma^2}{\\pi}\\right)^{1/2}"
+        }
+      ],
+      "finish_reason": "stop",
+      "request_sha256": "cfe6248b12ad8ac3c88c5b23f5647e5f51b1f1ee06718e8168547d7a9e99bd55",
+      "stream_sha256": "21e69d1c1215482549d4e83be2f48b0c8f7ce0a84bda7c6f9bbb1393bbe71a8c",
+      "complete_sha256": "bc12ee2d8b72a1903ace827bd1045894e79f39ead1b52fa91ff0015df4a356d6",
+      "reasoning_sha256": "f4f302e121e944c6dd4e03232b8ff506fd83c3283d4617478336314ddf73bc1c",
+      "final_sha256": "ffb8430aac3e76ec8b0a5b29745c90f6d9af5921c4a1ad9e20d7b93759e8d2a3",
+      "reasoning_chars": 6857,
+      "final_chars": 3100
+    },
+    {
+      "attempt_id": "v331_cal_quantum_1_1041_visible_guidance_481019",
+      "task_id": "quantum/1-1041",
+      "condition": "VISIBLE_GUIDANCE",
+      "generation_seed": 481019,
+      "process_criterion_scores": [
+        1,
+        0,
+        0
+      ],
+      "process_score": 1,
+      "answer_component_scores": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "evidence_spans": [
+        {
+          "field": "content",
+          "quote": "The mean position is calculated by integrating $x |\\psi(x)|^2$ over all space."
+        },
+        {
+          "field": "content",
+          "quote": "The potential $V(x)$ must be a quadratic function of $x$."
+        },
+        {
+          "field": "content",
+          "quote": "The momentum distribution $P(p)$ is the Fourier transform of the position distribution."
+        },
+        {
+          "field": "content",
+          "quote": "P(p) = \\frac{1}{\\sqrt{2\\pi \\sigma^2}}"
+        }
+      ],
+      "finish_reason": "stop",
+      "request_sha256": "77e0f0758d14356de6c68b8023e66ccdf0dc905ed996661af413874fa8002508",
+      "stream_sha256": "84b6a75a48dca0858491af504c3aabfff25ba24292ce39df3b50606323e395f0",
+      "complete_sha256": "26e63a51b3a98e2f8bbbc3eeae7c30a6b375350dcdcf16ca9fe1163a6f2846bc",
+      "reasoning_sha256": "213654f49a70b2639b991f11279e3d736bb0c956cd7a7ffe50e534424bdeb5ce",
+      "final_sha256": "f32f744c5aaac3572addd49cbfae0460071b0f26a0e4d6ede7022f67480fb433",
+      "reasoning_chars": 3632,
+      "final_chars": 3631
+    },
+    {
+      "attempt_id": "v331_cal_quantum_3_3025_baseline_481001",
+      "task_id": "quantum/3-3025",
+      "condition": "BASELINE",
+      "generation_seed": 481001,
+      "process_criterion_scores": [
+        1,
+        0,
+        0
+      ],
+      "process_score": 1,
+      "answer_component_scores": [
+        0,
+        0
+      ],
+      "evidence_spans": [
+        {
+          "field": "content",
+          "quote": "the Heisenberg equation:"
+        },
+        {
+          "field": "reasoning_content",
+          "quote": "[s_x, s_y] = i\\hbar"
+        },
+        {
+          "field": "content",
+          "quote": "s_z(t) = \\begin{pmatrix}"
+        }
+      ],
+      "finish_reason": "stop",
+      "request_sha256": "9113d71414ce9386ce412539b891e1f6b23e36fa7a47355570076ebdda1e509d",
+      "stream_sha256": "eebdc90c917faba76ee3f2ea744e0d900d1081dd0742239e1730d2af811f874c",
+      "complete_sha256": "18e7cfb678b031c7b061d37202884f9bdec44a741910753201bd1661ecb226d5",
+      "reasoning_sha256": "35c4aa374a549e21abefa9b2cc640a183a6c6a3212c7ae50d8494c7123eb7f9a",
+      "final_sha256": "78b4b197bc3b1d827b1caaa8d41afe38e3d05598c070bf400f724584d8fb8777",
+      "reasoning_chars": 2799,
+      "final_chars": 2457
+    },
+    {
+      "attempt_id": "v331_cal_quantum_3_3025_baseline_481019",
+      "task_id": "quantum/3-3025",
+      "condition": "BASELINE",
+      "generation_seed": 481019,
+      "process_criterion_scores": [
+        1,
+        0,
+        0
+      ],
+      "process_score": 1,
+      "answer_component_scores": [
+        0,
+        0
+      ],
+      "evidence_spans": [
+        {
+          "field": "content",
+          "quote": "The time evolution of the operator $\\mathbf{s}$ is governed by the Heisenberg equation of motion:"
+        },
+        {
+          "field": "reasoning_content",
+          "quote": "[s_x, s_y] = i \\hbar \\epsilon_{xy}"
+        },
+        {
+          "field": "content",
+          "quote": "The operator $s_z$ is defined in the basis of the spin-1/2 particle."
+        }
+      ],
+      "finish_reason": "stop",
+      "request_sha256": "0741b434c29998e0fb5bbe1745facd165d167bc50b2e9e494915c2106d4bc2fa",
+      "stream_sha256": "ed7a012f7fbc9c02b7ce6cb548be0066b367e0f812164b11c6996efd26ecc2a4",
+      "complete_sha256": "8ff4dafddb85f7d7046190eee3efa10ff8b96ee000e5a6a4e0b0b434b87f5514",
+      "reasoning_sha256": "4d3a9a16c081ee114ab06e24bf89c6ba33009c5fc6211f98582af5aefc99ae28",
+      "final_sha256": "32eb7537dd3da4c391b50ecfa0cfacd2232955dbb62b35a89ffeb328e30a0b60",
+      "reasoning_chars": 6520,
+      "final_chars": 2049
+    },
+    {
+      "attempt_id": "v331_cal_quantum_3_3025_visible_guidance_481001",
+      "task_id": "quantum/3-3025",
+      "condition": "VISIBLE_GUIDANCE",
+      "generation_seed": 481001,
+      "process_criterion_scores": [
+        1,
+        0,
+        0
+      ],
+      "process_score": 1,
+      "answer_component_scores": [
+        0,
+        0
+      ],
+      "evidence_spans": [
+        {
+          "field": "content",
+          "quote": "The time evolution of an operator $s_z$ is governed by the Heisenberg equation of motion:"
+        },
+        {
+          "field": "reasoning_content",
+          "quote": "[s_y, s_x] = i\\hbar \\sigma_z"
+        },
+        {
+          "field": "content",
+          "quote": "s_z = \\begin{pmatrix} 1 & 0 \\\\ 0 & -1 \\end{pmatrix}"
+        }
+      ],
+      "finish_reason": "stop",
+      "request_sha256": "c3d7a2aecfaaa38dc6c97f8c868bbf56ae19ef42ff249a765b66865b81704b59",
+      "stream_sha256": "064d84f4638fc2466d1508d3983119f2ca0887b32d78b8e12d9745a6346926c2",
+      "complete_sha256": "0de058279c146de712ed1b8f73db9cfe0f04285cbcf4acbb2e1068c11f7820c0",
+      "reasoning_sha256": "a09ae29425fb2b098724aac7071c1507385b37532dc7e25741bc73a6cf06b87f",
+      "final_sha256": "7d70e34b92e4bf5363beccd698244fc9784ccad944850bf30c3ab6b64dccb02c",
+      "reasoning_chars": 6439,
+      "final_chars": 1139
+    },
+    {
+      "attempt_id": "v331_cal_quantum_3_3025_visible_guidance_481019",
+      "task_id": "quantum/3-3025",
+      "condition": "VISIBLE_GUIDANCE",
+      "generation_seed": 481019,
+      "process_criterion_scores": [
+        1,
+        0,
+        0
+      ],
+      "process_score": 1,
+      "answer_component_scores": [
+        0,
+        0
+      ],
+      "evidence_spans": [
+        {
+          "field": "content",
+          "quote": "The time evolution of the state $|\\psi(t)\\rangle$ is governed by the Schrödinger equation:"
+        },
+        {
+          "field": "reasoning_content",
+          "quote": "d\\langle s_z \\rangle / dt = \\frac{i}{\\hbar} (-k i\\hbar s_x) = -i k s_x"
+        },
+        {
+          "field": "content",
+          "quote": "s_z = \\begin{pmatrix} 1 & 0 \\\\ 0 & -1 \\end{pmatrix}"
+        }
+      ],
+      "finish_reason": "stop",
+      "request_sha256": "13d4a93e943de39783837461cb464787379434471e84ea73101193e42b4a39db",
+      "stream_sha256": "bf9f562b2c368ab15528da026312ee83dc8cd0135a5cff4df14d9b407fa757f9",
+      "complete_sha256": "516f08ac192d86a148f49f1651038df1561914b2dd331b3ffe946a0952ca4a6f",
+      "reasoning_sha256": "0a84308d8972810ccdf21b570256c728cba8cca9551ff8cd1ce5cc871fa37ed9",
+      "final_sha256": "b21b0c22f965c3bf9d8c71d22c9ab2909dd01f49904113fb23a929190acedf46",
+      "reasoning_chars": 5661,
+      "final_chars": 1647
+    },
+    {
+      "attempt_id": "v331_cal_quantum_3_3047_baseline_481001",
+      "task_id": "quantum/3-3047",
+      "condition": "BASELINE",
+      "generation_seed": 481001,
+      "process_criterion_scores": [
+        1,
+        0,
+        0
+      ],
+      "process_score": 1,
+      "answer_component_scores": [
+        0,
+        0,
+        0
+      ],
+      "evidence_spans": [
+        {
+          "field": "content",
+          "quote": "### (a) Spin Wave Function for $t > 0$"
+        },
+        {
+          "field": "content",
+          "quote": "The spin wave function $\\psi(t)$ is the state vector resulting from the time evolution operator"
+        },
+        {
+          "field": "content",
+          "quote": "The transition between Region I and Region II must be **abrupt** (instantaneous)."
+        }
+      ],
+      "finish_reason": "stop",
+      "request_sha256": "25ca18c13c5b7d37ac8b5a26847acd3029e39f4821ecc9f6ecf2f75961921887",
+      "stream_sha256": "a9482d4b1db8aa0a451e97e9d3abf50330a1b0d9015856fc41b515642bde8ba7",
+      "complete_sha256": "0f710cdb75cbfdc0373474464ff7c1283fc3605b503d6238f1676120617d7201",
+      "reasoning_sha256": "0e6da0cda3a095bb9005d831f2f27a0127eac68035009de22ba9ce6b27f5a276",
+      "final_sha256": "87cabe962c467b1b1c19a5f6577b55b82c4fb138693985f82e5805183085d0a8",
+      "reasoning_chars": 4595,
+      "final_chars": 3345
+    },
+    {
+      "attempt_id": "v331_cal_quantum_3_3047_baseline_481019",
+      "task_id": "quantum/3-3047",
+      "condition": "BASELINE",
+      "generation_seed": 481019,
+      "process_criterion_scores": [
+        1,
+        0,
+        0
+      ],
+      "process_score": 1,
+      "answer_component_scores": [
+        0,
+        0,
+        0
+      ],
+      "evidence_spans": [
+        {
+          "field": "content",
+          "quote": "### (a) Spin Wave Function for $t > 0"
+        },
+        {
+          "field": "content",
+          "quote": "$$|\\psi(t)\\rangle = e^{-i \\frac{t}{\\hbar} H_2} | \\uparrow_z \\rangle$$"
+        },
+        {
+          "field": "content",
+          "quote": "The transition between region $\\text{I}$ and $\\text{II}$ must be **instantaneous**"
+        }
+      ],
+      "finish_reason": "stop",
+      "request_sha256": "6a19a46a394104d1e68ac262b1e443977623aeb1e17a9cfd35aa7c9776db5197",
+      "stream_sha256": "1512f0e94c4185fec13f51bb6e2326297c2967c8bfc68bb139ff151ead0b3c8c",
+      "complete_sha256": "1d60875e810dbdaefffdc1b74f0790887c9028dd6e5bd722d5543bfd15a02f5d",
+      "reasoning_sha256": "500bf753eddb76e6b013f7fbc801c3f789772974ef09e4bb0e0d78ec1a92d9c0",
+      "final_sha256": "59046dd68ab2425fb44290eb02ec167a716de5a829c3a6a79bc915f94078e1a0",
+      "reasoning_chars": 5121,
+      "final_chars": 3239
+    },
+    {
+      "attempt_id": "v331_cal_quantum_3_3047_visible_guidance_481001",
+      "task_id": "quantum/3-3047",
+      "condition": "VISIBLE_GUIDANCE",
+      "generation_seed": 481001,
+      "process_criterion_scores": [
+        1,
+        0,
+        0
+      ],
+      "process_score": 1,
+      "answer_component_scores": [
+        0,
+        0,
+        0
+      ],
+      "evidence_spans": [
+        {
+          "field": "content",
+          "quote": "### (a) Spin Wave Function for $t > 0$"
+        },
+        {
+          "field": "content",
+          "quote": "$$\\psi(t) = \\exp\\left( -i \\frac{H t}{\\hbar} \\right) \\psi(0)$$"
+        },
+        {
+          "field": "content",
+          "quote": "The transition must be instantaneous"
+        }
+      ],
+      "finish_reason": "stop",
+      "request_sha256": "5d3535dc93c35636a1be7d54453e17dccd4278cc8a683e7b002df230b9af0bb9",
+      "stream_sha256": "9024061c96611b788c455cd6c4504d1f801bce551460cc5e2dcd27e331033c30",
+      "complete_sha256": "b95e36eea893eeb7a16a718e57df1da444f28484b38cfd13356b2b75e209c371",
+      "reasoning_sha256": "f647fb9dc688844e94e916d09198dd97806aa7e00abc5a0a1947fc10112b34a5",
+      "final_sha256": "85a3956b3b32076dee0015a089ee7bba014875c21a56fc70e8dce3e52bf372c9",
+      "reasoning_chars": 4926,
+      "final_chars": 3274
+    },
+    {
+      "attempt_id": "v331_cal_quantum_3_3047_visible_guidance_481019",
+      "task_id": "quantum/3-3047",
+      "condition": "VISIBLE_GUIDANCE",
+      "generation_seed": 481019,
+      "process_criterion_scores": [
+        1,
+        1,
+        0
+      ],
+      "process_score": 2,
+      "answer_component_scores": [
+        1,
+        0,
+        0
+      ],
+      "evidence_spans": [
+        {
+          "field": "content",
+          "quote": "### (a) Spin Wave Function for $t > 0$"
+        },
+        {
+          "field": "content",
+          "quote": "\\psi(t) = \\cos\\left(\\frac{\\mu B_2 t}{\\hbar}\\right) |\\uparrow_z \\rangle + i \\sin\\left(\\frac{\\mu B_2 t}{\\hbar}\\right) | \\downarrow_z \\rangle"
+        },
+        {
+          "field": "content",
+          "quote": "The transition must be \"abrupt.\" This implies that the change in the magnetic field configuration must be instantaneous."
+        },
+        {
+          "field": "content",
+          "quote": "The transition must be \"abrupt.\" This implies that the change in the magnetic field configuration must be instantaneous."
+        }
+      ],
+      "finish_reason": "stop",
+      "request_sha256": "b538002c45e54b19a33600e8844020a784157153f6f0c5a27120af579dc8bfad",
+      "stream_sha256": "6b089be8092ca7c83b5dea09b59adb6eb111e7c09146eae5d6c81a88931e26f3",
+      "complete_sha256": "c8baf0dddcd7efc82d13ffec7eed4a7cc4ff076a439bac94c92f50f8aba4fec8",
+      "reasoning_sha256": "deea511f147c9abc9bd4363eb3d6068ef795e8aeb1f681a26dcaa51e71054816",
+      "final_sha256": "fe3365f2e468047c3307161a57910db2194b57ffe3e67d64233c342b2d94f0f5",
+      "reasoning_chars": 6098,
+      "final_chars": 3151
+    }
+  ],
+  "interpretation": {
+    "disposition": "VISIBLE_GUIDANCE_GATE_FAIL_STOP",
+    "paper_guidance_use_established": false,
+    "latent_side_memory_result": "NOT_TESTED; the prerequisite visible-guidance gate failed.",
+    "observed_partial_signal": "Only quantum/3-3047 improved its mean process score (+0.5/3), with a spinor appearing on one seed; other task means were unchanged.",
+    "limits": "Three calibration items and two seeds per condition do not establish a population effect. Scores are frozen-rubric annotations; full reasoning and final outputs are retained in the linked external journal."
+  }
+}
