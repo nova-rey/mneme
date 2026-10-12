@@ -310,6 +310,14 @@ class Runner:
                 "stream": self.journal.stream_summary(attempt_id),
             },
         )
+        if finish != "stop":
+            # A finished HTTP/SSE exchange is not necessarily a usable model
+            # completion. Preserve it durably, then fail closed before the next
+            # coordinate can be dispatched.
+            raise RuntimeError(
+                f"abnormal finish {finish!r} at {attempt_id}; "
+                "preserved without retry and stopped before the next coordinate"
+            )
 
 
 def matrix_phase(candidate: dict[str, Any], condition: str) -> list[dict[str, Any]]:

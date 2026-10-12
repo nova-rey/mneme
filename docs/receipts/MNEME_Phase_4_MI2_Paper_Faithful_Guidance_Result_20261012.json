@@ -1,0 +1,456 @@
+{
+  "schema_version": 1,
+  "artifact_type": "MI2_V34_VISIBLE_GATE_RESOLUTION",
+  "created_local": "2026-10-12",
+  "candidate_version": "v3.4",
+  "disposition": "NO_VISIBLE_GATE_PASS_NO_LATENT_EXPERIMENT",
+  "scope_note": "This is a paper-card visible prerequisite result on the exact local Gemma host. No side-memory bank, latent, irrelevant-memory, removal/reuse, or held-out MI2 calls were run. It does not relabel MI1.",
+  "plan_hashes": {
+    "candidate_sha256": "f1e26d775d7fdb2e35b2ce47ca572ab66ae137a3ec52e7b069f57ed8bfe4b23a",
+    "freeze_sha256": "8b8963b99d2575276fc9ff7f070f1f8840f64fe0dbd6115382563f2006cac967",
+    "approval_sha256": "87e95c00b04d8d5f84d28e759cb5e63b482478ed0f4520fc3d1da146f5d2339c",
+    "frozen_runner_sha256": "4bb4afa252866667da534c6feaa47152693f55bddc82a3cb929579534b6c8be9"
+  },
+  "host": {
+    "model": "google/gemma-4-E4B-it",
+    "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+    "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+    "gpu": "RTX 3060 Laptop 6 GiB",
+    "reasoning": "ON",
+    "cache_prompt": false,
+    "seeds": [
+      482011,
+      482029,
+      482047
+    ],
+    "sampling": {
+      "temperature": 0.35,
+      "top_k": 40,
+      "top_p": 0.9,
+      "min_p": 0.05,
+      "max_tokens": 8192,
+      "context_size": 8192,
+      "gpu_layers": 99,
+      "batch_size": 2048,
+      "ubatch_size": 512,
+      "threads": 4,
+      "threads_batch": 4,
+      "parallel": 1
+    }
+  },
+  "completion": {
+    "preflight": 2,
+    "baseline_matrix": 99,
+    "visible_matrix": 99,
+    "total_generation_calls": 200,
+    "journal_attempts": 200,
+    "journal_status_counts": {
+      "COMPLETE": 200
+    },
+    "baseline_finish_counts": {
+      "stop": 99
+    },
+    "visible_finish_counts": {
+      "stop": 98,
+      "length": 1
+    },
+    "latent_bank_or_memory_calls": 0
+  },
+  "execution_violation": {
+    "status": "STOP_CONDITION_VIOLATED",
+    "reason": "The frozen approval required stop on any abnormal coordinate. Runner durably recorded finish_reason=length but did not stop before dispatching subsequent visible coordinates.",
+    "affected_coordinate": "v34_quantum_1_1025_visible_guidance_482047",
+    "finish_reason": "length",
+    "reasoning_chars": 26582,
+    "final_chars": 0,
+    "request_sha256": "78af500421b18c203b4d589e94e6b48babb35bf9940f40e74900233d0df69713",
+    "stream_sha256": "c72d8904425de96ea391f8de1753eea8a4d0b41cd93933a9158e40679948525d",
+    "complete_sha256": "22ad312294ec9b168738487949a26a17b88a87d93b83e4d10296a1b23199baf9",
+    "description": "The visible reasoning loops over the claim that the ground-state eigenfunction is the TISE solution; the response has no final answer. The evidence is retained unchanged.",
+    "subsequent_visible_coordinates_dispatched_after_abnormal": 93
+  },
+  "scoring": {
+    "official_frozen_runner_score": "NOT_EMITTED: strict scorer refused the abnormal finish_reason=length coordinate.",
+    "available_output_analysis": "Conservative descriptive analysis; abnormal coordinate scored zero rather than retried or excluded.",
+    "method": "Same mechanical annotation rules used for baseline gate: (1) category cue in first 1600 reasoning characters; (2) named physics method plus math/action cue in reasoning; (3) at least two labeled final-answer headings. Answer components receive 1 only for exact normalized match; no 0.5 semantic-equivalence review was performed. Each matched coordinate has quote evidence in paired annotations. This is a mechanical proxy, not an independent full semantic rubric adjudication.",
+    "direct_task_count": 31,
+    "baseline_process_mean_0_to_3": 2.129032258064516,
+    "visible_process_mean_0_to_3": 2.0860215053763436,
+    "mean_process_delta_0_to_3": -0.043010752688172046,
+    "positive_direct_task_deltas": 5,
+    "negative_direct_task_deltas": 7,
+    "tied_direct_task_deltas": 19,
+    "one_sided_exact_sign_test_p": 0.80615234375,
+    "baseline_minus_visible_exact_answer_harm_0_to_1": 0.012903225806451615,
+    "thresholds": {
+      "process_delta_minimum": 0.25,
+      "positive_gt_negative": true,
+      "sign_p_maximum": 0.05,
+      "answer_harm_maximum": 0.05
+    },
+    "thresholds_met": false,
+    "failure_even_under_conservative_zero_scoring": true
+  },
+  "per_task": [
+    {
+      "task_id": "quantum/1-1024",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 2.3333333333333335,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 2.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": -0.3333333333333335,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/1-1025",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 1.3333333333333333,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 1.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": -0.33333333333333326,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/2-2013",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 2.3333333333333335,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 2.6666666666666665,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.33333333333333304,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/2-2014",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 3.0,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 3.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.0,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/2-2015",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 2.6666666666666665,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 3.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.3333333333333335,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/3-3023",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 2.3333333333333335,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 2.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": -0.3333333333333335,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/3-3048",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 2.6666666666666665,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 3.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.3333333333333335,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/4004",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 2.0,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 2.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.0,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/4010",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 2.3333333333333335,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 2.3333333333333335,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.0,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/5003",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 1.6666666666666667,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 1.6666666666666667,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.0,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/5032",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 3.0,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 3.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.0,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/5035",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 1.6666666666666667,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 1.3333333333333333,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": -0.3333333333333335,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/5060",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 1.6666666666666667,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 2.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.33333333333333326,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/5067",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 2.0,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 2.3333333333333335,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.3333333333333335,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/5068",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 1.0,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 1.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.0,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/5069",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 3.0,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 3.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.0,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/6012",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 2.0,
+      "baseline_answer_mean_exact_components_0_to_1": 0.5,
+      "visible_process_mean_0_to_3": 2.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.5,
+      "process_delta_visible_minus_baseline": 0.0,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/6013",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 2.0,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 2.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.0,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/6014",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 2.0,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 2.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.0,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/7008",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 1.0,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 1.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.0,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/7012",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 3.0,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 3.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.0,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/7013",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 1.6666666666666667,
+      "baseline_answer_mean_exact_components_0_to_1": 0.20000000000000004,
+      "visible_process_mean_0_to_3": 1.3333333333333333,
+      "visible_answer_mean_exact_components_0_to_1": 0.13333333333333333,
+      "process_delta_visible_minus_baseline": -0.3333333333333335,
+      "answer_harm_baseline_minus_visible": 0.06666666666666671
+    },
+    {
+      "task_id": "quantum/7014",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 2.6666666666666665,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 1.6666666666666667,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": -0.9999999999999998,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/7015",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 2.0,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 2.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.0,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/7022",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 1.0,
+      "baseline_answer_mean_exact_components_0_to_1": 1.0,
+      "visible_process_mean_0_to_3": 1.0,
+      "visible_answer_mean_exact_components_0_to_1": 1.0,
+      "process_delta_visible_minus_baseline": 0.0,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/7023",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 2.0,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 2.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.0,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/7024",
+      "trigger_applicability": "broad_quantum",
+      "baseline_process_mean_0_to_3": 1.3333333333333333,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 1.6666666666666667,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.3333333333333335,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/7025",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 1.6666666666666667,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 1.6666666666666667,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.0,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/8001",
+      "trigger_applicability": "broad_quantum",
+      "baseline_process_mean_0_to_3": 1.0,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 1.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.0,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/8006",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 2.0,
+      "baseline_answer_mean_exact_components_0_to_1": 0.5833333333333334,
+      "visible_process_mean_0_to_3": 2.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.25,
+      "process_delta_visible_minus_baseline": 0.0,
+      "answer_harm_baseline_minus_visible": 0.33333333333333337
+    },
+    {
+      "task_id": "quantum/8007",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 3.0,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 3.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.0,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/8008",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 3.0,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 3.0,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": 0.0,
+      "answer_harm_baseline_minus_visible": 0.0
+    },
+    {
+      "task_id": "quantum/8009",
+      "trigger_applicability": "direct_quantum_process",
+      "baseline_process_mean_0_to_3": 2.0,
+      "baseline_answer_mean_exact_components_0_to_1": 0.0,
+      "visible_process_mean_0_to_3": 1.6666666666666667,
+      "visible_answer_mean_exact_components_0_to_1": 0.0,
+      "process_delta_visible_minus_baseline": -0.33333333333333326,
+      "answer_harm_baseline_minus_visible": 0.0
+    }
+  ],
+  "external_evidence": {
+    "root": "/home/nyx/mneme-artifacts/phase4-mi2/calibration-run-v3.4",
+    "journal_index": "/home/nyx/mneme-artifacts/phase4-mi2/calibration-run-v3.4/journal/index.json",
+    "journal_index_sha256": "c68ee4b6bb4a91db9a8a7d84cfd54ab8d3c7e8a1c5ef2275294bb7ef67565625",
+    "journal_bytes": 235603921,
+    "baseline_annotations_sha256": "b5b92ada5f712e8548340ec22cddfe3b2f0de720671ead2184dc4a1677822e96",
+    "paired_annotations_sha256": "67aa1fef26699daf6aad05af5a6f3f670b2d55f5417ee4c42da3e7f1c257bcfc",
+    "score_receipt_path": "/home/nyx/mneme-artifacts/phase4-mi2/calibration-run-v3.4/MI2_v34_resolution.json"
+  },
+  "historical_comparison": {
+    "MI1_C2_visible": "2/6 on harder multi-edge path tasks; frozen report says one shortened-path output and three substantive reachability/invented-edge errors.",
+    "MI1_C3_visible": "8/8 on short single-target directed chains printed in ordinary prompt. This was not latent memory or procedural guidance.",
+    "interpretation": "These controls were not comparable in task difficulty. Their discrepancy does not imply the side-memory mechanism worked. MI1 Test A/B/C and removal/reuse remain negative as published."
+  },
+  "limitations": [
+    "No latent meaningful-guidance condition was run because the visible prerequisite did not pass.",
+    "This gate does not prove that all possible meaningful guidance or all Gemma-aware side-memory implementations fail.",
+    "The mechanical process proxy and exact-only answer match are conservative and limited; the frozen runner defect means v3.4 is not an official completed gate score."
+  ],
+  "runner_correction": {
+    "purpose": "Future frozen visible gates now preserve any abnormal result and stop before dispatching another coordinate.",
+    "corrected_runner_sha256": "0e4657d40fe966b3793ad2aa9c87c1d24992df11a1174d3dea0434fc5d192d01",
+    "focused_tests": "6 passed; regression test forces finish_reason=length, verifies durable record and proves the second coordinate is not dispatched."
+  },
+  "runtime_shutdown": {
+    "server_pid": 93083,
+    "shutdown": "SIGTERM sent; remote pgrep and ss showed no server/port 18473 listener.",
+    "local_tunnel": "terminated",
+    "local_health_after_shutdown": "connection refused on 127.0.0.1:18473"
+  }
+}

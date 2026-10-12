@@ -88,6 +88,53 @@ def test_first_baseline_matrix_response_must_replay_preflight(tmp_path: Path) ->
     assert mi2.baseline_replay_status(candidate, tmp_path)["status"] == "PASS"
 
 
+def test_abnormal_finished_response_is_preserved_and_stops_dispatch(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    candidate, freeze_sha, approval_sha = mi2.load_plan(*frozen_paths())
+    coordinates = [
+        row for row in mi2.build_matrix(candidate) if row["condition"] == "BASELINE"
+    ][:2]
+    journal = mi2.EvidenceJournal(tmp_path, hard_call_limit=mi2.MAX_CALLS)
+    calls = 0
+
+    def fake_http_json(url: str, payload: dict[str, object]) -> dict[str, str]:
+        assert url.endswith("/apply-template")
+        return {"prompt": "frozen baseline prompt"}
+
+    def fake_http_sse(
+        url: str, payload: dict[str, object], on_event: object
+    ) -> dict[str, object]:
+        nonlocal calls
+        calls += 1
+        return {
+            "choices": [
+                {
+                    "message": {
+                        "reasoning_content": "reasoning was cut off",
+                        "content": "",
+                    },
+                    "finish_reason": "length",
+                }
+            ]
+        }
+
+    monkeypatch.setattr(mi2, "http_json", fake_http_json)
+    monkeypatch.setattr(mi2, "http_sse", fake_http_sse)
+    runner = mi2.Runner(
+        "http://unit.test", journal, candidate, freeze_sha, approval_sha
+    )
+
+    with pytest.raises(RuntimeError, match="abnormal finish 'length'"):
+        mi2.run_phase(runner, tmp_path, coordinates, "baseline")
+
+    attempts = mi2.attempts_at(tmp_path)
+    assert calls == 1
+    assert attempts[coordinates[0]["coordinate_id"]]["status"] == "COMPLETE"
+    assert coordinates[0]["coordinate_id"] in attempts
+    assert coordinates[1]["coordinate_id"] not in attempts
+
+
 def test_frozen_input_tampering_fails_closed(tmp_path: Path) -> None:
     candidate_path, freeze_path, approval_path = frozen_paths()
     altered = tmp_path / "candidate.json"
