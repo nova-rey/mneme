@@ -1,0 +1,1242 @@
+{
+  "schema_version": "mi2-calibration-score-receipt-v1",
+  "package_id": "MI2-PAPER-GUIDANCE-20261011",
+  "status": "CALIBRATION_SCORED_STOPPED_BEFORE_HELDOUT",
+  "freeze": {
+    "path": "/home/nyx/mneme-artifacts/phase4-mi2/plan/v2/MI2_Calibration_v2_Final_Freeze_20261011.json",
+    "sha256": "98f146dc8164ff308ab12ada6b7cd9dd857a61d90224c66f98539b831c5c208d"
+  },
+  "source_artifacts": {
+    "journal_index": "/home/nyx/mneme-artifacts/phase4-mi2/calibration-run-v2/evidence/index.json",
+    "journal_index_sha256": "8296f6de27d70138204ee33a1225dca384be57d753f6f24a75c743a831dda04a",
+    "score_freeze_sha256": "98f146dc8164ff308ab12ada6b7cd9dd857a61d90224c66f98539b831c5c208d"
+  },
+  "recovery": {
+    "fresh_process_verify": "PASS",
+    "completed_records_reopened": 42,
+    "expected_records": 42,
+    "preflight_calls": 2,
+    "matrix_calls": 40,
+    "finish_reasons": {
+      "stop": 42
+    },
+    "matrix_failures": 0,
+    "truncated_matrix_outputs": 0,
+    "same_condition_determinism_preflight": "PASS",
+    "preflight_output_tuple_sha256": "01fec07df191a60f2f9efe56ae8d82d0efa26e574268e333a756ae46a2b6d78e"
+  },
+  "scoring_method": {
+    "process": "Frozen three binary criteria, 0/1 each, assessed from reasoning and final response; short evidence excerpt retained for every call. Process score excludes exact correctness unless frozen criterion requires method/object choice.",
+    "answer": "Frozen per-item answer components scored 0/0.5/1 and normalized by three components; assessed separately from process.",
+    "scorer": "single human rubric application; no model calls; each score is tied to frozen rubric.",
+    "no_output_rewrite_or_retry": true
+  },
+  "condition_aggregates": {
+    "BASELINE": {
+      "n": 8,
+      "process_mean_0_3": 2.75,
+      "answer_mean_0_1": 0.0,
+      "by_item": {
+        "quantum/3-3013": {
+          "n": 2,
+          "process_mean_0_3": 2.0,
+          "answer_mean_0_1": 0.0
+        },
+        "quantum/3-3024": {
+          "n": 2,
+          "process_mean_0_3": 3.0,
+          "answer_mean_0_1": 0.0
+        },
+        "quantum/1-1022": {
+          "n": 2,
+          "process_mean_0_3": 3.0,
+          "answer_mean_0_1": 0.0
+        },
+        "quantum/5005": {
+          "n": 2,
+          "process_mean_0_3": 3.0,
+          "answer_mean_0_1": 0.0
+        }
+      }
+    },
+    "VISIBLE_GUIDANCE": {
+      "n": 8,
+      "process_mean_0_3": 2.5,
+      "answer_mean_0_1": 0.0,
+      "by_item": {
+        "quantum/3-3013": {
+          "n": 2,
+          "process_mean_0_3": 2.0,
+          "answer_mean_0_1": 0.0
+        },
+        "quantum/3-3024": {
+          "n": 2,
+          "process_mean_0_3": 3.0,
+          "answer_mean_0_1": 0.0
+        },
+        "quantum/1-1022": {
+          "n": 2,
+          "process_mean_0_3": 3.0,
+          "answer_mean_0_1": 0.0
+        },
+        "quantum/5005": {
+          "n": 2,
+          "process_mean_0_3": 2.0,
+          "answer_mean_0_1": 0.0
+        }
+      }
+    },
+    "LATENT_TARGET_BANK_BIAS_0.0": {
+      "n": 8,
+      "process_mean_0_3": 2.75,
+      "answer_mean_0_1": 0.0,
+      "by_item": {
+        "quantum/3-3013": {
+          "n": 2,
+          "process_mean_0_3": 2.0,
+          "answer_mean_0_1": 0.0
+        },
+        "quantum/3-3024": {
+          "n": 2,
+          "process_mean_0_3": 3.0,
+          "answer_mean_0_1": 0.0
+        },
+        "quantum/1-1022": {
+          "n": 2,
+          "process_mean_0_3": 3.0,
+          "answer_mean_0_1": 0.0
+        },
+        "quantum/5005": {
+          "n": 2,
+          "process_mean_0_3": 3.0,
+          "answer_mean_0_1": 0.0
+        }
+      }
+    },
+    "LATENT_TARGET_BANK_BIAS_0.5": {
+      "n": 8,
+      "process_mean_0_3": 2.75,
+      "answer_mean_0_1": 0.08333333333333333,
+      "by_item": {
+        "quantum/3-3013": {
+          "n": 2,
+          "process_mean_0_3": 2.0,
+          "answer_mean_0_1": 0.0
+        },
+        "quantum/3-3024": {
+          "n": 2,
+          "process_mean_0_3": 3.0,
+          "answer_mean_0_1": 0.0
+        },
+        "quantum/1-1022": {
+          "n": 2,
+          "process_mean_0_3": 3.0,
+          "answer_mean_0_1": 0.0
+        },
+        "quantum/5005": {
+          "n": 2,
+          "process_mean_0_3": 3.0,
+          "answer_mean_0_1": 0.3333333333333333
+        }
+      }
+    },
+    "LATENT_TARGET_BANK_BIAS_1.0": {
+      "n": 8,
+      "process_mean_0_3": 2.625,
+      "answer_mean_0_1": 0.125,
+      "by_item": {
+        "quantum/3-3013": {
+          "n": 2,
+          "process_mean_0_3": 2.0,
+          "answer_mean_0_1": 0.0
+        },
+        "quantum/3-3024": {
+          "n": 2,
+          "process_mean_0_3": 3.0,
+          "answer_mean_0_1": 0.0
+        },
+        "quantum/1-1022": {
+          "n": 2,
+          "process_mean_0_3": 2.5,
+          "answer_mean_0_1": 0.0
+        },
+        "quantum/5005": {
+          "n": 2,
+          "process_mean_0_3": 3.0,
+          "answer_mean_0_1": 0.5
+        }
+      }
+    }
+  },
+  "visible_gate": {
+    "process_delta_visible_minus_baseline": -0.25,
+    "per_item_process_deltas": {
+      "quantum/3-3013": 0.0,
+      "quantum/3-3024": 0.0,
+      "quantum/1-1022": 0.0,
+      "quantum/5005": -1.0
+    },
+    "items_with_positive_delta": 0,
+    "answer_delta_visible_minus_baseline": 0.0,
+    "criteria": {
+      "mean_process_delta_at_least": 0.5,
+      "positive_item_deltas_at_least": 3,
+      "answer_mean_harm_no_more_than": 0.1
+    },
+    "result": "FAIL",
+    "reason": "The frozen visible-guidance process score does not exceed baseline by the required +0.50 and does not improve at least 3/4 items."
+  },
+  "latent_bias_selection": {
+    "status": "NOT_ASSESSED_VISIBLE_GATE_FAILED",
+    "rule": "Frozen procedure forbids latent-bias selection and heldout dispatch when visible gate fails."
+  },
+  "heldout_calls": 0,
+  "secondary_neighborhood_calls": 0,
+  "per_call_scores": [
+    {
+      "attempt_id": "cal_quantum_1-1022_baseline_481001",
+      "item_id": "quantum/1-1022",
+      "condition": "BASELINE",
+      "generation_seed": 481001,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "particle of mass $m$. * Potential: $V(x) = -a\\delta(x)$. * Goal: Find $x_0$ such that $P(|x| < x_0) = 1/2$. 3. **Determine the Wave Function ($\\psi(x)$):** * The potential is $V(x) = -a\\delta(x)$. * The particle is \"bound,\" meaning it must be confined. This implies",
+      "request_sha256": "516d296aa6dea1df116e5a73176d2eabdf85f90db0945f73875cf75d9e8708ae",
+      "outcome_sha256": "8e3f1d2fdebb23ae4ff0b73b30d87f72281fac8e5a64c40b6f9d6cde8067fd3d",
+      "reasoning_sha256": "5906d7a769785e77bc13d9abacf86bb21a8eb38c9649145afbd21012d306a3ba",
+      "final_sha256": "c7f5442dabcb1543daf5833f8bb659a6fa27b35e60904b0f1529618e801e1601",
+      "reasoning_chars": 9631,
+      "final_chars": 2389
+    },
+    {
+      "attempt_id": "cal_quantum_1-1022_baseline_481019",
+      "item_id": "quantum/1-1022",
+      "condition": "BASELINE",
+      "generation_seed": 481019,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "able, localized state. 6. **The Probability Condition:** * We need to find $x_0$ such that $P(|x| < x_0) = 1/2$. * $P(|x| < x_0) = \\int_{-x_0}^{x_0} |\\psi(x)|^2 dx = 1/2$. 7. **The Missing Information:** * The problem asks for $x_0$ based on a probability constraint, bu",
+      "request_sha256": "7e3b92e22117debdcd49a76daa976804fc7f7791fdb0c51f29525739369801e5",
+      "outcome_sha256": "1dff7b558a5559151c706374b493839ef1a9a3a6d4b9be0dd3316ff14ce54863",
+      "reasoning_sha256": "1faca2f7420c22671bd78f2f023d10ff82fb6ef6445508fae65472de70004421",
+      "final_sha256": "85e3857f18bfd7ea7cccfcb1835f62d577850c12f3813498a8864056768c0685",
+      "reasoning_chars": 8988,
+      "final_chars": 1286
+    },
+    {
+      "attempt_id": "cal_quantum_1-1022_latent_bias_0_0_481001",
+      "item_id": "quantum/1-1022",
+      "condition": "LATENT_TARGET_BANK_BIAS_0.0",
+      "generation_seed": 481001,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "to find the probability distribution. 8. **Focus on the probability condition:** * We need $P(|x| < x_0) = 1/2$. * $P = \\int_{-x_0}^{x_0} |\\psi(x)|^2 dx$. * If the particle is bound, the ground state $\\psi(x)$ is a localized function. * The ground state for a delta",
+      "request_sha256": "936c28f02b552e63243cb143a986b35cc65945afc886dbcb6e5b796b283297c3",
+      "outcome_sha256": "ed3cccbb4bd5b26b70d89a14235e20154b7c73ed31629f472bc81c9f0dc711e4",
+      "reasoning_sha256": "67e84969743bb3c8ad8b5aa47ef17ad728d147acf3ea0b290eeb9d1d456cbdf6",
+      "final_sha256": "6f3279e5373980b4365f750206562312e5403ee8fc12ca4a570bf5c61cd789b1",
+      "reasoning_chars": 8856,
+      "final_chars": 1275
+    },
+    {
+      "attempt_id": "cal_quantum_1-1022_latent_bias_0_0_481019",
+      "item_id": "quantum/1-1022",
+      "condition": "LATENT_TARGET_BANK_BIAS_0.0",
+      "generation_seed": 481019,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "distribution $P(x)$. 4. **Re-evaluating the Goal:** * The goal is to find $x_0$ such that $P(|x| < x_0) = 1/2$. * This means we need to find the probability distribution $\\rho(x) = |\\psi(x)|^2$ and find the point where the cumulative distribution function reaches 0.5. 5. **S",
+      "request_sha256": "4a82125c41bc0cdec46ae03557545d936c345844f83a61522183381e6bd3fef0",
+      "outcome_sha256": "bbb320de7b2ff691a2be85fc1b29c393f7b8551bb5b4c339e11ccbbc1399888f",
+      "reasoning_sha256": "79240c6f92f6cfe06552de4be27de02bfa02b74af8e59e9f9a1b9508262550e7",
+      "final_sha256": "d970551da34fcad2e60993f162151e775fcd85c47320e5b5e923d06ba079dfc1",
+      "reasoning_chars": 6969,
+      "final_chars": 692
+    },
+    {
+      "attempt_id": "cal_quantum_1-1022_latent_bias_0_5_481001",
+      "item_id": "quantum/1-1022",
+      "condition": "LATENT_TARGET_BANK_BIAS_0.5",
+      "generation_seed": 481001,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "V(x)]$. 8. **Re-evaluating the problem statement:** * The prompt asks for $x_0$ such that $P(|x| < x_0) = 1/2$. * This is a probability problem, not a physics problem. We need to find the \"half-point\" of the probability distribution. 9. **Calculate the probability distributi",
+      "request_sha256": "9fc05a7dc5574474052dd7ef90eafb2b0a9604c0661e84eb37d7d219616dd7fd",
+      "outcome_sha256": "7ab3a0ee20887439e6270af53d01282837a482c6c9e7833c0ae41789bbb4c87d",
+      "reasoning_sha256": "d80684c52cfe1cde37fa669dc8cc7603f46627e07dd52ae69912b02ed79c367a",
+      "final_sha256": "597c654e49ae1041f6642b62337285293d83e86c9b6f506e696e115b0bc6b4de",
+      "reasoning_chars": 7292,
+      "final_chars": 3199
+    },
+    {
+      "attempt_id": "cal_quantum_1-1022_latent_bias_0_5_481019",
+      "item_id": "quantum/1-1022",
+      "condition": "LATENT_TARGET_BANK_BIAS_0.5",
+      "generation_seed": 481019,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "differential equation. 9. **The Probability Condition:** * We need to find $x_0$ such that $P(|x| < x_0) = 1/2$. * $P(|x| < x_0) = \\int_{-x_0}^{x_0} |\\psi(x)|^2 dx = 1/2$. 10. **Simplification/Assumption:** * The problem is likely designed to be solved by finding the norm",
+      "request_sha256": "0010695ff38811ddaefa513a3429d328ecc55fe763b40357dea181b9bb9d727e",
+      "outcome_sha256": "f9f89147d2f7eac75daca1bfbca44881e49d782a8d06137023df7290c7f994fc",
+      "reasoning_sha256": "7b77b7360ff855a89d4b5d8b6d86038135ac832a2802afd64e101bc068af2f8b",
+      "final_sha256": "219dbe6d0e6badb4f492e34e9e9fdc76024eea4ce15dee71e8b53f1c981bc5ba",
+      "reasoning_chars": 6059,
+      "final_chars": 2363
+    },
+    {
+      "attempt_id": "cal_quantum_1-1022_latent_bias_1_0_481001",
+      "item_id": "quantum/1-1022",
+      "condition": "LATENT_TARGET_BANK_BIAS_1.0",
+      "generation_seed": 481001,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        0,
+        1
+      ],
+      "process_score_0_3": 2,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "or a stable, localized state, likely a ground state). * The problem asks for $x_0$ such that $P(|x| < x_0) = 1/2$. 3. **Determine the Hamiltonian:** * $H = -\\frac{\\hbar^2}{2m} \\frac{d^2}{dx^2} - a\\delta(x)$. * This is a 1D quantum mechanics problem. 4. **Solve the Schrödi",
+      "request_sha256": "fdfde9cc0e98c606f3cb087639eda1fc5700b9b89f141adb96dd95346d0173f8",
+      "outcome_sha256": "12edf4845f558fa9c8a927ad133d5e2cba1b88114133785204386f2bdba2ce02",
+      "reasoning_sha256": "db5ea5e71d6b7861968f41e7f5ffff45b74d772cf81b760a3ceb6d507f2f0081",
+      "final_sha256": "db65178343c32ef8a889e1cf96788106864c6b0f384257f5863925d1d945d9f4",
+      "reasoning_chars": 5571,
+      "final_chars": 1528
+    },
+    {
+      "attempt_id": "cal_quantum_1-1022_latent_bias_1_0_481019",
+      "item_id": "quantum/1-1022",
+      "condition": "LATENT_TARGET_BANK_BIAS_1.0",
+      "generation_seed": 481019,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "\\kappa^2 / (2m)$. * The probability of finding the particle in $|x| < x_0$ is $1/2$. * $P(|x| < x_0) = 1/2$. 9. **Calculating the Probability:** * The probability density is $|\\psi(x)|^2$. * $\\psi(x) = C e^{-\\kappa |x|}$. * The total probability is $\\int_{-\\in",
+      "request_sha256": "ffc6517b45ab8bd60205c96f7f3aeb58d3c957ae5bdf61f2981356e43fff384a",
+      "outcome_sha256": "5c30948afb6076376eadfef29e0f7ab275e28a811c1a800e5c748b8645228e34",
+      "reasoning_sha256": "484b5e5e4bd2a2995b7a4527ba2663af5557392f8f79bcecf4d0226f095db949",
+      "final_sha256": "08955512849e1a7674b30b0e64bbd788ea0acda338c6bf829ed7c1d3274820cb",
+      "reasoning_chars": 8307,
+      "final_chars": 1775
+    },
+    {
+      "attempt_id": "cal_quantum_1-1022_visible_guidance_481001",
+      "item_id": "quantum/1-1022",
+      "condition": "VISIBLE_GUIDANCE",
+      "generation_seed": 481001,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "6. **Simplify the Problem (The \"Trap Check\" step):** * The problem asks for $x_0$ such that $P(|x| < x_0) = 1/2$. * We need the probability density $|\\psi(x)|^2$. * Since the potential is $V(x) = -a\\delta(x)$, the wave function $\\psi(x)$ must satisfy: $[-\\frac{\\hba",
+      "request_sha256": "176ca0402a42a08199e8837d7daddaad85fffef566a86a09b11341d482ebd0a3",
+      "outcome_sha256": "c5bd9cd72d24e16da4f299de3ca42a7be61b05424240b44a8a02e7b20a975694",
+      "reasoning_sha256": "6acdcf51ed330eb5dbfa1d8ffacc40d45a2f63b8f07f073de9e20c6be42f8533",
+      "final_sha256": "3c92e4d015566d4be615b4b6e05e9b3e4ed6710adb3cb1afe7bc16e1325195be",
+      "reasoning_chars": 8209,
+      "final_chars": 1268
+    },
+    {
+      "attempt_id": "cal_quantum_1-1022_visible_guidance_481019",
+      "item_id": "quantum/1-1022",
+      "condition": "VISIBLE_GUIDANCE",
+      "generation_seed": 481019,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "ility of finding the particle with $|x| < x_0$ is exactly equal to $1/2$.\" * This implies the probability density $\\rho(x) = |\\psi(x)|^2$ is integrated over the region $|x| < x_0$. * We need to find $x_0$ such that $\\int_{-x_0}^{x_0} |\\psi(x)|^2 dx = 1/2$. 7. **Simplifying the Problem",
+      "request_sha256": "f1baabfd17bb2f5798cc3aba2f8d0638f13e665f3474ef77503aeab60c100038",
+      "outcome_sha256": "16d35a80f7d86352650dd73d13b83b0d2341d2447b6a4f1a8c1077fef55d0ae5",
+      "reasoning_sha256": "a68be8875788a90488ea7d15480afb6060d951749cf39758b98a473a83a7ea06",
+      "final_sha256": "8cd091940bd496de9f9b8e7d4dcf541e5c981a45da863dcbaf7946d4a2d1eec3",
+      "reasoning_chars": 8338,
+      "final_chars": 1903
+    },
+    {
+      "attempt_id": "cal_quantum_3-3013_baseline_481001",
+      "item_id": "quantum/3-3013",
+      "condition": "BASELINE",
+      "generation_seed": 481001,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        0,
+        1
+      ],
+      "process_score_0_3": 2,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "ecific wave function $\\psi(x, y, z)$. * The goal is to show that the system is in a state of \"definite angular momentum.\" * The goal is to calculate the values of $L^2$ (squared angular momentum operator) and $L_z$ (z-component of angular momentum). 2. **Analyze the Wave Function:** *",
+      "request_sha256": "23bfef89c77c5a2ccbec43d83d562069453fdb3532408ca154030fecea0b0d7c",
+      "outcome_sha256": "4f3bf556c87c3d260e5699ee2e890b1231b737d3cb5f2a7d5eefab3385522166",
+      "reasoning_sha256": "d588db24f16265ac5ed3bb0caf0217c7486dda07446af052cdd2a86f321fa12f",
+      "final_sha256": "00e445689560845ad4fc909796c759e22f61b433d22be9ab6e6e948d0a73a418",
+      "reasoning_chars": 7093,
+      "final_chars": 2928
+    },
+    {
+      "attempt_id": "cal_quantum_3-3013_baseline_481019",
+      "item_id": "quantum/3-3013",
+      "condition": "BASELINE",
+      "generation_seed": 481019,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        0,
+        1
+      ],
+      "process_score_0_3": 2,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "ce the prompt is likely flawed, I must interpret the intent: \"Show that the system is in a state of definite angular momentum and give the values of $L^2$ and $L_z$.\"* *If I treat the function as a standard wave function, I cannot proceed without a clear function.* *Let's assume the prompt mean",
+      "request_sha256": "1b65d46f7c36e61ce754a1110e64708027f0171eeb7821971c1cb8c5b0454941",
+      "outcome_sha256": "37e1897ceec587e775bded86f4713aa06e2ea748ebedc2781c238d55db30107f",
+      "reasoning_sha256": "27df79c91da8fc53e25964d40c0326eaee35d3bdfcd07b508c01d9998f475a8f",
+      "final_sha256": "670a62669ceaa95464b23fec6ec8b54fe7942da3473993f0d85240cf509ae3f6",
+      "reasoning_chars": 7737,
+      "final_chars": 1907
+    },
+    {
+      "attempt_id": "cal_quantum_3-3013_latent_bias_0_0_481001",
+      "item_id": "quantum/3-3013",
+      "condition": "LATENT_TARGET_BANK_BIAS_0.0",
+      "generation_seed": 481001,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        0,
+        1
+      ],
+      "process_score_0_3": 2,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "ecific wave function $\\psi(x, y, z)$. * The goal is to show that the system is in a state of \"definite angular momentum.\" * The goal is to calculate the values of $L^2$ and $L_z$ associated with this state. 2. **Analyze the Wave Function:** * $\\psi(x, y, z) = \\frac{\\alpha^{5/2}}{\\sqrt",
+      "request_sha256": "22fca0da5259668d5390114d8b94a13bb5b05f6d859ec1dd9cc713f36a0747b0",
+      "outcome_sha256": "a1b24daf8c664686ccae1240f773d96fa029de756ce867f386f6d48704fdc1c6",
+      "reasoning_sha256": "9c75660675e39379d0011367f4d4af7ca5dfbd128fbf21f28907851b3c328c02",
+      "final_sha256": "dfab914254eaed49e07f7597d30266695f4d67b2b72a32dd1120ae0047c91d76",
+      "reasoning_chars": 6266,
+      "final_chars": 3322
+    },
+    {
+      "attempt_id": "cal_quantum_3-3013_latent_bias_0_0_481019",
+      "item_id": "quantum/3-3013",
+      "condition": "LATENT_TARGET_BANK_BIAS_0.0",
+      "generation_seed": 481019,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        0,
+        1
+      ],
+      "process_score_0_3": 2,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "s to solve the problem: 1. **Analyze the Request:** The goal is to find the values of the squared angular momentum operator ($L^2$) and the $z$-component of angular momentum ($L_z$) for the given wave function $\\psi(x, y, z)$. 2. **Analyze the Wave Function:** $$\\psi(x, y, z) = \\frac{\\al",
+      "request_sha256": "8f4f34ecbb1aa7a5c772501951eb6961fb3440e2de779412f06004dba4b7d1df",
+      "outcome_sha256": "33cad1bd444d2af1dd248eb2126154ff3699d1b08700d2a5e2505e27a702aa63",
+      "reasoning_sha256": "d9790a6559f6f954c4f27870a53cf3db2ca525efb0bdb806908a7bbeda84e730",
+      "final_sha256": "58dc758192ac70ad11368cf8c7b3312899a61de5fe46c72bf1d763ba5483aa3d",
+      "reasoning_chars": 5845,
+      "final_chars": 1785
+    },
+    {
+      "attempt_id": "cal_quantum_3-3013_latent_bias_0_5_481001",
+      "item_id": "quantum/3-3013",
+      "condition": "LATENT_TARGET_BANK_BIAS_0.5",
+      "generation_seed": 481001,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        0,
+        1
+      ],
+      "process_score_0_3": 2,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "ecific wave function $\\psi(x, y, z)$. * The goal is to show that the system is in a state of \"definite angular momentum.\" * The goal is to calculate the values of $L^2$ and $L_z$ associated with this state. 2. **Analyze the Wave Function:** * $\\psi(x, y, z) = \\frac{\\alpha^{5/2}}{\\sqrt",
+      "request_sha256": "eecfe5912ccef9a06b32aa4841b17752274550dbd4689079cf574599590567b7",
+      "outcome_sha256": "baf952f16ae6e03cdbf0fad30b75ce933cfb95f1ab8f2676498f02cd5e8f2158",
+      "reasoning_sha256": "243a01adbacc6322e920856ca7d1f8bd0e17146c866705adffe03fa9c1a6a7f0",
+      "final_sha256": "aed2a17494b66dfda0fb40d4c3e98b5d246eda042a03b35533f385243f896451",
+      "reasoning_chars": 6005,
+      "final_chars": 2833
+    },
+    {
+      "attempt_id": "cal_quantum_3-3013_latent_bias_0_5_481019",
+      "item_id": "quantum/3-3013",
+      "condition": "LATENT_TARGET_BANK_BIAS_0.5",
+      "generation_seed": 481019,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        0,
+        1
+      ],
+      "process_score_0_3": 2,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "m state.* 4. **Re-reading the prompt:** The prompt asks to \"Show that the system is in a state of definite angular momentum and give the values of $L^2$ and $L_z$ associated with the state.\" 5. **The Problem with the Function:** The provided function $\\psi$ is not a standard quantum state. It's a com",
+      "request_sha256": "6c8457faed4c26683a46fd6f1d5659db353d104741098d0dd1314cb253676b21",
+      "outcome_sha256": "fd3a398f74b80aafcd8518c478b6392c7fcf57a6f255ae61a4e6fa9823aef83a",
+      "reasoning_sha256": "7a3eb34b55285490a7ec556bd988e36a571625a0c9f7e0925fb9aa5c7cfa6567",
+      "final_sha256": "f96418c37e29dfac2f49a31df35f79f23eb5110efe9c6459db49373ad9739670",
+      "reasoning_chars": 6237,
+      "final_chars": 1468
+    },
+    {
+      "attempt_id": "cal_quantum_3-3013_latent_bias_1_0_481001",
+      "item_id": "quantum/3-3013",
+      "condition": "LATENT_TARGET_BANK_BIAS_1.0",
+      "generation_seed": 481001,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        0,
+        1
+      ],
+      "process_score_0_3": 2,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "pecific wave function $\\psi(x, y, z)$. * The goal is to show that the system is in a state of definite angular momentum and to find the values of $L^2$ and $L_z$. * *Self-Correction/Refinement:* The provided wave function $\\psi(x, y, z) = \\frac{\\alpha^{5/2}}{\\sqrt{\\pi}} \\cdot z \\exp[-\\alpha(x",
+      "request_sha256": "3236d54910f33dd8badd9fb78bf12cd86066757d934546b821105e8d93a478ec",
+      "outcome_sha256": "54859aac1edaa5519d72238da94e5f4df2e9fff73a52511ae55a8c5083bf64ef",
+      "reasoning_sha256": "ef67d109cde9ccd1cc53adb2f2174232a7927eed9612d4d180690c00a776d936",
+      "final_sha256": "2a1dfe84a893658bb2771b767df60ac5e774ac84b905d7ac5735da12c51dc8b3",
+      "reasoning_chars": 5520,
+      "final_chars": 1728
+    },
+    {
+      "attempt_id": "cal_quantum_3-3013_latent_bias_1_0_481019",
+      "item_id": "quantum/3-3013",
+      "condition": "LATENT_TARGET_BANK_BIAS_1.0",
+      "generation_seed": 481019,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        0,
+        1
+      ],
+      "process_score_0_3": 2,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "s to solve the problem: 1. **Analyze the Request:** The goal is to find the values of the squared angular momentum operator ($L^2$) and the $z$-component of angular momentum ($L_z$) for the given wave function $\\psi(x, y, z)$. 2. **Analyze the Wave Function:** $$\\psi(x, y, z) = \\frac{\\al",
+      "request_sha256": "10b69ca4ce5306eaa12b840bd9fa7862e34bba49dbd211078c99a35b92185f5e",
+      "outcome_sha256": "50ac7c7aa630cf77fe28b71f6866369e46d64e19a9f7d1b1aabc11e691122e51",
+      "reasoning_sha256": "3b8b8e1f1e4ac24e9f7757c1239e361ef89c580238b583ea541333a35957be9d",
+      "final_sha256": "80699d963b7e2d9ffe84557fd3dcc5ad1d7e221e2953f3db5c72750408940c91",
+      "reasoning_chars": 5909,
+      "final_chars": 2469
+    },
+    {
+      "attempt_id": "cal_quantum_3-3013_visible_guidance_481001",
+      "item_id": "quantum/3-3013",
+      "condition": "VISIBLE_GUIDANCE",
+      "generation_seed": 481001,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        0,
+        1
+      ],
+      "process_score_0_3": 2,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": ", z \\exp[-\\alpha(x^2 + y^2 + z^2)^{1/2}]$. * **Constraint:** The state must be in a state of *definite angular momentum*. 2. **Examine the Wave Function:** * The function is $\\psi(x, y, z) = \\frac{\\alpha^{5/2}}{\\sqrt{\\pi}} \\cdot \\exp[-\\alpha \\sqrt{x^2 + y^2 + z^2}]$. * Wait, the promp",
+      "request_sha256": "3ed3daae04635d9facb2494fe2500057fc1b5de96caea1cc6072009662fa348c",
+      "outcome_sha256": "806c98f76e2759f191af56b71d40ffacb9084c15d0b2947d59aecd979d269bb5",
+      "reasoning_sha256": "afbcb38ddbaf9bd80307884f024891b9136de02902194d16574ebe17a385cd28",
+      "final_sha256": "235403436a27f3b60ee6f79cdbda00cb9cb1e3a702163d31ef1381e6c79e1a2b",
+      "reasoning_chars": 9095,
+      "final_chars": 2208
+    },
+    {
+      "attempt_id": "cal_quantum_3-3013_visible_guidance_481019",
+      "item_id": "quantum/3-3013",
+      "condition": "VISIBLE_GUIDANCE",
+      "generation_seed": 481019,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        0,
+        1
+      ],
+      "process_score_0_3": 2,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "based on a standard potential well. *Wait, the prompt says: \"Show that the system is in a state of definite angular momentum and give the values of $L^2$ and $L_z$.\"* * $L^2$: The operator $\\hat{L}^2$ is related to the square of the angular momentum operator. * $L_z$: The operator $\\hat{L}_z$ is th",
+      "request_sha256": "694bd8b82de2365943ef6b7f5ea5cb441f10f9a0416d552784cfaa79591f0cc3",
+      "outcome_sha256": "f141b473ccb60db26eb5406c6743ea11e2b2c1a3459a1beca7e88e769fb0a127",
+      "reasoning_sha256": "c26441cdac84cfb223a23b732fa788f7807205733d35b69da1f0b3bdd7cfd082",
+      "final_sha256": "ac75a6103e93f4865384f679a9e67901d38babe9fadcc80d092e0df95f2417a6",
+      "reasoning_chars": 5965,
+      "final_chars": 4457
+    },
+    {
+      "attempt_id": "cal_quantum_3-3024_baseline_481001",
+      "item_id": "quantum/3-3024",
+      "condition": "BASELINE",
+      "generation_seed": 481001,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "1/2 system in a constant magnetic field. * The Hamiltonian is $H = -\\mu_0 B s_x$. * The time evolution is governed by $e^{-i H t / \\hbar}$. * *Self-Correction/Refinement:* The prompt asks for the probability of finding $s_y = \\pm 1/2$ at *any* later time $t$. This implies a t",
+      "request_sha256": "5f7e4947b34267ebafc2f16d04ec0bf63a6bc370c3dda177fe2920320b6cd769",
+      "outcome_sha256": "256c21b9a5e0ca8c28e344e6854c12889762aeeff90cc05ab48e2f863e5b3df8",
+      "reasoning_sha256": "74f3ee5e9ea2c8653feefc72323fa9f54de74a881a5b17c66cc981320fd453d4",
+      "final_sha256": "565f70bf13044070cace6337f2db67832857cb593390ff5f6a502cb51d8efe7d",
+      "reasoning_chars": 8630,
+      "final_chars": 1801
+    },
+    {
+      "attempt_id": "cal_quantum_3-3024_baseline_481019",
+      "item_id": "quantum/3-3024",
+      "condition": "BASELINE",
+      "generation_seed": 481019,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "r, the interaction is $H = -\\mu_0 \\mathbf{s} \\cdot \\mathbf{B}$. 3. **Analyze the State Evolution (Time Evolution):** * The state at $t=0$ is defined by $s_z = +1/2$. * The evolution is governed by the Schrödinger equation: $i\\hbar \\frac{\\partial}{\\partial t} |\\psi\\rangle = H |\\ps",
+      "request_sha256": "53b2ebe2ed16c1d6fc9b04ccfff0e534b27106efcb4bfb75bdbe9ea10151eea1",
+      "outcome_sha256": "e9c08001d94f5935832d341d1c9c8f881b4520b9f85c8db301d3df20eda513be",
+      "reasoning_sha256": "4e742c87da87545616f4c72bd11c16a7f63d5d9e8456b9a7420f6a068a3e44a6",
+      "final_sha256": "0d418990eae3c91070081f5291febd9161c05961a352e1c6f69fb3bad2084b29",
+      "reasoning_chars": 8634,
+      "final_chars": 1529
+    },
+    {
+      "attempt_id": "cal_quantum_3-3024_latent_bias_0_0_481001",
+      "item_id": "quantum/3-3024",
+      "condition": "LATENT_TARGET_BANK_BIAS_0.0",
+      "generation_seed": 481001,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "f{s} \\cdot B_x \\hat{x}$. * Let $B_x = B_0$. $H = - \\mu_0 B_0 \\hat{s}_x$. 4. **Determine the Time Evolution:** * The time evolution is governed by $U(t) = e^{-i H t / \\hbar}$. * The state at time $t$ is $|\\psi(t)\\rangle = e^{-i H t / \\hbar} |\\psi(0)\\rangle$. * The init",
+      "request_sha256": "d2bb489f64185f62796d8444df7ee8c8c5f84b987e1f022bea528089f2fc284f",
+      "outcome_sha256": "7ca4ade546c1016d60df5557ce075d716763d3b9673e1cb6e15efe97c00bfde7",
+      "reasoning_sha256": "f422a5e42c49555bb71cc85b189dfca50a8055fbaeb23dbb64f3881271f6fd81",
+      "final_sha256": "5977a06eb472199ab69175e9735024ff949176f2ad91dcb8b7c2d296dc694769",
+      "reasoning_chars": 6615,
+      "final_chars": 1919
+    },
+    {
+      "attempt_id": "cal_quantum_3-3024_latent_bias_0_0_481019",
+      "item_id": "quantum/3-3024",
+      "condition": "LATENT_TARGET_BANK_BIAS_0.0",
+      "generation_seed": 481019,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "$.\" This means the initial state is $| \\psi(0) \\rangle = |s_z = +1/2 \\rangle$. 5. **Calculate the Time Evolution:** * The state evolves according to $e^{-i H t / \\hbar}$. * $H$ is proportional to $s_x$. * $H = - \\mu_0 B s_x$. * Since $s_x$ is a constant operator, the",
+      "request_sha256": "b32e6b54cdefd277a94d7d0b12c8aa07f9d86eb820e07c024b24804ab7034542",
+      "outcome_sha256": "0872f330f61c8e82b68ce9c7194df10f28261325cbc12fc8422c23a36ac7226f",
+      "reasoning_sha256": "a196800291469feac18df08b63a1a615faf477bf47f0762c5171f15906ecb4e3",
+      "final_sha256": "892516f8c77a0dcbd47baa1a3d84e849d82818f41fe271b6cbab52fc0f126e29",
+      "reasoning_chars": 7295,
+      "final_chars": 1990
+    },
+    {
+      "attempt_id": "cal_quantum_3-3024_latent_bias_0_5_481001",
+      "item_id": "quantum/3-3024",
+      "condition": "LATENT_TARGET_BANK_BIAS_0.5",
+      "generation_seed": 481001,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": ", 0)$. * $\\hat{H} = - \\mu_0 (s_x B)$. * $\\hat{H} = - \\mu_0 B s_x$. 4. **Determine the Time Evolution:** * The evolution is governed by $e^{-i \\hat{H} t / \\hbar}$. * The state at time $t$ is $|\\psi(t)\\rangle = e^{-i \\hat{H} t / \\hbar} |\\psi(0)\\rangle$. 5. **Analyze t",
+      "request_sha256": "ce2d3888e25322ac89d68c7c4cddc2db9f2574f0cab781804ea03525693a4273",
+      "outcome_sha256": "d093c59093682b89804129360d88ae1fae1c7767fb886c1ad3c7c865d9c7b81a",
+      "reasoning_sha256": "64ade4e3d0c71abbf3164ca287c360d894c3bf4a6095a43c8ef98171ef362aff",
+      "final_sha256": "be3b12f84e84f39a0627e2340ee6d0c8180940c8f0c71f7a4353d5ed2606c1ac",
+      "reasoning_chars": 7293,
+      "final_chars": 1542
+    },
+    {
+      "attempt_id": "cal_quantum_3-3024_latent_bias_0_5_481019",
+      "item_id": "quantum/3-3024",
+      "condition": "LATENT_TARGET_BANK_BIAS_0.5",
+      "generation_seed": 481019,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "0 (s_x B_x)$. * Since the field is along the $x$-axis, $H = -\\mu_0 s_x B_x$. 4. **Solve the Time Evolution:** * The state at $t=0$ is defined by $s_z = +1/2$. This means the initial state $|\\psi(0)\\rangle = |s_z = +1/2\\rangle$. * We need to find the probability of finding $",
+      "request_sha256": "3bd3bc9dd5d80eaedc0188a86402bbc8f98611a443698c1e0e7802a58c3a0da1",
+      "outcome_sha256": "d90161aac8f37d2aed5816af166b6a653fce8628ef642d982778bf1eb0d220be",
+      "reasoning_sha256": "570bfa1ab0694e17efcf65de549776c3d4a08bb66dce06e24270e07b36fbfd09",
+      "final_sha256": "4e8727f80395807e1c0e3a32ad7e3eae0f323a78eb91d63f2207bf04ef7bbb99",
+      "reasoning_chars": 7679,
+      "final_chars": 1865
+    },
+    {
+      "attempt_id": "cal_quantum_3-3024_latent_bias_1_0_481001",
+      "item_id": "quantum/3-3024",
+      "condition": "LATENT_TARGET_BANK_BIAS_1.0",
+      "generation_seed": 481001,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "itial state $|\\psi(0)\\rangle$ is the eigenstate corresponding to $s_z = +1/2$. 5. **Determine the Time Evolution:** * The system evolves under $H$. The time evolution is given by $e^{-i H t / \\hbar}$. * $H = -\\mu_0 B_x s_x$. * The state at time $t$ is $|\\psi(t)\\rangle = e^{",
+      "request_sha256": "89b940f098ca7b27014d1dcbd9979ceb0c18bcadac3a18dc0fce87e726f23a6e",
+      "outcome_sha256": "70401d71592308d674bc6b82c886b3ff8bd7ac6f799915f141fc5ed4cd4e2cec",
+      "reasoning_sha256": "23296a2951d89dafcce406d1627d417233128678cd6d7cdaa8d43636cc832c89",
+      "final_sha256": "a4b39c7b5768346df04cb0012a18f4eea889b94c004a3d332b0660fb9f6e0da0",
+      "reasoning_chars": 7450,
+      "final_chars": 1801
+    },
+    {
+      "attempt_id": "cal_quantum_3-3024_latent_bias_1_0_481019",
+      "item_id": "quantum/3-3024",
+      "condition": "LATENT_TARGET_BANK_BIAS_1.0",
+      "generation_seed": 481019,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "cdot \\mathbf{B} = -(\\mu_0 \\mathbf{s}) \\cdot (B \\mathbf{e}_x) = - \\mu_0 B s_x$. 3. **Determine the Time Evolution:** * The system is governed by the time-dependent Schrödinger equation: $i\\hbar \\frac{\\partial}{\\partial t} |\\psi(t)\\rangle = H |\\psi(t)\\rangle$. * The state is initia",
+      "request_sha256": "a0098d884357411bd386907371ae42273fd0c76045e93ee1a71dd3812bc97bd8",
+      "outcome_sha256": "a5859f0ac188451911a47f48faed7f7b959e3f97ae2ab0ed47e1bfc0a9e085c4",
+      "reasoning_sha256": "a48461e97fcd75b6d40df726dd3a375ec0af281b33a65af7ac755ed5ad4a9308",
+      "final_sha256": "45a1acc6ffb09df85c304af3d3e97f36bf6a8bde8010b75fffe7e54c49ef1cf0",
+      "reasoning_chars": 6449,
+      "final_chars": 1741
+    },
+    {
+      "attempt_id": "cal_quantum_3-3024_visible_guidance_481001",
+      "item_id": "quantum/3-3024",
+      "condition": "VISIBLE_GUIDANCE",
+      "generation_seed": 481001,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "rangle$. * The state at $t=0$ is $|\\psi(0)\\rangle = |s_z = +1/2\\rangle$. 4. **Determine the Time Evolution (Time Evolution):** * The evolution is governed by $H$. * $H = -\\mu_0 s_x$. * The time evolution is $e^{-i H t / \\hbar}$. 5. **Calculate the Evolution:** *",
+      "request_sha256": "05773482d8f96afec560c1d44f8141d65b0c1be393c76d74664d0f994990bb59",
+      "outcome_sha256": "49e9fa1a00012c7791763833af4bc05ff00b5e50594f2c5f56acc6785ca77e9c",
+      "reasoning_sha256": "b0097b343af7f070e9fe03de4e59b2be7336f819e5ee7a93e054cf3ff5897206",
+      "final_sha256": "e10d443b72eb9a2491f607ab173711e1497bff6e48fcc32e41db169abc402aec",
+      "reasoning_chars": 9171,
+      "final_chars": 2677
+    },
+    {
+      "attempt_id": "cal_quantum_3-3024_visible_guidance_481019",
+      "item_id": "quantum/3-3024",
+      "condition": "VISIBLE_GUIDANCE",
+      "generation_seed": 481019,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "s_z = +1/2$. * In the $z$-basis, this is the state $|s_z = +1/2\\rangle$. 6. **Calculate the Time Evolution:** * The system is a simple two-level system (spin $1/2$). * The Hamiltonian is $H = -\\mu_0 B_x s_x$. * The evolution is governed by the time evolution operator",
+      "request_sha256": "17ac81cb38629d527d3a411430cbc468f79965f7c7a38962ad475c675cad5c07",
+      "outcome_sha256": "6ddd4526bd17b532bdc3e5d4c0106f0cf3fafa3154f93a529851b8472c2a264e",
+      "reasoning_sha256": "f39e9d1b414a112a7af7dc7a0ec666a71d21e787390655595b1c072752731319",
+      "final_sha256": "83b79ec1407f2e565fe2b0f1ef6272b867babe62c5877ebea7894c84e2f49c93",
+      "reasoning_chars": 5647,
+      "final_chars": 2495
+    },
+    {
+      "attempt_id": "cal_quantum_5005_baseline_481001",
+      "item_id": "quantum/5005",
+      "condition": "BASELINE",
+      "generation_seed": 481001,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "al step). This problem requires the application of time-independent perturbation theory to find the first-order energy correction for the ground state of a particle in a rigid box. ### 1. Identify the Unperturbed System The unperturbed system is a particle in a rigid box of length $l$. * The ground state",
+      "request_sha256": "617a5d92df7472a40fc2a8f75b11e5543762f1ef161a1254b9f29c3f9242e820",
+      "outcome_sha256": "2093ef5f4822f4b7cde08b07e581d0bc663a76290a7fad79212e913484b552f3",
+      "reasoning_sha256": "ed6a2d4ade229234af1f359d03da3a97338f0b83c759acd1d384d4da7b797faf",
+      "final_sha256": "19d81591d10db3d0dc7df765ce870d2fdc099230352ebe1aa2128a01ccdd6772",
+      "reasoning_chars": 2907,
+      "final_chars": 2336
+    },
+    {
+      "attempt_id": "cal_quantum_5005_baseline_481019",
+      "item_id": "quantum/5005",
+      "condition": "BASELINE",
+      "generation_seed": 481019,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "* The perturbation $H' = V_{dip}$ is the term $-b$ in the region $0 < x < l/2$. 5. **Apply First-Order Perturbation Theory:** * The first-order energy correction is given by: $E^{(1)} = \\langle \\psi_0 | H' | \\psi_0 \\rangle = \\int \\psi_0^* H' \\psi_0 dx$ * Wait, the problem asks for",
+      "request_sha256": "a625543d62e4ddc40370e8e915192969e1113e4ec5524fef999f160aaf03d6ce",
+      "outcome_sha256": "31de75a72890b7f777402f4d1a5ecdf83bb61290b9b8200b5ba1dad74ccab239",
+      "reasoning_sha256": "b47fc21c5104e0408362171ad62b3f890076a8a2dbb37b509b26e7d34ab7f36d",
+      "final_sha256": "d14b0a25e2f1a5274648e4013676fb992bc024544efe1ee9ccea434591ebe77b",
+      "reasoning_chars": 5075,
+      "final_chars": 1812
+    },
+    {
+      "attempt_id": "cal_quantum_5005_latent_bias_0_0_481001",
+      "item_id": "quantum/5005",
+      "condition": "LATENT_TARGET_BANK_BIAS_0.0",
+      "generation_seed": 481001,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "Identify the Perturbation:** The potential dip $V = -b$ is the perturbation. 4. **Goal:** Find the first-order energy correction ($\\Delta E^{(1)}$) for the ground state. 5. **Determine the Unperturbed System:** * The system is a 1D rigid box (infinite potential walls at $x=0$ and $x=l$). * The",
+      "request_sha256": "33fdc78606f9c39e55e8b8bb8738db46918089d041fa98f55566f05c22eabe92",
+      "outcome_sha256": "fb14f7b5f28a92c155db923a00dd92da0992ce7b52d140ad541b91887b14f19a",
+      "reasoning_sha256": "6927787cc4845f7ce2c2769d929090526341fb26a0525b9066f7f49e80908a36",
+      "final_sha256": "243dc7d6c387f7f07983519bd8a47bc85f2f4f4cf7b232a01a9021cafc9f4fc3",
+      "reasoning_chars": 2576,
+      "final_chars": 2094
+    },
+    {
+      "attempt_id": "cal_quantum_5005_latent_bias_0_0_481019",
+      "item_id": "quantum/5005",
+      "condition": "LATENT_TARGET_BANK_BIAS_0.0",
+      "generation_seed": 481019,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "l, and the \"dip\" is the perturbation. 6. **Apply Perturbation Theory (First Order):** * The first-order energy correction is $\\Delta E^{(1)} = \\langle \\psi_1 | H' | \\psi_1 \\rangle$. * The unperturbed ground state wave function is $\\psi_1(x) = \\sqrt{2/l} \\sin(\\pi x/l)$. * The perturbation",
+      "request_sha256": "ce50d5fe89168fd90d4112b3a50835c824afdd0e9092576dcc86383cd873f536",
+      "outcome_sha256": "3ad0a8e8b9004fc0b227737d81149cca9cd88ca6711f69074c5bb79bce94c4f0",
+      "reasoning_sha256": "dada40f391ff87a81fef5f691d95502eabe92e79f417ee4fbd093875da58fa29",
+      "final_sha256": "6f622dfb1caa56fc9ee66d42da38e29e8b20085759469edd0ba54d0dc737a899",
+      "reasoning_chars": 4333,
+      "final_chars": 3173
+    },
+    {
+      "attempt_id": "cal_quantum_5005_latent_bias_0_5_481001",
+      "item_id": "quantum/5005",
+      "condition": "LATENT_TARGET_BANK_BIAS_0.5",
+      "generation_seed": 481001,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        1,
+        1,
+        0
+      ],
+      "answer_score_0_1": 0.6666666666666666,
+      "evidence_excerpt": "the Perturbation:** The potential dip $V = -b$ in the region $0 < x < l/2$. 4. **Goal:** Find the first-order energy correction ($\\Delta E^{(1)}$) for the ground state ($n=1$). 5. **Method:** Use Time-Independent Perturbation Theory. * $E^{(0)}$: The energy of the unperturbed system (the standard in",
+      "request_sha256": "da7d26f16f1810d7e1d027b88a9ed77f29e8d711d7126e376d6b45b18f5bd332",
+      "outcome_sha256": "e76f39c637f4c31d4e4dd21182155ab6602ccd8a77406450f758a522af5cb5c8",
+      "reasoning_sha256": "ecb60d1c9971ce4d4b6c490061864437613a45dc007ec28dc4e6c0b3eed62608",
+      "final_sha256": "55333f039e8e7ecd177cae05521e7b4f27b41285347bd07d9b41e3ebf0191878",
+      "reasoning_chars": 3113,
+      "final_chars": 2363
+    },
+    {
+      "attempt_id": "cal_quantum_5005_latent_bias_0_5_481019",
+      "item_id": "quantum/5005",
+      "condition": "LATENT_TARGET_BANK_BIAS_0.5",
+      "generation_seed": 481019,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "* The perturbation $H'$ is the change in potential: $H' = -b$ for $0 < x < 1/2$. 5. **Apply First-Order Perturbation Theory:** * $E^{(1)} = \\langle \\psi_0 | H' | \\psi_0 \\rangle$. * $\\psi_0$ is the ground state of the unperturbed system (the standard infinite square well). * The ground",
+      "request_sha256": "9fd23bde16a8d5cbcb6bfcc31eb741fd7736c66e2958f5bc177d3d7e49d71941",
+      "outcome_sha256": "9603c949e5ab440398a0c9a107656f3eda632b3d2ef341baf1e36c62f7470e17",
+      "reasoning_sha256": "af8534ccb900f022b56d817b225d39055cc47fb719a61f6836cb310f00d7de2f",
+      "final_sha256": "0e9293d87e2ba6fe656b92dbc55ad3a938cbed5a61500fd9ede0b5c87841c10c",
+      "reasoning_chars": 4299,
+      "final_chars": 1750
+    },
+    {
+      "attempt_id": "cal_quantum_5005_latent_bias_1_0_481001",
+      "item_id": "quantum/5005",
+      "condition": "LATENT_TARGET_BANK_BIAS_1.0",
+      "generation_seed": 481001,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "rbation:** The potential dip $V = -b$ for $0 < x < l/2$ is the perturbation. 4. **Goal:** Find the first-order energy correction ($\\Delta E^{(1)}$) for the ground state. 5. **Method:** Use time-independent perturbation theory. 6. **Ground State:** The ground state is $n=1$. 7. **Calculate the Ground Stat",
+      "request_sha256": "8cee33b2f39083a3f02b42c0aeab2e71d462b35c7e66b3c8110981da0eceb88d",
+      "outcome_sha256": "04efddca383e018083d2e9af380021adce4a8bf7a245519caaf95bbb656afb0c",
+      "reasoning_sha256": "13c07715c2ce394b7b8c5d729cf4622e83b589cf7305f815b8b9a478ed6589b9",
+      "final_sha256": "b81db3c0d7c2f3f0e94369fd09cbaa83b2fd253c6fc84f2f07f299c8078e3a87",
+      "reasoning_chars": 3832,
+      "final_chars": 1867
+    },
+    {
+      "attempt_id": "cal_quantum_5005_latent_bias_1_0_481019",
+      "item_id": "quantum/5005",
+      "condition": "LATENT_TARGET_BANK_BIAS_1.0",
+      "generation_seed": 481019,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        1,
+        1,
+        1
+      ],
+      "answer_score_0_1": 1.0,
+      "evidence_excerpt": "miltonian is $H' = -b$ (a constant shift). ### 3. Calculate the First-Order Correction ($E_1$) The first-order energy correction is given by: $$E_1 = \\langle \\psi_0 | H' | \\psi_0 \\rangle$$ The ground state wave function for the infinite square well of length $L=1$ is: $$\\psi_0(x) = \\sin(\\pi x)$$ The first-o",
+      "request_sha256": "a75d991bd79ac77f106ca434f84ef8cc927d364da9bfa5270260ba36613373aa",
+      "outcome_sha256": "83ab1a5c08b9f88f930ff6fe55a190dba54a6c306e451cfbd3b17c0f57724d9f",
+      "reasoning_sha256": "1a1ef521aa5b68792e89301d5ca0bdfcb5b1f3337cd8ff564c65645d2299d6e4",
+      "final_sha256": "c11964dc8c43be351ac114b506aec91ace8b38c5869512836e9eb08bf4d4df69",
+      "reasoning_chars": 3556,
+      "final_chars": 1656
+    },
+    {
+      "attempt_id": "cal_quantum_5005_visible_guidance_481001",
+      "item_id": "quantum/5005",
+      "condition": "VISIBLE_GUIDANCE",
+      "generation_seed": 481001,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        0,
+        0
+      ],
+      "process_score_0_3": 1,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "\\hbar^2}{2m L^2}$. * *Crucial realization:* The prompt implies that the \"potential dip\" is a perturbation. However, the prompt defines the potential *as* the dip: $V = -b$ in the first half, and $V=0$ in the second half. 5. **Re-evaluating the \"Perturbation\" vs. \"System\":** *",
+      "request_sha256": "9cdcaf5c0df174b54549357a914825648646ac7411fb375d22c7874f1269d038",
+      "outcome_sha256": "54dffd5500af07ca0d47f03ac72483ada93df06771bf0f6b5969bf6ad400d297",
+      "reasoning_sha256": "cdff9cb0640e241b654567f551446bd346138dafe6d767a85855d77922f87a59",
+      "final_sha256": "60aa9dc7ad65991c4a87158d53d54048b6fb50fb85f7f3530f82b35cf1cc5b33",
+      "reasoning_chars": 5806,
+      "final_chars": 1155
+    },
+    {
+      "attempt_id": "cal_quantum_5005_visible_guidance_481019",
+      "item_id": "quantum/5005",
+      "condition": "VISIBLE_GUIDANCE",
+      "generation_seed": 481019,
+      "finish_reason": "stop",
+      "process_criterion_scores_0_1": [
+        1,
+        1,
+        1
+      ],
+      "process_score_0_3": 3,
+      "answer_criterion_scores_0_0.5_1": [
+        0,
+        0,
+        0
+      ],
+      "answer_score_0_1": 0.0,
+      "evidence_excerpt": "< x < l/2$. * The problem asks for the *first order energy* of the ground state. 6. **Apply First-Order Perturbation Theory:** * The ground state wavefunction for the unperturbed system (infinite well) is $\\psi_1(x) = \\sin(\\pi x / l)$. * The perturbation is $H' = -b$ for $0 < x < l/2$.",
+      "request_sha256": "9917a0c2f90b35e1476d7d0f6180d253337f67d93e78d3f7a69304b1a4914041",
+      "outcome_sha256": "d251f1e7cbb1926b4a9b0102d892bf6d4a931a4e093991d5ec4d75de9637bd3c",
+      "reasoning_sha256": "645e0c6a25d18135bd9fd7f77c2d66760e0a66e21c0fdccba684078a56c7dee3",
+      "final_sha256": "ef300a002ae431b8c3dba9c27755a27756488e83fc622ff75e2b4b76c09c818a",
+      "reasoning_chars": 4392,
+      "final_chars": 1962
+    }
+  ],
+  "limitations": [
+    "Process scoring is a rubric application to four difficult calibration problems, not heldout semantic-transfer evidence.",
+    "Visible gate failure means latent and heldout conditions are not interpreted as a qualified test.",
+    "Single assessor; frozen criteria and excerpts are included for review."
+  ]
+}

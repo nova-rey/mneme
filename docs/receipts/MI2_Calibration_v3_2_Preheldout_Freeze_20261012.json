@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "package_id": "MI2-PAPER-GUIDANCE-20261011",
+  "candidate_version": "v3.2",
+  "status": "FROZEN_VISIBLE_GATE_ONLY_NO_LATENT_OR_HELDOUT_CALLS",
+  "base_commit": "42084b99912f59c29e70694c5d697660345ec536",
+  "scope": "Model-free candidate for an E&M-card visible-guidance calibration gate only. No bank construction, no inference, no latent-output review, no test-split access, no MNEME state/SAA/integration.",
+  "v3_1_prior_failure_preservation": {
+    "status": "Preserve as valid visible-process gate failure; do not reuse or rescore its outputs.",
+    "score_receipt_sha256": "696dfac42404e1a5c617cfc7f80f2523f2b223828500db7710d3783701151ecf",
+    "reopen_receipt_sha256": "5472cb956219c264e4f8d20a8a9a18b159720534f2af82c8fbcc3a1287c527b1"
+  },
+  "source_card_choice": {
+    "choice": "Electromagnetism rather than reusing the Atomic card.",
+    "reason": "The Atomic card is a broad correction hierarchy heuristic; v3.1 tasks included a baseline-ceiling item and two item-specific methods (degenerate perturbation and molecular nuclear-spin symmetry) not taught by that card. The published E&M card gives an explicit boundary-condition/constitutive/conductor procedure that maps directly onto these task requirements.",
+    "paper_title": "Memory Inception: Latent-Space KV Cache Manipulation for Steering LLMs",
+    "paper_version": "arXiv:2605.06225v2",
+    "paper_pdf_path": "/home/nyx/mneme-artifacts/phase4-mi2/source/memory-inception-arxiv-2605.06225v2.pdf",
+    "paper_pdf_sha256": "ffd265f3b32a93d6b7967c69faf8e992d13ccdadc2c0bc2927a2f7ffcf5791fc",
+    "paper_text_sha256": "967bb05050e6f9bacb76ce965e649f82d44ba29720dabd1b179d2f000fac9861",
+    "paper_location": "Appendix E, Table 6, Electromagnetism row; corroborated by the PHYSICS heuristic-completion description.",
+    "paper_card": {
+      "trigger": "Conductors, dielectrics, magnetic media, interfaces, cavities, or coaxial geometry appear; interfaces and material response often determine unknown constants and surface sources.",
+      "action": "Write the relevant normal and tangential boundary conditions, constitutive relations, and conductor constraints before solving the bulk field.",
+      "trap_check": "Avoid solving the differential equation in each region but forgetting how the regions communicate. Fields and potentials should satisfy the stated material behavior and interface jumps or continuities."
+    },
+    "paper_tex_path": "/home/nyx/mneme-artifacts/phase4-mi2/source/arxiv-source/main.tex",
+    "paper_tex_sha256": "23eaaeb88909e166a152240d91496e03401044d0ea6f030445ba7639f09dbcac",
+    "paper_card_source_location_tex_lines": "780-783",
+    "paper_card_verbatim_normalized": "Electromagnetism\nTrigger: Conductors, dielectrics, magnetic media, interfaces, cavities, or coaxial geometry appear; interfaces and material response often determine unknown constants and surface sources.\nAction: Write the relevant normal and tangential boundary conditions, constitutive relations, and conductor constraints before solving the bulk field.\nTrap Check: Avoid solving the differential equation in each region but forgetting how the regions communicate. Fields and potentials should satisfy the stated material behavior and interface jumps or continuities.",
+    "paper_card_verbatim_normalized_sha256": "a0f7570461551434ea2d46ef364292a19aa8633539efca2bbef9daf4a3e7f097"
+  },
+  "benchmark_sources": {
+    "dataset": "PHYSICS benchmark, electro_dataset_eval.jsonl only",
+    "path": "/home/nyx/mneme-artifacts/phase4-mi2/source/PHYSICS/PHYSICS/PHYSICS-eval/electro_dataset_eval.jsonl",
+    "file_sha256": "2eda779969499fdd172def382629af155d345f16bad1d7a9275ebc1270733188",
+    "selection_rule": "Select eval rows by direct match to the published E&M card: explicit dielectric/conductor interface, constitutive material response, and boundary/source coupling. No model outputs used in selection.",
+    "heldout_control": "Only PHYSICS-eval rows were read. PHYSICS-test file/path/content and heldout prompt IDs were not opened, searched, hashed, or copied into this artifact. Any final heldout set must remain separately embargoed and disjoint by source split and ID."
+  },
+  "candidate_tasks": [
+    {
+      "id": "electro/1_56",
+      "source_split": "PHYSICS-eval/electro_dataset_eval.jsonl",
+      "line_number": 15,
+      "source_row_sha256": "9286571c014f228aca12644e3c761e55e7b491b76690770298f76b09b28d21d7",
+      "question": "It can be shown that the electric field inside a dielectric sphere which is placed inside a large parallel-plate capacitor is uniform (the magnitude and direction of $E_0$ are constant). If the sphere has radius $R$ and relative dielectric constant $K_e = \\epsilon / \\epsilon_0$, find $E$ at point $p$ on the outer surface of the sphere (use polar coordinates $R, \\theta$). Determine the bound surface charge density at point $p$.",
+      "question_sha256": "aae4c52eb84df814e4ffdfc9af89c2aa72df4d77772b0790297c54098aa2809f",
+      "task_card_alignment": "Direct dielectric/vacuum interface: normal D and tangential E conditions determine the surface field; requested bound surface charge is a source at the interface.",
+      "process_score_criteria_binary": [
+        "Separates the dielectric sphere from the surrounding vacuum and identifies the normal and tangential field components at r=R.",
+        "States the no-free-surface-charge normal-D relation (epsilon E_in,n = epsilon0 E_out,n) and tangential-E continuity before obtaining the external field.",
+        "Obtains bound surface charge from polarization normal to the interface, sigma_b = P dot n; exact angular dependence/value is scored separately."
+      ],
+      "answer_key_components": [
+        "E = K_e E_0 \\cos \\theta \\, e_r - E_0 \\sin \\theta \\, e_\\theta",
+        "\\sigma_p = \\epsilon_0 (K_e - 1) E_0 \\cos \\theta"
+      ],
+      "answer_key_sha256": "1b14388ae0d56756b3d127dd590ced806e5c3c03b51ba828480bf89060ebc45c",
+      "answer_component_scoring": "Each official component 0=wrong/missing, 0.5=partial, 1=correct or semantically equivalent; normalized by component count, separate from process score."
+    },
+    {
+      "id": "electro/1_60",
+      "source_split": "PHYSICS-eval/electro_dataset_eval.jsonl",
+      "line_number": 12,
+      "source_row_sha256": "62346fd69a4c6abf1e28189ee845a6f25e2be820ffbc2912414b6a7411e718fa",
+      "question": "The volume between two concentric conducting spherical surfaces of radii $a$ and $b$ ($a < b$) is filled with an inhomogeneous dielectric constant \n\n$$\n\\varepsilon = \\frac{\\varepsilon_0}{1 + Kr},\n$$\n\nwhere $\\varepsilon_0$ and $K$ are constants and $r$ is the radial coordinate. Thus $D(r) = \\varepsilon E(r)$. A charge $Q$ is placed on the inner surface, while the outer surface is grounded. Find:\n\n(a) The displacement in the region $a < r < b$.\n\n(b) The capacitance of the device.\n\n(c) The polarization charge density in $a < r < b$.\n\n(d) The surface polarization charge density at $r = a$ and $r = b$.",
+      "question_sha256": "e4c4a3f0f13e004df7a7e0b4dba47255538e422097f6d6eb22105dc4b142997b",
+      "task_card_alignment": "Direct inhomogeneous-dielectric plus conducting boundaries: D versus E, epsilon(r), integrated potential, and volume/surface polarization sources.",
+      "process_score_criteria_binary": [
+        "Uses spherical symmetry and Gauss law for free charge to determine D(r) in the dielectric region, rather than treating E as the directly conserved quantity.",
+        "Applies the stated spatially varying constitutive law D=epsilon(r)E before integrating E for potential/capacitance.",
+        "Separates bound volume charge (-div P) from bound surface charge (P dot n) at the two dielectric/conductor boundaries; exact signs/values are scored separately."
+      ],
+      "answer_key_components": [
+        "\\mathbf{D} = \\frac{Q}{4 \\pi r^2} \\mathbf{e}_r",
+        "C = \\frac{4 \\pi \\varepsilon_0 ab}{(b-a) + abK \\ln (b/a)}",
+        "\\rho_P = \\frac{QK}{4 \\pi r^2}",
+        "\\sigma_P = \\frac{QK}{4 \\pi a} \\quad \\text{at} \\quad r = a",
+        "\\sigma_P = -\\frac{QK}{4 \\pi b} \\quad \\text{at} \\quad r = b"
+      ],
+      "answer_key_sha256": "62e3883ce2731fd5be03b23d1562eac1cab18ec8930602e6867ed797450e3391",
+      "answer_component_scoring": "Each official component 0=wrong/missing, 0.5=partial, 1=correct or semantically equivalent; normalized by component count, separate from process score."
+    },
+    {
+      "id": "electro/1_69",
+      "source_split": "PHYSICS-eval/electro_dataset_eval.jsonl",
+      "line_number": 13,
+      "source_row_sha256": "789c4cd995ef18a711c86d7fb107d9fd2233d6923a9dcf56b445c606f8c53d49",
+      "question": "A conducting sphere of radius $a$ carrying a charge $q$ is placed in a uniform electric field $E_0$. Find the potential at all points inside and outside of the sphere. What is the dipole moment of the induced charge on the sphere? The three electric fields in this problem give rise to six energy terms. Identify these six terms; state which are finite or zero, and which are infinite or unbounded.",
+      "question_sha256": "db755fece10743891916e5045348f2a5c7bb5b07302c21679ec3a3e0cd4d0cfb",
+      "task_card_alignment": "Direct conducting-boundary case: equipotential/zero-interior-field and far-field constraints determine the exterior solution and induced surface-source dipole.",
+      "process_score_criteria_binary": [
+        "Uses conductor constraints (constant interior potential/zero interior field) and the imposed uniform far field as boundary conditions.",
+        "Matches the outside potential to the conducting surface and far-field conditions before solving for the field/potential components.",
+        "Distinguishes the imposed free-charge monopole from the induced dipole contribution and connects the latter to the requested induced dipole moment."
+      ],
+      "answer_key_components": [
+        "\\Phi_1 = \\frac{q}{4\\pi \\varepsilon_0 a}",
+        "\\Phi_2 = -E_0 r \\cos \\theta + \\frac{q}{4\\pi \\varepsilon_0 r} + \\frac{E_0 a^3}{r^2} \\cos \\theta",
+        "P = 4\\pi \\varepsilon_0 a^3 E_0",
+        "W_1 \\rightarrow \\infty",
+        "W_2 = \\frac{q^2}{8\\pi \\varepsilon_0 a}",
+        "W_3 = \\frac{4\\pi \\varepsilon_0 a^3}{3} E_0^2",
+        "W_{12} = 0",
+        "W_{23} = 0",
+        "W_{13} = -2\\pi \\varepsilon_0 a^3 E_0^2"
+      ],
+      "answer_key_sha256": "965c4193112405995519b11d7cf19a90debc750b959e4d2960d14e61af9a6012",
+      "answer_component_scoring": "Each official component 0=wrong/missing, 0.5=partial, 1=correct or semantically equivalent; normalized by component count, separate from process score."
+    }
+  ],
+  "prompt_contract": {
+    "baseline_system_text": "You are solving a problem in electromagnetism. Work from the stated assumptions, show reasoning needed to justify each requested result, and clearly label final answers for every part.",
+    "visible_system_text": "You are solving a problem in electromagnetism. Work from the stated assumptions, show reasoning needed to justify each requested result, and clearly label final answers for every part.\n\nElectromagnetism process guide (Memory Inception, Appendix E, Table 6):\nTrigger: Conductors, dielectrics, magnetic media, interfaces, cavities, or coaxial geometry appear; interfaces and material response often determine unknown constants and surface sources.\nAction: Write the relevant normal and tangential boundary conditions, constitutive relations, and conductor constraints before solving the bulk field.\nTrap Check: Avoid solving the differential equation in each region but forgetting how the regions communicate. Fields and potentials should satisfy the stated material behavior and interface jumps or continuities.",
+    "user_prompt": "For each coordinate, send the selected dataset question verbatim as the user message. No solution, final-answer key, or latent-bank content appears in the user message.",
+    "only_condition_difference": "Visible condition adds the exact paper card to the system text; baseline omits it. User question, system task framing, model, reasoning mode, seeds, sampler, context, and runtime are otherwise identical.",
+    "reasoning": "ON",
+    "cache_prompt": false,
+    "generation_seeds": [
+      481001,
+      481019
+    ],
+    "same_condition_preflight": "Two identical baseline requests for candidate electro/1_60 at seed 481001; require byte-identical reasoning and final output before dispatching matrix.",
+    "generation_allowance": "Retain v3.1 max-token allowance 8192 unless a mechanical correction is frozen and separately reviewed before calls.",
+    "visible_system_text_exact": "You are solving a problem in electromagnetism. Work from the stated assumptions, show reasoning needed to justify each requested result, and clearly label final answers for every part.\n\nElectromagnetism process guide (Memory Inception, Appendix E, Table 6):\nTrigger: Conductors, dielectrics, magnetic media, interfaces, cavities, or coaxial geometry appear; interfaces and material response often determine unknown constants and surface sources.\nAction: Write the relevant normal and tangential boundary conditions, constitutive relations, and conductor constraints before solving the bulk field.\nTrap Check: Avoid solving the differential equation in each region but forgetting how the regions communicate. Fields and potentials should satisfy the stated material behavior and interface jumps or continuities.",
+    "future_latent_system_text": "Use baseline_system_text verbatim. Add no process-card wording or bank-derived text to prompt, metadata, chat history, or user message.",
+    "runtime_fingerprint_reference": {
+      "model": "google/gemma-4-E4B-it",
+      "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+      "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+      "llama_cpp_build": "0.5.0-dev build 1; isolated MI1 patch",
+      "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU, 6144 MiB",
+      "gpu_layers": 99,
+      "reasoning": "ON",
+      "reasoning_format": "deepseek",
+      "context_size": 8192,
+      "parallel_slots": 1,
+      "temperature": 0.35,
+      "top_k": 40,
+      "top_p": 0.9,
+      "min_p": 0.05,
+      "max_tokens": 8192,
+      "threads": 4,
+      "threads_batch": 4,
+      "prompt_cache": false
+    }
+  },
+  "scoring_proposal": {
+    "per_item_process_score": "Three frozen binary criteria per answer above; score only explicit observable reasoning/final evidence. Do not award points for generic mentions of boundary conditions unless the relevant interface and relation are identified.",
+    "overall_process_gate": "Mean visible-minus-baseline process delta at least +0.5 points on 0–3 scale, positive mean delta on at least 2/3 items, and no material answer-score harm (visible normalized answer score drop >0.10 fails).",
+    "headroom_rule": "Headroom is not empirically established by this model-free candidate. Baseline scores are unknown until approved calls. If the frozen baseline process mean exceeds 2.5/3 or two items score 3/3, classify this calibration as ceiling-limited and stop without replacing tasks after seeing visible outputs. Do not claim a failed latent mechanism from a failed/ceiling-limited visible gate.",
+    "answer_score": "Use source final_answers components (hash-bound per task) at 0/0.5/1; score independently from process. Exact numerical/analytic correctness is not inferred from process points.",
+    "evidence": "Persist complete baseline/visible requests, reasoning, final answers, finish reason and scorer evidence spans; independent review is required before any latent condition.",
+    "baseline_headroom_statement": "The frozen criteria create measurable opportunities but cannot establish that Gemma has headroom before baseline calls. Headroom remains unknown. The candidate items were selected from the eval split by method-to-task alignment only, not by output. Apply the predeclared ceiling stop rule; do not substitute items after seeing any outputs."
+  },
+  "anti_result_shopping": [
+    "Candidate tasks selected solely from the PHYSICS evaluation split and card-task alignment, without model output inspection.",
+    "All three IDs, full prompt bytes, answer keys, process criteria, threshold, seeds, and ceiling stop rule are included now for review before any output.",
+    "No substitutions after baseline or visible results; a ceiling or visible-gate failure ends this candidate version.",
+    "No v3.1 generated output, bank, selector, or score enters candidate selection or future evaluation."
+  ],
+  "expected_minimal_generation_budget": {
+    "visible_gate_calls": "12 matrix calls = 3 items × 2 seeds × {BASELINE,VISIBLE_GUIDANCE}",
+    "determinism_preflight_calls": 2,
+    "total_maximum": 14,
+    "latent_calls": 0,
+    "later_authorization": "Only after a visible gate pass and separate Root review could a separately frozen target/irrelevant/disabled latent matrix be proposed.",
+    "future_latent_matrix_if_visible_gate_passes": "Separate future proposal only: 3 tasks × 2 seeds × {BASELINE, VISIBLE_GUIDANCE, LATENT_TARGET at one prospectively fixed bias, LATENT_IRRELEVANT at matched bias, DISABLED/REMOVED} = 30 matrix calls; plus 2 deterministic preflight calls. This candidate authorizes none."
+  },
+  "deviations_and_risks": [
+    "The E&M card is paper-published and the chosen PHYSICS tasks are from the evaluation split, but exact Gemma/Q2/llama.cpp rendering and KV bank behavior remain the local adaptation.",
+    "The three tasks all concern electrostatic boundary/source conditions; they provide task-shape variation but not broad subject-generalization evidence.",
+    "The E&M card’s aggregate PHYSICS results in the paper do not establish that this Gemma host has baseline headroom on these particular items.",
+    "The candidate’s baseline ceiling rule is intentionally a stop condition, not a license to replace items after seeing outputs."
+  ],
+  "no_calls_status": "No Gemma/Quinn/host inference calls were made while preparing this candidate; no candidate bank/query tensors or selector sites were generated. No PHYSICS-test source was opened.",
+  "latent_bank_recipe_candidate": {
+    "status": "Proposed only; no bank has been built and no selector/capture exists.",
+    "source_method": "Paper Appendix E PHYSICS process-only heuristic card: source examples are construction-only; bank card is answer-stripped procedure, not solutions or answer fragments.",
+    "target_card": "The exact Electromagnetism card in source_card_choice.paper_card_verbatim_normalized.",
+    "irrelevant_control_card": {
+      "subject": "Optics",
+      "source": "Same paper Appendix E Table 6, main.tex lines 810-813",
+      "sha256_normalized": "5ace375168a23ce15f642e233988cfd7be24c2d2f779ad12ee1649847b464d7e",
+      "fields": {
+        "trigger": "Lenses, mirrors, apertures, slits, gratings, coherence, or diffraction all appear possible; ray optics tracks paths and images, while wave optics tracks phase, coherence, and aperture-limited structure.",
+        "action": "Decide whether wavelength and phase are essential or whether geometric imaging is sufficient for the requested scale.",
+        "trap_check": "Avoid using geometric imaging where diffraction or interference sets the answer, or adding wave machinery to a pure imaging geometry. The chosen model should depend on wavelength only when wave effects are relevant."
+      }
+    },
+    "templates": [
+      {
+        "id": "raw",
+        "text": "{BANK_CARD}"
+      },
+      {
+        "id": "internal_principles",
+        "text": "Internal principles for scientific problem solving:\\n\\n{BANK_CARD}"
+      },
+      {
+        "id": "private_reasoning_note",
+        "text": "A private note available during reasoning:\\n\\n{BANK_CARD}"
+      }
+    ],
+    "encoding_and_kv": "For each target and irrelevant card, freshly encode raw and two contextualized variants with pinned Gemma tokenizer using one leading BOS; retain card-content token positions only, excluding BOS/wrapper tokens; concatenate slots in raw/internal_principles/private_reasoning_note order; native Gemma-4 llama.cpp K/V capture with explicit layer/head identity; validate token-ID parity, K/V dimensions, capacity mask, finite tensors, and exact text hashes.",
+    "selector": "Fresh capture from the three candidate BASELINE prompts only and freshly encoded target/reference keys. Recompute query/KV selector sites for v3.2; no v1/v2/v3/v3.1 banks, captures, selectors, or generation outputs reused. Root reviews selector receipt before any generation.",
+    "reference_bank": "Use the frozen neutral/reference card from the v3.1 paper-derived recipe only if Root accepts it as a valid comparator; otherwise prospectively declare a neutral/reference text before capture. It is comparator-only and is not attached during target condition.",
+    "secret_absence": "BASELINE, LATENT_TARGET, LATENT_IRRELEVANT, and DISABLED user/system prompts contain neither target nor control card text; only VISIBLE condition includes target card text. Bank attachment is the only latent condition change."
+  },
+  "freeze_record": {
+    "frozen_utc": "2026-10-12T02:17:25Z",
+    "frozen_by": "Root Foreman",
+    "candidate_sha256": "2258a13a7b632a3b14613bb17a350f41156cbe2c634048fc98518624b9b172cb",
+    "review_checks": [
+      "Canonical paper text hash and Appendix E/Table 6 Electromagnetism card wording verified.",
+      "All three PHYSICS-eval row IDs, row hashes, question hashes, and final-answer hashes independently reconciled.",
+      "Visible prompt differs from baseline only by the exact published process card.",
+      "Process criteria test observable card-aligned procedures; exact answer scoring remains separate.",
+      "The ceiling stop rule prohibits post-output task replacement.",
+      "No PHYSICS-test split material or v3.1 latent output was used in candidate selection."
+    ],
+    "authorized_scope": "Run the two-call same-coordinate BASELINE determinism preflight; only if it passes, run exactly 12 BASELINE/VISIBLE_GUIDANCE calls (3 frozen tasks x 2 seeds x 2 conditions). Score only the frozen visible process/answer gates. No side-memory capture, latent condition, irrelevant bank, removal/reuse, or heldout inference is authorized by this freeze.",
+    "stop_conditions": [
+      "preflight mismatch",
+      "mechanical failure or incomplete evidence",
+      "frozen baseline ceiling rule",
+      "visible gate failure"
+    ],
+    "next_authority_boundary": "If visible gate passes, stop and request separate Root review before side-memory bank construction or any latent/irrelevant/disabled calls."
+  }
+}

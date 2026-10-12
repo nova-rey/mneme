@@ -1,0 +1,341 @@
+{
+  "schema_version": 1,
+  "package_id": "MI2-PAPER-GUIDANCE-20261011",
+  "calibration_version": "v3",
+  "status": "CALIBRATION_ONLY_PENDING_ROOT_REVIEW_NO_CAPTURE_NO_GENERATION",
+  "base_commit": "42084b99912f59c29e70694c5d697660345ec536",
+  "branch": "research/phase4-mi1-memory-inception",
+  "created_local_date": "2026-10-11",
+  "authority": {
+    "root_instruction": "Root requested exact v3 freeze review before any query capture or generation. No model calls until Root reviews this artifact.",
+    "scope": "one Atomic subject card calibration plus disjoint Atomic heldout design; no MNEME/SAA/state, no other model family, no paid compute."
+  },
+  "rationale": "V2 used quantum-subject tasks for the Quantum card. V2 remains a valid failed visible gate on its items. This new version uses Atomic Physics card and Atomic subject-specific benchmark splits; it does not relabel/re-score v2 outputs.",
+  "canonical_paper": {
+    "pdf_path": "/home/nyx/mneme-artifacts/phase4-mi2/source/memory-inception-arxiv-2605.06225v2.pdf",
+    "sha256": "ffd265f3b32a93d6b7967c69faf8e992d13ccdadc2c0bc2927a2f7ffcf5791fc",
+    "source_release": "ArXiv source inspected; source text says anonymous code/data release but exposes no URL. Candidate third-party repository was not authenticated as author code and lacks license; not used.",
+    "text_path": "/home/nyx/mneme-artifacts/phase4-mi2/source/memory-inception-arxiv-2605.06225v2.txt",
+    "title": "Memory Inception: Latent-Space KV Cache Manipulation for Steering LLMs",
+    "version": "arXiv:2605.06225v2"
+  },
+  "paper_card": {
+    "subject": "Atomic physics",
+    "trigger": "Hydrogenic, helium-like, molecular, fine, hyperfine, Zeeman, Stark, or nuclear effects appear together; atomic reasoning starts from a hierarchy of scales and then adds corrections in order.",
+    "action": "Identify the baseline structure, then place spin, relativistic, field, exchange, finite-size, or nuclear corrections by relative size.",
+    "trap_check": "Avoid mixing correction mechanisms without deciding which is the unperturbed problem and which is small. Each splitting or shift should be attributable to a named interaction and ordering assumption.",
+    "source": "Canonical paper Appendix E, Table 6, Atomic physics row",
+    "pdf_page": 22,
+    "printed_page": 21,
+    "source_pdf_sha256": "ffd265f3b32a93d6b7967c69faf8e992d13ccdadc2c0bc2927a2f7ffcf5791fc",
+    "derivation_note": "Use the paper-published process-only card verbatim. Authors report distillation from 5–10 construction problems/solutions with answer-bearing material removed; exact Atomic source examples are unavailable. No PHYSICS-eval/test question or answer is added to the bank."
+  },
+  "paper_to_gemma_deviations": [
+    "The paper-published Atomic process-only card is verbatim; its 5–10 source problems/reference solutions are unavailable, so its exact derivation cannot be independently reproduced.",
+    "Paper experiments used Llama 3.1/Qwen3 HF/vLLM; v3 tests only the custom exact-Q2 Gemma llama.cpp port.",
+    "Wrapper strings are fixed local instantiations of paper-described wrapper classes; only card-content token slots are retained.",
+    "Gemma native K/V mapping and sparse query-site selection are project adaptations, not author-code artifacts.",
+    "Manual frozen 3-binary process criteria and answer-component scoring differ from the paper graders."
+  ],
+  "source_data": {
+    "benchmark": "PHYSICS, subject-specific Atomic splits",
+    "eval_file": "/home/nyx/mneme-artifacts/phase4-mi2/source/PHYSICS/PHYSICS/PHYSICS-eval/atomic_dataset_eval.jsonl",
+    "eval_file_sha256": "9ecf99361c3f1a69b447513206cba12d8af3b165517bea87ef17f96b218bc8e5",
+    "eval_rows": 45,
+    "test_file": "/home/nyx/mneme-artifacts/phase4-mi2/source/PHYSICS/PHYSICS/PHYSICS-test/atomic_dataset_test.jsonl",
+    "test_file_sha256": "ae5cd51f4410482e9140ffd5fb1926d2ff7d326e318d4c3a39441f3e430fe462",
+    "test_rows": 155,
+    "textonly_file": "/home/nyx/mneme-artifacts/phase4-mi2/source/PHYSICS/PHYSICS/PHYSICS-textonly/atomic_dataset_textonly.jsonl",
+    "textonly_file_sha256": "5ff78042581f5b74fd437ce3a8e6a75810fa71d554ef138a4860f126c7ae6c1d",
+    "textonly_rows": 187,
+    "split_audit": {
+      "eval_test_overlap_count": 0,
+      "textonly_eval_overlap_count": 43,
+      "textonly_test_overlap_count": 144,
+      "interpretation": "PHYSICS-eval and PHYSICS-test IDs are disjoint. PHYSICS-textonly overlaps both and is not an independent split; it is not used here. Original Atomic card-construction question IDs are not exposed; the paper states construction examples are excluded from evaluation."
+    },
+    "candidate_pool_audit": "Model-free scan found three direct, defensible Atomic-eval matches: 1-48 correction hierarchy; 1-12 external perturbation on a degenerate atomic level; 1-41 atomic hyperfine and molecular nuclear-spin splitting. Adjacent or unrelated eval tasks were not padded in. Heldouts deliberately use six distinct direct subtypes: nuclear finite size, electron finite-size Lamb correction, helium-like exchange symmetry, spin-orbit fine structure, hyperfine scale, and extended-nucleus form factor. `atomic/2-15` and `atomic/1-38` were excluded as adjacent (nuclear magnetic-moment/isospin operator and transition multipole) rather than direct correction-hierarchy tests."
+  },
+  "calibration": {
+    "split": "PHYSICS-eval/atomic_dataset_eval.jsonl",
+    "items": [
+      {
+        "id": "atomic/1-48",
+        "role": "calibration",
+        "source_row_sha256": "fd5668a2afdec6df5ac4241514a078da0693fd67045f9330a795d5a13f4119f2",
+        "question_utf8": "Consider the ground state and $n = 2$ states of hydrogen atom.  \nIndicate in the diagram (Fig. 1.14) the complete spectroscopic notation for all four states. There are four corrections to the indicated level structure that must be considered to explain the various observed splitting of the levels. These corrections are:\n\n(a) Lamb shift,  \n(b) fine structure,  \n(c) hyperfine structure,  \n(d) relativistic effects.\n\n(1) Which of the above apply to the $n=1$ state?  \n(2) Which of the above apply to the $n=2, l=0$ state? The $n=2, l=1$ state?  \n(3) List in order of decreasing importance these four corrections. \n(i.e. biggest one first, smallest last). Indicate if some of the corrections \nare of the same order of magnitude.  \n(4) Discuss briefly the physical origins of the hyperfine structure. Your \ndiscussion should include an appropriate mention of the Fermi contact potential.",
+        "question_sha256": "6456aafcc9dcd68b17857695ad2a6ad8e7ec51157b5e6503cc40d83f8b99edbd",
+        "official_answer_component_count": 8,
+        "official_answers_sha256": "2f5b348c7eaaa609105c869142408511e7d5dfd35750410532bcbadc08aa779f",
+        "process_score_criteria": [
+          "Baseline: establishes the hydrogen Coulomb/Bohr level structure as reference before discussing corrections; exact spectroscopic labels are separate answer scoring.",
+          "Correction handling: treats fine/relativistic, Lamb, and hyperfine contributions as corrections and discusses relative order or same-scale grouping rather than conflating mechanisms; exact ordering is separate answer scoring.",
+          "Attribution/scope: attributes splitting/shift to named interaction and keeps state dependence distinct; detailed Fermi-contact description is separate answer scoring."
+        ]
+      },
+      {
+        "id": "atomic/1-12",
+        "role": "calibration",
+        "source_row_sha256": "09e2c0ec69de46441a6f717d2bf48b0a82f556573294fdaced1f8eecfdbf0e49",
+        "question_utf8": "The electric field that an atom experiences from its surroundings within a molecule or crystal can noticeably affect properties of the atomic ground state. An interesting example has to do with the phenomenon of angular momentum quenching in the iron atom of the hem group in the hemoglobin of your blood. Iron and hemoglobin are too complicated, however. So consider an atom containing one valence electron moving in a central atomic potential. It is in an $l = 1$ level. Ignore spin. We ask what happens to this level when the electron is acted on by the external potential arising from \nthe atom's surroundings. Take this external potential to be\n\n$$\nV_{\\text{pert}} = Ax^2 + By^2 - (A + B)z^2\n$$\n\n(the atomic nucleus is at the origin of coordinates) and treat it to lowest \norder.\n\n(a) The $l = 1$ level now splits into three distinct levels. As you can \nconfirm (and as we hint at) each has a wave function of the form\n\n$$\n\\Psi = (\\alpha x + \\beta y + \\gamma z)f(r),\n$$\n\nwhere $f(r)$ is a common central function and where each level has its own set \nof constants $(\\alpha, \\beta, \\gamma)$, which you will need to determine. Sketch the energy \nlevel diagram, specifying the relative shifts $\\Delta E$ in terms of the parameters \n$A$ and $B$ (i.e., compute the three shifts up to a common factor).\n\n(b) More interesting: Compute the expectation value of $L_z$, the $z$ com- \nponent of angular momentum, for each of the three levels.\n",
+        "question_sha256": "23b56b84added626d315674d06005391ae4079e037087c51eb84f6177aeeb490",
+        "official_answer_component_count": 4,
+        "official_answers_sha256": "dc2e0c12acc27fbfc17c32645a3c0d9b8f38f089149331e66f8042e25d396554",
+        "process_score_criteria": [
+          "Baseline: recognizes the l=1 level in a central potential as the unperturbed degenerate manifold.",
+          "Correction handling: treats the external potential as a perturbation acting within that manifold (e.g. degenerate perturbation); exact matrix/eigenvalues are separate answer scoring.",
+          "Attribution/scope: links split states and requested L_z observable to applied perturbation without importing unrelated spin/fine-structure mechanisms."
+        ]
+      },
+      {
+        "id": "atomic/1-41",
+        "role": "calibration",
+        "source_row_sha256": "2bcab22addb2fe981748780a8fc84aa538723d4796155888953cf4c665d03224",
+        "question_utf8": "(a) The ground state of the hydrogen atom is split by the hyperfine interaction. Indicate the level diagram and show from first principles which state lies higher in energy.\n\n(b) The ground state of the hydrogen molecule is split into total nuclear spin triplet and singlet states. Show from first principles which state lies higher in energy.",
+        "question_sha256": "a30d424b714ac4860c1cac420a6f26cc32c46a41ae9100b6cd89866f6e0b6e2b",
+        "official_answer_component_count": 2,
+        "official_answers_sha256": "9e5561802059c8bc6a9c922f4ee1d29eed67644aea7d82f96028b6e8c1682078",
+        "process_score_criteria": [
+          "Baseline: identifies hydrogen electron–proton hyperfine coupling and the separate molecular nuclear-spin problem as baseline structures.",
+          "Correction handling: treats each splitting as a named spin-coupling contribution and states the ordering assumption; exact state order is separate answer scoring.",
+          "Attribution/scope: keeps atomic hyperfine and molecular nuclear-spin symmetry reasoning distinct instead of mixing mechanisms."
+        ]
+      }
+    ],
+    "conditions": [
+      "BASELINE",
+      "VISIBLE_GUIDANCE",
+      "LATENT_TARGET_BANK_BIAS_0.0",
+      "LATENT_TARGET_BANK_BIAS_0.5",
+      "LATENT_TARGET_BANK_BIAS_1.0"
+    ],
+    "seeds": [
+      481001,
+      481019
+    ],
+    "call_budget": {
+      "matrix": 30,
+      "same_condition_determinism_preflight": 2,
+      "total": 32
+    },
+    "visible_gate": {
+      "mean_process_delta_minimum_points": 0.5,
+      "scale": "0–3 per answer from three binary criteria; average two seeds then items",
+      "minimum_positive_item_mean_deltas": "2/3",
+      "maximum_visible_answer_score_harm": 0.1,
+      "answer_score": "Each official answer component scored 0, 0.5, or 1 and normalized by component count; separate from process score."
+    },
+    "boundary": "If visible gate fails, no latent calibration interpretation and no heldout calls. If it passes, Root reviews complete calibration score, raw journal recovery/hash reconciliation, and selected bias/site freeze before heldout."
+  },
+  "heldout_embargo": {
+    "split": "PHYSICS-test/atomic_dataset_test.jsonl",
+    "items": [
+      {
+        "id": "atomic/1-50",
+        "role": "heldout_embargoed",
+        "card_relevance": "Direct: nuclear finite-size correction to hydrogenic levels.",
+        "source_row_sha256": "13912e16ea3a60538fa7543750631560329a15021f152e554448824c729f233d",
+        "question_utf8": "An atom has a nucleus of charge $Z$ and one electron. The nucleus has a radius $R$, inside which the charge (protons) is uniformly distributed. We want to study the effect of the finite size of the nucleus on the electron levels:\n\n(a) Calculate the potential taking into account the finite size of the nucleus.\n\n(b) Calculate the level shift due to the finite size of the nucleus for the 1s state of $^{208}\\text{Pb}$ using perturbation theory, assuming that $R$ is much smaller than the Bohr radius and approximating the wave function accordingly.\n\n(c) Give a numerical answer to (b) in $cm^{-1}$ assuming $R = r_0 A^{1/3}$, $r_0 = 1.2$ fermi.",
+        "question_sha256": "16ee3d668d10f6a71641cd666097a6328e7e78c4801ab763273adde84e9e6faa",
+        "official_answer_component_count": 4,
+        "official_answers_sha256": "041101482e5c31c79fe0884519ee8b6c45327b1b9a99368c4b685d0407f4d877",
+        "process_score_criteria": [
+          "Establishes the point-Coulomb potential as the reference and the finite uniform nuclear charge distribution as the changed structure.",
+          "Treats the finite-size potential as a correction and uses the stated R much less than Bohr-radius regime for perturbative shift.",
+          "Attributes the shift to the finite nuclear charge radius and distinguishes the requested 1s overlap effect from unrelated fine/hyperfine mechanisms."
+        ]
+      },
+      {
+        "id": "atomic/1-37",
+        "role": "heldout_embargoed",
+        "card_relevance": "Direct: a distinct finite-size perturbative correction and level dependence.",
+        "source_row_sha256": "497123a7422cd5f65802ccd894fa2861eb2a92c16c1b57236b968093b6218abb",
+        "question_utf8": "If a very small uniform-density sphere of charge is in an electrostatic potential $V(r)$, its potential energy is\n\n$$\nU(r) = V(r) + \\frac{r_0^2}{6} \\nabla^2 V(r) + \\cdots \n$$\n\nwhere $r$ is the position of the center of the charge and $r_0$ is its very small radius. The \"Lamb shift\" can be thought of as the small correction to the energy levels of the hydrogen atom because the physical electron does have this property.\n\nIf the $r_0^2$ term of $U$ is treated as a very small perturbation compared to the Coulomb interaction $V(r) = -e^2/r$, what are the Lamb shifts for the 1s and 2p levels of the hydrogen atom? Express your result in terms of $r_0$ and fundamental constants. The unperturbed wave functions are\n\n$$\n\\psi_{1s}(r) = 2a_B^{-3/2} \\exp(-r/a_B)Y_0^0,\n$$\n\n$$\n\\psi_{2pm}(r) = a_B^{-5/2} r \\exp(-r/2a_B)Y_1^m/\\sqrt{24},\n$$\n\nwhere $a_B = \\hbar^2 / m_e e^2$.",
+        "question_sha256": "32bc17af2bee8b8a2b7038a56ff00d71584e1e9c854139083f09f28637aacd17",
+        "official_answer_component_count": 2,
+        "official_answers_sha256": "948360a3885fbc5dada95e610d888ac1a2110fbc17e7d8ac0aad56efaf882bf0",
+        "process_score_criteria": [
+          "Identifies Coulomb hydrogen as the unperturbed problem and the r0-squared term as a small finite-size correction.",
+          "Uses first-order perturbative expectation values for the two stated levels rather than replacing the baseline potential.",
+          "Attributes the level difference to wavefunction support at the origin and does not conflate this model correction with other Lamb-shift contributions."
+        ]
+      },
+      {
+        "id": "atomic/1-26",
+        "role": "heldout_embargoed",
+        "card_relevance": "Direct: helium-like structure and exchange symmetry; tests a different named interaction class.",
+        "source_row_sha256": "eb86828ab68b7fda96927bec35e76cea4804d642b07bd01b7bc1e53fcd82ed93",
+        "question_utf8": "The ground state of the realistic helium atom is of course nondegenerate. However, consider a hypothetical helium atom in which the two electrons are replaced by two identical spin-one particles of negative charge. Neglect spin-dependent forces. For this hypothetical atom, what is the degeneracy of the ground state? Give your reasoning.",
+        "question_sha256": "ec51c299b1064ae72e81a84b0da097a76e04d4e2272ab046ab26745db154c127",
+        "official_answer_component_count": 1,
+        "official_answers_sha256": "0e71c9d61a801b86235274dfab92b15dfb859514f351bf1627e1bc07bca5b60c",
+        "process_score_criteria": [
+          "States the spin-independent two-particle central-potential problem as the baseline.",
+          "Uses identical-particle exchange symmetry and allowed spatial/spin symmetry to determine ground-state configurations.",
+          "Distinguishes exchange/statistical degeneracy from an energy splitting caused by spin-dependent forces, which the prompt excludes."
+        ]
+      },
+      {
+        "id": "atomic/1-31",
+        "role": "heldout_embargoed",
+        "card_relevance": "Direct: fine/spin-orbit correction and its relative scale.",
+        "source_row_sha256": "cd0b564e9156cc7cbf511dffd7c435cf82d7c9e337286274048e5b8ac9356ead",
+        "question_utf8": "Spin-orbit splitting of the hydrogen $2p$ state is $10^{-6}$, $10^{-4}$, $10^{-2}$, $10^0$ eV.",
+        "question_sha256": "6709e2f98cfb1a9de2efdcbc3268aeb3e03bf5066da45e711cf77597ab9e2c58",
+        "official_answer_component_count": 1,
+        "official_answers_sha256": "1c7e0a59b1f1538e770357b3ebfbf89ddd862b50401ebeea128d83bbd543e3bd",
+        "process_score_criteria": [
+          "Identifies hydrogen 2p Coulomb structure as baseline and spin-orbit coupling as the fine-structure correction.",
+          "Places the requested splitting on the scale of the spin-orbit correction rather than confusing it with gross Coulomb binding or hyperfine structure.",
+          "Attributes the splitting to electron spin-orbit interaction, not nuclear spin or an undifferentiated electron–nucleus effect."
+        ]
+      },
+      {
+        "id": "atomic/1-29",
+        "role": "heldout_embargoed",
+        "card_relevance": "Direct: hyperfine correction scale, distinct from fine structure.",
+        "source_row_sha256": "c51bb8808a7762b71ac4105677344bdb57db62a28b51f311006438d522396d72",
+        "question_utf8": "Hyperfine splitting in hydrogen ground state is $10^{-7}$, $10^{-5}$, $10^{-3}$, $10^{-1}$ eV.",
+        "question_sha256": "2c2a8f0595013fbf6543ee403c2c639894708661c4a3a4126e6af95dccfea10a",
+        "official_answer_component_count": 1,
+        "official_answers_sha256": "e3a9b92471bf4ea640ee374b91f4d5db77f054f5a74ab3c66c25585025cb2bea",
+        "process_score_criteria": [
+          "Identifies the requested quantity as the ground-state hydrogen hyperfine splitting, distinct from gross structure.",
+          "Uses a scale argument appropriate to the small spin-coupling correction rather than the much larger Coulomb/fine-structure scale.",
+          "Attributes the splitting to nuclear/electron spin coupling and avoids substituting Lamb or fine-structure corrections."
+        ]
+      },
+      {
+        "id": "atomic/2-21",
+        "role": "heldout_embargoed",
+        "card_relevance": "Direct: point-nucleus baseline versus extended nuclear charge correction.",
+        "source_row_sha256": "34adb57bfd067a736f10a74c32a52079dd183c02b80359f2c660ef65b33953f3",
+        "question_utf8": "The study of the scattering of high energy electrons from nuclei has yielded much interesting information about the charge distributions in nuclei and nucleons. We shall here consider a simple version in which the electrons are supposed to have zero spin. We also assume that the nucleus, of charge $Ze$, remains fixed in space (i.e., its mass is assumed infinite). Let $\\rho(\\mathbf{x})$ denote the charge density in the nucleus. The charge distribution is assumed to be spherically symmetric but otherwise arbitrary.\n\nLet $f_c (\\mathbf{p_i}, \\mathbf{p_f})$, where $\\mathbf{p_i}$ is the initial and $\\mathbf{p_f}$ the final momentum, be the scattering amplitude in the first Born approximation for the scattering of an electron from a point-nucleus of charge $Ze$. Let $f(\\mathbf{p_i}, \\mathbf{p_f})$ be the scattering amplitude of an electron from a real nucleus of the same charge. Let $\\mathbf{q} = \\mathbf{p_i} - \\mathbf{p_f}$ denote the momentum transfer. The quantity $F$ defined by\n\n$$f(\\mathbf{p_i}, \\mathbf{p_f}) = F(q^2) f_c (\\mathbf{p_i}, \\mathbf{p_f})$$\n\nis called the form factor. It is easily seen that $F$, in fact, depends on $\\mathbf{p_i}$ and $\\mathbf{p_f}$ only through the quantity $q^2$.\n\n(a) The form factor $F(q^2)$ and the Fourier transform of the charge density $\\rho(\\mathbf{x})$ are related in a very simple manner. State and derive this relationship within the framework of the nonrelativistic Schrödinger theory. The assumption that the electrons are \"nonrelativistic\" is here made so that the problem will be simplified. However, on careful consideration it will probably be clear that the assumption is irrelevant: the same result applies in the \"relativistic\" case of the actual experiment. It is also the case that the neglect of the electron spin does not affect the essence of what we are here concerned with.\n\n(b) Figure 2.3 shows some experimental results pertaining to the form factor for the proton, and we shall regard our theory as applicable to these data. On the basis of the data shown, compute the root-mean-square (charge) radius of the proton. Hint: Note that there is a simple relationship between the root-mean-square radius and the derivative of $F(q^2)$ with respect to $q^2$, at $q^2 = 0$. Find this relationship, and then compute.",
+        "question_sha256": "27bac01414f053b9f44aa1464ba48ba53950c9be3362142c478332e1da1d91a9",
+        "official_answer_component_count": 2,
+        "official_answers_sha256": "281af6ed326446cbe8b41a746ed0560c97f91ec23eb6f9a24363d860096e3f7d",
+        "process_score_criteria": [
+          "Establishes the point-nucleus Coulomb amplitude as the reference model.",
+          "Represents the real extended nucleus as a correction through its charge-density form factor in the stated first-Born framework.",
+          "Attributes q-dependence to nuclear charge distribution and keeps it separate from electron-spin or relativistic changes that the prompt says are inessential."
+        ]
+      }
+    ],
+    "conditions": [
+      "BASELINE",
+      "VISIBLE_GUIDANCE",
+      "LATENT_TARGET_BANK_FROZEN_BIAS",
+      "IRRELEVANT_BANK_SAME_RECIPE",
+      "DISABLED_AFTER_ATTACHMENT",
+      "REATTACHED_TARGET_BANK_REUSE"
+    ],
+    "seeds": [
+      481001,
+      481019
+    ],
+    "base_calls": 48,
+    "lifecycle_extra_calls": 8,
+    "planned_total_calls": 56,
+    "lifecycle_items": [
+      "atomic/1-50",
+      "atomic/1-26"
+    ],
+    "status": "EMBARGOED; question text and rubrics are frozen for later evaluation, but must not be sent to query capture, generation, or selector before separate Root approval after calibration."
+  },
+  "irrelevant_control_bank": {
+    "subject": "Thermodynamics/statistical mechanics",
+    "trigger": "Energy, volume, temperature, particle number, chemical potential, or reservoir contact is specified; the ensemble is fixed by what is controlled and what can fluctuate.",
+    "action": "Choose microcanonical, canonical, grand-canonical, isothermal-isobaric, or another potential from the constraints before differentiating.",
+    "trap_check": "Avoid using a partition function whose natural variables do not match the physical setup. Later derivatives should be taken with respect to the natural variables of the chosen potential.",
+    "source": "Canonical paper Appendix E, Table 6, Thermodynamics/statistical mechanics row",
+    "same_bank_recipe": true
+  },
+  "prompt_contract": {
+    "system_baseline": "You are solving a problem in atomic physics. Work from the stated assumptions, show the reasoning needed to justify each requested result, and clearly label final answers for every part.",
+    "visible_system": "You are solving a problem in atomic physics. Work from the stated assumptions, show the reasoning needed to justify each requested result, and clearly label final answers for every part.\n\nAtomic physics process guide (the same guidance encoded for the latent condition):\nTrigger: Hydrogenic, helium-like, molecular, fine, hyperfine, Zeeman, Stark, or nuclear effects appear together; atomic reasoning starts from a hierarchy of scales and then adds corrections in order.\nAction: Identify the baseline structure, then place spin, relativistic, field, exchange, finite-size, or nuclear corrections by relative size.\nTrap Check: Avoid mixing correction mechanisms without deciding which is the unperturbed problem and which is small. Each splitting or shift should be attributable to a named interaction and ordering assumption.",
+    "user_source": "Exact UTF-8 question string from frozen PHYSICS JSONL row, without Unicode normalization.",
+    "secret_exclusion": "For BASELINE/LATENT/IRRELEVANT/DISABLED/REUSE, request contains baseline system and task question only; Atomic card occurs only in side-bank for latent. Persist full request and rendered prompt bytes/hash; exact target/irrelevant card text must be absent from every non-visible request.",
+    "reasoning": "ON",
+    "prompt_cache": false,
+    "evidence": "Persist complete request JSON, rendered prompt bytes/hash, bank fingerprint, reasoning, answer, finish reason, seed/sampler, timings."
+  },
+  "bank_construction": {
+    "kv_projection": "Use frozen GGUF/native MI1 encoder at float32 normalized Kcur_normed/Vcur_normed captures, before RoPE; preserve native token-order per layer and 2 KV heads; keys relative phase zero. Confirm 24 K/V sources and exact layer/head dimensions against model output; abort if mismatch.",
+    "retention": "Encode each complete source string with the pinned Gemma tokenizer using one leading BOS; in each wrapped encoding retain exactly the card-content token positions only, excluding BOS and wrapper tokens; raw encoding retains card content tokens only. Store token IDs and integer positions; fail closed on non-unique/non-compositional span. Concatenate slots in order raw, internal_principles, private_reasoning_note. No averaging or answer-bearing extra text. Target and irrelevant card use identical recipe.",
+    "selection": "Before any v3 generation, capture the exact rendered BASELINE requests for the three frozen Atomic PHYSICS-eval calibration questions only, using the current Gemma apply-template path and native target-bank prefill. Capture query/attention state against the target and neutral/reference bank keys; use no generation output, no v1/v2 query captures or generation outputs, and no heldout prompt in v3 selection. Validate exact token-ID parity against server /tokenize, all 42 query layers x 8 Q heads, expected Q/KV dimensions, dynamic masked cache-capacity gap, and finite tensors. Apply the frozen Eq.3-inspired selector only to these three v3 Atomic query captures: per-layer top-1 KV group, then aggregate and freeze the top four Q layers, mapping each selected KV group to its associated four Q heads. Record v3 capture/runtime hashes, prompts, token counts, capacity/shapes, selector scores/sites, and receipt hash. Freeze this exact v3 selector before any generation. No v3 calibration generation may occur until Root reviews and approves the resulting v3 selector receipt. Heldout prompts are embargoed from capture, selector, and generation until separate post-calibration Root approval.",
+    "templates": [
+      {
+        "id": "raw",
+        "text": "{BANK_CARD}"
+      },
+      {
+        "id": "internal_principles",
+        "text": "Internal principles for scientific problem solving:\n\n{BANK_CARD}"
+      },
+      {
+        "id": "private_reasoning_note",
+        "text": "A private note available during reasoning:\n\n{BANK_CARD}"
+      }
+    ]
+  },
+  "seed_and_runtime": {
+    "context_size": 8192,
+    "gguf_path_remote": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+    "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+    "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU, 6144 MiB",
+    "gpu_layers": 99,
+    "host": "brokeass-msi",
+    "llama_build": "0.5.0-dev build 1; isolated MI1 patch",
+    "llama_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+    "name": "google/gemma-4-E4B-it",
+    "parallel_slots": 1,
+    "prompt_cache": false,
+    "reasoning": "ON",
+    "reasoning_format": "deepseek",
+    "sampler": {
+      "max_tokens": 8192,
+      "min_p": 0.05,
+      "seed_values": [
+        481001,
+        481019
+      ],
+      "stream": true,
+      "temperature": 0.35,
+      "top_k": 40,
+      "top_p": 0.9
+    },
+    "server_binary_sha256": "0032af18feb8cfa683ed34757c47bb10e4fbcdcd309071e937e4f6b4e4fd741c",
+    "threads": 4,
+    "threads_batch": 4
+  },
+  "scoring": {
+    "process": "Three item-specific binary 0/1 criteria are frozen above; score observable procedure only, not exact answer value. Preserve evidence spans.",
+    "answer": "Official component score 0/0.5/1 normalized by components; independent of process score.",
+    "heldout": "Before calls, freeze item-specific scoring criteria from each question and card, before seeing outputs; do not use outputs to change card, bank recipe, sites, bias, or prompts.",
+    "heldout_process_rubric": "Three item-specific binary 0/1 criteria are frozen with each embargoed item using the same baseline → correction → named interaction/scope structure. These are procedure criteria only; exact values/labels remain separately scored against frozen official answer components.",
+    "official_answer_component_scoring": "For every item, each frozen PHYSICS `final_answers` component is scored 0, 0.5, or 1 for wrong/missing, partial, or correct/semantically equivalent; normalize by component count. Source row hash and answer hash bind the scoring key. Do not alter components or equivalence rules after any output is observed."
+  },
+  "stop_criteria": [
+    "No capture or generation before Root reviews this exact freeze.",
+    "If duplicate cache_prompt=false output is not byte-identical, stop.",
+    "If visible gate fails, stop before latent or heldout interpretation.",
+    "All three calibration IDs must belong to Atomic eval; all six heldouts to Atomic test; no overlap.",
+    "Any prompt/card/bank/site/bias/sampler alteration requires a new version and Root review.",
+    "No heldout query capture or use in selector.",
+    "No MNEME/SAA/state, no other host/model family, no paid compute."
+  ],
+  "query_capture_plan": {
+    "before_generation": "Capture only the three frozen Atomic calibration requests. No heldout query capture and no generation outputs in selection.",
+    "target_and_reference": "Attach encoded Atomic target bank at bias 0 and compare last-token queries with the frozen neutral/reference card keys.",
+    "selector": "Recompute from v3 calibration queries only: frozen Eq.3-inspired per-layer top-1 KV group and top-4 Q layers; expand selected KV groups to associated four Q heads. Freeze exact sites, query/bank hashes and score receipt; Root reviews before generation.",
+    "parity": "Parse chat special tokens; assert token IDs exactly match server /tokenize; all 42 layers x 8 query heads, native Q/KV shapes; dynamic bank_start=n_keys-bank_slots; reserved-capacity gap zero; finite tensors; fail closed on any mismatch.",
+    "capacity": "No fixed slot count; validate each prompt/bank combined capacity and zero gap."
+  },
+  "provenance_and_freeze": {
+    "v1_v2": "Preserve v1/v2 freezes, scores, journals, and dispositions unchanged. v3 is new card/item calibration.",
+    "v3_calls_so_far": 0,
+    "v3_query_capture_so_far": 0,
+    "artifact_sha256": "computed over canonical JSON bytes after creation; manifest adjacent.",
+    "heldout_items_and_rubrics_frozen_before_any_v3_capture_or_generation": true
+  }
+}

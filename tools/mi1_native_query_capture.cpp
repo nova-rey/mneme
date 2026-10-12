@@ -113,13 +113,20 @@ void write_record(const std::string & path, const CaptureState & state,
 } // namespace
 
 int main(int argc, char ** argv) {
-    if (argc != 5) {
-        std::cerr << "usage: mi1-native-query-capture MODEL.gguf PROMPT.txt BANK.mi1|- OUTPUT.mi1qry\n";
+    if (argc != 5 && argc != 6) {
+        std::cerr << "usage: mi1-native-query-capture MODEL.gguf PROMPT.txt BANK.mi1|- OUTPUT.mi1qry [raw|chat-special]\n";
         return 2;
     }
     try {
         const std::string prompt = read_file(argv[2]);
         if (prompt.empty()) throw std::runtime_error("prompt text is empty");
+        const std::string tokenization_mode = argc == 6 ? argv[5] : "raw";
+        if (tokenization_mode != "raw" && tokenization_mode != "chat-special") {
+            throw std::runtime_error("tokenization mode must be raw or chat-special");
+        }
+        // A normal rendered prompt contains Gemma control-token spellings, so
+        // its capture must use the same special-token parsing as llama-server.
+        const bool parse_special = tokenization_mode == "chat-special";
         const bool bank_attached = std::string(argv[3]) != "-";
         if (bank_attached && !llama_mi1_attach_bank(argv[3])) {
             throw std::runtime_error(llama_mi1_last_error());
@@ -131,11 +138,11 @@ int main(int argc, char ** argv) {
         if (!model) throw std::runtime_error("pinned model load failed");
         const auto * vocab = llama_model_get_vocab(model);
         int32_t count = -llama_tokenize(vocab, prompt.data(), static_cast<int32_t>(prompt.size()),
-                nullptr, 0, true, false);
+                nullptr, 0, true, parse_special);
         if (count <= 0) throw std::runtime_error("prompt tokenization failed");
         std::vector<llama_token> tokens(static_cast<size_t>(count));
         count = llama_tokenize(vocab, prompt.data(), static_cast<int32_t>(prompt.size()),
-                tokens.data(), count, true, false);
+                tokens.data(), count, true, parse_special);
         if (count <= 0) throw std::runtime_error("prompt tokenization failed");
         tokens.resize(static_cast<size_t>(count));
         auto params = llama_context_default_params();
@@ -159,6 +166,7 @@ int main(int argc, char ** argv) {
                   << (bank_attached ? "true" : "false")
                   << " layers=" << capture.layers.size()
                   << " prompt_tokens=" << tokens.size()
+                  << " tokenization_mode=" << tokenization_mode
                   << " output=" << argv[4] << "\n";
         llama_free(context);
         llama_model_free(model);

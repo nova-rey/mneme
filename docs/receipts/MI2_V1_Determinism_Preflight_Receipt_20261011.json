@@ -1,0 +1,74 @@
+{
+  "authorization": "Root approved v1 fresh duplicate preflight and full calibration if deterministic; no heldout authorized.",
+  "controls": {
+    "cache_prompt": false,
+    "matched_coordinate": "PHYSICS quantum/4002 BASELINE",
+    "max_tokens": 8192,
+    "min_p": 0.05,
+    "seed": 481001,
+    "temperature": 0.35,
+    "top_k": 40,
+    "top_p": 0.9
+  },
+  "durable_attempts": [
+    {
+      "answer_bytes": 5009,
+      "attempt_id": "determinism_preflight_a_4002_481001",
+      "cache_prompt": false,
+      "condition": "BASELINE",
+      "finish_reason": "stop",
+      "max_tokens": 8192,
+      "outcome_sha256": "cc928c9a93b05b4e53b11e9ff8e7270e871dbafa54f45c34b803e33abf349be3",
+      "reasoning_bytes": 3823,
+      "request_sha256": "33c66e66617a7b26ea66f088cab8e757817598a5cdfb8ca36400898543310de9",
+      "seed": 481001
+    },
+    {
+      "answer_bytes": 5009,
+      "attempt_id": "determinism_preflight_b_4002_481001",
+      "cache_prompt": false,
+      "condition": "BASELINE",
+      "finish_reason": "stop",
+      "max_tokens": 8192,
+      "outcome_sha256": "82832b92a7b17fbbfe1c828cda4bcf51d096477f86cd326f00af01141934ec8a",
+      "reasoning_bytes": 3823,
+      "request_sha256": "3265adda745da98a48aa3c5054b00a12cf7f80cd494fd2952a9a8378abb06537",
+      "seed": 481001
+    }
+  ],
+  "fresh_process_recovery": {
+    "method": "new Python process constructed EvidenceJournal and called verify()",
+    "status_counts": {
+      "COMPLETE": 2
+    },
+    "uncertain_or_failed": 0
+  },
+  "frozen_artifacts": {
+    "selector_sha256": "0d0e1b9f9eab6b68888a0ac8267cc28da6f19d3496dad12e3b8d58037a0d5d8b",
+    "v1_plan_sha256": "0caed111c7448878bc82201c0ad32ecf6b2434cbba4121a5174c112c071bd912"
+  },
+  "host": {
+    "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+    "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+    "model": "google/gemma-4-E4B-it",
+    "runtime": "CUDA; RTX 3060 Laptop 6 GiB; reasoning ON; isolated llama-server port 18473"
+  },
+  "next_authorized_step": "Run the complete fresh 40-call v1 calibration matrix only; stop for Root review before heldout.",
+  "package_id": "MI2-PAPER-GUIDANCE-20261011",
+  "preflight_result": {
+    "attempt_ids": [
+      "determinism_preflight_a_4002_481001",
+      "determinism_preflight_b_4002_481001"
+    ],
+    "compared_sha256": [
+      "02be64880893b6ce0993f72366af407fcef09b6f971fa9ece56bb281678d6479",
+      "02be64880893b6ce0993f72366af407fcef09b6f971fa9ece56bb281678d6479"
+    ],
+    "outputs_byte_identical": true,
+    "status": "PASS"
+  },
+  "schema_version": 1,
+  "stage": "V1_DETERMINISM_PREFLIGHT",
+  "status": "PASS",
+  "v0_separation": "No v0 generation outputs reused; v0 remains quarantined and unscored."
+}

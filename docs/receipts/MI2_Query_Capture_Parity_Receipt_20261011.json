@@ -1,0 +1,208 @@
+{
+  "approved_process_score_amendment_sha256": "4b28ca427e1e5f19f8a691ca18c39aea9ba638e929e32ddaa5f16e6968de65e7",
+  "base_plan_sha256": "b032078782c0cd4fa6d56fe5dc9dc3bba8c0fe18021c1a7c22338899668dcdf8",
+  "captures": [
+    {
+      "compressed_capture_sha256": "75f9ce33aed62b8b914565af98ac54192fde7099b9067846bdbe57eb081bb1b1",
+      "item_id": "4002",
+      "kq_slots_including_270_bank": 526,
+      "layers": "0..41",
+      "masked_gap_verified": true,
+      "prompt_tokens": 176,
+      "query_heads_per_layer": 8,
+      "raw_capture_sha256": "299c816aa0b1173c348dc10cddf7b8902e9d8fc196fef033ad9a77cabca54214",
+      "reserved_prompt_cache_capacity": 256,
+      "token_id_parity": "EXACT"
+    },
+    {
+      "compressed_capture_sha256": "07fea5e4f8cd841809b8b3f357283b71c6a3712517399c6e84efee144f5b8f6a",
+      "item_id": "5051",
+      "kq_slots_including_270_bank": 526,
+      "layers": "0..41",
+      "masked_gap_verified": true,
+      "prompt_tokens": 201,
+      "query_heads_per_layer": 8,
+      "raw_capture_sha256": "19283ad5baf215709f1b0cea455ef02713a9d63b57a9093166a18790f74ca5c9",
+      "reserved_prompt_cache_capacity": 256,
+      "token_id_parity": "EXACT"
+    },
+    {
+      "compressed_capture_sha256": "497526019d16c8192ac97518c34510199b4e530344b35f0532d8a44e6dc1e76b",
+      "item_id": "6040",
+      "kq_slots_including_270_bank": 782,
+      "layers": "0..41",
+      "masked_gap_verified": true,
+      "prompt_tokens": 396,
+      "query_heads_per_layer": 8,
+      "raw_capture_sha256": "900cbd73718f58ed7708ef03ea251ced92a8354d04896731f5c6435016d7ba40",
+      "reserved_prompt_cache_capacity": 512,
+      "token_id_parity": "EXACT"
+    },
+    {
+      "compressed_capture_sha256": "e7f6c59f8b6286f3e54616fb83efb179be0bf1f5ea43a9e57de2ab1ea868cba7",
+      "item_id": "6015",
+      "kq_slots_including_270_bank": 782,
+      "layers": "0..41",
+      "masked_gap_verified": true,
+      "prompt_tokens": 274,
+      "query_heads_per_layer": 8,
+      "raw_capture_sha256": "5185eabc55dbaea5851c532b3bc98fd511ddefc623640d0916b574c0c8758811",
+      "reserved_prompt_cache_capacity": 512,
+      "token_id_parity": "EXACT"
+    }
+  ],
+  "clarification_sha256": "2911d5b7243bdb17afbd4eec9635d1683094e3b8f92554c3bc66754e22c128ec",
+  "generation_started": false,
+  "heldout_used": false,
+  "instrumentation_correction": {
+    "approval": "Root approved shape-derived bank-start and exact prompt-span validation before any generation",
+    "correction": "derive reserved capacity as attention key width minus bank slot count and validate the intervening unused cache slots are zero using attention_mass(); no bank, selector, prompt, or scoring changes",
+    "evidence": "native capture KQ width is reserved prompt cache capacity plus final bank slots; captures show cache capacity rounded in 256-token blocks for prompt lengths above 256",
+    "issue": "wrapper incorrectly assumed fixed 256 prompt-cache slots for all query captures"
+  },
+  "schema_version": 1,
+  "scope": "MI2 calibration query-capture parity only; no Generation API/model completion performed",
+  "selected_kv_groups": [
+    [
+      6,
+      1
+    ],
+    [
+      5,
+      0
+    ],
+    [
+      4,
+      1
+    ],
+    [
+      2,
+      0
+    ]
+  ],
+  "selected_query_sites": [
+    [
+      6,
+      4
+    ],
+    [
+      6,
+      5
+    ],
+    [
+      6,
+      6
+    ],
+    [
+      6,
+      7
+    ],
+    [
+      5,
+      0
+    ],
+    [
+      5,
+      1
+    ],
+    [
+      5,
+      2
+    ],
+    [
+      5,
+      3
+    ],
+    [
+      4,
+      4
+    ],
+    [
+      4,
+      5
+    ],
+    [
+      4,
+      6
+    ],
+    [
+      4,
+      7
+    ],
+    [
+      2,
+      0
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      2,
+      2
+    ],
+    [
+      2,
+      3
+    ]
+  ],
+  "selector_freeze_sha256": "0d0e1b9f9eab6b68888a0ac8267cc28da6f19d3496dad12e3b8d58037a0d5d8b",
+  "server_apply_template_checks": [
+    {
+      "apply_template_prompt_sha256": "2e3ff05d6190d9ec00b013fa8b7df1e31f2548d1180653130959f47509f9f6b3",
+      "item_id": "quantum/4002",
+      "matches_frozen_render": "EXACT"
+    },
+    {
+      "apply_template_prompt_sha256": "e5b2a6eb039ec051b9aab477208f0fa6f2ddf24e6a81e6813c49169a3a531018",
+      "item_id": "quantum/5051",
+      "matches_frozen_render": "EXACT"
+    },
+    {
+      "apply_template_prompt_sha256": "3e6f98ee9a175265b1bf676471fc21cad8a2e37832eb7bbb0eca8ff467a368a5",
+      "item_id": "quantum/6040",
+      "matches_frozen_render": "EXACT"
+    },
+    {
+      "apply_template_prompt_sha256": "31e461da883093c71b46de6a5744f81306da68dfbefb9035511788f69a060a74",
+      "item_id": "quantum/6015",
+      "matches_frozen_render": "EXACT"
+    }
+  ],
+  "server_process": {
+    "binary_sha256": "0032af18feb8cfa683ed34757c47bb10e4fbcdcd309071e937e4f6b4e4fd741c",
+    "context": 8192,
+    "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU",
+    "listen": "127.0.0.1:18473",
+    "llama_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+    "model_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+    "parallel": 1,
+    "pid": 88149,
+    "reasoning": "on",
+    "threads": 4
+  },
+  "staged_remote_bank_variants": [
+    {
+      "bias": 0.0,
+      "filename": "target-sites-b0.0.mi1",
+      "local_path": "/home/nyx/mneme-artifacts/phase4-mi2/banks/target-sites-b0.0.mi1",
+      "remote_path": "/home/rey/mneme-mi2/banks/target-sites-b0.0.mi1",
+      "sha256": "3456020b8ce679d99764d12b63db632d71505607fff408a677fa166ab12dd3c8"
+    },
+    {
+      "bias": 0.5,
+      "filename": "target-sites-b0.5.mi1",
+      "local_path": "/home/nyx/mneme-artifacts/phase4-mi2/banks/target-sites-b0.5.mi1",
+      "remote_path": "/home/rey/mneme-mi2/banks/target-sites-b0.5.mi1",
+      "sha256": "7ef8a7f5bb5b89b2560aa9147ff2fb7f77bd950ee433fe34b7d18691047d6997"
+    },
+    {
+      "bias": 1.0,
+      "filename": "target-sites-b1.0.mi1",
+      "local_path": "/home/nyx/mneme-artifacts/phase4-mi2/banks/target-sites-b1.0.mi1",
+      "remote_path": "/home/rey/mneme-mi2/banks/target-sites-b1.0.mi1",
+      "sha256": "9267dcc1163ce3d46d710e4c5056c5764308b6ae9e8342784b3abc1f8cfdfb36"
+    }
+  ],
+  "status": "PREGENERATION_MECHANICAL_VALIDATION_COMPLETE"
+}

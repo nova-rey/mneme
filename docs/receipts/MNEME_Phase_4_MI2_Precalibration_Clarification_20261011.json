@@ -1,0 +1,34 @@
+{
+  "created_utc": "2026-10-11T22:22:03+00:00",
+  "freeze_sha256": "b032078782c0cd4fa6d56fe5dc9dc3bba8c0fe18021c1a7c22338899668dcdf8",
+  "host_shape_gate": {
+    "kv": "Require 24 KV-producing source layers, two KV groups per source layer, layer/head dimensions matching the pinned host source map; require finite normalized K/V arrays in pre-RoPE canonical coordinates.",
+    "mapping": "Use `gemma4_source_kv_mapping` exactly as frozen in the MI1 source: direct mapping for producer layers, then shared source `24 - 2` for SWA query layers and `24 - 1` for full-attention query layers; record all 42 query→KV source pairs and validate every selected site resolves.",
+    "query": "Require all query layers 0–41, eight Q heads per layer, and recorded per-layer Q head dimension from model capture.",
+    "selector": "Run calibration-only query capture over all 42 query layers/eight heads with target+reference bank diagnostics; after scoring, freeze top-one KV group per layer and top-four layers, expanded to associated query heads; store full per-layer scores, selected sites and query→KV map before any generation. No heldout prompt/query enters selector."
+  },
+  "kind": "PRECALIBRATION_CLARIFICATION_ONLY",
+  "no_change_to": "selected tasks/split, process card, prompt wording, conditions, seed schedule, score rubric, thresholds, layer budget, gain candidates, heldout embargo or stop criteria",
+  "operator_settings": {
+    "bank_logit_bias_candidates": [
+      0.0,
+      0.5,
+      1.0
+    ],
+    "layer_gain": "Current Gemma patch does not provide independent per-layer rho; use one frozen global bank_logit_bias chosen by calibration rule.",
+    "reference_bank_generation_use": false,
+    "relative_key_phase": "0 for every retained bank slot"
+  },
+  "paper_appendix_c_selector_reference_bank": {
+    "diagnostic_use": "For selector score only: normalized pre-RoPE final prompt-token Q against target-card K vs this reference-card K; Eq. 3 max similarity difference; record attention-mass diagnostic. The deployed latent condition contains only target bank, not the reference bank.",
+    "encoding": "Same raw plus internal-principles plus private-reasoning-note context procedure and descriptor-only token-span retention as target and irrelevant banks. It is not supplied to the model in ordinary generation prompts.",
+    "exact_text": "General problem-solving note: Identify exactly what the problem asks for. Choose a standard method that fits the stated assumptions. Show the steps needed to justify the result, and check that the final answer addresses the requested quantity.",
+    "purpose": "The target/reference alignment term in Eq. 3 requires a comparison bank; this neutral generic procedure is used only during selector calibration and is not attached during generation or scored as a test condition."
+  },
+  "schema_version": 1,
+  "status": "ADDENDUM_FROZEN_BEFORE_CALIBRATION_GENERATION",
+  "token_position_recording": {
+    "frozen_rule": "For each template, tokenize exactly once using the pinned Gemma vocabulary with BOS enabled and control-token parsing disabled for raw note text. Retain only the unique exact token-id subsequence for the complete card text, excluding BOS. For contextualized encodings, require the card token sequence to occur exactly once; record both full token_ids and retained integer positions in bank manifest. Preserve original slot ordering and template provenance.",
+    "pre_generation_gate": "Before any calibration generation, build target/reference/irrelevant banks; record full token-ID sequences and retained integer positions; verify each bank has 3 × card token count slots, no wrapper/BOS slots, slot alignment, SHA-256, finite tensors and expected host dimensions. A mismatch stops calibration."
+  }
+}

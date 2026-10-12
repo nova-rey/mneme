@@ -1,0 +1,344 @@
+{
+  "answer_gate": {
+    "baseline_mean_normalized": 0.42857142857142855,
+    "components_total": 14,
+    "maximum_allowed_harm": 0.1,
+    "passed": true,
+    "per_item": {
+      "atomic/1-12": {
+        "baseline_mean_normalized": 0.0,
+        "baseline_seed_raw_points": [
+          0.0,
+          0.0
+        ],
+        "components": 4,
+        "visible_mean_normalized": 0.0,
+        "visible_seed_raw_points": [
+          0.0,
+          0.0
+        ]
+      },
+      "atomic/1-41": {
+        "baseline_mean_normalized": 1.0,
+        "baseline_seed_raw_points": [
+          2.0,
+          2.0
+        ],
+        "components": 2,
+        "visible_mean_normalized": 0.75,
+        "visible_seed_raw_points": [
+          2.0,
+          1.0
+        ]
+      },
+      "atomic/1-48": {
+        "baseline_mean_normalized": 0.5,
+        "baseline_seed_raw_points": [
+          4.0,
+          4.0
+        ],
+        "components": 8,
+        "visible_mean_normalized": 0.5,
+        "visible_seed_raw_points": [
+          4.0,
+          4.0
+        ]
+      }
+    },
+    "scoring_note": "Raw points summed over frozen components; normalize by component count and average two seeds.",
+    "visible_answer_harm": 0.0357142857142857,
+    "visible_mean_normalized": 0.39285714285714285
+  },
+  "calibration_version": "v3.1",
+  "examples": [
+    {
+      "baseline_attempt": "v31_cal_atomic_1_48_baseline_481001",
+      "baseline_excerpt": "All four corrections apply to this state.",
+      "item_id": "atomic/1-48",
+      "observation": "The visible condition retained broad over-inclusion and did not add the frozen Coulomb/Bohr baseline or state-specific splitting distinction.",
+      "visible_attempt": "v31_cal_atomic_1_48_visible_guidance_481001",
+      "visible_excerpt": "All four corrections apply to the n=1 state. All four corrections (a, b, c, d) apply."
+    },
+    {
+      "baseline_attempt": "v31_cal_atomic_1_12_baseline_481001",
+      "baseline_excerpt": "Since the specific form of f(r) is not provided, the exact numerical values cannot be calculated.",
+      "item_id": "atomic/1-12",
+      "observation": "Both conditions stop short of the requested degenerate calculation; visible guidance does not overcome the same false insufficiency.",
+      "visible_attempt": "v31_cal_atomic_1_12_visible_guidance_481001",
+      "visible_excerpt": "Since the specific wave function Psi is not provided, we cannot calculate a numerical value."
+    },
+    {
+      "baseline_attempt": "v31_cal_atomic_1_41_baseline_481001",
+      "baseline_excerpt": "The ground state of the hydrogen molecule (H2) ... Singlet ... Triplet.",
+      "item_id": "atomic/1-41",
+      "observation": "Visible adds the process-guide heading and names exchange, but omits the nuclear-spin symmetry/rotational distinction; frozen process criteria do not change.",
+      "visible_attempt": "v31_cal_atomic_1_41_visible_guidance_481001",
+      "visible_excerpt": "Baseline Structure ... exchange interaction ... singlet/triplet."
+    }
+  ],
+  "journal_reopen_receipt_sha256": "5472cb956219c264e4f8d20a8a9a18b159720534f2af82c8fbcc3a1287c527b1",
+  "overall_visible_gate_passed": false,
+  "package_id": "MI2-PAPER-GUIDANCE-20261011",
+  "plan_sha256": "6e5ffbc17e2185e99e3dfdfb4d0245cb007c8950ae2461472b8a37b518ab7af1",
+  "process_gate": {
+    "baseline_mean_0_to_3": 1.6666666666666667,
+    "item_count": 3,
+    "passed": false,
+    "per_item": {
+      "atomic/1-12": {
+        "baseline_mean_0_to_3": 3.0,
+        "baseline_seed_scores": [
+          3,
+          3
+        ],
+        "criteria_rationale": [
+          "Recognizes the central-potential l=1/p-orbital manifold and m_l states.",
+          "Treats V_pert as a perturbation on that manifold, although it does not solve the degenerate matrix.",
+          "Connects split levels and L_z request to V_pert without unrelated spin/fine-structure mechanisms; exact values are answer-scored."
+        ],
+        "visible_mean_0_to_3": 3.0,
+        "visible_minus_baseline": 0.0,
+        "visible_seed_scores": [
+          3,
+          3
+        ]
+      },
+      "atomic/1-41": {
+        "baseline_mean_0_to_3": 1.0,
+        "baseline_seed_scores": [
+          1,
+          1
+        ],
+        "criteria_rationale": [
+          "Does not identify molecular total-nuclear-spin/rotational-symmetry structure; frames H2 as electronic spin states.",
+          "Names atomic hyperfine and molecular exchange/spin-state interactions and gives an energy-ordering claim.",
+          "Does not explain molecular nuclear-spin symmetry/rotational distinction required by this item."
+        ],
+        "visible_mean_0_to_3": 1.0,
+        "visible_minus_baseline": 0.0,
+        "visible_seed_scores": [
+          1,
+          1
+        ]
+      },
+      "atomic/1-48": {
+        "baseline_mean_0_to_3": 1.0,
+        "baseline_seed_scores": [
+          1,
+          1
+        ],
+        "criteria_rationale": [
+          "No Coulomb/Bohr baseline is established before discussing corrections.",
+          "Names the correction families and attempts an ordering/grouping; exact correctness is separate.",
+          "Says corrections apply generally and does not distinguish which interactions split/shift each state."
+        ],
+        "visible_mean_0_to_3": 1.0,
+        "visible_minus_baseline": 0.0,
+        "visible_seed_scores": [
+          1,
+          1
+        ]
+      }
+    },
+    "positive_item_deltas": 0,
+    "threshold_mean_visible_delta_points": 0.5,
+    "threshold_positive_item_deltas": "at least 2/3",
+    "visible_mean_0_to_3": 1.6666666666666667,
+    "visible_minus_baseline_points": 0.0
+  },
+  "provenance": {
+    "official_answer_hashes": {
+      "atomic/1-12": "dc2e0c12acc27fbfc17c32645a3c0d9b8f38f089149331e66f8042e25d396554",
+      "atomic/1-41": "9e5561802059c8bc6a9c922f4ee1d29eed67644aea7d82f96028b6e8c1682078",
+      "atomic/1-48": "2f5b348c7eaaa609105c869142408511e7d5dfd35750410532bcbadc08aa779f"
+    },
+    "raw_journal_root": "/home/nyx/mneme-artifacts/phase4-mi2/calibration-run-v3.1/journal",
+    "source_eval_sha256": "9ecf99361c3f1a69b447513206cba12d8af3b165517bea87ef17f96b218bc8e5"
+  },
+  "raw_baseline_visible_records": [
+    {
+      "attempt_id": "v31_cal_atomic_1_48_baseline_481001",
+      "condition": "BASELINE",
+      "final_sha256": "43975828dd6fff2691a78858dfee2d07e29b38338eeeb84a9d45665624608d56",
+      "finish_reason": "stop",
+      "item_id": "atomic/1-48",
+      "process_criterion_scores": [
+        0,
+        1,
+        0
+      ],
+      "process_score": 1,
+      "reasoning_sha256": "af90a5a9ea522e9fb0badcf58e95d9793138efeee4499db426c660a997e0e916",
+      "seed": 481001
+    },
+    {
+      "attempt_id": "v31_cal_atomic_1_48_baseline_481019",
+      "condition": "BASELINE",
+      "final_sha256": "e8ebec66f8f9aa3caf279aba1c0e2b6015b79b7fb107444550ce428bd21b552b",
+      "finish_reason": "stop",
+      "item_id": "atomic/1-48",
+      "process_criterion_scores": [
+        0,
+        1,
+        0
+      ],
+      "process_score": 1,
+      "reasoning_sha256": "c5549a3d61d7168b65425600430ab44cb54864903301c25293cd82aaa70261f3",
+      "seed": 481019
+    },
+    {
+      "attempt_id": "v31_cal_atomic_1_48_visible_guidance_481001",
+      "condition": "VISIBLE_GUIDANCE",
+      "final_sha256": "863da088750ba0ed66ca3bc909a5b09b3ec868569b09ebe7844bc95b57d540fd",
+      "finish_reason": "stop",
+      "item_id": "atomic/1-48",
+      "process_criterion_scores": [
+        0,
+        1,
+        0
+      ],
+      "process_score": 1,
+      "reasoning_sha256": "84e3a0574267d141a9a70dd250706e8d7f71d1506b7a8d005f5fb44f2e694c18",
+      "seed": 481001
+    },
+    {
+      "attempt_id": "v31_cal_atomic_1_48_visible_guidance_481019",
+      "condition": "VISIBLE_GUIDANCE",
+      "final_sha256": "a73edbebcd027e6c52f20e7760cdc62fc0ca83b01e726d4c2feaa335a6770be9",
+      "finish_reason": "stop",
+      "item_id": "atomic/1-48",
+      "process_criterion_scores": [
+        0,
+        1,
+        0
+      ],
+      "process_score": 1,
+      "reasoning_sha256": "e7d36ef0810f8aa158d388549335ad8ad58bab3c4cf0a84f4eda2dd65144547b",
+      "seed": 481019
+    },
+    {
+      "attempt_id": "v31_cal_atomic_1_12_baseline_481001",
+      "condition": "BASELINE",
+      "final_sha256": "0f8f2642e7ee1b67f6978abca5f07c65df3a0dbd2d8de0f805c0d3de3efa68e8",
+      "finish_reason": "stop",
+      "item_id": "atomic/1-12",
+      "process_criterion_scores": [
+        1,
+        1,
+        1
+      ],
+      "process_score": 3,
+      "reasoning_sha256": "c454431510bba5735631d7b3fb557be0a048c1e590686b9c45ef97a6300d791c",
+      "seed": 481001
+    },
+    {
+      "attempt_id": "v31_cal_atomic_1_12_baseline_481019",
+      "condition": "BASELINE",
+      "final_sha256": "28639d1314c3be764df5bf9552808581c46bbe77664d629dd1010a9dba29c48e",
+      "finish_reason": "stop",
+      "item_id": "atomic/1-12",
+      "process_criterion_scores": [
+        1,
+        1,
+        1
+      ],
+      "process_score": 3,
+      "reasoning_sha256": "baa5d988642543ae6000e01bddb31d84c2cebd0800ff599d246720e03255d880",
+      "seed": 481019
+    },
+    {
+      "attempt_id": "v31_cal_atomic_1_12_visible_guidance_481001",
+      "condition": "VISIBLE_GUIDANCE",
+      "final_sha256": "810e7b61a4313ad7c2c975fc450ad3a7188a0fb16f6f81fb45ad6b67cd92b48f",
+      "finish_reason": "stop",
+      "item_id": "atomic/1-12",
+      "process_criterion_scores": [
+        1,
+        1,
+        1
+      ],
+      "process_score": 3,
+      "reasoning_sha256": "44412734d64731b237b56a35397cf8b3ff97bfcf1efe84919f0a6c67c2829475",
+      "seed": 481001
+    },
+    {
+      "attempt_id": "v31_cal_atomic_1_12_visible_guidance_481019",
+      "condition": "VISIBLE_GUIDANCE",
+      "final_sha256": "dd9dc7f41a180d48d8cf90be9396f28c3349432932cdfd1b8964a0c62df4782d",
+      "finish_reason": "stop",
+      "item_id": "atomic/1-12",
+      "process_criterion_scores": [
+        1,
+        1,
+        1
+      ],
+      "process_score": 3,
+      "reasoning_sha256": "f8beb78ea7684cb111741b0588a31e5f80c6abb24fa8addd74d0b85c30abea5d",
+      "seed": 481019
+    },
+    {
+      "attempt_id": "v31_cal_atomic_1_41_baseline_481001",
+      "condition": "BASELINE",
+      "final_sha256": "0998d443d3943b564b4dec9073611c00f0cb0f626e1b42cb84ab99b7e64341df",
+      "finish_reason": "stop",
+      "item_id": "atomic/1-41",
+      "process_criterion_scores": [
+        0,
+        1,
+        0
+      ],
+      "process_score": 1,
+      "reasoning_sha256": "b1cb7a72e428202d96a63b2fb90ace504955252313be77d10fdd3c32cb4a68e5",
+      "seed": 481001
+    },
+    {
+      "attempt_id": "v31_cal_atomic_1_41_baseline_481019",
+      "condition": "BASELINE",
+      "final_sha256": "8d0e89ff9602c2c86bc102173b68966420d37eb3b5e8bcb7a46fcbaad519789d",
+      "finish_reason": "stop",
+      "item_id": "atomic/1-41",
+      "process_criterion_scores": [
+        0,
+        1,
+        0
+      ],
+      "process_score": 1,
+      "reasoning_sha256": "b5bb4a809067395811fbedb8aab72bd67ce4e669083ece53d21424e95d7cad7a",
+      "seed": 481019
+    },
+    {
+      "attempt_id": "v31_cal_atomic_1_41_visible_guidance_481001",
+      "condition": "VISIBLE_GUIDANCE",
+      "final_sha256": "8a443bf9be87b79aeda020f2d5a31948b8c03eb0171bd3f4f987e85e81af3b73",
+      "finish_reason": "stop",
+      "item_id": "atomic/1-41",
+      "process_criterion_scores": [
+        0,
+        1,
+        0
+      ],
+      "process_score": 1,
+      "reasoning_sha256": "a74ad3df31cc2aef9078d82996414e8204bf72be195a7ebead66baa4fd1c2125",
+      "seed": 481001
+    },
+    {
+      "attempt_id": "v31_cal_atomic_1_41_visible_guidance_481019",
+      "condition": "VISIBLE_GUIDANCE",
+      "final_sha256": "394a4524f80d7607a633d2f41cf3bded16354f816926e26c52b2984e7b7af7c6",
+      "finish_reason": "stop",
+      "item_id": "atomic/1-41",
+      "process_criterion_scores": [
+        0,
+        1,
+        0
+      ],
+      "process_score": 1,
+      "reasoning_sha256": "47a75b5c69ca5564d4ccd4951c4481f822f32e6c95f5f9dc8a6a63a7cd3a9b77",
+      "seed": 481019
+    }
+  ],
+  "schema_version": 1,
+  "scoring_method": "Frozen item-specific process criteria scored binary 0/1 from recorded reasoning/final text; official final-answer components scored separately 0/0.5/1 against frozen PHYSICS eval row. No latent-condition outputs were interpreted.",
+  "status": "VISIBLE_GATE_FAIL_LATENT_UNINTERPRETED",
+  "stop_boundary": "Visible guidance failed the frozen process gate; do not interpret latent conditions and do not access/call heldouts. Raw latent matrix outputs exist because Root approved the exact 30-coordinate matrix; preserved but unscored/uninterpreted."
+}

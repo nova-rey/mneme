@@ -1,0 +1,75 @@
+{
+  "authority": "Root Foreman instruction in active task thread",
+  "base_freeze_unchanged": true,
+  "base_plan_sha256": "b032078782c0cd4fa6d56fe5dc9dc3bba8c0fe18021c1a7c22338899668dcdf8",
+  "created_utc": "2026-10-11T22:29:00Z",
+  "criteria_by_item": {
+    "quantum/1-1009": [
+      "Recognizes the distinct norm-conservation, stationary-state, and initial-state expansion parts.",
+      "Uses Schrödinger evolution/energy eigenstates and overlap integrals for the appropriate subproblem.",
+      "Distinguishes norm conservation and phase-only stationarity from the specific top-hat expansion coefficients."
+    ],
+    "quantum/2-2001": [
+      "Identifies the cubic infinite-well eigenproblem and requested lowest state/counting-law parts.",
+      "Uses separated 3D eigenstates and phase-space/state counting for the corresponding requests.",
+      "Normalizes the lowest state correctly and states the large-N approximation/scope for the E^(3/2) count."
+    ],
+    "quantum/3-3006": [
+      "Recognizes the l=1 angular-momentum subspace and decomposes the angular state into spherical-harmonic components.",
+      "Computes the requested angular-momentum expectation using the correct component/symmetry relations.",
+      "Uses normalized component weights for the Lz measurement probability and gives a normalized angular density."
+    ],
+    "quantum/4002": [
+      "Identifies the requested regime as time-dependent evolution and expectation-value/Ehrenfest motion rather than stationary spectral analysis.",
+      "Chooses the time-dependent Schrödinger equation with the stated potential and the commutator/Ehrenfest method for the expectation value.",
+      "Keeps the conclusion scoped to the expectation value, derives the requested Newton relation, and addresses the instrument application without treating it as an individual classical trajectory."
+    ],
+    "quantum/5016": [
+      "Separates the rotor H0 from the electric-field perturbation and recognizes the degenerate j-level structure.",
+      "Uses the appropriate selection rules and degenerate-subspace reasoning for the requested leading correction.",
+      "Explains why the allowed nondegenerate treatment applies to the requested matrix elements while preserving m degeneracy."
+    ],
+    "quantum/5051": [
+      "Recognizes a three-state degenerate manifold before perturbing.",
+      "Forms and diagonalizes the perturbation matrix in that degenerate subspace.",
+      "Avoids the nondegenerate formula on the manifold and reports the unchanged/split states consistently."
+    ],
+    "quantum/5073": [
+      "Classifies the pulse as a short-time time-dependent perturbation problem.",
+      "Uses transition amplitudes/parity selection to reason about the requested transition probabilities.",
+      "Gives the requested P2 dependence and scopes it to the stated small-transition/short-pulse assumptions."
+    ],
+    "quantum/6005": [
+      "Identifies the low-energy hard-sphere scattering regime and applies the boundary at r0 to the s-wave.",
+      "Uses partial-wave threshold suppression for higher angular momenta as k approaches zero.",
+      "Reports the requested scaling with correct sign/coefficient and checks its low-energy scope."
+    ],
+    "quantum/6015": [
+      "Separates symmetry around the incident axis from full angular independence and distinguishes the problem parts.",
+      "Uses the differential cross section and a consistent Born-amplitude representation for the scattering observable.",
+      "States low-energy/partial-wave and weak-potential Born assumptions only where they apply."
+    ],
+    "quantum/6040": [
+      "Identifies the two unstable energy/lifetime components and the requested oscillation/probability-difference quantity.",
+      "Evolves each component with both its phase and decay width, retaining their relative phase.",
+      "Preserves the interference term and reports the requested time dependence with the right scope."
+    ]
+  },
+  "heldout_embargo_unchanged": true,
+  "kind": "FROZEN_PROCESS_SCORE_CRITERIA_AMENDMENT_BEFORE_CALIBRATION",
+  "package_id": "MI2-PAPER-GUIDANCE-20261011",
+  "purpose": "Resolve internal mismatch between the frozen global 0-3 process score and item-specific answer/process reference checks. This freezes three binary process dimensions per item before any inference; answer-component scoring remains separate and unchanged.",
+  "scale": {
+    "name": "process_score",
+    "per_dimension": [
+      0,
+      1
+    ],
+    "range": [
+      0,
+      3
+    ]
+  },
+  "schema_version": 1,
+  "scoring_rule": "For each dimension, assessor records an evidence span and assigns 1 only if the required procedure/decision is clearly present; otherwise 0. Missing, truncated, or malformed output receives no credit for absent evidence. The separate answer score continues to use official final-answer components exactly as in the base freeze."
+}

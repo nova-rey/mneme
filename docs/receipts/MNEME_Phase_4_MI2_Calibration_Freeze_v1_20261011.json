@@ -1,0 +1,448 @@
+{
+  "authorities": {
+    "owner_task": "MNEME Phase 4 \u2014 MI2 Paper-Faithful Semantic Guidance Test",
+    "root_instruction": "No held-out/scored calls until freeze reviewed by Root",
+    "source_paper_sha256": "ffd265f3b32a93d6b7967c69faf8e992d13ccdadc2c0bc2927a2f7ffcf5791fc"
+  },
+  "bank_construction": {
+    "kv_projection": "Use frozen GGUF/native MI1 encoder at float32 normalized Kcur_normed/Vcur_normed captures, before RoPE; preserve native token-order per layer and 2 KV heads; keys relative phase zero. Confirm 24 K/V sources and exact layer/head dimensions against model output; abort if mismatch.",
+    "retention": "Encode each complete source string with the pinned Gemma tokenizer using one leading BOS; in each wrapped encoding retain exactly the card-content token positions only, excluding BOS and wrapper tokens; raw encoding retains card content tokens only. Store token IDs and integer positions; fail closed on non-unique/non-compositional span. Concatenate slots in order raw, internal_principles, private_reasoning_note. No averaging or answer-bearing extra text. Target and irrelevant card use identical recipe.",
+    "selection": "Query capture on calibration task prefixes only, with target+neutral reference banks attached. Use normalized pre-RoPE final prompt-token Q; Eq.3 max target-key similarity minus max reference-key similarity per Q head then average within each KV group; record target-bank and prompt attention mass; rank groups within each layer by margin (bank mass tie-break), top 1 group/layer, rank layers by their group margin and freeze top 4; expand KV group to corresponding 4 Q heads via pinned GQA/SWA mapping. Selector and bank bias frozen before heldout.",
+    "templates": [
+      {
+        "id": "raw",
+        "text": "{BANK_CARD}"
+      },
+      {
+        "id": "internal_principles",
+        "text": "Internal principles for scientific problem solving:\n\n{BANK_CARD}"
+      },
+      {
+        "id": "private_reasoning_note",
+        "text": "A private note available during reasoning:\n\n{BANK_CARD}"
+      }
+    ]
+  },
+  "base_commit": "42084b99912f59c29e70694c5d697660345ec536",
+  "branch": "research/phase4-mi1-memory-inception",
+  "canonical_paper": {
+    "pdf_path": "/home/nyx/mneme-artifacts/phase4-mi2/source/memory-inception-arxiv-2605.06225v2.pdf",
+    "sha256": "ffd265f3b32a93d6b7967c69faf8e992d13ccdadc2c0bc2927a2f7ffcf5791fc",
+    "source_release": "ArXiv source inspected; source text says anonymous code/data release but exposes no URL. Candidate third-party repository was not authenticated as author code and lacks license; not used.",
+    "text_path": "/home/nyx/mneme-artifacts/phase4-mi2/source/memory-inception-arxiv-2605.06225v2.txt",
+    "title": "Memory Inception: Latent-Space KV Cache Manipulation for Steering LLMs",
+    "version": "arXiv:2605.06225v2"
+  },
+  "conditions": {
+    "calibration": [
+      "BASELINE",
+      "VISIBLE_GUIDANCE",
+      "LATENT_TARGET_BANK_BIAS_0.0",
+      "LATENT_TARGET_BANK_BIAS_0.5",
+      "LATENT_TARGET_BANK_BIAS_1.0"
+    ],
+    "heldout": [
+      "BASELINE",
+      "VISIBLE_GUIDANCE",
+      "LATENT_TARGET_BANK_FROZEN_CALIBRATION_BIAS",
+      "IRRELEVANT_BANK_SAME_RECIPE",
+      "DISABLED_AFTER_ATTACHMENT",
+      "REATTACHED_TARGET_BANK_REUSE"
+    ],
+    "lifecycle": "For two preselected heldout items quantum/5073 and quantum/6005, for each seed: baseline, visible, attach target+generate, replace attached target with irrelevant bank+generate, clear bank+generate, reattach target bank at frozen bias+generate. Verify bank fingerprints/state before each generation. The other four held-outs receive baseline/visible/latent/irrelevant only. Disabled output is compared to same-seed baseline; reuse must reproduce first latent output byte-for-byte."
+  },
+  "created_utc": "2026-10-11T22:21:30+00:00",
+  "failure_and_stop_criteria": [
+    "No held-out output is scored until Root reviews the frozen calibration outcome and heldout freeze.",
+    "If exact prompt/cache-disabled same-condition duplicate differs bytewise, stop and diagnose determinism before experimental calls.",
+    "If visible calibration gate fails, stop held-out scoring; use only a documented calibration-only revision.",
+    "If selector/bank/site fingerprints mismatch, prompt contains the secret, or state leaks across conditions, stop that coordinate and preserve evidence.",
+    "If bank attach does not change fingerprint, clear does not remove, replacement does not change, or reattach fails to reproduce latent, report apparatus failure; do not reinterpret outputs.",
+    "No condition-specific prompt changes beyond visible guidance; no held-out gain/site/prompt tuning; no secondary MNEME neighborhood unless primary heldout meets success criteria.",
+    "Do not load or modify any MNEME state/SAA/learner/introspection; do not run paid GPU or another model family."
+  ],
+  "guidance_source": {
+    "bank_card": {
+      "action": "Decide whether the answer concerns allowed states, time evolution, measurement statistics, response to a small change, or asymptotic behavior.",
+      "trap_check": "Avoid solving the wrong kind of quantum problem because similar symbols appear in the prompt. The mathematical object in the final answer should match the physical question.",
+      "trigger": "A prompt mixes states, operators, spectra, measurement, and time language; separate spectral, dynamical, measurement, and approximation questions before computing."
+    },
+    "derivation_note": "Verbatim representative paper card, not rewritten from outputs. The authors report deriving cards from 5\u201310 construction questions, reference solutions and standard knowledge, then removing source examples/answers/formulas/numeric constants/solution-order traces; exact author source examples were not available.",
+    "paper_location": "Appendix E, Table 5, Quantum mechanics row; canonical PDF p.20 / printed page 19"
+  },
+  "irrelevant_control_bank": {
+    "card": {
+      "action": "Identify the transform parameter and convergence domain, then choose among substitution, differentiation under the integral, contour/symmetry reduction, or known-transform matching.",
+      "trap_check": "Do not simplify outside the valid domain. Check the final expression by limits, differentiation with respect to the parameter, or a simple numeric substitution.",
+      "trigger": "The problem contains a parameterized integral, transform-like kernel, or special-function-looking expression; success often depends on choosing the right representation before manipulating the integral."
+    },
+    "paper_location": "Appendix E, Table 7, Integral and Laplace-integral row; canonical PDF p.21 / printed page 20",
+    "same_bank_recipe": true
+  },
+  "package_id": "MI2-PAPER-GUIDANCE-20261011",
+  "paper_to_gemma_mapping": [
+    {
+      "deviation": "Author\u2019s original 5\u201310 construction prompts and GPT-5.5 distillation cannot be reproduced from the inspected release.",
+      "gemma": "Appendix E/Table 5 quantum card verbatim; no solved example/reference answer in bank",
+      "paper": "PHYSICS process card distilled from construction problems; answer-bearing details removed"
+    },
+    {
+      "deviation": "Wrapper wordings are local instantiations because paper gives wrapper classes, not exact prompt strings.",
+      "gemma": "Raw card plus two fixed wrappers; retain only exact card token span (BOS excluded) in each variant; fail closed if alignment is absent or ambiguous. Token IDs/selected integer positions to be recorded in bank manifest before held-out inference.",
+      "paper": "Raw descriptor plus direct and contextualized variants; keep descriptor-aligned positions"
+    },
+    {
+      "deviation": "Gemma Q2/llama.cpp is a custom port; paper tests Llama 3.1 and Qwen3 HF/vLLM, not Gemma. Native path must be shape/hash verified before use.",
+      "gemma": "MI1 native Gemma Q2 encoder captures normalized pre-RoPE K/V; 24 KV-producing source layers \u00d7 2 KV heads; 42 query layers \u00d7 8 Q heads; Gemma SWA/full-attention mapping from existing source map; relative phase zero. Store all descriptor slots, do not average.",
+      "paper": "Frozen model native norm and K/V projections; canonical pre-RoPE K; GQA map to query heads"
+    },
+    {
+      "deviation": "Paper does not fix m=4/k=1 or give a Gemma structured-reasoning selector. These are a sparse, bounded Gemma port; gains are global bank logit bias because the current patch lacks the paper\u2019s layer-wise rho schedule.",
+      "gemma": "On the four calibration items only, capture last-prompt-token queries with target and neutral-reference bank; compute Eq.3 mean target-reference alignment plus bank/prompt mass; top 1 KV group per layer, rank aggregate across layers, freeze top 4 query layers (expanded to their 4 Q heads). Calibration-selected global bank-logit bias from fixed {0.0,0.5,1.0}; smallest setting meeting declared calibration criterion; if none, stop before heldout.",
+      "paper": "Calibration selector: target/reference alignment and route diagnostics; top-k units per layer, top-m layers; freeze sites/gains"
+    },
+    {
+      "deviation": "Small N and local deterministic seeds are a feasibility study, not author-scale replication. Manual rubric scoring replaces paper\u2019s GPT-5.5-thinking \u00d73 graders.",
+      "gemma": "Reasoning ON; baseline, visible card, latent target bank, irrelevant same-procedure bank; disabled-after-attach/removal and reattach/reuse on two preselected held-outs.",
+      "paper": "Plain problem, visible prompt with same guidance, latent bank; scoring via question-specific rubric"
+    },
+    {
+      "deviation": "Backbone, quantization, runtime, and backend all differ; results scope only to this Gemma port.",
+      "gemma": "Exact local google/gemma-4-E4B-it Q2 GGUF and patched llama.cpp, RTX 3060 Laptop.",
+      "paper": "Llama 3.1 / Qwen3-30B on HF/vLLM GPUs"
+    }
+  ],
+  "preheldout_requirements": [
+    "Root review of this exact freeze artifact",
+    "Host/runtime preflight; GPU and disk safe",
+    "Calibration-only calls and raw outputs durably reopened",
+    "Calibration score report and final selected selector/gain freeze with hash",
+    "No held-out/scored call before Root receives and reviews final selected selector/gain freeze"
+  ],
+  "prompt_contract": {
+    "latent_irrelevant_disabled_system": "Same baseline system; no guidance text.",
+    "ordinary_prompt_secret_exclusion": "For LATENT, IRRELEVANT, DISABLED, REUSE and replacement arms, the only system/user messages are the baseline system and exact question. Card content appears only in side-bank bytes. Save complete request JSON and final rendered prompt bytes/hash; scan case-insensitively for harbor/tide/dock irrelevant to this physics test and also for exact card-specific phrases: bank text must not occur in request.",
+    "system_baseline": "You are solving a quantum mechanics problem. Work from the stated assumptions, show the reasoning needed to justify each requested result, and clearly label final answers for every part.",
+    "user": "Exact `questions` bytes from the listed PHYSICS row, UTF-8 decoded without normalization.",
+    "visible_system": "You are solving a quantum mechanics problem. Work from the stated assumptions, show the reasoning needed to justify each requested result, and clearly label final answers for every part.\n\nQuantum mechanics process guide (same guidance encoded for the latent condition):\nTrigger: A prompt mixes states, operators, spectra, measurement, and time language; separate spectral, dynamical, measurement, and approximation questions before computing.\nAction: Decide whether the answer concerns allowed states, time evolution, measurement statistics, response to a small change, or asymptotic behavior.\nTrap Check: Avoid solving the wrong kind of quantum problem because similar symbols appear in the prompt. The mathematical object in the final answer should match the physical question."
+  },
+  "replication_and_budget": {
+    "calibration_generation_calls": 42,
+    "counting": "4 calibration items \u00d7 2 seeds \u00d7 (baseline + visible + three latent biases) = 40, plus 2 duplicate deterministic preflight calls = 42; heldout = 6 items \u00d7 2 seeds \u00d7 4 primary conditions (48) plus disabled+re-use for 2 items \u00d7 2 seeds (8) = 56. Total = 98.",
+    "heldout_calls_if_calibration_passes": 56,
+    "note": "Review count arithmetic before any dispatch; all calls checkpoint raw outputs immediately. Planned 2 matched seeds per problem. This is a small local feasibility screen, not population inference.",
+    "total_generation_calls_if_passes": 98
+  },
+  "schema_version": 1,
+  "scoring": {
+    "answer_score": "Per item, score each official final-answer component 0/0.5/1.0 (wrong/missing; materially incomplete but correct component; correct/equivalent). Item score is mean over reference components. Record explicit rationale for any equivalence/partial-credit decision. Official solution text is retained in the frozen plan as reference.",
+    "latent_gain_selection": "After visible gate, evaluate frozen selector with logit biases [0.0,0.5,1.0] on calibration items and two seeds. Select the smallest bias whose mean process score exceeds baseline by >=0.25 and has positive mean delta in >=2/4 items, with answer-score mean no worse than baseline by >0.10. If none qualifies, record calibration latent failure and do not interpret heldout as a result; Root reviews next calibration revision. No other gain search.",
+    "process_score": "Blinded condition label; 0/1 each for the three task-specific predeclared process criteria included per item (0\u20133 total). Criteria ask (1) task regime/subparts identified, (2) representation/method fits that regime, (3) trap/check prevents solving the wrong mathematical object or overextending assumptions. Item-specific criteria above operationalize these; assessor writes evidence span before assigning 0/1.",
+    "visible_calibration_gate": "Across 4 calibration items \u00d7 2 seeds: visible must exceed baseline by mean >=0.50 points on 0\u20133 process score and have positive item-mean delta on >=3/4 items; visible mean answer score may not be >0.10 below baseline. If gate fails, do not score heldout; any material redesign requires a new calibration-only frozen revision."
+  },
+  "seed_and_runtime": {
+    "context_size": 8192,
+    "gguf_path_remote": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+    "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+    "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU, 6144 MiB",
+    "gpu_layers": 99,
+    "host": "brokeass-msi",
+    "llama_build": "0.5.0-dev build 1; isolated MI1 patch",
+    "llama_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+    "name": "google/gemma-4-E4B-it",
+    "parallel_slots": 1,
+    "prompt_cache": false,
+    "reasoning": "ON",
+    "reasoning_format": "deepseek",
+    "sampler": {
+      "max_tokens": 8192,
+      "min_p": 0.05,
+      "seed_values": [
+        481001,
+        481019
+      ],
+      "stream": true,
+      "temperature": 0.35,
+      "top_k": 40,
+      "top_p": 0.9
+    },
+    "server_binary_sha256": "0032af18feb8cfa683ed34757c47bb10e4fbcdcd309071e937e4f6b4e4fd741c",
+    "threads": 4,
+    "threads_batch": 4
+  },
+  "source_data": {
+    "calibration_split": "PHYSICS-eval/quantum_dataset_eval.jsonl",
+    "commit": "91140b8c5590b539a86d974c194d2c829d948de3",
+    "construction_method_deviation": "The exact representative quantum-mechanics process card is transcribed from paper Appendix E/Table 5. The source paper says its card was distilled from 5\u201310 construction Qs plus reference solutions by GPT-5.5-thinking, with answer fragments, numerical constants, formulas and solution-order traces removed. The anonymous author construction IDs/card source pipeline are unavailable, so this run does not claim to redistill/recreate them; it reuses the published process-only example verbatim. PHYSICS items selected below are calibration/evaluation only and are not bank source material.",
+    "file_hashes": {
+      "benchmark_eval": {
+        "bytes": 621065,
+        "path": "/home/nyx/mneme-artifacts/phase4-mi2/source/PHYSICS/PHYSICS/PHYSICS-eval/quantum_dataset_eval.jsonl",
+        "rows": 53,
+        "sha256": "6274d86cc8767fdd332f04ab2175d5754bb20250190ba10bf45d9e33367ac919"
+      },
+      "calibration": {
+        "bytes": 621065,
+        "path": "/home/nyx/mneme-artifacts/phase4-mi2/source/PHYSICS/PHYSICS/PHYSICS-eval/quantum_dataset_eval.jsonl",
+        "rows": 53,
+        "sha256": "6274d86cc8767fdd332f04ab2175d5754bb20250190ba10bf45d9e33367ac919"
+      },
+      "heldout": {
+        "bytes": 2544153,
+        "path": "/home/nyx/mneme-artifacts/phase4-mi2/source/PHYSICS/PHYSICS/PHYSICS-test/quantum_dataset_test.jsonl",
+        "rows": 183,
+        "sha256": "a256cfb3e3bf410c36d6495de2ad4278dc09f97644e0a0d434d184a625c8b5bc"
+      }
+    },
+    "heldout_split": "PHYSICS-test/quantum_dataset_test.jsonl",
+    "license": "MIT (repository LICENSE)",
+    "repository": "yale-nlp/Physics",
+    "test_eval_ids_disjoint": true
+  },
+  "split_audit": {
+    "calibration_count": 4,
+    "calibration_heldout_ids_disjoint": true,
+    "calibration_split": "PHYSICS-eval",
+    "heldout_count": 6,
+    "heldout_split": "PHYSICS-test",
+    "selected_calibration_ids_in_eval": [
+      "quantum/4002",
+      "quantum/5051",
+      "quantum/6015",
+      "quantum/6040"
+    ],
+    "selected_heldout_ids_in_test": [
+      "quantum/1-1009",
+      "quantum/2-2001",
+      "quantum/3-3006",
+      "quantum/5016",
+      "quantum/5073",
+      "quantum/6005"
+    ],
+    "test_eval_global_id_overlap_count": 0
+  },
+  "splits": {
+    "calibration": [
+      {
+        "graphs": null,
+        "id": "quantum/4002",
+        "official_final_answers": [
+          "i \\hbar \\frac{\\partial \\psi}{\\partial t} = -\\frac{\\hbar^2}{2m} \\nabla^2 \\psi - q \\mathbf{E} \\cdot \\mathbf{r} \\, \\psi",
+          "m \\frac{d^2}{dt^2} \\langle \\mathbf{r} \\rangle = q \\mathbf{E}"
+        ],
+        "official_solutions": "(a) The Schr\u00f6dinger equation for the particle is\n\n$$\ni \\hbar \\frac{\\partial \\psi}{\\partial t} = -\\frac{\\hbar^2}{2m} \\nabla^2 \\psi - q \\mathbf{E} \\cdot \\mathbf{r} \\, \\psi.\n$$\n\n(b) The Hamiltonian of the particle is\n\n$$\nH = \\frac{\\mathbf{p}^2}{2m} - q \\mathbf{E} \\cdot \\mathbf{r}.\n$$\n\nThen\n\n$$\n\\frac{dx}{dt} = \\frac{1}{i \\hbar} [x, H] = \\frac{1}{i \\hbar} \\left[x, \\frac{p_x^2}{2m} \\right] = \\frac{p_x}{m} \\frac{1}{i \\hbar} [x, p_x] = \\frac{p_x}{m},\n$$\n\n$$\n\\frac{dp_x}{dt} = \\frac{1}{i \\hbar} [p_x, H] = \\frac{1}{i \\hbar} \\left[p_x, -\\mathbf{E}_x x \\right] = -\\frac{q \\mathbf{E}_x}{i \\hbar} [p_x, x] = q \\mathbf{E}_x,\n$$\n\nand hence\n\n$$\n\\frac{d \\langle \\mathbf{r} \\rangle}{dt} = \\frac{\\langle \\mathbf{p} \\rangle}{m},\n$$\n\n$$\n\\frac{d \\langle \\mathbf{p} \\rangle}{dt} = q \\mathbf{E}.\n$$\n\nThus\n\n$$\n\\frac{d^2}{dt^2} \\langle \\mathbf{r} \\rangle = \\frac{1}{m} \\frac{d \\langle \\mathbf{p} \\rangle}{dt},\n$$\n\nor\n\n$$\nm \\frac{d^2}{dt^2} \\langle \\mathbf{r} \\rangle = q \\mathbf{E},\n$$\n\nwhich is just Newton's second law of motion.\n\n(c) These results show that we could use classical mechanics directly when we are computing the trajectory of a charged particle in instruments such as mass spectrometers, particle accelerators, etc.\n\n",
+        "process_rubric": {
+          "criteria": [
+            "writes the time-dependent Schr\u00f6dinger equation with potential -q E\u00b7r",
+            "uses the appropriate expectation-value/Ehrenfest equation rather than a stationary-spectrum method",
+            "obtains m d\u00b2<r>/dt\u00b2=qE",
+            "connects this result to a concrete instrument/design application"
+          ],
+          "task_class": "time-dependent dynamics / expectation-value motion"
+        },
+        "question": "A particle of charge $q$ and mass $\\text m$ is subject to a uniform electrostatic field $\\mathbf{E}$.\n\n(a) Write down the time-dependent Schr\u00f6dinger equation for this system.\n\n(b) Show that the expectation value of the position operator obeys Newton's second law of motion when the particle is in an arbitrary state $\\psi(\\mathbf{r}, t)$.\n\n(c) It can be shown that this result is valid if there is also a uniform magnetostatic field present. Do these results have any practical application to the design of instruments such as mass spectrometers, particle accelerators, etc.? Explain.",
+        "question_sha256": "da3ef11b578046bc2f2c5774b06b9f9f9885035cd23bc69dcb2196cc93aa8acd",
+        "source_line_sha256": "ef5a961f2fd6c20ca70f8f77aa3807418f97d8f833a893b74d7a04299a931530"
+      },
+      {
+        "graphs": null,
+        "id": "quantum/5051",
+        "official_final_answers": [
+          "E^{(1)}_0 = \\frac{5}{2} \\hbar\\omega",
+          "E^{(1)}_{\\pm} = \\frac{5}{2} \\hbar\\omega \\pm \\frac{\\hbar b}{2m\\omega_0}",
+          "|\\psi'_0\\rangle = |001\\rangle",
+          "|\\psi^{(1)}_{\\pm}\\rangle = \\frac{1}{\\sqrt{2}} (|100\\rangle \\pm |010\\rangle)"
+        ],
+        "official_solutions": "Write the unperturbed energy eigenstate as\n\n$$\n|n_x n_y n_z \\rangle = |n_x \\rangle |n_y \\rangle |n_z \\rangle,\n$$\n\nwhere $|n\\rangle$ is the $n$th eigenstate of a one-dimensional harmonic oscillator. The first excited state of the 3-dimensional isotropic harmonic oscillator is degenerate in the states\n\n$$\n|\\psi_1 \\rangle = |100\\rangle, |\\psi_2 \\rangle = |010\\rangle, |\\psi_3 \\rangle = |001\\rangle.\n$$\n\nCalculating the matrix elements\n\n$$\nH'_{ij} = b \\langle \\psi_i | xy | \\psi_j \\rangle,\n$$\n\nwe find\n\n$$\nH'_{11} = b \\langle 100 | xy | 100 \\rangle = b \\langle 1 | x | 1 \\rangle \\langle 0 | y | 0 \\rangle = 0 = H'_{22} = H'_{33},\n$$\n\n$$\nH'_{12} = b \\langle 100 | xy | 010 \\rangle = b \\langle 1 | x | 0 \\rangle \\langle 0 | y | 1 \\rangle = b \\langle 0 | x | 1 \\rangle^* \\langle 0 | y | 1 \\rangle = \\frac{\\hbar b}{2m\\omega_a} = H'_{21},\n$$\n\n$$\nH'_{13} = b \\langle 100 | xy | 001 \\rangle = b \\langle 1 | x | 0 \\rangle \\langle 0 | y | 0 \\rangle = 0 = H'_{31},\n$$\n\n$$\nH'_{23} = b \\langle 010 | xy | 001 \\rangle = b \\langle 0 | x | 0 \\rangle \\langle 1 | y | 0 \\rangle = 0 = H'_{32}.\n$$\n\nThus\n\n$$\nH' = \\frac{\\hbar b}{2m\\omega_0}\n\\begin{pmatrix}\n0 & 1 & 0 \\\\\n1 & 0 & 0 \\\\\n0 & 0 & 0\n\\end{pmatrix}.\n$$\n\nThe secular equation\n\n$$\n\\det|H' - E^{(1)}| = 0\n$$\n\nhas roots $E^{(1)} = 0, E^{(1)} = \\pm \\frac{\\hbar b}{2m\\omega_0}$. The unperturbed oscillator has energy $E^{(0)}_n = (n + \\frac{3}{2})\\hbar\\omega$. The first excited state, $n = 1$, now splits into three levels with the wave functions indicated:\n\n$$\nE^{(1)}_0 = \\frac{5}{2} \\hbar\\omega + 0 = \\frac{5}{2} \\hbar\\omega, \\quad |\\psi'_0\\rangle = |\\psi_3\\rangle = |001\\rangle.\n$$\n\n$$\nE^{(1)}_{\\pm} = \\frac{5}{2} \\hbar\\omega \\pm \\frac{\\hbar b}{2m\\omega_0}, \\quad |\\psi^{(1)}_{\\pm}\\rangle = \\frac{1}{\\sqrt{2}} (|100\\rangle \\pm |010\\rangle).\n$$",
+        "process_rubric": {
+          "criteria": [
+            "identifies the three-state degenerate subspace before first-order perturbation",
+            "forms/diagonalizes perturbation matrix in the degenerate subspace",
+            "reports the unchanged state and split eigenstates/energies consistent with the reference",
+            "does not apply nondegenerate first-order formula directly to the degenerate manifold"
+          ],
+          "task_class": "degenerate perturbative response"
+        },
+        "question": "The first excited state of three-dimensional isotropic harmonic oscillator (of natural angular frequency $\\omega_0$ and mass $m$) is three-fold degenerate. Use the perturbation method to calculate the splitting (to the first order) of this three-fold degenerate state due to a small perturbation of the form $H' = bxy$, where $b$ is a constant. Give the first-order wave functions of the three split levels in terms of the wave functions of the unperturbed three-dimensional harmonic oscillator, given that, for a one-dimensional harmonic oscillator,\n\n$$\n\\langle n|x|n + 1 \\rangle = \\sqrt{\\frac{(n + 1)\\hbar}{2m\\omega_0}}.\n$$",
+        "question_sha256": "c939fc52454bb17741c289d0f5feb13c7fcdee54d9b76d14b42ef701e09eb171",
+        "source_line_sha256": "fdf83b94373372a6a23e7b50346fcaf124362c8fa1b4b4284c923703142f3e06"
+      },
+      {
+        "graphs": null,
+        "id": "quantum/6040",
+        "official_final_answers": [
+          "P_0(t) - \\bar{P}_0(t) = e^{-(\\gamma_L + \\gamma_S) t/2} \\cos\\left( \\frac{(m_L - m_S) c^2 t}{\\hbar} \\right)"
+        ],
+        "official_solutions": "Suppose the $K$ meson is a metastable state of width $\\Gamma$ at energy $\\varepsilon_0$. In the region of energy\n$$\nE = E_0 - \\frac{i}{2} \\Gamma,\n$$\n\nits wave function may be expressed as\n\n$$\n\\left| \\psi(t) \\right> = \\frac{1}{\\sqrt{2}} \\left| K_L \\right> \\exp \\left[ -i \\left( \\frac{m_Lc^2}{\\hbar} - i \\frac{\\gamma_L}{2} \\right) t \\right] \\\\\n+ \\left| K_S \\right> \\exp \\left[ -i \\left( \\frac{m_Sc^2}{\\hbar} - i \\frac{\\gamma_S}{2} \\right) t \\right]\n$$\n\n$$\n= \\frac{1}{\\sqrt{2}} \\left[ \\left| K_L \\right> \\exp \\left( -im_Lc^2t/\\hbar \\right) \\exp \\left( -\\frac{1}{2} \\gamma_L t \\right) \\right. \\\\ \\left.\n+ \\left| K_S \\right> e^{-im_Sc^2t/\\hbar} e^{-\\gamma_S t/2} \\right].\n$$\n\nThe probability of its being in the $\\left| K^0 \\right>$ state at time $t$ is\n\n$$\nP_0(t) = \\left| \\left< K^0 | \\psi(t) \\right> \\right|^2 \n$$\n\n$$\n= \\frac{1}{4} \\left| e^{-im_Lc^2t/\\hbar} e^{-\\gamma_L t/2} + e^{-im_Sc^2t/\\hbar} e^{-\\gamma_S t/2}  \\right|^2\n$$\n\n$$\n= \\frac{1}{4} \\left\\{ e^{-\\gamma_L t} + e^{-\\gamma_S t} + 2e^{-(\\gamma_L + \\gamma_S) t/2} \\cos \\left[ (m_L - m_S) c^2 t/\\hbar \\right] \\right\\},\n$$\n\nand the probability of its being in the $\\bar{K}^0$ state is\n\n$$\n\\bar{P}_0(t) = \\left| \\langle \\bar{K}^0 | \\psi(t) \\rangle \\right|^2\n$$\n\n$$\n= \\frac{1}{4} \\left\\{ e^{-\\gamma_L t} + e^{-\\gamma_S t} - 2e^{-(\\gamma_L + \\gamma_S) t/2} \\cos \\left[ (m_L - m_S) c^2 t/\\hbar \\right] \\right\\}.\n$$\n\nThus\n\n$$\nP_0(t) - \\bar{P}_0(t) = e^{-(\\gamma_L + \\gamma_S)/2} \\cos{[m_L - m_S) c^2t/\\hbar]}.\n$$",
+        "process_rubric": {
+          "criteria": [
+            "uses K_L/K_S decomposition rather than treating K0 as an energy eigenstate",
+            "accounts for relative phase and decay widths when deriving oscillation",
+            "reports time-dependent probability/interference term consistent with reference"
+          ],
+          "task_class": "two-state time evolution / oscillation"
+        },
+        "question": "The neutral K-meson states $|K^0\\rangle$ and $|\\bar{K}^0\\rangle$ can be expressed in terms of states $|K_L\\rangle$, $|K_S\\rangle$:\n\n$$\n|K^0\\rangle = \\frac{1}{\\sqrt{2}} (|K_L\\rangle + |K_S\\rangle),\n$$\n\n$$\n|\\bar{K}^0\\rangle = \\frac{1}{\\sqrt{2}} (|K_L\\rangle - |K_S\\rangle),\n$$\n\nwhere $\\left| K_L \\right>$ and $\\left| K_S \\right>$ are states with definite lifetimes $\\tau_L = \\frac{1}{\\gamma_L}$ and $\\tau_S = \\frac{1}{\\gamma_S}$ and distinct rest energies $m_Lc^2 \\neq m_Sc^2$. At time $t = 0$, a meson is produced in the state $\\left| \\psi(t = 0) \\right> = \\left| K^0 \\right>$. Let the probability of finding the system in state $\\left| K^0 \\right>$ at time $t$ be $P_0(t)$ and that of finding the system in state $|\\bar{K}^0 \\rangle$ at time $t$ be $\\bar{P}_0(t)$. Find an expression for $P_0(t) - \\bar{P}_0(t)$ in terms of $\\gamma_L, \\gamma_S, m_Lc^2$ and $m_Sc^2$. Neglect $CP$ violation.",
+        "question_sha256": "8162f99266e3751f8f5f3ed47cb19ccd93965b5ddce982ef7928aa62bb635e6f",
+        "source_line_sha256": "06b4aa127035d72087f5a468d11dae8bf4cfe5d0c09b765e75076745f2e8400c"
+      },
+      {
+        "graphs": null,
+        "id": "quantum/6015",
+        "official_final_answers": [
+          "\\frac{\\partial f(\\theta, \\varphi)}{\\partial \\varphi} = 0",
+          "\\frac{d f(\\theta)}{d \\theta} = 0",
+          "\\frac{d \\sigma}{d \\Omega} = |f(\\theta, \\varphi)|^2",
+          "f(\\theta, \\varphi) = -\\frac{m}{2 \\pi \\hbar^2} \\int V(r') \\exp(-i \\mathbf{q} \\cdot \\mathbf{r'}) d^3 r' = -\\frac{2m}{\\hbar^2 q} \\int_{0}^{\\infty} r' V(r') \\sin(qr') dr'",
+          "\\text{The interaction potential is small compared with the energy of the incident particle.}"
+        ],
+        "official_solutions": "(a) The incident wave $e^{ikz} = e^{ikr \\cos \\theta}$ is the eigenstate of $\\hat{l}_z$, third component of the angular momentum $L$, with eigenvalue $m = 0$. If the Hamiltonian is rotationally invariant, the angular momentum is conserved  \n\nand the outgoing wave is still the eigenstate of $\\hat{l}_z$ with eigenvalue m = 0, that is,\n\n$$\n\\hat{l}_z f(\\theta, \\varphi) = m f(\\theta, \\varphi) = 0.\n$$\n\nSince $ \\hat{l}_z = \\frac{\\hbar}{i} \\frac{\\partial}{\\partial \\varphi} $, this means that $\\partial f(\\theta, \\varphi)/\\partial \\varphi = 0$.\n\n(b) As the asymptotic form of the wave function $\\psi(r)$ is not an eigenfunction of $\\hat{L}^2$, we cannot extend the above argument to conclude that $f$ is independent of $\\theta$.\n\n(c) When the energy $E \\rightarrow 0$, i.e., $k \\rightarrow 0$, the incident wave consists mainly only of the $l = 0$ partial wave; other partial waves have very small amplitudes and can be neglected. Under such conditions, the rotational invariance of $H$ results in the conservation of $\\hat{L}^2$. Then the outgoing wave must also be the eigenstate of $\\hat{L}^2$ with eigenvalue $l = 0$ (approximately).\n\nAs \n\n$$\n\\hat{L}^2 = -\\hbar^2 \\left[ \\frac{1}{\\sin \\theta} \\frac{\\partial}{\\partial \\theta} \\left( \\sin \\theta \\frac{\\partial}{\\partial \\theta} \\right) + \\frac{1}{\\sin^2 \\theta} \\frac{\\partial^2}{\\partial \\varphi^2} \\right],\n$$\n\nwe have\n\n$$\n\\frac{1}{\\sin \\theta} \\frac{d}{d \\theta} \\left[ \\sin \\theta \\frac{d f(\\theta)}{d \\theta} \\right] = 0.\n$$\n\nAs $f(\\theta)$ must be a wave function with all the appropriate properties, this means\n\n$$\n\\frac{d f(\\theta)}{d \\theta} = 0.\n$$\n\n(d) The differential scattering cross section is given by\n\n$$\n\\frac{d \\sigma}{d \\Omega} = |f(\\theta, \\varphi)|^2.\n$$\n\n(e) In the first Born approximation, for scattering from a central field $V(r')$, $f$ is given by\n\n$$\nf(\\theta, \\varphi) = -\\frac{m}{2 \\pi \\hbar^2} \\int V(r') \\exp(-i \\mathbf{q} \\cdot \\mathbf{r'}) d^3 r'\n$$\n\n$$\n= -\\frac{2m}{\\hbar^2 q} \\int_{0}^{\\infty} r' V(r') \\sin(qr') dr',\n$$\n\nwhere $\\mathbf{q} = \\mathbf{k} - \\mathbf{k}_0$, $\\mathbf{k}$ and $\\mathbf{k}_0$ being respectively the momenta of the particle before and after scattering.\n\n(f) The validity of Born approximation requires that the interaction potential is small compared with the energy of the incident particle.",
+        "process_rubric": {
+          "criteria": [
+            "distinguishes incident-axis symmetry from full rotational invariance to answer angular dependence",
+            "uses differential cross-section |f|\u00b2 and gives Born amplitude in a defined convention",
+            "identifies weak interaction relative to incident energy as Born validity condition"
+          ],
+          "task_class": "scattering symmetry, observable, Born approximation, validity"
+        },
+        "question": "In the quantum theory of scattering from a fixed potential, we get the following expression for the asymptotic form of the wave function  \n\n$$\n\\psi(r) \\xrightarrow{r \\to \\infty} e^{ikz} + f(\\theta, \\varphi) \\frac{e^{ikr}}{r}.\n$$\n\n(a) If the entire Hamiltonian is rotationally invariant, give the argument that the scattering amplitude $f$ should be independent of the angle $\\varphi$.\n\n(b) Why cannot this argument be extended (considering rotation about any axis) to conclude that $f$ should be independent of $\\theta$ as well?\n\n(c) Reconsider part(b) in the case where the incident energy approaches zero.\n\n(d) What is the formula for the scattering cross section in terms of $f$?\n\n(e) What is the formula for the first Born approximation for $f$? (Be sure to define all quantities introduced. You need not worry about simple dimensionless factors like 2 or $\\pi$).  \n\n(f) Under what conditions is the Born approximation valid?",
+        "question_sha256": "4eaf244be1b5b71994aaf9424e31813c3f2c1ab469c0bc250b0a5c4526bd8e7b",
+        "source_line_sha256": "66bae35b40e10e5b11c86a98017addb2c1ca115a9af5825651b5b6bdda54b8a6"
+      }
+    ],
+    "heldout": [
+      {
+        "graphs": null,
+        "id": "quantum/5073",
+        "official_final_answers": [
+          "P_2 \\approx \\left( \\frac{16}{9\\pi^2} \\frac{eEa}{\\hbar} \\tau \\right)^2",
+          "P_3 = 0"
+        ],
+        "official_solutions": "The electron in the $ n = 1 $ eigenstate of the potential well\n\n$$\nV = \\begin{cases} \n0 & |x| \\leq a/2, \\\\\n\\infty & \\text{otherwise}\n\\end{cases}\n$$\n\nhas wave functions and corresponding energies\n\n$$\n\\psi_n(x) = \\sqrt{\\frac{2}{a}} \\sin \\left[ \\frac{n\\pi}{a} \\left( \\frac{a}{2} + x \\right) \\right] ,\n$$\n\n$$\nE_n = \\hbar^2 \\pi^2 n^2 / 2ma^2 , \\quad n = 1, 2, \\ldots .\n$$\n\nThe uniform electric field $E\\hat{e}_x$ has potential $\\phi = -\\int Edx = -Ex$. The potential energy of the electron (charge -e) due to $E, H' = eEx,$ is considered as a perturbation. We have\n\n$$\nH'_{n_2 n_1} = \\langle n_2|H'|n_1 \\rangle \n$$\n\n$$\n= \\frac{2}{a} \\int_{-\\frac{a}{2}}^{\\frac{a}{2}} \\sin \\left[ \\frac{n_1 \\pi}{a} \\left( x + \\frac{a}{2} \\right) \\right] \\sin \\left[ \\frac{n_2 \\pi}{a} \\left( x + \\frac{a}{2} \\right) \\right] eEx dx \n$$\n\n$$\n= \\frac{eE}{a} \\int_{-\\frac{a}{2}}^{\\frac{a}{2}} \\left\\{ \\cos \\left[ \\frac{(n_1 - n_2)}{a} \\pi \\left( x + \\frac{a}{2} \\right) \\right] \n- \\cos \\left[ \\frac{n_1 + n_2}{a} \\pi \\left( x + \\frac{a}{2} \\right) \\right] \\right\\} x dx\n$$\n\n$$\n= \\frac{eE}{a} \\left\\{ \\frac{a^2}{(n_1-n_2)^2 \\pi^2} [(-1)^{n_1-n_2} - 1] \n- \\frac{a^2}{(n_1+n_2)^2 \\pi^2} [(-1)^{n_1+n_2} - 1] \\right\\}\n$$\n\n$$\n= \\frac{4eEa}{\\pi^2} \\frac{n_1 n_2}{(n_1^2 - n_2^2)^2} [(-1)^{n_1+n_2} - 1] ,\n$$\n\n$$\n\\omega_{n_2 n_1} = \\frac{1}{\\hbar} (E_{n_2} - E_{n_1}) = \\frac{\\hbar \\pi^2}{2ma^2} (n_2^2 - n_1^2) ,\n$$\n\n$$\nC_{k'k}(t) = \\frac{1}{i\\hbar} \\int_{\\theta}^{\\tau} H'_{k'k}e^{i \\omega_{k'k} t}dt = \\frac{1}{\\hbar} H'_{k'k} (1 - e^{i \\omega_{k'k} \\tau}) \\frac{1}{\\omega_{k'k}}.\n$$\n\nFor the transition $1 \\rightarrow 2$,\n\n$$\nH'_{21} = \\langle 2|H'|1 \\rangle = -\\frac{16eEa}{9\\pi^2}, \\quad \\omega_{21} = \\frac{3\\hbar \\pi^2}{2ma^2},\n$$\n\nand so the probability of finding the electron in the n = 2 state at $t > \\tau$ is \n\n$$\nP_2 = |C_{21}(t)|^2 = \\frac{1}{\\hbar^2 \\omega_{21}^2} {H'}_{21}^2 (1 - e^{i \\omega_{21} \\tau} ) ( 1 - e^{-i \\omega_{21} \\tau} )\n$$\n\n$$\n= \\left( \\frac{16a^2}{9\\pi^2} \\right)^3 \\left[ \\frac{eEm}{\\hbar^2 \\pi} \\sin \\left( \\frac{3\\hbar \\pi^2}{4ma^2} \\tau \\right) \\right]^2 \\approx \\left( \\frac{16}{9\\pi^2} \\frac{eEa}{\\hbar} \\tau \\right)^2\n$$\n\nfor $ \\tau \\ll \\frac{\\hbar}{E_1 - E_2} $.\n\nFor the transition $ 1 \\rightarrow 3 $,\n\n$$\nH'_{31} = \\langle 3|H'|1 \\rangle = 0,\n$$\n\nand so\n\n$$\nP_3 = |C_{31}(t)|^2 = 0.\n$$\n\nThe validity of the time-dependent perturbation theory requires the time $ \\tau $ during which the perturbation acts should be small. The perturbation potential itself should also be small.",
+        "process_rubric": {
+          "criteria": [
+            "classifies pulse as short-time time-dependent perturbation",
+            "uses transition amplitudes/parity selection; concludes P3=0 for symmetry reason",
+            "gives P2 dependence matching reference and states small-transition/short-pulse validity assumptions"
+          ],
+          "task_class": "time-dependent perturbative response"
+        },
+        "question": "An electron is in the $ n = 1 $ eigenstate of a one-dimensional infinite square-well potential which extends from $ x = -a/2 $ to $ x = a/2 $. At $ t = 0 $ a uniform electric field $ E $ is applied in the $ x $ direction. It is left on for a time $ \\tau $ and then removed. Use time-dependent perturbation theory to calculate the probabilities $ P_2 $ and $ P_3 $ that the electron will be, respectively, in the $ n = 2 $ and $ n = 3 $ eigenstates at $ t > \\tau $. Assume that $ \\tau $ is short in the sense that $ \\tau \\ll \\frac{\\hbar}{E_1 - E_2} $, where $ E_n $ is the energy of the eigenstate $ n $. Specify any requirements on the parameters of the problem necessary for the validity of the approximations made in the application of time-dependent perturbation theory.",
+        "question_sha256": "60e8a2a2236489bf9da93b8eeb290407b2801b4552c381264c3d5fbcd6a18b99",
+        "source_line_sha256": "195c26421d301994bc1ecfd462281ec00d20abe3ffbe38843bfe8faec60bb78c"
+      },
+      {
+        "graphs": null,
+        "id": "quantum/5016",
+        "official_final_answers": [
+          "H = \\frac{J^2}{2I} - dE \\cos \\theta",
+          "H_0 = \\frac{J^2}{2I}, \\quad H' = -dE \\cos \\theta",
+          "E_{jm}^{(0)} = \\frac{j(j+1)\\hbar^2}{2I}",
+          "(2j + 1)\\text{-fold degenerate}",
+          "E^{(2)} = \\frac{Id^2E^2[j(j + 1) - 3m^2]}{\\hbar^2 j(j + 1)(2j - 1)(2j + 3)}"
+        ],
+        "official_solutions": "(a) Take the z-axis in the direction of the field. The Hamiltonian of the rotator is\n\n$$\nH = \\frac{J^2}{2I} - d \\cdot \\mathbf{E} = \\frac{J^2}{2I} - dE \\cos \\theta.\n$$\n\nConsidering $-dE \\cos \\theta$ as a perturbation, we have\n\n$$\nH_0 = \\frac{J^2}{2I}, \\quad H' = -dE \\cos \\theta.\n$$\n\n(b) The eigenfunctions of the unperturbed system are\n\n$$\n\\psi_{jm} = Y_{jm}(\\theta, \\varphi),\n$$\n\nwhere $m = -j, (-j + 1), \\ldots, (j - 1), j$, and the energy eigenvalues are $E_{jm}^{(0)} = \\frac{j(j+1)\\hbar^2}{2I}$. The $e1$ eve is are $(2j + 1)$-fold degenerate since $E_{jm}^{(0)}$ does not depend on $m$ at all.\n\n(c) The first order energy correction is\n\n$$\n\\langle jm|-dE \\cos \\theta|jm \\rangle = -dE \\langle jm| \\cos \\theta|jm \\rangle\n$$\n\n$$\n= -dE \\int_0^\\pi \\int_0^{2\\pi} \\cos \\theta \\sin \\theta \\,d\\theta d\\varphi = 0.\n$$\n\nFor the second order correction we calculate\n\n$$\nE_n^{(2)} = \\sum_i' \\frac{|\\langle n|H'|i\\rangle|^2}{E_n^{(0)} - E_i^{(0)}},\n$$\n\nwhere $n, i$ denote pairs of $j, m$ and the prime signifies exclusion of $i = n$ in the summation. As the non-vanishing matrix elements are only\n\n$$\n(j + 1, m|-dE \\cos \\theta|jm) = -dE\\sqrt{\\frac{(j + 1 - m)(j + 1 + m)}{(2j + 1)(2j + 3)}},\n$$\n\n$$\n(j - 1, m|-dE \\cos \\theta|jm) = -dE\\sqrt{\\frac{(j + m)(j - m)}{(2j + 1)(2j - 1)}},\n$$\n\nThe lowest order energy correction is\n\n$$\nE^{(2)} = \\frac{2Id^2E^2}{\\hbar^2}\n\\times\n\\left\\{ \\frac{(j + 1 - m)(j + 1 + m)}{(2j + 1)(2j + 3)[j(j + 1) - (j + 1)(j + 2)]} \\right. \\\\\n+ \\left. \\frac{(j + m)(j - m)}{(2j + 1)(2j - 1)[j(j + 1) - j(j - 1)]} \\right\\} \\\\\n= \\frac{Id^2E^2[j(j + 1) - 3m^2]}{\\hbar^2 j(j + 1)(2j - 1)(2j + 3)} \\ .\n$$\n\n(d) Because $H'$ is already diagonal in the $j$ subspace, the nondegenerate perturbation theory is still applicable. However even with the perturbation, degeneracy does not completely disappear. In fact states with same $j$ but opposite $m$ are still degenerate.",
+        "process_rubric": {
+          "criteria": [
+            "separates H0=J\u00b2/(2I) from field perturbation -dE cos(theta)",
+            "gives unperturbed j-levels and 2j+1 degeneracy",
+            "uses selection rules/degeneracy correctly to derive leading energy correction",
+            "explains why nondegenerate treatment can apply to the requested matrix elements while preserving m degeneracy"
+          ],
+          "task_class": "weak-field perturbative response on a rotator"
+        },
+        "question": "The polarization of a diatomic molecule in weak electric fields may be treated by considering a rigid rotator with moment of inertia $I$ and electric dipole moment $d$ in a weak electric field $\\mathbf{E}$.\n\n(a) Ignoring the motion of the center of mass write down the Hamiltonian $H$ of the rigid rotator in the form of $H_0 + H$.\n\n(b) Solve the unperturbed problem exactly. How are the levels degenerate?\n\n(c) Calculate the lowest order correction to all the energy levels by non-degenerate perturbation method.\n\n(d) Explain why is nondegenerate perturbation method applicable here and how are the levels degenerate.\n\nThe following relation may be useful:\n\n$$\n\\cos \\theta Y_{lm} =\n\\sqrt{\\frac{(l + 1 - m)(l + 1 + m)}{(2l + 1)(2l + 1)}} Y_{l+1,m} +\n\\sqrt{\\frac{(l + m)(l - m)}{(2l + 1)(2l - 1)}} Y_{l-1,m}.\n$$",
+        "question_sha256": "0ec7bbe0649eb4f1a186ac0d0d8b84953447e9fd5c69762658f74fd918a1934e",
+        "source_line_sha256": "02e8b9a3a6de14ea2f64d0dc403d870c58d5529857fbe23ebbe731b49539b57d"
+      },
+      {
+        "graphs": null,
+        "id": "quantum/6005",
+        "official_final_answers": [
+          "\\tan \\delta_0 = -k r_0",
+          "\\tan \\delta_\\ell \\approx -\\frac{(kr_0)^{2\\ell+1}}{[(2\\ell - 1)!!]^2 (2\\ell + 1)}"
+        ],
+        "official_solutions": "(a) This is a typical scattering problem that can be readily solved by the method of partial waves. The potential can be expressed as  \n\n$$\nV(r) = \n\\begin{cases} \n\\infty, & r < r_0, \\\\\n0, & r > r_0. \n\\end{cases}\n$$\n\nThe radial wave function for the $\\ell$ partial wave is  \n\n$$\nR_\\ell(kr) = \n\\begin{cases} \n0, & r < r_0, \\\\\nj_\\ell(kr) \\cos \\delta_\\ell - n_\\ell(kr) \\sin \\delta_\\ell, & r > r_0.\n\\end{cases} \n\\tag{2}\n$$\n\nHere $j_\\ell$ and $n_\\ell$ are spherical Bessel function and spherical Neumann function of order $\\ell$. These functions have the asymptotic forms  \n\n$$\nj_\\ell(x) \\xrightarrow{x \\rightarrow \\infty} \\frac{1}{x} \\sin(x - \\ell\\pi/2),\n$$\n\n$$\nn_\\ell(x) \\xrightarrow{x \\rightarrow \\infty} -\\frac{1}{x} \\cos(x - \\ell\\pi/2).\n$$\n\nHence for $r > r_0$ we have  \n\n$$\nR_\\ell(kr) \\xrightarrow{kr \\rightarrow \\infty} \\sin\\left(kr - \\frac{\\ell \\pi}{2} + \\delta_\\ell\\right).\n$$\n\nThe phase shift $\\delta_\\ell$ can be determined by the continuity of the wave function at $r = r_0$. Writing $kr_0 = x$, the continuity condition  \n\n$$\nR_\\ell(x) = j_\\ell(x) \\cos \\delta_\\ell - n_\\ell(x) \\sin \\delta_\\ell = 0\n$$\n\ngives  \n\n$$\n\\tan \\delta_\\ell = \\frac{j_\\ell(x)}{n_\\ell(x)}.\n$$\n\nIn the low-energy limit $x \\to 0$, the functions have the asymptotic forms\n\n$$\nj_\\ell(x) \\xrightarrow{x \\to 0} \\frac{x^\\ell}{(2\\ell + 1)!!}, \n$$\n$$\nn_\\ell(x) \\xrightarrow{x \\to 0} -\\frac{(2\\ell - 1)!!}{x^{\\ell+1}},\n$$\n\nso that\n\n$$\n\\tan \\delta_\\ell = \\frac{j_\\ell(x)}{n_\\ell(x)} \\xrightarrow{x \\to 0} -\\frac{x^{2\\ell+1}}{[(2\\ell - 1)!!]^2 \\, (2\\ell + 1)}.\n$$\n\nThus the s-wave ($\\ell = 0$) phase shift is\n\n$$\n\\tan \\delta_0 = -x = -k r_0.\n$$\n\nIt gives a finite contribution to the scattering and the corresponding total cross section is\n\n$$\n\\sigma_t = \\frac{4\\pi}{k^2} \\sin^2 \\delta_0 \\approx \\frac{4\\pi}{k^2} \\delta_0^2 \\approx 4\\pi r_0^2.\n$$\n\nThe scattering is spherically symmetric, and the total cross section is four times the classical value $\\pi r_0^2$.\n\n(b) Consider the low-energy limit $k \\to 0$. \n\nAs\n$$\n\\tan \\delta_\\ell \\approx -\\frac{x^{2\\ell+1}}{[(2\\ell - 1)!!]^2 (2\\ell + 1)},\n$$\n\n$\\delta_\\ell$ falls off very rapidly as $\\ell$ increases. All the phase shifts vanish as $k \\to 0$, except for the $l = 0$ partial wave. Hence s-waves predominate in low-energy scattering. Physically, particles with higher partial waves are farther away from the force center so the effect of the force on such particles is smaller, causing $|\\delta_\\ell|$ to be smaller.\n",
+        "process_rubric": {
+          "criteria": [
+            "applies hard-sphere boundary condition at r0 to derive s-wave phase shift",
+            "identifies higher partial-wave threshold suppression as k\u21920",
+            "gives scaling tan(delta_l) proportional to (kr0)^(2l+1) with correct sign/coefficient"
+          ],
+          "task_class": "low-energy scattering/asymptotics"
+        },
+        "question": "(a) Find the s-wave phase shift, as a function of wave number $k$, for a spherically symmetric potential which is infinitely repulsive inside of a radius $r_0$, and vanishes outside of $r_0$.  \n\n(b) For $k \\rightarrow 0$ discuss the behavior of the phase shifts in the higher partial waves. ",
+        "question_sha256": "118f11f7b65e76f11bb6a7bf6de1ec6cf73110343e4b8bb68fb5bd9ab96211ef",
+        "source_line_sha256": "36d6a49e009de696014080398ecc1c91fb97282d35a62c9f2b401d98f38197b6"
+      },
+      {
+        "graphs": null,
+        "id": "quantum/1-1009",
+        "official_final_answers": [
+          "\\frac{d}{dt} \\int_{-\\infty}^{\\infty} \\psi^*(x, t) \\psi(x, t) \\, dx = 0",
+          "\\hat{H} \\psi(x, t) = E \\psi(x, t)",
+          "\\psi(x, t) = \\sum_n a_n \\psi_n(x) \\exp\\left(-i \\frac{E_n}{\\hbar} t\\right)",
+          "a_n = \\sqrt{\\frac{1}{2a}} \\int_{-a}^{a} \\psi_n^*(x) \\, dx"
+        ],
+        "official_solutions": "\ufeff(a) Consider the Schr\u00f6dinger equation and its complex conjugate\n\n$$\ni\\hbar \\partial \\psi / \\partial t = -\\frac{\\hbar^2}{2m} \\nabla^2 \\psi + V\\psi,\n\\tag{1}\n$$\n\n$$\n-i\\hbar \\partial \\psi^* / \\partial t = -\\frac{\\hbar^2}{2m} \\nabla^2 \\psi^* + V \\psi^* .\n\\tag{2}\n$$\n\nTaking $\\psi^*$ x (1) - $\\psi$ x (2) we obtain\n\n$$\ni\\hbar \\frac{\\partial}{\\partial t} (\\psi^* \\psi) = -\\frac{\\hbar^2}{2m} \\nabla \\cdot (\\psi^* \\nabla \\psi - \\psi \\nabla \\psi^*).\n$$\n\nFor the one dimension case we have, integrating over all space,\n\n$$\n\\frac{d}{dt} \\int_{-\\infty}^{\\infty} \\psi^*(x, t) \\psi(x, t) \\, dx = \\frac{i \\hbar}{2m} \\int_{-\\infty}^{\\infty} \\frac{\\partial}{\\partial x} \\left( \\psi^* \\frac{\\partial \\psi}{\\partial x} - \\psi \\frac{\\partial \\psi^*}{\\partial x} \\right) \\, dx \n$$\n\n$$\n= \\frac{i \\hbar}{2m} \\left[ \\psi^* \\partial \\psi / \\partial x - \\psi \\partial \\psi^* / \\partial x \\right]_{-\\infty}^{\\infty}.\n$$\n\nIf $\\psi$ is a bound state, then $\\psi(x \\to \\pm \\infty) = 0$ and hence\n\n$$\n\\frac{d}{dt} \\int_{-\\infty}^{\\infty} \\psi^*(x, t) \\psi(x, t) \\, dx = 0.\n$$\n\n(b) Supposing the particle is in a stationary state with energy $E$ at $t = t_0$, we have\n\n$$\n\\hat{H} \\psi(x, t_0) = E \\psi(x, t_0),\n$$\n\nwhere  $\\hat{H}$ does not depend on $t$ explicitly. At any later time $t$ , the Schr\u00f6dinger equation\n\n$$\ni \\hbar \\partial \\psi(x, t) / \\partial t = \\hat{H} \\psi(x, t)\n$$\n\napplies. As $\\hat{H}$ does not depend on $t$ explicitly, the Schr\u00f6dinger equation has the formal solution\n\n$$\n\\psi(x, t) = \\exp \\left[ -i \\hat{H} (t - t_0) / \\hbar \\right] \\psi(x, t_0).\n$$\n\nMultiplying both sides by $\\hat{H}$  from the left and noting the commutability between $\\hat{H}$ and $\\exp[-i(t-t_0) \\hat{H} / \\hbar]$, we find\n\n$$\n\\hat{H} \\psi(x, t) = \\exp \\left[\\frac{-i \\hat{H} (t - t_0)}{\\hbar} \\right] \\hat{H} \\psi(x, t_0)\n$$\n\n$$\n= E \\exp \\left[\\frac{-i \\hat{H} (t - t_0)}{\\hbar} \\right] \\psi(x, t_0)\n$$\n\n$$\n= E \\psi(x, t).\n$$\n\nHence $\\psi(x, t)$ represents a stationary state at any later time $t$.\n\n(c) The wave function given for $t = 0$ can be written as\n\n$$\n\\psi(x, 0) = \n\\begin{cases} \nC, & |x| < a, \\\\ \n0, & \\text{otherwise}, \n\\end{cases}\n$$\n\nwhere $C$ is a constant. Normalization $\\int^a_{-a} \\psi^* \\psi \\, dx = 1$ requires that $c = \\left(\\frac{1}{2a}\\right)^{\\frac{1}{2}}$. Suppose the eigenfunction of the bound state is $\\langle x|n \\rangle$ and $\\hat{H}|n\\rangle= E_n|n\\rangle$. Then \n\n$$ \n1 = \\sum_n |n\\rangle\\langle n|, \n$$\n\nand \n\n$$ \n|\\psi(x, 0)\\rangle = \\sum_n |n\\rangle \\langle n|\\psi(x, 0)\\rangle, \n$$\n\n$$ \n|\\psi(x, t)\\rangle = \\sum_n |n\\rangle \\langle n|\\psi(x, 0)\\rangle \\, \\exp\\left(-i \\frac{E_n}{\\hbar} \\right). \n$$\n\nHence\n\n$$ \n\\psi(x, t) = \\sum_n a_n \\psi_n(x) \\exp\\left(-i \\frac{E_n}{\\hbar} t\\right), \n$$\n\nwith\n\n$$ \na_n = \\langle n | \\psi(x, 0) \\rangle = \\int_{-\\infty}^{\\infty} \\psi_n^*(x) \\psi(x, 0) \\, dx \n$$\n\n$$ \n= \\sqrt{\\frac{1}{2a}} \\int^a_{-a} \\psi_n^*(x) \\, dx.\n$$\n",
+        "process_rubric": {
+          "criteria": [
+            "uses continuity/Schr\u00f6dinger equation to establish norm conservation",
+            "identifies stationary energy eigenstates as time-persistent up to phase",
+            "expands initial top-hat state in energy eigenstates with coefficients from overlap integrals"
+          ],
+          "task_class": "time evolution and stationary-state expansion"
+        },
+        "question": "\ufeffConsider a one-dimensional bound particle.\n\n(a) Show that\n\n$$\n\\frac{d}{dt} \\int_{-\\infty}^{\\infty} \\psi^*(x, t) \\psi(x, t) \\, dx = 0.\n$$\n\n($\\psi$ need not be a stationary state).\n\n(b) Show that, if the particle is in a stationary state at a given time, then it will always remain in a stationary state.\n\n(c) If at $t = 0$ the wave function is constant in the region $-a < x < a$ and zero elsewhere, express the complete wave function at a subsequent time in terms of the eigenstates of the system.\n",
+        "question_sha256": "15bd035b2d04493686f57145ae2b5d0f094994a43f8f7a94e271e45e3a2d5884",
+        "source_line_sha256": "b3c956e28a94e29708ccab649156ccee03062a235e4e7c6a147b2cb9f5dcf150"
+      },
+      {
+        "graphs": null,
+        "id": "quantum/2-2001",
+        "official_final_answers": [
+          "i \\hbar \\frac{\\partial \\psi (r, t)}{\\partial t} = - \\frac{\\hbar^2}{2m} \\nabla^2 \\psi (r, t)",
+          "\\psi_{111}(x, y, z) = \\left( \\frac{2}{L} \\right)^{3/2} \\sin \\left( \\frac{\\pi x}{L} \\right) \\sin \\left( \\frac{\\pi y}{L} \\right) \\sin \\left( \\frac{\\pi z}{L} \\right)",
+          "N = \\frac{4 \\pi}{3} \\left( \\frac{mL^2}{2 \\hbar^2 \\pi^2} E \\right)^{3/2}"
+        ],
+        "official_solutions": "(a) The Schr\u00f6dinger equation is\n\n$$\ni \\hbar \\partial \\psi (r, t)/ \\partial t = - \\left( \\hbar^2 / 2m \\right) \\nabla^2 \\psi (r, t), \\quad 0 \\leq x, y, z \\leq L,\n$$\n\n$$\n\\psi = 0, \\quad \\text{otherwise.} \n$$\n\n(b) By separation of variables, we can take that the wave function to be the product of three wave functions each of a one-dimensional infinite well potential. The wave function of the lowest energy level is\n\n$$\n\\psi_{111}(x, y, z) = \\psi_1(x) \\psi_1(y) \\psi_1(z), \n$$\n\nwhere\n\n$$\n\\psi_1(x) = \\sqrt{\\frac{2}{L}} \\sin \\left( \\frac{\\pi}{L} x \\right), \\quad \\text{etc.} \n$$\n\nThus\n\n$$\n\\psi_{111}(x, y, z) = \\left( \\frac{2}{L} \\right)^{3/2} \\sin \\left( \\frac{\\pi x}{L}  \\right) \\sin \\left( \\frac{\\pi y}{L}  \\right) \\sin \\left( \\frac{\\pi z}{L}  \\right).\n$$\n\nThe corresponding energy is $E_{111} = 3 \\hbar^2 \\pi^2 / 2mL^2$.\n\n(c) For a set of quantum numbers $n_x, n_y, n_z$ for the three dimensions, the energy is\n\n$$\nE = \\frac{\\hbar^2 \\pi^2}{2mL^2} \\left( n_x^2 + n_y^2 + n_z^2 \\right).\n$$\n\nHence the number $N$ of states whose energy is less than or equal to $E$ is equal to the number of sets of three positive integers $n_x, n_y, n_z$ satisfying the inequality\n\n$$\nn_x^2 + n_y^2 + n_z^2 \\leq \\frac{2mL^2E}{\\hbar^2 \\pi^2}. \n$$\n\nConsider a Cartesian coordinate system of axes $n_x, n_y, n$. The number $N$ required is numerically equal to the volume in the first quadrant of a sphere of radius $(2mL^2E/\\hbar^2 \\pi^2)^{1/2}$, provided $N \\geq 1$. Thus\n\n$$\nN = \\frac{1}{8} \\cdot \\frac{4 \\pi}{3} \\cdot \\left( \\frac{2mL^2}{\\hbar^2 \\pi^2} E \\right)^{3/2} = \\frac{4 \\pi}{3} \\left( \\frac{mL^2}{2 \\hbar^2 \\pi^2 E} \\right)^{3/2}.\n$$",
+        "process_rubric": {
+          "criteria": [
+            "writes the 3D Schr\u00f6dinger eigenproblem for the cubic infinite well",
+            "gives the normalized lowest state with n=(1,1,1)",
+            "uses large-N phase-space/state counting to obtain E^(3/2) dependence and correct prefactor"
+          ],
+          "task_class": "spectrum/eigenstate and asymptotic state counting"
+        },
+        "question": "An electron is confined in a three-dimensional infinite potential well. The sides parallel to the *x-*, *y-*, and *z*-axes are of length $L$ each.\n\n(a) Write the appropriate Schr\u00f6dinger equation.  \n\n(b) Write the time-independent wave function corresponding to the state of the lowest possible energy.  \n\n(c) Give an expression for the number of states, $N$, having energy less than some given $E$. Assume $N \\gg 1$.",
+        "question_sha256": "786e5b3d38d9613d2bb6adb00e2e9a79d5cfb2c90c58160be49dac64bf360713",
+        "source_line_sha256": "42a685c4b57ce9628224afa6ac973f38e2cf188645e3984a40d3b36104341bc8"
+      },
+      {
+        "graphs": null,
+        "id": "quantum/3-3006",
+        "official_final_answers": [
+          "\\sqrt{2} \\hbar",
+          "0",
+          "\\frac{1}{6}",
+          "\\frac{1}{8\\pi} \\left[ \\sin \\theta (\\sin \\phi + \\cos \\phi) + 2 \\cos \\theta \\right]^2 \\mathrm{d}\\Omega"
+        ],
+        "official_solutions": "The wave function may be rewritten in spherical coordinates as\n\n$$\n\\psi = Kr (\\cos \\phi \\sin \\theta + \\sin \\phi \\sin \\theta + 2 \\cos \\theta) e^{-\\alpha r},\n$$\n\nits angular part being\n\n$$\n\\psi(\\theta, \\phi) = K' (\\cos \\phi \\sin \\theta + \\sin \\phi \\sin \\theta + 2 \\cos \\theta),\n$$\n\nwhere $K'$ is the normalization constant such that\n\n$$\nK'^2 \\int_{\\theta}^{\\pi} d\\theta \\int_{0}^{2\\pi} \\sin \\theta (\\cos \\phi \\sin \\theta + \\sin \\phi \\sin \\theta + 2 \\cos \\theta)^2 d\\phi= 1.\n$$\n\nSince\n\n$$\n\\cos \\phi = \\frac{1}{2} (e^{i\\phi} + e^{-i\\phi}), \\quad \\sin \\phi = \\frac{1}{2i}(e^{i\\phi} - e^{-i\\phi}),\n$$\n\nwe have\n\n$$\n\\psi(\\theta, \\phi) = K' \\left[ \\frac{1}{2} (e^{i\\phi} + e^{-i\\phi}) \\sin \\theta + \\frac{1}{2i} (e^{i\\phi} - e^{-i\\phi}) \\sin \\theta + \\cos 2\\theta \\right],\n$$\n\n$$\n= K' \\left[ -\\frac{1}{2} (1 - i) \\sqrt{\\frac{8\\pi}{3}} Y_1^1 + \\frac{1}{2} (1 + i) \\sqrt{\\frac{8\\pi}{3}} Y_1^{-1} + 2 \\sqrt{\\frac{4\\pi}{3}} Y_1^0 \\right].\n$$\n\nThe normalization condition and the orthonormality of $Y^m_l$ then give\n\n$$\nK'^2 \\left[ \\frac{1}{2} \\cdot \\frac{8 \\pi}{3} + \\frac{1}{2} \\cdot \\frac{8 \\pi}{3} + 4 \\cdot \\frac{4 \\pi}{3} \\right] = 1 \n$$\n\nor \n\n$$\nK' = \\sqrt{\\frac{1}{8 \\pi}},\n$$\n\nand thus\n\n$$\n\\psi(\\theta, \\phi) = \\sqrt{\\frac{1}{8 \\pi}} \\left[ -\\frac{1}{2} (1 - i) \\sqrt{\\frac{8 \\pi}{3}} Y^1_1 \\right.\n$$\n\n$$\n\\left. + \\frac{1}{2} (1 + i) \\sqrt{\\frac{8 \\pi}{3}} Y^{-1}_1 + 2 \\sqrt{\\frac{4 \\pi}{3}} Y^0_1 \\right].\n$$\n\n(a) The total angular momentum of the particle is\n\n$$\n\\sqrt{\\langle\\mathbf{L}^2\\rangle} = \\sqrt{l(l+1)} \\hbar =\\sqrt{2} \\hbar.\n$$\n\nas the wave function corresponds to $l = 1$.\n\n(b) The z-component of the angular momentum is\n\n$$\n\\langle\\psi^* | L_z | \\psi \\rangle = K'^2 \\left[ \\frac{1}{2} \\cdot \\frac{8 \\pi}{3} \\cdot \\hbar (Y^1_1)^2 + \\frac{1}{2} \\cdot \\frac{8 \\pi}{3} \\cdot (-\\hbar) (Y^{-1}_1)^2 \\right.\n$$\n\n$$\n\\left. + 4 \\cdot \\frac{4 \\pi}{3} (0) (Y^0_1)^2 \\right]\n$$\n\n$$\n= \\frac{1}{8 \\pi} \\left[ \\frac{1}{2} \\cdot \\frac{8 \\pi}{3} \\cdot (+\\hbar) + \\frac{1}{2} \\cdot \\frac{8 \\pi}{3} \\cdot (-\\hbar) \\right] = 0 .\n$$\n\n(c) The probability of finding $L_z = +\\hbar$ is\n\n$$\nP = |\\langle L_z = +\\hbar | \\psi(\\theta, \\phi) \\rangle|^2 \n$$\n\n$$\n= \\frac{1}{8\\pi} \\cdot \\frac{1}{2} \\cdot \\frac{8\\pi}{3} = \\frac{1}{6} .\n$$\n\n(d) The probability of finding the particle in the solid angle $\\mathrm{d}\\Omega$ at $\\theta, \\varphi$ is\n\n$$\n\\int \\psi^*(\\theta, \\varphi) \\psi(\\theta, \\varphi) \\mathrm{d}\\Omega = \\frac{1}{8\\pi} \\left[ \\sin \\theta (\\sin \\phi + \\cos \\phi) + 2 \\cos \\theta \\right]^2 \\mathrm{d}\\Omega .\n$$\n",
+        "process_rubric": {
+          "criteria": [
+            "decomposes angular dependence into l=1 spherical harmonics and identifies total L\u00b2",
+            "computes expectation of requested angular momentum component consistently with symmetry",
+            "computes Lz=+hbar measurement probability from normalized component weights",
+            "gives angular probability density with correct normalization/phi dependence"
+          ],
+          "task_class": "angular-momentum measurement statistics"
+        },
+        "question": "Consider a spinless particle represented by the wave function\n\n$$\n\\psi = K(x + y + 2z) e^{-\\alpha r},\n$$\n\nwhere $r = \\sqrt{x^2 + y^2 + z^2}$, and $K$ and $\\alpha$ are real constants.\n\n(a) What is the total angular momentum of the particle? \n\n(b) What is the expectation value of the t-component of angular momentum?  \n\n(c) If the z-component of angular momentum, $L_z$, were measured, what is the probability that the result would be $L_z = +\\hbar$?  \n\n(d) What is the probability of finding the particle at $\\theta, \\phi$ and in solid angle $d\\Omega$? Here $\\theta, \\phi$ are the usual angles of spherical coordinates.\n\nYou may find the following expressions for the first few spherical harmonics useful:\n\n$$\nY_0^0 = \\sqrt{\\frac{1}{4\\pi}}, \\quad Y_1^{\\pm 1} = \\mp \\sqrt{\\frac{3}{8\\pi}} \\sin \\theta e^{\\pm i \\phi},\n$$\n\n$$\nY_1^0 = \\sqrt{\\frac{3}{4\\pi}} \\cos \\theta, \\quad Y_2^{\\pm 1} = \\mp \\sqrt{\\frac{15}{8\\pi}} \\sin \\theta \\cos \\theta e^{\\pm i \\phi}.\n$$",
+        "question_sha256": "8fe9e886060f0291da63f419c46a5a8ab0963ccc6a77edd1dfbf3589dd5d851b",
+        "source_line_sha256": "a14c21d429f5957a62715fc044baa04125467663ab5a4ecfbfc234f355c9fd10"
+      }
+    ]
+  },
+  "status": "PREHELDOUT_DESIGN_FROZEN_PENDING_ROOT_REVIEW",
+  "worktree": "/tmp/mneme-mi2"
+}

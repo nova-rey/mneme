@@ -1,0 +1,1270 @@
+{
+  "authorities": {
+    "owner_task": "MNEME Phase 4 — MI2 Paper-Faithful Semantic Guidance Test",
+    "root_instruction": "No held-out/scored calls until freeze reviewed by Root",
+    "source_paper_sha256": "ffd265f3b32a93d6b7967c69faf8e992d13ccdadc2c0bc2927a2f7ffcf5791fc"
+  },
+  "bank_construction": {
+    "kv_projection": "Use frozen GGUF/native MI1 encoder at float32 normalized Kcur_normed/Vcur_normed captures, before RoPE; preserve native token-order per layer and 2 KV heads; keys relative phase zero. Confirm 24 K/V sources and exact layer/head dimensions against model output; abort if mismatch.",
+    "retention": "Encode each complete source string with the pinned Gemma tokenizer using one leading BOS; in each wrapped encoding retain exactly the card-content token positions only, excluding BOS and wrapper tokens; raw encoding retains card content tokens only. Store token IDs and integer positions; fail closed on non-unique/non-compositional span. Concatenate slots in order raw, internal_principles, private_reasoning_note. No averaging or answer-bearing extra text. Target and irrelevant card use identical recipe.",
+    "selection": "Before any v2 generation, capture the exact final rendered baseline prompt for each of the four frozen v2 calibration questions using the current Gemma server apply-template path and native target-bank prefill only. Capture Q/attention for those four prompts only, with the frozen target bank attached at bias 0.0; compare Q to the frozen target and neutral-reference bank keys. No generation output, v1 query captures, or heldout prompt may enter selection. Validate exact token-ID parity against server /tokenize, all layers 0..41, 8 Q heads/layer, dynamic masked cache-capacity gap and finite tensors. Apply frozen Eq.3 selector (per-layer top-1 KV group, target-bank attention tie-break, top four layers; map each selected KV group to its four query heads) to this v2-only capture set and freeze the resulting 16 Q sites before generation. Record capture elapsed time, raw/compressed SHA-256, prompt hashes/token counts, capacities, shapes, source tool/build hashes, and selector result. No calibration generation is authorized until Root reviews final v2 freeze.",
+    "templates": [
+      {
+        "id": "raw",
+        "text": "{BANK_CARD}"
+      },
+      {
+        "id": "internal_principles",
+        "text": "Internal principles for scientific problem solving:\n\n{BANK_CARD}"
+      },
+      {
+        "id": "private_reasoning_note",
+        "text": "A private note available during reasoning:\n\n{BANK_CARD}"
+      }
+    ]
+  },
+  "base_commit": "42084b99912f59c29e70694c5d697660345ec536",
+  "branch": "research/phase4-mi1-memory-inception",
+  "calibration_version": "v2",
+  "canonical_paper": {
+    "pdf_path": "/home/nyx/mneme-artifacts/phase4-mi2/source/memory-inception-arxiv-2605.06225v2.pdf",
+    "sha256": "ffd265f3b32a93d6b7967c69faf8e992d13ccdadc2c0bc2927a2f7ffcf5791fc",
+    "source_release": "ArXiv source inspected; source text says anonymous code/data release but exposes no URL. Candidate third-party repository was not authenticated as author code and lacks license; not used.",
+    "text_path": "/home/nyx/mneme-artifacts/phase4-mi2/source/memory-inception-arxiv-2605.06225v2.txt",
+    "title": "Memory Inception: Latent-Space KV Cache Manipulation for Steering LLMs",
+    "version": "arXiv:2605.06225v2"
+  },
+  "conditions": {
+    "calibration": [
+      "BASELINE",
+      "VISIBLE_GUIDANCE",
+      "LATENT_TARGET_BANK_BIAS_0.0",
+      "LATENT_TARGET_BANK_BIAS_0.5",
+      "LATENT_TARGET_BANK_BIAS_1.0"
+    ],
+    "heldout": [
+      "BASELINE",
+      "VISIBLE_GUIDANCE",
+      "LATENT_TARGET_BANK_FROZEN_CALIBRATION_BIAS",
+      "IRRELEVANT_BANK_SAME_RECIPE",
+      "DISABLED_AFTER_ATTACHMENT",
+      "REATTACHED_TARGET_BANK_REUSE"
+    ],
+    "lifecycle": "For two preselected heldout items quantum/5073 and quantum/6005, for each seed: baseline, visible, attach target+generate, replace attached target with irrelevant bank+generate, clear bank+generate, reattach target bank at frozen bias+generate. Verify bank fingerprints/state before each generation. The other four held-outs receive baseline/visible/latent/irrelevant only. Disabled output is compared to same-seed baseline; reuse must reproduce first latent output byte-for-byte."
+  },
+  "created_utc": "2026-10-11",
+  "failure_and_stop_criteria": [
+    "No held-out output is scored until Root reviews the frozen calibration outcome and heldout freeze.",
+    "If exact prompt/cache-disabled same-condition duplicate differs bytewise, stop and diagnose determinism before experimental calls.",
+    "If visible calibration gate fails, stop held-out scoring; use only a documented calibration-only revision.",
+    "If selector/bank/site fingerprints mismatch, prompt contains the secret, or state leaks across conditions, stop that coordinate and preserve evidence.",
+    "If bank attach does not change fingerprint, clear does not remove, replacement does not change, or reattach fails to reproduce latent, report apparatus failure; do not reinterpret outputs.",
+    "No condition-specific prompt changes beyond visible guidance; no held-out gain/site/prompt tuning; no secondary MNEME neighborhood unless primary heldout meets success criteria.",
+    "Do not load or modify any MNEME state/SAA/learner/introspection; do not run paid GPU or another model family.",
+    "If visible v2 gate fails, stop before heldout; report the card/item calibration result without repeatedly revising to the same items. Any further material calibration design requires Root review and a new frozen revision."
+  ],
+  "guidance_source": {
+    "bank_card": {
+      "action": "Decide whether the answer concerns allowed states, time evolution, measurement statistics, response to a small change, or asymptotic behavior.",
+      "trap_check": "Avoid solving the wrong kind of quantum problem because similar symbols appear in the prompt. The mathematical object in the final answer should match the physical question.",
+      "trigger": "A prompt mixes states, operators, spectra, measurement, and time language; separate spectral, dynamical, measurement, and approximation questions before computing."
+    },
+    "derivation_note": "Verbatim representative paper card, not rewritten from outputs. The authors report deriving cards from 5–10 construction questions, reference solutions and standard knowledge, then removing source examples/answers/formulas/numeric constants/solution-order traces; exact author source examples were not available.",
+    "paper_location": "Appendix E, Table 5, Quantum mechanics row; canonical PDF p.20 / printed page 19"
+  },
+  "irrelevant_control_bank": {
+    "card": {
+      "action": "Identify the transform parameter and convergence domain, then choose among substitution, differentiation under the integral, contour/symmetry reduction, or known-transform matching.",
+      "trap_check": "Do not simplify outside the valid domain. Check the final expression by limits, differentiation with respect to the parameter, or a simple numeric substitution.",
+      "trigger": "The problem contains a parameterized integral, transform-like kernel, or special-function-looking expression; success often depends on choosing the right representation before manipulating the integral."
+    },
+    "paper_location": "Appendix E, Table 7, Integral and Laplace-integral row; canonical PDF p.21 / printed page 20",
+    "same_bank_recipe": true
+  },
+  "package_id": "MI2-PAPER-GUIDANCE-20261011",
+  "paper_to_gemma_mapping": [
+    {
+      "deviation": "Author’s original 5–10 construction prompts and GPT-5.5 distillation cannot be reproduced from the inspected release.",
+      "gemma": "Appendix E/Table 5 quantum card verbatim; no solved example/reference answer in bank",
+      "paper": "PHYSICS process card distilled from construction problems; answer-bearing details removed"
+    },
+    {
+      "deviation": "Wrapper wordings are local instantiations because paper gives wrapper classes, not exact prompt strings.",
+      "gemma": "Raw card plus two fixed wrappers; retain only exact card token span (BOS excluded) in each variant; fail closed if alignment is absent or ambiguous. Token IDs/selected integer positions to be recorded in bank manifest before held-out inference.",
+      "paper": "Raw descriptor plus direct and contextualized variants; keep descriptor-aligned positions"
+    },
+    {
+      "deviation": "Gemma Q2/llama.cpp is a custom port; paper tests Llama 3.1 and Qwen3 HF/vLLM, not Gemma. Native path must be shape/hash verified before use.",
+      "gemma": "MI1 native Gemma Q2 encoder captures normalized pre-RoPE K/V; 24 KV-producing source layers × 2 KV heads; 42 query layers × 8 Q heads; Gemma SWA/full-attention mapping from existing source map; relative phase zero. Store all descriptor slots, do not average.",
+      "paper": "Frozen model native norm and K/V projections; canonical pre-RoPE K; GQA map to query heads"
+    },
+    {
+      "deviation": "Paper does not fix m=4/k=1 or give a Gemma structured-reasoning selector. These are a sparse, bounded Gemma port; gains are global bank logit bias because the current patch lacks the paper’s layer-wise rho schedule.",
+      "gemma": "On the four calibration items only, capture last-prompt-token queries with target and neutral-reference bank; compute Eq.3 mean target-reference alignment plus bank/prompt mass; top 1 KV group per layer, rank aggregate across layers, freeze top 4 query layers (expanded to their 4 Q heads). Calibration-selected global bank-logit bias from fixed {0.0,0.5,1.0}; smallest setting meeting declared calibration criterion; if none, stop before heldout.",
+      "paper": "Calibration selector: target/reference alignment and route diagnostics; top-k units per layer, top-m layers; freeze sites/gains"
+    },
+    {
+      "deviation": "Small N and local deterministic seeds are a feasibility study, not author-scale replication. Manual rubric scoring replaces paper’s GPT-5.5-thinking ×3 graders.",
+      "gemma": "Reasoning ON; baseline, visible card, latent target bank, irrelevant same-procedure bank; disabled-after-attach/removal and reattach/reuse on two preselected held-outs.",
+      "paper": "Plain problem, visible prompt with same guidance, latent bank; scoring via question-specific rubric"
+    },
+    {
+      "deviation": "Backbone, quantization, runtime, and backend all differ; results scope only to this Gemma port.",
+      "gemma": "Exact local google/gemma-4-E4B-it Q2 GGUF and patched llama.cpp, RTX 3060 Laptop.",
+      "paper": "Llama 3.1 / Qwen3-30B on HF/vLLM GPUs"
+    }
+  ],
+  "preheldout_requirements": [
+    "Root review of this exact freeze artifact",
+    "Host/runtime preflight; GPU and disk safe",
+    "Calibration-only calls and raw outputs durably reopened",
+    "Calibration score report and final selected selector/gain freeze with hash",
+    "No held-out/scored call before Root receives and reviews final selected selector/gain freeze"
+  ],
+  "prompt_contract": {
+    "latent_irrelevant_disabled_system": "Same baseline system; no guidance text.",
+    "ordinary_prompt_secret_exclusion": "For LATENT, IRRELEVANT, DISABLED, REUSE and replacement arms, the only system/user messages are the baseline system and exact question. Card content appears only in side-bank bytes. Save complete request JSON and final rendered prompt bytes/hash; scan case-insensitively for harbor/tide/dock irrelevant to this physics test and also for exact card-specific phrases: bank text must not occur in request.",
+    "system_baseline": "You are solving a quantum mechanics problem. Work from the stated assumptions, show the reasoning needed to justify each requested result, and clearly label final answers for every part.",
+    "user": "Exact `questions` bytes from the listed PHYSICS row, UTF-8 decoded without normalization.",
+    "visible_system": "You are solving a quantum mechanics problem. Work from the stated assumptions, show the reasoning needed to justify each requested result, and clearly label final answers for every part.\n\nQuantum mechanics process guide (same guidance encoded for the latent condition):\nTrigger: A prompt mixes states, operators, spectra, measurement, and time language; separate spectral, dynamical, measurement, and approximation questions before computing.\nAction: Decide whether the answer concerns allowed states, time evolution, measurement statistics, response to a small change, or asymptotic behavior.\nTrap Check: Avoid solving the wrong kind of quantum problem because similar symbols appear in the prompt. The mathematical object in the final answer should match the physical question."
+  },
+  "query_capture_execution": {
+    "all_token_parity": "EXACT for 4/4 prompts; 42 layers and 8 Q heads/layer; all Q/KV shapes validated.",
+    "capture_records": [
+      {
+        "attention_width": 526,
+        "bank_slots": 270,
+        "capture_elapsed_seconds": 3.44,
+        "compressed_capture_bytes": 77717364,
+        "compressed_capture_path": "/home/nyx/mneme-artifacts/phase4-mi2/calibration-run-v2-query-capture/captures/query_3-3013.mi1qry.zst",
+        "compressed_capture_sha256": "699aea3b3a417882a5334383c1aa80ad0068fef1d3e7f15f40a204c0a6f3e485",
+        "generated_tokens": 0,
+        "item_id": "quantum/3-3013",
+        "layers": 42,
+        "masked_gap_slots": 93,
+        "masked_gap_zero_check": "PASS_ALL_LAYERS_FINAL_QUERY",
+        "prompt_tokens": 163,
+        "query_capture_bytes": 180665912,
+        "query_capture_path": "/home/nyx/mneme-artifacts/phase4-mi2/calibration-run-v2-query-capture/captures/query_3-3013.mi1qry",
+        "query_capture_sha256": "bf660ea4825fc43eb9d7a5a9cef838e30092610adfc2b94f11c813329582b9ac",
+        "query_head_dims_present": [
+          256,
+          512
+        ],
+        "query_heads_per_layer": 8,
+        "rendered_prompt_sha256": "02bf7d1cd00f6078540d391485579ecfb8de617c59e29e55baaecece78d7c078",
+        "reserved_prompt_cache_capacity": 256,
+        "server_token_ids_sha256": "d4cccd882f1ca43305bddcae16de4106ea063fdf734be17eba112c479e6eb9c9",
+        "token_id_parity": "EXACT"
+      },
+      {
+        "attention_width": 526,
+        "bank_slots": 270,
+        "capture_elapsed_seconds": 1.68,
+        "compressed_capture_bytes": 65426015,
+        "compressed_capture_path": "/home/nyx/mneme-artifacts/phase4-mi2/calibration-run-v2-query-capture/captures/query_3-3024.mi1qry.zst",
+        "compressed_capture_sha256": "7de4fc064f5413c4a8d7573e83d7fd5601544fb79af10e53225091c95c52c15a",
+        "generated_tokens": 0,
+        "item_id": "quantum/3-3024",
+        "layers": 42,
+        "masked_gap_slots": 115,
+        "masked_gap_zero_check": "PASS_ALL_LAYERS_FINAL_QUERY",
+        "prompt_tokens": 141,
+        "query_capture_bytes": 156282080,
+        "query_capture_path": "/home/nyx/mneme-artifacts/phase4-mi2/calibration-run-v2-query-capture/captures/query_3-3024.mi1qry",
+        "query_capture_sha256": "b4e463dfbe674724b8f283de3b0b9f7997961e79b82db736f052246a943c9a7b",
+        "query_head_dims_present": [
+          256,
+          512
+        ],
+        "query_heads_per_layer": 8,
+        "rendered_prompt_sha256": "f1ed2f545322a751e79e8d0dcb334dd2626649abeb0a64120ac0bebc5878512c",
+        "reserved_prompt_cache_capacity": 256,
+        "server_token_ids_sha256": "502523c85552c8775d48fa22421eebe28f24acff36cb913d49d12bac00d577a7",
+        "token_id_parity": "EXACT"
+      },
+      {
+        "attention_width": 526,
+        "bank_slots": 270,
+        "capture_elapsed_seconds": 1.66,
+        "compressed_capture_bytes": 63721003,
+        "compressed_capture_path": "/home/nyx/mneme-artifacts/phase4-mi2/calibration-run-v2-query-capture/captures/query_1-1022.mi1qry.zst",
+        "compressed_capture_sha256": "87a7636a59489369bdf996e6362627a53b7b688af15d28f7beeb7a40b36baeb2",
+        "generated_tokens": 0,
+        "item_id": "quantum/1-1022",
+        "layers": 42,
+        "masked_gap_slots": 118,
+        "masked_gap_zero_check": "PASS_ALL_LAYERS_FINAL_QUERY",
+        "prompt_tokens": 138,
+        "query_capture_bytes": 152957012,
+        "query_capture_path": "/home/nyx/mneme-artifacts/phase4-mi2/calibration-run-v2-query-capture/captures/query_1-1022.mi1qry",
+        "query_capture_sha256": "462c558b82a719ff56275758fe01d456f6c918a1b5b23130c9085b1eac4943d7",
+        "query_head_dims_present": [
+          256,
+          512
+        ],
+        "query_heads_per_layer": 8,
+        "rendered_prompt_sha256": "71b30da6ea0d7f25e7504cc87e6897f9564db6bb1f8b28561d086f7a96a2afcd",
+        "reserved_prompt_cache_capacity": 256,
+        "server_token_ids_sha256": "539ff79b62a244e29e34f92e3e957a1254179e21c6e21d90beb516d1034fe395",
+        "token_id_parity": "EXACT"
+      },
+      {
+        "attention_width": 526,
+        "bank_slots": 270,
+        "capture_elapsed_seconds": 1.75,
+        "compressed_capture_bytes": 107789659,
+        "compressed_capture_path": "/home/nyx/mneme-artifacts/phase4-mi2/calibration-run-v2-query-capture/captures/query_5005.mi1qry.zst",
+        "compressed_capture_sha256": "1c376f738a6b61115a0dd472a4db76fc6167fd5f28ad910f65c5786461e8ffd9",
+        "generated_tokens": 0,
+        "item_id": "quantum/5005",
+        "layers": 42,
+        "masked_gap_slots": 43,
+        "masked_gap_zero_check": "PASS_ALL_LAYERS_FINAL_QUERY",
+        "prompt_tokens": 213,
+        "query_capture_bytes": 236083712,
+        "query_capture_path": "/home/nyx/mneme-artifacts/phase4-mi2/calibration-run-v2-query-capture/captures/query_5005.mi1qry",
+        "query_capture_sha256": "0237ac578f2e78eead94c7db38e14899212bb2379cf84edf6d66beb8c9713e7a",
+        "query_head_dims_present": [
+          256,
+          512
+        ],
+        "query_heads_per_layer": 8,
+        "rendered_prompt_sha256": "162d45b800c87ae0284fb3397715a16dc3eafe1938557e4a3720084e5f4ba820",
+        "reserved_prompt_cache_capacity": 256,
+        "server_token_ids_sha256": "432ac5b55a33e4d9aada3d40e23e771296fb95a0caac25daad1fee438d3a3bbb",
+        "token_id_parity": "EXACT"
+      }
+    ],
+    "capture_time_seconds_total": 8.530000000000001,
+    "generation_calls": 0,
+    "receipt_sha256": "deae19abfb1ccdd0c3194c03304e841ad48e0a8e99bfa178c20019ff89c408ba",
+    "reserved_cache_capacity": "256 slots each; native KQ width 526 = prompt cache capacity 256 + target bank 270; unused gap slots validated zero at all layers for final prompt token.",
+    "same_sites_as_v1": "YES by coincidence after independent v2-only selection; no v1 selector scores or captures used.",
+    "scope": "Exact v2 calibration prompts only; prefill-only; no generated completion or heldout query.",
+    "source_kv_mapping_and_sites": "See selector freeze receipt; selector run used these four v2 query captures only."
+  },
+  "replication_and_budget": {
+    "calibration_generation_calls": 42,
+    "counting": "4 calibration items × 2 seeds × (baseline + visible + three latent biases) = 40, plus 2 duplicate deterministic preflight calls = 42; heldout = 6 items × 2 seeds × 4 primary conditions (48) plus disabled+re-use for 2 items × 2 seeds (8) = 56. Total = 98.",
+    "heldout_calls_if_calibration_passes": 56,
+    "note": "Review count arithmetic before any dispatch; all calls checkpoint raw outputs immediately. Planned 2 matched seeds per problem. This is a small local feasibility screen, not population inference.",
+    "total_generation_calls_if_passes": 98,
+    "v2_call_count": "4 calibration items x 2 seeds x 5 conditions = 40 matrix calls plus 2 fresh same-condition deterministic preflight calls = 42; all v1 outputs are excluded."
+  },
+  "schema_version": 1,
+  "scoring": {
+    "answer_score": "Separate, blinded official-answer rubric per item: score listed official components 0/0.5/1 and normalize by component count. This measures answer correctness only and does not contribute to process score.",
+    "latent_gain_selection": "Unchanged from v1: after visible gate only, the frozen bias [0.0,0.5,1.0] selection rule applies using the same process and answer score thresholds. No heldout calls if no bias qualifies.",
+    "process_score": "Three prospectively frozen binary dimensions (0/1 each): (1) identifies the relevant task class; (2) matches requested quantity to the appropriate mathematical object/operation; (3) scopes result to asked physical question and avoids a neighboring task. Criteria are process-level; no exact numeric result, answer-specific derivation, or formula is required for process points. Assessor records supporting reasoning/answer spans before assigning each point.",
+    "rubric_rationale": "v1 criteria required concrete answer derivations/results (e.g., exact force relation, diagonalized matrix/split states, oscillation cosine, Born cross section) beyond the general process card. v2 process criteria are linked to broad task classification, representation choice, and scope checks and do not score exact derivations. Official-answer scoring is retained separately.",
+    "visible_calibration_gate": "Unchanged from v1: across 4 calibration items x 2 seeds, visible must exceed baseline by mean >=0.50 on 0-3 process score and have positive item-mean delta on >=3/4 items; visible mean answer score may not be >0.10 below baseline. If gate fails, no heldout calls."
+  },
+  "seed_and_runtime": {
+    "context_size": 8192,
+    "gguf_path_remote": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+    "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+    "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU, 6144 MiB",
+    "gpu_layers": 99,
+    "host": "brokeass-msi",
+    "llama_build": "0.5.0-dev build 1; isolated MI1 patch",
+    "llama_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+    "name": "google/gemma-4-E4B-it",
+    "parallel_slots": 1,
+    "prompt_cache": false,
+    "reasoning": "ON",
+    "reasoning_format": "deepseek",
+    "sampler": {
+      "max_tokens": 8192,
+      "min_p": 0.05,
+      "seed_values": [
+        481001,
+        481019
+      ],
+      "stream": true,
+      "temperature": 0.35,
+      "top_k": 40,
+      "top_p": 0.9
+    },
+    "server_binary_sha256": "0032af18feb8cfa683ed34757c47bb10e4fbcdcd309071e937e4f6b4e4fd741c",
+    "threads": 4,
+    "threads_batch": 4
+  },
+  "selector_freeze": {
+    "bank_bias_for_selector_capture": 0.0,
+    "calibration_query_records": {
+      "quantum/1-1022": {
+        "attention_keys_by_layer": [
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526
+        ],
+        "head_dims_by_layer": [
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512
+        ],
+        "prompt_tokens": 138,
+        "query_capture_sha256": "462c558b82a719ff56275758fe01d456f6c918a1b5b23130c9085b1eac4943d7",
+        "query_heads_per_layer": 8,
+        "query_layers": 42,
+        "rendered_prompt_sha256": "71b30da6ea0d7f25e7504cc87e6897f9564db6bb1f8b28561d086f7a96a2afcd",
+        "reserved_prompt_cache_capacity": 256,
+        "server_token_ids_sha256": "539ff79b62a244e29e34f92e3e957a1254179e21c6e21d90beb516d1034fe395",
+        "token_id_parity": "EXACT"
+      },
+      "quantum/3-3013": {
+        "attention_keys_by_layer": [
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526
+        ],
+        "head_dims_by_layer": [
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512
+        ],
+        "prompt_tokens": 163,
+        "query_capture_sha256": "bf660ea4825fc43eb9d7a5a9cef838e30092610adfc2b94f11c813329582b9ac",
+        "query_heads_per_layer": 8,
+        "query_layers": 42,
+        "rendered_prompt_sha256": "02bf7d1cd00f6078540d391485579ecfb8de617c59e29e55baaecece78d7c078",
+        "reserved_prompt_cache_capacity": 256,
+        "server_token_ids_sha256": "d4cccd882f1ca43305bddcae16de4106ea063fdf734be17eba112c479e6eb9c9",
+        "token_id_parity": "EXACT"
+      },
+      "quantum/3-3024": {
+        "attention_keys_by_layer": [
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526
+        ],
+        "head_dims_by_layer": [
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512
+        ],
+        "prompt_tokens": 141,
+        "query_capture_sha256": "b4e463dfbe674724b8f283de3b0b9f7997961e79b82db736f052246a943c9a7b",
+        "query_heads_per_layer": 8,
+        "query_layers": 42,
+        "rendered_prompt_sha256": "f1ed2f545322a751e79e8d0dcb334dd2626649abeb0a64120ac0bebc5878512c",
+        "reserved_prompt_cache_capacity": 256,
+        "server_token_ids_sha256": "502523c85552c8775d48fa22421eebe28f24acff36cb913d49d12bac00d577a7",
+        "token_id_parity": "EXACT"
+      },
+      "quantum/5005": {
+        "attention_keys_by_layer": [
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526,
+          526
+        ],
+        "head_dims_by_layer": [
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512,
+          256,
+          256,
+          256,
+          256,
+          256,
+          512
+        ],
+        "prompt_tokens": 213,
+        "query_capture_sha256": "0237ac578f2e78eead94c7db38e14899212bb2379cf84edf6d66beb8c9713e7a",
+        "query_heads_per_layer": 8,
+        "query_layers": 42,
+        "rendered_prompt_sha256": "162d45b800c87ae0284fb3397715a16dc3eafe1938557e4a3720084e5f4ba820",
+        "reserved_prompt_cache_capacity": 256,
+        "server_token_ids_sha256": "432ac5b55a33e4d9aada3d40e23e771296fb95a0caac25daad1fee438d3a3bbb",
+        "token_id_parity": "EXACT"
+      }
+    },
+    "heldout_queries_used": false,
+    "provenance": "Recomputed solely from four v2 captures; v1 selector capture, score, and generation outputs not reused.",
+    "query_capture_receipt_sha256": "deae19abfb1ccdd0c3194c03304e841ad48e0a8e99bfa178c20019ff89c408ba",
+    "query_to_kv_source_mapping": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        5,
+        5
+      ],
+      [
+        6,
+        6
+      ],
+      [
+        7,
+        7
+      ],
+      [
+        8,
+        8
+      ],
+      [
+        9,
+        9
+      ],
+      [
+        10,
+        10
+      ],
+      [
+        11,
+        11
+      ],
+      [
+        12,
+        12
+      ],
+      [
+        13,
+        13
+      ],
+      [
+        14,
+        14
+      ],
+      [
+        15,
+        15
+      ],
+      [
+        16,
+        16
+      ],
+      [
+        17,
+        17
+      ],
+      [
+        18,
+        18
+      ],
+      [
+        19,
+        19
+      ],
+      [
+        20,
+        20
+      ],
+      [
+        21,
+        21
+      ],
+      [
+        22,
+        22
+      ],
+      [
+        23,
+        23
+      ],
+      [
+        24,
+        22
+      ],
+      [
+        25,
+        22
+      ],
+      [
+        26,
+        22
+      ],
+      [
+        27,
+        22
+      ],
+      [
+        28,
+        22
+      ],
+      [
+        29,
+        23
+      ],
+      [
+        30,
+        22
+      ],
+      [
+        31,
+        22
+      ],
+      [
+        32,
+        22
+      ],
+      [
+        33,
+        22
+      ],
+      [
+        34,
+        22
+      ],
+      [
+        35,
+        23
+      ],
+      [
+        36,
+        22
+      ],
+      [
+        37,
+        22
+      ],
+      [
+        38,
+        22
+      ],
+      [
+        39,
+        22
+      ],
+      [
+        40,
+        22
+      ],
+      [
+        41,
+        23
+      ]
+    ],
+    "selected_groups_equal_v1_by_coincidence": true,
+    "selected_kv_groups": [
+      [
+        6,
+        1
+      ],
+      [
+        5,
+        0
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        2,
+        0
+      ]
+    ],
+    "selected_query_sites": [
+      [
+        6,
+        4
+      ],
+      [
+        6,
+        5
+      ],
+      [
+        6,
+        6
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        5,
+        0
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        5,
+        2
+      ],
+      [
+        5,
+        3
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        4,
+        7
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "selection_rule": "Frozen Appendix-C Eq.3 max target/reference pre-RoPE K alignment; per-layer top-1 KV group with bank mass tie-break; global top-4 layers; each KV group expands to its 4 associated Q heads.",
+    "selector_receipt_sha256": "502c6117a4d76830940f741e10f50a42c5d53ae1475ab1871216abb2a2165487",
+    "status": "FROZEN_BEFORE_GENERATION"
+  },
+  "selector_query_capture_receipt_path": "/home/nyx/mneme-artifacts/phase4-mi2/plan/v2/MI2_Calibration_v2_Query_Capture_Receipt_20261011.json",
+  "selector_query_capture_receipt_sha256": "deae19abfb1ccdd0c3194c03304e841ad48e0a8e99bfa178c20019ff89c408ba",
+  "source_data": {
+    "calibration_item_sha256s": {
+      "quantum/1-1022": {
+        "question_sha256": "1d44ce37343db826bab08188d983e6282cfa35e633e61b31103ac4bbeb23666f",
+        "source_line_sha256": "082df980e8b4e752035f5ebb33bdd1f3cb093f60dc4da016feca6dee6784b000"
+      },
+      "quantum/3-3013": {
+        "question_sha256": "ec0c9eee5a9473cd45d05e7cc89d8f505a91a4c46b5d2ada20006f6b457cb467",
+        "source_line_sha256": "c01ff105ec1032c370b87a845beedb9c552fd4c6ff2c68544b1ff041fb8d9da8"
+      },
+      "quantum/3-3024": {
+        "question_sha256": "fca128e8c77f3376e85628ade13c5d72d2a87e954eb84867c5007e4b9062fcbe",
+        "source_line_sha256": "80fa5c808e0509e38a06e0b25e4c6d29216f6d1a05664fb627e3a9f776f4e38f"
+      },
+      "quantum/5005": {
+        "question_sha256": "ad4bb1cab26ede7a291a3dd02f0e8ab347aa16f90597d0f5d127757f27d71438",
+        "source_line_sha256": "49407da8380d750339f224cb99454b27db5021bca8493083be06540e040bf97f"
+      }
+    },
+    "calibration_split": "PHYSICS-eval/quantum_dataset_eval.jsonl",
+    "commit": "91140b8c5590b539a86d974c194d2c829d948de3",
+    "construction_method_deviation": "The exact representative quantum-mechanics process card is transcribed from paper Appendix E/Table 5. The source paper says its card was distilled from 5–10 construction Qs plus reference solutions by GPT-5.5-thinking, with answer fragments, numerical constants, formulas and solution-order traces removed. The anonymous author construction IDs/card source pipeline are unavailable, so this run does not claim to redistill/recreate them; it reuses the published process-only example verbatim. PHYSICS items selected below are calibration/evaluation only and are not bank source material.",
+    "file_hashes": {
+      "benchmark_eval": {
+        "bytes": 621065,
+        "path": "/home/nyx/mneme-artifacts/phase4-mi2/source/PHYSICS/PHYSICS/PHYSICS-eval/quantum_dataset_eval.jsonl",
+        "rows": 53,
+        "sha256": "6274d86cc8767fdd332f04ab2175d5754bb20250190ba10bf45d9e33367ac919"
+      },
+      "calibration": {
+        "bytes": 621065,
+        "path": "/home/nyx/mneme-artifacts/phase4-mi2/source/PHYSICS/PHYSICS/PHYSICS-eval/quantum_dataset_eval.jsonl",
+        "rows": 53,
+        "sha256": "6274d86cc8767fdd332f04ab2175d5754bb20250190ba10bf45d9e33367ac919"
+      },
+      "heldout": {
+        "bytes": 2544153,
+        "path": "/home/nyx/mneme-artifacts/phase4-mi2/source/PHYSICS/PHYSICS/PHYSICS-test/quantum_dataset_test.jsonl",
+        "rows": 183,
+        "sha256": "a256cfb3e3bf410c36d6495de2ad4278dc09f97644e0a0d434d184a625c8b5bc"
+      }
+    },
+    "heldout_split": "PHYSICS-test/quantum_dataset_test.jsonl",
+    "license": "MIT (repository LICENSE)",
+    "repository": "yale-nlp/Physics",
+    "test_eval_ids_disjoint": true
+  },
+  "split_audit": {
+    "calibration_count": 4,
+    "calibration_heldout_ids_disjoint": true,
+    "calibration_split": "PHYSICS-eval",
+    "heldout_count": 6,
+    "heldout_split": "PHYSICS-test",
+    "selected_calibration_ids_disjoint_from_heldout": true,
+    "selected_calibration_ids_disjoint_from_v1": true,
+    "selected_calibration_ids_in_eval": [
+      "quantum/3-3013",
+      "quantum/3-3024",
+      "quantum/1-1022",
+      "quantum/5005"
+    ],
+    "selected_heldout_ids_in_test": [
+      "quantum/1-1009",
+      "quantum/2-2001",
+      "quantum/3-3006",
+      "quantum/5016",
+      "quantum/5073",
+      "quantum/6005"
+    ],
+    "test_eval_global_id_overlap_count": 0
+  },
+  "splits": {
+    "calibration": [
+      {
+        "answer_score_rubric": [
+          "Correctly identifies angular factor as the l=1,m=0 spherical harmonic (or equivalent).",
+          "Reports L^2=2 hbar^2.",
+          "Reports L_z=0."
+        ],
+        "id": "quantum/3-3013",
+        "official_final_answers": [
+          "L^2 = 2 \\hbar^2",
+          "L_z = 0"
+        ],
+        "official_solutions": "Transforming to spherical coordinates by\n\n$$\nx = r \\sin \\theta \\cos \\varphi, \\quad y = r \\sin \\theta \\sin \\varphi, \\quad z = r \\cos \\theta,\n$$\n\nwe have\n\n$$\n\\psi(r, \\theta, \\varphi) = \\frac{\\alpha^{5/2}}{\\sqrt{\\pi}} \\, r \\cos \\theta \\, e^{-\\alpha r} = f(r) Y_{10}\n$$\n\nHence the particle is in a state of definite angular momentum. For this state, $l = 1$, $L^2 = l(l + 1) \\hbar^2 = 2\\hbar^2$, $L_z = 0$.",
+        "process_score_criteria": [
+          "Identifies this as identifying an angular-momentum eigenstate/eigenvalues from a stationary spatial wavefunction, rather than a time-evolution task.",
+          "Uses the wavefunction angular structure and the L^2/L_z eigenvalue observables as the relevant mathematical objects; no exact derivation or numeric eigenvalue required for this process point.",
+          "Keeps the conclusion scoped to definite angular momentum and the requested observables; does not drift into energy spectra or dynamics."
+        ],
+        "question": "A quantum-mechanical state of a particle, with Cartesian coordinates $x, y,$ and $z$, is described by the normalized wave function\n\n$$\n\\psi(x, y, z) = \\frac{\\alpha^{5/2}}{\\sqrt{\\pi}} \\, z \\exp[-\\alpha(x^2 + y^2 + z^2)^{1/2}].\n$$\n\nShow that the system is in a state of definite angular momentum and give the values of $L^2$ and $L_z$ associated with the state.",
+        "question_sha256": "ec0c9eee5a9473cd45d05e7cc89d8f505a91a4c46b5d2ada20006f6b457cb467",
+        "source_line_sha256": "c01ff105ec1032c370b87a845beedb9c552fd4c6ff2c68544b1ff041fb8d9da8",
+        "task_class": "stationary angular-momentum eigenstate / observable identification"
+      },
+      {
+        "answer_score_rubric": [
+          "Provides a time-dependent probability for s_y=+1/2 consistent with the official solution.",
+          "Provides a time-dependent probability for s_y=-1/2 consistent with the official solution.",
+          "Probabilities are normalized and use the stated spin dynamics convention."
+        ],
+        "id": "quantum/3-3024",
+        "official_final_answers": [
+          "P(+) = \\frac{1}{2} (1 + \\sin 2\\omega t)",
+          "P(-) = \\frac{1}{2} (1 - \\sin 2\\omega t)"
+        ],
+        "official_solutions": "The Hamiltonian (spin part) of the system is  \n\n$$\n\\hat{H} = -\\mu_0 \\hat {\\mathbf{s}} \\cdot \\mathbf{B} = -\\frac{1}{2} \\hat{\\sigma}_x B \\mu_0,\n$$\n\nas $s = \\frac{1}{2} \\hbar \\sigma_x$, being in the $x$ direction. In the $\\sigma_x$ representation, the Schrodinger equation that the spin wave function $\\begin{pmatrix} a_1 \\\\ a_2 \\end{pmatrix}$ satisfies is\n\n$$\ni \\hbar \\frac{d}{dt} \n\\begin{pmatrix} \na_1 \\\\ \na_2 \n\\end{pmatrix}\n+ \\frac{1}{2} \\mu_0 B\n\\begin{pmatrix} \n0 & 1 \\\\ \n1 & 0 \n\\end{pmatrix}\n\\begin{pmatrix} \na_1 \\\\ \na_2 \n\\end{pmatrix} = 0, \n$$\n\nor \n\n$$\n\\left\\{\n\\begin{aligned}\ni \\hbar \\frac{d}{dt} a_1 + \\frac{1}{2} \\mu_0 B a_2 &= 0, \\\\\ni \\hbar \\frac{d}{dt} a_2 + \\frac{1}{2} \\mu_0 B a_1 &= 0.\n\\end{aligned}\n\\right.\n$$\n\nElimination of $a_1$ or $a_2$ gives\n\n$$\n\\frac{d^2}{dt^2} a_{1,2} + \\frac{\\mu_0^2 B^2}{4 \\hbar^2} a_{1,2} = 0,\n$$\n\nwhich have solutions\n\n$$\na_{1,2} = A_{1,2} e^{i \\omega t} + B_{1,2} e^{-i \\omega t},\n$$\n\nwhere \n\n$$\n\\omega = \\frac{\\mu_0 B}{2 \\hbar}\n$$\n\nand $A_{1,2}, B_{1,2}$ are constants. As\n\n$$\n\\hat{s}_z = \\frac{1}{2} \\sigma_z = \\frac{1}{2} \\begin{pmatrix} 1 & 0 \\\\ 0 & -1 \\end{pmatrix}\n$$\n\nand\n\n$$\n\\hat{s}_z \n\\begin{pmatrix} 1 \\\\ 0 \\end{pmatrix} \n= \\frac{1}{2} \\begin{pmatrix} 1 \\\\ 0 \\end{pmatrix},\n$$\n\nthe initial spin wave function is $\\begin{pmatrix} 1 \\\\ 0 \\end{pmatrix}$, i.e. $a_1(0) = 1$, $a_2(0) = 0$. The Schrodinger equation then gives\n\n$$\n\\frac{d a_1(0)}{dt} = 0, \\quad \\frac{d a_2(0)}{dt} = i \\frac{\\mu_0 B}{2 \\hbar} = i \\omega.\n$$\n\nThese four initial conditions give\n\n$$\n\\left\\{\n\\begin{aligned}\nA_1 + B_1 &= 1, \\\\\nA_2 + B_2 &= 0, \\\\\n\\omega (A_1 - B_1) &= 0, \\\\\n\\omega (A_2 - B_2) &= \\omega.\n\\end{aligned}\n\\right.\n$$\n\nwith the solution $A_1 = A_2 = B_1 = -B_2 = 1/2$. Substitution in the expressions for $a_{1,2}$ results in\n\n$$\n\\begin{pmatrix}\na_1(t) \\\\\na_2(t)\n\\end{pmatrix}\n=\n\\begin{pmatrix}\n\\cos \\omega t \\\\\ni \\sin \\omega t\n\\end{pmatrix}.\n$$\n\nAs the eigenstate of $s_y = +1/2$ is\n\n$$\n|s_y(+)\\rangle = \\frac{1}{\\sqrt{2}}\n\\begin{pmatrix}\n1 \\\\\ni\n\\end{pmatrix}\n$$\n\nand that of $s_y = -1/2$ is\n\n$$\n|s_y(-)\\rangle = \\frac{1}{\\sqrt{2}}\n\\begin{pmatrix}\n1 \\\\\n-i\n\\end{pmatrix},\n$$\n\nthe probability of finding $s_y = +1/2$ is\n\n$$\n\\begin{aligned}\nP(+) & = |\\langle s_y(+)|\\psi(t)\\rangle|^2 \\\\\n    & = \\left| \\frac{1}{\\sqrt{2}} (1 - i)\n    \\begin{pmatrix}\n    \\cos \\omega t \\\\\n    i \\sin \\omega t\n    \\end{pmatrix}\n    \\right|^2 \\\\\n    & = \\frac{1}{2} (1 + \\sin 2\\omega t).\n\\end{aligned}\n$$\n\nSimilarly, the probability of finding $s_y = -1/2$ is\n\n$$\nP(-) = |\\langle s_y(-)|\\psi(t)\\rangle|^2 = \\frac{1}{2} (1 - \\sin 2\\omega t).\n$$",
+        "process_score_criteria": [
+          "Identifies a time-evolving spin state followed by a later spin-component measurement.",
+          "Matches the task to state evolution under the field Hamiltonian followed by projection/Born probabilities in the requested s_y basis.",
+          "Separates time evolution from measurement statistics; does not substitute a static spectrum or classical trajectory for the requested probabilities."
+        ],
+        "question": "A particle with magnetic moment $\\mu = \\mu_0 \\mathbf{s}$ and spin $\\mathbf s$, with magnitude $1/2$, is placed in a constant magnetic field pointing along the $x$-axis. At $t = 0$, the particle is found to have $s_z = +1/2$. Find the probabilities at any later time of finding the particle with $s_y = \\pm 1/2$.  ",
+        "question_sha256": "fca128e8c77f3376e85628ade13c5d72d2a87e954eb84867c5007e4b9062fcbe",
+        "source_line_sha256": "80fa5c808e0509e38a06e0b25e4c6d29216f6d1a05664fb627e3a9f776f4e38f",
+        "task_class": "spin time evolution followed by measurement probabilities"
+      },
+      {
+        "answer_score_rubric": [
+          "Obtains the bound-state decay parameter k=ma/hbar^2 or equivalent.",
+          "Uses the symmetric normalized cumulative probability condition for |x|<x0.",
+          "Reports x0=(hbar^2/(2ma)) ln 2 or equivalent."
+        ],
+        "id": "quantum/1-1022",
+        "official_final_answers": [
+          "x_0 = \\frac{\\hbar^2}{2ma} \\ln 2"
+        ],
+        "official_solutions": "For bound states, $E < 0$. The Schrödinger equation\n\n$$\n\\left[ -\\frac{\\hbar^2}{2m} \\frac{d^2}{dx^2} - a \\delta(x) \\right] \\psi(x) = E\\psi(x)\n$$\n\nhas for $x \\neq 0$ the solutions finite at $x = \\pm\\infty$ as follows,\n\n$$\n\\psi(x) = \n\\begin{cases} \nA e^{kx} & \\text{for } x < 0, \\\\\nA e^{-kx} & \\text{for } x > 0,\n\\end{cases}\n$$\n\nwhere $k =\\frac{ \\sqrt{-2mE}}{\\hbar}$ and $A$ an arbitrary constant. Applying $\\lim_{\\varepsilon \\to 0^+} \\int_{-\\varepsilon}^{\\varepsilon} dx$ to the Schrödinger equation gives\n\n$$\n\\psi'(0^+) - \\psi'(0^-) = -\\frac{2ma}{\\hbar^2} \\psi(0) \\tag{1}\n$$\n\nsince\n\n$$\n\\int_{-\\varepsilon}^{\\varepsilon} \\psi(x) \\delta(x) \\, dx = \\psi(0), \\quad \\lim_{\\varepsilon \\to 0} \\int_{-\\varepsilon}^{\\varepsilon} \\psi(x) \\, dx = 0\n$$\n\nfor finite $\\psi(0)$. Substitution of $\\psi(x)$ in (1) gives\n\n$$\nk = \\frac{ma}{\\hbar^2}.\n$$\n\nHence\n\n$$\n\\psi(x) = A \\exp \\left( -\\frac{ma |x|}{\\hbar^2} \\right).\n$$\n\nOn account of symmetry, the probabilities are\n\n$$\nP(|x| < x_0) = 2|A|^2 \\int_0^{x_0} e^{-2kx} \\, dx = \\frac{\\left| A \\right|^2}{k} (1 - e^{-2kx_0})\n$$\n\n$$\nP(-\\infty < x < \\infty) = 2|A|^2 \\int_0^{\\infty} e^{-2kx} \\, dx = \\frac{\\left| A \\right|^2}{k}.\n$$\n\nAs it is given\n\n$$\n1 - e^{-2kx_0} = \\frac{1}{2},\n$$\n\nwe have\n\n$$\nx_0 = \\frac{1}{2k} \\ln 2 = \\frac{\\hbar^2}{2ma} \\ln 2.\n$$",
+        "process_score_criteria": [
+          "Identifies a stationary bound state with a spatial probability-in-an-interval question.",
+          "Matches the request to a normalized position density and cumulative integral over |x|<x_0.",
+          "Distinguishes integrated interval probability from pointwise density and keeps the calculation static rather than dynamical."
+        ],
+        "question": "A particle of mass $m$ moves non-relativistically in one dimension in a potential given by $\\mathbf{V}(x) = -a\\delta(x)$, where $\\delta(x)$ is the usual Dirac delta function. The particle is bound. Find the value of $x_0$ such that the probability of finding the particle with $|x| < x_0$ is exactly equal to $1/2$.",
+        "question_sha256": "1d44ce37343db826bab08188d983e6282cfa35e633e61b31103ac4bbeb23666f",
+        "source_line_sha256": "082df980e8b4e752035f5ebb33bdd1f3cb093f60dc4da016feca6dee6784b000",
+        "task_class": "stationary bound state / spatial measurement probability"
+      },
+      {
+        "answer_score_rubric": [
+          "Uses the unperturbed infinite-well ground state for first-order perturbation theory.",
+          "Computes first-order correction -b/2.",
+          "Gives total first-order energy pi^2 hbar^2/(2ml^2)-b/2."
+        ],
+        "id": "quantum/5005",
+        "official_final_answers": [
+          "E = \\frac{\\hbar^2 \\pi^2}{2m l^2} - \\frac{b}{2}"
+        ],
+        "official_solutions": "For the regular rigid box, the energy and wave function of the ground state are respectively\n\n$$\nE^{(0)} = \\frac{\\pi^2 \\hbar^2}{2ml^2}, \\quad \\psi^{(0)}(x) = \\sqrt{\\frac{2}{l}} \\sin \\frac{\\pi x}{l}\n$$\n\nThe perturbation is $H^{(1)} = -b, 0 < x \\leq \\frac{l}{2}$. Hence the energy correction of first order perturbation is\n\n$$\nE^{(1)} = \\int_{0}^{\\frac{l}{2}} \\phi^{(0)*}(x)(-b)\\phi^{(0)}(x)dx\n$$\n\n$$\n= \\int_{0}^{\\frac{l}{2}} \\frac{2}{l} \\sin^2\\left(\\frac{\\pi x}{l}\\right)(-b) \\, dx\n$$\n\n$$\n= -\\frac{b}{l} \\int_{0}^{\\frac{l}{2}} \\left(1 - \\cos \\frac{2\\pi x}{l}\\right) \\, dx = -\\frac{b}{2}.\n$$\n\nThus the energy of the ground state with first order perturbation correction is\n\n$$\nE = E^{(0)} + E^{(1)} = \\frac{\\hbar^2 \\pi^2}{2m l^2} - \\frac{b}{2}.\n$$",
+        "process_score_criteria": [
+          "Identifies a small potential change as a first-order stationary-state energy-shift problem.",
+          "Matches the requested shift to the perturbation expectation in the unperturbed ground state.",
+          "Keeps the answer to first order and avoids solving the modified well exactly or changing the target to a full spectrum."
+        ],
+        "question": "A particle moves in a one-dimensional box with a small potential dip (Fig. 5.2):\n\n$$\nV = \\infty \\text{ for } x < 0 \\text{ and } x > l,\n$$\n\n$$\nV = -b \\text{ for } 0 < x < (1/2)l,\n$$\n\n$$\nV = 0 \\text{ for } (1/2)l < x < l.\n$$\n\nTreat the potential dip as a perturbation to a regular rigid box $(V = \\infty \\text{ for } x < 0 \\text{ and } x > l, \\, V = 0 \\text{ for } 0 < x < 1)$. Find the first order energy of the ground state.",
+        "question_sha256": "ad4bb1cab26ede7a291a3dd02f0e8ab347aa16f90597d0f5d127757f27d71438",
+        "source_line_sha256": "49407da8380d750339f224cb99454b27db5021bca8493083be06540e040bf97f",
+        "task_class": "first-order perturbative response of an energy level"
+      }
+    ],
+    "heldout": [
+      {
+        "graphs": null,
+        "id": "quantum/5073",
+        "official_final_answers": [
+          "P_2 \\approx \\left( \\frac{16}{9\\pi^2} \\frac{eEa}{\\hbar} \\tau \\right)^2",
+          "P_3 = 0"
+        ],
+        "official_solutions": "The electron in the $ n = 1 $ eigenstate of the potential well\n\n$$\nV = \\begin{cases} \n0 & |x| \\leq a/2, \\\\\n\\infty & \\text{otherwise}\n\\end{cases}\n$$\n\nhas wave functions and corresponding energies\n\n$$\n\\psi_n(x) = \\sqrt{\\frac{2}{a}} \\sin \\left[ \\frac{n\\pi}{a} \\left( \\frac{a}{2} + x \\right) \\right] ,\n$$\n\n$$\nE_n = \\hbar^2 \\pi^2 n^2 / 2ma^2 , \\quad n = 1, 2, \\ldots .\n$$\n\nThe uniform electric field $E\\hat{e}_x$ has potential $\\phi = -\\int Edx = -Ex$. The potential energy of the electron (charge -e) due to $E, H' = eEx,$ is considered as a perturbation. We have\n\n$$\nH'_{n_2 n_1} = \\langle n_2|H'|n_1 \\rangle \n$$\n\n$$\n= \\frac{2}{a} \\int_{-\\frac{a}{2}}^{\\frac{a}{2}} \\sin \\left[ \\frac{n_1 \\pi}{a} \\left( x + \\frac{a}{2} \\right) \\right] \\sin \\left[ \\frac{n_2 \\pi}{a} \\left( x + \\frac{a}{2} \\right) \\right] eEx dx \n$$\n\n$$\n= \\frac{eE}{a} \\int_{-\\frac{a}{2}}^{\\frac{a}{2}} \\left\\{ \\cos \\left[ \\frac{(n_1 - n_2)}{a} \\pi \\left( x + \\frac{a}{2} \\right) \\right] \n- \\cos \\left[ \\frac{n_1 + n_2}{a} \\pi \\left( x + \\frac{a}{2} \\right) \\right] \\right\\} x dx\n$$\n\n$$\n= \\frac{eE}{a} \\left\\{ \\frac{a^2}{(n_1-n_2)^2 \\pi^2} [(-1)^{n_1-n_2} - 1] \n- \\frac{a^2}{(n_1+n_2)^2 \\pi^2} [(-1)^{n_1+n_2} - 1] \\right\\}\n$$\n\n$$\n= \\frac{4eEa}{\\pi^2} \\frac{n_1 n_2}{(n_1^2 - n_2^2)^2} [(-1)^{n_1+n_2} - 1] ,\n$$\n\n$$\n\\omega_{n_2 n_1} = \\frac{1}{\\hbar} (E_{n_2} - E_{n_1}) = \\frac{\\hbar \\pi^2}{2ma^2} (n_2^2 - n_1^2) ,\n$$\n\n$$\nC_{k'k}(t) = \\frac{1}{i\\hbar} \\int_{\\theta}^{\\tau} H'_{k'k}e^{i \\omega_{k'k} t}dt = \\frac{1}{\\hbar} H'_{k'k} (1 - e^{i \\omega_{k'k} \\tau}) \\frac{1}{\\omega_{k'k}}.\n$$\n\nFor the transition $1 \\rightarrow 2$,\n\n$$\nH'_{21} = \\langle 2|H'|1 \\rangle = -\\frac{16eEa}{9\\pi^2}, \\quad \\omega_{21} = \\frac{3\\hbar \\pi^2}{2ma^2},\n$$\n\nand so the probability of finding the electron in the n = 2 state at $t > \\tau$ is \n\n$$\nP_2 = |C_{21}(t)|^2 = \\frac{1}{\\hbar^2 \\omega_{21}^2} {H'}_{21}^2 (1 - e^{i \\omega_{21} \\tau} ) ( 1 - e^{-i \\omega_{21} \\tau} )\n$$\n\n$$\n= \\left( \\frac{16a^2}{9\\pi^2} \\right)^3 \\left[ \\frac{eEm}{\\hbar^2 \\pi} \\sin \\left( \\frac{3\\hbar \\pi^2}{4ma^2} \\tau \\right) \\right]^2 \\approx \\left( \\frac{16}{9\\pi^2} \\frac{eEa}{\\hbar} \\tau \\right)^2\n$$\n\nfor $ \\tau \\ll \\frac{\\hbar}{E_1 - E_2} $.\n\nFor the transition $ 1 \\rightarrow 3 $,\n\n$$\nH'_{31} = \\langle 3|H'|1 \\rangle = 0,\n$$\n\nand so\n\n$$\nP_3 = |C_{31}(t)|^2 = 0.\n$$\n\nThe validity of the time-dependent perturbation theory requires the time $ \\tau $ during which the perturbation acts should be small. The perturbation potential itself should also be small.",
+        "process_rubric": {
+          "criteria": [
+            "classifies pulse as short-time time-dependent perturbation",
+            "uses transition amplitudes/parity selection; concludes P3=0 for symmetry reason",
+            "gives P2 dependence matching reference and states small-transition/short-pulse validity assumptions"
+          ],
+          "task_class": "time-dependent perturbative response"
+        },
+        "question": "An electron is in the $ n = 1 $ eigenstate of a one-dimensional infinite square-well potential which extends from $ x = -a/2 $ to $ x = a/2 $. At $ t = 0 $ a uniform electric field $ E $ is applied in the $ x $ direction. It is left on for a time $ \\tau $ and then removed. Use time-dependent perturbation theory to calculate the probabilities $ P_2 $ and $ P_3 $ that the electron will be, respectively, in the $ n = 2 $ and $ n = 3 $ eigenstates at $ t > \\tau $. Assume that $ \\tau $ is short in the sense that $ \\tau \\ll \\frac{\\hbar}{E_1 - E_2} $, where $ E_n $ is the energy of the eigenstate $ n $. Specify any requirements on the parameters of the problem necessary for the validity of the approximations made in the application of time-dependent perturbation theory.",
+        "question_sha256": "60e8a2a2236489bf9da93b8eeb290407b2801b4552c381264c3d5fbcd6a18b99",
+        "source_line_sha256": "195c26421d301994bc1ecfd462281ec00d20abe3ffbe38843bfe8faec60bb78c"
+      },
+      {
+        "graphs": null,
+        "id": "quantum/5016",
+        "official_final_answers": [
+          "H = \\frac{J^2}{2I} - dE \\cos \\theta",
+          "H_0 = \\frac{J^2}{2I}, \\quad H' = -dE \\cos \\theta",
+          "E_{jm}^{(0)} = \\frac{j(j+1)\\hbar^2}{2I}",
+          "(2j + 1)\\text{-fold degenerate}",
+          "E^{(2)} = \\frac{Id^2E^2[j(j + 1) - 3m^2]}{\\hbar^2 j(j + 1)(2j - 1)(2j + 3)}"
+        ],
+        "official_solutions": "(a) Take the z-axis in the direction of the field. The Hamiltonian of the rotator is\n\n$$\nH = \\frac{J^2}{2I} - d \\cdot \\mathbf{E} = \\frac{J^2}{2I} - dE \\cos \\theta.\n$$\n\nConsidering $-dE \\cos \\theta$ as a perturbation, we have\n\n$$\nH_0 = \\frac{J^2}{2I}, \\quad H' = -dE \\cos \\theta.\n$$\n\n(b) The eigenfunctions of the unperturbed system are\n\n$$\n\\psi_{jm} = Y_{jm}(\\theta, \\varphi),\n$$\n\nwhere $m = -j, (-j + 1), \\ldots, (j - 1), j$, and the energy eigenvalues are $E_{jm}^{(0)} = \\frac{j(j+1)\\hbar^2}{2I}$. The $e1$ eve is are $(2j + 1)$-fold degenerate since $E_{jm}^{(0)}$ does not depend on $m$ at all.\n\n(c) The first order energy correction is\n\n$$\n\\langle jm|-dE \\cos \\theta|jm \\rangle = -dE \\langle jm| \\cos \\theta|jm \\rangle\n$$\n\n$$\n= -dE \\int_0^\\pi \\int_0^{2\\pi} \\cos \\theta \\sin \\theta \\,d\\theta d\\varphi = 0.\n$$\n\nFor the second order correction we calculate\n\n$$\nE_n^{(2)} = \\sum_i' \\frac{|\\langle n|H'|i\\rangle|^2}{E_n^{(0)} - E_i^{(0)}},\n$$\n\nwhere $n, i$ denote pairs of $j, m$ and the prime signifies exclusion of $i = n$ in the summation. As the non-vanishing matrix elements are only\n\n$$\n(j + 1, m|-dE \\cos \\theta|jm) = -dE\\sqrt{\\frac{(j + 1 - m)(j + 1 + m)}{(2j + 1)(2j + 3)}},\n$$\n\n$$\n(j - 1, m|-dE \\cos \\theta|jm) = -dE\\sqrt{\\frac{(j + m)(j - m)}{(2j + 1)(2j - 1)}},\n$$\n\nThe lowest order energy correction is\n\n$$\nE^{(2)} = \\frac{2Id^2E^2}{\\hbar^2}\n\\times\n\\left\\{ \\frac{(j + 1 - m)(j + 1 + m)}{(2j + 1)(2j + 3)[j(j + 1) - (j + 1)(j + 2)]} \\right. \\\\\n+ \\left. \\frac{(j + m)(j - m)}{(2j + 1)(2j - 1)[j(j + 1) - j(j - 1)]} \\right\\} \\\\\n= \\frac{Id^2E^2[j(j + 1) - 3m^2]}{\\hbar^2 j(j + 1)(2j - 1)(2j + 3)} \\ .\n$$\n\n(d) Because $H'$ is already diagonal in the $j$ subspace, the nondegenerate perturbation theory is still applicable. However even with the perturbation, degeneracy does not completely disappear. In fact states with same $j$ but opposite $m$ are still degenerate.",
+        "process_rubric": {
+          "criteria": [
+            "separates H0=J²/(2I) from field perturbation -dE cos(theta)",
+            "gives unperturbed j-levels and 2j+1 degeneracy",
+            "uses selection rules/degeneracy correctly to derive leading energy correction",
+            "explains why nondegenerate treatment can apply to the requested matrix elements while preserving m degeneracy"
+          ],
+          "task_class": "weak-field perturbative response on a rotator"
+        },
+        "question": "The polarization of a diatomic molecule in weak electric fields may be treated by considering a rigid rotator with moment of inertia $I$ and electric dipole moment $d$ in a weak electric field $\\mathbf{E}$.\n\n(a) Ignoring the motion of the center of mass write down the Hamiltonian $H$ of the rigid rotator in the form of $H_0 + H$.\n\n(b) Solve the unperturbed problem exactly. How are the levels degenerate?\n\n(c) Calculate the lowest order correction to all the energy levels by non-degenerate perturbation method.\n\n(d) Explain why is nondegenerate perturbation method applicable here and how are the levels degenerate.\n\nThe following relation may be useful:\n\n$$\n\\cos \\theta Y_{lm} =\n\\sqrt{\\frac{(l + 1 - m)(l + 1 + m)}{(2l + 1)(2l + 1)}} Y_{l+1,m} +\n\\sqrt{\\frac{(l + m)(l - m)}{(2l + 1)(2l - 1)}} Y_{l-1,m}.\n$$",
+        "question_sha256": "0ec7bbe0649eb4f1a186ac0d0d8b84953447e9fd5c69762658f74fd918a1934e",
+        "source_line_sha256": "02e8b9a3a6de14ea2f64d0dc403d870c58d5529857fbe23ebbe731b49539b57d"
+      },
+      {
+        "graphs": null,
+        "id": "quantum/6005",
+        "official_final_answers": [
+          "\\tan \\delta_0 = -k r_0",
+          "\\tan \\delta_\\ell \\approx -\\frac{(kr_0)^{2\\ell+1}}{[(2\\ell - 1)!!]^2 (2\\ell + 1)}"
+        ],
+        "official_solutions": "(a) This is a typical scattering problem that can be readily solved by the method of partial waves. The potential can be expressed as  \n\n$$\nV(r) = \n\\begin{cases} \n\\infty, & r < r_0, \\\\\n0, & r > r_0. \n\\end{cases}\n$$\n\nThe radial wave function for the $\\ell$ partial wave is  \n\n$$\nR_\\ell(kr) = \n\\begin{cases} \n0, & r < r_0, \\\\\nj_\\ell(kr) \\cos \\delta_\\ell - n_\\ell(kr) \\sin \\delta_\\ell, & r > r_0.\n\\end{cases} \n\\tag{2}\n$$\n\nHere $j_\\ell$ and $n_\\ell$ are spherical Bessel function and spherical Neumann function of order $\\ell$. These functions have the asymptotic forms  \n\n$$\nj_\\ell(x) \\xrightarrow{x \\rightarrow \\infty} \\frac{1}{x} \\sin(x - \\ell\\pi/2),\n$$\n\n$$\nn_\\ell(x) \\xrightarrow{x \\rightarrow \\infty} -\\frac{1}{x} \\cos(x - \\ell\\pi/2).\n$$\n\nHence for $r > r_0$ we have  \n\n$$\nR_\\ell(kr) \\xrightarrow{kr \\rightarrow \\infty} \\sin\\left(kr - \\frac{\\ell \\pi}{2} + \\delta_\\ell\\right).\n$$\n\nThe phase shift $\\delta_\\ell$ can be determined by the continuity of the wave function at $r = r_0$. Writing $kr_0 = x$, the continuity condition  \n\n$$\nR_\\ell(x) = j_\\ell(x) \\cos \\delta_\\ell - n_\\ell(x) \\sin \\delta_\\ell = 0\n$$\n\ngives  \n\n$$\n\\tan \\delta_\\ell = \\frac{j_\\ell(x)}{n_\\ell(x)}.\n$$\n\nIn the low-energy limit $x \\to 0$, the functions have the asymptotic forms\n\n$$\nj_\\ell(x) \\xrightarrow{x \\to 0} \\frac{x^\\ell}{(2\\ell + 1)!!}, \n$$\n$$\nn_\\ell(x) \\xrightarrow{x \\to 0} -\\frac{(2\\ell - 1)!!}{x^{\\ell+1}},\n$$\n\nso that\n\n$$\n\\tan \\delta_\\ell = \\frac{j_\\ell(x)}{n_\\ell(x)} \\xrightarrow{x \\to 0} -\\frac{x^{2\\ell+1}}{[(2\\ell - 1)!!]^2 \\, (2\\ell + 1)}.\n$$\n\nThus the s-wave ($\\ell = 0$) phase shift is\n\n$$\n\\tan \\delta_0 = -x = -k r_0.\n$$\n\nIt gives a finite contribution to the scattering and the corresponding total cross section is\n\n$$\n\\sigma_t = \\frac{4\\pi}{k^2} \\sin^2 \\delta_0 \\approx \\frac{4\\pi}{k^2} \\delta_0^2 \\approx 4\\pi r_0^2.\n$$\n\nThe scattering is spherically symmetric, and the total cross section is four times the classical value $\\pi r_0^2$.\n\n(b) Consider the low-energy limit $k \\to 0$. \n\nAs\n$$\n\\tan \\delta_\\ell \\approx -\\frac{x^{2\\ell+1}}{[(2\\ell - 1)!!]^2 (2\\ell + 1)},\n$$\n\n$\\delta_\\ell$ falls off very rapidly as $\\ell$ increases. All the phase shifts vanish as $k \\to 0$, except for the $l = 0$ partial wave. Hence s-waves predominate in low-energy scattering. Physically, particles with higher partial waves are farther away from the force center so the effect of the force on such particles is smaller, causing $|\\delta_\\ell|$ to be smaller.\n",
+        "process_rubric": {
+          "criteria": [
+            "applies hard-sphere boundary condition at r0 to derive s-wave phase shift",
+            "identifies higher partial-wave threshold suppression as k→0",
+            "gives scaling tan(delta_l) proportional to (kr0)^(2l+1) with correct sign/coefficient"
+          ],
+          "task_class": "low-energy scattering/asymptotics"
+        },
+        "question": "(a) Find the s-wave phase shift, as a function of wave number $k$, for a spherically symmetric potential which is infinitely repulsive inside of a radius $r_0$, and vanishes outside of $r_0$.  \n\n(b) For $k \\rightarrow 0$ discuss the behavior of the phase shifts in the higher partial waves. ",
+        "question_sha256": "118f11f7b65e76f11bb6a7bf6de1ec6cf73110343e4b8bb68fb5bd9ab96211ef",
+        "source_line_sha256": "36d6a49e009de696014080398ecc1c91fb97282d35a62c9f2b401d98f38197b6"
+      },
+      {
+        "graphs": null,
+        "id": "quantum/1-1009",
+        "official_final_answers": [
+          "\\frac{d}{dt} \\int_{-\\infty}^{\\infty} \\psi^*(x, t) \\psi(x, t) \\, dx = 0",
+          "\\hat{H} \\psi(x, t) = E \\psi(x, t)",
+          "\\psi(x, t) = \\sum_n a_n \\psi_n(x) \\exp\\left(-i \\frac{E_n}{\\hbar} t\\right)",
+          "a_n = \\sqrt{\\frac{1}{2a}} \\int_{-a}^{a} \\psi_n^*(x) \\, dx"
+        ],
+        "official_solutions": "﻿(a) Consider the Schrödinger equation and its complex conjugate\n\n$$\ni\\hbar \\partial \\psi / \\partial t = -\\frac{\\hbar^2}{2m} \\nabla^2 \\psi + V\\psi,\n\\tag{1}\n$$\n\n$$\n-i\\hbar \\partial \\psi^* / \\partial t = -\\frac{\\hbar^2}{2m} \\nabla^2 \\psi^* + V \\psi^* .\n\\tag{2}\n$$\n\nTaking $\\psi^*$ x (1) - $\\psi$ x (2) we obtain\n\n$$\ni\\hbar \\frac{\\partial}{\\partial t} (\\psi^* \\psi) = -\\frac{\\hbar^2}{2m} \\nabla \\cdot (\\psi^* \\nabla \\psi - \\psi \\nabla \\psi^*).\n$$\n\nFor the one dimension case we have, integrating over all space,\n\n$$\n\\frac{d}{dt} \\int_{-\\infty}^{\\infty} \\psi^*(x, t) \\psi(x, t) \\, dx = \\frac{i \\hbar}{2m} \\int_{-\\infty}^{\\infty} \\frac{\\partial}{\\partial x} \\left( \\psi^* \\frac{\\partial \\psi}{\\partial x} - \\psi \\frac{\\partial \\psi^*}{\\partial x} \\right) \\, dx \n$$\n\n$$\n= \\frac{i \\hbar}{2m} \\left[ \\psi^* \\partial \\psi / \\partial x - \\psi \\partial \\psi^* / \\partial x \\right]_{-\\infty}^{\\infty}.\n$$\n\nIf $\\psi$ is a bound state, then $\\psi(x \\to \\pm \\infty) = 0$ and hence\n\n$$\n\\frac{d}{dt} \\int_{-\\infty}^{\\infty} \\psi^*(x, t) \\psi(x, t) \\, dx = 0.\n$$\n\n(b) Supposing the particle is in a stationary state with energy $E$ at $t = t_0$, we have\n\n$$\n\\hat{H} \\psi(x, t_0) = E \\psi(x, t_0),\n$$\n\nwhere  $\\hat{H}$ does not depend on $t$ explicitly. At any later time $t$ , the Schrödinger equation\n\n$$\ni \\hbar \\partial \\psi(x, t) / \\partial t = \\hat{H} \\psi(x, t)\n$$\n\napplies. As $\\hat{H}$ does not depend on $t$ explicitly, the Schrödinger equation has the formal solution\n\n$$\n\\psi(x, t) = \\exp \\left[ -i \\hat{H} (t - t_0) / \\hbar \\right] \\psi(x, t_0).\n$$\n\nMultiplying both sides by $\\hat{H}$  from the left and noting the commutability between $\\hat{H}$ and $\\exp[-i(t-t_0) \\hat{H} / \\hbar]$, we find\n\n$$\n\\hat{H} \\psi(x, t) = \\exp \\left[\\frac{-i \\hat{H} (t - t_0)}{\\hbar} \\right] \\hat{H} \\psi(x, t_0)\n$$\n\n$$\n= E \\exp \\left[\\frac{-i \\hat{H} (t - t_0)}{\\hbar} \\right] \\psi(x, t_0)\n$$\n\n$$\n= E \\psi(x, t).\n$$\n\nHence $\\psi(x, t)$ represents a stationary state at any later time $t$.\n\n(c) The wave function given for $t = 0$ can be written as\n\n$$\n\\psi(x, 0) = \n\\begin{cases} \nC, & |x| < a, \\\\ \n0, & \\text{otherwise}, \n\\end{cases}\n$$\n\nwhere $C$ is a constant. Normalization $\\int^a_{-a} \\psi^* \\psi \\, dx = 1$ requires that $c = \\left(\\frac{1}{2a}\\right)^{\\frac{1}{2}}$. Suppose the eigenfunction of the bound state is $\\langle x|n \\rangle$ and $\\hat{H}|n\\rangle= E_n|n\\rangle$. Then \n\n$$ \n1 = \\sum_n |n\\rangle\\langle n|, \n$$\n\nand \n\n$$ \n|\\psi(x, 0)\\rangle = \\sum_n |n\\rangle \\langle n|\\psi(x, 0)\\rangle, \n$$\n\n$$ \n|\\psi(x, t)\\rangle = \\sum_n |n\\rangle \\langle n|\\psi(x, 0)\\rangle \\, \\exp\\left(-i \\frac{E_n}{\\hbar} \\right). \n$$\n\nHence\n\n$$ \n\\psi(x, t) = \\sum_n a_n \\psi_n(x) \\exp\\left(-i \\frac{E_n}{\\hbar} t\\right), \n$$\n\nwith\n\n$$ \na_n = \\langle n | \\psi(x, 0) \\rangle = \\int_{-\\infty}^{\\infty} \\psi_n^*(x) \\psi(x, 0) \\, dx \n$$\n\n$$ \n= \\sqrt{\\frac{1}{2a}} \\int^a_{-a} \\psi_n^*(x) \\, dx.\n$$\n",
+        "process_rubric": {
+          "criteria": [
+            "uses continuity/Schrödinger equation to establish norm conservation",
+            "identifies stationary energy eigenstates as time-persistent up to phase",
+            "expands initial top-hat state in energy eigenstates with coefficients from overlap integrals"
+          ],
+          "task_class": "time evolution and stationary-state expansion"
+        },
+        "question": "﻿Consider a one-dimensional bound particle.\n\n(a) Show that\n\n$$\n\\frac{d}{dt} \\int_{-\\infty}^{\\infty} \\psi^*(x, t) \\psi(x, t) \\, dx = 0.\n$$\n\n($\\psi$ need not be a stationary state).\n\n(b) Show that, if the particle is in a stationary state at a given time, then it will always remain in a stationary state.\n\n(c) If at $t = 0$ the wave function is constant in the region $-a < x < a$ and zero elsewhere, express the complete wave function at a subsequent time in terms of the eigenstates of the system.\n",
+        "question_sha256": "15bd035b2d04493686f57145ae2b5d0f094994a43f8f7a94e271e45e3a2d5884",
+        "source_line_sha256": "b3c956e28a94e29708ccab649156ccee03062a235e4e7c6a147b2cb9f5dcf150"
+      },
+      {
+        "graphs": null,
+        "id": "quantum/2-2001",
+        "official_final_answers": [
+          "i \\hbar \\frac{\\partial \\psi (r, t)}{\\partial t} = - \\frac{\\hbar^2}{2m} \\nabla^2 \\psi (r, t)",
+          "\\psi_{111}(x, y, z) = \\left( \\frac{2}{L} \\right)^{3/2} \\sin \\left( \\frac{\\pi x}{L} \\right) \\sin \\left( \\frac{\\pi y}{L} \\right) \\sin \\left( \\frac{\\pi z}{L} \\right)",
+          "N = \\frac{4 \\pi}{3} \\left( \\frac{mL^2}{2 \\hbar^2 \\pi^2} E \\right)^{3/2}"
+        ],
+        "official_solutions": "(a) The Schrödinger equation is\n\n$$\ni \\hbar \\partial \\psi (r, t)/ \\partial t = - \\left( \\hbar^2 / 2m \\right) \\nabla^2 \\psi (r, t), \\quad 0 \\leq x, y, z \\leq L,\n$$\n\n$$\n\\psi = 0, \\quad \\text{otherwise.} \n$$\n\n(b) By separation of variables, we can take that the wave function to be the product of three wave functions each of a one-dimensional infinite well potential. The wave function of the lowest energy level is\n\n$$\n\\psi_{111}(x, y, z) = \\psi_1(x) \\psi_1(y) \\psi_1(z), \n$$\n\nwhere\n\n$$\n\\psi_1(x) = \\sqrt{\\frac{2}{L}} \\sin \\left( \\frac{\\pi}{L} x \\right), \\quad \\text{etc.} \n$$\n\nThus\n\n$$\n\\psi_{111}(x, y, z) = \\left( \\frac{2}{L} \\right)^{3/2} \\sin \\left( \\frac{\\pi x}{L}  \\right) \\sin \\left( \\frac{\\pi y}{L}  \\right) \\sin \\left( \\frac{\\pi z}{L}  \\right).\n$$\n\nThe corresponding energy is $E_{111} = 3 \\hbar^2 \\pi^2 / 2mL^2$.\n\n(c) For a set of quantum numbers $n_x, n_y, n_z$ for the three dimensions, the energy is\n\n$$\nE = \\frac{\\hbar^2 \\pi^2}{2mL^2} \\left( n_x^2 + n_y^2 + n_z^2 \\right).\n$$\n\nHence the number $N$ of states whose energy is less than or equal to $E$ is equal to the number of sets of three positive integers $n_x, n_y, n_z$ satisfying the inequality\n\n$$\nn_x^2 + n_y^2 + n_z^2 \\leq \\frac{2mL^2E}{\\hbar^2 \\pi^2}. \n$$\n\nConsider a Cartesian coordinate system of axes $n_x, n_y, n$. The number $N$ required is numerically equal to the volume in the first quadrant of a sphere of radius $(2mL^2E/\\hbar^2 \\pi^2)^{1/2}$, provided $N \\geq 1$. Thus\n\n$$\nN = \\frac{1}{8} \\cdot \\frac{4 \\pi}{3} \\cdot \\left( \\frac{2mL^2}{\\hbar^2 \\pi^2} E \\right)^{3/2} = \\frac{4 \\pi}{3} \\left( \\frac{mL^2}{2 \\hbar^2 \\pi^2 E} \\right)^{3/2}.\n$$",
+        "process_rubric": {
+          "criteria": [
+            "writes the 3D Schrödinger eigenproblem for the cubic infinite well",
+            "gives the normalized lowest state with n=(1,1,1)",
+            "uses large-N phase-space/state counting to obtain E^(3/2) dependence and correct prefactor"
+          ],
+          "task_class": "spectrum/eigenstate and asymptotic state counting"
+        },
+        "question": "An electron is confined in a three-dimensional infinite potential well. The sides parallel to the *x-*, *y-*, and *z*-axes are of length $L$ each.\n\n(a) Write the appropriate Schrödinger equation.  \n\n(b) Write the time-independent wave function corresponding to the state of the lowest possible energy.  \n\n(c) Give an expression for the number of states, $N$, having energy less than some given $E$. Assume $N \\gg 1$.",
+        "question_sha256": "786e5b3d38d9613d2bb6adb00e2e9a79d5cfb2c90c58160be49dac64bf360713",
+        "source_line_sha256": "42a685c4b57ce9628224afa6ac973f38e2cf188645e3984a40d3b36104341bc8"
+      },
+      {
+        "graphs": null,
+        "id": "quantum/3-3006",
+        "official_final_answers": [
+          "\\sqrt{2} \\hbar",
+          "0",
+          "\\frac{1}{6}",
+          "\\frac{1}{8\\pi} \\left[ \\sin \\theta (\\sin \\phi + \\cos \\phi) + 2 \\cos \\theta \\right]^2 \\mathrm{d}\\Omega"
+        ],
+        "official_solutions": "The wave function may be rewritten in spherical coordinates as\n\n$$\n\\psi = Kr (\\cos \\phi \\sin \\theta + \\sin \\phi \\sin \\theta + 2 \\cos \\theta) e^{-\\alpha r},\n$$\n\nits angular part being\n\n$$\n\\psi(\\theta, \\phi) = K' (\\cos \\phi \\sin \\theta + \\sin \\phi \\sin \\theta + 2 \\cos \\theta),\n$$\n\nwhere $K'$ is the normalization constant such that\n\n$$\nK'^2 \\int_{\\theta}^{\\pi} d\\theta \\int_{0}^{2\\pi} \\sin \\theta (\\cos \\phi \\sin \\theta + \\sin \\phi \\sin \\theta + 2 \\cos \\theta)^2 d\\phi= 1.\n$$\n\nSince\n\n$$\n\\cos \\phi = \\frac{1}{2} (e^{i\\phi} + e^{-i\\phi}), \\quad \\sin \\phi = \\frac{1}{2i}(e^{i\\phi} - e^{-i\\phi}),\n$$\n\nwe have\n\n$$\n\\psi(\\theta, \\phi) = K' \\left[ \\frac{1}{2} (e^{i\\phi} + e^{-i\\phi}) \\sin \\theta + \\frac{1}{2i} (e^{i\\phi} - e^{-i\\phi}) \\sin \\theta + \\cos 2\\theta \\right],\n$$\n\n$$\n= K' \\left[ -\\frac{1}{2} (1 - i) \\sqrt{\\frac{8\\pi}{3}} Y_1^1 + \\frac{1}{2} (1 + i) \\sqrt{\\frac{8\\pi}{3}} Y_1^{-1} + 2 \\sqrt{\\frac{4\\pi}{3}} Y_1^0 \\right].\n$$\n\nThe normalization condition and the orthonormality of $Y^m_l$ then give\n\n$$\nK'^2 \\left[ \\frac{1}{2} \\cdot \\frac{8 \\pi}{3} + \\frac{1}{2} \\cdot \\frac{8 \\pi}{3} + 4 \\cdot \\frac{4 \\pi}{3} \\right] = 1 \n$$\n\nor \n\n$$\nK' = \\sqrt{\\frac{1}{8 \\pi}},\n$$\n\nand thus\n\n$$\n\\psi(\\theta, \\phi) = \\sqrt{\\frac{1}{8 \\pi}} \\left[ -\\frac{1}{2} (1 - i) \\sqrt{\\frac{8 \\pi}{3}} Y^1_1 \\right.\n$$\n\n$$\n\\left. + \\frac{1}{2} (1 + i) \\sqrt{\\frac{8 \\pi}{3}} Y^{-1}_1 + 2 \\sqrt{\\frac{4 \\pi}{3}} Y^0_1 \\right].\n$$\n\n(a) The total angular momentum of the particle is\n\n$$\n\\sqrt{\\langle\\mathbf{L}^2\\rangle} = \\sqrt{l(l+1)} \\hbar =\\sqrt{2} \\hbar.\n$$\n\nas the wave function corresponds to $l = 1$.\n\n(b) The z-component of the angular momentum is\n\n$$\n\\langle\\psi^* | L_z | \\psi \\rangle = K'^2 \\left[ \\frac{1}{2} \\cdot \\frac{8 \\pi}{3} \\cdot \\hbar (Y^1_1)^2 + \\frac{1}{2} \\cdot \\frac{8 \\pi}{3} \\cdot (-\\hbar) (Y^{-1}_1)^2 \\right.\n$$\n\n$$\n\\left. + 4 \\cdot \\frac{4 \\pi}{3} (0) (Y^0_1)^2 \\right]\n$$\n\n$$\n= \\frac{1}{8 \\pi} \\left[ \\frac{1}{2} \\cdot \\frac{8 \\pi}{3} \\cdot (+\\hbar) + \\frac{1}{2} \\cdot \\frac{8 \\pi}{3} \\cdot (-\\hbar) \\right] = 0 .\n$$\n\n(c) The probability of finding $L_z = +\\hbar$ is\n\n$$\nP = |\\langle L_z = +\\hbar | \\psi(\\theta, \\phi) \\rangle|^2 \n$$\n\n$$\n= \\frac{1}{8\\pi} \\cdot \\frac{1}{2} \\cdot \\frac{8\\pi}{3} = \\frac{1}{6} .\n$$\n\n(d) The probability of finding the particle in the solid angle $\\mathrm{d}\\Omega$ at $\\theta, \\varphi$ is\n\n$$\n\\int \\psi^*(\\theta, \\varphi) \\psi(\\theta, \\varphi) \\mathrm{d}\\Omega = \\frac{1}{8\\pi} \\left[ \\sin \\theta (\\sin \\phi + \\cos \\phi) + 2 \\cos \\theta \\right]^2 \\mathrm{d}\\Omega .\n$$\n",
+        "process_rubric": {
+          "criteria": [
+            "decomposes angular dependence into l=1 spherical harmonics and identifies total L²",
+            "computes expectation of requested angular momentum component consistently with symmetry",
+            "computes Lz=+hbar measurement probability from normalized component weights",
+            "gives angular probability density with correct normalization/phi dependence"
+          ],
+          "task_class": "angular-momentum measurement statistics"
+        },
+        "question": "Consider a spinless particle represented by the wave function\n\n$$\n\\psi = K(x + y + 2z) e^{-\\alpha r},\n$$\n\nwhere $r = \\sqrt{x^2 + y^2 + z^2}$, and $K$ and $\\alpha$ are real constants.\n\n(a) What is the total angular momentum of the particle? \n\n(b) What is the expectation value of the t-component of angular momentum?  \n\n(c) If the z-component of angular momentum, $L_z$, were measured, what is the probability that the result would be $L_z = +\\hbar$?  \n\n(d) What is the probability of finding the particle at $\\theta, \\phi$ and in solid angle $d\\Omega$? Here $\\theta, \\phi$ are the usual angles of spherical coordinates.\n\nYou may find the following expressions for the first few spherical harmonics useful:\n\n$$\nY_0^0 = \\sqrt{\\frac{1}{4\\pi}}, \\quad Y_1^{\\pm 1} = \\mp \\sqrt{\\frac{3}{8\\pi}} \\sin \\theta e^{\\pm i \\phi},\n$$\n\n$$\nY_1^0 = \\sqrt{\\frac{3}{4\\pi}} \\cos \\theta, \\quad Y_2^{\\pm 1} = \\mp \\sqrt{\\frac{15}{8\\pi}} \\sin \\theta \\cos \\theta e^{\\pm i \\phi}.\n$$",
+        "question_sha256": "8fe9e886060f0291da63f419c46a5a8ab0963ccc6a77edd1dfbf3589dd5d851b",
+        "source_line_sha256": "a14c21d429f5957a62715fc044baa04125467663ab5a4ecfbfc234f355c9fd10"
+      }
+    ]
+  },
+  "status": "FINAL_V2_PREGENERATION_FREEZE_PENDING_ROOT_APPROVAL",
+  "v1_relationship": {
+    "only_intended_design_change": "Replace four calibration items and their prospectively frozen process/answer rubrics. Keep heldouts, card, bank recipe, implementation, selector/sites, prompts, conditions, seeds, samplers, runtime, gain grid, and thresholds fixed.",
+    "supersedes_for_new_calibration_only": "MI2_Calibration_v1_Freeze_20261011.json",
+    "v1_disposition": "Visible-gate failure on its fixed high-difficulty/mismatched calibration items remains valid for those items but is inconclusive for the MI mechanism; v1 outputs are not reused or rescored as v2.",
+    "v1_is_immutable": true
+  },
+  "v2_calibration_rationale": {
+    "dispatch_status": "No v2 generation or scoring has occurred. Root review of this exact freeze is required before generation.",
+    "not_claimed": "These are calibration-only tasks, not heldout generalization evidence. They are selected for procedure relevance and manageable answer rubric, not because Gemma is known to fail them.",
+    "paper_alignment": "Four different card-relevant task regimes selected: angular-momentum eigenstate/observable identification; spin time-evolution plus measurement; stationary spatial probability; first-order perturbative response.",
+    "selection_method": "Model-free review of the frozen PHYSICS-eval questions and official reference solutions only; no Gemma output was consulted for selection."
+  },
+  "v2_freeze_chain": {
+    "candidate_plan_sha256_before_selector_capture": "d561642e10dfc8622e5b2005fd9aad3e1b3761ff29a5cbf2c2489703e0ab21da",
+    "final_plan_sha256": "pending post-capture receipt inclusion",
+    "generated_calls_complete": 0,
+    "heldout_calls_complete": 0,
+    "query_capture_receipt_sha256": "deae19abfb1ccdd0c3194c03304e841ad48e0a8e99bfa178c20019ff89c408ba",
+    "selector_capture_cost_seconds": 8.530000000000001,
+    "selector_capture_sha256": "502c6117a4d76830940f741e10f50a42c5d53ae1475ab1871216abb2a2165487",
+    "v2_query_capture_only": true
+  },
+  "worktree": "/tmp/mneme-mi2"
+}

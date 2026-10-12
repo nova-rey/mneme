@@ -1,0 +1,517 @@
+{
+  "answer_score_gate": "NOT_EVALUATED; process gate failure is independently decisive.",
+  "calibration_version": "v1",
+  "condition_aggregates": {
+    "quantum/4002": {
+      "BASELINE": {
+        "dimension_means": [
+          1.0,
+          1.0,
+          0.0
+        ],
+        "mean_process_score": 2.0,
+        "seed_scores": [
+          2,
+          2
+        ]
+      },
+      "VISIBLE_GUIDANCE": {
+        "dimension_means": [
+          1.0,
+          1.0,
+          0.0
+        ],
+        "mean_process_score": 2.0,
+        "seed_scores": [
+          2,
+          2
+        ]
+      }
+    },
+    "quantum/5051": {
+      "BASELINE": {
+        "dimension_means": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "mean_process_score": 1.0,
+        "seed_scores": [
+          1,
+          1
+        ]
+      },
+      "VISIBLE_GUIDANCE": {
+        "dimension_means": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "mean_process_score": 1.0,
+        "seed_scores": [
+          1,
+          1
+        ]
+      }
+    },
+    "quantum/6015": {
+      "BASELINE": {
+        "dimension_means": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "mean_process_score": 1.0,
+        "seed_scores": [
+          1,
+          1
+        ]
+      },
+      "VISIBLE_GUIDANCE": {
+        "dimension_means": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mean_process_score": 0.0,
+        "seed_scores": [
+          0,
+          0
+        ]
+      }
+    },
+    "quantum/6040": {
+      "BASELINE": {
+        "dimension_means": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "mean_process_score": 1.0,
+        "seed_scores": [
+          1,
+          1
+        ]
+      },
+      "VISIBLE_GUIDANCE": {
+        "dimension_means": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "mean_process_score": 1.0,
+        "seed_scores": [
+          1,
+          1
+        ]
+      }
+    }
+  },
+  "disposition": "Do not dispatch heldout. Calibration v1 did not establish visible-guidance efficacy on these four frozen calibration tasks. Root review is required before any new calibration-only version.",
+  "item_deltas_visible_minus_baseline": {
+    "quantum/4002": 0.0,
+    "quantum/5051": 0.0,
+    "quantum/6015": -1.0,
+    "quantum/6040": 0.0
+  },
+  "journal_index_sha256": "1fd5d4884bd7ba39b9d4a89184f1cb95e42a1ae1251f6017ce71ee45333755aa",
+  "journal_recovery": {
+    "complete": 42,
+    "failed": 0,
+    "fresh_process": true,
+    "uncertain": 0
+  },
+  "latent_bias_selection": "NOT_APPLICABLE: visible gate failed. Latent outputs are preserved but unscored/uninterpreted; no bias selected.",
+  "output_completeness": {
+    "failed": 0,
+    "finish_reason_length": 0,
+    "finish_reason_stop": 40,
+    "matrix_attempts": 40,
+    "uncertain": 0
+  },
+  "package_id": "MI2-PAPER-GUIDANCE-20261011",
+  "plan_sha256": "0caed111c7448878bc82201c0ad32ecf6b2434cbba4121a5174c112c071bd912",
+  "process_score_amendment_sha256": "4b28ca427e1e5f19f8a691ca18c39aea9ba638e929e32ddaa5f16e6968de65e7",
+  "schema_version": 1,
+  "score_rows": [
+    {
+      "answer_bytes": 5009,
+      "answer_score": null,
+      "answer_score_status": "NOT_SCORED_AFTER_PROCESS_GATE_FAILURE",
+      "attempt_id": "cal_quantum_4002_baseline_481001",
+      "condition": "BASELINE",
+      "dimension_rationales": [
+        "Responses explicitly frame the task as time-dependent and name TDSE/Ehrenfest or commutator methods.",
+        "Responses use TDSE/Ehrenfest/commutator reasoning.",
+        "No reviewed baseline/visible answer derives the frozen m d\u00b2<r>/dt\u00b2=qE relation; several instead equate d<r>/dt with qE/m. Instrument applications alone do not satisfy this criterion."
+      ],
+      "finish_reason": "stop",
+      "item_id": "quantum/4002",
+      "outcome_sha256": "795865fe4e92bf6e475635610523f3ee2849ce4409d3fb951c469960d310cf96",
+      "process_dimensions": [
+        1,
+        1,
+        0
+      ],
+      "process_total": 2,
+      "reasoning_bytes": 3823,
+      "seed": 481001
+    },
+    {
+      "answer_bytes": 3601,
+      "answer_score": null,
+      "answer_score_status": "NOT_SCORED_AFTER_PROCESS_GATE_FAILURE",
+      "attempt_id": "cal_quantum_4002_visible_guidance_481001",
+      "condition": "VISIBLE_GUIDANCE",
+      "dimension_rationales": [
+        "Responses explicitly frame the task as time-dependent and name TDSE/Ehrenfest or commutator methods.",
+        "Responses use TDSE/Ehrenfest/commutator reasoning.",
+        "No reviewed baseline/visible answer derives the frozen m d\u00b2<r>/dt\u00b2=qE relation; several instead equate d<r>/dt with qE/m. Instrument applications alone do not satisfy this criterion."
+      ],
+      "finish_reason": "stop",
+      "item_id": "quantum/4002",
+      "outcome_sha256": "5e00f817888f42191dcd8fcc5d946ca873cad1016f460608ab7ac64f8510d803",
+      "process_dimensions": [
+        1,
+        1,
+        0
+      ],
+      "process_total": 2,
+      "reasoning_bytes": 3410,
+      "seed": 481001
+    },
+    {
+      "answer_bytes": 5572,
+      "answer_score": null,
+      "answer_score_status": "NOT_SCORED_AFTER_PROCESS_GATE_FAILURE",
+      "attempt_id": "cal_quantum_4002_baseline_481019",
+      "condition": "BASELINE",
+      "dimension_rationales": [
+        "Responses explicitly frame the task as time-dependent and name TDSE/Ehrenfest or commutator methods.",
+        "Responses use TDSE/Ehrenfest/commutator reasoning.",
+        "No reviewed baseline/visible answer derives the frozen m d\u00b2<r>/dt\u00b2=qE relation; several instead equate d<r>/dt with qE/m. Instrument applications alone do not satisfy this criterion."
+      ],
+      "finish_reason": "stop",
+      "item_id": "quantum/4002",
+      "outcome_sha256": "287149a683aeb29d52cf02d02fa9799e320667b00220184527d19ee42fa3002e",
+      "process_dimensions": [
+        1,
+        1,
+        0
+      ],
+      "process_total": 2,
+      "reasoning_bytes": 2705,
+      "seed": 481019
+    },
+    {
+      "answer_bytes": 3823,
+      "answer_score": null,
+      "answer_score_status": "NOT_SCORED_AFTER_PROCESS_GATE_FAILURE",
+      "attempt_id": "cal_quantum_4002_visible_guidance_481019",
+      "condition": "VISIBLE_GUIDANCE",
+      "dimension_rationales": [
+        "Responses explicitly frame the task as time-dependent and name TDSE/Ehrenfest or commutator methods.",
+        "Responses use TDSE/Ehrenfest/commutator reasoning.",
+        "No reviewed baseline/visible answer derives the frozen m d\u00b2<r>/dt\u00b2=qE relation; several instead equate d<r>/dt with qE/m. Instrument applications alone do not satisfy this criterion."
+      ],
+      "finish_reason": "stop",
+      "item_id": "quantum/4002",
+      "outcome_sha256": "7fac86d6f8ab9e9688a9ccd1877281b5cfd669b7b69a8bc68069dbb0f001be1c",
+      "process_dimensions": [
+        1,
+        1,
+        0
+      ],
+      "process_total": 2,
+      "reasoning_bytes": 2975,
+      "seed": 481019
+    },
+    {
+      "answer_bytes": 2134,
+      "answer_score": null,
+      "answer_score_status": "NOT_SCORED_AFTER_PROCESS_GATE_FAILURE",
+      "attempt_id": "cal_quantum_5051_baseline_481001",
+      "condition": "BASELINE",
+      "dimension_rationales": [
+        "Responses identify the first-excited three-state degeneracy.",
+        "No answer forms and diagonalizes the 3x3 perturbation matrix in the degenerate subspace; answers use diagonal expectation values or generic perturbation prose.",
+        "No answer reports the frozen split energies and corresponding mixed eigenstates; several claim zero splitting."
+      ],
+      "finish_reason": "stop",
+      "item_id": "quantum/5051",
+      "outcome_sha256": "2e60f37e27e9519a7b836735ee7b7e406d5d1dc6004e34c772d76ec7437d1155",
+      "process_dimensions": [
+        1,
+        0,
+        0
+      ],
+      "process_total": 1,
+      "reasoning_bytes": 5305,
+      "seed": 481001
+    },
+    {
+      "answer_bytes": 3061,
+      "answer_score": null,
+      "answer_score_status": "NOT_SCORED_AFTER_PROCESS_GATE_FAILURE",
+      "attempt_id": "cal_quantum_5051_visible_guidance_481001",
+      "condition": "VISIBLE_GUIDANCE",
+      "dimension_rationales": [
+        "Responses identify the first-excited three-state degeneracy.",
+        "No answer forms and diagonalizes the 3x3 perturbation matrix in the degenerate subspace; answers use diagonal expectation values or generic perturbation prose.",
+        "No answer reports the frozen split energies and corresponding mixed eigenstates; several claim zero splitting."
+      ],
+      "finish_reason": "stop",
+      "item_id": "quantum/5051",
+      "outcome_sha256": "142e4686c599791446f13120e21c5c4988ff6caf87e567ceb167d07fc2ff6c7d",
+      "process_dimensions": [
+        1,
+        0,
+        0
+      ],
+      "process_total": 1,
+      "reasoning_bytes": 6584,
+      "seed": 481001
+    },
+    {
+      "answer_bytes": 2561,
+      "answer_score": null,
+      "answer_score_status": "NOT_SCORED_AFTER_PROCESS_GATE_FAILURE",
+      "attempt_id": "cal_quantum_5051_baseline_481019",
+      "condition": "BASELINE",
+      "dimension_rationales": [
+        "Responses identify the first-excited three-state degeneracy.",
+        "No answer forms and diagonalizes the 3x3 perturbation matrix in the degenerate subspace; answers use diagonal expectation values or generic perturbation prose.",
+        "No answer reports the frozen split energies and corresponding mixed eigenstates; several claim zero splitting."
+      ],
+      "finish_reason": "stop",
+      "item_id": "quantum/5051",
+      "outcome_sha256": "6d3d16a630aea0a649ce810ed23bae8c277c13f556b7d5d99570005fc1325e9a",
+      "process_dimensions": [
+        1,
+        0,
+        0
+      ],
+      "process_total": 1,
+      "reasoning_bytes": 5807,
+      "seed": 481019
+    },
+    {
+      "answer_bytes": 2642,
+      "answer_score": null,
+      "answer_score_status": "NOT_SCORED_AFTER_PROCESS_GATE_FAILURE",
+      "attempt_id": "cal_quantum_5051_visible_guidance_481019",
+      "condition": "VISIBLE_GUIDANCE",
+      "dimension_rationales": [
+        "Responses identify the first-excited three-state degeneracy.",
+        "No answer forms and diagonalizes the 3x3 perturbation matrix in the degenerate subspace; answers use diagonal expectation values or generic perturbation prose.",
+        "No answer reports the frozen split energies and corresponding mixed eigenstates; several claim zero splitting."
+      ],
+      "finish_reason": "stop",
+      "item_id": "quantum/5051",
+      "outcome_sha256": "dbea95d910c585296887ba3c734adb471fbdb653cd38bad97ee3356478c73488",
+      "process_dimensions": [
+        1,
+        0,
+        0
+      ],
+      "process_total": 1,
+      "reasoning_bytes": 7387,
+      "seed": 481019
+    },
+    {
+      "answer_bytes": 3271,
+      "answer_score": null,
+      "answer_score_status": "NOT_SCORED_AFTER_PROCESS_GATE_FAILURE",
+      "attempt_id": "cal_quantum_6040_baseline_481001",
+      "condition": "BASELINE",
+      "dimension_rationales": [
+        "Responses identify K_L/K_S or the two unstable components and lifetimes.",
+        "No answer clearly evolves both components with mass phase and decay width while retaining relative phase.",
+        "No answer gives the required interference cosine in P0-barP0; outputs use sums/differences of decays or omit the result."
+      ],
+      "finish_reason": "stop",
+      "item_id": "quantum/6040",
+      "outcome_sha256": "8d5cefd3143d5e633e9888b82389468ea2cf70cc4021f14ad0a61f51dd388651",
+      "process_dimensions": [
+        1,
+        0,
+        0
+      ],
+      "process_total": 1,
+      "reasoning_bytes": 8458,
+      "seed": 481001
+    },
+    {
+      "answer_bytes": 2006,
+      "answer_score": null,
+      "answer_score_status": "NOT_SCORED_AFTER_PROCESS_GATE_FAILURE",
+      "attempt_id": "cal_quantum_6040_visible_guidance_481001",
+      "condition": "VISIBLE_GUIDANCE",
+      "dimension_rationales": [
+        "Responses identify K_L/K_S or the two unstable components and lifetimes.",
+        "No answer clearly evolves both components with mass phase and decay width while retaining relative phase.",
+        "No answer gives the required interference cosine in P0-barP0; outputs use sums/differences of decays or omit the result."
+      ],
+      "finish_reason": "stop",
+      "item_id": "quantum/6040",
+      "outcome_sha256": "5ddcc7ed7a4a0dfce3b15fa4e5d9a83a66e930ff0813ed251e6352b854348f60",
+      "process_dimensions": [
+        1,
+        0,
+        0
+      ],
+      "process_total": 1,
+      "reasoning_bytes": 7519,
+      "seed": 481001
+    },
+    {
+      "answer_bytes": 1338,
+      "answer_score": null,
+      "answer_score_status": "NOT_SCORED_AFTER_PROCESS_GATE_FAILURE",
+      "attempt_id": "cal_quantum_6040_baseline_481019",
+      "condition": "BASELINE",
+      "dimension_rationales": [
+        "Responses identify K_L/K_S or the two unstable components and lifetimes.",
+        "No answer clearly evolves both components with mass phase and decay width while retaining relative phase.",
+        "No answer gives the required interference cosine in P0-barP0; outputs use sums/differences of decays or omit the result."
+      ],
+      "finish_reason": "stop",
+      "item_id": "quantum/6040",
+      "outcome_sha256": "37c39f8291d74784485fd8f4af9bde75ad9766ef0527468ab439b360e4371cf9",
+      "process_dimensions": [
+        1,
+        0,
+        0
+      ],
+      "process_total": 1,
+      "reasoning_bytes": 7295,
+      "seed": 481019
+    },
+    {
+      "answer_bytes": 989,
+      "answer_score": null,
+      "answer_score_status": "NOT_SCORED_AFTER_PROCESS_GATE_FAILURE",
+      "attempt_id": "cal_quantum_6040_visible_guidance_481019",
+      "condition": "VISIBLE_GUIDANCE",
+      "dimension_rationales": [
+        "Responses identify K_L/K_S or the two unstable components and lifetimes.",
+        "No answer clearly evolves both components with mass phase and decay width while retaining relative phase.",
+        "No answer gives the required interference cosine in P0-barP0; outputs use sums/differences of decays or omit the result."
+      ],
+      "finish_reason": "stop",
+      "item_id": "quantum/6040",
+      "outcome_sha256": "e43036beeb6fbeee05778bfdd8aea06b7e23be270e71699b29cfb99829586597",
+      "process_dimensions": [
+        1,
+        0,
+        0
+      ],
+      "process_total": 1,
+      "reasoning_bytes": 3323,
+      "seed": 481019
+    },
+    {
+      "answer_bytes": 4344,
+      "answer_score": null,
+      "answer_score_status": "NOT_SCORED_AFTER_PROCESS_GATE_FAILURE",
+      "attempt_id": "cal_quantum_6015_baseline_481001",
+      "condition": "BASELINE",
+      "dimension_rationales": [
+        "Baseline outputs separate azimuthal phi independence from theta dependence; visible outputs either assert independence of both angles or explain theta via a coordinate-system error.",
+        "No baseline/visible answer gives both the differential cross-section and a consistent Born amplitude representation.",
+        "No baseline/visible answer clearly states low-energy/partial-wave and Born-validity scope together."
+      ],
+      "finish_reason": "stop",
+      "item_id": "quantum/6015",
+      "outcome_sha256": "239736ff663789617a6d5eab0a5fe769d662345053fb07f68fe41ecb82532a53",
+      "process_dimensions": [
+        1,
+        0,
+        0
+      ],
+      "process_total": 1,
+      "reasoning_bytes": 2981,
+      "seed": 481001
+    },
+    {
+      "answer_bytes": 4304,
+      "answer_score": null,
+      "answer_score_status": "NOT_SCORED_AFTER_PROCESS_GATE_FAILURE",
+      "attempt_id": "cal_quantum_6015_visible_guidance_481001",
+      "condition": "VISIBLE_GUIDANCE",
+      "dimension_rationales": [
+        "Baseline outputs separate azimuthal phi independence from theta dependence; visible outputs either assert independence of both angles or explain theta via a coordinate-system error.",
+        "No baseline/visible answer gives both the differential cross-section and a consistent Born amplitude representation.",
+        "No baseline/visible answer clearly states low-energy/partial-wave and Born-validity scope together."
+      ],
+      "finish_reason": "stop",
+      "item_id": "quantum/6015",
+      "outcome_sha256": "86340f060d3d85131844b37065434ee5eb090f9c178019743a8c49de356fb123",
+      "process_dimensions": [
+        0,
+        0,
+        0
+      ],
+      "process_total": 0,
+      "reasoning_bytes": 3680,
+      "seed": 481001
+    },
+    {
+      "answer_bytes": 3606,
+      "answer_score": null,
+      "answer_score_status": "NOT_SCORED_AFTER_PROCESS_GATE_FAILURE",
+      "attempt_id": "cal_quantum_6015_baseline_481019",
+      "condition": "BASELINE",
+      "dimension_rationales": [
+        "Baseline outputs separate azimuthal phi independence from theta dependence; visible outputs either assert independence of both angles or explain theta via a coordinate-system error.",
+        "No baseline/visible answer gives both the differential cross-section and a consistent Born amplitude representation.",
+        "No baseline/visible answer clearly states low-energy/partial-wave and Born-validity scope together."
+      ],
+      "finish_reason": "stop",
+      "item_id": "quantum/6015",
+      "outcome_sha256": "981adcbfb5785191bc0cff4278a64ccb1cb9fb4d6457fd883a0bc13a71a84e05",
+      "process_dimensions": [
+        1,
+        0,
+        0
+      ],
+      "process_total": 1,
+      "reasoning_bytes": 3496,
+      "seed": 481019
+    },
+    {
+      "answer_bytes": 4668,
+      "answer_score": null,
+      "answer_score_status": "NOT_SCORED_AFTER_PROCESS_GATE_FAILURE",
+      "attempt_id": "cal_quantum_6015_visible_guidance_481019",
+      "condition": "VISIBLE_GUIDANCE",
+      "dimension_rationales": [
+        "Baseline outputs separate azimuthal phi independence from theta dependence; visible outputs either assert independence of both angles or explain theta via a coordinate-system error.",
+        "No baseline/visible answer gives both the differential cross-section and a consistent Born amplitude representation.",
+        "No baseline/visible answer clearly states low-energy/partial-wave and Born-validity scope together."
+      ],
+      "finish_reason": "stop",
+      "item_id": "quantum/6015",
+      "outcome_sha256": "f1107031923bbfe1f880c7d41740cba44846e6ce216c492945867c0b1929bb72",
+      "process_dimensions": [
+        0,
+        0,
+        0
+      ],
+      "process_total": 0,
+      "reasoning_bytes": 2996,
+      "seed": 481019
+    }
+  ],
+  "scoring_method": "Manual strict application of frozen binary process dimensions. Condition labels were withheld in the temporary assessor presentation; score 1 only when the exact required method/result was clearly present. Answer components are not scored because the conjunctive process gate failed; all full outputs remain available by hash for review.",
+  "status": "VISIBLE_GATE_FAIL",
+  "visible_gate": {
+    "frozen_minimum_mean_delta": 0.5,
+    "frozen_minimum_positive_items": 3,
+    "observed_mean_baseline": 1.25,
+    "observed_mean_delta": -0.25,
+    "observed_mean_visible": 1.0,
+    "observed_positive_items": 0,
+    "pass": false
+  }
+}

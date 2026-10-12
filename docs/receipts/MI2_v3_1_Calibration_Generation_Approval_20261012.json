@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "package_id": "MI2-PAPER-GUIDANCE-20261011",
+  "status": "APPROVED_CALIBRATION_GENERATION_ONLY",
+  "approved_by": "Root Foreman",
+  "created_utc": "2026-10-12T01:27:08Z",
+  "authority": {
+    "plan_path": "/home/nyx/mneme-artifacts/phase4-mi2/plan/v3.1/MI2_Calibration_v3_1_Preheldout_Freeze_20261012.json",
+    "plan_sha256": "6e5ffbc17e2185e99e3dfdfb4d0245cb007c8950ae2461472b8a37b518ab7af1",
+    "selector_candidate_path": "/home/nyx/mneme-artifacts/phase4-mi2/calibration-run-v3.1/selector/MI2_v3_1_Selector_Receipt.json",
+    "selector_candidate_sha256": "b370695dbfa0bc94ab705fc204dd51dde19b460a15326ad49d70eecfe66cbe15",
+    "selector_capture_receipt_path": "docs/receipts/MI2_v3_1_Capture_Selector_Receipt_20261012.json",
+    "selector_capture_receipt_sha256": "2e4fcc204840be0adc66eed8feaedb24ec1f983d096799a75a66dc399866e239"
+  },
+  "root_review": {
+    "fresh_process_reopen": "PASS",
+    "three_query_token_sequences": "PASS exact parity: 277/277, 410/410, 116/116",
+    "query_tensor_validation": "PASS 42 layers x 8 Q heads; expected dimensions; finite arrays; dynamic capacity gaps masked",
+    "bank_reopen_and_hashes": "PASS NPZ plus manifest reopened; native bank SHA-256/fingerprint match",
+    "raw_zstd_reconciliation": "PASS decompressed hashes equal raw capture hashes",
+    "selector_recomputation": "PASS exact same four KV groups and 16 Q-head sites; maximum alignment-score delta 1.49e-7; other score arrays and capture/bank hashes identical",
+    "selector_sites": [[6, 1], [5, 0], [4, 1], [2, 0]],
+    "scope_review": "No generated tokens or heldout inputs were used in selector construction. Calibration rows are the three frozen Atomic PHYSICS-eval items only."
+  },
+  "authorized_scope": {
+    "model": "google/gemma-4-E4B-it",
+    "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+    "reasoning": "ON",
+    "cache_prompt": false,
+    "calibration_items": ["atomic/1-48", "atomic/1-12", "atomic/1-41"],
+    "conditions": [
+      "BASELINE",
+      "VISIBLE_GUIDANCE",
+      "LATENT_TARGET_BANK_BIAS_0.0",
+      "LATENT_TARGET_BANK_BIAS_0.5",
+      "LATENT_TARGET_BANK_BIAS_1.0"
+    ],
+    "seeds": [481001, 481019],
+    "determinism_preflight": "Exactly two identical BASELINE requests for atomic/1-48 at seed 481001; require byte-identical full final outputs before dispatching matrix calls.",
+    "matrix_call_count": 30,
+    "total_generation_call_cap": 32,
+    "selected_query_sites": [
+      [6, 4], [6, 5], [6, 6], [6, 7],
+      [5, 0], [5, 1], [5, 2], [5, 3],
+      [4, 4], [4, 5], [4, 6], [4, 7],
+      [2, 0], [2, 1], [2, 2], [2, 3]
+    ]
+  },
+  "gates": {
+    "preflight_mismatch": "STOP immediately; do not run matrix calls.",
+    "visible_guidance_success": "Mean process-score delta versus baseline >= 0.5 points; positive mean item deltas on >=2/3 items; visible answer-score harm <=0.10.",
+    "visible_gate_failure": "Stop before interpreting latent conditions and before any heldout access/capture/generation.",
+    "post_calibration": "Return complete calibration scoring, raw journal/recovery and hash reconciliation, and selected bias/site evidence to Root. This approval does not authorize heldout calls, lifecycle calls, or the secondary MNEME-shaped experiment."
+  },
+  "prohibited": [
+    "Any heldout prompt access, capture, selector use, or generation",
+    "Any MNEME state, SAA, or developmental-state access",
+    "Any other model family or paid compute",
+    "Any change to prompts, bank text/recipe, sites, biases, sampler, scoring rules, or experimental conditions"
+  ]
+}

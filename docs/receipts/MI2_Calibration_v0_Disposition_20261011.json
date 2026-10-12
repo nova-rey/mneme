@@ -1,0 +1,32 @@
+{
+  "calls": {
+    "determinism_preflight": 2,
+    "matrix_complete": 23,
+    "total": 25,
+    "unstarted_next_coordinate": "cal_quantum_6040_latent_bias_0_5_481001"
+  },
+  "created_utc": "2026-10-11",
+  "fresh_process_recovery": {
+    "status": "PASS",
+    "status_counts": {
+      "COMPLETE": 25
+    }
+  },
+  "frozen_plan_sha256": "b032078782c0cd4fa6d56fe5dc9dc3bba8c0fe18021c1a7c22338899668dcdf8",
+  "generation_budget_sha256": "7ba22816cfbb7554dfedd94611ec1b74daf857e626a192b4debd5a6708c485f3",
+  "heldout_used": false,
+  "journal_index_sha256": "225d1598fe2ce0791a3eea5db4c43982e5f6af9db2186f9032be8e0a5966ad67",
+  "preflight_receipt_sha256": "8697869a0f65b6c6e7fcea429a7a47d8f7e681c710e6a07bedac329bab054b7b",
+  "reason": "One calibration baseline reached finish_reason=length under the frozen 4096 total token allowance, making output completeness a predeclared engineering validity concern for the visible-guidance gate. Root directed a v1 calibration freeze with only max_tokens doubled to 8192; v0 remains immutable and is not scored or selectively reused.",
+  "run": "MI2 calibration v0",
+  "schema_version": 1,
+  "scored": false,
+  "selector_sha256": "0d0e1b9f9eab6b68888a0ac8267cc28da6f19d3496dad12e3b8d58037a0d5d8b",
+  "status": "SUPERSEDED_PREHELDOUT_OUTPUT_ALLOWANCE",
+  "stop_note": "After 23 matrix coordinates, interrupted the runner while it was locally preparing the next bank variant, before request persistence or model generation. No extra model call was issued. Isolated server PID 88149 was terminated and port 18473 is no longer listening.",
+  "truncated_coordinate": {
+    "finish_reason": "length",
+    "id": "cal_quantum_6040_baseline_481001",
+    "max_tokens": 4096
+  }
+}

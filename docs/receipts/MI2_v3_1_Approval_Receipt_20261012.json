@@ -1,0 +1,43 @@
+{
+  "approved_by": "Root Foreman",
+  "approved_plan_path": "/home/nyx/mneme-artifacts/phase4-mi2/plan/v3.1/MI2_Calibration_v3_1_Preheldout_Freeze_20261012.json",
+  "approved_plan_sha256": "6e5ffbc17e2185e99e3dfdfb4d0245cb007c8950ae2461472b8a37b518ab7af1",
+  "created_utc": "2026-10-12T01:05:18.083540+00:00",
+  "fresh_run_root": "/home/nyx/mneme-artifacts/phase4-mi2/calibration-run-v3.1",
+  "heldout_accessed": false,
+  "host_preflight": {
+    "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+    "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU, 6144 MiB",
+    "gpu_memory_used_mib": 1,
+    "gpu_temp_c": 34,
+    "gpu_utilization_pct": 0,
+    "hostname": "brokeass-msi",
+    "resident_server_or_capture_process": false,
+    "server_binary_sha256": "0032af18feb8cfa683ed34757c47bb10e4fbcdcd309071e937e4f6b4e4fd741c",
+    "ssh_control_socket": "/tmp/mi2-ssh-control.sock"
+  },
+  "package_id": "MI2-PAPER-GUIDANCE-20261011",
+  "plan_mutated": false,
+  "schema_version": 1,
+  "scope": {
+    "allowed": [
+      "freshly encode v3.1 Atomic target and generic reference banks",
+      "capture exact baseline prefill/query for three Atomic PHYSICS-eval calibration items only",
+      "derive v3.1 selector from those three query captures"
+    ],
+    "calibration_ids": [
+      "atomic/1-48",
+      "atomic/1-12",
+      "atomic/1-41"
+    ],
+    "generation_calls": 0,
+    "heldouts_embargoed": true,
+    "prohibited": [
+      "all generated tokens/responses",
+      "all heldout prompt reads, captures or use",
+      "v1/v2 tensors, token/KV captures, query captures, selector scores, generation outputs",
+      "MNEME state/SAA and other model/paid compute"
+    ]
+  },
+  "status": "APPROVED_CAPTURE_AND_SELECTOR_ONLY"
+}
