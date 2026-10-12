@@ -2054,3 +2054,7 @@ and dispositions remain unchanged.
 - Completed the frozen 33-item Quantum visible-guidance matrix after baseline headroom passed. The journal has 200 durable attempts, including 99 baseline and 99 visible coordinates. One visible response ended at `finish_reason=length` with no final answer; the frozen stop policy was violated because the runner continued through 93 later coordinates.
 - The official scorer rejected the abnormal completion. Conservative descriptive scoring assigns the incomplete coordinate zero and still fails the process gate: −0.043/3 mean direct-item delta, 5 positive / 7 negative / 19 tied item means, one-sided exact p=0.806. No latent/bank/removal/reuse calls were made.
 - Fixed the v3.4 runner to stop after durably recording any abnormal finish and added a regression test. Full outcome/report: `docs/receipts/MNEME_Phase_4_MI2_Paper_Faithful_Guidance_Result_20261012.md` and `.json`. MI1 historical disposition remains unchanged.
+
+## 2026-10-12 MI2 v3.4 queue closure
+
+- Closed `MI2-V35-WIDE-VISIBLE-GATE` after artifact/hash reconciliation, conservative scoring, full local validation, and proof that no latent/bank call occurred. The visible prerequisite failed and one abnormal finish exposed a runner stop-policy defect, now fixed and tested. Compact result is committed and pushed; canonical generation evidence remains outside Git. CI for the result commit passed (run 38212656729).
