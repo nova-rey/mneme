@@ -1,0 +1,55 @@
+{
+  "approval_sha256": "accb7a25fec793a9eba0fb68465d63874326b773d957d0d79465fcd039ac2404",
+  "bank_or_selector_calls": 0,
+  "cache_prompt": false,
+  "candidate_sha256": "2258a13a7b632a3b14613bb17a350f41156cbe2c634048fc98518624b9b172cb",
+  "conditions": [
+    "BASELINE",
+    "VISIBLE_GUIDANCE"
+  ],
+  "dispatch_stages": {
+    "1": "two-call same-coordinate BASELINE determinism preflight",
+    "2": "six BASELINE matrix calls",
+    "3": "score frozen baseline ceiling rule; stop if ceiling-limited",
+    "4": "six VISIBLE_GUIDANCE calls only after baseline gate passes",
+    "5": "score frozen visible-minus-baseline process/answer gate after all 14 outputs durable"
+  },
+  "execution_projection_sha256": "d5942a2cc4269ed59d92520486f6bf845129c518478c179a6058cab3ebb0a149",
+  "generation_dispatched": false,
+  "heldout_coordinates": 0,
+  "latent_coordinates": 0,
+  "matrix_count": 12,
+  "matrix_ids": [
+    "v32_cal_electro_1_56_baseline_481001",
+    "v32_cal_electro_1_56_visible_guidance_481001",
+    "v32_cal_electro_1_56_baseline_481019",
+    "v32_cal_electro_1_56_visible_guidance_481019",
+    "v32_cal_electro_1_60_baseline_481001",
+    "v32_cal_electro_1_60_visible_guidance_481001",
+    "v32_cal_electro_1_60_baseline_481019",
+    "v32_cal_electro_1_60_visible_guidance_481019",
+    "v32_cal_electro_1_69_baseline_481001",
+    "v32_cal_electro_1_69_visible_guidance_481001",
+    "v32_cal_electro_1_69_baseline_481019",
+    "v32_cal_electro_1_69_visible_guidance_481019"
+  ],
+  "max_total_calls": 14,
+  "package_id": "MI2-PAPER-GUIDANCE-20261011",
+  "plan_sha256": "8d085a1184e33e0d39837c146abf5cae8426f1ab94993c01667b526a6c2cb3a3",
+  "preflight_ids": [
+    "v32_preflight_electro_1_60_baseline_481001_a",
+    "v32_preflight_electro_1_60_baseline_481001_b"
+  ],
+  "reasoning": "ON",
+  "runner_script_sha256": "d62b7eb3b52daa23e295e9676455ec225df55e53898918290554ca34cc2c4dd1",
+  "seeds": [
+    481001,
+    481019
+  ],
+  "status": "DRY_RUN_VALIDATED_NO_NETWORK_NO_GENERATION",
+  "task_ids": [
+    "electro/1_56",
+    "electro/1_60",
+    "electro/1_69"
+  ]
+}
