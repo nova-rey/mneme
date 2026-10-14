@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from experiments.mi4.coordinates import build_heldout_coordinates, validate_heldout_coordinate
 from experiments.mi4.run_calibration import CalibrationBudget, build_plan
 
 
@@ -62,3 +63,16 @@ def test_mi4_budget_is_bounded_and_has_no_mi1_prior_provenance(tmp_path: Path) -
         assert "limit" in str(exc)
     else:
         raise AssertionError("MI4 calibration budget exceeded its frozen limit")
+
+
+def test_mi4_heldout_plan_has_96_frozen_cache_disabled_coordinates() -> None:
+    protocol = json.loads(Path("experiments/mi4/frozen_protocol.json").read_text())
+    plan = build_heldout_coordinates(protocol)
+
+    assert len(plan) == 96
+    assert {row["condition"] for row in plan} == set(protocol["heldout"]["conditions"])
+    assert {row["thinking"] for row in plan} == {False, True}
+    assert {row["seed"] for row in plan} == {615103, 615109}
+    for coordinate in plan:
+        validate_heldout_coordinate(protocol, coordinate)
+        assert coordinate["request"]["cache_prompt"] is False
