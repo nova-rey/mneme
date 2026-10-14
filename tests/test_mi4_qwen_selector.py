@@ -3,10 +3,11 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from experiments.mi4.prepare_bank_variants import build_variants
 from experiments.mi1.native.bank import BankManifest, MemoryBank
 from experiments.mi1.native.query_capture import QueryCapture, QueryLayerCapture
+from experiments.mi4.prepare_bank_variants import build_variants
 from experiments.mi4.qwen_batch_contract import validate_single_sequence_bank_prefill
+from experiments.mi4.qwen_preflight import _messages, build_generation_request
 from experiments.mi4.select_qwen_sites import select_sites
 
 
@@ -112,3 +113,37 @@ def test_variant_builder_writes_fixed_biases_without_mutating_sources(tmp_path) 
     assert {row["bias"] for row in result["variants"]} == {0.5, 1.0}
     assert all(row["size_bytes"] == len(source_bytes) + 16 for row in result["variants"])
     assert all((bank_root / f"{name}.mi1").read_bytes() == source_bytes for name in names)
+
+
+def test_preflight_request_freezes_cache_off_sampler_and_thinking_mode() -> None:
+    protocol = {
+        "generation": {
+            "system": "system",
+            "sampler": {
+                "temperature": 0.35,
+                "top_k": 40,
+                "top_p": 0.9,
+                "min_p": 0.05,
+                "max_tokens": 8192,
+                "cache_prompt": False,
+            },
+        },
+        "neighborhoods": {
+            "A_resilience": {"descriptor_text": "A"},
+            "B_simplicity": {"descriptor_text": "B"},
+        },
+        "calibration": {
+            "visible_prompt_wrapper": {"prefix": "prefix", "suffix": "suffix"}
+        },
+    }
+    messages = _messages(protocol, "visible_A_resilience", "problem")
+    request = build_generation_request(
+        messages=messages,
+        seed=615103,
+        thinking=True,
+        sampler=protocol["generation"]["sampler"],
+    )
+    assert request["cache_prompt"] is False
+    assert request["chat_template_kwargs"] == {"enable_thinking": True}
+    assert request["seed"] == 615103
+    assert messages[1]["content"] == "prefixAsuffixproblem"

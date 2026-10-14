@@ -195,7 +195,21 @@ def preflight(
                     "bank_config": {"bias": 0.5},
                 }
                 response = runner.execute(coordinate, phase="calibration")
-                outputs.append(_visible_output(response))
+                try:
+                    outputs.append(_visible_output(response))
+                except (KeyError, TypeError, ValueError) as exc:
+                    atomic_json_write(
+                        output / "preflight-failure.json",
+                        {
+                            "status": "FAILED_RESPONSE_VALIDATION",
+                            "coordinate_id": coordinate_id,
+                            "error_type": type(exc).__name__,
+                            "error": str(exc),
+                            "completed_calls": attempt_count,
+                            "journal_status_counts": journal.verify(),
+                        },
+                    )
+                    raise
             equal = outputs[0] == outputs[1]
             outcomes[f"{mode}:{condition}"] = {
                 "identical": equal,
@@ -206,6 +220,28 @@ def preflight(
                 "answer_chars": len(outputs[0]["answer"]),
             }
             if not equal:
+                atomic_json_write(
+                    output / "preflight-failure.json",
+                    {
+                        "status": "NONDETERMINISTIC_DUPLICATE",
+                        "mode": mode,
+                        "condition": condition,
+                        "attempt_ids": [
+                            f"preflight_{mode.lower()}_{condition}_1",
+                            f"preflight_{mode.lower()}_{condition}_2",
+                        ],
+                        "output_hashes": [
+                            hashlib.sha256(
+                                json.dumps(
+                                    item, sort_keys=True, ensure_ascii=False
+                                ).encode("utf-8")
+                            ).hexdigest()
+                            for item in outputs
+                        ],
+                        "completed_calls": attempt_count,
+                        "journal_status_counts": journal.verify(),
+                    },
+                )
                 raise RuntimeError(f"same-condition duplicate differed: {mode}:{condition}")
     verification = journal.verify()
     if sum(verification.values()) != attempt_count or verification.get("COMPLETE") != 24:
