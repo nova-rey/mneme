@@ -2108,3 +2108,7 @@ and dispositions remain unchanged.
 - The frozen 96-call Qwen3-4B Q4/llama.cpp matrix completed with 96 `stop` finishes; side bank was cleared/disabled after the run. The blind scorer packet was sealed before mapping unseal and independently rechecked against the derived aggregates.
 - Visible resilience and simplicity guidance produced opposite, strong rating profiles. Latent A/B did not: pooled directional separation was -0.0625 (thinking ON -0.125; OFF 0.000), and both latent conditions stayed near no-bank/irrelevant controls. Small differences are descriptive only, not inferential statistics.
 - MI4 did not rescue the reconstructed MI transport on this local Qwen configuration. The report recommends parking this path; it does not claim the paper-scale Qwen3-30B-A3B/vLLM result is disproven. No developmental MNEME state or production system was changed.
+
+## 2026-10-14 MI4 report correction
+
+- Corrected the Qwen3-4B GGUF SHA-256 to the frozen source fingerprint. Clarified that latent B's simplicity score is modestly above irrelevant, but latent A is also higher; this is a non-specific shift, not bank-specific separation. The pooled directional result is unchanged.

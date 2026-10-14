@@ -27,7 +27,7 @@
       "license": "Apache-2.0",
       "repo": "Qwen/Qwen3-4B-GGUF",
       "revision": "bc640142c66e1fdd12af0bd68f40445458f3869b",
-      "sha256": "7485fe6f11af29433bc51cab58009521f205840f5b4e3a32fa7f92e8534fdf5"
+      "sha256": "7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5"
     },
     "paper_model": "Qwen3-30B-A3B (30.5B total / 3.3B active), customized vLLM side-bank implementation; exact paper precision and vLLM build not specified in source note.",
     "runtime": {
@@ -50,7 +50,7 @@
   "interpretation": {
     "calibration": "The frozen 18-call calibration had zero A/B directional separation at bank gains 0.5 and 1.0; rule froze 0.5 before heldout and did not retune.",
     "coherence": "Mean coherence/task-fit remains about 3/4 in all conditions; no broad competence collapse detected.",
-    "latent_gate": "The pooled directional separation is slightly negative, not positive. The latent resilience and simplicity banks are not separable in the intended direction; neither improves its own target score over the competing latent bank. Latent effects are small and not distinguishable from no-bank/irrelevant controls at this sample size.",
+    "latent_gate": "The pooled directional separation is slightly negative, not positive. Latent A and B are not separable in their intended directions; neither improves its intended score over the competing latent bank. Latent B has a small simplicity-score elevation over irrelevant (+0.3125; five paired blocks higher, one lower, ten tied), but latent A is also elevated (+0.4375), so the difference is non-specific rather than bank-predictive. Latent effects remain near no-bank/irrelevant controls at this sample size.",
     "recommendation": "Park the current reconstructed Memory Inception transport path for these local hosts. Do not launch another rescue mechanism automatically; any future reconsideration should require a materially better capability/runtime or direct evidence of an implementation defect.",
     "visible_anchor": "Visible A and visible B produce clear, opposite, intended score profiles in both reasoning modes."
   },
@@ -402,7 +402,7 @@
   "source_artifacts": {
     "external_directory": "/home/nyx/mneme-artifacts/phase4-mi4/heldout",
     "git_report_path": "docs/receipts/MNEME_MI4_Qwen_Family_Control_20261014.md",
-    "git_report_sha256": "f9cdabaf3e629c41f56a3c1f22fd155ec77e1098924a158809615ec8e133f519",
+    "git_report_sha256": "3f7d17bc0caa4f6b6940f77a7ec6c95fb6514e3a858b1d867cab7efa16da3fc4",
     "sha256": {
       "blind-heldout-outputs.json": "6cdbe27d4a3e0b925d541c670f9fa6201d5e2d59b0efbda6b854c0927d6448be",
       "blind-map.json": "853853625552b8783d03b30a7bbd8f692e52e0e58a3013d9f36332614a415b4b",
