@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from experiments.mi4.run_calibration import build_plan
+from experiments.mi4.run_calibration import CalibrationBudget, build_plan
 
 
 def test_mi4_calibration_plan_is_exactly_frozen_d1_d2_matrix() -> None:
@@ -44,3 +44,21 @@ def test_mi4_calibration_plan_keeps_visible_text_and_latent_bank_separate() -> N
         not in " ".join(message["content"] for message in row["request"]["messages"])
         for row in latent_rows
     )
+
+
+def test_mi4_budget_is_bounded_and_has_no_mi1_prior_provenance(tmp_path: Path) -> None:
+    path = tmp_path / "budget.json"
+    budget = CalibrationBudget(path, hard_limit=1, protocol_sha256="a" * 64)
+    budget.reserve("cal_D1_no_bank", "calibration")
+
+    value = json.loads(path.read_text())
+    assert value["reservations"] == [{"attempt_id": "cal_D1_no_bank", "phase": "calibration"}]
+    assert "prior_calibration_evidence" not in value
+    assert budget.counts()["total"] == 1
+
+    try:
+        budget.reserve("cal_D1_visible_A", "calibration")
+    except RuntimeError as exc:
+        assert "limit" in str(exc)
+    else:
+        raise AssertionError("MI4 calibration budget exceeded its frozen limit")

@@ -10,11 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from experiments.mi1.native.evidence import EvidenceJournal, atomic_json_write
-from experiments.mi1.runner import (
-    GenerationBudget,
-    MI1CoordinateRunner,
-    ResolvedBank,
-)
+from experiments.mi1.runner import MI1CoordinateRunner, ResolvedBank
 from experiments.mi4.qwen_preflight import build_generation_request
 
 CONDITIONS = (
@@ -28,6 +24,49 @@ CONDITIONS = (
     ("latent_irrelevant_bias_0.5", "irrelevant_visual_composition", 0.5),
     ("latent_irrelevant_bias_1.0", "irrelevant_visual_composition", 1.0),
 )
+
+
+class CalibrationBudget:
+    """Persist the frozen MI4 cap without inheriting MI1 provenance metadata."""
+
+    def __init__(self, path: Path, *, hard_limit: int, protocol_sha256: str):
+        self.path = path
+        self.hard_limit = hard_limit
+        self.protocol_sha256 = protocol_sha256
+        if path.exists():
+            value = json.loads(path.read_text(encoding="utf-8"))
+            if (
+                value.get("protocol_sha256") != protocol_sha256
+                or value.get("hard_limit") != hard_limit
+            ):
+                raise ValueError("MI4 calibration budget contract mismatch")
+        else:
+            atomic_json_write(
+                path,
+                {
+                    "schema_version": 1,
+                    "protocol_sha256": protocol_sha256,
+                    "hard_limit": hard_limit,
+                    "reservations": [],
+                },
+            )
+
+    def reserve(self, attempt_id: str, phase: str) -> None:
+        if phase != "calibration":
+            raise ValueError("MI4 calibration budget accepts calibration calls only")
+        value = json.loads(self.path.read_text(encoding="utf-8"))
+        reservations = value["reservations"]
+        if any(row["attempt_id"] == attempt_id for row in reservations):
+            raise FileExistsError(f"MI4 generation ID already reserved: {attempt_id}")
+        if len(reservations) >= self.hard_limit:
+            raise RuntimeError("frozen MI4 calibration call limit reached")
+        reservations.append({"attempt_id": attempt_id, "phase": phase})
+        atomic_json_write(self.path, value)
+
+    def counts(self) -> dict[str, int]:
+        value = json.loads(self.path.read_text(encoding="utf-8"))
+        count = len(value["reservations"])
+        return {"total": count, "calibration": count, "scored": 0, "confirmation": 0}
 
 
 def _sha256(path: Path) -> str:
@@ -126,11 +165,10 @@ def run_calibration(
         )
 
     journal = EvidenceJournal(output_root / "journal", hard_call_limit=18)
-    budget = GenerationBudget(
+    budget = CalibrationBudget(
         output_root / "budget.json",
-        prior_calibration_calls=0,
-        calibration_limit=18,
         hard_limit=18,
+        protocol_sha256=_sha256(protocol_path),
     )
     runner = MI1CoordinateRunner(
         base_url=base_url,

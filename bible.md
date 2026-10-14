@@ -2095,3 +2095,4 @@ and dispositions remain unchanged.
 
 - Added a model-free-validated executor for exactly the frozen D1/D2 × nine-condition MI4 calibration (18 reasoning-ON calls, seed 615103). It writes each streamed request/result to the append-only journal and emits condition-blinded outputs plus a separate mapping for Root's calibration scoring.
 - Calibration remains distinct from the 96-coordinate held-out matrix; no held-out output is used to select bank bias. The frozen directional-separation rule and 0.5 tie/nonpositive fallback remain unchanged. No new calibration inference had run when this entry was committed.
+- The MI4 call budget records only MI4 reservations and protocol identity; it does not inherit the legacy MI1 budget's prior-calibration evidence pointer.
