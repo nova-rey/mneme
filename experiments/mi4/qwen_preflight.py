@@ -4,13 +4,19 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import time
 import urllib.request
 from pathlib import Path
 from typing import Any
 
 from experiments.mi1.native.evidence import EvidenceJournal, atomic_json_write
-from experiments.mi1.runner import GenerationBudget, MI1CoordinateRunner, ResolvedBank
+from experiments.mi1.runner import (
+    GenerationBudget,
+    MI1CoordinateRunner,
+    ResolvedBank,
+    load_completed_response,
+)
 
 
 def _request(url: str, value: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -61,6 +67,35 @@ def _messages(protocol: dict[str, Any], condition: str, user: str) -> list[dict[
         wrapper = protocol["calibration"]["visible_prompt_wrapper"]
         user = wrapper["prefix"] + descriptor + wrapper["suffix"] + user
     return [{"role": "system", "content": system}, {"role": "user", "content": user}]
+
+
+def _attempt_resolution(
+    indexed: dict[str, dict[str, Any]], logical_coordinate_id: str
+) -> tuple[str | None, str | None]:
+    """Return (completed attempt, next attempt ID) without reusing an attempt ID."""
+    retry_pattern = re.compile(re.escape(logical_coordinate_id) + r"_retry(\d+)")
+    attempts: list[tuple[int, str, dict[str, Any]]] = []
+    base = indexed.get(logical_coordinate_id)
+    if base is not None:
+        attempts.append((0, logical_coordinate_id, base))
+    for attempt_id, row in indexed.items():
+        match = retry_pattern.fullmatch(attempt_id)
+        if match:
+            attempts.append((int(match.group(1)), attempt_id, row))
+    attempts.sort(key=lambda item: item[0])
+    complete = [item for item in attempts if item[2].get("status") == "COMPLETE"]
+    if complete:
+        return complete[-1][1], None
+    if any(item[2].get("status") == "FAILED" for item in attempts):
+        raise RuntimeError(
+            f"failed preflight coordinate requires review: {logical_coordinate_id}"
+        )
+    if not attempts:
+        return None, logical_coordinate_id
+    next_retry = max(item[0] for item in attempts if item[0] > 0) + 1 if any(
+        item[0] > 0 for item in attempts
+    ) else 1
+    return None, f"{logical_coordinate_id}_retry{next_retry}"
 
 
 def bank_lifecycle(
@@ -126,6 +161,7 @@ def preflight(
     bank_fingerprints: dict[str, str],
     output: Path,
     base_url: str,
+    recovery_allowance: int = 0,
 ) -> dict[str, Any]:
     protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
     selector = json.loads(selector_path.read_text(encoding="utf-8"))
@@ -148,9 +184,75 @@ def preflight(
             selector={"sites": selector["selected_query_sites"], "bias": config["bias"]},
         )
 
-    journal = EvidenceJournal(output / "journal", hard_call_limit=24)
+    journal_root = output / "journal"
+    budget_path = output / "budget.json"
+    extension_path = output / "recovery-extension.json"
+    if recovery_allowance < 0:
+        raise ValueError("recovery_allowance cannot be negative")
+    call_limit = 24
+    index_path = journal_root / "index.json"
+    if recovery_allowance:
+        if not index_path.exists() or not budget_path.exists():
+            raise ValueError("a recovery allowance requires an interrupted preflight journal")
+        index_value = json.loads(index_path.read_text(encoding="utf-8"))
+        budget_value = json.loads(budget_path.read_text(encoding="utf-8"))
+        pending = [
+            row for row in index_value.get("attempts", [])
+            if row.get("status") == "REQUEST_DURABLE"
+        ]
+        if len(pending) != recovery_allowance:
+            raise ValueError("recovery allowance must match preserved incomplete attempts")
+        call_limit += recovery_allowance
+        if not extension_path.exists():
+            if index_value.get("hard_call_limit") != 24 or budget_value.get("hard_limit") != 24:
+                raise ValueError("recovery may only extend the original 24-call preflight cap")
+            extension = {
+                "schema_version": 1,
+                "original_hard_call_limit": 24,
+                "revised_hard_call_limit": call_limit,
+                "recovery_allowance": recovery_allowance,
+                "preserved_incomplete_attempts": [row["attempt_id"] for row in pending],
+                "reason": (
+                    "A frozen duplicate request was interrupted before terminal SSE "
+                    "completion; a fresh attempt is needed for that same coordinate."
+                ),
+                "authorization": (
+                    "Root Foreman directed consuming a fresh frozen preflight slot; no "
+                    "prompt, seed, condition, or sampler changed."
+                ),
+            }
+            atomic_json_write(extension_path, extension)
+            index_value["hard_call_limit"] = call_limit
+            atomic_json_write(index_path, index_value)
+            budget_value["hard_limit"] = call_limit
+            budget_value["calibration_limit"] = call_limit
+            budget_value.setdefault("recovery_extensions", []).append(extension)
+            atomic_json_write(budget_path, budget_value)
+        else:
+            extension = json.loads(extension_path.read_text(encoding="utf-8"))
+            if (
+                extension.get("revised_hard_call_limit") != call_limit
+                or extension.get("preserved_incomplete_attempts")
+                != [row["attempt_id"] for row in pending]
+            ):
+                raise ValueError("recovery extension does not match the preserved journal")
+        if index_value.get("hard_call_limit") != call_limit:
+            if index_value.get("hard_call_limit") != 24:
+                raise ValueError("journal cap differs from the authorized recovery extension")
+            index_value["hard_call_limit"] = call_limit
+            atomic_json_write(index_path, index_value)
+        if budget_value.get("hard_limit") != call_limit:
+            if budget_value.get("hard_limit") != 24:
+                raise ValueError("budget cap differs from the authorized recovery extension")
+            budget_value["hard_limit"] = call_limit
+            budget_value["calibration_limit"] = call_limit
+            budget_value.setdefault("recovery_extensions", []).append(
+                json.loads(extension_path.read_text(encoding="utf-8"))
+            )
+            atomic_json_write(budget_path, budget_value)
+    journal = EvidenceJournal(journal_root, hard_call_limit=call_limit)
     budget = GenerationBudget(
-        output / "budget.json", prior_calibration_calls=0, calibration_limit=24, hard_limit=24
+        budget_path, prior_calibration_calls=0, calibration_limit=call_limit, hard_limit=call_limit
     )
     runner = MI1CoordinateRunner(
         base_url=base_url,
@@ -169,14 +271,31 @@ def preflight(
     }
     outcomes: dict[str, dict[str, Any]] = {}
     started = time.time()
-    attempt_count = 0
+    newly_executed_calls = 0
     for thinking_mode in (False, True):
         mode = "ON" if thinking_mode else "OFF"
         for condition, bank_name in bank_for.items():
             outputs: list[dict[str, str]] = []
             for repetition in (1, 2):
-                attempt_count += 1
-                coordinate_id = f"preflight_{mode.lower()}_{condition}_{repetition}"
+                logical_coordinate_id = f"preflight_{mode.lower()}_{condition}_{repetition}"
+                index_text = (journal_root / "index.json").read_text(encoding="utf-8")
+                journal_index = json.loads(index_text)
+                indexed = {row["attempt_id"]: row for row in journal_index.get("attempts", [])}
+                completed_attempt, coordinate_id = _attempt_resolution(
+                    indexed, logical_coordinate_id
+                )
+                if completed_attempt is not None:
+                    outputs.append(
+                        _visible_output(load_completed_response(journal_root, completed_attempt))
+                    )
+                    continue
+                if coordinate_id is None:
+                    raise AssertionError("attempt resolution returned neither output nor call ID")
+                recovery_of = (
+                    logical_coordinate_id
+                    if coordinate_id != logical_coordinate_id
+                    else None
+                )
                 request = build_generation_request(
                     messages=_messages(protocol, condition, prompt["user"]),
                     seed=protocol["mechanical_preflight"]["seed"],
@@ -186,7 +305,10 @@ def preflight(
                 coordinate = {
                     "coordinate_id": coordinate_id,
                     "request": request,
-                    "metadata": {"server_role": "mi1_server"},
+                    "metadata": {
+                        "server_role": "mi1_server",
+                        **({"recovery_of": recovery_of} if recovery_of else {}),
+                    },
                     "bank_action": "clear" if bank_name is None else "attach",
                     "bank_source": bank_name,
                     "bank_source_sha256": None
@@ -195,6 +317,7 @@ def preflight(
                     "bank_config": {"bias": 0.5},
                 }
                 response = runner.execute(coordinate, phase="calibration")
+                newly_executed_calls += 1
                 try:
                     outputs.append(_visible_output(response))
                 except (KeyError, TypeError, ValueError) as exc:
@@ -205,7 +328,7 @@ def preflight(
                             "coordinate_id": coordinate_id,
                             "error_type": type(exc).__name__,
                             "error": str(exc),
-                            "completed_calls": attempt_count,
+                            "completed_calls": newly_executed_calls,
                             "journal_status_counts": journal.verify(),
                         },
                     )
@@ -226,10 +349,7 @@ def preflight(
                         "status": "NONDETERMINISTIC_DUPLICATE",
                         "mode": mode,
                         "condition": condition,
-                        "attempt_ids": [
-                            f"preflight_{mode.lower()}_{condition}_1",
-                            f"preflight_{mode.lower()}_{condition}_2",
-                        ],
+                        "attempt_ids": [logical_coordinate_id],
                         "output_hashes": [
                             hashlib.sha256(
                                 json.dumps(
@@ -238,20 +358,30 @@ def preflight(
                             ).hexdigest()
                             for item in outputs
                         ],
-                        "completed_calls": attempt_count,
+                        "completed_calls": newly_executed_calls,
                         "journal_status_counts": journal.verify(),
                     },
                 )
                 raise RuntimeError(f"same-condition duplicate differed: {mode}:{condition}")
     verification = journal.verify()
-    if sum(verification.values()) != attempt_count or verification.get("COMPLETE") != 24:
+    logical_coordinates = 2 * len(outcomes)
+    total_calls = sum(verification.values())
+    if (
+        logical_coordinates != 24
+        or total_calls != 24 + recovery_allowance
+        or verification.get("COMPLETE") != 24
+        or verification.get("REQUEST_DURABLE", 0) != recovery_allowance
+    ):
         raise RuntimeError(f"preflight journal is incomplete: {verification}")
     result = {
         "schema_version": 1,
         "protocol_sha256": _sha256(protocol_path),
         "health": health,
         "initial_bank_state": initial_bank_state,
-        "calls": attempt_count,
+        "calls": total_calls,
+        "completed_coordinates": logical_coordinates,
+        "newly_executed_calls_this_invocation": newly_executed_calls,
+        "recovery_allowance": recovery_allowance,
         "conditions": outcomes,
         "journal_status_counts": verification,
         "elapsed_seconds": round(time.time() - started, 3),
