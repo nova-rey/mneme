@@ -1,0 +1,88 @@
+{
+  "campaign": "mneme-phase4-mi4-qwen-family-control-ab",
+  "created_at": "2026-10-14T20:15:52.657238Z",
+  "dependencies": {},
+  "hard_problem_repo": null,
+  "packages": [
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "19039c7ef797547d90f8388f27fa50331fb1f81c",
+      "campaign": "mneme-phase4-mi4-qwen-family-control-ab",
+      "candidate": null,
+      "completion_criterion": "Publish an evidence-backed YES/PARTIALLY/NO disposition on whether a locally runnable Qwen family-control produces bank-specific semantic influence where MI3 Gemma did not, with exact model/runtime caveats and a recommendation to continue or park Phase Four transport research. No production MNEME integration.",
+      "created_at": "2026-10-14T20:15:52.702298Z",
+      "dependencies": [],
+      "domain": "local-qwen-memory-inception-family-control",
+      "edit_boundaries": [
+        "/tmp/mneme-mi4 only",
+        "docs/research and docs/receipts for MI4",
+        "experiments/mi4 isolated source",
+        "external artifact root /home/rey/mneme-artifacts/phase4-mi4",
+        "isolated llama.cpp research worktree /home/rey/src/llama-mi4",
+        "append-only bible.md on every commit"
+      ],
+      "evidence_refs": [],
+      "id": "MI4-QWEN-FAMILY-CONTROL",
+      "notes": "",
+      "owner": "/root/mi4_supervisor",
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "MI4-R1-PAPER-HOST-RUNTIME",
+        "MI4-R2-LOCAL-QWEN-QUALIFICATION",
+        "MI4-R3-FROZEN-MI3-COMPARISON",
+        "MI4-R4-BLIND-DIFFERENTIAL-COGNITION",
+        "MI4-R5-REPORT-AND-VALIDATION"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": true,
+          "name": "host_qwen_gpu",
+          "units": 1
+        },
+        {
+          "exclusive": true,
+          "name": "local_model_generation",
+          "units": 1
+        }
+      ],
+      "scope": "Verify the authoritative paper's Qwen host/runtime; qualify the closest feasible local Qwen checkpoint and MI1/MI3 side-bank port on the MSI; freeze an MI3-matched bank-specific differential-cognition matrix; run bounded matched conditions and blind semantic scoring for reasoning modes that fit measured local cost; publish compact report, receipt, experiment sources/manifests, and append-only research doctrine update. No MNEME developmental/production state or SAA integration.",
+      "session_ids": [
+        "mi4-20261014-main"
+      ],
+      "status": "RUNNING",
+      "title": "MI4 local Qwen family-control A/B",
+      "updated_at": "2026-10-14T20:15:57.038764Z",
+      "validation": {
+        "required": [
+          "The source/runtime comparison distinguishes paper facts from omissions and local deviations",
+          "The Qwen bank/runtime path passes load, visible A/B, attach, replace, disable and determinism sanity checks before frozen latent inference",
+          "Every matrix coordinate has durable request, reasoning, answer, bank identity, seed, thinking mode and runtime metadata",
+          "Heldout scoring is condition-blind and reconciles to all generated outputs",
+          "Report states bounded MI4 disposition and compares it with MI3 without claiming Qwen paper replication",
+          "Focused tests, Ruff, strict mypy, CI, pushed branch and clean worktree"
+        ],
+        "results": {}
+      },
+      "waiting_on": [],
+      "workstream": "phase4-mi4"
+    }
+  ],
+  "project": "nova-rey/mneme",
+  "resources": {
+    "host_qwen_gpu": {
+      "capacity": 1,
+      "exclusive": true
+    },
+    "local_model_generation": {
+      "capacity": 1,
+      "exclusive": true
+    }
+  },
+  "schema_version": 1,
+  "updated_at": "2026-10-14T20:15:57.038812Z"
+}

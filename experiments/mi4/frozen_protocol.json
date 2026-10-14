@@ -1,0 +1,251 @@
+{
+  "bank_construction": {
+    "bank_gain": "0.5 logit prior fixed for heldout; no per-prompt tuning. If mechanical gate establishes invalid bank visibility, stop and preserve evidence rather than tune on heldout.",
+    "contextualization": [
+      {
+        "id": "raw",
+        "text": "{BANK_CARD}"
+      },
+      {
+        "id": "internal_principles",
+        "text": "Internal principles for considering a system:\n\n{BANK_CARD}"
+      },
+      {
+        "id": "private_reasoning_note",
+        "text": "A private note available during reasoning:\n\n{BANK_CARD}"
+      }
+    ],
+    "operator": "MI3 Appendix-C-inspired selected-site Eq.2 side-bank port, rebuilt from Qwen3-native K/V. Qwen model-specific RoPE and grouped-query mapping must be verified mechanically before semantic evaluation.",
+    "selector": "Frozen algorithm: Qwen calibration prompts D1/D2, per-layer top-1 KV group by target-vs-reference query-key margin, aggregate and retain top 4 layers; map selected KV group to its 4 Qwen3 query heads. Site IDs then frozen for heldout. One shared site set for all bank identities.",
+    "slot_retention": "Raw descriptor plus descriptor-aligned token positions from two contextual wrappers; preserve all token positions, no averaging.",
+    "source": "MI3 descriptor text, unchanged; no Gemma K/V tensors reused."
+  },
+  "base_commit": "19039c7ef797547d90f8388f27fa50331fb1f81c",
+  "calibration": {
+    "call_count": 18,
+    "conditions": [
+      "no_bank",
+      "visible_A_resilience",
+      "visible_B_simplicity",
+      "latent_A_bias_0.5",
+      "latent_A_bias_1.0",
+      "latent_B_bias_0.5",
+      "latent_B_bias_1.0",
+      "latent_irrelevant_bias_0.5",
+      "latent_irrelevant_bias_1.0"
+    ],
+    "global_bias_candidates": [
+      0.5,
+      1.0
+    ],
+    "prompts": [
+      {
+        "id": "D1_after_school_program",
+        "user": "A volunteer-run after-school program has added two sites. Families now receive messages from different coordinators, and weekly planning pauses when the person who knows the schedule is away. Some volunteers want one office to make decisions; others want each site to decide for itself. How would you organize the work so families get clear communication and the program keeps running when plans change? Avoid adding process for its own sake."
+      },
+      {
+        "id": "D2_community_repair_group",
+        "user": "A small community repair group has grown from six to twenty-four volunteers. Requests arrive through email, phone, and informal chats, and several people may start the same request while other jobs wait. When the experienced intake volunteer takes a week off, nobody is sure what was promised. How could the group adapt its way of working?"
+      }
+    ],
+    "purpose": "Choose one global query-site set and one global bank_logit_bias before held-out inference. Calibration data cannot be included in held-out scoring.",
+    "seed": 615103,
+    "selection_rule": "Before viewing any held-out output, choose the bias with larger mean blinded directional-separation score across D1/D2; score = (A-score under latent A minus A-score under latent B) + (B-score under latent B minus B-score under latent A). If tied, choose 0.5. If both produce non-positive separation, still freeze 0.5 and let held-out determine whether bank identity predicts direction; do not retune.",
+    "site_selection": "Capture all query heads/layers on the two calibration prompts with each of the three equal-shape banks. Form balanced pairwise key-alignment margins for A-vs-B/irrelevant, B-vs-A/irrelevant, irrelevant-vs-A/B; average across prompt and bank comparisons. Use the paper-inspired MI2 rule: per-layer top-1 KV group, then top-4 query layers, and expand each selected KV group to its four query heads. Average bank attention mass is only a tie-break. This one shared set is applied unchanged to every bank identity.",
+    "visible_conditions_are_non_gating": true,
+    "visible_prompt_wrapper": {
+      "construction": "prefix + exact descriptor_text + suffix + exact frozen calibration user text",
+      "prefix": "Here are conceptual principles you may use if they fit the situation:\n\n",
+      "same_for_A_and_B": true,
+      "suffix": "\n\nApply them selectively to the current problem; you may also decide they are not useful.\n\nCurrent problem:\n"
+    }
+  },
+  "created_local": "2026-10-14",
+  "decision_rule": "Primary: bank identity must predict A-vs-B semantic score direction across heldout prompts/seeds, and latent A/B must separate from no-bank and irrelevant controls without competence loss. Output changes, lexical matches, reasoning length, or attention mass alone do not pass.",
+  "evidence": {
+    "blind_scoring": "Use MI3 semantic rubric unchanged; scorer receives anonymized outputs and exact user question, with no bank/condition mapping.",
+    "raw_root": "/home/rey/mneme-artifacts/phase4-mi4",
+    "required_per_call": [
+      "request bytes/hash",
+      "condition-blinded opaque ID",
+      "context ID",
+      "seed",
+      "thinking mode",
+      "bank identity/fingerprint",
+      "bank file hash",
+      "selected sites",
+      "runtime/model fingerprint",
+      "complete reasoning",
+      "complete final response",
+      "finish reason",
+      "token/latency metadata",
+      "attention/bank-access diagnostics where available"
+    ]
+  },
+  "generation": {
+    "cache_prompt": false,
+    "context_size": 8192,
+    "generation_seeds": [
+      615103,
+      615109
+    ],
+    "max_tokens": 8192,
+    "reasoning_configuration": "Qwen3 chat-template enable_thinking=false/true; exact serialized request and template output retained per call; prompt caching disabled.",
+    "sampler": {
+      "batch_size": 2048,
+      "cache_prompt": false,
+      "context_size": 8192,
+      "gpu_layers": 99,
+      "max_tokens": 8192,
+      "min_p": 0.05,
+      "parallel": 1,
+      "temperature": 0.35,
+      "threads": 4,
+      "threads_batch": 4,
+      "top_k": 40,
+      "top_p": 0.9,
+      "ubatch_size": 512
+    },
+    "system": "You are a thoughtful design partner. Reason carefully in private before answering. Give the user a practical response that explains a few options, tradeoffs, and first steps. Do not assume one organizational structure is always best."
+  },
+  "heldout": {
+    "conditions": [
+      "no_bank",
+      "visible_A_resilience",
+      "visible_B_simplicity",
+      "latent_A_resilience",
+      "latent_B_simplicity",
+      "latent_irrelevant_visual_composition"
+    ],
+    "coordinates_per_mode": 48,
+    "mode_matrix": [
+      "OFF",
+      "ON"
+    ],
+    "prompts": [
+      {
+        "id": "H1_city_arts_festival",
+        "user": "A city\u2019s summer arts festival has grown from a few venues to activities spread across several blocks. Weather changes the crowd size, volunteers rotate through shifts, and organizers hear about problems through different channels. The event should still feel coherent but not require one person to approve every small adjustment. What would you change?"
+      },
+      {
+        "id": "H2_food_cooperative",
+        "user": "A neighborhood food cooperative now serves three pickup locations. Deliveries arrive at different times, demand varies by week, and volunteers at each location sometimes make promises without knowing what the other sites have arranged. How should they organize the next year?"
+      },
+      {
+        "id": "H3_public_space_project",
+        "user": "Several local groups are preparing a public-space renovation. They have separate timelines and some work depends on the same utilities and permits. Meetings are becoming long, but a missed update could force crews to redo work. How should they coordinate?"
+      },
+      {
+        "id": "H4_community_information_service",
+        "user": "A small team maintains a community information service. The service is usually reliable but parts of it are hard to understand, and changes by one person sometimes surprise the people responsible for support. The team has limited time to improve it. Where should they begin?"
+      }
+    ],
+    "randomization": "Within each prompt x seed x thinking-mode block, deterministic Fisher-Yates permutation using MI3 rule, then persist exact dispatch order.",
+    "seeds": [
+      615103,
+      615109
+    ],
+    "source_freeze_id": "MNEME-MI3-HELDOUT-FINAL-FREEZE-20261014",
+    "source_sha256": "840b0ef9a8e486c35fbcf90e6eb71f24324f9460eeab990ab5b2e47740846c20",
+    "total_heldout_coordinates": 96
+  },
+  "historical_dispositions": {
+    "MI1": "Latent arbitrary factual/rule retrieval was not demonstrated.",
+    "MI2": "Visible quantum guidance did not pass its frozen metric; its latent condition was not run.",
+    "MI3_Gemma": "Visible A/B were descriptively separable; latent A/B did not produce bank-specific directional separation from no-bank/irrelevant controls."
+  },
+  "local_host": {
+    "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU, 6 GiB",
+    "license": "Apache-2.0",
+    "model_family": "Qwen3 dense 4B; same generation family as paper Qwen3-30B-A3B, different architecture size/variant",
+    "model_file": "Qwen3-4B-Q4_K_M.gguf",
+    "model_file_sha256": "7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5",
+    "model_file_size_bytes": 2497280256,
+    "model_repo": "Qwen/Qwen3-4B-GGUF",
+    "model_revision": "bc640142c66e1fdd12af0bd68f40445458f3869b",
+    "prompt_cache": false,
+    "runtime_plan": "Pinned llama.cpp 4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0 plus isolated MI4-only Qwen3 side-bank port; not author vLLM implementation.",
+    "thinking_modes": [
+      "OFF",
+      "ON"
+    ]
+  },
+  "mechanical_preflight": {
+    "before_heldout": "Must pass model load, ordinary text generation, visible A/B understanding, native bank capture, attach, replace, disable/clear, bank access diagnostics, and same-request duplicate determinism with cache_prompt=false. Visible semantics are not an accuracy gate.",
+    "duplicate_conditions": [
+      "no_bank",
+      "visible_A_resilience",
+      "visible_B_simplicity",
+      "latent_A_resilience",
+      "latent_B_simplicity",
+      "latent_irrelevant_visual_composition"
+    ],
+    "maximum_preflight_calls": 24,
+    "modes": [
+      "OFF",
+      "ON"
+    ],
+    "repeat_each": 2,
+    "seed": 615103
+  },
+  "neighborhoods": {
+    "A_resilience": {
+      "core": "Resilience and graceful degradation",
+      "descriptor_text": "Across systems, important functions can be exposed to different kinds of disruption. When several independent paths can sustain a critical function, loss of one path need not halt the whole activity. Keeping problems contained within their own part can prevent a local fault from spreading. A less capable mode that preserves the essential purpose may be more reliable than a design optimized only for ideal conditions. Some repeated capacity or work is worthwhile when it prevents a fragile dependency; its value depends on failure cost and on whether the paths are actually independent. A nominal alternative that shares the same vulnerable cause is not true protection. The useful relationships concern what still works after disruption, what can be isolated, and where partial operation remains acceptable."
+    },
+    "B_simplicity": {
+      "core": "Simplicity and consolidation",
+      "descriptor_text": "Across systems, separate activities can gradually acquire overlapping purposes, confusing responsibility and adding coordination work. Clear ownership makes it easier to know who decides and who follows through. Combining closely related work can reduce handoffs and simplify maintenance when the tasks share real dependencies. Fewer components are easier to understand when each has a distinct, necessary role. A common coordinating structure can resolve inconsistent local decisions, but concentrated responsibility can become an obstacle if decisions no longer fit local needs. The useful relationships concern which boundaries serve a purpose, where work is truly repeated, and what complexity can be removed without losing an important capability. Consolidation is less useful when tasks require different expertise or a shared decision point becomes a bottleneck."
+    },
+    "irrelevant_visual_composition": {
+      "core": "Visual composition in painting",
+      "descriptor_text": "In visual composition, placement and surrounding space affect what attracts attention. A focal element needs enough contrast to remain visible, while repeated shapes can create rhythm without exact symmetry. Empty space can separate competing forms; too much separation can make a composition feel fragmented. Color relationships depend on brightness, warmth, and neighboring hues rather than on a single color in isolation. A painter often tests arrangements at different scales before choosing one. The medium also matters: pigments spread, layer, and dry differently, so the final appearance can diverge from the first sketch. A successful composition depends on how the parts are perceived together, not on any one element alone. Light may demand a rearrangement, not one color change."
+    }
+  },
+  "package_id": "MI4-QWEN-FAMILY-CONTROL",
+  "paper_source": {
+    "citation": "Liu et al., Memory Inception: Latent-Space KV Cache Manipulation for Steering LLMs, arXiv:2605.06225v2, 2026-05-09",
+    "paper_code_release": "The paper describes an anonymous code/evaluation release, but no authenticated repository URL was established. Candidate third-party repository is not used.",
+    "paper_model": "Qwen3-30B-A3B (30.5B total / 3.3B active) and Meta-Llama-3.1-8B-Instruct",
+    "paper_precision": "Not specified as an exact bit precision in source details.",
+    "paper_runtime": "Customized vLLM side-bank path for Qwen3; native paged prompt/generation KV remains separate from selected-site side banks.",
+    "paper_sha256": "ffd265f3b32a93d6b7967c69faf8e992d13ccdadc2c0bc2927a2f7ffcf5791fc",
+    "paper_vllm_version": "Not specified in source details.",
+    "qwen_reasoning": "Qwen3 thinking and non-thinking modes are included in the paper configuration.",
+    "url": "https://arxiv.org/abs/2605.06225v2"
+  },
+  "protocol_id": "MNEME-MI4-QWEN-FAMILY-CONTROL",
+  "schema_version": 1,
+  "scope": "Isolated Qwen-family control for MI3 bank-specific differential cognition. No MNEME instance, developmental state, SAA, CompactStore, or production integration.",
+  "scoring": {
+    "blind_semantic_rubric": {
+      "A_resilience_0_to_4": [
+        "0 absent",
+        "1 weak/implicit",
+        "2 one recognizable relation",
+        "3 multiple linked resilience relations shape the approach",
+        "4 resilience/graceful-degradation structure organizes the approach"
+      ],
+      "B_simplicity_0_to_4": [
+        "0 absent",
+        "1 weak/implicit",
+        "2 one recognizable relation",
+        "3 multiple linked simplification/consolidation relations shape the approach",
+        "4 simplicity/consolidation structure organizes the approach"
+      ],
+      "coherence_task_fit_0_to_4": [
+        "0 incoherent/off-task",
+        "1 major damage",
+        "2 partly useful but material weakness",
+        "3 coherent and responsive",
+        "4 coherent, appropriately qualified, and practical"
+      ],
+      "evidence_quote_required": true
+    },
+    "blindness": "Hide condition and bank labels. Assign each output a random opaque ID from a recorded shuffle seed; give scorer the exact user prompt and complete reasoning/final but not the bank mapping. Do not include bank source text.",
+    "mechanical_features": "Report word counts, reasoning/final bytes, finish reasons, bank-slot/site/runtime parity, and exact/semantic phrase occurrences as descriptive only; never define success by these.",
+    "paired_directional_comparison": "Within each problem \u00d7 seed block, compare latent A/B/no-bank/irrelevant outputs in randomized order. Separately choose which is more A-shaped, which is more B-shaped (left/right/tie) and note evidence; scorer remains blind to condition identity.",
+    "scorer": "A separate condition-blinded human evaluator; Root Foreman is requested as evaluator unless Root assigns another blinded reviewer. Preserve the exact rubric and the returned per-output judgments."
+  },
+  "status": "FROZEN_BEFORE_QWEN_INFERENCE"
+}

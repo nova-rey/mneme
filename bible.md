@@ -2066,3 +2066,9 @@ and dispositions remain unchanged.
 ## 2026-10-14 MI3 root validation closure
 
 - Root reconciled the candidate against all 48 durable held-out request/result hash pairs, verified the blinded score lock and 120 matched comparisons, and recorded 941 passing tests, Ruff, strict mypy, JSON/compile checks, and the evidence validation receipt. Work Queue package `MI3-DIFFERENTIAL-COGNITION` is complete at candidate `7f6bda38d6480847653e76a8b1be49e5d0264e4f`; the measured negative result does not authorize production integration or additional confirmation calls.
+
+## 2026-10-14 MI4 Qwen family-control pre-inference freeze
+
+- Froze MI4 on the MI3 four held-out problems, unchanged A/B/irrelevant neighborhoods, MI3 semantic rubric, and seeds 615103/615109 before any Qwen inference. The matrix is 48 coordinates per thinking mode (OFF and ON), with a bounded duplicate/mechanical preflight; Qwen bank identities and output mapping remain external to the blinded scorer.
+- The local control is Qwen3-4B Q4_K_M, distinct from the paper's Qwen3-30B-A3B. Paper facts and local deviations are stated in the frozen protocol; this is an isolated llama.cpp port plan, not author-vLLM reproduction. No MNEME state, SAA, CompactStore, or production host is in scope.
+- Freeze: `experiments/mi4/frozen_protocol.json`, SHA-256 `fb80cc62c51ddfb3c1a8526f42176d7fe63ca464b8eaeed22013e96434a459ee`. Root verified prompt, condition, seed, system, rubric, and descriptor parity with MI3 before execution.
