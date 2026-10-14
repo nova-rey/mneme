@@ -157,6 +157,7 @@ def preflight(
     protocol_path: Path,
     selector_path: Path,
     bank_paths: dict[str, Path],
+    bank_native_hashes: dict[str, str] | None = None,
     bank_source_hashes: dict[str, str],
     bank_fingerprints: dict[str, str],
     output: Path,
@@ -178,7 +179,11 @@ def preflight(
         path = bank_paths[key]
         return ResolvedBank(
             path=path,
-            native_sha256=_sha256(path),
+            native_sha256=(
+                bank_native_hashes[key]
+                if bank_native_hashes is not None
+                else _sha256(path)
+            ),
             bank_fingerprint=bank_fingerprints[key],
             selector_sha256=_sha256(selector_path),
             selector={"sites": selector["selected_query_sites"], "bias": config["bias"]},
