@@ -1,0 +1,104 @@
+{
+  "schema_version": "mneme-mi3-root-validation.v1",
+  "package_id": "MI3-DIFFERENTIAL-COGNITION",
+  "candidate_commit": "7f6bda38d6480847653e76a8b1be49e5d0264e4f",
+  "base_commit": "a873352224a9101930a56fa287176483cc1d9a91",
+  "validated_at_utc": "2026-10-14T16:04:00.269864+00:00",
+  "scope": "Root evidence reconciliation and repository validation; no model generation or specimen mutation.",
+  "evidence_checks": {
+    "heldout_coordinates": 48,
+    "complete_request_outcome_hash_pairs": 48,
+    "finish_reason_stop": 48,
+    "matched_prompt_seed_blocks": 8,
+    "conditions_per_block": 6,
+    "latent_ordinary_requests_identical": true,
+    "reasoning_on_and_cache_prompt_false": true,
+    "bank_lifecycle_actions": {
+      "attach_fingerprint_enabled": 21,
+      "replace_fingerprint_enabled": 3,
+      "clear_disabled_empty_fingerprint": 24
+    },
+    "blind_outputs_scored": 48,
+    "scores_in_range_and_evidence_quotes_exact": true,
+    "within_block_pairwise_comparisons": 120,
+    "blind_break_detected": false,
+    "score_packet_locked_before_unblinding": true,
+    "post_unblinding_gemma_calls": 0,
+    "replacement_confirmation_run": false
+  },
+  "score_means_0_to_4": {
+    "latent_A_resilience": {
+      "A_resilience": 1.5,
+      "B_simplicity": 1.75,
+      "coherence": 3.5,
+      "n": 8
+    },
+    "latent_B_simplicity": {
+      "A_resilience": 1.5,
+      "B_simplicity": 1.625,
+      "coherence": 3.375,
+      "n": 8
+    },
+    "latent_irrelevant_visual_composition": {
+      "A_resilience": 1.625,
+      "B_simplicity": 1.625,
+      "coherence": 3.375,
+      "n": 8
+    },
+    "no_bank": {
+      "A_resilience": 1.625,
+      "B_simplicity": 1.875,
+      "coherence": 3.375,
+      "n": 8
+    },
+    "visible_A_resilience": {
+      "A_resilience": 3,
+      "B_simplicity": 1.25,
+      "coherence": 3.125,
+      "n": 8
+    },
+    "visible_B_simplicity": {
+      "A_resilience": 1.5,
+      "B_simplicity": 2.375,
+      "coherence": 3,
+      "n": 8
+    }
+  },
+  "interpretation": "The frozen bank-specific cognition criterion was measured and the observed result is negative; this is not a failed apparatus run. Visible A/B references show descriptive target-specific effects, but latent A/B do not show bank-predictive direction against no-bank/irrelevant controls.",
+  "repository_validation": {
+    "pytest": {
+      "status": "PASS",
+      "passed": 941
+    },
+    "ruff_check_all": {
+      "status": "PASS"
+    },
+    "mypy_strict_src_mneme": {
+      "status": "PASS",
+      "files": 72
+    },
+    "compileall_mi3_tools": {
+      "status": "PASS"
+    },
+    "json_parse": {
+      "status": "PASS"
+    },
+    "git_diff_check": {
+      "status": "PASS"
+    }
+  },
+  "sha256": {
+    "freeze": "840b0ef9a8e486c35fbcf90e6eb71f24324f9460eeab990ab5b2e47740846c20",
+    "blind_packet": "5817db47039c14a1b7d440296337eeddde383ff7cd70bb211d3a2f17ac297548",
+    "mapping_key": "361d295c1f893e696e3595ca3668f7b5c75528da807469d98773d68dca259635",
+    "blind_scores": "68d2ace10483e9b979d1fabc680f87f916006d92f3bcc48346ee41c5abfbca9e",
+    "blind_scoring_method": "14ba5ddc1667fb05e370501030030bb7eff40ed7539f35c7d074296b37302354",
+    "blind_score_lock": "7aa0121b6b62cf34589665ba4f3fcc6f68e9caf5d1e609553104675395cad040",
+    "determinism_preflight": "4ef94692cce0ccde421200be29e45f52895e6334592dcec0ae96e068f6dd2280",
+    "heldout_journal_index": "b32150c736a893d14027d382192d19be57afebcb3d7f1880d50e942b7b80d083",
+    "report_markdown": "760ad62c2d5a44831d7dde1b2ee95142c2dc4dc5058bb489bea38f0836b8c499",
+    "report_json": "e5e29e3e5afb28c658b9bbe838142082a0714a8a6d304fdfeaa39001c2700a1a",
+    "frozen_protocol": "f2352fa0feeb077dd1986b6a03d3a8921d9e74bea2b441532fd484ea3303e236"
+  },
+  "external_raw_evidence_directory": "/home/nyx/mneme-artifacts/phase4-mi3/"
+}

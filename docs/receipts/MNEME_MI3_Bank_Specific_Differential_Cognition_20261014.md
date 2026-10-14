@@ -53,3 +53,5 @@ The held-out set is small (four prompts, two seeds), and the blind rating is a s
 Full call records, reasoning, answers, request mapping, scorer packet, and bank artifacts remain outside Git under `/home/nyx/mneme-artifacts/phase4-mi3/`. Principal hashes are recorded in the adjacent JSON receipt. The held-out journal index SHA-256 is `b32150c736a893d14027d382192d19be57afebcb3d7f1880d50e942b7b80d083`; the held-out freeze SHA-256 is `840b0ef9a8e486c35fbcf90e6eb71f24324f9460eeab990ab5b2e47740846c20`; the condition-blind packet SHA-256 is `5817db47039c14a1b7d440296337eeddde383ff7cd70bb211d3a2f17ac297548`. The blind score lock verified all 48 unique outputs, valid score ranges, exact evidence quotes, all 120 paired comparisons, and no reported blind break.
 
 The research doctrine update is recorded in [MNEME Phase Four Differential Cognition Principle](../research/MNEME_Phase_Four_Differential_Cognition_Principle_20261014.md).
+
+Root's evidence and repository validation is recorded in [the MI3 validation receipt](MNEME_MI3_Root_Validation_20261014.json).
