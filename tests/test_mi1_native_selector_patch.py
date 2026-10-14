@@ -44,3 +44,23 @@ def test_native_selector_patch_rejects_nonempty_or_nonneutral_source(tmp_path: P
         patch_native_bank_selector(
             source, tmp_path / "out.mi1", query_sites=((1, 0),), bank_logit_bias=0.0
         )
+
+
+def test_native_selector_patch_accepts_qwen3_dimensions_when_declared(tmp_path: Path) -> None:
+    source = tmp_path / "qwen-base.mi1"
+    output = tmp_path / "qwen-selected.mi1"
+    source.write_bytes(
+        struct.pack("<8sIIII", b"MI1KV002", 2, 36, 2, 0)
+        + struct.pack("<IIII", 0, 1, 1, 1)
+        + struct.pack("<f", 0.0)
+    )
+    sites = ((35, 31),)
+    patch_native_bank_selector(
+        source,
+        output,
+        query_sites=sites,
+        bank_logit_bias=0.5,
+        layer_count=36,
+        query_head_count=32,
+    )
+    assert struct.unpack_from("<I", output.read_bytes(), 20)[0] == 1

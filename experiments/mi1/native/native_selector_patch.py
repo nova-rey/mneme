@@ -15,6 +15,8 @@ def patch_native_bank_selector(
     *,
     query_sites: tuple[tuple[int, int], ...],
     bank_logit_bias: float,
+    layer_count: int = 42,
+    query_head_count: int = 8,
 ) -> None:
     """Copy a no-selector MI1 bank and replace only its selector metadata.
 
@@ -25,8 +27,13 @@ def patch_native_bank_selector(
         raise ValueError("bank logit bias must be finite")
     if len(set(query_sites)) != len(query_sites):
         raise ValueError("query sites must be unique")
-    if any(not (0 <= layer < 42 and 0 <= head < 8) for layer, head in query_sites):
-        raise ValueError("query site is outside Gemma4 layer/head dimensions")
+    if layer_count <= 0 or query_head_count <= 0:
+        raise ValueError("architecture dimensions must be positive")
+    if any(
+        not (0 <= layer < layer_count and 0 <= head < query_head_count)
+        for layer, head in query_sites
+    ):
+        raise ValueError("query site is outside the declared layer/head dimensions")
     raw = source.read_bytes()
     header_size = struct.calcsize("<8sIIII")
     if len(raw) < header_size + 4:
