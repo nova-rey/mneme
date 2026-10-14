@@ -2102,3 +2102,9 @@ and dispositions remain unchanged.
 
 - The condition-blinded calibration scorer returned all 18 scores without consulting the condition map. After the score packet was sealed, mapping scores back to conditions yielded zero A/B directional separation at both predeclared bank biases (0.5 and 1.0); the frozen tie/nonpositive fallback therefore selects the lower global bias, 0.5.
 - The calibration result is a selector decision only, not a positive MI result. The 96-coordinate held-out test may proceed unchanged at the frozen 0.5 bias; no held-out generation preceded this receipt.
+
+## 2026-10-14 MI4 Qwen family-control disposition
+
+- The frozen 96-call Qwen3-4B Q4/llama.cpp matrix completed with 96 `stop` finishes; side bank was cleared/disabled after the run. The blind scorer packet was sealed before mapping unseal and independently rechecked against the derived aggregates.
+- Visible resilience and simplicity guidance produced opposite, strong rating profiles. Latent A/B did not: pooled directional separation was -0.0625 (thinking ON -0.125; OFF 0.000), and both latent conditions stayed near no-bank/irrelevant controls. Small differences are descriptive only, not inferential statistics.
+- MI4 did not rescue the reconstructed MI transport on this local Qwen configuration. The report recommends parking this path; it does not claim the paper-scale Qwen3-30B-A3B/vLLM result is disproven. No developmental MNEME state or production system was changed.
