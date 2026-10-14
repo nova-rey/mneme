@@ -217,6 +217,38 @@ def test_bank_selector_indices_match_gemma4_dimensions(
         bank.validate()
 
 
+def test_qwen3_native_bank_accepts_32_query_heads_and_eight_kv_groups() -> None:
+    manifest = BankManifest(
+        model_sha256="c" * 64,
+        llama_commit="4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+        architecture="qwen3-4b",
+        layer_ids=tuple(range(36)),
+        head_dim=2,
+        kv_heads_by_layer=(8,) * 36,
+        slot_count=1,
+        query_groups=((35, 7),),
+        query_sites=((35, 31),),
+    )
+    keys = {layer: np.zeros((1, 8, 2), dtype=np.float32) for layer in manifest.layer_ids}
+    values = {layer: np.ones((1, 8, 2), dtype=np.float32) for layer in manifest.layer_ids}
+    MemoryBank(manifest, keys, values, "Qwen3 shape fixture", (11,)).validate()
+
+
+def test_qwen3_flat_value_projection_reshapes_to_token_kv_head_head_dim_order() -> None:
+    # llama.cpp's Qwen3 graph constructs the pre-reshape V tensor as
+    # [head_dim * kv_heads, tokens], then ggml_reshape_3d(dim, heads, tokens).
+    # Pin the equivalent canonical [tokens, kv_heads, head_dim] ordering.
+    head_dim, kv_heads, token_count = 128, 8, 137
+    flat = np.arange(head_dim * kv_heads * token_count, dtype=np.float32).reshape(
+        head_dim * kv_heads, token_count
+    )
+    slots = flat.T.reshape(token_count, kv_heads, head_dim)
+
+    assert slots.shape == (137, 8, 128)
+    for token, head, dim in ((0, 0, 0), (0, 7, 127), (68, 3, 21), (136, 7, 127)):
+        assert slots[token, head, dim] == flat[head * head_dim + dim, token]
+
+
 def test_reads_exact_tokenwise_native_encoder_capture(tmp_path: Path) -> None:
     path = tmp_path / "captured.mi1cap"
     with path.open("wb") as stream:

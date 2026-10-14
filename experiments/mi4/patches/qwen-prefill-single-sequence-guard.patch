@@ -1,0 +1,13 @@
+diff --git a/src/llama-graph.cpp b/src/llama-graph.cpp
+index 0000000..0000000 100644
+--- a/src/llama-graph.cpp
++++ b/src/llama-graph.cpp
+@@ -489,7 +489,7 @@ void llm_graph_input_attn_kv::set_input(const llama_ubatch * ubatch) {
+
+     if (!mi1_banks.empty()) {
+         GGML_ASSERT(mi1_enabled);
+-        GGML_ASSERT(ubatch->n_seqs == 1 && ubatch->n_seqs_unq == 1);
++        GGML_ASSERT(ubatch->n_seqs_unq == 1);
+         GGML_ASSERT(ubatch->n_tokens > 0 && ubatch->pos != nullptr);
+         const int32_t query_pos = static_cast<int32_t>(ubatch->pos[ubatch->n_tokens - 1]);
+         for (auto & entry : mi1_banks) {

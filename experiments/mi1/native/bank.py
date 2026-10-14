@@ -135,16 +135,35 @@ class MemoryBank:
             raise ValueError("query selector sites must be unique")
         if len(set(self.manifest.query_groups)) != len(self.manifest.query_groups):
             raise ValueError("query selector KV groups must be unique")
+        # The native bank format is shared by isolated Gemma4 and Qwen3
+        # experiments. Preserve Gemma4's exact historical checks and admit
+        # Qwen3's larger GQA head/group dimensions in its separate host path.
+        if self.manifest.architecture == "gemma4-e4b":
+            layer_limit, group_limit, query_head_limit = 42, 2, 8
+        elif self.manifest.architecture.startswith("qwen3"):
+            layer_limit, group_limit, query_head_limit = 36, 16, 32
+        else:
+            layer_limit, group_limit, query_head_limit = 42, 16, 32
         if any(
-            layer < 0 or layer >= 42 or group < 0 or group >= 2
+            layer < 0 or layer >= layer_limit or group < 0 or group >= group_limit
             for layer, group in self.manifest.query_groups
         ):
-            raise ValueError("query selector KV group index exceeds Gemma4's 2 KV groups")
+            message = (
+                "query selector KV group index exceeds Gemma4's 2 KV groups"
+                if self.manifest.architecture == "gemma4-e4b"
+                else "query selector KV group index is outside supported host bounds"
+            )
+            raise ValueError(message)
         if any(
-            layer < 0 or layer >= 42 or head < 0 or head >= 8
+            layer < 0 or layer >= layer_limit or head < 0 or head >= query_head_limit
             for layer, head in self.manifest.query_sites
         ):
-            raise ValueError("query selector site head index exceeds Gemma4's 8 query heads")
+            message = (
+                "query selector site head index exceeds Gemma4's 8 query heads"
+                if self.manifest.architecture == "gemma4-e4b"
+                else "query selector site is outside supported host bounds"
+            )
+            raise ValueError(message)
         head_dims = self._head_dims()
         for i, layer in enumerate(self.manifest.layer_ids):
             expected = (

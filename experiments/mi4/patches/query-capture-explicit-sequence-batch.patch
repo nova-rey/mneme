@@ -1,0 +1,24 @@
+diff --git a/tools/mi1_native_query_capture.cpp b/tools/mi1_native_query_capture.cpp
+index 0000000..0000000 100644
+--- a/tools/mi1_native_query_capture.cpp
++++ b/tools/mi1_native_query_capture.cpp
+@@ -157,7 +157,17 @@ int main(int argc, char ** argv) {
+         params.cb_eval = capture_eval;
+         params.cb_eval_user_data = &capture;
+         auto * context = llama_init_from_model(model, params);
+         if (!context) throw std::runtime_error("context initialization failed");
+-        const int status = llama_decode(context, llama_batch_get_one(tokens.data(), count));
++        auto batch = llama_batch_init(count, 0, 1);
++        batch.n_tokens = count;
++        for (int32_t i = 0; i < count; ++i) {
++            batch.token[i] = tokens[static_cast<size_t>(i)];
++            batch.pos[i] = i;
++            batch.n_seq_id[i] = 1;
++            batch.seq_id[i][0] = 0;
++            batch.logits[i] = (i == count - 1) ? 1 : 0;
++        }
++        const int status = llama_decode(context, batch);
++        llama_batch_free(batch);
+         if (status != 0 || !capture.error.empty()) {
+             throw std::runtime_error(capture.error.empty() ? "prompt prefill failed" : capture.error);
+         }
