@@ -3,6 +3,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
+from experiments.mi4.prepare_bank_variants import build_variants
 from experiments.mi1.native.bank import BankManifest, MemoryBank
 from experiments.mi1.native.query_capture import QueryCapture, QueryLayerCapture
 from experiments.mi4.qwen_batch_contract import validate_single_sequence_bank_prefill
@@ -84,3 +85,30 @@ def test_qwen_prefill_guard_accepts_one_sequence_and_rejects_multi_sequence() ->
             token_count=136,
             mask_query_counts=(135,),
         )
+
+
+def test_variant_builder_writes_fixed_biases_without_mutating_sources(tmp_path) -> None:
+    import json
+    import struct
+
+    bank_root = tmp_path / "banks"
+    bank_root.mkdir()
+    names = ("A_resilience", "B_simplicity", "irrelevant_visual_composition")
+    source_bytes = (
+        struct.pack("<8sIIII", b"MI1KV002", 2, 36, 1, 0)
+        + struct.pack("<IIff", 0, 1, 0.25, 0.5)
+        + struct.pack("<f", 0.0)
+    )
+    for name in names:
+        (bank_root / f"{name}.mi1").write_bytes(source_bytes)
+    selector = tmp_path / "selector.json"
+    selector.write_text(
+        json.dumps({"selected_query_sites": [[35, 28], [35, 29]]}), encoding="utf-8"
+    )
+    result = build_variants(
+        bank_root=bank_root, selector_path=selector, output_root=tmp_path / "out"
+    )
+    assert len(result["variants"]) == 6
+    assert {row["bias"] for row in result["variants"]} == {0.5, 1.0}
+    assert all(row["size_bytes"] == len(source_bytes) + 16 for row in result["variants"])
+    assert all((bank_root / f"{name}.mi1").read_bytes() == source_bytes for name in names)
