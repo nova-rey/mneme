@@ -563,3 +563,7 @@ current specification identifies it as historical context.
 - The first F0 C/R/F0 prospective run is published in [the complete evidence bundle](receipts/MNEME_P2_F0_C_R_F0_Evidence_20260926/) with the derived [analysis receipt](receipts/MNEME_P2_F0_C_R_F0_Analysis_20260926.md): F0 executed but all four neutral probes had zero pressure, so the result is valid zero-field exposure/inconclusive rather than a behavioral negative.
 
 - [Final reasoning-ON micro-stagnation comparison](experiments/micro_reasoning/report.md): frozen-bank OFF/ON follow-up, MIXED; improved loop recognition with persistent prompt sensitivity and productive false positives. Adaptive stagnation detection parked.
+- `research/MNEME_Phase_Four_Differential_Cognition_Principle_20261014.md` records the
+  Phase Four research criterion that history-shaped, bank-specific differential cognition
+  is the primary influence measure; factual retrieval and task performance remain
+  diagnostics, not substitutes.

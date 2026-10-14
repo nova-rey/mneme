@@ -1,0 +1,18 @@
+{
+  "id": "MI3-DIFFERENTIAL-COGNITION",
+  "title": "MI3 bank-specific differential cognition experiment",
+  "requirement_ids": ["MI3-R1-DESIGN-FREEZE", "MI3-R2-FROZEN-HELDOUT", "MI3-R3-REPORT-DOCTRINE"],
+  "priority": 1,
+  "dependencies": [],
+  "workstream": "phase4-mi3",
+  "domain": "local-gemma-memory-inception-research",
+  "scope": "On the existing research branch, audit MI1/MI2 evidence and host, freeze a calibration/held-out MI3 design before held-out calls, execute bank-specific matched cognition conditions on the exact local Gemma host with continuous durable evidence, analyze with blinded/directional scoring, publish compact receipts and doctrine update, and return a candidate commit for root validation.",
+  "edit_boundaries": ["/tmp/mneme-mi3 only", "docs/research and docs/receipts for MI3 artifacts", "isolated MI3 experiment tooling if required", "append-only bible.md update for every commit"],
+  "resource_requirements": [
+    {"name":"host_gemma_gpu","units":1,"exclusive":true},
+    {"name":"local_model_generation","units":1,"exclusive":true}
+  ],
+  "base_sha": "a873352224a9101930a56fa287176483cc1d9a91",
+  "validation_requirements": ["Frozen plan precedes all held-out outputs", "All calls durably journaled with prompt, reasoning, final answer, seed, condition, and bank fingerprint", "Bank identity predicts direction under blinded/directional evaluation with controls", "Reports reconcile to durable raw evidence", "Focused artifact and experiment validation"],
+  "completion_criterion": "Return a reviewable candidate commit with frozen design, compact report and JSON receipt, evidence manifest, doctrine update, raw external artifact hashes, and tests/validation; do not integrate into production MNEME or begin SAA integration."
+}

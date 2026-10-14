@@ -2058,3 +2058,7 @@ and dispositions remain unchanged.
 ## 2026-10-12 MI2 v3.4 queue closure
 
 - Closed `MI2-V35-WIDE-VISIBLE-GATE` after artifact/hash reconciliation, conservative scoring, full local validation, and proof that no latent/bank call occurred. The visible prerequisite failed and one abnormal finish exposed a runner stop-policy defect, now fixed and tested. Compact result is committed and pushed; canonical generation evidence remains outside Git. CI for the result commit passed (run 38212656729).
+
+## 2026-10-14 MI3 bank-specific differential cognition
+
+- Ran the frozen 48-coordinate MI3 held-out matrix on exact local Gemma Q2 with reasoning on and prompt caching disabled. Independent blind scoring found that latent resilience and simplicity banks did not shift reasoning in their bank-predicted directions relative to no-bank or irrelevant-bank controls; visible references did separate descriptively. The bounded result is NO for this side-memory configuration, so no success-only replacement/third-bank confirmation or SAA integration was run. Report, machine-readable score summary, and the Phase Four differential-cognition research principle are committed on the research branch; canonical requests, reasoning, answers, scores, and banks remain hash-linked outside Git.

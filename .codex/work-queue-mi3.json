@@ -1,0 +1,83 @@
+{
+  "campaign": "mneme-phase4-mi3-bank-specific-differential-cognition",
+  "created_at": "2026-10-14T14:25:49.628240Z",
+  "dependencies": {},
+  "hard_problem_repo": null,
+  "packages": [
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "a873352224a9101930a56fa287176483cc1d9a91",
+      "campaign": "mneme-phase4-mi3-bank-specific-differential-cognition",
+      "candidate": null,
+      "completion_criterion": "Return a reviewable candidate commit with frozen design, compact report and JSON receipt, evidence manifest, doctrine update, raw external artifact hashes, and tests/validation; do not integrate into production MNEME or begin SAA integration.",
+      "created_at": "2026-10-14T14:25:59.082433Z",
+      "dependencies": [],
+      "domain": "local-gemma-memory-inception-research",
+      "edit_boundaries": [
+        "/tmp/mneme-mi3 only",
+        "docs/research and docs/receipts for MI3 artifacts",
+        "isolated MI3 experiment tooling if required",
+        "append-only bible.md update for every commit"
+      ],
+      "evidence_refs": [],
+      "id": "MI3-DIFFERENTIAL-COGNITION",
+      "notes": "",
+      "owner": "/root/mi3_supervisor",
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "MI3-R1-DESIGN-FREEZE",
+        "MI3-R2-FROZEN-HELDOUT",
+        "MI3-R3-REPORT-DOCTRINE"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": true,
+          "name": "host_gemma_gpu",
+          "units": 1
+        },
+        {
+          "exclusive": true,
+          "name": "local_model_generation",
+          "units": 1
+        }
+      ],
+      "scope": "On the existing research branch, audit MI1/MI2 evidence and host, freeze a calibration/held-out MI3 design before held-out calls, execute bank-specific matched cognition conditions on the exact local Gemma host with continuous durable evidence, analyze with blinded/directional scoring, publish compact receipts and doctrine update, and return a candidate commit for root validation.",
+      "session_ids": [
+        "mi3-campaign-20261014"
+      ],
+      "status": "RUNNING",
+      "title": "MI3 bank-specific differential cognition experiment",
+      "updated_at": "2026-10-14T14:26:05.569883Z",
+      "validation": {
+        "required": [
+          "Frozen plan precedes all held-out outputs",
+          "All calls durably journaled with prompt, reasoning, final answer, seed, condition, and bank fingerprint",
+          "Bank identity predicts direction under blinded/directional evaluation with controls",
+          "Reports reconcile to durable raw evidence",
+          "Focused artifact and experiment validation"
+        ],
+        "results": {}
+      },
+      "waiting_on": [],
+      "workstream": "phase4-mi3"
+    }
+  ],
+  "project": "nova-rey/mneme",
+  "resources": {
+    "host_gemma_gpu": {
+      "capacity": 1,
+      "exclusive": true
+    },
+    "local_model_generation": {
+      "capacity": 1,
+      "exclusive": true
+    }
+  },
+  "schema_version": 1,
+  "updated_at": "2026-10-14T14:26:05.569935Z"
+}

@@ -1,0 +1,570 @@
+{
+  "schema_version": "mneme-mi3-differential-cognition-report.v1",
+  "package_id": "MI3-DIFFERENTIAL-COGNITION",
+  "base_commit": "a873352224a9101930a56fa287176483cc1d9a91",
+  "disposition": "NO",
+  "plain_english": "Changing the latent bank did not produce a reproducible corresponding change in held-out reasoning under this frozen test. Visible A/B text did produce distinguishable patterns, showing the host understood the concepts when explicitly presented.",
+  "scope": "Synthetic side-memory-only experiment; no MNEME developmental state, SAA, learner, or production integration.",
+  "host": {
+    "model": "google/gemma-4-E4B-it",
+    "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+    "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+    "llama_server_sha256": "0032af18feb8cfa683ed34757c47bb10e4fbcdcd309071e937e4f6b4e4fd741c",
+    "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU",
+    "reasoning": "ON",
+    "cache_prompt": false,
+    "seeds": [
+      615103,
+      615109
+    ]
+  },
+  "bank_design": {
+    "construction": "Three descriptor contextualizations (raw, internal principles, private reasoning note); descriptor-aligned slots; token-level K/V concatenated, not averaged. MI2-inspired correspondence; MI1/MI2 dispositions remain unchanged.",
+    "slots_each": 411,
+    "gain": 0.5,
+    "selected_query_sites": [
+      [
+        14,
+        4
+      ],
+      [
+        14,
+        5
+      ],
+      [
+        14,
+        6
+      ],
+      [
+        14,
+        7
+      ],
+      [
+        11,
+        0
+      ],
+      [
+        11,
+        1
+      ],
+      [
+        11,
+        2
+      ],
+      [
+        11,
+        3
+      ],
+      [
+        23,
+        0
+      ],
+      [
+        23,
+        1
+      ],
+      [
+        23,
+        2
+      ],
+      [
+        23,
+        3
+      ],
+      [
+        13,
+        4
+      ],
+      [
+        13,
+        5
+      ],
+      [
+        13,
+        6
+      ],
+      [
+        13,
+        7
+      ]
+    ],
+    "banks": {
+      "A_resilience": {
+        "compressed_file": "/home/nyx/mneme-artifacts/phase4-mi3/banks/calibration/A_resilience__bias-0p5.mi1.zst",
+        "compressed_sha256": "5a95d78f7ae74fa640a1a4b900d4cbcbcd4087024774b147c2ed1e83595ba6d7",
+        "file": "/home/nyx/mneme-artifacts/phase4-mi3/banks/calibration/A_resilience__bias-0p5.mi1",
+        "native_fingerprint": "dfc26b115fb1e6a3",
+        "sha256": "b624b0e689a90e56b6112e19517f61ff4bc5c54f36c0d2312f26b96ec51089e1",
+        "slots": 411
+      },
+      "B_simplicity": {
+        "compressed_file": "/home/nyx/mneme-artifacts/phase4-mi3/banks/calibration/B_simplicity__bias-0p5.mi1.zst",
+        "compressed_sha256": "6f26610b9b2bc88c2f9c7966d96d3382ceed3a5d51bb846f8f58dc57d1f6229b",
+        "file": "/home/nyx/mneme-artifacts/phase4-mi3/banks/calibration/B_simplicity__bias-0p5.mi1",
+        "native_fingerprint": "b2458c6d2f62a136",
+        "sha256": "8e1fe60330d7e2c6e6aa062a02aa18e766341869b76ebfcb30279449f77398f4",
+        "slots": 411
+      },
+      "irrelevant_visual_composition": {
+        "compressed_file": "/home/nyx/mneme-artifacts/phase4-mi3/banks/calibration/irrelevant_visual_composition__bias-0p5.mi1.zst",
+        "compressed_sha256": "84bc811bf70f50ea989a602b4b8c9b711f90e1a7d41062dd66d5c7263cf52ddb",
+        "file": "/home/nyx/mneme-artifacts/phase4-mi3/banks/calibration/irrelevant_visual_composition__bias-0p5.mi1",
+        "native_fingerprint": "575b00fdf75e0947",
+        "sha256": "d6ce1bcd06047f721820bc4d5c20307614fc3ae63a74a55d5860c587efa75e67",
+        "slots": 411
+      }
+    }
+  },
+  "design": {
+    "heldout_prompts": 4,
+    "seeds_per_prompt": 2,
+    "conditions": [
+      "no_bank",
+      "visible_A_resilience",
+      "visible_B_simplicity",
+      "latent_A_resilience",
+      "latent_B_simplicity",
+      "latent_irrelevant_visual_composition"
+    ],
+    "coordinates": 48,
+    "duplicate_preflight_calls": 12,
+    "preflight_identical_pairs": 6,
+    "preflight_pairs_passed": 6,
+    "blind_scores": 48,
+    "paired_comparisons": 120,
+    "blind_break_detected": false,
+    "score_lock_checks": {
+      "score_rows_match_frozen_blind_packet": true,
+      "all_48_unique_outputs_scored": true,
+      "all_48_rows_have_valid_0_to_4_integer_scores": true,
+      "all_required_quotes_are_exact_substrings": true,
+      "120_within_block_pairwise_comparisons_cover_all_pairs": true,
+      "no_blind_break_reported": true
+    },
+    "latent_no_bank_request_bytes_identical": true,
+    "bank_lifecycle_actions": {
+      "attach": 21,
+      "replace": 3,
+      "clear": 24,
+      "attach_replace_result": "expected enabled bank fingerprint",
+      "clear_result": "enabled=false with empty fingerprint"
+    }
+  },
+  "score_means_0_to_4": {
+    "no_bank": {
+      "A_resilience": 1.625,
+      "B_simplicity": 1.875,
+      "coherence": 3.375,
+      "n": 8
+    },
+    "visible_A_resilience": {
+      "A_resilience": 3,
+      "B_simplicity": 1.25,
+      "coherence": 3.125,
+      "n": 8
+    },
+    "visible_B_simplicity": {
+      "A_resilience": 1.5,
+      "B_simplicity": 2.375,
+      "coherence": 3,
+      "n": 8
+    },
+    "latent_A_resilience": {
+      "A_resilience": 1.5,
+      "B_simplicity": 1.75,
+      "coherence": 3.5,
+      "n": 8
+    },
+    "latent_B_simplicity": {
+      "A_resilience": 1.5,
+      "B_simplicity": 1.625,
+      "coherence": 3.375,
+      "n": 8
+    },
+    "latent_irrelevant_visual_composition": {
+      "A_resilience": 1.625,
+      "B_simplicity": 1.625,
+      "coherence": 3.375,
+      "n": 8
+    }
+  },
+  "score_means_by_prompt_0_to_4": {
+    "H2_food_cooperative": {
+      "latent_irrelevant_visual_composition": {
+        "A_resilience": 1.5,
+        "B_simplicity": 2,
+        "coherence": 3,
+        "n": 2
+      },
+      "no_bank": {
+        "A_resilience": 1,
+        "B_simplicity": 2.5,
+        "coherence": 3,
+        "n": 2
+      },
+      "latent_A_resilience": {
+        "A_resilience": 1,
+        "B_simplicity": 1.5,
+        "coherence": 3,
+        "n": 2
+      },
+      "latent_B_simplicity": {
+        "A_resilience": 1,
+        "B_simplicity": 1.5,
+        "coherence": 3,
+        "n": 2
+      },
+      "visible_B_simplicity": {
+        "A_resilience": 1,
+        "B_simplicity": 2.5,
+        "coherence": 3,
+        "n": 2
+      },
+      "visible_A_resilience": {
+        "A_resilience": 3.5,
+        "B_simplicity": 1,
+        "coherence": 3.5,
+        "n": 2
+      }
+    },
+    "H3_public_space_project": {
+      "visible_B_simplicity": {
+        "A_resilience": 1,
+        "B_simplicity": 3,
+        "coherence": 2.5,
+        "n": 2
+      },
+      "no_bank": {
+        "A_resilience": 1.5,
+        "B_simplicity": 1,
+        "coherence": 3.5,
+        "n": 2
+      },
+      "latent_B_simplicity": {
+        "A_resilience": 1.5,
+        "B_simplicity": 2,
+        "coherence": 4,
+        "n": 2
+      },
+      "latent_irrelevant_visual_composition": {
+        "A_resilience": 1.5,
+        "B_simplicity": 1.5,
+        "coherence": 3.5,
+        "n": 2
+      },
+      "visible_A_resilience": {
+        "A_resilience": 3.5,
+        "B_simplicity": 1,
+        "coherence": 2.5,
+        "n": 2
+      },
+      "latent_A_resilience": {
+        "A_resilience": 1.5,
+        "B_simplicity": 2,
+        "coherence": 3.5,
+        "n": 2
+      }
+    },
+    "H1_city_arts_festival": {
+      "no_bank": {
+        "A_resilience": 3,
+        "B_simplicity": 1,
+        "coherence": 3.5,
+        "n": 2
+      },
+      "latent_irrelevant_visual_composition": {
+        "A_resilience": 2.5,
+        "B_simplicity": 1,
+        "coherence": 4,
+        "n": 2
+      },
+      "visible_B_simplicity": {
+        "A_resilience": 2.5,
+        "B_simplicity": 1.5,
+        "coherence": 3,
+        "n": 2
+      },
+      "latent_A_resilience": {
+        "A_resilience": 2.5,
+        "B_simplicity": 1,
+        "coherence": 4,
+        "n": 2
+      },
+      "latent_B_simplicity": {
+        "A_resilience": 2.5,
+        "B_simplicity": 0.5,
+        "coherence": 4,
+        "n": 2
+      },
+      "visible_A_resilience": {
+        "A_resilience": 4,
+        "B_simplicity": 0.5,
+        "coherence": 3,
+        "n": 2
+      }
+    },
+    "H4_community_information_service": {
+      "no_bank": {
+        "A_resilience": 1,
+        "B_simplicity": 3,
+        "coherence": 3.5,
+        "n": 2
+      },
+      "latent_irrelevant_visual_composition": {
+        "A_resilience": 1,
+        "B_simplicity": 2,
+        "coherence": 3,
+        "n": 2
+      },
+      "visible_A_resilience": {
+        "A_resilience": 1,
+        "B_simplicity": 2.5,
+        "coherence": 3.5,
+        "n": 2
+      },
+      "visible_B_simplicity": {
+        "A_resilience": 1.5,
+        "B_simplicity": 2.5,
+        "coherence": 3.5,
+        "n": 2
+      },
+      "latent_A_resilience": {
+        "A_resilience": 1,
+        "B_simplicity": 2.5,
+        "coherence": 3.5,
+        "n": 2
+      },
+      "latent_B_simplicity": {
+        "A_resilience": 1,
+        "B_simplicity": 2.5,
+        "coherence": 2.5,
+        "n": 2
+      }
+    }
+  },
+  "paired_directional_counts": {
+    "A_more_shaped:latent_A_resilience_vs_no_bank": {
+      "first_more": 0,
+      "second_more": 1,
+      "tie": 7
+    },
+    "A_more_shaped:latent_A_resilience_vs_latent_irrelevant_visual_composition": {
+      "first_more": 1,
+      "second_more": 2,
+      "tie": 5
+    },
+    "A_more_shaped:latent_B_simplicity_vs_no_bank": {
+      "first_more": 1,
+      "second_more": 2,
+      "tie": 5
+    },
+    "A_more_shaped:latent_B_simplicity_vs_latent_irrelevant_visual_composition": {
+      "first_more": 1,
+      "second_more": 2,
+      "tie": 5
+    },
+    "A_more_shaped:latent_A_resilience_vs_latent_B_simplicity": {
+      "first_more": 2,
+      "second_more": 2,
+      "tie": 4
+    },
+    "A_more_shaped:visible_A_resilience_vs_no_bank": {
+      "first_more": 6,
+      "second_more": 0,
+      "tie": 2
+    },
+    "A_more_shaped:visible_B_simplicity_vs_no_bank": {
+      "first_more": 1,
+      "second_more": 2,
+      "tie": 5
+    },
+    "B_more_shaped:latent_A_resilience_vs_no_bank": {
+      "first_more": 2,
+      "second_more": 3,
+      "tie": 3
+    },
+    "B_more_shaped:latent_A_resilience_vs_latent_irrelevant_visual_composition": {
+      "first_more": 2,
+      "second_more": 1,
+      "tie": 5
+    },
+    "B_more_shaped:latent_B_simplicity_vs_no_bank": {
+      "first_more": 2,
+      "second_more": 4,
+      "tie": 2
+    },
+    "B_more_shaped:latent_B_simplicity_vs_latent_irrelevant_visual_composition": {
+      "first_more": 2,
+      "second_more": 2,
+      "tie": 4
+    },
+    "B_more_shaped:latent_A_resilience_vs_latent_B_simplicity": {
+      "first_more": 1,
+      "second_more": 0,
+      "tie": 7
+    },
+    "B_more_shaped:visible_A_resilience_vs_no_bank": {
+      "first_more": 0,
+      "second_more": 4,
+      "tie": 4
+    },
+    "B_more_shaped:visible_B_simplicity_vs_no_bank": {
+      "first_more": 3,
+      "second_more": 1,
+      "tie": 4
+    }
+  },
+  "representative_matched_example": {
+    "task": "Several local groups are preparing a public-space renovation. They have separate timelines and some work depends on the same utilities and permits. Meetings are becoming long, but a missed update could force crews to redo work. How should they coordinate?",
+    "prompt_id": "H3_public_space_project",
+    "seed": 615103,
+    "conditions": {
+      "visible_B_simplicity": {
+        "opaque_id": "heldout-blind-03",
+        "coordinate_id": "MI3-HOLDOUT-H3_public_space_project-615103-visible_B_simplicity",
+        "prompt_id": "H3_public_space_project",
+        "seed": 615103,
+        "request_sha256": "aba3531c2afd32b9ab2fc0261b45600fa750c18643488fb10f90d32a1bc277c9",
+        "scores": {
+          "A_resilience_0_to_4": 1,
+          "B_simplicity_consolidation_0_to_4": 3,
+          "coherence_task_fit_0_to_4": 2
+        },
+        "reasoning_excerpt": "Here's a thinking process to structure the response:\n\n1.  **Analyze the Request:**\n    *   **Goal:** Provide a practical, thoughtful design partner response to a complex coordination problem.\n    *   **Problem:** Multiple local groups (teams/departments) are working on a public-space renovation. They have conflicting timelines and shared dependencies (utilities/permits). Meetings are long, and missed updates lead to ",
+        "final_excerpt": "This situation requires a shift from a fragmented, \"local\" approach to a \"system-wide\" coordination strategy. The problem is not just the *work* itself, but the *hand-off* between groups.\n\nAs a design partner, I recommend a multi-pronged approach that addresses the \"handoff\" problem and the \"bottleneck\" problem.\n\n### 1. Analysis of the Problem\n\nThe core issue is \"Coordination\" and \"Rework.\" The current system is fail",
+        "final_sha256": "5c093094a6ad601fac1d72ca7d60af3a13830baca58af0d3d26d9551899f09e5",
+        "reasoning_sha256": "be4f72e127d7a82c42217fa2cff065d7f14e8c75fcf15d0b3ceee670207dcbea",
+        "excerpt_note": "Verbatim leading excerpt from preserved output; truncation is at character boundary."
+      },
+      "no_bank": {
+        "opaque_id": "heldout-blind-20",
+        "coordinate_id": "MI3-HOLDOUT-H3_public_space_project-615103-no_bank",
+        "prompt_id": "H3_public_space_project",
+        "seed": 615103,
+        "request_sha256": "d0c41a3f5abc3c4eaf4cd33874793d222113cfa66aa888e115ca91bfef25a096",
+        "scores": {
+          "A_resilience_0_to_4": 2,
+          "B_simplicity_consolidation_0_to_4": 1,
+          "coherence_task_fit_0_to_4": 3
+        },
+        "reasoning_excerpt": "Here's a thinking process that leads to the suggested response:\n\n1.  **Analyze the Request:**\n    *   **Context:** Several local groups are renovating a public space.\n    *   **Problem:** They have separate timelines, shared dependencies (utilities/permits), and meetings are becoming long/inefficient.\n    *   **Goal:** Find a practical, practical way to coordinate the work efficiently.\n    *   **Persona:** I need to ",
+        "final_excerpt": "This is a classic coordination problem: multiple independent groups trying to complete a shared, complex project (the renovation). When multiple groups are involved, the risk of \"re-doing work\" (rework) increases exponentially.\n\nAs a design partner, I recommend a multi-layered approach that addresses the \"process,\" the \"communication,\" and the \"risk.\"\n\nHere is a structured approach to coordinating these groups:\n\n***\n",
+        "final_sha256": "5f06faead8316be2b2c842320928993343afbf93214d9f87d1f74647ee19b697",
+        "reasoning_sha256": "3702face0fb5dd6cb4d749f0167f8cca0d10ce033fbe0683de64b0563a7cd7af",
+        "excerpt_note": "Verbatim leading excerpt from preserved output; truncation is at character boundary."
+      },
+      "latent_irrelevant_visual_composition": {
+        "opaque_id": "heldout-blind-33",
+        "coordinate_id": "MI3-HOLDOUT-H3_public_space_project-615103-latent_irrelevant_visual_composition",
+        "prompt_id": "H3_public_space_project",
+        "seed": 615103,
+        "request_sha256": "d0c41a3f5abc3c4eaf4cd33874793d222113cfa66aa888e115ca91bfef25a096",
+        "scores": {
+          "A_resilience_0_to_4": 1,
+          "B_simplicity_consolidation_0_to_4": 2,
+          "coherence_task_fit_0_to_4": 3
+        },
+        "reasoning_excerpt": "Here's a thinking process that leads to the suggested response:\n\n1.  **Analyze the Request:**\n    *   **Context:** Several local groups are renovating a public space.\n    *   **Problem:** They have separate timelines, shared dependencies (utilities/permits), and meetings are becoming long/inefficient.\n    *   **Goal:** How should they coordinate? (i.e., How to manage the coordination and dependencies to prevent rewor",
+        "final_excerpt": "This is a classic coordination problem: managing dependencies across multiple, potentially overlapping, work streams. The goal is to move from \"long, inefficient meetings\" to \"efficient, coordinated execution.\"\n\nTo address this, I will provide three distinct options, each with its own trade-offs, and then outline the immediate first steps.\n\n***\n\n### 1. The Strategic Options\n\nSince you are dealing with multiple groups",
+        "final_sha256": "f5add7e737e0246aa733edb02b8633d75c216c85714832afef835a1dfd147fbd",
+        "reasoning_sha256": "86690c688e79d4b4bea30a57081c7abc6caea209b7ba9dcff41073392b0cfa99",
+        "excerpt_note": "Verbatim leading excerpt from preserved output; truncation is at character boundary."
+      },
+      "latent_A_resilience": {
+        "opaque_id": "heldout-blind-36",
+        "coordinate_id": "MI3-HOLDOUT-H3_public_space_project-615103-latent_A_resilience",
+        "prompt_id": "H3_public_space_project",
+        "seed": 615103,
+        "request_sha256": "d0c41a3f5abc3c4eaf4cd33874793d222113cfa66aa888e115ca91bfef25a096",
+        "scores": {
+          "A_resilience_0_to_4": 2,
+          "B_simplicity_consolidation_0_to_4": 2,
+          "coherence_task_fit_0_to_4": 4
+        },
+        "reasoning_excerpt": "Here's a thinking process that leads to the suggested response:\n\n1.  **Analyze the Request:**\n    *   **Context:** Several local groups are renovating a public space.\n    *   **Problem:** They have separate timelines, shared dependencies (utilities/permits), and meetings are becoming long/inefficient.\n    *   **Goal:** How should they coordinate? (Need practical, actionable advice).\n\n2.  **Deconstruct the Problem:**\n",
+        "final_excerpt": "This is a classic coordination problem. When multiple groups are working on the same physical space, the risk of \"rework\" (having to redo work) is high. The core issue is not a lack of effort, but a lack of **synchronization** and a lack of a **Single Source of Truth (SOT)**.\n\nAs a design partner, I recommend a multi-pronged approach: **Process, Communication, and Structure.**\n\nHere is a breakdown of the options, tra",
+        "final_sha256": "43cede13d14657688d0860934bd554a1ab941a70093cd3f7e0fb68b92f16ba0b",
+        "reasoning_sha256": "0942d07875b62cdf79da69552bc9dfedcd1e26c1f1d69ebfac6fe627375ded43",
+        "excerpt_note": "Verbatim leading excerpt from preserved output; truncation is at character boundary."
+      },
+      "visible_A_resilience": {
+        "opaque_id": "heldout-blind-43",
+        "coordinate_id": "MI3-HOLDOUT-H3_public_space_project-615103-visible_A_resilience",
+        "prompt_id": "H3_public_space_project",
+        "seed": 615103,
+        "request_sha256": "42154ebb703162ea38f8ca8a72c9523b47a3242a352fec6b4c8ac0110ce82278",
+        "scores": {
+          "A_resilience_0_to_4": 4,
+          "B_simplicity_consolidation_0_to_4": 1,
+          "coherence_task_fit_0_to_4": 2
+        },
+        "reasoning_excerpt": "Here's a thinking process that leads to the suggested response:\n\n1.  **Analyze the Request:**\n    *   **Goal:** Provide a practical, thoughtful, and structured response to a complex coordination problem (renovating a public space with multiple groups/timelines/dependencies).\n    *   **Constraint:** The response must be practical, explain options/trade-offs, and suggest first steps.\n    *   **Context:** Several local ",
+        "final_excerpt": "This is a complex coordination problem requiring a structured, multi-layered approach. Since the core issue is *coordination* and *dependency management* across multiple groups, the solution must focus on **redundancy, isolation, and prioritization**.\n\nHere is a breakdown of the options, the trade-offs, and the first steps to take.\n\n***\n\n### 💡 The Thoughtful Design Partner's Analysis\n\nThe problem is not just \"how to ",
+        "final_sha256": "1b03ecdc7c66d875ca5574c81385428f496246e7e40ef333a9ead2697302541b",
+        "reasoning_sha256": "5788cb89b4b8ffd316dce15c2dd3da1795ad5334a563181bf076fa7ce1f3087f",
+        "excerpt_note": "Verbatim leading excerpt from preserved output; truncation is at character boundary."
+      },
+      "latent_B_simplicity": {
+        "opaque_id": "heldout-blind-46",
+        "coordinate_id": "MI3-HOLDOUT-H3_public_space_project-615103-latent_B_simplicity",
+        "prompt_id": "H3_public_space_project",
+        "seed": 615103,
+        "request_sha256": "d0c41a3f5abc3c4eaf4cd33874793d222113cfa66aa888e115ca91bfef25a096",
+        "scores": {
+          "A_resilience_0_to_4": 1,
+          "B_simplicity_consolidation_0_to_4": 2,
+          "coherence_task_fit_0_to_4": 4
+        },
+        "reasoning_excerpt": "Here's a thinking process that leads to the suggested response:\n\n1.  **Analyze the Request:**\n    *   **Context:** Several local groups are renovating a public space.\n    *   **Problem:** They have separate timelines and shared dependencies (utilities/permits).\n    *   **Pain Point:** Long meetings, risk of re-work if updates are missed.\n    *   **Goal:** How should they coordinate?\n    *   **Constraint:** Avoid assu",
+        "final_excerpt": "This is a classic coordination problem in complex, multi-stakeholder projects. Since the core issue is the *interdependence* of timelines and shared resources (permits/utilities), the solution must focus on **synchronization, not just scheduling.**\n\nAs a design partner, I will provide three distinct approaches, each with its own trade-offs, followed by the immediate first steps.\n\n***\n\n### 💡 Analysis of the Problem\n\nT",
+        "final_sha256": "b33d429d48a3be1b58ec42b8dca220deb822a099ac37021699371ade0fe7734a",
+        "reasoning_sha256": "edcc38bfd718f6d4711b47c0929a9e6731deaa67b41543774b732724cf0cad0d",
+        "excerpt_note": "Verbatim leading excerpt from preserved output; truncation is at character boundary."
+      }
+    }
+  },
+  "interpretation": {
+    "bank_specific_latent_differential_cognition": "not demonstrated",
+    "visible_concept_understanding": "demonstrated descriptively; visible A mean A score 3.0 versus no-bank 1.625; visible B mean B score 2.375 versus no-bank 1.875",
+    "coherence": "similar across latent/no-bank/irrelevant means (3.375-3.5); one visible condition modestly lower (3.0 for A, 3.0 for B) but small sample and no quality inference",
+    "memory_inception_mi3_recommendation": "Do not advance this implementation to SAA integration. MI3 frozen held-out gate failed; no post-result confirmation/tuning was performed."
+  },
+  "source_artifacts": {
+    "external_directory": "/home/nyx/mneme-artifacts/phase4-mi3/holdout",
+    "sha256": {
+      "final-heldout-freeze.json": "840b0ef9a8e486c35fbcf90e6eb71f24324f9460eeab990ab5b2e47740846c20",
+      "blind-heldout-packet.json": "5817db47039c14a1b7d440296337eeddde383ff7cd70bb211d3a2f17ac297548",
+      "blind-heldout-key.json": "361d295c1f893e696e3595ca3668f7b5c75528da807469d98773d68dca259635",
+      "blind-scores-independent.json": "68d2ace10483e9b979d1fabc680f87f916006d92f3bcc48346ee41c5abfbca9e",
+      "blind-scores-independent-method.json": "14ba5ddc1667fb05e370501030030bb7eff40ed7539f35c7d074296b37302354",
+      "blind-score-lock.json": "7aa0121b6b62cf34589665ba4f3fcc6f68e9caf5d1e609553104675395cad040",
+      "determinism-preflight-verification.json": "4ef94692cce0ccde421200be29e45f52895e6334592dcec0ae96e068f6dd2280",
+      "heldout_journal_index.json": "b32150c736a893d14027d382192d19be57afebcb3d7f1880d50e942b7b80d083"
+    },
+    "raw_heldout_journal_sha256": "b32150c736a893d14027d382192d19be57afebcb3d7f1880d50e942b7b80d083",
+    "source_note": "Full requests, reasoning, final outputs, mapping, per-output scores, and the blind scoring instructions remain in the external artifact directory; this Git receipt is derived and intentionally compact."
+  },
+  "engineering_validation": {
+    "full_pytest": {
+      "result": "PASS",
+      "tests_passed": 941
+    },
+    "ruff_all": {
+      "result": "PASS"
+    },
+    "strict_mypy_project_sources": {
+      "result": "PASS",
+      "source_files": 72,
+      "command": "mypy src/mneme"
+    },
+    "mi3_tool_compileall": {
+      "result": "PASS"
+    },
+    "report_and_protocol_json_parse": {
+      "result": "PASS"
+    },
+    "git_diff_check": {
+      "result": "PASS"
+    }
+  }
+}

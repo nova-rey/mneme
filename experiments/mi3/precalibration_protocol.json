@@ -1,0 +1,280 @@
+{
+  "schema_version": 1,
+  "protocol_id": "MNEME-MI3-BANK-SPECIFIC-DIFFERENTIAL-COGNITION",
+  "status": "FROZEN_PRECALIBRATION_NO_HELDOUT_OUTPUTS",
+  "created_utc": "2026-10-14",
+  "base_commit": "a873352224a9101930a56fa287176483cc1d9a91",
+  "branch": "research/phase4-mi1-memory-inception",
+  "scope": "Synthetic side-memory bank-specific differential cognition on exact local Gemma 4 E4B Q2/llama.cpp. No MNEME instance, CompactStore, SAA, learner, or developmental state is loaded.",
+  "historical_dispositions_immutable": {
+    "MI1": "Latent arbitrary factual/rule retrieval was not demonstrated.",
+    "MI2": "The selected visible quantum guidance did not pass its frozen performance gate; latent MI2 was not run."
+  },
+  "host": {
+    "hostname": "brokeass-msi",
+    "user": "rey",
+    "model": "google/gemma-4-E4B-it",
+    "gguf_path": "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+    "gguf_sha256": "79dde517866cfbb5c00230b530de17910fc7fc78f8827554d0e14281ce5faf03",
+    "llama_cpp_source": "/home/rey/src/llama-mi1",
+    "llama_cpp_commit": "4b1a27fa0eb875bbca4f6cfe936e3d65adc685c0",
+    "llama_server_path": "/home/rey/src/llama-mi1/build-mi1/bin/llama-server",
+    "llama_server_sha256": "0032af18feb8cfa683ed34757c47bb10e4fbcdcd309071e937e4f6b4e4fd741c",
+    "mi1_encoder_path": "/home/rey/src/llama-mi1/build-mi1/bin/mi1-native-encode",
+    "mi1_query_capture_path": "/home/rey/src/llama-mi1/build-mi1/bin/mi1-native-query-capture",
+    "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU",
+    "vram_mib": 6144,
+    "reasoning": "ON",
+    "reasoning_format": "deepseek",
+    "prompt_cache": false
+  },
+  "generation": {
+    "system": "You are a thoughtful design partner. Reason carefully in private before answering. Give the user a practical response that explains a few options, tradeoffs, and first steps. Do not assume one organizational structure is always best.",
+    "sampler": {
+      "temperature": 0.35,
+      "top_k": 40,
+      "top_p": 0.9,
+      "min_p": 0.05,
+      "max_tokens": 8192,
+      "context_size": 8192,
+      "gpu_layers": 99,
+      "batch_size": 2048,
+      "ubatch_size": 512,
+      "threads": 4,
+      "threads_batch": 4,
+      "parallel": 1,
+      "cache_prompt": false,
+      "chat_template_kwargs": {
+        "enable_thinking": true
+      }
+    },
+    "generation_seeds": [
+      615103,
+      615109
+    ],
+    "server_command": [
+      "/home/rey/src/llama-mi1/build-mi1/bin/llama-server",
+      "--model",
+      "/home/rey/models/gemma4/gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "18473",
+      "--ctx-size",
+      "8192",
+      "--gpu-layers",
+      "99",
+      "--parallel",
+      "1",
+      "--threads",
+      "4",
+      "--threads-batch",
+      "4",
+      "--batch-size",
+      "2048",
+      "--ubatch-size",
+      "512",
+      "--reasoning-format",
+      "deepseek",
+      "--no-webui"
+    ]
+  },
+  "neighborhoods": {
+    "A_resilience": {
+      "core": "Resilience and graceful degradation",
+      "descriptor_text": "Across systems, important functions can be exposed to different kinds of disruption. When several independent paths can sustain a critical function, loss of one path need not halt the whole activity. Keeping problems contained within their own part can prevent a local fault from spreading. A less capable mode that preserves the essential purpose may be more reliable than a design optimized only for ideal conditions. Some repeated capacity or work is worthwhile when it prevents a fragile dependency; its value depends on failure cost and on whether the paths are actually independent. A nominal alternative that shares the same vulnerable cause is not true protection. The useful relationships concern what still works after disruption, what can be isolated, and where partial operation remains acceptable.",
+      "interpretive_dimensions": [
+        "independent capability",
+        "containment",
+        "alternative paths",
+        "continued essential operation",
+        "partial operation",
+        "cost of shared vulnerability"
+      ]
+    },
+    "B_simplicity": {
+      "core": "Simplicity and consolidation",
+      "descriptor_text": "Across systems, separate activities can gradually acquire overlapping purposes, confusing responsibility and adding coordination work. Clear ownership makes it easier to know who decides and who follows through. Combining closely related work can reduce handoffs and simplify maintenance when the tasks share real dependencies. Fewer components are easier to understand when each has a distinct, necessary role. A common coordinating structure can resolve inconsistent local decisions, but concentrated responsibility can become an obstacle if decisions no longer fit local needs. The useful relationships concern which boundaries serve a purpose, where work is truly repeated, and what complexity can be removed without losing an important capability. Consolidation is less useful when tasks require different expertise or a shared decision point becomes a bottleneck.",
+      "interpretive_dimensions": [
+        "clear ownership",
+        "reduced overlap",
+        "fewer handoffs",
+        "consolidation",
+        "common coordination",
+        "complexity removal"
+      ]
+    },
+    "irrelevant_visual_composition": {
+      "core": "Visual composition in painting",
+      "descriptor_text": "In visual composition, placement and surrounding space affect what attracts attention. A focal element needs enough contrast to remain visible, while repeated shapes can create rhythm without exact symmetry. Empty space can separate competing forms; too much separation can make a composition feel fragmented. Color relationships depend on brightness, warmth, and neighboring hues rather than on a single color in isolation. A painter often tests arrangements at different scales before choosing one. The medium also matters: pigments spread, layer, and dry differently, so the final appearance can diverge from the first sketch. A successful composition depends on how the parts are perceived together, not on any one element alone. Light may demand a rearrangement, not one color change.",
+      "interpretive_dimensions": [
+        "contrast",
+        "focal attention",
+        "negative space",
+        "rhythm",
+        "color relations",
+        "scale",
+        "material effects"
+      ]
+    }
+  },
+  "bank_construction": {
+    "source_basis": "MI2 paper correspondence note: contextualize a descriptor in raw/internal-principles/private-reasoning-note wrappers, retain descriptor-aligned token slots, concatenate token-level K/V without averaging.",
+    "templates": [
+      {
+        "id": "raw",
+        "text": "{BANK_CARD}"
+      },
+      {
+        "id": "internal_principles",
+        "text": "Internal principles for considering a system:\n\n{BANK_CARD}"
+      },
+      {
+        "id": "private_reasoning_note",
+        "text": "A private note available during reasoning:\n\n{BANK_CARD}"
+      }
+    ],
+    "retention": "Capture all Gemma-4 Q2 native K/V source layers; keep only descriptor content token slots aligned inside each wrapper; exclude BOS/wrapper slots; concatenate the three variants in listed order; do not average or add task answers.",
+    "equalization": "Before bank build, actual pinned Gemma tokenization must show identical raw descriptor content-token counts for A, B, and irrelevant bank. If they differ, adjust wording before any behavioral calibration generation and publish a changed pre-calibration protocol hash; do not pad with repeated filler.",
+    "operator": "Isolated Gemma MI1 llama.cpp side-bank path; token-level native K/V, zero relative RoPE phase, Eq.2 augmented attention as implemented by pinned MI1 patch. This is a project-specific Gemma port, not author-code-verified paper behavior.",
+    "runtime_shape": "Same source layers, KV dimensions, slot count, selected query sites, and bank logit bias for A, B, and irrelevant banks. Latent/no-bank/irrelevant ordinary messages remain byte-identical.",
+    "bank_slot_count": "3 * matched descriptor content-token count; exact integer recorded in post-encode build receipt."
+  },
+  "calibration": {
+    "purpose": "Choose one global query-site set and one global bank_logit_bias before held-out inference. Calibration data cannot be included in held-out scoring.",
+    "prompts": [
+      {
+        "id": "D1_after_school_program",
+        "user": "A volunteer-run after-school program has added two sites. Families now receive messages from different coordinators, and weekly planning pauses when the person who knows the schedule is away. Some volunteers want one office to make decisions; others want each site to decide for itself. How would you organize the work so families get clear communication and the program keeps running when plans change? Avoid adding process for its own sake."
+      },
+      {
+        "id": "D2_community_repair_group",
+        "user": "A small community repair group has grown from six to twenty-four volunteers. Requests arrive through email, phone, and informal chats, and several people may start the same request while other jobs wait. When the experienced intake volunteer takes a week off, nobody is sure what was promised. How could the group adapt its way of working?"
+      }
+    ],
+    "seed": 615103,
+    "conditions": [
+      "no_bank",
+      "visible_A_resilience",
+      "visible_B_simplicity",
+      "latent_A_bias_0.5",
+      "latent_A_bias_1.0",
+      "latent_B_bias_0.5",
+      "latent_B_bias_1.0",
+      "latent_irrelevant_bias_0.5",
+      "latent_irrelevant_bias_1.0"
+    ],
+    "call_count": 18,
+    "site_selection": "Capture all query heads/layers on the two calibration prompts with each of the three equal-shape banks. Form balanced pairwise key-alignment margins for A-vs-B/irrelevant, B-vs-A/irrelevant, irrelevant-vs-A/B; average across prompt and bank comparisons. Use the paper-inspired MI2 rule: per-layer top-1 KV group, then top-4 query layers, and expand each selected KV group to its four query heads. Average bank attention mass is only a tie-break. This one shared set is applied unchanged to every bank identity.",
+    "global_bias_candidates": [
+      0.5,
+      1.0
+    ],
+    "selection_rule": "Before viewing any held-out output, choose the bias with larger mean blinded directional-separation score across D1/D2; score = (A-score under latent A minus A-score under latent B) + (B-score under latent B minus B-score under latent A). If tied, choose 0.5. If both produce non-positive separation, still freeze 0.5 and let held-out determine whether bank identity predicts direction; do not retune.",
+    "visible_conditions_are_non_gating": true,
+    "visible_prompt_wrapper": {
+      "prefix": "Here are conceptual principles you may use if they fit the situation:\n\n",
+      "suffix": "\n\nApply them selectively to the current problem; you may also decide they are not useful.\n\nCurrent problem:\n",
+      "construction": "prefix + exact descriptor_text + suffix + exact frozen calibration user text",
+      "same_for_A_and_B": true
+    }
+  },
+  "heldout": {
+    "prompts_frozen_before_calibration_generation": true,
+    "domains": [
+      {
+        "id": "H1_city_arts_festival",
+        "user": "A city’s summer arts festival has grown from a few venues to activities spread across several blocks. Weather changes the crowd size, volunteers rotate through shifts, and organizers hear about problems through different channels. The event should still feel coherent but not require one person to approve every small adjustment. What would you change?"
+      },
+      {
+        "id": "H2_food_cooperative",
+        "user": "A neighborhood food cooperative now serves three pickup locations. Deliveries arrive at different times, demand varies by week, and volunteers at each location sometimes make promises without knowing what the other sites have arranged. How should they organize the next year?"
+      },
+      {
+        "id": "H3_public_space_project",
+        "user": "Several local groups are preparing a public-space renovation. They have separate timelines and some work depends on the same utilities and permits. Meetings are becoming long, but a missed update could force crews to redo work. How should they coordinate?"
+      },
+      {
+        "id": "H4_community_information_service",
+        "user": "A small team maintains a community information service. The service is usually reliable but parts of it are hard to understand, and changes by one person sometimes surprise the people responsible for support. The team has limited time to improve it. Where should they begin?"
+      }
+    ],
+    "conditions": [
+      "no_bank",
+      "visible_A_resilience",
+      "visible_B_simplicity",
+      "latent_A_resilience",
+      "latent_B_simplicity",
+      "latent_irrelevant_visual_composition"
+    ],
+    "seeds": [
+      615103,
+      615109
+    ],
+    "coordinates": 48,
+    "condition_randomization": "Within each heldout prompt × seed block, use deterministic Fisher-Yates shuffle with order_seed=2026101407+100*prompt_index+seed_index. Persist exact order.",
+    "request_construction": {
+      "visible_A_and_visible_B": "Reuse calibration.visible_prompt_wrapper prefix and suffix verbatim, substitute the corresponding held-out descriptor, and substitute the exact frozen held-out user prompt.",
+      "no_bank_latent_A_latent_B_irrelevant": "Use the exact frozen held-out user bytes in the same system message; latent banks are provided only through the bank endpoint."
+    }
+  },
+  "determinism_preflight": {
+    "prompt": "D1_after_school_program",
+    "seed": 615103,
+    "conditions": [
+      "no_bank",
+      "visible_A_resilience",
+      "visible_B_simplicity",
+      "latent_A_resilience",
+      "latent_B_simplicity",
+      "latent_irrelevant_visual_composition"
+    ],
+    "repeat_each_condition": true,
+    "call_count": 12,
+    "pass": "For each duplicate, same request bytes, bank fingerprint/configuration, finish reason, and complete reasoning/final response bytes. Any mismatch stops held-out dispatch."
+  },
+  "scoring": {
+    "blindness": "Hide condition and bank labels. Assign each output a random opaque ID from a recorded shuffle seed; give scorer the exact user prompt and complete reasoning/final but not the bank mapping. Do not include bank source text.",
+    "blind_semantic_rubric": {
+      "A_resilience_0_to_4": [
+        "0 absent",
+        "1 weak/implicit",
+        "2 one recognizable relation",
+        "3 multiple linked resilience relations shape the approach",
+        "4 resilience/graceful-degradation structure organizes the approach"
+      ],
+      "B_simplicity_0_to_4": [
+        "0 absent",
+        "1 weak/implicit",
+        "2 one recognizable relation",
+        "3 multiple linked simplification/consolidation relations shape the approach",
+        "4 simplicity/consolidation structure organizes the approach"
+      ],
+      "coherence_task_fit_0_to_4": [
+        "0 incoherent/off-task",
+        "1 major damage",
+        "2 partly useful but material weakness",
+        "3 coherent and responsive",
+        "4 coherent, appropriately qualified, and practical"
+      ],
+      "evidence_quote_required": true
+    },
+    "paired_directional_comparison": "Within each problem × seed block, compare latent A/B/no-bank/irrelevant outputs in randomized order. Separately choose which is more A-shaped, which is more B-shaped (left/right/tie) and note evidence; scorer remains blind to condition identity.",
+    "mechanical_features": "Report word counts, reasoning/final bytes, finish reasons, bank-slot/site/runtime parity, and exact/semantic phrase occurrences as descriptive only; never define success by these.",
+    "scorer": "A separate condition-blinded human evaluator; Root Foreman is requested as evaluator unless Root assigns another blinded reviewer. Preserve the exact rubric and the returned per-output judgments."
+  },
+  "success_analysis": {
+    "primary": "Compare A and B semantic scores on full reasoning+final, and separately final-only, across matched prompts/seeds. Success requires latent A direction > no-bank and irrelevant, latent B direction > no-bank and irrelevant, and latent A/B reliable separation across multiple prompts/seeds; assess practical coherence and whether any shared generic bank effect explains differences.",
+    "visible_reference": "Visible conditions are descriptive reference signatures only; no performance or visible-separation gate can prevent latent execution.",
+    "no_winner": true,
+    "no_task_accuracy_claim": true
+  },
+  "call_budget": {
+    "calibration_generation": 18,
+    "determinism_preflight": 12,
+    "heldout_matrix": 48,
+    "total_planned_generation_calls": 78,
+    "conditional_replacement_confirmation": "If primary heldout results support bank-specific cognition: one frozen heldout coordinate (H1 seed 615103), additional sequence A attach -> B replace -> clear -> B restore if applicable, preserving every operation/output. A new third meaningful neighborhood will be constructed with the frozen recipe without selector/gain changes and tested on one heldout context before final success disposition.",
+    "disk_safety": "External raw journal under /home/nyx/mneme-artifacts/phase4-mi3; stop if MSI free space falls below 5 GiB or local artifact store below 10 GiB. No raw journals or tensor dumps in Git."
+  }
+}
