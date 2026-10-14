@@ -2090,3 +2090,8 @@ and dispositions remain unchanged.
 - Two completed OFF/no-bank duplicates from the initial run are byte-identical (answer SHA-256 `a2bb1c71404a3f270619bb54817dd071f7b60751b814d29e73dd9dcbd9c86017`; both `finish_reason=stop`, `cache_n=0`, `prompt_n=140`). A visible-A duplicate was interrupted before terminal SSE and remains preserved as `REQUEST_DURABLE`; it is not treated as a completed output.
 - The durable preflight runner now resumes completed logical coordinates from disk and assigns a fresh attempt ID to an interrupted coordinate. Root authorized one recovery allowance, so the journal records 25 physical attempts while still requiring 24 successful frozen duplicate coordinates; it does not change prompts, conditions, seeds, or samplers.
 - Bank variant files are held on the MSI while request journals are local; the preflight resolver now accepts verified local SHA-256 values separately from the remote absolute bank paths, so it can validate evidence locally while asking the MSI server to load only the transferred artifact.
+
+## 2026-10-14 MI4 frozen calibration executor
+
+- Added a model-free-validated executor for exactly the frozen D1/D2 × nine-condition MI4 calibration (18 reasoning-ON calls, seed 615103). It writes each streamed request/result to the append-only journal and emits condition-blinded outputs plus a separate mapping for Root's calibration scoring.
+- Calibration remains distinct from the 96-coordinate held-out matrix; no held-out output is used to select bank bias. The frozen directional-separation rule and 0.5 tie/nonpositive fallback remain unchanged. No new calibration inference had run when this entry was committed.
