@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "status": "FROZEN",
+  "selected_bias": 0.5,
+  "protocol_sha256": "fb80cc62c51ddfb3c1a8526f42176d7fe63ca464b8eaeed22013e96434a459ee",
+  "calibration_plan_sha256": "742008803c14a7faa350acf0ce8c0cf43aaa1ca412644eb5cc8076a3f7a43f69",
+  "calibration_blind_seal_sha256": "f16b6822db5cd28062ee2c559837c1de0dfc8fb9d99898ea8e258c59eb224568",
+  "blind_scorer_packet": {
+    "path": "/home/nyx/mneme-artifacts/phase4-mi4/calibration/blind-scorer-packet.json",
+    "sha256": "30eabed78f2503cebbdaf4b9cc9ee553db6b0c1d62d82d8aeadb61180a60b261",
+    "source_outputs_sha256": "49d4ff45edbc6e644ffe55a1009270371a45546f353e7e69082eaaf69b5ec060",
+    "rubric_sha256": "f2352fa0feeb077dd1986b6a03d3a8921d9e74bea2b441532fd484ea3303e236",
+    "mapping_accessed": false
+  },
+  "selection_rule": "For each bias, average across D1/D2 the sum of (A-score under latent A minus A-score under latent B) and (B-score under latent B minus B-score under latent A). Choose the higher mean; tie selects 0.5. If both means are non-positive, select 0.5 regardless. No retuning is permitted.",
+  "bias_results": {
+    "0.5": {
+      "D1": {"A_direction": 0, "B_direction": 0, "combined": 0},
+      "D2": {"A_direction": 0, "B_direction": 0, "combined": 0},
+      "mean_directional_separation": 0.0
+    },
+    "1.0": {
+      "D1": {"A_direction": 0, "B_direction": 0, "combined": 0},
+      "D2": {"A_direction": 0, "B_direction": 0, "combined": 0},
+      "mean_directional_separation": 0.0
+    }
+  },
+  "decision": "Both predeclared biases tied at zero and were non-positive; the frozen fallback selects 0.5. Calibration shows no bank-specific directional separation at either tested bias. Proceed to the already-frozen held-out matrix without changing the bias.",
+  "scores_by_blind_id": {
+    "blind_01": {"resilience_A": 2, "simplicity_B": 1, "coherence_task_fit": 3},
+    "blind_06": {"resilience_A": 4, "simplicity_B": 1, "coherence_task_fit": 3},
+    "blind_02": {"resilience_A": 3, "simplicity_B": 3, "coherence_task_fit": 3},
+    "blind_04": {"resilience_A": 2, "simplicity_B": 1, "coherence_task_fit": 3},
+    "blind_16": {"resilience_A": 2, "simplicity_B": 1, "coherence_task_fit": 3},
+    "blind_17": {"resilience_A": 2, "simplicity_B": 1, "coherence_task_fit": 3},
+    "blind_07": {"resilience_A": 2, "simplicity_B": 1, "coherence_task_fit": 3},
+    "blind_15": {"resilience_A": 2, "simplicity_B": 2, "coherence_task_fit": 3},
+    "blind_03": {"resilience_A": 2, "simplicity_B": 2, "coherence_task_fit": 3},
+    "blind_09": {"resilience_A": 2, "simplicity_B": 2, "coherence_task_fit": 3},
+    "blind_05": {"resilience_A": 2, "simplicity_B": 2, "coherence_task_fit": 3},
+    "blind_14": {"resilience_A": 2, "simplicity_B": 1, "coherence_task_fit": 3},
+    "blind_12": {"resilience_A": 2, "simplicity_B": 1, "coherence_task_fit": 3},
+    "blind_13": {"resilience_A": 2, "simplicity_B": 2, "coherence_task_fit": 3},
+    "blind_10": {"resilience_A": 4, "simplicity_B": 1, "coherence_task_fit": 3},
+    "blind_08": {"resilience_A": 2, "simplicity_B": 3, "coherence_task_fit": 3},
+    "blind_11": {"resilience_A": 2, "simplicity_B": 2, "coherence_task_fit": 3},
+    "blind_18": {"resilience_A": 2, "simplicity_B": 2, "coherence_task_fit": 3}
+  }
+}

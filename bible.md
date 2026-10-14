@@ -2097,3 +2097,8 @@ and dispositions remain unchanged.
 - Calibration remains distinct from the 96-coordinate held-out matrix; no held-out output is used to select bank bias. The frozen directional-separation rule and 0.5 tie/nonpositive fallback remain unchanged. No new calibration inference had run when this entry was committed.
 - The MI4 call budget records only MI4 reservations and protocol identity; it does not inherit the legacy MI1 budget's prior-calibration evidence pointer.
 - Prepared the gated 96-coordinate held-out executor with deterministic protocol ordering, cache-disabled requests, a blind response set, and immediate stop on abnormal completion. It refuses to start without a calibration-bias freeze bound to the sealed blind-score artifact; no held-out generation has run.
+
+## 2026-10-14 MI4 calibration bias freeze
+
+- The condition-blinded calibration scorer returned all 18 scores without consulting the condition map. After the score packet was sealed, mapping scores back to conditions yielded zero A/B directional separation at both predeclared bank biases (0.5 and 1.0); the frozen tie/nonpositive fallback therefore selects the lower global bias, 0.5.
+- The calibration result is a selector decision only, not a positive MI result. The 96-coordinate held-out test may proceed unchanged at the frozen 0.5 bias; no held-out generation preceded this receipt.
