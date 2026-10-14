@@ -2112,3 +2112,7 @@ and dispositions remain unchanged.
 ## 2026-10-14 MI4 report correction
 
 - Corrected the Qwen3-4B GGUF SHA-256 to the frozen source fingerprint. Clarified that latent B's simplicity score is modestly above irrelevant, but latent A is also higher; this is a non-specific shift, not bank-specific separation. The pooled directional result is unchanged.
+
+## 2026-10-14 MI4 root validation closure
+
+- Root independently reconciled the 96 blind scores and condition aggregates, corrected report hashes/qualification, reran pytest (960), Ruff, strict mypy (72 files), verified GitHub CI and remote branch equality, and recorded every declared acceptance check. MI4 is complete with a negative local family-control result and a recommendation to park the reconstructed transport path; no production or developmental state changed.

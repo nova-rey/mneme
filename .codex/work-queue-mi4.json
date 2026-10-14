@@ -11,7 +11,13 @@
       },
       "base_sha": "19039c7ef797547d90f8388f27fa50331fb1f81c",
       "campaign": "mneme-phase4-mi4-qwen-family-control-ab",
-      "candidate": null,
+      "candidate": {
+        "artifact": null,
+        "base_sha": "19039c7ef797547d90f8388f27fa50331fb1f81c",
+        "returned_at": "2026-10-14T22:39:14.862820Z",
+        "returned_by": "/root/mi4_supervisor",
+        "sha": "3b44c47500743cd00acbf9c1cdfa50cb341f1e7e"
+      },
       "completion_criterion": "Publish an evidence-backed YES/PARTIALLY/NO disposition on whether a locally runnable Qwen family-control produces bank-specific semantic influence where MI3 Gemma did not, with exact model/runtime caveats and a recommendation to continue or park Phase Four transport research. No production MNEME integration.",
       "created_at": "2026-10-14T20:15:52.702298Z",
       "dependencies": [],
@@ -24,10 +30,12 @@
         "isolated llama.cpp research worktree /home/rey/src/llama-mi4",
         "append-only bible.md on every commit"
       ],
-      "evidence_refs": [],
+      "evidence_refs": [
+        "Root validation complete: source/runtime report checked, hashes and condition aggregates reconciled, pytest/Ruff/strict mypy passed, GitHub CI 38649073397 passed at 3b44c47500743cd00acbf9c1cdfa50cb341f1e7e; branch pushed and clean."
+      ],
       "id": "MI4-QWEN-FAMILY-CONTROL",
       "notes": "",
-      "owner": "/root/mi4_supervisor",
+      "owner": null,
       "priority": 1,
       "project": "nova-rey/mneme",
       "required": true,
@@ -51,12 +59,10 @@
         }
       ],
       "scope": "Verify the authoritative paper's Qwen host/runtime; qualify the closest feasible local Qwen checkpoint and MI1/MI3 side-bank port on the MSI; freeze an MI3-matched bank-specific differential-cognition matrix; run bounded matched conditions and blind semantic scoring for reasoning modes that fit measured local cost; publish compact report, receipt, experiment sources/manifests, and append-only research doctrine update. No MNEME developmental/production state or SAA integration.",
-      "session_ids": [
-        "mi4-20261014-main"
-      ],
-      "status": "RUNNING",
+      "session_ids": [],
+      "status": "DONE",
       "title": "MI4 local Qwen family-control A/B",
-      "updated_at": "2026-10-14T20:15:57.038764Z",
+      "updated_at": "2026-10-14T22:40:37.444674Z",
       "validation": {
         "required": [
           "The source/runtime comparison distinguishes paper facts from omissions and local deviations",
@@ -66,7 +72,38 @@
           "Report states bounded MI4 disposition and compares it with MI3 without claiming Qwen paper replication",
           "Focused tests, Ruff, strict mypy, CI, pushed branch and clean worktree"
         ],
-        "results": {}
+        "results": {
+          "Every matrix coordinate has durable request, reasoning, answer, bank identity, seed, thinking mode and runtime metadata": {
+            "receipt": "external heldout artifacts: blind-heldout-outputs.json SHA 6cdbe27d...; blind-map.json SHA 85385362...; heldout receipt",
+            "recorded_at": "2026-10-14T22:40:32.674062Z",
+            "status": "PASS"
+          },
+          "Focused tests, Ruff, strict mypy, CI, pushed branch and clean worktree": {
+            "receipt": "pytest 960; Ruff; mypy src/mneme (72 files); CI 38649073397 success at 3b44c47; origin branch matches; clean worktree",
+            "recorded_at": "2026-10-14T22:40:32.948808Z",
+            "status": "PASS"
+          },
+          "Heldout scoring is condition-blind and reconciles to all generated outputs": {
+            "receipt": "external blind-scorer-packet.json SHA 4a625d60...; 96 unique IDs reconciled to map after scoring",
+            "recorded_at": "2026-10-14T22:40:32.766513Z",
+            "status": "PASS"
+          },
+          "Report states bounded MI4 disposition and compares it with MI3 without claiming Qwen paper replication": {
+            "receipt": "docs/receipts/MNEME_MI4_Qwen_Family_Control_20261014.md and JSON",
+            "recorded_at": "2026-10-14T22:40:32.856586Z",
+            "status": "PASS"
+          },
+          "The Qwen bank/runtime path passes load, visible A/B, attach, replace, disable and determinism sanity checks before frozen latent inference": {
+            "receipt": "docs/receipts/MNEME_MI4_Qwen_Family_Control_20261014.json; 24-coordinate preflight and 96-call receipt",
+            "recorded_at": "2026-10-14T22:40:32.585992Z",
+            "status": "PASS"
+          },
+          "The source/runtime comparison distinguishes paper facts from omissions and local deviations": {
+            "receipt": "docs/research/MI2_Memory_Inception_Paper_Reference_20261011.md; source/runtime table in committed MI4 report",
+            "recorded_at": "2026-10-14T22:40:32.479269Z",
+            "status": "PASS"
+          }
+        }
       },
       "waiting_on": [],
       "workstream": "phase4-mi4"
@@ -84,5 +121,5 @@
     }
   },
   "schema_version": 1,
-  "updated_at": "2026-10-14T20:15:57.038812Z"
+  "updated_at": "2026-10-14T22:40:37.444717Z"
 }
