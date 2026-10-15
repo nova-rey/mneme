@@ -2116,3 +2116,7 @@ and dispositions remain unchanged.
 ## 2026-10-14 MI4 root validation closure
 
 - Root independently reconciled the 96 blind scores and condition aggregates, corrected report hashes/qualification, reran pytest (960), Ruff, strict mypy (72 files), verified GitHub CI and remote branch equality, and recorded every declared acceptance check. MI4 is complete with a negative local family-control result and a recommendation to park the reconstructed transport path; no production or developmental state changed.
+
+# 2026-10-15 — MI5 original Memory Inception upstream feasibility
+
+Cloned and hash-preserved Andy Liu's repository at `578de36a556cadeb9ea433dee2e153d76e70e0ec`. The released HF Qwen3-MoE evaluation path is more developed than the vLLM work area, but mandatory `long_context` assets and the vLLM intervention plugin are absent; the local Qwen3-4B GGUF does not match the default `qwen3_moe` HF loader. Source syntax passed, but stock imports/generation did not run and no behavior is claimed. See `docs/receipts/MNEME_MI5_Original_Memory_Inception_Feasibility_20261015.md` and its JSON receipt.

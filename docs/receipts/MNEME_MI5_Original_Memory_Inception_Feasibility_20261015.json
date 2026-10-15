@@ -1,0 +1,144 @@
+{
+  "schema_version": "mneme-mi5-original-mi-feasibility.v1",
+  "package_id": "MI5-ORIGINAL-MI-FEASIBILITY",
+  "base_commit": "d98fe4e0f0472fc5bb0f0368d739c8f49e8d3d44",
+  "disposition": "UPSTREAM RELEASE INCOMPLETE FOR THE REQUIRED EXECUTION",
+  "scope": "Read-only upstream clone/source audit and local hardware/model preflight; no MNEME integration or developmental-state access.",
+  "upstream": {
+    "url": "https://github.com/AndyLiuin/Memory_Inception",
+    "commit": "578de36a556cadeb9ea433dee2e153d76e70e0ec",
+    "tracked_file_count": 47,
+    "root_readme": false,
+    "license_file": false,
+    "license_declared": false,
+    "release_tags": [],
+    "pristine_path": "/home/nyx/mneme-artifacts/phase4-mi5/upstream-pristine",
+    "file_inventory_path": "/home/nyx/mneme-artifacts/phase4-mi5/upstream-pristine-files.txt",
+    "file_inventory_sha256": "2cfb3886621f1dbe89234c78fee8336ca804beefc4959454d43102d6b88f539f",
+    "per_file_manifest_path": "/home/nyx/mneme-artifacts/phase4-mi5/upstream-pristine-files.sha256",
+    "per_file_manifest_sha256": "939b9409fc1439bda1cabc4d7ea294716060c49284dae6ad1bfb7b36cbe82e1e",
+    "incomplete_assets": [
+      "long_context/style_track_a.py",
+      "long_context/style_traits.py",
+      "datasets/gsm8k/test.jsonl",
+      "datasets/mmlu/dev.jsonl",
+      "datasets/mmlu/test.jsonl",
+      "datasets/scripts/prepare_mmlu_jsonl.py",
+      "vllm_port/qwen3_moe_intervention_model.py"
+    ],
+    "imports": {
+      "descriptor_memory_persona_memory_attention_mlp": "fallback modules exist in qwen3_eval, so these imports are optional individually",
+      "descriptor_memory_persona_runtime": "fallback is self-referential through the bundle loader and expected GenerationConfig/runtime helpers are absent from the release",
+      "long_context": "mandatory for the named HF evaluation entrypoints; absent",
+      "vllm_custom_intervention_model": "mandatory for vLLM intervention runner; absent",
+      "vllm_baseline_runner": "only plain and prompt methods"
+    }
+  },
+  "paper_code_provenance": {
+    "status": "UNRESOLVED",
+    "conclusion": "The inspected author-provided commit is not demonstrably the exact code used to produce the published results; no paper-to-commit/source-tree identity is stated in the paper or release.",
+    "supporting_release_sources": [
+      {
+        "path": "qwen3_eval/README.md",
+        "lines": "1-7",
+        "observation": "Labels the HF materials a collaboration evaluation bundle and enumerates its eval scope."
+      },
+      {
+        "path": "vllm_port/README.md",
+        "lines": "1-5",
+        "observation": "Describes vLLM as a working port from the HF/Transformers reference bundle."
+      },
+      {
+        "path": "vllm_port/integration_plan.md",
+        "lines": "45-60",
+        "observation": "Lists the Qwen attention-path information still required by canonical-memory integration."
+      }
+    ],
+    "source_commit_url": "https://github.com/AndyLiuin/Memory_Inception/tree/578de36a556cadeb9ea433dee2e153d76e70e0ec"
+  },
+  "paper": {
+    "id": "arXiv:2605.06225v2",
+    "source_pdf_sha256": "ffd265f3b32a93d6b7967c69faf8e992d13ccdadc2c0bc2927a2f7ffcf5791fc",
+    "qwen_model": "Qwen3-30B-A3B",
+    "qwen_total_parameters_billions": 30.5,
+    "qwen_active_parameters_billions": 3.3,
+    "qwen_layers": 48,
+    "qwen_query_heads": 32,
+    "qwen_kv_heads": 4,
+    "runtime": "customized vLLM attention path for Qwen experiments; exact version not stated",
+    "precision": "not specified for paper Qwen path; repository HF/vLLM runners default to bfloat16",
+    "thinking": "Qwen supports thinking/non-thinking; paper PHYSICS evaluates both CoT and no-CoT",
+    "qwen_attention_note": "Selected-site side KV bank; paper describes synthetic single-slot prompt-side approximation rather than modifying native paged KV"
+  },
+  "local_hardware": {
+    "host": "brokeass-msi",
+    "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU",
+    "vram_mib": 6144,
+    "driver": "595.91.07",
+    "ram_gib": 14,
+    "free_disk_gib_at_check": 6.2,
+    "gpu_temperature_c": 28,
+    "pytorch_installed": false,
+    "transformers_installed": false,
+    "hf_checkpoint_found": false,
+    "descriptor_memory_persona_found": false
+  },
+  "local_candidate": {
+    "model": "Qwen/Qwen3-4B-GGUF",
+    "revision": "bc640142c66e1fdd12af0bd68f40445458f3869b",
+    "filename": "Qwen3-4B-Q4_K_M.gguf",
+    "size_bytes": 2497280256,
+    "sha256": "7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5",
+    "license": "Apache-2.0",
+    "runtime": "llama.cpp",
+    "upstream_compatibility": "not directly loadable by HF PyTorch runner; config model_type qwen3 does not satisfy default qwen3_moe assertion"
+  },
+  "execution": {
+    "source_compileall": "PASS; syntax only",
+    "hf_entrypoint_help_import": "FAIL before model load: ModuleNotFoundError: No module named 'torch'",
+    "model_downloaded": false,
+    "model_loaded": false,
+    "canonical_bank_constructed": false,
+    "inference_calls": 0,
+    "behavioral_effect": "not evaluated",
+    "source_only_test_can_prove_generation": false,
+    "reason": "Bank construction requires a real HF model forward and hidden states; intervention effect requires generation. No model-free upstream qualification harness is present."
+  },
+  "comparison": [
+    {
+      "component": "host_and_runtime",
+      "difference": "paper/upstream Qwen3-MoE HF/vLLM versus MI3 Gemma4 Q2 GGUF/llama.cpp",
+      "assessment": "likely consequential for compatibility/numerics; not demonstrated as causal"
+    },
+    {
+      "component": "contextualization_and_slots",
+      "difference": "upstream supports full descriptor plus multiple variants/templates and descriptor-span slots; MI3 used raw/principles/private-reasoning variants and 411 concatenated slots",
+      "assessment": "possibly consequential"
+    },
+    {
+      "component": "kv_construction",
+      "difference": "upstream uses HF hidden states, input_layernorm, native K/V projections, K norm, canonical pre-RoPE; MI3 uses native Gemma capture/projections/norms including Gemma value normalization",
+      "assessment": "likely consequential architecture-specific difference, not a proven cause"
+    },
+    {
+      "component": "site_selection",
+      "difference": "upstream describes target/reference alignment and bank/prompt-mass calibration selecting Qwen KV groups/layers/gains; MI3 froze 16 Gemma query sites in layers 11,13,14,23 at gain 0.5",
+      "assessment": "likely consequential"
+    },
+    {
+      "component": "attention_mixing",
+      "difference": "paper Qwen vLLM side bank approximates prompt routing with a synthetic single-slot prompt bank; MI3 native path uses augmented prompt-plus-bank K/V attention",
+      "assessment": "likely consequential operator difference; numerical equivalence absent"
+    }
+  ],
+  "next_step": "Obtain a complete, license-clear author release with its missing runtime/context/data modules, vLLM intervention plugin, pinned dependencies and model configuration; only then reconsider a local stock run.",
+  "report": "docs/receipts/MNEME_MI5_Original_Memory_Inception_Feasibility_20261015.md",
+  "boundaries": {
+    "mneme_state_opened": false,
+    "saa_changed": false,
+    "compactstore_changed": false,
+    "developmental_calls": 0,
+    "paid_compute_used": false,
+    "source_modified": false
+  }
+}
