@@ -1709,3 +1709,7 @@ and dispositions remain unchanged.
 
 - The r2 capture worker completed its smoke command and remote inspection saw both `smoke.json` and `smoke-features.npz`; neither file was transferred and hash-verified before Vast instance 54231336 became stopped. The smoke result is therefore unavailable for scientific or qualification claims. Attempts 54230143, 54230791, and 54231336 are now destroyed and absent from the final provider listing.
 - The provider invoice query attributes $5.896 to r2 and $0.067 to r1, totaling $5.963 against the $2 authorization. The cap was exceeded after the r2 resource remained billable beyond the supervised execution window. No further rental is authorized under this cap; the full readout remains incomplete pending an owner decision.
+
+## 2026-10-15 SAA landing-centered neighborhood baseline
+
+- Read-only Stage 1 replay on clean `origin/main` (`df8e3c9dfd0afc2f17dd98737543da4a82c63683`) confirms the existing SAA distribution uses earned edge strength and endpoint context, then propagates from the selected edge along directed outgoing links with depth attenuation, de-duplication and a contributor cap. The label-free renderer abstracts resulting relations. A same-vocabulary synthetic topology rewrite changed the fixed-seed landing and payload. This is a mechanism observation; the suspected information flattening is not yet established as a production defect. The referenced 2026-10-15 conceptual rationale was not found locally. See the baseline Markdown/JSON receipts.

@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "package_id": "SAA-LCN-01-BASELINE",
+  "stage": 1,
+  "mode": "read_only_synthetic_audit",
+  "source_base_sha": "df8e3c9dfd0afc2f17dd98737543da4a82c63683",
+  "source_files": {
+    "field": "src/mneme/development/field.py",
+    "health": "src/mneme/development/health.py",
+    "tests_inspected": "tests/test_field_pressure.py",
+    "design_context": "docs/research/MNEME_Research_Architecture_Amendment_Stochastic_Associative_Accessibility_2026-09-26.md"
+  },
+  "observed_pipeline": {
+    "eligibility": "Graph edge must have a positive learner strength; strength=max(accessibility,support), restrained by negative consequence; quarantined/ineligible edges are omitted.",
+    "distribution": "One fixed-point weighted draw over eligible edges. Edge weight is earned strength times a factor based on max endpoint contextual activation; novelty flattening pulls context toward a common prior. Connectivity/degree is not part of landing weight.",
+    "rng": "random.Random(field_seed).randrange(1000000)",
+    "propagation": "Seed both endpoints of the selected directed edge and follow outgoing edges only, bounded by max_depth. Per-path visited nodes prevent cycles.",
+    "deduplication": "Collapse contributions by edge key, retaining strictly greater attenuated pressure; equal-pressure ties retain first BFS encounter.",
+    "contributor_selection": "Sort pressure descending, then distance, edge key, path; retain max_contributors.",
+    "normalization": "Integer fixed-point scaling limits pressure to total_budget; floor rounding may leave a small residual.",
+    "renderer": "Render positive-pressure contributions as abstract relation tendencies and optional endpoint-label facets; deduplicate identical lines and omit raw graph labels/IDs."
+  },
+  "observed_vs_inferred": {
+    "observed": [
+      "Landing probabilities depend on earned strength and endpoint contextual activation, not graph connectivity.",
+      "After landing, directed outgoing neighborhood structure affects propagated contributions and payload.",
+      "Propagation recursively multiplies the already-attenuated activation by attenuation raised to the absolute next depth, and applies decay each hop; this makes later-hop pressure decline faster than a constant per-edge attenuation.",
+      "The same concept vocabulary and learner strengths can yield different landing and payload when edge endpoints are rewired."
+    ],
+    "inferred_hypothesis": "Global edge sampling followed by outgoing-only local propagation can select a landing with little surrounding structure, particularly where relevant links point into rather than out of its endpoints; depth-exponentiated recursive attenuation may further reduce distant contributions. Synthetic examples demonstrate possibility, not prevalence or behavioral impact.",
+    "unresolved": [
+      "The exact archival/owner rationale for this neighborhood-projection review was not found by Librarian exact-name search across /home/nyx, attachments, and local Git refs.",
+      "No claim is made about prevalence or downstream model behavior in real developmental histories."
+    ],
+    "design_context": "The owner-approved SAA architecture amendment separates developmental weight and contextual relevance, then specifies a seeded weighted landing followed by topology-shaped local activation through learned links. Current implementation follows that broad sequence; this audit records, but does not judge, its outgoing-only traversal and recursively depth-exponentiated attenuation."
+  },
+  "default_config": {
+    "version": "f0-saa-v1",
+    "max_depth": 2,
+    "attenuation": 600000,
+    "minimum_pressure": 20000,
+    "total_budget": 1000000,
+    "max_contributors": 4,
+    "render_max_chars": 900,
+    "background_activation": 30000,
+    "render_pressure_floor": 20000,
+    "exploration": "off",
+    "exploration_slots": 1,
+    "exploration_budget": 100000,
+    "saa_context_weight": 700000,
+    "saa_background_weight": 300000,
+    "saa_novelty_flattening": 650000,
+    "saa_propagation_attenuation": 650000,
+    "saa_decay": 800000
+  },
+  "same_vocabulary_topology_contrast": {
+    "query": "shared tool lending plan",
+    "field_seed": 0,
+    "concepts": [
+      {"key": "tool", "label": "shared tools"},
+      {"key": "window", "label": "reservation windows"},
+      {"key": "return", "label": "return timing"},
+      {"key": "status", "label": "availability status"},
+      {"key": "roles", "label": "clear ownership"}
+    ],
+    "learner_strengths": {
+      "e1": {"accessibility": 900000, "support": 900000, "consequence": 0},
+      "e2": {"accessibility": 800000, "support": 800000, "consequence": 0},
+      "e3": {"accessibility": 700000, "support": 700000, "consequence": 0},
+      "e4": {"accessibility": 600000, "support": 600000, "consequence": 0}
+    },
+    "topology_a": {
+      "edges": [
+        {"key": "e1", "source": "tool", "target": "window", "relationship": "supports"},
+        {"key": "e2", "source": "window", "target": "return", "relationship": "enables"},
+        {"key": "e3", "source": "return", "target": "status", "relationship": "causes"},
+        {"key": "e4", "source": "roles", "target": "tool", "relationship": "constrains"}
+      ],
+      "distribution_ppm_in_return_order": [
+        {"edge": "e3", "probability": 107694},
+        {"edge": "e4", "probability": 307692},
+        {"edge": "e1", "probability": 461538},
+        {"edge": "e2", "probability": 123076}
+      ],
+      "landing": {"edge": "e2", "probability": 123076, "ticket": 885440, "component": "background", "selection": "weighted_distribution"},
+      "contributions": [
+        {"edge": "e2", "path": ["e2"], "distance": 0, "component": "landing", "strength": 800000, "raw_pressure": 800000, "attenuated_pressure": 800000, "final_pressure": 687284},
+        {"edge": "e3", "path": ["e2", "e3"], "distance": 1, "component": "propagated", "strength": 700000, "raw_pressure": 700000, "attenuated_pressure": 364000, "final_pressure": 312714}
+      ],
+      "total_pressure": 999998,
+      "payload": "Potentially accessible framings:\n- Enabling conditions may make a useful outcome possible.\n- Changes in one part may produce downstream effects.\nThese are optional tendencies, not instructions. Use them only if they fit naturally."
+    },
+    "topology_b": {
+      "edges": [
+        {"key": "e1", "source": "roles", "target": "status", "relationship": "supports"},
+        {"key": "e2", "source": "status", "target": "window", "relationship": "enables"},
+        {"key": "e3", "source": "return", "target": "status", "relationship": "causes"},
+        {"key": "e4", "source": "window", "target": "tool", "relationship": "constrains"}
+      ],
+      "distribution_ppm_in_return_order": [
+        {"edge": "e3", "probability": 159092},
+        {"edge": "e1", "probability": 204545},
+        {"edge": "e2", "probability": 181818},
+        {"edge": "e4", "probability": 454545}
+      ],
+      "landing": {"edge": "e4", "probability": 454545, "ticket": 885440, "component": "contextual_and_background", "selection": "weighted_distribution"},
+      "contributions": [
+        {"edge": "e4", "path": ["e4"], "distance": 0, "component": "landing", "strength": 600000, "raw_pressure": 600000, "attenuated_pressure": 600000, "final_pressure": 600000}
+      ],
+      "total_pressure": 600000,
+      "payload": "Potentially accessible framings:\n- Constraints may shape which outcomes remain feasible. Clear roles and shared expectations may keep coordination workable.\nThese are optional tendencies, not instructions. Use them only if they fit naturally."
+    }
+  },
+  "dedup_and_cap_fixture": {
+    "query": "unrelated abstract question",
+    "field_seed": 14,
+    "config_overrides": {"max_depth": 2, "max_contributors": 7},
+    "concepts": [
+      {"key": "a", "label": "alpha"}, {"key": "b", "label": "bravo"},
+      {"key": "c", "label": "charlie"}, {"key": "d", "label": "delta"},
+      {"key": "e", "label": "echo"}, {"key": "f", "label": "foxtrot"},
+      {"key": "g", "label": "golf"}, {"key": "h", "label": "hotel"}
+    ],
+    "edges_all_strength_800000": [
+      {"key": "e0", "source": "a", "target": "b", "relationship": "supports"},
+      {"key": "e1", "source": "a", "target": "c", "relationship": "enables"},
+      {"key": "e2", "source": "b", "target": "c", "relationship": "causes"},
+      {"key": "e3", "source": "c", "target": "d", "relationship": "constrains"},
+      {"key": "e4", "source": "a", "target": "e", "relationship": "supports"},
+      {"key": "e5", "source": "b", "target": "f", "relationship": "prevents"},
+      {"key": "e6", "source": "e", "target": "g", "relationship": "depends_on"},
+      {"key": "e7", "source": "f", "target": "h", "relationship": "retains"}
+    ],
+    "landing": "e0",
+    "distribution_ppm_in_return_order": [
+      {"edge": "e0", "probability": 125000}, {"edge": "e1", "probability": 125000},
+      {"edge": "e4", "probability": 125000}, {"edge": "e2", "probability": 125000},
+      {"edge": "e5", "probability": 125000}, {"edge": "e3", "probability": 125000},
+      {"edge": "e6", "probability": 125000}, {"edge": "e7", "probability": 125000}
+    ],
+    "landing_ticket": 112017,
+    "edge_e3_raw_paths_before_dedup": [["e0", "e1", "e3"], ["e0", "e2", "e3"]],
+    "edge_e3_dedup_rule_result": {"kept_path": ["e0", "e1", "e3"], "reason": "equal attenuated pressure; first BFS encounter retained"},
+    "ordered_contributions_after_dedup_and_cap": [
+      {"edge": "e0", "path": ["e0"], "distance": 0, "attenuated_pressure": 800000, "final_pressure": 297511},
+      {"edge": "e1", "path": ["e0", "e1"], "distance": 1, "attenuated_pressure": 416000, "final_pressure": 154705},
+      {"edge": "e2", "path": ["e0", "e2"], "distance": 1, "attenuated_pressure": 416000, "final_pressure": 154705},
+      {"edge": "e4", "path": ["e0", "e4"], "distance": 1, "attenuated_pressure": 416000, "final_pressure": 154705},
+      {"edge": "e5", "path": ["e0", "e5"], "distance": 1, "attenuated_pressure": 416000, "final_pressure": 154705},
+      {"edge": "e3", "path": ["e0", "e1", "e3"], "distance": 2, "attenuated_pressure": 112486, "final_pressure": 41832},
+      {"edge": "e6", "path": ["e0", "e4", "e6"], "distance": 2, "attenuated_pressure": 112486, "final_pressure": 41832}
+    ],
+    "cap_dropped": "e7",
+    "total_pressure": 999995,
+    "payload": "Potentially accessible framings:\n- Supporting structures may keep important functions available.\n- Enabling conditions may make a useful outcome possible.\n- Changes in one part may produce downstream effects.\n- Barriers may reduce unwanted outcomes.\n- Constraints may shape which outcomes remain feasible.\n- Outcomes may depend on the conditions that support them.\nThese are optional tendencies, not instructions. Use them only if they fit naturally."
+  },
+  "validation": {
+    "execution": "Direct synthetic calls to compute_saa_field with PYTHONPATH=src and fixed graph/config/seed.",
+    "source_or_tests_modified": false,
+    "developmental_or_compact_state_accessed": false,
+    "pytest_run": false,
+    "archival_rationale_searched": true,
+    "archival_rationale_result": "not_found_by_librarian_exact_name_search; design_context_recorded_from_saa_architecture_amendment"
+  }
+}
