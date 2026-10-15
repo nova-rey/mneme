@@ -1,0 +1,4366 @@
+{
+  "schema_version": 1,
+  "package_id": "SAA-LCN02-FIXED-LANDING",
+  "mode": "synthetic_model_free_counterfactuals",
+  "source_base_sha": "45e251f368f5d1986d6027c484cdf61e7344b61c",
+  "archival_amendment": {
+    "name": "MNEME_Conceptual_Amendment_Landing_Centered_Neighborhoods_2026-10-15.md",
+    "status": "unavailable_in_supplied_environment",
+    "handling": "not reconstructed, paraphrased, or attributed"
+  },
+  "fixed_landing_contrast": {
+    "query": "unfamiliar abstract question",
+    "field_seed": 1,
+    "seed_search": {
+      "performed": true,
+      "method": "bounded exploratory scan of integer seeds 0 through 5; selected the first seed yielding e0 in both actual results",
+      "candidate_seeds_tested": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "common_landing_sweep": [
+        {
+          "field_seed": 0,
+          "landings": {
+            "history_a": "e4",
+            "history_b": "e4"
+          }
+        },
+        {
+          "field_seed": 1,
+          "landings": {
+            "history_a": "e0",
+            "history_b": "e0"
+          }
+        },
+        {
+          "field_seed": 2,
+          "landings": {
+            "history_a": "e4",
+            "history_b": "e4"
+          }
+        },
+        {
+          "field_seed": 3,
+          "landings": {
+            "history_a": "e0",
+            "history_b": "e0"
+          }
+        },
+        {
+          "field_seed": 4,
+          "landings": {
+            "history_a": "e0",
+            "history_b": "e0"
+          }
+        },
+        {
+          "field_seed": 5,
+          "landings": {
+            "history_a": "e2",
+            "history_b": "e2"
+          }
+        }
+      ],
+      "selection_conditioning": "seed 1 was chosen because both histories selected the required common e0 landing; all six tested seeds selected the same edge in A and B, while only seeds 1, 3, and 4 landed on e0"
+    },
+    "field_config": {
+      "version": "f0-graph-pressure-v2-background",
+      "max_depth": 3,
+      "attenuation": 600000,
+      "minimum_pressure": 20000,
+      "total_budget": 1000000,
+      "max_contributors": 12,
+      "render_max_chars": 900,
+      "background_activation": 30000,
+      "render_pressure_floor": 20000,
+      "exploration": "off",
+      "exploration_slots": 1,
+      "exploration_budget": 100000,
+      "saa_context_weight": 700000,
+      "saa_background_weight": 300000,
+      "saa_novelty_flattening": 650000,
+      "saa_propagation_attenuation": 650000,
+      "saa_decay": 800000
+    },
+    "learner_strengths": {
+      "e0": 900000,
+      "e1": 700000,
+      "e2": 600000,
+      "e3": 500000,
+      "e4": 400000,
+      "remote": 200000
+    },
+    "changed_edge_keys_history_a_vs_b": [
+      "e2",
+      "e4"
+    ],
+    "fixed_edge_keys": [
+      "e0",
+      "e1",
+      "e3",
+      "remote"
+    ],
+    "histories": {
+      "history_a": {
+        "graph": {
+          "concepts": [
+            {
+              "key": "a",
+              "label": "shared tools",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "b",
+              "label": "reservation windows",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "c",
+              "label": "return timing",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "d",
+              "label": "availability status",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "e",
+              "label": "clear ownership",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "f",
+              "label": "maintenance",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "g",
+              "label": "safety",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "x",
+              "label": "garden planning",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "y",
+              "label": "seasonal planting",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "z",
+              "label": "community workshop",
+              "kind": "concept",
+              "evidence": []
+            }
+          ],
+          "edges": [
+            {
+              "key": "e0",
+              "source": "a",
+              "target": "b",
+              "relationship": "supports",
+              "evidence": [
+                {
+                  "synthetic": true
+                }
+              ]
+            },
+            {
+              "key": "e1",
+              "source": "b",
+              "target": "c",
+              "relationship": "enables",
+              "evidence": [
+                {
+                  "synthetic": true
+                }
+              ]
+            },
+            {
+              "key": "e2",
+              "source": "c",
+              "target": "d",
+              "relationship": "causes",
+              "evidence": [
+                {
+                  "synthetic": true
+                }
+              ]
+            },
+            {
+              "key": "e3",
+              "source": "b",
+              "target": "e",
+              "relationship": "constrains",
+              "evidence": [
+                {
+                  "synthetic": true
+                }
+              ]
+            },
+            {
+              "key": "e4",
+              "source": "e",
+              "target": "f",
+              "relationship": "supports",
+              "evidence": [
+                {
+                  "synthetic": true
+                }
+              ]
+            },
+            {
+              "key": "remote",
+              "source": "x",
+              "target": "y",
+              "relationship": "associated_with",
+              "evidence": [
+                {
+                  "synthetic": true
+                }
+              ]
+            }
+          ],
+          "sha256": "de7185f410d253802610c8dc1166313b5b299dd989199cc676a9aaf5b9e0ecf9"
+        },
+        "learner_state": {
+          "schema_version": 1,
+          "global_opportunity": 0,
+          "edge_states": [
+            {
+              "target_key": "e0",
+              "context": "general",
+              "accessibility": 900000,
+              "support": 900000,
+              "consequence": 0,
+              "relevant_opportunities": 0,
+              "inactivity_ticks": 0,
+              "unsupported_streak": 0,
+              "lifetime_by_group": {},
+              "induced_by_group": {},
+              "rolling_credits": [],
+              "last_consolidation_opportunity": null,
+              "raw_occurrence_count": 0,
+              "episode_keys": []
+            },
+            {
+              "target_key": "e1",
+              "context": "general",
+              "accessibility": 700000,
+              "support": 700000,
+              "consequence": 0,
+              "relevant_opportunities": 0,
+              "inactivity_ticks": 0,
+              "unsupported_streak": 0,
+              "lifetime_by_group": {},
+              "induced_by_group": {},
+              "rolling_credits": [],
+              "last_consolidation_opportunity": null,
+              "raw_occurrence_count": 0,
+              "episode_keys": []
+            },
+            {
+              "target_key": "e2",
+              "context": "general",
+              "accessibility": 600000,
+              "support": 600000,
+              "consequence": 0,
+              "relevant_opportunities": 0,
+              "inactivity_ticks": 0,
+              "unsupported_streak": 0,
+              "lifetime_by_group": {},
+              "induced_by_group": {},
+              "rolling_credits": [],
+              "last_consolidation_opportunity": null,
+              "raw_occurrence_count": 0,
+              "episode_keys": []
+            },
+            {
+              "target_key": "e3",
+              "context": "general",
+              "accessibility": 500000,
+              "support": 500000,
+              "consequence": 0,
+              "relevant_opportunities": 0,
+              "inactivity_ticks": 0,
+              "unsupported_streak": 0,
+              "lifetime_by_group": {},
+              "induced_by_group": {},
+              "rolling_credits": [],
+              "last_consolidation_opportunity": null,
+              "raw_occurrence_count": 0,
+              "episode_keys": []
+            },
+            {
+              "target_key": "e4",
+              "context": "general",
+              "accessibility": 400000,
+              "support": 400000,
+              "consequence": 0,
+              "relevant_opportunities": 0,
+              "inactivity_ticks": 0,
+              "unsupported_streak": 0,
+              "lifetime_by_group": {},
+              "induced_by_group": {},
+              "rolling_credits": [],
+              "last_consolidation_opportunity": null,
+              "raw_occurrence_count": 0,
+              "episode_keys": []
+            },
+            {
+              "target_key": "remote",
+              "context": "general",
+              "accessibility": 200000,
+              "support": 200000,
+              "consequence": 0,
+              "relevant_opportunities": 0,
+              "inactivity_ticks": 0,
+              "unsupported_streak": 0,
+              "lifetime_by_group": {},
+              "induced_by_group": {},
+              "rolling_credits": [],
+              "last_consolidation_opportunity": null,
+              "raw_occurrence_count": 0,
+              "episode_keys": []
+            }
+          ],
+          "route_states": [],
+          "applied_operations": []
+        },
+        "config": {
+          "version": "f0-graph-pressure-v2-background",
+          "max_depth": 3,
+          "attenuation": 600000,
+          "minimum_pressure": 20000,
+          "total_budget": 1000000,
+          "max_contributors": 12,
+          "render_max_chars": 900,
+          "background_activation": 30000,
+          "render_pressure_floor": 20000,
+          "exploration": "off",
+          "exploration_slots": 1,
+          "exploration_budget": 100000,
+          "saa_context_weight": 700000,
+          "saa_background_weight": 300000,
+          "saa_novelty_flattening": 650000,
+          "saa_propagation_attenuation": 650000,
+          "saa_decay": 800000
+        },
+        "query": "unfamiliar abstract question",
+        "field_seed": 1,
+        "field_result": {
+          "version": "f0-saa-v1",
+          "query": "unfamiliar abstract question",
+          "config": {
+            "version": "f0-saa-v1",
+            "max_depth": 3,
+            "attenuation": 600000,
+            "minimum_pressure": 20000,
+            "total_budget": 1000000,
+            "max_contributors": 12,
+            "render_max_chars": 900,
+            "background_activation": 30000,
+            "render_pressure_floor": 20000,
+            "exploration": "off",
+            "exploration_slots": 1,
+            "exploration_budget": 100000,
+            "saa_context_weight": 700000,
+            "saa_background_weight": 300000,
+            "saa_novelty_flattening": 650000,
+            "saa_propagation_attenuation": 650000,
+            "saa_decay": 800000
+          },
+          "field_enabled": true,
+          "exploration": "on",
+          "field_seed": 1,
+          "active_concepts": [
+            {
+              "key": "a",
+              "label": "shared tools",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "b",
+              "label": "reservation windows",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "c",
+              "label": "return timing",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "d",
+              "label": "availability status",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "e",
+              "label": "clear ownership",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "f",
+              "label": "maintenance",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "g",
+              "label": "safety",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "x",
+              "label": "garden planning",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "y",
+              "label": "seasonal planting",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "z",
+              "label": "community workshop",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            }
+          ],
+          "contributions": [
+            {
+              "edge_key": "e0",
+              "source": "a",
+              "target": "b",
+              "relationship": "supports",
+              "path": [
+                "e0"
+              ],
+              "distance": 0,
+              "source_activation": 1000000,
+              "developmental_strength": 900000,
+              "raw_pressure": 900000,
+              "attenuated_pressure": 900000,
+              "eligible": true,
+              "eligibility_reason": "earned",
+              "normalized_pressure": 551142,
+              "final_pressure": 551142,
+              "component": "landing",
+              "exploration_selected": false,
+              "selection_mode": "weighted_distribution",
+              "candidate_component": "background"
+            },
+            {
+              "edge_key": "e1",
+              "source": "b",
+              "target": "c",
+              "relationship": "enables",
+              "path": [
+                "e0",
+                "e1"
+              ],
+              "distance": 1,
+              "source_activation": 1000000,
+              "developmental_strength": 700000,
+              "raw_pressure": 700000,
+              "attenuated_pressure": 364000,
+              "eligible": true,
+              "eligibility_reason": "earned",
+              "normalized_pressure": 222906,
+              "final_pressure": 222906,
+              "component": "propagated",
+              "exploration_selected": false
+            },
+            {
+              "edge_key": "e3",
+              "source": "b",
+              "target": "e",
+              "relationship": "constrains",
+              "path": [
+                "e0",
+                "e3"
+              ],
+              "distance": 1,
+              "source_activation": 1000000,
+              "developmental_strength": 500000,
+              "raw_pressure": 500000,
+              "attenuated_pressure": 260000,
+              "eligible": true,
+              "eligibility_reason": "earned",
+              "normalized_pressure": 159218,
+              "final_pressure": 159218,
+              "component": "propagated",
+              "exploration_selected": false
+            },
+            {
+              "edge_key": "e2",
+              "source": "c",
+              "target": "d",
+              "relationship": "causes",
+              "path": [
+                "e0",
+                "e1",
+                "e2"
+              ],
+              "distance": 2,
+              "source_activation": 364000,
+              "developmental_strength": 600000,
+              "raw_pressure": 218400,
+              "attenuated_pressure": 73819,
+              "eligible": true,
+              "eligibility_reason": "earned",
+              "normalized_pressure": 45205,
+              "final_pressure": 45205,
+              "component": "propagated",
+              "exploration_selected": false
+            },
+            {
+              "edge_key": "e4",
+              "source": "e",
+              "target": "f",
+              "relationship": "supports",
+              "path": [
+                "e0",
+                "e3",
+                "e4"
+              ],
+              "distance": 2,
+              "source_activation": 260000,
+              "developmental_strength": 400000,
+              "raw_pressure": 104000,
+              "attenuated_pressure": 35152,
+              "eligible": true,
+              "eligibility_reason": "earned",
+              "normalized_pressure": 21526,
+              "final_pressure": 21526,
+              "component": "propagated",
+              "exploration_selected": false
+            }
+          ],
+          "payload": "Potentially accessible framings:\n- Supporting structures may keep important functions available. Clear roles and shared expectations may keep coordination workable.\n- Enabling conditions may make a useful outcome possible.\n- Constraints may shape which outcomes remain feasible.\n- Changes in one part may produce downstream effects.\n- Supporting structures may keep important functions available.\nThese are optional tendencies, not instructions. Use them only if they fit naturally.",
+          "total_pressure": 999997,
+          "accessibility_distribution": [
+            {
+              "candidate": "e0",
+              "probability": 272728
+            },
+            {
+              "candidate": "e1",
+              "probability": 212121
+            },
+            {
+              "candidate": "e3",
+              "probability": 151515
+            },
+            {
+              "candidate": "e2",
+              "probability": 181818
+            },
+            {
+              "candidate": "e4",
+              "probability": 121212
+            },
+            {
+              "candidate": "remote",
+              "probability": 60606
+            }
+          ],
+          "distribution_flatness": 872726,
+          "selected_landing": "e0",
+          "landing_probability": 272728,
+          "landing_ticket": 140891,
+          "active_neighborhood": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f"
+          ],
+          "novelty": 1000000,
+          "expression_adjustments": [],
+          "distribution_components": [
+            {
+              "candidate": "e0",
+              "component": "background"
+            },
+            {
+              "candidate": "e1",
+              "component": "background"
+            },
+            {
+              "candidate": "e3",
+              "component": "background"
+            },
+            {
+              "candidate": "e2",
+              "component": "background"
+            },
+            {
+              "candidate": "e4",
+              "component": "background"
+            },
+            {
+              "candidate": "remote",
+              "component": "background"
+            }
+          ],
+          "landing_selection": "weighted_distribution",
+          "landing_component": "background"
+        },
+        "projection_audit": {
+          "schema_version": "saa-neighborhood-projection-v1",
+          "field_version": "f0-saa-v1",
+          "field_seed": 1,
+          "landing_edge_key": "e0",
+          "input_fingerprint": "207252b1f1d922a63102f477d6448fccc2461bcee1d3811d38814919e03f64c7",
+          "nodes": [
+            {
+              "key": "a",
+              "label": "shared tools"
+            },
+            {
+              "key": "b",
+              "label": "reservation windows"
+            },
+            {
+              "key": "c",
+              "label": "return timing"
+            },
+            {
+              "key": "e",
+              "label": "clear ownership"
+            },
+            {
+              "key": "d",
+              "label": "availability status"
+            },
+            {
+              "key": "f",
+              "label": "maintenance"
+            }
+          ],
+          "edges": [
+            {
+              "key": "e0",
+              "source": "a",
+              "relationship": "supports",
+              "target": "b",
+              "path": [
+                "e0"
+              ],
+              "hops": 0,
+              "role": "landing",
+              "pressure": 551142,
+              "component": "landing"
+            },
+            {
+              "key": "e1",
+              "source": "b",
+              "relationship": "enables",
+              "target": "c",
+              "path": [
+                "e0",
+                "e1"
+              ],
+              "hops": 1,
+              "role": "direct",
+              "pressure": 222906,
+              "component": "propagated"
+            },
+            {
+              "key": "e3",
+              "source": "b",
+              "relationship": "constrains",
+              "target": "e",
+              "path": [
+                "e0",
+                "e3"
+              ],
+              "hops": 1,
+              "role": "direct",
+              "pressure": 159218,
+              "component": "propagated"
+            },
+            {
+              "key": "e2",
+              "source": "c",
+              "relationship": "causes",
+              "target": "d",
+              "path": [
+                "e0",
+                "e1",
+                "e2"
+              ],
+              "hops": 2,
+              "role": "farther",
+              "pressure": 45205,
+              "component": "propagated"
+            },
+            {
+              "key": "e4",
+              "source": "e",
+              "relationship": "supports",
+              "target": "f",
+              "path": [
+                "e0",
+                "e3",
+                "e4"
+              ],
+              "hops": 2,
+              "role": "farther",
+              "pressure": 21526,
+              "component": "propagated"
+            }
+          ],
+          "paths": [
+            {
+              "contribution_edge": "e0",
+              "edge_keys": [
+                "e0"
+              ],
+              "hops": 0
+            },
+            {
+              "contribution_edge": "e1",
+              "edge_keys": [
+                "e0",
+                "e1"
+              ],
+              "hops": 1
+            },
+            {
+              "contribution_edge": "e3",
+              "edge_keys": [
+                "e0",
+                "e3"
+              ],
+              "hops": 1
+            },
+            {
+              "contribution_edge": "e2",
+              "edge_keys": [
+                "e0",
+                "e1",
+                "e2"
+              ],
+              "hops": 2
+            },
+            {
+              "contribution_edge": "e4",
+              "edge_keys": [
+                "e0",
+                "e3",
+                "e4"
+              ],
+              "hops": 2
+            }
+          ],
+          "omissions": [],
+          "descriptor_omissions": []
+        },
+        "optional_synthetic_descriptor": {
+          "schema_version": "saa-portable-neighborhood-v1",
+          "relations": [
+            {
+              "source": "shared tools",
+              "relationship": "supports",
+              "target": "reservation windows",
+              "role": "landing",
+              "hops": 0
+            },
+            {
+              "source": "reservation windows",
+              "relationship": "enables",
+              "target": "return timing",
+              "role": "direct",
+              "hops": 1
+            },
+            {
+              "source": "reservation windows",
+              "relationship": "constrains",
+              "target": "clear ownership",
+              "role": "direct",
+              "hops": 1
+            },
+            {
+              "source": "return timing",
+              "relationship": "causes",
+              "target": "availability status",
+              "role": "farther",
+              "hops": 2
+            },
+            {
+              "source": "clear ownership",
+              "relationship": "supports",
+              "target": "maintenance",
+              "role": "farther",
+              "hops": 2
+            }
+          ]
+        }
+      },
+      "history_b": {
+        "graph": {
+          "concepts": [
+            {
+              "key": "a",
+              "label": "shared tools",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "b",
+              "label": "reservation windows",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "c",
+              "label": "return timing",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "d",
+              "label": "availability status",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "e",
+              "label": "clear ownership",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "f",
+              "label": "maintenance",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "g",
+              "label": "safety",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "x",
+              "label": "garden planning",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "y",
+              "label": "seasonal planting",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "z",
+              "label": "community workshop",
+              "kind": "concept",
+              "evidence": []
+            }
+          ],
+          "edges": [
+            {
+              "key": "e0",
+              "source": "a",
+              "target": "b",
+              "relationship": "supports",
+              "evidence": [
+                {
+                  "synthetic": true
+                }
+              ]
+            },
+            {
+              "key": "e1",
+              "source": "b",
+              "target": "c",
+              "relationship": "enables",
+              "evidence": [
+                {
+                  "synthetic": true
+                }
+              ]
+            },
+            {
+              "key": "e2",
+              "source": "c",
+              "target": "f",
+              "relationship": "causes",
+              "evidence": [
+                {
+                  "synthetic": true
+                }
+              ]
+            },
+            {
+              "key": "e3",
+              "source": "b",
+              "target": "e",
+              "relationship": "constrains",
+              "evidence": [
+                {
+                  "synthetic": true
+                }
+              ]
+            },
+            {
+              "key": "e4",
+              "source": "e",
+              "target": "d",
+              "relationship": "supports",
+              "evidence": [
+                {
+                  "synthetic": true
+                }
+              ]
+            },
+            {
+              "key": "remote",
+              "source": "x",
+              "target": "y",
+              "relationship": "associated_with",
+              "evidence": [
+                {
+                  "synthetic": true
+                }
+              ]
+            }
+          ],
+          "sha256": "b90c701cff20dc2b166b84646ef1b2a9534fc75a317ca89028a70fb261854896"
+        },
+        "learner_state": {
+          "schema_version": 1,
+          "global_opportunity": 0,
+          "edge_states": [
+            {
+              "target_key": "e0",
+              "context": "general",
+              "accessibility": 900000,
+              "support": 900000,
+              "consequence": 0,
+              "relevant_opportunities": 0,
+              "inactivity_ticks": 0,
+              "unsupported_streak": 0,
+              "lifetime_by_group": {},
+              "induced_by_group": {},
+              "rolling_credits": [],
+              "last_consolidation_opportunity": null,
+              "raw_occurrence_count": 0,
+              "episode_keys": []
+            },
+            {
+              "target_key": "e1",
+              "context": "general",
+              "accessibility": 700000,
+              "support": 700000,
+              "consequence": 0,
+              "relevant_opportunities": 0,
+              "inactivity_ticks": 0,
+              "unsupported_streak": 0,
+              "lifetime_by_group": {},
+              "induced_by_group": {},
+              "rolling_credits": [],
+              "last_consolidation_opportunity": null,
+              "raw_occurrence_count": 0,
+              "episode_keys": []
+            },
+            {
+              "target_key": "e2",
+              "context": "general",
+              "accessibility": 600000,
+              "support": 600000,
+              "consequence": 0,
+              "relevant_opportunities": 0,
+              "inactivity_ticks": 0,
+              "unsupported_streak": 0,
+              "lifetime_by_group": {},
+              "induced_by_group": {},
+              "rolling_credits": [],
+              "last_consolidation_opportunity": null,
+              "raw_occurrence_count": 0,
+              "episode_keys": []
+            },
+            {
+              "target_key": "e3",
+              "context": "general",
+              "accessibility": 500000,
+              "support": 500000,
+              "consequence": 0,
+              "relevant_opportunities": 0,
+              "inactivity_ticks": 0,
+              "unsupported_streak": 0,
+              "lifetime_by_group": {},
+              "induced_by_group": {},
+              "rolling_credits": [],
+              "last_consolidation_opportunity": null,
+              "raw_occurrence_count": 0,
+              "episode_keys": []
+            },
+            {
+              "target_key": "e4",
+              "context": "general",
+              "accessibility": 400000,
+              "support": 400000,
+              "consequence": 0,
+              "relevant_opportunities": 0,
+              "inactivity_ticks": 0,
+              "unsupported_streak": 0,
+              "lifetime_by_group": {},
+              "induced_by_group": {},
+              "rolling_credits": [],
+              "last_consolidation_opportunity": null,
+              "raw_occurrence_count": 0,
+              "episode_keys": []
+            },
+            {
+              "target_key": "remote",
+              "context": "general",
+              "accessibility": 200000,
+              "support": 200000,
+              "consequence": 0,
+              "relevant_opportunities": 0,
+              "inactivity_ticks": 0,
+              "unsupported_streak": 0,
+              "lifetime_by_group": {},
+              "induced_by_group": {},
+              "rolling_credits": [],
+              "last_consolidation_opportunity": null,
+              "raw_occurrence_count": 0,
+              "episode_keys": []
+            }
+          ],
+          "route_states": [],
+          "applied_operations": []
+        },
+        "config": {
+          "version": "f0-graph-pressure-v2-background",
+          "max_depth": 3,
+          "attenuation": 600000,
+          "minimum_pressure": 20000,
+          "total_budget": 1000000,
+          "max_contributors": 12,
+          "render_max_chars": 900,
+          "background_activation": 30000,
+          "render_pressure_floor": 20000,
+          "exploration": "off",
+          "exploration_slots": 1,
+          "exploration_budget": 100000,
+          "saa_context_weight": 700000,
+          "saa_background_weight": 300000,
+          "saa_novelty_flattening": 650000,
+          "saa_propagation_attenuation": 650000,
+          "saa_decay": 800000
+        },
+        "query": "unfamiliar abstract question",
+        "field_seed": 1,
+        "field_result": {
+          "version": "f0-saa-v1",
+          "query": "unfamiliar abstract question",
+          "config": {
+            "version": "f0-saa-v1",
+            "max_depth": 3,
+            "attenuation": 600000,
+            "minimum_pressure": 20000,
+            "total_budget": 1000000,
+            "max_contributors": 12,
+            "render_max_chars": 900,
+            "background_activation": 30000,
+            "render_pressure_floor": 20000,
+            "exploration": "off",
+            "exploration_slots": 1,
+            "exploration_budget": 100000,
+            "saa_context_weight": 700000,
+            "saa_background_weight": 300000,
+            "saa_novelty_flattening": 650000,
+            "saa_propagation_attenuation": 650000,
+            "saa_decay": 800000
+          },
+          "field_enabled": true,
+          "exploration": "on",
+          "field_seed": 1,
+          "active_concepts": [
+            {
+              "key": "a",
+              "label": "shared tools",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "b",
+              "label": "reservation windows",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "c",
+              "label": "return timing",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "d",
+              "label": "availability status",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "e",
+              "label": "clear ownership",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "f",
+              "label": "maintenance",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "g",
+              "label": "safety",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "x",
+              "label": "garden planning",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "y",
+              "label": "seasonal planting",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "z",
+              "label": "community workshop",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            }
+          ],
+          "contributions": [
+            {
+              "edge_key": "e0",
+              "source": "a",
+              "target": "b",
+              "relationship": "supports",
+              "path": [
+                "e0"
+              ],
+              "distance": 0,
+              "source_activation": 1000000,
+              "developmental_strength": 900000,
+              "raw_pressure": 900000,
+              "attenuated_pressure": 900000,
+              "eligible": true,
+              "eligibility_reason": "earned",
+              "normalized_pressure": 551142,
+              "final_pressure": 551142,
+              "component": "landing",
+              "exploration_selected": false,
+              "selection_mode": "weighted_distribution",
+              "candidate_component": "background"
+            },
+            {
+              "edge_key": "e1",
+              "source": "b",
+              "target": "c",
+              "relationship": "enables",
+              "path": [
+                "e0",
+                "e1"
+              ],
+              "distance": 1,
+              "source_activation": 1000000,
+              "developmental_strength": 700000,
+              "raw_pressure": 700000,
+              "attenuated_pressure": 364000,
+              "eligible": true,
+              "eligibility_reason": "earned",
+              "normalized_pressure": 222906,
+              "final_pressure": 222906,
+              "component": "propagated",
+              "exploration_selected": false
+            },
+            {
+              "edge_key": "e3",
+              "source": "b",
+              "target": "e",
+              "relationship": "constrains",
+              "path": [
+                "e0",
+                "e3"
+              ],
+              "distance": 1,
+              "source_activation": 1000000,
+              "developmental_strength": 500000,
+              "raw_pressure": 500000,
+              "attenuated_pressure": 260000,
+              "eligible": true,
+              "eligibility_reason": "earned",
+              "normalized_pressure": 159218,
+              "final_pressure": 159218,
+              "component": "propagated",
+              "exploration_selected": false
+            },
+            {
+              "edge_key": "e2",
+              "source": "c",
+              "target": "f",
+              "relationship": "causes",
+              "path": [
+                "e0",
+                "e1",
+                "e2"
+              ],
+              "distance": 2,
+              "source_activation": 364000,
+              "developmental_strength": 600000,
+              "raw_pressure": 218400,
+              "attenuated_pressure": 73819,
+              "eligible": true,
+              "eligibility_reason": "earned",
+              "normalized_pressure": 45205,
+              "final_pressure": 45205,
+              "component": "propagated",
+              "exploration_selected": false
+            },
+            {
+              "edge_key": "e4",
+              "source": "e",
+              "target": "d",
+              "relationship": "supports",
+              "path": [
+                "e0",
+                "e3",
+                "e4"
+              ],
+              "distance": 2,
+              "source_activation": 260000,
+              "developmental_strength": 400000,
+              "raw_pressure": 104000,
+              "attenuated_pressure": 35152,
+              "eligible": true,
+              "eligibility_reason": "earned",
+              "normalized_pressure": 21526,
+              "final_pressure": 21526,
+              "component": "propagated",
+              "exploration_selected": false
+            }
+          ],
+          "payload": "Potentially accessible framings:\n- Supporting structures may keep important functions available. Clear roles and shared expectations may keep coordination workable.\n- Enabling conditions may make a useful outcome possible.\n- Constraints may shape which outcomes remain feasible.\n- Changes in one part may produce downstream effects.\n- Supporting structures may keep important functions available.\nThese are optional tendencies, not instructions. Use them only if they fit naturally.",
+          "total_pressure": 999997,
+          "accessibility_distribution": [
+            {
+              "candidate": "e0",
+              "probability": 272728
+            },
+            {
+              "candidate": "e1",
+              "probability": 212121
+            },
+            {
+              "candidate": "e3",
+              "probability": 151515
+            },
+            {
+              "candidate": "e2",
+              "probability": 181818
+            },
+            {
+              "candidate": "e4",
+              "probability": 121212
+            },
+            {
+              "candidate": "remote",
+              "probability": 60606
+            }
+          ],
+          "distribution_flatness": 872726,
+          "selected_landing": "e0",
+          "landing_probability": 272728,
+          "landing_ticket": 140891,
+          "active_neighborhood": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f"
+          ],
+          "novelty": 1000000,
+          "expression_adjustments": [],
+          "distribution_components": [
+            {
+              "candidate": "e0",
+              "component": "background"
+            },
+            {
+              "candidate": "e1",
+              "component": "background"
+            },
+            {
+              "candidate": "e3",
+              "component": "background"
+            },
+            {
+              "candidate": "e2",
+              "component": "background"
+            },
+            {
+              "candidate": "e4",
+              "component": "background"
+            },
+            {
+              "candidate": "remote",
+              "component": "background"
+            }
+          ],
+          "landing_selection": "weighted_distribution",
+          "landing_component": "background"
+        },
+        "projection_audit": {
+          "schema_version": "saa-neighborhood-projection-v1",
+          "field_version": "f0-saa-v1",
+          "field_seed": 1,
+          "landing_edge_key": "e0",
+          "input_fingerprint": "d7111eabcc658b8224b2e3f12d123fb2a950addbe5244432e804a9f7fbfd779b",
+          "nodes": [
+            {
+              "key": "a",
+              "label": "shared tools"
+            },
+            {
+              "key": "b",
+              "label": "reservation windows"
+            },
+            {
+              "key": "c",
+              "label": "return timing"
+            },
+            {
+              "key": "e",
+              "label": "clear ownership"
+            },
+            {
+              "key": "f",
+              "label": "maintenance"
+            },
+            {
+              "key": "d",
+              "label": "availability status"
+            }
+          ],
+          "edges": [
+            {
+              "key": "e0",
+              "source": "a",
+              "relationship": "supports",
+              "target": "b",
+              "path": [
+                "e0"
+              ],
+              "hops": 0,
+              "role": "landing",
+              "pressure": 551142,
+              "component": "landing"
+            },
+            {
+              "key": "e1",
+              "source": "b",
+              "relationship": "enables",
+              "target": "c",
+              "path": [
+                "e0",
+                "e1"
+              ],
+              "hops": 1,
+              "role": "direct",
+              "pressure": 222906,
+              "component": "propagated"
+            },
+            {
+              "key": "e3",
+              "source": "b",
+              "relationship": "constrains",
+              "target": "e",
+              "path": [
+                "e0",
+                "e3"
+              ],
+              "hops": 1,
+              "role": "direct",
+              "pressure": 159218,
+              "component": "propagated"
+            },
+            {
+              "key": "e2",
+              "source": "c",
+              "relationship": "causes",
+              "target": "f",
+              "path": [
+                "e0",
+                "e1",
+                "e2"
+              ],
+              "hops": 2,
+              "role": "farther",
+              "pressure": 45205,
+              "component": "propagated"
+            },
+            {
+              "key": "e4",
+              "source": "e",
+              "relationship": "supports",
+              "target": "d",
+              "path": [
+                "e0",
+                "e3",
+                "e4"
+              ],
+              "hops": 2,
+              "role": "farther",
+              "pressure": 21526,
+              "component": "propagated"
+            }
+          ],
+          "paths": [
+            {
+              "contribution_edge": "e0",
+              "edge_keys": [
+                "e0"
+              ],
+              "hops": 0
+            },
+            {
+              "contribution_edge": "e1",
+              "edge_keys": [
+                "e0",
+                "e1"
+              ],
+              "hops": 1
+            },
+            {
+              "contribution_edge": "e3",
+              "edge_keys": [
+                "e0",
+                "e3"
+              ],
+              "hops": 1
+            },
+            {
+              "contribution_edge": "e2",
+              "edge_keys": [
+                "e0",
+                "e1",
+                "e2"
+              ],
+              "hops": 2
+            },
+            {
+              "contribution_edge": "e4",
+              "edge_keys": [
+                "e0",
+                "e3",
+                "e4"
+              ],
+              "hops": 2
+            }
+          ],
+          "omissions": [],
+          "descriptor_omissions": []
+        },
+        "optional_synthetic_descriptor": {
+          "schema_version": "saa-portable-neighborhood-v1",
+          "relations": [
+            {
+              "source": "shared tools",
+              "relationship": "supports",
+              "target": "reservation windows",
+              "role": "landing",
+              "hops": 0
+            },
+            {
+              "source": "reservation windows",
+              "relationship": "enables",
+              "target": "return timing",
+              "role": "direct",
+              "hops": 1
+            },
+            {
+              "source": "reservation windows",
+              "relationship": "constrains",
+              "target": "clear ownership",
+              "role": "direct",
+              "hops": 1
+            },
+            {
+              "source": "return timing",
+              "relationship": "causes",
+              "target": "maintenance",
+              "role": "farther",
+              "hops": 2
+            },
+            {
+              "source": "clear ownership",
+              "relationship": "supports",
+              "target": "availability status",
+              "role": "farther",
+              "hops": 2
+            }
+          ]
+        }
+      },
+      "history_a_remote_rewire_control": {
+        "graph": {
+          "concepts": [
+            {
+              "key": "a",
+              "label": "shared tools",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "b",
+              "label": "reservation windows",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "c",
+              "label": "return timing",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "d",
+              "label": "availability status",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "e",
+              "label": "clear ownership",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "f",
+              "label": "maintenance",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "g",
+              "label": "safety",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "x",
+              "label": "garden planning",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "y",
+              "label": "seasonal planting",
+              "kind": "concept",
+              "evidence": []
+            },
+            {
+              "key": "z",
+              "label": "community workshop",
+              "kind": "concept",
+              "evidence": []
+            }
+          ],
+          "edges": [
+            {
+              "key": "e0",
+              "source": "a",
+              "target": "b",
+              "relationship": "supports",
+              "evidence": [
+                {
+                  "synthetic": true
+                }
+              ]
+            },
+            {
+              "key": "e1",
+              "source": "b",
+              "target": "c",
+              "relationship": "enables",
+              "evidence": [
+                {
+                  "synthetic": true
+                }
+              ]
+            },
+            {
+              "key": "e2",
+              "source": "c",
+              "target": "d",
+              "relationship": "causes",
+              "evidence": [
+                {
+                  "synthetic": true
+                }
+              ]
+            },
+            {
+              "key": "e3",
+              "source": "b",
+              "target": "e",
+              "relationship": "constrains",
+              "evidence": [
+                {
+                  "synthetic": true
+                }
+              ]
+            },
+            {
+              "key": "e4",
+              "source": "e",
+              "target": "f",
+              "relationship": "supports",
+              "evidence": [
+                {
+                  "synthetic": true
+                }
+              ]
+            },
+            {
+              "key": "remote",
+              "source": "x",
+              "target": "z",
+              "relationship": "associated_with",
+              "evidence": [
+                {
+                  "synthetic": true
+                }
+              ]
+            }
+          ],
+          "sha256": "4a48316e39e80a7b025217201c04ef1c4bcfa70af7db17ef1973f8bd7a462674"
+        },
+        "learner_state": {
+          "schema_version": 1,
+          "global_opportunity": 0,
+          "edge_states": [
+            {
+              "target_key": "e0",
+              "context": "general",
+              "accessibility": 900000,
+              "support": 900000,
+              "consequence": 0,
+              "relevant_opportunities": 0,
+              "inactivity_ticks": 0,
+              "unsupported_streak": 0,
+              "lifetime_by_group": {},
+              "induced_by_group": {},
+              "rolling_credits": [],
+              "last_consolidation_opportunity": null,
+              "raw_occurrence_count": 0,
+              "episode_keys": []
+            },
+            {
+              "target_key": "e1",
+              "context": "general",
+              "accessibility": 700000,
+              "support": 700000,
+              "consequence": 0,
+              "relevant_opportunities": 0,
+              "inactivity_ticks": 0,
+              "unsupported_streak": 0,
+              "lifetime_by_group": {},
+              "induced_by_group": {},
+              "rolling_credits": [],
+              "last_consolidation_opportunity": null,
+              "raw_occurrence_count": 0,
+              "episode_keys": []
+            },
+            {
+              "target_key": "e2",
+              "context": "general",
+              "accessibility": 600000,
+              "support": 600000,
+              "consequence": 0,
+              "relevant_opportunities": 0,
+              "inactivity_ticks": 0,
+              "unsupported_streak": 0,
+              "lifetime_by_group": {},
+              "induced_by_group": {},
+              "rolling_credits": [],
+              "last_consolidation_opportunity": null,
+              "raw_occurrence_count": 0,
+              "episode_keys": []
+            },
+            {
+              "target_key": "e3",
+              "context": "general",
+              "accessibility": 500000,
+              "support": 500000,
+              "consequence": 0,
+              "relevant_opportunities": 0,
+              "inactivity_ticks": 0,
+              "unsupported_streak": 0,
+              "lifetime_by_group": {},
+              "induced_by_group": {},
+              "rolling_credits": [],
+              "last_consolidation_opportunity": null,
+              "raw_occurrence_count": 0,
+              "episode_keys": []
+            },
+            {
+              "target_key": "e4",
+              "context": "general",
+              "accessibility": 400000,
+              "support": 400000,
+              "consequence": 0,
+              "relevant_opportunities": 0,
+              "inactivity_ticks": 0,
+              "unsupported_streak": 0,
+              "lifetime_by_group": {},
+              "induced_by_group": {},
+              "rolling_credits": [],
+              "last_consolidation_opportunity": null,
+              "raw_occurrence_count": 0,
+              "episode_keys": []
+            },
+            {
+              "target_key": "remote",
+              "context": "general",
+              "accessibility": 200000,
+              "support": 200000,
+              "consequence": 0,
+              "relevant_opportunities": 0,
+              "inactivity_ticks": 0,
+              "unsupported_streak": 0,
+              "lifetime_by_group": {},
+              "induced_by_group": {},
+              "rolling_credits": [],
+              "last_consolidation_opportunity": null,
+              "raw_occurrence_count": 0,
+              "episode_keys": []
+            }
+          ],
+          "route_states": [],
+          "applied_operations": []
+        },
+        "config": {
+          "version": "f0-graph-pressure-v2-background",
+          "max_depth": 3,
+          "attenuation": 600000,
+          "minimum_pressure": 20000,
+          "total_budget": 1000000,
+          "max_contributors": 12,
+          "render_max_chars": 900,
+          "background_activation": 30000,
+          "render_pressure_floor": 20000,
+          "exploration": "off",
+          "exploration_slots": 1,
+          "exploration_budget": 100000,
+          "saa_context_weight": 700000,
+          "saa_background_weight": 300000,
+          "saa_novelty_flattening": 650000,
+          "saa_propagation_attenuation": 650000,
+          "saa_decay": 800000
+        },
+        "query": "unfamiliar abstract question",
+        "field_seed": 1,
+        "field_result": {
+          "version": "f0-saa-v1",
+          "query": "unfamiliar abstract question",
+          "config": {
+            "version": "f0-saa-v1",
+            "max_depth": 3,
+            "attenuation": 600000,
+            "minimum_pressure": 20000,
+            "total_budget": 1000000,
+            "max_contributors": 12,
+            "render_max_chars": 900,
+            "background_activation": 30000,
+            "render_pressure_floor": 20000,
+            "exploration": "off",
+            "exploration_slots": 1,
+            "exploration_budget": 100000,
+            "saa_context_weight": 700000,
+            "saa_background_weight": 300000,
+            "saa_novelty_flattening": 650000,
+            "saa_propagation_attenuation": 650000,
+            "saa_decay": 800000
+          },
+          "field_enabled": true,
+          "exploration": "on",
+          "field_seed": 1,
+          "active_concepts": [
+            {
+              "key": "a",
+              "label": "shared tools",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "b",
+              "label": "reservation windows",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "c",
+              "label": "return timing",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "d",
+              "label": "availability status",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "e",
+              "label": "clear ownership",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "f",
+              "label": "maintenance",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "g",
+              "label": "safety",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "x",
+              "label": "garden planning",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "y",
+              "label": "seasonal planting",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            },
+            {
+              "key": "z",
+              "label": "community workshop",
+              "initial_activation": 0,
+              "matched_tokens": [],
+              "contextual_activation": 0,
+              "background_activation": 0
+            }
+          ],
+          "contributions": [
+            {
+              "edge_key": "e0",
+              "source": "a",
+              "target": "b",
+              "relationship": "supports",
+              "path": [
+                "e0"
+              ],
+              "distance": 0,
+              "source_activation": 1000000,
+              "developmental_strength": 900000,
+              "raw_pressure": 900000,
+              "attenuated_pressure": 900000,
+              "eligible": true,
+              "eligibility_reason": "earned",
+              "normalized_pressure": 551142,
+              "final_pressure": 551142,
+              "component": "landing",
+              "exploration_selected": false,
+              "selection_mode": "weighted_distribution",
+              "candidate_component": "background"
+            },
+            {
+              "edge_key": "e1",
+              "source": "b",
+              "target": "c",
+              "relationship": "enables",
+              "path": [
+                "e0",
+                "e1"
+              ],
+              "distance": 1,
+              "source_activation": 1000000,
+              "developmental_strength": 700000,
+              "raw_pressure": 700000,
+              "attenuated_pressure": 364000,
+              "eligible": true,
+              "eligibility_reason": "earned",
+              "normalized_pressure": 222906,
+              "final_pressure": 222906,
+              "component": "propagated",
+              "exploration_selected": false
+            },
+            {
+              "edge_key": "e3",
+              "source": "b",
+              "target": "e",
+              "relationship": "constrains",
+              "path": [
+                "e0",
+                "e3"
+              ],
+              "distance": 1,
+              "source_activation": 1000000,
+              "developmental_strength": 500000,
+              "raw_pressure": 500000,
+              "attenuated_pressure": 260000,
+              "eligible": true,
+              "eligibility_reason": "earned",
+              "normalized_pressure": 159218,
+              "final_pressure": 159218,
+              "component": "propagated",
+              "exploration_selected": false
+            },
+            {
+              "edge_key": "e2",
+              "source": "c",
+              "target": "d",
+              "relationship": "causes",
+              "path": [
+                "e0",
+                "e1",
+                "e2"
+              ],
+              "distance": 2,
+              "source_activation": 364000,
+              "developmental_strength": 600000,
+              "raw_pressure": 218400,
+              "attenuated_pressure": 73819,
+              "eligible": true,
+              "eligibility_reason": "earned",
+              "normalized_pressure": 45205,
+              "final_pressure": 45205,
+              "component": "propagated",
+              "exploration_selected": false
+            },
+            {
+              "edge_key": "e4",
+              "source": "e",
+              "target": "f",
+              "relationship": "supports",
+              "path": [
+                "e0",
+                "e3",
+                "e4"
+              ],
+              "distance": 2,
+              "source_activation": 260000,
+              "developmental_strength": 400000,
+              "raw_pressure": 104000,
+              "attenuated_pressure": 35152,
+              "eligible": true,
+              "eligibility_reason": "earned",
+              "normalized_pressure": 21526,
+              "final_pressure": 21526,
+              "component": "propagated",
+              "exploration_selected": false
+            }
+          ],
+          "payload": "Potentially accessible framings:\n- Supporting structures may keep important functions available. Clear roles and shared expectations may keep coordination workable.\n- Enabling conditions may make a useful outcome possible.\n- Constraints may shape which outcomes remain feasible.\n- Changes in one part may produce downstream effects.\n- Supporting structures may keep important functions available.\nThese are optional tendencies, not instructions. Use them only if they fit naturally.",
+          "total_pressure": 999997,
+          "accessibility_distribution": [
+            {
+              "candidate": "e0",
+              "probability": 272728
+            },
+            {
+              "candidate": "e1",
+              "probability": 212121
+            },
+            {
+              "candidate": "e3",
+              "probability": 151515
+            },
+            {
+              "candidate": "e2",
+              "probability": 181818
+            },
+            {
+              "candidate": "e4",
+              "probability": 121212
+            },
+            {
+              "candidate": "remote",
+              "probability": 60606
+            }
+          ],
+          "distribution_flatness": 872726,
+          "selected_landing": "e0",
+          "landing_probability": 272728,
+          "landing_ticket": 140891,
+          "active_neighborhood": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f"
+          ],
+          "novelty": 1000000,
+          "expression_adjustments": [],
+          "distribution_components": [
+            {
+              "candidate": "e0",
+              "component": "background"
+            },
+            {
+              "candidate": "e1",
+              "component": "background"
+            },
+            {
+              "candidate": "e3",
+              "component": "background"
+            },
+            {
+              "candidate": "e2",
+              "component": "background"
+            },
+            {
+              "candidate": "e4",
+              "component": "background"
+            },
+            {
+              "candidate": "remote",
+              "component": "background"
+            }
+          ],
+          "landing_selection": "weighted_distribution",
+          "landing_component": "background"
+        },
+        "projection_audit": {
+          "schema_version": "saa-neighborhood-projection-v1",
+          "field_version": "f0-saa-v1",
+          "field_seed": 1,
+          "landing_edge_key": "e0",
+          "input_fingerprint": "207252b1f1d922a63102f477d6448fccc2461bcee1d3811d38814919e03f64c7",
+          "nodes": [
+            {
+              "key": "a",
+              "label": "shared tools"
+            },
+            {
+              "key": "b",
+              "label": "reservation windows"
+            },
+            {
+              "key": "c",
+              "label": "return timing"
+            },
+            {
+              "key": "e",
+              "label": "clear ownership"
+            },
+            {
+              "key": "d",
+              "label": "availability status"
+            },
+            {
+              "key": "f",
+              "label": "maintenance"
+            }
+          ],
+          "edges": [
+            {
+              "key": "e0",
+              "source": "a",
+              "relationship": "supports",
+              "target": "b",
+              "path": [
+                "e0"
+              ],
+              "hops": 0,
+              "role": "landing",
+              "pressure": 551142,
+              "component": "landing"
+            },
+            {
+              "key": "e1",
+              "source": "b",
+              "relationship": "enables",
+              "target": "c",
+              "path": [
+                "e0",
+                "e1"
+              ],
+              "hops": 1,
+              "role": "direct",
+              "pressure": 222906,
+              "component": "propagated"
+            },
+            {
+              "key": "e3",
+              "source": "b",
+              "relationship": "constrains",
+              "target": "e",
+              "path": [
+                "e0",
+                "e3"
+              ],
+              "hops": 1,
+              "role": "direct",
+              "pressure": 159218,
+              "component": "propagated"
+            },
+            {
+              "key": "e2",
+              "source": "c",
+              "relationship": "causes",
+              "target": "d",
+              "path": [
+                "e0",
+                "e1",
+                "e2"
+              ],
+              "hops": 2,
+              "role": "farther",
+              "pressure": 45205,
+              "component": "propagated"
+            },
+            {
+              "key": "e4",
+              "source": "e",
+              "relationship": "supports",
+              "target": "f",
+              "path": [
+                "e0",
+                "e3",
+                "e4"
+              ],
+              "hops": 2,
+              "role": "farther",
+              "pressure": 21526,
+              "component": "propagated"
+            }
+          ],
+          "paths": [
+            {
+              "contribution_edge": "e0",
+              "edge_keys": [
+                "e0"
+              ],
+              "hops": 0
+            },
+            {
+              "contribution_edge": "e1",
+              "edge_keys": [
+                "e0",
+                "e1"
+              ],
+              "hops": 1
+            },
+            {
+              "contribution_edge": "e3",
+              "edge_keys": [
+                "e0",
+                "e3"
+              ],
+              "hops": 1
+            },
+            {
+              "contribution_edge": "e2",
+              "edge_keys": [
+                "e0",
+                "e1",
+                "e2"
+              ],
+              "hops": 2
+            },
+            {
+              "contribution_edge": "e4",
+              "edge_keys": [
+                "e0",
+                "e3",
+                "e4"
+              ],
+              "hops": 2
+            }
+          ],
+          "omissions": [],
+          "descriptor_omissions": []
+        },
+        "optional_synthetic_descriptor": {
+          "schema_version": "saa-portable-neighborhood-v1",
+          "relations": [
+            {
+              "source": "shared tools",
+              "relationship": "supports",
+              "target": "reservation windows",
+              "role": "landing",
+              "hops": 0
+            },
+            {
+              "source": "reservation windows",
+              "relationship": "enables",
+              "target": "return timing",
+              "role": "direct",
+              "hops": 1
+            },
+            {
+              "source": "reservation windows",
+              "relationship": "constrains",
+              "target": "clear ownership",
+              "role": "direct",
+              "hops": 1
+            },
+            {
+              "source": "return timing",
+              "relationship": "causes",
+              "target": "availability status",
+              "role": "farther",
+              "hops": 2
+            },
+            {
+              "source": "clear ownership",
+              "relationship": "supports",
+              "target": "maintenance",
+              "role": "farther",
+              "hops": 2
+            }
+          ]
+        }
+      }
+    }
+  },
+  "disconnected_remote_control": {
+    "comparison": "history_a versus history_a_remote_rewire_control",
+    "only_changed_edge_key": "remote",
+    "result_a": {
+      "distribution": [
+        {
+          "candidate": "e0",
+          "probability": 272728
+        },
+        {
+          "candidate": "e1",
+          "probability": 212121
+        },
+        {
+          "candidate": "e3",
+          "probability": 151515
+        },
+        {
+          "candidate": "e2",
+          "probability": 181818
+        },
+        {
+          "candidate": "e4",
+          "probability": 121212
+        },
+        {
+          "candidate": "remote",
+          "probability": 60606
+        }
+      ],
+      "landing": "e0",
+      "projection": {
+        "schema_version": "saa-neighborhood-projection-v1",
+        "field_version": "f0-saa-v1",
+        "field_seed": 1,
+        "landing_edge_key": "e0",
+        "input_fingerprint": "207252b1f1d922a63102f477d6448fccc2461bcee1d3811d38814919e03f64c7",
+        "nodes": [
+          {
+            "key": "a",
+            "label": "shared tools"
+          },
+          {
+            "key": "b",
+            "label": "reservation windows"
+          },
+          {
+            "key": "c",
+            "label": "return timing"
+          },
+          {
+            "key": "e",
+            "label": "clear ownership"
+          },
+          {
+            "key": "d",
+            "label": "availability status"
+          },
+          {
+            "key": "f",
+            "label": "maintenance"
+          }
+        ],
+        "edges": [
+          {
+            "key": "e0",
+            "source": "a",
+            "relationship": "supports",
+            "target": "b",
+            "path": [
+              "e0"
+            ],
+            "hops": 0,
+            "role": "landing",
+            "pressure": 551142,
+            "component": "landing"
+          },
+          {
+            "key": "e1",
+            "source": "b",
+            "relationship": "enables",
+            "target": "c",
+            "path": [
+              "e0",
+              "e1"
+            ],
+            "hops": 1,
+            "role": "direct",
+            "pressure": 222906,
+            "component": "propagated"
+          },
+          {
+            "key": "e3",
+            "source": "b",
+            "relationship": "constrains",
+            "target": "e",
+            "path": [
+              "e0",
+              "e3"
+            ],
+            "hops": 1,
+            "role": "direct",
+            "pressure": 159218,
+            "component": "propagated"
+          },
+          {
+            "key": "e2",
+            "source": "c",
+            "relationship": "causes",
+            "target": "d",
+            "path": [
+              "e0",
+              "e1",
+              "e2"
+            ],
+            "hops": 2,
+            "role": "farther",
+            "pressure": 45205,
+            "component": "propagated"
+          },
+          {
+            "key": "e4",
+            "source": "e",
+            "relationship": "supports",
+            "target": "f",
+            "path": [
+              "e0",
+              "e3",
+              "e4"
+            ],
+            "hops": 2,
+            "role": "farther",
+            "pressure": 21526,
+            "component": "propagated"
+          }
+        ],
+        "paths": [
+          {
+            "contribution_edge": "e0",
+            "edge_keys": [
+              "e0"
+            ],
+            "hops": 0
+          },
+          {
+            "contribution_edge": "e1",
+            "edge_keys": [
+              "e0",
+              "e1"
+            ],
+            "hops": 1
+          },
+          {
+            "contribution_edge": "e3",
+            "edge_keys": [
+              "e0",
+              "e3"
+            ],
+            "hops": 1
+          },
+          {
+            "contribution_edge": "e2",
+            "edge_keys": [
+              "e0",
+              "e1",
+              "e2"
+            ],
+            "hops": 2
+          },
+          {
+            "contribution_edge": "e4",
+            "edge_keys": [
+              "e0",
+              "e3",
+              "e4"
+            ],
+            "hops": 2
+          }
+        ],
+        "omissions": [],
+        "descriptor_omissions": []
+      }
+    },
+    "remote_rewire": {
+      "distribution": [
+        {
+          "candidate": "e0",
+          "probability": 272728
+        },
+        {
+          "candidate": "e1",
+          "probability": 212121
+        },
+        {
+          "candidate": "e3",
+          "probability": 151515
+        },
+        {
+          "candidate": "e2",
+          "probability": 181818
+        },
+        {
+          "candidate": "e4",
+          "probability": 121212
+        },
+        {
+          "candidate": "remote",
+          "probability": 60606
+        }
+      ],
+      "landing": "e0",
+      "projection": {
+        "schema_version": "saa-neighborhood-projection-v1",
+        "field_version": "f0-saa-v1",
+        "field_seed": 1,
+        "landing_edge_key": "e0",
+        "input_fingerprint": "207252b1f1d922a63102f477d6448fccc2461bcee1d3811d38814919e03f64c7",
+        "nodes": [
+          {
+            "key": "a",
+            "label": "shared tools"
+          },
+          {
+            "key": "b",
+            "label": "reservation windows"
+          },
+          {
+            "key": "c",
+            "label": "return timing"
+          },
+          {
+            "key": "e",
+            "label": "clear ownership"
+          },
+          {
+            "key": "d",
+            "label": "availability status"
+          },
+          {
+            "key": "f",
+            "label": "maintenance"
+          }
+        ],
+        "edges": [
+          {
+            "key": "e0",
+            "source": "a",
+            "relationship": "supports",
+            "target": "b",
+            "path": [
+              "e0"
+            ],
+            "hops": 0,
+            "role": "landing",
+            "pressure": 551142,
+            "component": "landing"
+          },
+          {
+            "key": "e1",
+            "source": "b",
+            "relationship": "enables",
+            "target": "c",
+            "path": [
+              "e0",
+              "e1"
+            ],
+            "hops": 1,
+            "role": "direct",
+            "pressure": 222906,
+            "component": "propagated"
+          },
+          {
+            "key": "e3",
+            "source": "b",
+            "relationship": "constrains",
+            "target": "e",
+            "path": [
+              "e0",
+              "e3"
+            ],
+            "hops": 1,
+            "role": "direct",
+            "pressure": 159218,
+            "component": "propagated"
+          },
+          {
+            "key": "e2",
+            "source": "c",
+            "relationship": "causes",
+            "target": "d",
+            "path": [
+              "e0",
+              "e1",
+              "e2"
+            ],
+            "hops": 2,
+            "role": "farther",
+            "pressure": 45205,
+            "component": "propagated"
+          },
+          {
+            "key": "e4",
+            "source": "e",
+            "relationship": "supports",
+            "target": "f",
+            "path": [
+              "e0",
+              "e3",
+              "e4"
+            ],
+            "hops": 2,
+            "role": "farther",
+            "pressure": 21526,
+            "component": "propagated"
+          }
+        ],
+        "paths": [
+          {
+            "contribution_edge": "e0",
+            "edge_keys": [
+              "e0"
+            ],
+            "hops": 0
+          },
+          {
+            "contribution_edge": "e1",
+            "edge_keys": [
+              "e0",
+              "e1"
+            ],
+            "hops": 1
+          },
+          {
+            "contribution_edge": "e3",
+            "edge_keys": [
+              "e0",
+              "e3"
+            ],
+            "hops": 1
+          },
+          {
+            "contribution_edge": "e2",
+            "edge_keys": [
+              "e0",
+              "e1",
+              "e2"
+            ],
+            "hops": 2
+          },
+          {
+            "contribution_edge": "e4",
+            "edge_keys": [
+              "e0",
+              "e3",
+              "e4"
+            ],
+            "hops": 2
+          }
+        ],
+        "omissions": [],
+        "descriptor_omissions": []
+      }
+    }
+  },
+  "directionality": {
+    "fixture": {
+      "concepts": [
+        {
+          "key": "a",
+          "label": "landing alpha",
+          "kind": "concept",
+          "evidence": []
+        },
+        {
+          "key": "b",
+          "label": "landing bravo",
+          "kind": "concept",
+          "evidence": []
+        },
+        {
+          "key": "c",
+          "label": "incoming association concept",
+          "kind": "concept",
+          "evidence": []
+        },
+        {
+          "key": "d",
+          "label": "outgoing consequence",
+          "kind": "concept",
+          "evidence": []
+        },
+        {
+          "key": "e",
+          "label": "incoming causal source",
+          "kind": "concept",
+          "evidence": []
+        },
+        {
+          "key": "f",
+          "label": "part concept",
+          "kind": "concept",
+          "evidence": []
+        }
+      ],
+      "edges": [
+        {
+          "key": "e0",
+          "source": "a",
+          "target": "b",
+          "relationship": "supports",
+          "evidence": [
+            {
+              "synthetic": true
+            }
+          ]
+        },
+        {
+          "key": "incoming",
+          "source": "c",
+          "target": "a",
+          "relationship": "associated_with",
+          "evidence": [
+            {
+              "synthetic": true
+            }
+          ]
+        },
+        {
+          "key": "outgoing",
+          "source": "b",
+          "target": "d",
+          "relationship": "enables",
+          "evidence": [
+            {
+              "synthetic": true
+            }
+          ]
+        }
+      ],
+      "learner_state": {
+        "schema_version": 1,
+        "global_opportunity": 0,
+        "edge_states": [
+          {
+            "target_key": "e0",
+            "context": "general",
+            "accessibility": 900000,
+            "support": 900000,
+            "consequence": 0,
+            "relevant_opportunities": 0,
+            "inactivity_ticks": 0,
+            "unsupported_streak": 0,
+            "lifetime_by_group": {},
+            "induced_by_group": {},
+            "rolling_credits": [],
+            "last_consolidation_opportunity": null,
+            "raw_occurrence_count": 0,
+            "episode_keys": []
+          },
+          {
+            "target_key": "incoming",
+            "context": "general",
+            "accessibility": 500000,
+            "support": 500000,
+            "consequence": 0,
+            "relevant_opportunities": 0,
+            "inactivity_ticks": 0,
+            "unsupported_streak": 0,
+            "lifetime_by_group": {},
+            "induced_by_group": {},
+            "rolling_credits": [],
+            "last_consolidation_opportunity": null,
+            "raw_occurrence_count": 0,
+            "episode_keys": []
+          },
+          {
+            "target_key": "outgoing",
+            "context": "general",
+            "accessibility": 500000,
+            "support": 500000,
+            "consequence": 0,
+            "relevant_opportunities": 0,
+            "inactivity_ticks": 0,
+            "unsupported_streak": 0,
+            "lifetime_by_group": {},
+            "induced_by_group": {},
+            "rolling_credits": [],
+            "last_consolidation_opportunity": null,
+            "raw_occurrence_count": 0,
+            "episode_keys": []
+          }
+        ],
+        "route_states": [],
+        "applied_operations": []
+      },
+      "config": {
+        "version": "f0-graph-pressure-v2-background",
+        "max_depth": 2,
+        "attenuation": 600000,
+        "minimum_pressure": 20000,
+        "total_budget": 1000000,
+        "max_contributors": 8,
+        "render_max_chars": 900,
+        "background_activation": 30000,
+        "render_pressure_floor": 20000,
+        "exploration": "off",
+        "exploration_slots": 1,
+        "exploration_budget": 100000,
+        "saa_context_weight": 700000,
+        "saa_background_weight": 300000,
+        "saa_novelty_flattening": 650000,
+        "saa_propagation_attenuation": 650000,
+        "saa_decay": 800000
+      },
+      "query": "unrelated",
+      "field_seed": 1,
+      "field_result": {
+        "version": "f0-saa-v1",
+        "query": "unrelated",
+        "config": {
+          "version": "f0-saa-v1",
+          "max_depth": 2,
+          "attenuation": 600000,
+          "minimum_pressure": 20000,
+          "total_budget": 1000000,
+          "max_contributors": 8,
+          "render_max_chars": 900,
+          "background_activation": 30000,
+          "render_pressure_floor": 20000,
+          "exploration": "off",
+          "exploration_slots": 1,
+          "exploration_budget": 100000,
+          "saa_context_weight": 700000,
+          "saa_background_weight": 300000,
+          "saa_novelty_flattening": 650000,
+          "saa_propagation_attenuation": 650000,
+          "saa_decay": 800000
+        },
+        "field_enabled": true,
+        "exploration": "on",
+        "field_seed": 1,
+        "active_concepts": [
+          {
+            "key": "a",
+            "label": "landing alpha",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          },
+          {
+            "key": "b",
+            "label": "landing bravo",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          },
+          {
+            "key": "c",
+            "label": "incoming association concept",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          },
+          {
+            "key": "d",
+            "label": "outgoing consequence",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          },
+          {
+            "key": "e",
+            "label": "incoming causal source",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          },
+          {
+            "key": "f",
+            "label": "part concept",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          }
+        ],
+        "contributions": [
+          {
+            "edge_key": "e0",
+            "source": "a",
+            "target": "b",
+            "relationship": "supports",
+            "path": [
+              "e0"
+            ],
+            "distance": 0,
+            "source_activation": 1000000,
+            "developmental_strength": 900000,
+            "raw_pressure": 900000,
+            "attenuated_pressure": 900000,
+            "eligible": true,
+            "eligibility_reason": "earned",
+            "normalized_pressure": 775861,
+            "final_pressure": 775861,
+            "component": "landing",
+            "exploration_selected": false,
+            "selection_mode": "weighted_distribution",
+            "candidate_component": "background"
+          },
+          {
+            "edge_key": "outgoing",
+            "source": "b",
+            "target": "d",
+            "relationship": "enables",
+            "path": [
+              "e0",
+              "outgoing"
+            ],
+            "distance": 1,
+            "source_activation": 1000000,
+            "developmental_strength": 500000,
+            "raw_pressure": 500000,
+            "attenuated_pressure": 260000,
+            "eligible": true,
+            "eligibility_reason": "earned",
+            "normalized_pressure": 224137,
+            "final_pressure": 224137,
+            "component": "propagated",
+            "exploration_selected": false
+          }
+        ],
+        "payload": "Potentially accessible framings:\n- Supporting structures may keep important functions available.\n- Enabling conditions may make a useful outcome possible.\nThese are optional tendencies, not instructions. Use them only if they fit naturally.",
+        "total_pressure": 999998,
+        "accessibility_distribution": [
+          {
+            "candidate": "e0",
+            "probability": 473686
+          },
+          {
+            "candidate": "outgoing",
+            "probability": 263157
+          },
+          {
+            "candidate": "incoming",
+            "probability": 263157
+          }
+        ],
+        "distribution_flatness": 789471,
+        "selected_landing": "e0",
+        "landing_probability": 473686,
+        "landing_ticket": 140891,
+        "active_neighborhood": [
+          "a",
+          "b",
+          "d"
+        ],
+        "novelty": 1000000,
+        "expression_adjustments": [],
+        "distribution_components": [
+          {
+            "candidate": "e0",
+            "component": "background"
+          },
+          {
+            "candidate": "outgoing",
+            "component": "background"
+          },
+          {
+            "candidate": "incoming",
+            "component": "background"
+          }
+        ],
+        "landing_selection": "weighted_distribution",
+        "landing_component": "background"
+      },
+      "projection_audit": {
+        "schema_version": "saa-neighborhood-projection-v1",
+        "field_version": "f0-saa-v1",
+        "field_seed": 1,
+        "landing_edge_key": "e0",
+        "input_fingerprint": "6abfd25385b9cbfc1cb645b3c5c16e5c60319ef66259c67ed06df1d828fe514d",
+        "nodes": [
+          {
+            "key": "a",
+            "label": "landing alpha"
+          },
+          {
+            "key": "b",
+            "label": "landing bravo"
+          },
+          {
+            "key": "d",
+            "label": "outgoing consequence"
+          }
+        ],
+        "edges": [
+          {
+            "key": "e0",
+            "source": "a",
+            "relationship": "supports",
+            "target": "b",
+            "path": [
+              "e0"
+            ],
+            "hops": 0,
+            "role": "landing",
+            "pressure": 775861,
+            "component": "landing"
+          },
+          {
+            "key": "outgoing",
+            "source": "b",
+            "relationship": "enables",
+            "target": "d",
+            "path": [
+              "e0",
+              "outgoing"
+            ],
+            "hops": 1,
+            "role": "direct",
+            "pressure": 224137,
+            "component": "propagated"
+          }
+        ],
+        "paths": [
+          {
+            "contribution_edge": "e0",
+            "edge_keys": [
+              "e0"
+            ],
+            "hops": 0
+          },
+          {
+            "contribution_edge": "outgoing",
+            "edge_keys": [
+              "e0",
+              "outgoing"
+            ],
+            "hops": 1
+          }
+        ],
+        "omissions": [],
+        "descriptor_omissions": []
+      },
+      "counterfactual": {
+        "kind": "reachability_only_counterfactual_not_field_result",
+        "max_depth": 2,
+        "max_records": 64,
+        "records": [
+          {
+            "edge_key": "incoming",
+            "semantic_source": "c",
+            "relationship": "associated_with",
+            "semantic_target": "a",
+            "navigation_from": "a",
+            "navigation_to": "c",
+            "navigation_mode": "incoming_access_only",
+            "depth": 1,
+            "path_edge_keys": [
+              "e0",
+              "incoming"
+            ],
+            "asserts_inverse_semantics": false
+          },
+          {
+            "edge_key": "outgoing",
+            "semantic_source": "b",
+            "relationship": "enables",
+            "semantic_target": "d",
+            "navigation_from": "b",
+            "navigation_to": "d",
+            "navigation_mode": "outgoing",
+            "depth": 1,
+            "path_edge_keys": [
+              "e0",
+              "outgoing"
+            ],
+            "asserts_inverse_semantics": false
+          }
+        ],
+        "truncated": false,
+        "semantic_direction_preserved": true,
+        "inverse_relationships_created": false
+      }
+    },
+    "directional_relation_caution": {
+      "concepts": [
+        {
+          "key": "a",
+          "label": "landing alpha",
+          "kind": "concept",
+          "evidence": []
+        },
+        {
+          "key": "b",
+          "label": "landing bravo",
+          "kind": "concept",
+          "evidence": []
+        },
+        {
+          "key": "c",
+          "label": "incoming association concept",
+          "kind": "concept",
+          "evidence": []
+        },
+        {
+          "key": "d",
+          "label": "outgoing consequence",
+          "kind": "concept",
+          "evidence": []
+        },
+        {
+          "key": "e",
+          "label": "incoming causal source",
+          "kind": "concept",
+          "evidence": []
+        },
+        {
+          "key": "f",
+          "label": "part concept",
+          "kind": "concept",
+          "evidence": []
+        }
+      ],
+      "edges": [
+        {
+          "key": "e0",
+          "source": "a",
+          "target": "b",
+          "relationship": "supports",
+          "evidence": [
+            {
+              "synthetic": true
+            }
+          ]
+        },
+        {
+          "key": "cause_in",
+          "source": "e",
+          "target": "a",
+          "relationship": "causes",
+          "evidence": [
+            {
+              "synthetic": true
+            }
+          ]
+        },
+        {
+          "key": "part_in",
+          "source": "f",
+          "target": "a",
+          "relationship": "part_of",
+          "evidence": [
+            {
+              "synthetic": true
+            }
+          ]
+        },
+        {
+          "key": "prevent_out",
+          "source": "b",
+          "target": "d",
+          "relationship": "prevents",
+          "evidence": [
+            {
+              "synthetic": true
+            }
+          ]
+        }
+      ],
+      "learner_state": {
+        "schema_version": 1,
+        "global_opportunity": 0,
+        "edge_states": [
+          {
+            "target_key": "cause_in",
+            "context": "general",
+            "accessibility": 500000,
+            "support": 500000,
+            "consequence": 0,
+            "relevant_opportunities": 0,
+            "inactivity_ticks": 0,
+            "unsupported_streak": 0,
+            "lifetime_by_group": {},
+            "induced_by_group": {},
+            "rolling_credits": [],
+            "last_consolidation_opportunity": null,
+            "raw_occurrence_count": 0,
+            "episode_keys": []
+          },
+          {
+            "target_key": "e0",
+            "context": "general",
+            "accessibility": 900000,
+            "support": 900000,
+            "consequence": 0,
+            "relevant_opportunities": 0,
+            "inactivity_ticks": 0,
+            "unsupported_streak": 0,
+            "lifetime_by_group": {},
+            "induced_by_group": {},
+            "rolling_credits": [],
+            "last_consolidation_opportunity": null,
+            "raw_occurrence_count": 0,
+            "episode_keys": []
+          },
+          {
+            "target_key": "part_in",
+            "context": "general",
+            "accessibility": 500000,
+            "support": 500000,
+            "consequence": 0,
+            "relevant_opportunities": 0,
+            "inactivity_ticks": 0,
+            "unsupported_streak": 0,
+            "lifetime_by_group": {},
+            "induced_by_group": {},
+            "rolling_credits": [],
+            "last_consolidation_opportunity": null,
+            "raw_occurrence_count": 0,
+            "episode_keys": []
+          },
+          {
+            "target_key": "prevent_out",
+            "context": "general",
+            "accessibility": 500000,
+            "support": 500000,
+            "consequence": 0,
+            "relevant_opportunities": 0,
+            "inactivity_ticks": 0,
+            "unsupported_streak": 0,
+            "lifetime_by_group": {},
+            "induced_by_group": {},
+            "rolling_credits": [],
+            "last_consolidation_opportunity": null,
+            "raw_occurrence_count": 0,
+            "episode_keys": []
+          }
+        ],
+        "route_states": [],
+        "applied_operations": []
+      },
+      "field_result": {
+        "version": "f0-saa-v1",
+        "query": "unrelated",
+        "config": {
+          "version": "f0-saa-v1",
+          "max_depth": 2,
+          "attenuation": 600000,
+          "minimum_pressure": 20000,
+          "total_budget": 1000000,
+          "max_contributors": 8,
+          "render_max_chars": 900,
+          "background_activation": 30000,
+          "render_pressure_floor": 20000,
+          "exploration": "off",
+          "exploration_slots": 1,
+          "exploration_budget": 100000,
+          "saa_context_weight": 700000,
+          "saa_background_weight": 300000,
+          "saa_novelty_flattening": 650000,
+          "saa_propagation_attenuation": 650000,
+          "saa_decay": 800000
+        },
+        "field_enabled": true,
+        "exploration": "on",
+        "field_seed": 1,
+        "active_concepts": [
+          {
+            "key": "a",
+            "label": "landing alpha",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          },
+          {
+            "key": "b",
+            "label": "landing bravo",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          },
+          {
+            "key": "c",
+            "label": "incoming association concept",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          },
+          {
+            "key": "d",
+            "label": "outgoing consequence",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          },
+          {
+            "key": "e",
+            "label": "incoming causal source",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          },
+          {
+            "key": "f",
+            "label": "part concept",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          }
+        ],
+        "contributions": [
+          {
+            "edge_key": "e0",
+            "source": "a",
+            "target": "b",
+            "relationship": "supports",
+            "path": [
+              "e0"
+            ],
+            "distance": 0,
+            "source_activation": 1000000,
+            "developmental_strength": 900000,
+            "raw_pressure": 900000,
+            "attenuated_pressure": 900000,
+            "eligible": true,
+            "eligibility_reason": "earned",
+            "normalized_pressure": 775861,
+            "final_pressure": 775861,
+            "component": "landing",
+            "exploration_selected": false,
+            "selection_mode": "weighted_distribution",
+            "candidate_component": "background"
+          },
+          {
+            "edge_key": "prevent_out",
+            "source": "b",
+            "target": "d",
+            "relationship": "prevents",
+            "path": [
+              "e0",
+              "prevent_out"
+            ],
+            "distance": 1,
+            "source_activation": 1000000,
+            "developmental_strength": 500000,
+            "raw_pressure": 500000,
+            "attenuated_pressure": 260000,
+            "eligible": true,
+            "eligibility_reason": "earned",
+            "normalized_pressure": 224137,
+            "final_pressure": 224137,
+            "component": "propagated",
+            "exploration_selected": false
+          }
+        ],
+        "payload": "Potentially accessible framings:\n- Supporting structures may keep important functions available.\n- Barriers may reduce unwanted outcomes.\nThese are optional tendencies, not instructions. Use them only if they fit naturally.",
+        "total_pressure": 999998,
+        "accessibility_distribution": [
+          {
+            "candidate": "e0",
+            "probability": 375001
+          },
+          {
+            "candidate": "prevent_out",
+            "probability": 208333
+          },
+          {
+            "candidate": "cause_in",
+            "probability": 208333
+          },
+          {
+            "candidate": "part_in",
+            "probability": 208333
+          }
+        ],
+        "distribution_flatness": 833332,
+        "selected_landing": "e0",
+        "landing_probability": 375001,
+        "landing_ticket": 140891,
+        "active_neighborhood": [
+          "a",
+          "b",
+          "d"
+        ],
+        "novelty": 1000000,
+        "expression_adjustments": [],
+        "distribution_components": [
+          {
+            "candidate": "e0",
+            "component": "background"
+          },
+          {
+            "candidate": "prevent_out",
+            "component": "background"
+          },
+          {
+            "candidate": "cause_in",
+            "component": "background"
+          },
+          {
+            "candidate": "part_in",
+            "component": "background"
+          }
+        ],
+        "landing_selection": "weighted_distribution",
+        "landing_component": "background"
+      },
+      "counterfactual": {
+        "kind": "reachability_only_counterfactual_not_field_result",
+        "max_depth": 2,
+        "max_records": 64,
+        "records": [
+          {
+            "edge_key": "cause_in",
+            "semantic_source": "e",
+            "relationship": "causes",
+            "semantic_target": "a",
+            "navigation_from": "a",
+            "navigation_to": "e",
+            "navigation_mode": "incoming_access_only",
+            "depth": 1,
+            "path_edge_keys": [
+              "e0",
+              "cause_in"
+            ],
+            "asserts_inverse_semantics": false
+          },
+          {
+            "edge_key": "part_in",
+            "semantic_source": "f",
+            "relationship": "part_of",
+            "semantic_target": "a",
+            "navigation_from": "a",
+            "navigation_to": "f",
+            "navigation_mode": "incoming_access_only",
+            "depth": 1,
+            "path_edge_keys": [
+              "e0",
+              "part_in"
+            ],
+            "asserts_inverse_semantics": false
+          },
+          {
+            "edge_key": "prevent_out",
+            "semantic_source": "b",
+            "relationship": "prevents",
+            "semantic_target": "d",
+            "navigation_from": "b",
+            "navigation_to": "d",
+            "navigation_mode": "outgoing",
+            "depth": 1,
+            "path_edge_keys": [
+              "e0",
+              "prevent_out"
+            ],
+            "asserts_inverse_semantics": false
+          }
+        ],
+        "truncated": false,
+        "semantic_direction_preserved": true,
+        "inverse_relationships_created": false
+      },
+      "warning": "incoming navigation preserves C causes A and F part_of A; it does not assert A causes C or A part_of F"
+    }
+  },
+  "cap_and_attenuation": {
+    "source_receipt": "docs/receipts/MNEME_SAA_Neighborhood_Projection_Baseline_20261015.json#/dedup_and_cap_fixture",
+    "prior_raw_path_witness": [
+      [
+        "e0",
+        "e1",
+        "e3"
+      ],
+      [
+        "e0",
+        "e2",
+        "e3"
+      ]
+    ],
+    "prior_raw_path_witness_provenance": "LCN-01 receipt; raw propagation alternatives are not exposed by FieldResult",
+    "fixture": {
+      "concepts": [
+        {
+          "key": "a",
+          "label": "alpha",
+          "kind": "concept",
+          "evidence": []
+        },
+        {
+          "key": "b",
+          "label": "bravo",
+          "kind": "concept",
+          "evidence": []
+        },
+        {
+          "key": "c",
+          "label": "charlie",
+          "kind": "concept",
+          "evidence": []
+        },
+        {
+          "key": "d",
+          "label": "delta",
+          "kind": "concept",
+          "evidence": []
+        },
+        {
+          "key": "e",
+          "label": "echo",
+          "kind": "concept",
+          "evidence": []
+        },
+        {
+          "key": "f",
+          "label": "foxtrot",
+          "kind": "concept",
+          "evidence": []
+        },
+        {
+          "key": "g",
+          "label": "golf",
+          "kind": "concept",
+          "evidence": []
+        },
+        {
+          "key": "h",
+          "label": "hotel",
+          "kind": "concept",
+          "evidence": []
+        }
+      ],
+      "edges": [
+        {
+          "key": "e0",
+          "source": "a",
+          "target": "b",
+          "relationship": "supports",
+          "evidence": [
+            {
+              "synthetic": true
+            }
+          ]
+        },
+        {
+          "key": "e1",
+          "source": "a",
+          "target": "c",
+          "relationship": "enables",
+          "evidence": [
+            {
+              "synthetic": true
+            }
+          ]
+        },
+        {
+          "key": "e2",
+          "source": "b",
+          "target": "c",
+          "relationship": "causes",
+          "evidence": [
+            {
+              "synthetic": true
+            }
+          ]
+        },
+        {
+          "key": "e3",
+          "source": "c",
+          "target": "d",
+          "relationship": "constrains",
+          "evidence": [
+            {
+              "synthetic": true
+            }
+          ]
+        },
+        {
+          "key": "e4",
+          "source": "a",
+          "target": "e",
+          "relationship": "supports",
+          "evidence": [
+            {
+              "synthetic": true
+            }
+          ]
+        },
+        {
+          "key": "e5",
+          "source": "b",
+          "target": "f",
+          "relationship": "prevents",
+          "evidence": [
+            {
+              "synthetic": true
+            }
+          ]
+        },
+        {
+          "key": "e6",
+          "source": "e",
+          "target": "g",
+          "relationship": "depends_on",
+          "evidence": [
+            {
+              "synthetic": true
+            }
+          ]
+        },
+        {
+          "key": "e7",
+          "source": "f",
+          "target": "h",
+          "relationship": "retains",
+          "evidence": [
+            {
+              "synthetic": true
+            }
+          ]
+        }
+      ],
+      "learner_state": {
+        "schema_version": 1,
+        "global_opportunity": 0,
+        "edge_states": [
+          {
+            "target_key": "e0",
+            "context": "general",
+            "accessibility": 800000,
+            "support": 800000,
+            "consequence": 0,
+            "relevant_opportunities": 0,
+            "inactivity_ticks": 0,
+            "unsupported_streak": 0,
+            "lifetime_by_group": {},
+            "induced_by_group": {},
+            "rolling_credits": [],
+            "last_consolidation_opportunity": null,
+            "raw_occurrence_count": 0,
+            "episode_keys": []
+          },
+          {
+            "target_key": "e1",
+            "context": "general",
+            "accessibility": 800000,
+            "support": 800000,
+            "consequence": 0,
+            "relevant_opportunities": 0,
+            "inactivity_ticks": 0,
+            "unsupported_streak": 0,
+            "lifetime_by_group": {},
+            "induced_by_group": {},
+            "rolling_credits": [],
+            "last_consolidation_opportunity": null,
+            "raw_occurrence_count": 0,
+            "episode_keys": []
+          },
+          {
+            "target_key": "e2",
+            "context": "general",
+            "accessibility": 800000,
+            "support": 800000,
+            "consequence": 0,
+            "relevant_opportunities": 0,
+            "inactivity_ticks": 0,
+            "unsupported_streak": 0,
+            "lifetime_by_group": {},
+            "induced_by_group": {},
+            "rolling_credits": [],
+            "last_consolidation_opportunity": null,
+            "raw_occurrence_count": 0,
+            "episode_keys": []
+          },
+          {
+            "target_key": "e3",
+            "context": "general",
+            "accessibility": 800000,
+            "support": 800000,
+            "consequence": 0,
+            "relevant_opportunities": 0,
+            "inactivity_ticks": 0,
+            "unsupported_streak": 0,
+            "lifetime_by_group": {},
+            "induced_by_group": {},
+            "rolling_credits": [],
+            "last_consolidation_opportunity": null,
+            "raw_occurrence_count": 0,
+            "episode_keys": []
+          },
+          {
+            "target_key": "e4",
+            "context": "general",
+            "accessibility": 800000,
+            "support": 800000,
+            "consequence": 0,
+            "relevant_opportunities": 0,
+            "inactivity_ticks": 0,
+            "unsupported_streak": 0,
+            "lifetime_by_group": {},
+            "induced_by_group": {},
+            "rolling_credits": [],
+            "last_consolidation_opportunity": null,
+            "raw_occurrence_count": 0,
+            "episode_keys": []
+          },
+          {
+            "target_key": "e5",
+            "context": "general",
+            "accessibility": 800000,
+            "support": 800000,
+            "consequence": 0,
+            "relevant_opportunities": 0,
+            "inactivity_ticks": 0,
+            "unsupported_streak": 0,
+            "lifetime_by_group": {},
+            "induced_by_group": {},
+            "rolling_credits": [],
+            "last_consolidation_opportunity": null,
+            "raw_occurrence_count": 0,
+            "episode_keys": []
+          },
+          {
+            "target_key": "e6",
+            "context": "general",
+            "accessibility": 800000,
+            "support": 800000,
+            "consequence": 0,
+            "relevant_opportunities": 0,
+            "inactivity_ticks": 0,
+            "unsupported_streak": 0,
+            "lifetime_by_group": {},
+            "induced_by_group": {},
+            "rolling_credits": [],
+            "last_consolidation_opportunity": null,
+            "raw_occurrence_count": 0,
+            "episode_keys": []
+          },
+          {
+            "target_key": "e7",
+            "context": "general",
+            "accessibility": 800000,
+            "support": 800000,
+            "consequence": 0,
+            "relevant_opportunities": 0,
+            "inactivity_ticks": 0,
+            "unsupported_streak": 0,
+            "lifetime_by_group": {},
+            "induced_by_group": {},
+            "rolling_credits": [],
+            "last_consolidation_opportunity": null,
+            "raw_occurrence_count": 0,
+            "episode_keys": []
+          }
+        ],
+        "route_states": [],
+        "applied_operations": []
+      },
+      "config": {
+        "version": "f0-graph-pressure-v2-background",
+        "max_depth": 2,
+        "attenuation": 600000,
+        "minimum_pressure": 20000,
+        "total_budget": 1000000,
+        "max_contributors": 7,
+        "render_max_chars": 900,
+        "background_activation": 30000,
+        "render_pressure_floor": 20000,
+        "exploration": "off",
+        "exploration_slots": 1,
+        "exploration_budget": 100000,
+        "saa_context_weight": 700000,
+        "saa_background_weight": 300000,
+        "saa_novelty_flattening": 650000,
+        "saa_propagation_attenuation": 650000,
+        "saa_decay": 800000
+      },
+      "query": "unrelated abstract question",
+      "field_seed": 14,
+      "field_result": {
+        "version": "f0-saa-v1",
+        "query": "unrelated abstract question",
+        "config": {
+          "version": "f0-saa-v1",
+          "max_depth": 2,
+          "attenuation": 600000,
+          "minimum_pressure": 20000,
+          "total_budget": 1000000,
+          "max_contributors": 7,
+          "render_max_chars": 900,
+          "background_activation": 30000,
+          "render_pressure_floor": 20000,
+          "exploration": "off",
+          "exploration_slots": 1,
+          "exploration_budget": 100000,
+          "saa_context_weight": 700000,
+          "saa_background_weight": 300000,
+          "saa_novelty_flattening": 650000,
+          "saa_propagation_attenuation": 650000,
+          "saa_decay": 800000
+        },
+        "field_enabled": true,
+        "exploration": "on",
+        "field_seed": 14,
+        "active_concepts": [
+          {
+            "key": "a",
+            "label": "alpha",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          },
+          {
+            "key": "b",
+            "label": "bravo",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          },
+          {
+            "key": "c",
+            "label": "charlie",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          },
+          {
+            "key": "d",
+            "label": "delta",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          },
+          {
+            "key": "e",
+            "label": "echo",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          },
+          {
+            "key": "f",
+            "label": "foxtrot",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          },
+          {
+            "key": "g",
+            "label": "golf",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          },
+          {
+            "key": "h",
+            "label": "hotel",
+            "initial_activation": 0,
+            "matched_tokens": [],
+            "contextual_activation": 0,
+            "background_activation": 0
+          }
+        ],
+        "contributions": [
+          {
+            "edge_key": "e0",
+            "source": "a",
+            "target": "b",
+            "relationship": "supports",
+            "path": [
+              "e0"
+            ],
+            "distance": 0,
+            "source_activation": 1000000,
+            "developmental_strength": 800000,
+            "raw_pressure": 800000,
+            "attenuated_pressure": 800000,
+            "eligible": true,
+            "eligibility_reason": "earned",
+            "normalized_pressure": 297511,
+            "final_pressure": 297511,
+            "component": "landing",
+            "exploration_selected": false,
+            "selection_mode": "weighted_distribution",
+            "candidate_component": "background"
+          },
+          {
+            "edge_key": "e1",
+            "source": "a",
+            "target": "c",
+            "relationship": "enables",
+            "path": [
+              "e0",
+              "e1"
+            ],
+            "distance": 1,
+            "source_activation": 1000000,
+            "developmental_strength": 800000,
+            "raw_pressure": 800000,
+            "attenuated_pressure": 416000,
+            "eligible": true,
+            "eligibility_reason": "earned",
+            "normalized_pressure": 154705,
+            "final_pressure": 154705,
+            "component": "propagated",
+            "exploration_selected": false
+          },
+          {
+            "edge_key": "e2",
+            "source": "b",
+            "target": "c",
+            "relationship": "causes",
+            "path": [
+              "e0",
+              "e2"
+            ],
+            "distance": 1,
+            "source_activation": 1000000,
+            "developmental_strength": 800000,
+            "raw_pressure": 800000,
+            "attenuated_pressure": 416000,
+            "eligible": true,
+            "eligibility_reason": "earned",
+            "normalized_pressure": 154705,
+            "final_pressure": 154705,
+            "component": "propagated",
+            "exploration_selected": false
+          },
+          {
+            "edge_key": "e4",
+            "source": "a",
+            "target": "e",
+            "relationship": "supports",
+            "path": [
+              "e0",
+              "e4"
+            ],
+            "distance": 1,
+            "source_activation": 1000000,
+            "developmental_strength": 800000,
+            "raw_pressure": 800000,
+            "attenuated_pressure": 416000,
+            "eligible": true,
+            "eligibility_reason": "earned",
+            "normalized_pressure": 154705,
+            "final_pressure": 154705,
+            "component": "propagated",
+            "exploration_selected": false
+          },
+          {
+            "edge_key": "e5",
+            "source": "b",
+            "target": "f",
+            "relationship": "prevents",
+            "path": [
+              "e0",
+              "e5"
+            ],
+            "distance": 1,
+            "source_activation": 1000000,
+            "developmental_strength": 800000,
+            "raw_pressure": 800000,
+            "attenuated_pressure": 416000,
+            "eligible": true,
+            "eligibility_reason": "earned",
+            "normalized_pressure": 154705,
+            "final_pressure": 154705,
+            "component": "propagated",
+            "exploration_selected": false
+          },
+          {
+            "edge_key": "e3",
+            "source": "c",
+            "target": "d",
+            "relationship": "constrains",
+            "path": [
+              "e0",
+              "e1",
+              "e3"
+            ],
+            "distance": 2,
+            "source_activation": 416000,
+            "developmental_strength": 800000,
+            "raw_pressure": 332800,
+            "attenuated_pressure": 112486,
+            "eligible": true,
+            "eligibility_reason": "earned",
+            "normalized_pressure": 41832,
+            "final_pressure": 41832,
+            "component": "propagated",
+            "exploration_selected": false
+          },
+          {
+            "edge_key": "e6",
+            "source": "e",
+            "target": "g",
+            "relationship": "depends_on",
+            "path": [
+              "e0",
+              "e4",
+              "e6"
+            ],
+            "distance": 2,
+            "source_activation": 416000,
+            "developmental_strength": 800000,
+            "raw_pressure": 332800,
+            "attenuated_pressure": 112486,
+            "eligible": true,
+            "eligibility_reason": "earned",
+            "normalized_pressure": 41832,
+            "final_pressure": 41832,
+            "component": "propagated",
+            "exploration_selected": false
+          }
+        ],
+        "payload": "Potentially accessible framings:\n- Supporting structures may keep important functions available.\n- Enabling conditions may make a useful outcome possible.\n- Changes in one part may produce downstream effects.\n- Barriers may reduce unwanted outcomes.\n- Constraints may shape which outcomes remain feasible.\n- Outcomes may depend on the conditions that support them.\nThese are optional tendencies, not instructions. Use them only if they fit naturally.",
+        "total_pressure": 999995,
+        "accessibility_distribution": [
+          {
+            "candidate": "e0",
+            "probability": 125000
+          },
+          {
+            "candidate": "e1",
+            "probability": 125000
+          },
+          {
+            "candidate": "e4",
+            "probability": 125000
+          },
+          {
+            "candidate": "e2",
+            "probability": 125000
+          },
+          {
+            "candidate": "e5",
+            "probability": 125000
+          },
+          {
+            "candidate": "e3",
+            "probability": 125000
+          },
+          {
+            "candidate": "e6",
+            "probability": 125000
+          },
+          {
+            "candidate": "e7",
+            "probability": 125000
+          }
+        ],
+        "distribution_flatness": 1000000,
+        "selected_landing": "e0",
+        "landing_probability": 125000,
+        "landing_ticket": 112017,
+        "active_neighborhood": [
+          "a",
+          "b",
+          "c",
+          "d",
+          "e",
+          "f",
+          "g"
+        ],
+        "novelty": 1000000,
+        "expression_adjustments": [],
+        "distribution_components": [
+          {
+            "candidate": "e0",
+            "component": "background"
+          },
+          {
+            "candidate": "e1",
+            "component": "background"
+          },
+          {
+            "candidate": "e4",
+            "component": "background"
+          },
+          {
+            "candidate": "e2",
+            "component": "background"
+          },
+          {
+            "candidate": "e5",
+            "component": "background"
+          },
+          {
+            "candidate": "e3",
+            "component": "background"
+          },
+          {
+            "candidate": "e6",
+            "component": "background"
+          },
+          {
+            "candidate": "e7",
+            "component": "background"
+          }
+        ],
+        "landing_selection": "weighted_distribution",
+        "landing_component": "background"
+      },
+      "projection_audit": {
+        "schema_version": "saa-neighborhood-projection-v1",
+        "field_version": "f0-saa-v1",
+        "field_seed": 14,
+        "landing_edge_key": "e0",
+        "input_fingerprint": "08ca3191c8efc28fc62ef035a608a37d1354d23a554cf441857882c01b512264",
+        "nodes": [
+          {
+            "key": "a",
+            "label": "alpha"
+          },
+          {
+            "key": "b",
+            "label": "bravo"
+          },
+          {
+            "key": "c",
+            "label": "charlie"
+          },
+          {
+            "key": "e",
+            "label": "echo"
+          },
+          {
+            "key": "f",
+            "label": "foxtrot"
+          },
+          {
+            "key": "d",
+            "label": "delta"
+          },
+          {
+            "key": "g",
+            "label": "golf"
+          }
+        ],
+        "edges": [
+          {
+            "key": "e0",
+            "source": "a",
+            "relationship": "supports",
+            "target": "b",
+            "path": [
+              "e0"
+            ],
+            "hops": 0,
+            "role": "landing",
+            "pressure": 297511,
+            "component": "landing"
+          },
+          {
+            "key": "e1",
+            "source": "a",
+            "relationship": "enables",
+            "target": "c",
+            "path": [
+              "e0",
+              "e1"
+            ],
+            "hops": 1,
+            "role": "direct",
+            "pressure": 154705,
+            "component": "propagated"
+          },
+          {
+            "key": "e2",
+            "source": "b",
+            "relationship": "causes",
+            "target": "c",
+            "path": [
+              "e0",
+              "e2"
+            ],
+            "hops": 1,
+            "role": "cross_link",
+            "pressure": 154705,
+            "component": "propagated"
+          },
+          {
+            "key": "e4",
+            "source": "a",
+            "relationship": "supports",
+            "target": "e",
+            "path": [
+              "e0",
+              "e4"
+            ],
+            "hops": 1,
+            "role": "direct",
+            "pressure": 154705,
+            "component": "propagated"
+          },
+          {
+            "key": "e5",
+            "source": "b",
+            "relationship": "prevents",
+            "target": "f",
+            "path": [
+              "e0",
+              "e5"
+            ],
+            "hops": 1,
+            "role": "direct",
+            "pressure": 154705,
+            "component": "propagated"
+          },
+          {
+            "key": "e3",
+            "source": "c",
+            "relationship": "constrains",
+            "target": "d",
+            "path": [
+              "e0",
+              "e1",
+              "e3"
+            ],
+            "hops": 2,
+            "role": "farther",
+            "pressure": 41832,
+            "component": "propagated"
+          },
+          {
+            "key": "e6",
+            "source": "e",
+            "relationship": "depends_on",
+            "target": "g",
+            "path": [
+              "e0",
+              "e4",
+              "e6"
+            ],
+            "hops": 2,
+            "role": "farther",
+            "pressure": 41832,
+            "component": "propagated"
+          }
+        ],
+        "paths": [
+          {
+            "contribution_edge": "e0",
+            "edge_keys": [
+              "e0"
+            ],
+            "hops": 0
+          },
+          {
+            "contribution_edge": "e1",
+            "edge_keys": [
+              "e0",
+              "e1"
+            ],
+            "hops": 1
+          },
+          {
+            "contribution_edge": "e2",
+            "edge_keys": [
+              "e0",
+              "e2"
+            ],
+            "hops": 1
+          },
+          {
+            "contribution_edge": "e4",
+            "edge_keys": [
+              "e0",
+              "e4"
+            ],
+            "hops": 1
+          },
+          {
+            "contribution_edge": "e5",
+            "edge_keys": [
+              "e0",
+              "e5"
+            ],
+            "hops": 1
+          },
+          {
+            "contribution_edge": "e3",
+            "edge_keys": [
+              "e0",
+              "e1",
+              "e3"
+            ],
+            "hops": 2
+          },
+          {
+            "contribution_edge": "e6",
+            "edge_keys": [
+              "e0",
+              "e4",
+              "e6"
+            ],
+            "hops": 2
+          }
+        ],
+        "omissions": [],
+        "descriptor_omissions": []
+      }
+    }
+  },
+  "interpretation": {
+    "observed": [
+      "LCN02 fixed landing results come from actual compute_saa_field calls and both select e0 with seed 1.",
+      "The fixed histories have identical vocabulary, edge inventory, learner strengths, and distribution by edge key; only e2/e4 endpoints differ.",
+      "The disconnected remote-edge rewire changes no landing or projected local view.",
+      "Production propagation omits the positive incoming edge because adjacency is keyed only by edge.source.",
+      "The counterfactual only describes bounded reachability and retains each edge's original semantic source, relation, and target.",
+      "The cap fixture omits e7 upstream; projection reflects contributions supplied by FieldResult and does not recover e7 or the alternate deduplicated e3 path."
+    ],
+    "unproven": [
+      "No preserved developmental history was changed or analyzed.",
+      "No frequency/prevalence of incoming-edge loss is established.",
+      "No model uptake or behavioral benefit is established.",
+      "No relation-specific inverse/access policy is approved by this diagnostic."
+    ]
+  }
+}

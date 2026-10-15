@@ -1727,3 +1727,9 @@ and dispositions remain unchanged.
 ## 2026-10-15 SAA neighborhood projection queue closure
 
 - Closed the local SAA-LCN-01 queue after Root validation: deterministic replay receipts, projection tests, full test suite, Ruff, strict mypy, whitespace check, and GitHub CI all passed. The implementation and comparison receipts are on `research/saa-lcn-01`; the main worktree and MI branches were not changed. Queue state is retained at `.codex/work-queue-saa-lcn-01.json`.
+
+## 2026-10-15 LCN-02 fixed-landing counterfactuals
+
+- Added model-free synthetic receipts holding the SAA landing at `e0` while changing only earned non-landing endpoints; the distribution and landing match, projected path topology differs, and the legacy renderer output is identical.
+- Added a disconnected remote-edge control and a reachability-only incoming-edge counterfactual that preserves original edge source, relation, and target, with explicit `causes`/`part_of` inverse-semantics warnings.
+- Reused the LCN-01 cap/de-dup trace and verified that projection does not reconstruct an upstream omitted candidate or alternate deduplicated path. No production SAA or projection behavior changed.
