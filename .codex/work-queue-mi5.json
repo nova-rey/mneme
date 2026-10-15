@@ -1,0 +1,133 @@
+{
+  "campaign": "mneme-phase4-mi5-original-memory-inception",
+  "created_at": "2026-10-15T12:44:45.796218Z",
+  "dependencies": {},
+  "hard_problem_repo": null,
+  "packages": [
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "d98fe4e0f0472fc5bb0f0368d739c8f49e8d3d44",
+      "campaign": "mneme-phase4-mi5-original-memory-inception",
+      "candidate": {
+        "artifact": null,
+        "base_sha": "d98fe4e0f0472fc5bb0f0368d739c8f49e8d3d44",
+        "returned_at": "2026-10-15T12:53:50.205462Z",
+        "returned_by": "/root/mi5_supervisor",
+        "sha": "ef9b904ab3d93f1c4c63293f436a24ad98519b0d"
+      },
+      "completion_criterion": "Return one supported MI5 disposition: stock upstream runs and shows semantic influence; stock upstream runs but no semantic influence demonstrated; runs only with documented compatibility changes; not practically runnable on current local hardware; or upstream release incomplete for required execution. Commit compact report/receipt to the MI5 research branch and preserve upstream and experiment evidence outside Git.",
+      "created_at": "2026-10-15T12:44:45.840895Z",
+      "dependencies": [],
+      "domain": "memory-inception-upstream-reproduction",
+      "edit_boundaries": [
+        "/tmp/mneme-mi5 only for project changes",
+        "/home/nyx/mneme-artifacts/phase4-mi5 for upstream clone and large evidence",
+        "pristine upstream clone must remain unmodified",
+        "compatibility patches, if unavoidable, must be isolated and labeled",
+        "no edits to /home/nyx/mneme canonical dirty worktree"
+      ],
+      "evidence_refs": [
+        "Root validated and published MI5 report/JSON at candidate ef9b904ab3d93f1c4c63293f436a24ad98519b0d; 960 tests, Ruff, strict mypy, upstream manifest/source checks pass; GitHub CI 38738150382 success. No inference or MNEME state mutation."
+      ],
+      "id": "MI5-ORIGINAL-MI-FEASIBILITY",
+      "notes": "",
+      "owner": null,
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "MI5-R1-UPSTREAM-PRESERVATION",
+        "MI5-R2-SOURCE-UNDERSTANDING",
+        "MI5-R3-IMPLEMENTATION-COMPARISON",
+        "MI5-R4-LOCAL-HARDWARE-FEASIBILITY",
+        "MI5-R5-STOCK-QWEN-EXECUTION",
+        "MI5-R6-GEMMA-FEASIBILITY",
+        "MI5-R7-BEHAVIORAL-TEST",
+        "MI5-R8-DURABLE-EVIDENCE"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": true,
+          "name": "upstream_clone",
+          "units": 1
+        },
+        {
+          "exclusive": true,
+          "name": "local_model_generation",
+          "units": 1
+        }
+      ],
+      "scope": "Clone Andy Liu's original Memory_Inception repository outside production MNEME, preserve a pristine source copy, inspect the released Qwen3 evaluation and unfinished vLLM port, compare against MI1-MI3 without changing them, verify current local hardware/model feasibility, run the stock HF/PyTorch path if possible on local Qwen, assess Gemma support, and publish compact evidence/report on the MI research branch. No MNEME state, SAA, CompactStore, development, paid cloud, or production changes.",
+      "session_ids": [],
+      "status": "DONE",
+      "title": "MI5 stock original Memory Inception feasibility on local host",
+      "updated_at": "2026-10-15T12:55:15.991959Z",
+      "validation": {
+        "required": [
+          "Pristine upstream URL, commit, tree, license, dependencies, and working/incomplete entry points are recorded and hash-verified",
+          "Paper/upstream-to-MI1-MI3 implementation comparison separates evidenced discrepancies from causal speculation",
+          "Current local hardware and exact model artifact/runtime feasibility are measured before downloading/loading weights",
+          "Any reported stock result is produced by unmodified upstream code and has durable request/reasoning/final evidence; patched results are separately labeled",
+          "Gemma direct support versus checkpoint/adaptation requirements is established from source and a bounded smoke if practical",
+          "Compact human-readable report and JSON receipt are published, external artifacts remain outside Git, and no production/development state changed",
+          "Focused/full tests, Ruff, strict mypy, CI, pushed branch, and clean worktree"
+        ],
+        "results": {
+          "Any reported stock result is produced by unmodified upstream code and has durable request/reasoning/final evidence; patched results are separately labeled": {
+            "receipt": "No stock inference/result is claimed; pristine source only syntax-checked; canonical entrypoint import preflight fails before model loading; zero inference calls.",
+            "recorded_at": "2026-10-15T12:55:12.428442Z",
+            "status": "PASS"
+          },
+          "Compact human-readable report and JSON receipt are published, external artifacts remain outside Git, and no production/development state changed": {
+            "receipt": "Markdown and JSON receipts committed; upstream clone and source manifests remain outside Git; root diff from MI4 contains only those receipts and append-only bible entry; no MNEME/development state opened.",
+            "recorded_at": "2026-10-15T12:55:12.509346Z",
+            "status": "PASS"
+          },
+          "Current local hardware and exact model artifact/runtime feasibility are measured before downloading/loading weights": {
+            "receipt": "MSI hardware and local Qwen3-4B Q4_K_M GGUF identity/hash recorded; no downloads/model loads; source loader requires Qwen3-MoE HF and stock code lacks GGUF path.",
+            "recorded_at": "2026-10-15T12:55:12.384589Z",
+            "status": "PASS"
+          },
+          "Focused/full tests, Ruff, strict mypy, CI, pushed branch, and clean worktree": {
+            "receipt": "Root reran pytest: 960 passed; .venv/bin/ruff check . PASS; .venv/bin/mypy --strict src PASS (72 files); upstream compileall/JSON/diff checks PASS; GitHub CI 38738150382 SUCCESS for ef9b904ab3d93f1c4c63293f436a24ad98519b0d. Queue closure commit will preserve this validation ledger and restore clean status.",
+            "recorded_at": "2026-10-15T12:55:12.554771Z",
+            "status": "PASS"
+          },
+          "Gemma direct support versus checkpoint/adaptation requirements is established from source and a bounded smoke if practical": {
+            "receipt": "HF loader architecture assertion is Qwen3-MoE-specific and requires PyTorch model modules; Gemma host is llama.cpp Q2 GGUF. Direct support absent; no Gemma smoke was practical/needed.",
+            "recorded_at": "2026-10-15T12:55:12.467997Z",
+            "status": "PASS"
+          },
+          "Paper/upstream-to-MI1-MI3 implementation comparison separates evidenced discrepancies from causal speculation": {
+            "receipt": "Root reviewed source comparison; discrepancies are labeled likely/possibly consequential or unresolved and not attributed as causes; code-to-paper provenance explicitly unresolved.",
+            "recorded_at": "2026-10-15T12:55:12.343240Z",
+            "status": "PASS"
+          },
+          "Pristine upstream URL, commit, tree, license, dependencies, and working/incomplete entry points are recorded and hash-verified": {
+            "receipt": "Upstream source is pristine at 578de36a556cadeb9ea433dee2e153d76e70e0ec; Root verified clean git status, 47 tracked files, file inventory hash 2cfb3886621f1dbe89234c78fee8336ca804beefc4959454d43102d6b88f539f and manifest hash 939b9409fc1439bda1cabc4d7ea294716060c49284dae6ad1bfb7b36cbe82e1e; sha256sum -c passed.",
+            "recorded_at": "2026-10-15T12:55:12.282804Z",
+            "status": "PASS"
+          }
+        }
+      },
+      "waiting_on": [],
+      "workstream": "phase4-mi5"
+    }
+  ],
+  "project": "nova-rey/mneme",
+  "resources": {
+    "local_model_generation": {
+      "capacity": 1,
+      "exclusive": true
+    },
+    "upstream_clone": {
+      "capacity": 1,
+      "exclusive": true
+    }
+  },
+  "schema_version": 1,
+  "updated_at": "2026-10-15T12:55:15.992008Z"
+}

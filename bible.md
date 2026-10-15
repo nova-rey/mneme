@@ -2120,3 +2120,7 @@ and dispositions remain unchanged.
 # 2026-10-15 — MI5 original Memory Inception upstream feasibility
 
 Cloned and hash-preserved Andy Liu's repository at `578de36a556cadeb9ea433dee2e153d76e70e0ec`. The released HF Qwen3-MoE evaluation path is more developed than the vLLM work area, but mandatory `long_context` assets and the vLLM intervention plugin are absent; the local Qwen3-4B GGUF does not match the default `qwen3_moe` HF loader. Source syntax passed, but stock imports/generation did not run and no behavior is claimed. See `docs/receipts/MNEME_MI5_Original_Memory_Inception_Feasibility_20261015.md` and its JSON receipt.
+
+## 2026-10-15 MI5 root validation closure
+
+- Root independently checked the pristine upstream clone and SHA-256 manifests, reviewed the author-code provenance caveat, parsed the machine-readable receipt, reran pytest (960), Ruff, strict mypy (72 files), upstream compileall, and checked GitHub CI run 38738150382 green on the published candidate. The MI5 queue records each acceptance check and `can-idle` confirms the campaign complete. The upstream stock path remains unexecuted: source/equipment blockers were reported, not patched around; no model call or MNEME-state change occurred.
