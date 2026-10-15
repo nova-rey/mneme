@@ -333,4 +333,3 @@ def test_descriptor_drops_unsupported_relation_without_substituting_a_generic_on
     assert projection.to_portable_dict() is None
     assert dict(projection.descriptor_omissions)["descriptor_relation_unsupported"] == 1
     assert projection.edges[0].relationship == "invented_relation"
-

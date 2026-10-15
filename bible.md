@@ -1719,3 +1719,7 @@ and dispositions remain unchanged.
 - Added a deterministic, bounded, read-only projection from existing selected `FieldResult` contributions. It preserves actual directed edges, paths, local roles, pressure, and omission reasons in a research audit; it does not walk the graph or create relations.
 - The optional portable descriptor is separate, disabled by default, and currently limited to explicitly caller-attested synthetic fixtures. This is not a privacy filter. The default label-free `_render_saa`, SAA distribution/landing, propagation, persistence, and developmental state remain unchanged.
 - Added synthetic same-vocabulary/different-topology comparison evidence and adversarial projection tests. No Gemma/Quinn/extractor/NLI calls or developmental state were used. The separately named archival rationale was unavailable; implementation follows the uploaded brief and September amendments without reconstructing that document.
+
+## 2026-10-15 SAA projection whitespace hygiene
+
+- Removed an extra blank line at EOF from the projection test file after independent diff-check found it. No behavior or test logic changed; the package candidate remains otherwise unchanged.
