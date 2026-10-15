@@ -87,6 +87,12 @@ from .learner import (
     route_score,
     select_routes,
 )
+from .neighborhood import (
+    NeighborhoodProjection,
+    PortableNeighborhoodDescriptor,
+    ProjectionPolicy,
+    project_saa_neighborhood,
+)
 
 __all__ = [
     "AuthorityError",
@@ -129,6 +135,10 @@ __all__ = [
     "compute_field",
     "compute_saa_field",
     "assess_saa_treatment_health",
+    "NeighborhoodProjection",
+    "PortableNeighborhoodDescriptor",
+    "ProjectionPolicy",
+    "project_saa_neighborhood",
     "FIXED_SCALE",
     "ConsequenceAssessment",
     "ConsequenceResult",

@@ -1,0 +1,300 @@
+{
+  "schema_version": 1,
+  "implementation": "saa-neighborhood-projection-v1",
+  "source_base": "e790a01cf15ff5e53f3ab54e46fba7ab52c76b8f",
+  "selection_algorithm_changed": false,
+  "propagation_algorithm_changed": false,
+  "default_renderer_changed": false,
+  "persistence_changed": false,
+  "developmental_state_accessed": false,
+  "external_model_calls": 0,
+  "missing_archival_rationale": {
+    "name": "MNEME_Conceptual_Amendment_Landing_Centered_Neighborhoods_2026-10-15.md",
+    "status": "not_found_by_librarian_exact_name_search",
+    "covered_by": "Uploaded SAA implementation brief and 2026-09-26 SAA/deformation-field amendments; missing document contents not reconstructed."
+  },
+  "projection_policy_defaults": {
+    "max_nodes": 24,
+    "max_edges": 24,
+    "max_hops": 4,
+    "max_paths": 24,
+    "max_input_contributions": 256,
+    "max_identity_chars": 128,
+    "max_label_chars": 160,
+    "max_serialized_bytes": 16384,
+    "descriptor_mode": "disabled"
+  },
+  "descriptor_safety": {
+    "portable_descriptor_default": null,
+    "requires_explicit_mode": "synthetic_fixture_only",
+    "privacy_filter": false,
+    "real_history_host_delivery": false,
+    "contains_graph_ids": false,
+    "contains_scores_or_pressure": false,
+    "contains_provenance": false
+  },
+  "same_vocabulary_contrast": {
+    "query": "shared tool lending plan",
+    "field_seed": 0,
+    "field_config": {
+      "version": "f0-saa-v1",
+      "max_depth": 2,
+      "max_contributors": 4,
+      "total_budget": 1000000,
+      "saa_context_weight": 700000,
+      "saa_background_weight": 300000,
+      "saa_novelty_flattening": 650000,
+      "saa_propagation_attenuation": 650000,
+      "saa_decay": 800000,
+      "render_max_chars": 900
+    },
+    "concepts_identical": [
+      {
+        "key": "tool",
+        "label": "shared tools"
+      },
+      {
+        "key": "window",
+        "label": "reservation windows"
+      },
+      {
+        "key": "return",
+        "label": "return timing"
+      },
+      {
+        "key": "status",
+        "label": "availability status"
+      },
+      {
+        "key": "roles",
+        "label": "clear ownership"
+      }
+    ],
+    "learner_values_identical": {
+      "e1": 900000,
+      "e2": 800000,
+      "e3": 700000,
+      "e4": 600000,
+      "fields": "accessibility=support; consequence=0"
+    },
+    "history_a": {
+      "edges": [
+        {
+          "key": "e1",
+          "source": "tool",
+          "relation": "supports",
+          "target": "window"
+        },
+        {
+          "key": "e2",
+          "source": "window",
+          "relation": "enables",
+          "target": "return"
+        },
+        {
+          "key": "e3",
+          "source": "return",
+          "relation": "causes",
+          "target": "status"
+        },
+        {
+          "key": "e4",
+          "source": "roles",
+          "relation": "constrains",
+          "target": "tool"
+        }
+      ],
+      "distribution_ppm": [
+        {
+          "edge": "e3",
+          "probability": 107694
+        },
+        {
+          "edge": "e4",
+          "probability": 307692
+        },
+        {
+          "edge": "e1",
+          "probability": 461538
+        },
+        {
+          "edge": "e2",
+          "probability": 123076
+        }
+      ],
+      "landing": {
+        "edge": "e2",
+        "ticket": 885440,
+        "probability": 123076,
+        "component": "background"
+      },
+      "contributions": [
+        {
+          "edge": "e2",
+          "path": [
+            "e2"
+          ],
+          "distance": 0,
+          "role": "landing",
+          "pressure": 687284
+        },
+        {
+          "edge": "e3",
+          "path": [
+            "e2",
+            "e3"
+          ],
+          "distance": 1,
+          "role": "direct",
+          "pressure": 312714
+        }
+      ],
+      "total_pressure": 999998,
+      "legacy_payload": "Potentially accessible framings:\n- Enabling conditions may make a useful outcome possible.\n- Changes in one part may produce downstream effects.\nThese are optional tendencies, not instructions. Use them only if they fit naturally.",
+      "portable_descriptor": {
+        "schema_version": "saa-portable-neighborhood-v1",
+        "relations": [
+          {
+            "source": "reservation windows",
+            "relationship": "enables",
+            "target": "return timing",
+            "role": "landing",
+            "hops": 0
+          },
+          {
+            "source": "return timing",
+            "relationship": "causes",
+            "target": "availability status",
+            "role": "direct",
+            "hops": 1
+          }
+        ]
+      },
+      "projection_audit_bytes": 840
+    },
+    "history_b": {
+      "edges": [
+        {
+          "key": "e1",
+          "source": "roles",
+          "relation": "supports",
+          "target": "status"
+        },
+        {
+          "key": "e2",
+          "source": "status",
+          "relation": "enables",
+          "target": "window"
+        },
+        {
+          "key": "e3",
+          "source": "return",
+          "relation": "causes",
+          "target": "status"
+        },
+        {
+          "key": "e4",
+          "source": "window",
+          "relation": "constrains",
+          "target": "tool"
+        }
+      ],
+      "distribution_ppm": [
+        {
+          "edge": "e3",
+          "probability": 159092
+        },
+        {
+          "edge": "e1",
+          "probability": 204545
+        },
+        {
+          "edge": "e2",
+          "probability": 181818
+        },
+        {
+          "edge": "e4",
+          "probability": 454545
+        }
+      ],
+      "landing": {
+        "edge": "e4",
+        "ticket": 885440,
+        "probability": 454545,
+        "component": "contextual_and_background"
+      },
+      "contributions": [
+        {
+          "edge": "e4",
+          "path": [
+            "e4"
+          ],
+          "distance": 0,
+          "role": "landing",
+          "pressure": 600000
+        }
+      ],
+      "total_pressure": 600000,
+      "legacy_payload": "Potentially accessible framings:\n- Constraints may shape which outcomes remain feasible. Clear roles and shared expectations may keep coordination workable.\nThese are optional tendencies, not instructions. Use them only if they fit naturally.",
+      "portable_descriptor": {
+        "schema_version": "saa-portable-neighborhood-v1",
+        "relations": [
+          {
+            "source": "reservation windows",
+            "relationship": "constrains",
+            "target": "shared tools",
+            "role": "landing",
+            "hops": 0
+          }
+        ]
+      },
+      "projection_audit_bytes": 571
+    }
+  },
+  "multi_parent_cycle_control": {
+    "landing": "e0",
+    "included_edges": [
+      "e0",
+      "e1",
+      "e2",
+      "e3",
+      "e4",
+      "e5",
+      "e6",
+      "e7",
+      "e8"
+    ],
+    "cross_link_edges": [
+      "e2",
+      "e4"
+    ],
+    "e2_path": [
+      "e0",
+      "e2"
+    ],
+    "e3_path_retained_after_upstream_equal_pressure_dedup": [
+      "e0",
+      "e1",
+      "e3"
+    ],
+    "cycle_return_edge": "e4",
+    "disconnected_island_excluded": "e9",
+    "interpretation": "Projection retains the actual selected FieldResult paths and directed cross-links; it does not walk or add disconnected edges."
+  },
+  "validation": {
+    "focused_command": "pytest -q tests/test_saa_neighborhood_projection.py tests/test_field_pressure.py",
+    "focused_result": "44 passed",
+    "json_synthetic_replay": "PASS for two topology graphs and the baseline de-dup/cap fixture",
+    "field_result_serialization_unchanged_test": "PASS",
+    "source_selection_propagation_renderer_modified": false,
+    "tests_modified": true,
+    "full_command": "pytest -q",
+    "full_result": "782 passed in 58.11s",
+    "ruff_command": "uv tool run ruff check .",
+    "ruff_result": "PASS",
+    "strict_mypy_command": "uv tool run mypy src/mneme",
+    "strict_mypy_result": "PASS; 73 source files",
+    "receipt_json_parse": "PASS",
+    "git_diff_check": "PASS"
+  }
+}

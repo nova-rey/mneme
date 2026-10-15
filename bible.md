@@ -1713,3 +1713,9 @@ and dispositions remain unchanged.
 ## 2026-10-15 SAA landing-centered neighborhood baseline
 
 - Read-only Stage 1 replay on clean `origin/main` (`df8e3c9dfd0afc2f17dd98737543da4a82c63683`) confirms the existing SAA distribution uses earned edge strength and endpoint context, then propagates from the selected edge along directed outgoing links with depth attenuation, de-duplication and a contributor cap. The label-free renderer abstracts resulting relations. A same-vocabulary synthetic topology rewrite changed the fixed-seed landing and payload. This is a mechanism observation; the suspected information flattening is not yet established as a production defect. The referenced 2026-10-15 conceptual rationale was not found locally. See the baseline Markdown/JSON receipts.
+
+## 2026-10-15 SAA landing-centered neighborhood projection
+
+- Added a deterministic, bounded, read-only projection from existing selected `FieldResult` contributions. It preserves actual directed edges, paths, local roles, pressure, and omission reasons in a research audit; it does not walk the graph or create relations.
+- The optional portable descriptor is separate, disabled by default, and currently limited to explicitly caller-attested synthetic fixtures. This is not a privacy filter. The default label-free `_render_saa`, SAA distribution/landing, propagation, persistence, and developmental state remain unchanged.
+- Added synthetic same-vocabulary/different-topology comparison evidence and adversarial projection tests. No Gemma/Quinn/extractor/NLI calls or developmental state were used. The separately named archival rationale was unavailable; implementation follows the uploaded brief and September amendments without reconstructing that document.
