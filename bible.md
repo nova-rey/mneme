@@ -1733,3 +1733,7 @@ and dispositions remain unchanged.
 - Added model-free synthetic receipts holding the SAA landing at `e0` while changing only earned non-landing endpoints; the distribution and landing match, projected path topology differs, and the legacy renderer output is identical.
 - Added a disconnected remote-edge control and a reachability-only incoming-edge counterfactual that preserves original edge source, relation, and target, with explicit `causes`/`part_of` inverse-semantics warnings.
 - Reused the LCN-01 cap/de-dup trace and verified that projection does not reconstruct an upstream omitted candidate or alternate deduplicated path. No production SAA or projection behavior changed.
+
+## 2026-10-15 SAA LCN-02 fixed-landing counterfactual
+
+- Completed the synthetic-only fixed-landing topology and directionality investigation on `research/saa-lcn-02`. Actual field results held e0 and its distribution constant while rewired earned edges changed projected endpoints; incoming access was analyzed separately without asserting inverse relations. No SAA production code or developmental state changed. Root validation and CI passed. See the LCN02 Markdown/JSON receipts.

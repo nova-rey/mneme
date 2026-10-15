@@ -1,0 +1,114 @@
+{
+  "campaign": "mneme-saa-lcn-02-fixed-landing",
+  "created_at": "2026-10-15T18:40:40.380164Z",
+  "dependencies": {},
+  "hard_problem_repo": null,
+  "packages": [
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "45e251f368f5d1986d6027c484cdf61e7344b61c",
+      "campaign": "mneme-saa-lcn-02-fixed-landing",
+      "candidate": {
+        "artifact": null,
+        "base_sha": "45e251f368f5d1986d6027c484cdf61e7344b61c",
+        "returned_at": "2026-10-15T18:48:23.867407Z",
+        "returned_by": "/root/supervisor",
+        "sha": "cafdd3b33712a455e8e499fbaab7c76c40ae4e3e"
+      },
+      "completion_criterion": "A reproducible, synthetic-only report establishes whether fixed landing with changed earned links changes the projected neighborhood and documents directionality limits without implementing any SAA behavior change.",
+      "created_at": "2026-10-15T18:40:40.429683Z",
+      "dependencies": [],
+      "domain": "mneme-saa-neighborhood-counterfactuals",
+      "edit_boundaries": [
+        "/tmp/mneme-saa-lcn02 only",
+        "tests, read-only research helper if necessary, docs/receipts, bible.md",
+        "do not modify src/mneme/development/field.py, neighborhood.py, persistence, or main",
+        "no Gemma, GPU, MI, vLLM, cloud, extractor, Quinn, NLI, or developmental specimen access/mutation",
+        "do not invent or paraphrase the unavailable archival amendment",
+        "do not merge or alter other research branches"
+      ],
+      "evidence_refs": [
+        "Root validated synthetic fixed-landing, disconnected control, directionality diagnostic, cap/attenuation trace, focused/full checks and CI; production behavior unchanged."
+      ],
+      "id": "SAA-LCN02-FIXED-LANDING",
+      "notes": "",
+      "owner": null,
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "LCN02-FIXED-LANDING",
+        "LCN02-DIRECTIONALITY",
+        "LCN02-CAP-ATTENUATION",
+        "LCN02-RECEIPTS",
+        "LCN02-TESTS"
+      ],
+      "resource_requirements": [],
+      "scope": "On research/saa-lcn-02 based at 45e251f368f5d1986d6027c484cdf61e7344b61c, perform only the model-free synthetic investigations in the uploaded LCN-02 brief. Prove same selected landing with different earned surrounding topology; add disconnected-edge control; show production outgoing-only exclusion of earned incoming associations and a separate bounded reachability-only counterfactual preserving original edge direction; illustrate directional relation risk; reuse the existing cap/attenuation fixture. Produce the two requested Markdown receipts plus machine-readable JSON and focused tests/script as appropriate. No production algorithm/source changes unless a diagnostic/test issue is demonstrated and Owner approval obtained.",
+      "session_ids": [],
+      "status": "DONE",
+      "title": "Run fixed-landing neighborhood and directionality counterfactuals",
+      "updated_at": "2026-10-15T18:51:13.105340Z",
+      "validation": {
+        "required": [
+          "Both topology cases are genuine compute_saa_field results with same e0 landing and disclosed selection controls",
+          "Disconnected-edge control leaves projected reachable neighborhood unchanged and report distinguishes distribution effects",
+          "Production incoming-edge exclusion and separate counterfactual preserve source/target orientation and do not fabricate FieldResult",
+          "Existing contributor-cap/attenuation loss is traced and projection shown not to reconstruct omitted paths",
+          "Focused tests, full pytest, Ruff, strict mypy, JSON/whitespace checks pass",
+          "CI passes on pushed research branch"
+        ],
+        "results": {
+          "Both topology cases are genuine compute_saa_field results with same e0 landing and disclosed selection controls": {
+            "receipt": "Root replayed helper and inspected trace JSON: both actual results share the distribution by key, seed 1 ticket 140891, selected e0. Seed scan 0..5 and conditioning are disclosed.",
+            "recorded_at": "2026-10-15T18:49:51.174414Z",
+            "status": "PASS"
+          },
+          "CI passes on pushed research branch": {
+            "receipt": "GitHub Actions CI run 38788869814 completed success for commit cafdd3b33712a455e8e499fbaab7c76c40ae4e3e.",
+            "recorded_at": "2026-10-15T18:51:13.041416Z",
+            "status": "PASS"
+          },
+          "Disconnected-edge control leaves projected reachable neighborhood unchanged and report distinguishes distribution effects": {
+            "receipt": "Fixed remote edge rewire from y to z leaves the candidate distribution, landing, and projection audit unchanged; helper replay is byte-identical.",
+            "recorded_at": "2026-10-15T18:49:51.269325Z",
+            "status": "PASS"
+          },
+          "Existing contributor-cap/attenuation loss is traced and projection shown not to reconstruct omitted paths": {
+            "receipt": "Root reviewed rerun cap fixture and prior LCN01 receipt: e7 eligible candidate is removed upstream, projection cannot restore it; e3 path provenance is explicitly limited to prior raw propagation witness; pressure depths 416000\u2192112486 are reproduced.",
+            "recorded_at": "2026-10-15T18:49:51.453509Z",
+            "status": "PASS"
+          },
+          "Focused tests, full pytest, Ruff, strict mypy, JSON/whitespace checks pass": {
+            "receipt": "Root: full pytest 787 passed; Ruff all checks passed; mypy source 73 files and helper/tests with MYPYPATH=src passed; trace JSON byte-identical regeneration SHA256 3378de4cce827d8dc3805e5e33ac3a52a2ab6993bff10130eee7b7151266bae1; git diff --check and JSON parse passed.",
+            "recorded_at": "2026-10-15T18:49:51.538084Z",
+            "status": "PASS"
+          },
+          "Production incoming-edge exclusion and separate counterfactual preserve source/target orientation and do not fabricate FieldResult": {
+            "receipt": "Actual FieldResult includes eligible incoming candidate in distribution but omits it from contributions; separate simulator labels incoming_access_only, retains C\u2192associated_with\u2192A and never creates a FieldResult or inverse claim. Directional causes/part_of test passes.",
+            "recorded_at": "2026-10-15T18:49:51.363226Z",
+            "status": "PASS"
+          }
+        }
+      },
+      "waiting_on": [],
+      "workstream": "saa-lcn-02"
+    }
+  ],
+  "project": "nova-rey/mneme",
+  "resources": {
+    "canonical-integration": {
+      "capacity": 1,
+      "exclusive": true
+    },
+    "model-agent": {
+      "capacity": 4,
+      "exclusive": false
+    }
+  },
+  "schema_version": 1,
+  "updated_at": "2026-10-15T18:51:13.105381Z"
+}
