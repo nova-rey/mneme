@@ -1723,3 +1723,7 @@ and dispositions remain unchanged.
 ## 2026-10-15 SAA projection whitespace hygiene
 
 - Removed an extra blank line at EOF from the projection test file after independent diff-check found it. No behavior or test logic changed; the package candidate remains otherwise unchanged.
+
+## 2026-10-15 SAA neighborhood projection queue closure
+
+- Closed the local SAA-LCN-01 queue after Root validation: deterministic replay receipts, projection tests, full test suite, Ruff, strict mypy, whitespace check, and GitHub CI all passed. The implementation and comparison receipts are on `research/saa-lcn-01`; the main worktree and MI branches were not changed. Queue state is retained at `.codex/work-queue-saa-lcn-01.json`.

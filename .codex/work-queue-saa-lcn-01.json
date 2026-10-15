@@ -1,0 +1,183 @@
+{
+  "campaign": "mneme-saa-lcn-01",
+  "created_at": "2026-10-15T16:44:05.696331Z",
+  "dependencies": {},
+  "hard_problem_repo": null,
+  "packages": [
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "df8e3c9",
+      "campaign": "mneme-saa-lcn-01",
+      "candidate": {
+        "artifact": null,
+        "base_sha": "df8e3c9",
+        "returned_at": "2026-10-15T16:49:41.068637Z",
+        "returned_by": "/root/supervisor",
+        "sha": "e790a01"
+      },
+      "completion_criterion": "Return an independently reproducible Stage 1 audit receipt with exact synthetic examples, before any selection algorithm or renderer changes.",
+      "created_at": "2026-10-15T16:44:05.741762Z",
+      "dependencies": [],
+      "domain": "mneme-saa-graph-projection",
+      "edit_boundaries": [
+        "/tmp/mneme-saa only",
+        "read-only source and tests; no code edits",
+        "do not access or mutate developmental specimens or CompactStore",
+        "preserve dirty /home/nyx/mneme worktree and all MI branches"
+      ],
+      "evidence_refs": [
+        "Stage 1 baseline integrated at e790a01 and root replay validation passed. Implementation has not begun."
+      ],
+      "id": "SAA-LCN-01-BASELINE",
+      "notes": "",
+      "owner": null,
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "LCN-STAGE1-PIPELINE-AUDIT",
+        "LCN-BASELINE-RECEIPT"
+      ],
+      "resource_requirements": [
+        {
+          "exclusive": true,
+          "name": "read_only_saa_audit",
+          "units": 1
+        }
+      ],
+      "scope": "Read-only audit on a clean origin/main worktree of the fixed SAA pipeline from eligible edges through distribution, seeded landing, directed propagation, contributor cap and legacy renderer. Use only small synthetic graphs. Produce exact counts/paths/payload baseline and same-concept/different-earned-cross-link control. Do not implement until Root resolves missing archival rationale and the parallel MI1 scope question.",
+      "session_ids": [],
+      "status": "DONE",
+      "title": "SAA landing-centered neighborhood baseline audit",
+      "updated_at": "2026-10-15T16:49:41.348763Z",
+      "validation": {
+        "required": [
+          "Baseline reproduces from fixed synthetic graph and field seed",
+          "Audit preserves and reports exact selected edge/path/contribution/legacy payload, with no production-state mutation",
+          "Baseline receipt labels observed facts separately from the flattening hypothesis"
+        ],
+        "results": {
+          "Audit preserves and reports exact selected edge/path/contribution/legacy payload, with no production-state mutation": {
+            "receipt": "Root reviewed Markdown/JSON and exact source behavior; reports synthetic-only controlled traces and observed/inferred/unresolved separation. No source, tests, developmental database/specimen or CompactStore changed.",
+            "recorded_at": "2026-10-15T16:49:41.243318Z",
+            "status": "PASS"
+          },
+          "Baseline receipt labels observed facts separately from the flattening hypothesis": {
+            "receipt": "Markdown and JSON explicitly mark observed pipeline mechanics, inferred flattening hypothesis, and unresolved missing archival rationale/prevalence; no algorithm recommendation asserted.",
+            "recorded_at": "2026-10-15T16:49:41.302067Z",
+            "status": "PASS"
+          },
+          "Baseline reproduces from fixed synthetic graph and field seed": {
+            "receipt": "Root replayed both topologies directly from the JSON under source base df8e3c9dfd0afc2f17dd98737543da4a82c63683. Both distributions, tickets, landings and exact payloads matched; baseline deterministic replay PASS.",
+            "recorded_at": "2026-10-15T16:49:41.188094Z",
+            "status": "PASS"
+          }
+        }
+      },
+      "waiting_on": [],
+      "workstream": "saa-lcn-01"
+    },
+    {
+      "attempt_state": {
+        "material_attempts": [],
+        "tier": 1
+      },
+      "base_sha": "e790a01cf15ff5e53f3ab54e46fba7ab52c76b8f",
+      "campaign": "mneme-saa-lcn-01",
+      "candidate": {
+        "artifact": null,
+        "base_sha": "e790a01cf15ff5e53f3ab54e46fba7ab52c76b8f",
+        "returned_at": "2026-10-15T17:07:11.633032Z",
+        "returned_by": "/root/saa_lcn_baseline_supervisor",
+        "sha": "5dfd4eb56ad9bbd351280eb3cd1edede5ba5d389"
+      },
+      "completion_criterion": "A small versioned projection exposes inspectable earned neighborhood structure with deterministic budgets, while the old renderer remains default and every protected selection/landing invariant is unchanged.",
+      "created_at": "2026-10-15T16:53:05.471384Z",
+      "dependencies": [
+        "package:SAA-LCN-01-BASELINE"
+      ],
+      "domain": "mneme-saa-graph-projection",
+      "edit_boundaries": [
+        "/tmp/mneme-saa only",
+        "src/mneme/development projection code and tests",
+        "compact docs/receipts artifacts and bible.md",
+        "do not modify production main or MI branches",
+        "no MI, Gemma, Quinn, extractor, or NLI calls",
+        "do not access or mutate developmental specimens or CompactStore",
+        "do not alter SAA selection/propagation/default rendering or historical receipts"
+      ],
+      "evidence_refs": [
+        "Root independently reviewed and validated projection, reports and unchanged SAA behavior; baseline and implementation packages complete on research/saa-lcn-01."
+      ],
+      "id": "SAA-LCN-02-PROJECTION",
+      "notes": "",
+      "owner": null,
+      "priority": 1,
+      "project": "nova-rey/mneme",
+      "required": true,
+      "requirement_ids": [
+        "LCN-PROJECTION",
+        "LCN-DUAL-OUTPUT",
+        "LCN-SELECTION-PRESERVATION",
+        "LCN-TESTS",
+        "LCN-COMPARISON-REPORT"
+      ],
+      "resource_requirements": [],
+      "scope": "On research/saa-lcn-01, implement a pure, deterministic, bounded, versioned neighborhood projection derived only from existing FieldResult selected contributions. Keep current landing distribution, propagation, persistence, historical serialization, and default host renderer unchanged. Separate research audit projection from optional portable descriptor; default host delivery remains the old label-free renderer. Add focused adversarial tests and readable synthetic examples comparing earned topologies. Record the unavailable named archival rationale as an unresolved provenance gap and rely only on the uploaded owner-directed implementation brief plus existing September SAA amendments.",
+      "session_ids": [],
+      "status": "DONE",
+      "title": "Implement bounded landing-centered SAA neighborhood projection",
+      "updated_at": "2026-10-15T17:08:45.792577Z",
+      "validation": {
+        "required": [
+          "Pure projection is deterministic and bounded; paths/direction/relations preserved; no fabricated edges",
+          "Projection does not change landing/distribution/current renderer/default host delivery or F0 snapshots",
+          "Focused SAA tests, full pytest, Ruff, strict mypy pass",
+          "Comparison report demonstrates different same-vocabulary earned cross-links and records exact outputs",
+          "CI passes on pushed research branch"
+        ],
+        "results": {
+          "CI passes on pushed research branch": {
+            "receipt": "GitHub Actions CI 38774733435 completed success on pushed candidate 5dfd4eb56ad9bbd351280eb3cd1edede5ba5d389.",
+            "recorded_at": "2026-10-15T17:08:45.729436Z",
+            "status": "PASS"
+          },
+          "Comparison report demonstrates different same-vocabulary earned cross-links and records exact outputs": {
+            "receipt": "Markdown/JSON report parses and gives exact fixed-seed distributions, landings, edge paths, default payloads, and opt-in descriptors for two synthetic histories with equal concept labels and differing edges.",
+            "recorded_at": "2026-10-15T17:07:37.384135Z",
+            "status": "PASS"
+          },
+          "Focused SAA tests, full pytest, Ruff, strict mypy pass": {
+            "receipt": "Root: focused field+projection 44 passed; full pytest 782 passed; uv ruff check . passed; uv mypy src/mneme passed strict configured checks for 73 files; git diff --check passed after cleanup.",
+            "recorded_at": "2026-10-15T17:07:37.284950Z",
+            "status": "PASS"
+          },
+          "Projection does not change landing/distribution/current renderer/default host delivery or F0 snapshots": {
+            "receipt": "Projection is a separate module; source diff for field.py, state/, graph.py is empty; tests assert FieldResult serialization/distribution/payload unchanged; no runtime wiring added.",
+            "recorded_at": "2026-10-15T17:07:37.180628Z",
+            "status": "PASS"
+          },
+          "Pure projection is deterministic and bounded; paths/direction/relations preserved; no fabricated edges": {
+            "receipt": "Root independent review of project_saa_neighborhood; 44 focused tests cover deterministic output, directed paths, cycles, multiple parents/crosslinks, caps, omission reasons, protected edges, and two-topology comparison.",
+            "recorded_at": "2026-10-15T17:07:37.080422Z",
+            "status": "PASS"
+          }
+        }
+      },
+      "waiting_on": [],
+      "workstream": "saa-lcn-01"
+    }
+  ],
+  "project": "nova-rey/mneme",
+  "resources": {
+    "read_only_saa_audit": {
+      "capacity": 1,
+      "exclusive": true
+    }
+  },
+  "schema_version": 1,
+  "updated_at": "2026-10-15T17:08:45.792628Z"
+}
